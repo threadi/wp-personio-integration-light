@@ -1,0 +1,9 @@
+Installation und Konfiguration des Plugins
+==========================================
+
+1. Plugin über Plugins > Hinzufügen hochladen und so installieren.
+2. Plugin anschließend aktivieren.
+3. Der Meldung zur Einstellungs-Seite folgen.
+4. Dort die eigene Personio-URL einfügen und speichern.
+5. Anschließend der Meldung folgen die zur Liste der importierten Positionen führt.
+6. Fertig, wenn die Liste gefüllt ist.

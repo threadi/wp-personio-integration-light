@@ -1,0 +1,19 @@
+* Überladen von Template durch Child-Theme testen
+* Personio-Icon in folgenden Auflösungen nötig (als PNG):
+-> 20x20
+-> 128x128
+* alle 3 Plugins in Github hinterlegen (Lizenzen + Pro nicht öffentlich)
+* Template-Liste nach Liste und Detail trennen
+
+Schönheit:
+* Einstellungen auf- und zuklappbar machen
+* wenn RichSnippets aktiviert sind prüfen, ob Organisation angegeben wurde und wenn nicht Warnung im Backend ausgeben
+* Shortcodes per Klick in Zwischenablage legen
+
+Später:
+* weitere Formular-Plugins für Bewerbungen unterstützen
+-> NinjaForms
+* Uploads für Bewerbungen ergänzen
+* Zusatzangaben zur Bewerbung erfassen, z.B. Geburtsdatum => https://developer.personio.de/reference/post_v1-recruiting-applications
+* Anzahl max. Positionen für Free-Version auf 10 beschränken
+-> wie mit mehr umgehen? auch bei aktualisierung?

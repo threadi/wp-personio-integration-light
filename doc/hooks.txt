@@ -1,0 +1,6 @@
+Hooks
+=====
+
+wp_personio_licence_url
+-----------------------
+* prüfen und ändern der Lizenz-URL (nur für Entwicklungszwecke)

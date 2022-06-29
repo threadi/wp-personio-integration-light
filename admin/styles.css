@@ -1,0 +1,111 @@
+:root {
+    --personio-pro-bg: yellow;
+    --personio-pro-font: #000;
+    --personio-hint-bg: #c45602;
+    --personio-hint-font: #fff;
+    --personio-pro-hint-bg: #fca15b;
+    --personio-pro-hint-font: #000;
+}
+
+#dashboard_personio_integration_positions .inside {
+    margin: 0;
+    padding: 0
+}
+
+#dashboard_personio_integration_positions .inside > p {
+    padding: 8px 12px;
+}
+
+.personio_positions {
+    background-color: #f6f7f7;
+    margin: 0;
+}
+
+.personio_positions li {
+    border-bottom: 1px solid #f0f0f1;
+    padding: 8px 12px;
+}
+
+/* Gutenberg multi-select */
+.wp-personio-integration-selectcontrol-multiple select {
+    height: 120px !important;
+}
+
+/* Elementor-Widget-Icon */
+.wp-personio-integration-icon:after {
+    content: url(../gfx/personio_icon.png);
+    display: block;
+}
+
+/* SiteOrigin Widget Icon */
+#sow-widgets-page #widgets-list .so-widget[data-id='personio-positions'] .so-widget-banner svg,
+#sow-widgets-page #widgets-list .so-widget[data-id='personio-position'] .so-widget-banner svg {
+    display: none
+}
+#sow-widgets-page #widgets-list .so-widget[data-id='personio-positions'] .so-widget-banner:before,
+#sow-widgets-page #widgets-list .so-widget[data-id='personio-position'] .so-widget-banner:before {
+    content: url(../gfx/personio_icon.png);
+    display: block;
+}
+
+.personio-field-width { width: 250px }
+
+body.post-type-personioposition.edit-tags-php #col-left { display: none }
+body.post-type-personioposition.edit-tags-php #col-right {
+    float: none;
+    width: auto;
+}
+body.post-type-personioposition.edit-tags-php #col-right .col-wrap { padding: 0 }
+
+body.post-type-personioposition.edit-tags-php #col-right th:first-child, body.post-type-personioposition.edit-tags-php #col-right td:first-child { display: none }
+
+.wp-personio-integration-transient {
+    position: relative;
+    z-index: 1;
+}
+
+.wp-personio-integration-transient h3 img {
+    vertical-align: middle;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.column-dragdrop { width: 20px }
+
+.ui-sortable-handle { cursor: pointer; }
+
+.pro-marker {
+    background-color: var(--personio-pro-bg);
+    border-radius: 4px;
+    color: var(--personio-pro-font);
+    display: inline-block;
+    padding: 0 8px;
+}
+
+.post-type-personioposition .personio-pro-hint {
+    background-color: var(--personio-pro-hint-bg);
+    color: var(--personio-pro-hint-font);
+    padding: 12px;
+}
+
+.post-type-personioposition div.wrap > .personio-pro-hint {
+    padding: 4px 8px;
+}
+
+.personioposition_page_personioPositions .highlight {
+    background-color: var(--personio-hint-bg);
+    color: var(--personio-hint-font);
+    padding: 12px;
+}
+
+.personioposition_page_personioPositions .highlight a {
+    color: var(--personio-hint-font);
+}
+
+.personioposition_page_personioPositions .highlight a:after, .post-type-personioposition .personio-pro-hint a:after {
+    content: "\f504";
+    display: inline-block;
+    font-family: "dashicons";
+    margin-left: 4px;
+    vertical-align: middle;
+}

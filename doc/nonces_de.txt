@@ -1,0 +1,7 @@
+Nonces zur Absicherung von Request
+==================================
+
+Warum werden im Frontend bei den Filtern keine nonces verwendet?
+----------------------------------------------------------------
+
+Es handelt sich um URLs die durchaus an andere per E-Mail weitergegeben werden können sollten. Daher findet keine Absicherung der Requests statt.

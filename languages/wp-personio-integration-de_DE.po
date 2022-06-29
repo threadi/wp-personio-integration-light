@@ -1,0 +1,1108 @@
+# Copyright (C) 2022 LaOlaWeb
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-personio-"
+"integration-light\n"
+"POT-Creation-Date: 2022-06-29T04:20:48-05:00\n"
+"PO-Revision-Date: 2022-06-29 11:21+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1\n"
+"X-Domain: wp-personio-integration\n"
+
+#. Plugin Name of the plugin
+msgid "WP Personio Integration Light"
+msgstr "WP Personio Integration Light"
+
+#. Description of the plugin
+msgid "Provides recruiting handling for Personio."
+msgstr "Stellt das Handling von Stellen von Personio bereit."
+
+#. Author of the plugin
+msgid "LaOlaWeb"
+msgstr "LaOlaWeb"
+
+#. Author URI of the plugin
+msgid "https://laolaweb.com"
+msgstr "https://laolaweb.com"
+
+#: classes/class-helper.php:62 classes/class-helper.php:68
+#: classes/class-helper.php:74 classes/class-helper.php:87
+#: classes/class-helper.php:99 classes/class-helper.php:124
+#: classes/class-helper.php:129
+msgid "Personio Integration"
+msgstr "Personio Integration"
+
+#: classes/class-helper.php:63 classes/class-helper.php:69
+msgid "Plugin was not activated!"
+msgstr "Das Plugin wurde nicht aktiviert!"
+
+#: classes/class-helper.php:64
+msgid ""
+"The PHP extension curl is missing on the system. Please contact your hoster "
+"about this."
+msgstr ""
+"Die PHP-Erweiterung curl fehlt auf dem System. Bitte wenden Sie sich "
+"diesbezüglich an Ihren Hoster."
+
+#: classes/class-helper.php:70
+msgid ""
+"The PHP extension simplexml is missing on the system. Please contact your "
+"hoster about this."
+msgstr ""
+"Die PHP-Erweiterung simplexml fehlt auf dem System. Bitte wenden Sie sich "
+"diesbezüglich an Ihren Hoster."
+
+#: classes/class-helper.php:75
+msgid "The specification of your Personio URL is still pending."
+msgstr "Die Angabe Ihrer Personio-URL steht noch aus."
+
+#. translators: %1$s is replaced with "string"
+#: classes/class-helper.php:77
+msgid "To do this, please go to the <a href=\"%s\">settings page</a>."
+msgstr "Gehe dazu bitte auf die <a href=\"%s\">Einstellungsseite</a>."
+
+#: classes/class-helper.php:88
+msgid "You have not imported your open positions from Personio until now."
+msgstr "Es wurden bisher noch keine offenen Stellen aus Personio importiert."
+
+#. translators: %1$s is replaced with "string"
+#: classes/class-helper.php:90
+msgid "To start the import click <a href=\"%s\">here</a>."
+msgstr "Zum Starten des Imports <a href=\"%s\">hier</a> klicken."
+
+#. translators: %1$s is replaced with "string", %2$s is replaced with "string"
+#: classes/class-helper.php:102
+msgid ""
+"<strong>The import has been manually run.</strong> Please check the <a href="
+"\"%1$s\">list of positions</a> or <a href=\"%2$s\">the log</a> for possible "
+"errors."
+msgstr ""
+"<strong>Der Import wurde manuell ausgeführt.</strong> Bitte <a href=\"%1$s"
+"\">die Liste der Stellen</a> oder <a href=\"%2$s\">das Logfile</a> wegen "
+"möglicherweise aufgetretener Fehler prüfen."
+
+#: classes/class-helper.php:125
+msgid ""
+"The specified Personio URL is reachable. Click on the following button to "
+"import your positions from Personio now:"
+msgstr ""
+"Die angegebene Personio-URL ist erreichbar. Klicken Sie auf die folgende "
+"Schaltfläche, um Ihre Positionen jetzt aus Personio zu importieren:"
+
+#: classes/class-helper.php:125 inc/admin.php:43 inc/settings/import.php:167
+msgid "Run import"
+msgstr "führe Import jetzt aus"
+
+#. translators: %1$s is replaced with "string"
+#: classes/class-helper.php:132
+msgid ""
+"The specified Personio URL %s is not usable for this plugin. Please double-"
+"check the URL in your Personio-account under Settings > Recruiting > Career "
+"Page > Activations."
+msgstr ""
+"Die angegebene Personio-URL %s ist für dieses Plugin nicht verwendbar. Bitte "
+"überprüfen Sie die URL in Ihrem Personio-Account unter Einstellungen > "
+"Recruiting > Karriereseite > Aktivierungen."
+
+#: classes/class-helper.php:614
+msgctxt "taxonomy general name"
+msgid "recruiting categories"
+msgstr "Kategorien"
+
+#: classes/class-helper.php:615
+msgctxt "taxonomy singular name"
+msgid "recruiting category"
+msgstr "Kategorie"
+
+#: classes/class-helper.php:616
+msgid "Search recruiting category"
+msgstr "Suche nach Kategorie"
+
+#: classes/class-helper.php:617
+msgid "Edit recruiting category"
+msgstr "Kategorie bearbeiten"
+
+#: classes/class-helper.php:618
+msgid "Update recruiting category"
+msgstr "Kategorie aktualisieren"
+
+#: classes/class-helper.php:619
+msgid "recruiting categories"
+msgstr "Kategorien"
+
+#: classes/class-helper.php:622
+msgctxt "taxonomy general name"
+msgid "occupation categories"
+msgstr "Berufsarten"
+
+#: classes/class-helper.php:623
+msgctxt "taxonomy singular name"
+msgid "occupation category"
+msgstr "Berufsart"
+
+#: classes/class-helper.php:624
+msgid "Search occupation category"
+msgstr "Suche nach Berufsart"
+
+#: classes/class-helper.php:625
+msgid "Edit occupation category"
+msgstr "Berufsart bearbeiten"
+
+#: classes/class-helper.php:626
+msgid "Update occupation category"
+msgstr "Berufsart aktualisieren"
+
+#: classes/class-helper.php:627
+msgid "occupation categories"
+msgstr "Berufsarten"
+
+#: classes/class-helper.php:630
+msgctxt "taxonomy general name"
+msgid "offices"
+msgstr "Standorte"
+
+#: classes/class-helper.php:631
+msgctxt "taxonomy singular name"
+msgid "office"
+msgstr "Standort"
+
+#: classes/class-helper.php:632
+msgid "Search office"
+msgstr "Suchen Standort"
+
+#: classes/class-helper.php:633
+msgid "Edit office"
+msgstr "Bearbeite Standort"
+
+#: classes/class-helper.php:634
+msgid "Update office"
+msgstr "Aktualisiere Standort"
+
+#: classes/class-helper.php:635
+msgid "offices"
+msgstr "Standorte"
+
+#: classes/class-helper.php:638
+msgctxt "taxonomy general name"
+msgid "departments"
+msgstr "Abteilungen"
+
+#: classes/class-helper.php:639
+msgctxt "taxonomy singular name"
+msgid "department"
+msgstr "Abteilung"
+
+#: classes/class-helper.php:640
+msgid "Search department"
+msgstr "Suche nach Abteilung"
+
+#: classes/class-helper.php:641
+msgid "Edit department"
+msgstr "Bearbeite Abteilung"
+
+#: classes/class-helper.php:642
+msgid "Update department"
+msgstr "Aktualisierung Abteilung"
+
+#: classes/class-helper.php:643
+msgid "departments"
+msgstr "Abteilungen"
+
+#: classes/class-helper.php:646
+msgctxt "taxonomy general name"
+msgid "employment types"
+msgstr "Anstellungsarten"
+
+#: classes/class-helper.php:647
+msgctxt "taxonomy singular name"
+msgid "employment type"
+msgstr "Anstellungsart"
+
+#: classes/class-helper.php:648
+msgid "Search employment type"
+msgstr "Suche nach Anstellungsart"
+
+#: classes/class-helper.php:649
+msgid "Edit employment type"
+msgstr "Bearbeite Anstellungsart"
+
+#: classes/class-helper.php:650
+msgid "Update employment type"
+msgstr "Aktualisiere Anstellungsart"
+
+#: classes/class-helper.php:651 inc/init.php:321
+msgid "employment types"
+msgstr "Anstellungsarten"
+
+#: classes/class-helper.php:654
+msgctxt "taxonomy general name"
+msgid "seniority"
+msgstr "Dienstalter"
+
+#: classes/class-helper.php:655
+msgctxt "taxonomy singular name"
+msgid "seniority"
+msgstr "Dienstalter"
+
+#: classes/class-helper.php:656
+msgid "Search seniority"
+msgstr "Suche nach Dienstalter"
+
+#: classes/class-helper.php:657
+msgid "Edit seniority"
+msgstr "Bearbeite Dienstalter"
+
+#: classes/class-helper.php:658
+msgid "Update seniority"
+msgstr "Aktualisiere Dienstalter"
+
+#: classes/class-helper.php:659 inc/init.php:322 blocks/list/build/index.js:1
+#: blocks/list/src/edit.js:78 blocks/list/src/edit.js:154
+#: blocks/show/build/index.js:1 blocks/show/src/edit.js:128
+msgid "seniority"
+msgstr "Dienstalter"
+
+#: classes/class-helper.php:662
+msgctxt "taxonomy general name"
+msgid "schedules"
+msgstr "Arbeitszeiten"
+
+#: classes/class-helper.php:663
+msgctxt "taxonomy singular name"
+msgid "schedule"
+msgstr "Arbeitszeit"
+
+#: classes/class-helper.php:664
+msgid "Search schedule"
+msgstr "Suche nach Arbeitszeit"
+
+#: classes/class-helper.php:665
+msgid "Edit schedule"
+msgstr "Bearbeite Arbeitszeit"
+
+#: classes/class-helper.php:666
+msgid "Update schedule"
+msgstr "Aktualisiere Arbeitszeit"
+
+#: classes/class-helper.php:667
+msgid "schedules"
+msgstr "Arbeitszeiten"
+
+#: classes/class-helper.php:670
+msgctxt "taxonomy general name"
+msgid "experiences"
+msgstr "Berufserfahrungen"
+
+#: classes/class-helper.php:671
+msgctxt "taxonomy singular name"
+msgid "experience"
+msgstr "Berufserfahrung"
+
+#: classes/class-helper.php:672
+msgid "Search experience"
+msgstr "Suche nach Berufserfahrung"
+
+#: classes/class-helper.php:673
+msgid "Edit experience"
+msgstr "Bearbeite Berufserfahrung"
+
+#: classes/class-helper.php:674
+msgid "Update experience"
+msgstr "Aktualisiere Berufserfahrung"
+
+#: classes/class-helper.php:675
+msgid "experiences"
+msgstr "Berufserfahrungen"
+
+#: classes/class-helper.php:678
+msgctxt "taxonomy general name"
+msgid "languages"
+msgstr "Sprachen"
+
+#: classes/class-helper.php:679
+msgctxt "taxonomy singular name"
+msgid "language"
+msgstr "Sprache"
+
+#: classes/class-helper.php:680
+msgid "Search language"
+msgstr "Suche nach Sprache"
+
+#: classes/class-helper.php:681
+msgid "Edit language"
+msgstr "Bearbeite Sprache"
+
+#: classes/class-helper.php:682
+msgid "Update language"
+msgstr "Aktualisiere Sprache"
+
+#: classes/class-helper.php:683
+msgid "languages"
+msgstr "Sprachen"
+
+#: classes/class-helper.php:711
+msgid "permanent"
+msgstr "Dauerhaft"
+
+#: classes/class-helper.php:712
+msgid "intern"
+msgstr "intern"
+
+#: classes/class-helper.php:713
+msgid "trainee"
+msgstr "Praktikant/in"
+
+#: classes/class-helper.php:714
+msgid "freelance"
+msgstr "Freelancer"
+
+#: classes/class-helper.php:717
+msgid "entry-level"
+msgstr "Einstiegslevel"
+
+#: classes/class-helper.php:718
+msgid "experienced"
+msgstr "Erfahrung"
+
+#: classes/class-helper.php:719
+msgid "executive"
+msgstr "Geschäftsführer"
+
+#: classes/class-helper.php:720
+msgid "student"
+msgstr "Student"
+
+#: classes/class-helper.php:723
+msgid "full-time"
+msgstr "Vollzeit"
+
+#: classes/class-helper.php:724
+msgid "part-time"
+msgstr "Teil-Zeit"
+
+#: classes/class-helper.php:727
+msgid "less than 1 year"
+msgstr "weniger als 1 Jahr"
+
+#: classes/class-helper.php:728
+msgid "1-2 years"
+msgstr "1-2 Jahre"
+
+#: classes/class-helper.php:729
+msgid "2-5 years"
+msgstr "2-5 Jahre"
+
+#: classes/class-helper.php:730
+msgid "5-7 years"
+msgstr "5-7 Jahre"
+
+#: classes/class-helper.php:731
+msgid "7-10 years"
+msgstr "7-10 Jahre"
+
+#: classes/class-helper.php:732
+msgid "10-15 years"
+msgstr "10-15 Jahre"
+
+#: classes/class-helper.php:733
+msgid "more than 15 years"
+msgstr "mehr als 15 Jahre"
+
+#: classes/class-import.php:47
+msgid "Personio URL not configured."
+msgstr "Personio URL nicht konfiguriert."
+
+#: classes/class-import.php:182
+msgid "Personio URL not available. Please check the URL you configured."
+msgstr ""
+"Personio URL nicht verfügbar. Bitte überprüfen Sie die von Ihnen "
+"konfigurierte URL."
+
+#: classes/class-import.php:245
+msgid "Error during Personio Positions Import"
+msgstr "Fehler beim Personio Positions Import"
+
+#: classes/class-import.php:246
+msgid ""
+"The following error occurred when importing positions provided by Personio:"
+msgstr ""
+"Beim Importieren von Positionen, die von Personio bereitgestellt wurden, ist "
+"folgender Fehler aufgetreten:"
+
+#: classes/class-import.php:247
+msgid "Sent by the plugin WP Personio Integration"
+msgstr "Gesendet vom Plugin WP Personio Integration"
+
+#: classes/class-logs.php:44
+msgid "state"
+msgstr "Status"
+
+#: classes/class-logs.php:45 classes/class-positionswidget.php:57
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:122
+msgid "date"
+msgstr "Datum"
+
+#: classes/class-logs.php:46
+msgid "log"
+msgstr "Eintrag"
+
+#. translators: %1$s is replaced with "string"
+#: classes/class-position.php:69
+msgid "Unknown property %s."
+msgstr "Unbekannte Eigenschaft %s."
+
+#: classes/class-position.php:102
+msgid "Position could not be saved as the PersonioId is missing."
+msgstr "Stelle konnte nicht gespeichert werden, da die PersonioId fehlt."
+
+#: classes/class-positionswidget.php:20
+msgid "Provides a Widget to show a list of positions provided by Personio."
+msgstr ""
+"Stellt ein Widget zur Verfügung, um eine Liste der von Stellen anzuzeigen."
+
+#: classes/class-positionswidget.php:24 inc/init.php:259
+#: blocks/list/build/index.js:1 blocks/list/src/index.js:37
+msgid "Personio Positions"
+msgstr "Personio Stellen"
+
+#: classes/class-positionswidget.php:39 blocks/list/build/index.js:1
+#: blocks/list/src/edit.js:101
+msgid "amount"
+msgstr "Anzahl"
+
+#: classes/class-positionswidget.php:44
+msgid "Sort Direction"
+msgstr "Sortierrichtung"
+
+#: classes/class-positionswidget.php:47 blocks/list/build/index.js:1
+#: blocks/list/src/edit.js:112
+msgid "ascending"
+msgstr "aufsteigend"
+
+#: classes/class-positionswidget.php:48 blocks/list/build/index.js:1
+#: blocks/list/src/edit.js:113
+msgid "descending"
+msgstr "absteigend"
+
+#: classes/class-positionswidget.php:53 blocks/list/build/index.js:1
+#: blocks/list/src/edit.js:118
+msgid "Sort by"
+msgstr "sortieren nach"
+
+#: classes/class-positionswidget.php:56 inc/init.php:338
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:121
+msgid "title"
+msgstr "Titel"
+
+#: classes/class-positionswidget.php:62 classes/class-positionwidget.php:53
+msgid "Show title"
+msgstr "Zeige Titel an"
+
+#: classes/class-positionswidget.php:65 classes/class-positionswidget.php:74
+#: classes/class-positionswidget.php:83 classes/class-positionswidget.php:99
+#: classes/class-positionswidget.php:108 classes/class-positionwidget.php:56
+#: classes/class-positionwidget.php:65 classes/class-positionwidget.php:74
+#: classes/class-positionwidget.php:90 classes/class-positionwidget.php:99
+msgid "Show"
+msgstr "Zeigen"
+
+#: classes/class-positionswidget.php:66 classes/class-positionswidget.php:75
+#: classes/class-positionswidget.php:84 classes/class-positionswidget.php:100
+#: classes/class-positionswidget.php:109 classes/class-positionwidget.php:57
+#: classes/class-positionwidget.php:66 classes/class-positionwidget.php:75
+#: classes/class-positionwidget.php:91 classes/class-positionwidget.php:100
+msgid "Hide"
+msgstr "Verstecken"
+
+#: classes/class-positionswidget.php:71 classes/class-positionwidget.php:62
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:132
+#: blocks/show/build/index.js:1 blocks/show/src/edit.js:104
+msgid "link title"
+msgstr "verlinke den Titel"
+
+#: classes/class-positionswidget.php:80 classes/class-positionwidget.php:71
+msgid "Show excerpt"
+msgstr "Zeige Auszug"
+
+#: classes/class-positionswidget.php:89 classes/class-positionwidget.php:80
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:144
+#: blocks/show/build/index.js:1 blocks/show/src/edit.js:118
+msgid "Choose excerpt components"
+msgstr "Wähle Auszug-Komponenten"
+
+#: classes/class-positionswidget.php:96 classes/class-positionwidget.php:87
+msgid "Show content"
+msgstr "zeige Inhalt an"
+
+#: classes/class-positionswidget.php:105 classes/class-positionwidget.php:96
+msgid "Show application link"
+msgstr "zeige Link zum Bewerbungsformular an"
+
+#: classes/class-positionwidget.php:20
+msgid "Provides a Widget to show a single position provided by Personio."
+msgstr "Stellt ein Widget zur Verfügung, um eine einzelne Stelle anzuzeigen."
+
+#: classes/class-positionwidget.php:24 blocks/show/build/index.js:1
+#: blocks/show/src/index.js:38
+msgid "Personio Position"
+msgstr "Personio Stelle"
+
+#: classes/class-positionwidget.php:47 blocks/show/build/index.js:1
+#: blocks/show/src/edit.js:92
+msgid "Select position"
+msgstr "Anzuzeigende Stelle wählen"
+
+#: inc/admin.php:40
+msgid "Get WP Personio Integration Pro"
+msgstr "Get WP Personio Integration Pro"
+
+#: inc/admin.php:42
+msgid "Reset sorting"
+msgstr "Sortierung zurücksetzen"
+
+#: inc/admin.php:44 inc/settings/import.php:168
+msgid ""
+"Performing the import could take a few minutes. If a timeout occurs, a "
+"manual import is not possible this way. Then the automatic import should be "
+"used."
+msgstr ""
+"Die Durchführung des Imports kann einige Minuten dauern. Wenn eine "
+"Zeitüberschreitung auftritt, ist ein manueller Import auf diese Weise nicht "
+"möglich. Dann sollte der automatische Import verwendet werden."
+
+#: inc/admin.php:63
+msgid "Positions imported from Personio"
+msgstr "Von Personio importierte Stellen"
+
+#: inc/admin.php:81
+msgid "Actually there are no positions imported from Personio."
+msgstr "Derzeit gibt es keine aus Personio importierten Stellen."
+
+#: inc/admin.php:96
+msgid "Show all positions"
+msgstr "Zeige alle Stellen"
+
+#: inc/admin.php:146
+msgid "Dismiss this notice."
+msgstr "Hinweis ausblenden"
+
+#: inc/admin.php:176
+msgid "PersonioID"
+msgstr "PersonioID"
+
+#: inc/admin.php:220 inc/settings/settings.php:26 blocks/list/build/index.js:1
+#: blocks/list/src/edit.js:99 blocks/show/build/index.js:1
+#: blocks/show/src/edit.js:90
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: inc/frontend.php:68
+msgid "Detail-view called without Id of a position."
+msgstr "Detail-Ansicht ohne Id einer Stelle aufgerufen."
+
+#: inc/frontend.php:80
+msgid "Given Id is not a valid position-Id."
+msgstr "Die gegebene Id ist keine gültige Stellen-Id."
+
+#: inc/init.php:28 inc/init.php:30
+msgid "Positions"
+msgstr "Stellen"
+
+#: inc/init.php:29
+msgid "Position"
+msgstr "Stelle"
+
+#: inc/init.php:31
+msgid "Parent Position"
+msgstr "Eltern Stelle"
+
+#: inc/init.php:32
+msgid "All Positions"
+msgstr "offene Stellen"
+
+#: inc/init.php:33
+msgid "View Position"
+msgstr "zeige Stelle an"
+
+#: inc/init.php:34
+msgid "View Positions"
+msgstr "zeige Stellen an"
+
+#: inc/init.php:35
+msgid "Search Position"
+msgstr "suche nach Stellen"
+
+#: inc/init.php:36
+msgid "Not Found"
+msgstr "Nicht gefunden"
+
+#: inc/init.php:37
+msgid "Not found in Trash"
+msgstr "In Papierkorb nicht gefunden"
+
+#: inc/init.php:210
+msgid "every 5th Minute"
+msgstr "jede 5. Minute"
+
+#: inc/init.php:317 blocks/list/build/index.js:1 blocks/list/src/edit.js:74
+#: blocks/list/src/edit.js:148 blocks/show/build/index.js:1
+#: blocks/show/src/edit.js:122
+msgid "recruiting category"
+msgstr "Kategorie"
+
+#: inc/init.php:318 blocks/list/build/index.js:1 blocks/list/src/edit.js:75
+#: blocks/list/src/edit.js:151 blocks/show/build/index.js:1
+#: blocks/show/src/edit.js:125
+msgid "schedule"
+msgstr "Arbeitszeit"
+
+#: inc/init.php:319 blocks/list/build/index.js:1 blocks/list/src/edit.js:76
+#: blocks/list/src/edit.js:152 blocks/show/build/index.js:1
+#: blocks/show/src/edit.js:126
+msgid "office"
+msgstr "Standort"
+
+#: inc/init.php:320 blocks/list/build/index.js:1 blocks/list/src/edit.js:77
+#: blocks/list/src/edit.js:153 blocks/show/build/index.js:1
+#: blocks/show/src/edit.js:127
+msgid "department"
+msgstr "Abteilung"
+
+#: inc/init.php:323 blocks/list/build/index.js:1 blocks/list/src/edit.js:79
+#: blocks/list/src/edit.js:155 blocks/show/build/index.js:1
+#: blocks/show/src/edit.js:129
+msgid "experience"
+msgstr "Berufserfahrung"
+
+#: inc/init.php:324 blocks/list/build/index.js:1 blocks/list/src/edit.js:80
+#: blocks/list/src/edit.js:156 blocks/show/build/index.js:1
+#: blocks/show/src/edit.js:130
+msgid "occupation"
+msgstr "Beschäftigung"
+
+#: inc/init.php:339
+msgid "excerpt"
+msgstr "Auszug"
+
+#: inc/init.php:340
+msgid "content"
+msgstr "Inhalt"
+
+#: inc/init.php:341
+msgid "formular"
+msgstr "Formular"
+
+#: inc/settings/advanced.php:19
+msgid "Advanced"
+msgstr "Erweitert"
+
+#: inc/settings/advanced.php:64
+msgid "Advanced Settings"
+msgstr "erweiterte Einstellungen"
+
+#: inc/settings/advanced.php:87
+msgid "max. Age for log entries in days"
+msgstr "maximales Alter für Log-Einträge in Tagen"
+
+#: inc/settings/advanced.php:102
+msgid "Timeout for URL-request in Seconds"
+msgstr "Timeout für URL-Requests in Sekunden"
+
+#: inc/settings/advanced.php:117
+msgid "Delete all imported data on uninstall"
+msgstr "Löschen aller importierten Daten bei der Deinstallation"
+
+#: inc/settings/advanced.php:132
+msgid "Debug-Mode"
+msgstr "Debug-Modus"
+
+#: inc/settings/advanced.php:139
+msgid ""
+"If activated, the import will be executed every time even if there are no "
+"changes."
+msgstr ""
+"Wenn diese Option aktiviert ist, wird der Import jedes Mal durchgeführt, "
+"auch wenn keine Änderungen vorliegen."
+
+#. translators: %1$s is replaced with "string"
+#: inc/settings/advanced.php:155
+msgid ""
+"With %s you get more advanced options, e.g. to change the URL of archives "
+"with positions."
+msgstr ""
+"Mit %s erhältst Du weitere Optionen, z.B. die Möglichkeit die URL von "
+"Stellen-Listen zu ändern."
+
+#: inc/settings/advanced.php:169
+msgid "A timeout must have a value greater than 0."
+msgstr "Ein Timeout muss einen Wert größer als 0 haben."
+
+#: inc/settings/forms.php:12
+msgid "Application Forms"
+msgstr "Bewerbungsformulare"
+
+#: inc/settings/general.php:45 inc/settings/settings.php:54
+msgid "General Settings"
+msgstr "Allgemeine Einstellungen"
+
+#: inc/settings/general.php:53
+msgid "Personio URL"
+msgstr "Personio URL"
+
+#. translators: %1$s is replaced with "string"
+#: inc/settings/general.php:61
+msgid ""
+"You find this URL in your <a href=\"%s\" target=\"_blank\">Personio-account</"
+"a> under Settings > Recruiting > Career Page > Activations.<br>If you have "
+"any questions about the URL provided by Personio, please contact the "
+"Personio support: "
+msgstr ""
+"Du findest diese URL in deinem <a href=\"%s\" target=\"_blank\">Personio-"
+"Konto</a> unter Einstellungen > Recruiting > Karriereseite > Aktivierungen."
+"<br>Wenn du Fragen zu der von Personio bereitgestellten URL hast, wende dich "
+"bitte an den Personio-Support: "
+
+#: inc/settings/general.php:74
+msgid "Used languages"
+msgstr "verwendete Sprachen"
+
+#: inc/settings/general.php:89
+msgid "Main language"
+msgstr "Hauptsprache"
+
+#. translators: %1$s is replaced with "string"
+#: inc/settings/general.php:120
+msgid "Mark to enable %1$s"
+msgstr "Markieren zum Aktivieren von %1$s"
+
+#. translators: %1$s is replaced with "string"
+#: inc/settings/general.php:143
+msgid "Use all languages supported by Personio with %s"
+msgstr "Verwende alle von Personio unterstützten Sprachen mit %s"
+
+#. translators: %1$s is replaced with "string"
+#: inc/settings/general.php:163
+msgid "Mark to set %1$s as default language in the frontend."
+msgstr "Markieren um %1$s zur Sprache im Frontend zu setzen."
+
+#: inc/settings/general.php:195
+msgid "German"
+msgstr "Deutsch"
+
+#: inc/settings/general.php:196
+msgid "English"
+msgstr "Englisch"
+
+#: inc/settings/general.php:217
+msgid "You must enable one language. English will be set."
+msgstr "Sie müssen eine Sprache aktivieren. Es wird Englisch eingestellt."
+
+#: inc/settings/general.php:250
+msgid ""
+"No main language was specified. The specification of a main language is "
+"mandatory."
+msgstr ""
+"Es wurde keine Hauptsprache angegeben. Die Angabe einer Hauptsprache ist "
+"obligatorisch."
+
+#: inc/settings/general.php:255
+msgid "The selected main language is not activated as a language."
+msgstr "Die ausgewählte Hauptsprache ist nicht als Sprache aktiviert."
+
+#: inc/settings/general.php:282
+msgid "The specification of the Personio URL is mandatory."
+msgstr "Die Angabe der Personio-URL ist obligatorisch."
+
+#: inc/settings/general.php:288
+msgid ""
+"The Personio URL must end with \".jobs.personio.com\" or \".jobs.personio.de"
+"\"!"
+msgstr ""
+"Die Personio URL muss mit \".jobs.personio.com\" oder \".jobs.personio.de\" "
+"enden!"
+
+#: inc/settings/general.php:295
+msgid "Please enter a valid URL."
+msgstr "Bitte eine gültige URL eintragen."
+
+#: inc/settings/import.php:64
+msgid "Import Settings"
+msgstr "Import-Einstellungen"
+
+#: inc/settings/import.php:72
+msgid "Start import now"
+msgstr "Starte Import jetzt"
+
+#: inc/settings/import.php:85
+msgid "Enable automatic import"
+msgstr "Aktiviere automatischen Import"
+
+#: inc/settings/import.php:92
+msgid ""
+"If enabled, new positions stored in Personio will be retrieved automatically "
+"every hour.<br>If disabled, new positions are retrieved manually only."
+msgstr ""
+"Wenn diese Option aktiviert ist, werden neue Stelle, die in Personio "
+"gespeichert sind, in dem unten angegebenen Intervall abgerufen.<br>Wenn sie "
+"deaktiviert ist, werden neue Stellen nur manuell abgerufen."
+
+#. translators: %1$s is replaced with "string"
+#: inc/settings/import.php:95
+msgid ""
+"Use more import options with the %s. Among other things, you get the "
+"possibility to change the time interval for imports and partial imports of "
+"very large position lists."
+msgstr ""
+"Verwende mehr Import-Optionen mit %s. Neben anderen Dingen erhältst Du die "
+"Möglichkeit das Intervall zum Import zu ändern sowie partielle Importe für "
+"sehr große Stellen-Listen durchzuführen."
+
+#: inc/settings/import.php:115
+msgid "An interval for the automatic import has to be set."
+msgstr "Es muss ein Intervall für den automatischen Import festgelegt werden."
+
+#: inc/settings/import.php:122
+msgid "The given interval does not exists."
+msgstr "Das angegebene Intervall existiert nicht."
+
+#: inc/settings/import.php:168
+msgid "Hint"
+msgstr "Hinweis"
+
+#: inc/settings/settings.php:25
+msgid "WP Personio Integration Settings"
+msgstr "WP Personio Integration Einstellungen"
+
+#: inc/settings/settings.php:62
+msgid "Enter Personio URL to get more options"
+msgstr "Personio URL eingeben für weitere Optionen"
+
+#: inc/settings/settings.php:113
+msgid "Logs"
+msgstr "Logfile"
+
+#: inc/settings/templates.php:63
+msgid "Template Settings"
+msgstr "Template Einstellungen"
+
+#: inc/settings/templates.php:71
+msgid "Enable filter on list-view"
+msgstr "Filter in der Listenansicht einschalten"
+
+#: inc/settings/templates.php:86
+msgid "Available filter"
+msgstr "Verfügbarer Filter"
+
+#: inc/settings/templates.php:94
+msgid ""
+"Mark multiple default filter for each list-view of positions. This setting "
+"will be overridden by individual settings on the blocks or widgets of your "
+"shortcode or PageBuilder."
+msgstr ""
+"Markiere mehrere Standardfilter für jede Listenansicht von Stellen. Diese "
+"Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
+"Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
+
+#: inc/settings/templates.php:103
+msgid "Set filter-type"
+msgstr "Setze Filter-Typ"
+
+#: inc/settings/templates.php:111 blocks/list/build/index.js:1
+#: blocks/list/src/edit.js:92
+msgid "select-box"
+msgstr "Auswahl-Box"
+
+#: inc/settings/templates.php:112 blocks/list/build/index.js:1
+#: blocks/list/src/edit.js:91
+msgid "list of links"
+msgstr "Linkliste"
+
+#: inc/settings/templates.php:114
+msgid ""
+"This setting will be overridden by individual settings on the blocks or "
+"widgets of your shortcode or PageBuilder."
+msgstr ""
+"Diese Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
+"Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
+
+#: inc/settings/templates.php:123
+msgid "Templates for list-view of positions"
+msgstr "Vorlagen für die Listenansicht von Positionen"
+
+#: inc/settings/templates.php:131
+msgid ""
+"Mark multiple default templates for each list-view of positions. This "
+"setting will be overridden by individual settings on the blocks or widgets "
+"of your shortcode or PageBuilder."
+msgstr ""
+"Markier mehrere Standardvorlagen für jede Listenansicht von Positionen. "
+"Diese Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
+"Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
+
+#: inc/settings/templates.php:140
+msgid "Excerpt-parts for list-view of positions"
+msgstr "Auszugsteile für Listenansicht der Positionen"
+
+#: inc/settings/templates.php:148
+msgid ""
+"Mark multiple default excerpt-parts for each frontend-output. This setting "
+"will be overridden by individual settings on the blocks or widgets of your "
+"shortcode or PageBuilder."
+msgstr ""
+"Markiere mehrere Standard-Excerpt-Teile für jede Frontend-Ausgabe. Diese "
+"Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
+"Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
+
+#: inc/settings/templates.php:157
+msgid "Templates for detail-view of single positions"
+msgstr "Vorlagen für Detailansichten einzelner Positionen"
+
+#: inc/settings/templates.php:165
+msgid ""
+"Mark multiple default templates for each detail-view of single positions. "
+"This setting will be overridden by individual settings on the blocks or "
+"widgets of your shortcode or PageBuilder."
+msgstr ""
+"Markiere mehrere Standardvorlagen für jede Detailansicht der einzelnen "
+"Positionen. Diese Einstellung wird durch individuelle Einstellungen an den "
+"Blöcken oder Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
+
+#: inc/settings/templates.php:174
+msgid "Excerpt-parts for detail-view of positions"
+msgstr "Auszug-Teile für Detail-Ansicht der Positionen"
+
+#: inc/settings/templates.php:182
+msgid ""
+"Mark multiple excerpt-parts for detail-view of positions. Only used if "
+"template \"excerpt\" is enabled for detail-view. This setting will be "
+"overridden by individual settings on the blocks or widgets of your shortcode "
+"or PageBuilder."
+msgstr ""
+"Mehrere Auszugsteile für die Detailansicht von Positionen markieren. Wird "
+"nur verwendet, wenn das Template \"Auszug\" für die Detail-Ansicht aktiviert "
+"ist. Diese Einstellung wird durch individuelle Einstellungen an den Blöcken "
+"oder Widgets deines Shortcodes oder PageBuilders überschrieben."
+
+#: inc/settings/templates.php:191
+msgid "Enable link to detail on list-view"
+msgstr "Link zum Detail in der Listenansicht aktivieren"
+
+#: inc/settings/templates.php:206
+msgid "Enable link to detail on detail-view"
+msgstr "Link zum Detail in der Detailansicht aktivieren"
+
+#: inc/settings/templates.php:221
+msgid "Separator for excerpt-list"
+msgstr "Trennzeichen für Auszugliste"
+
+#: templates/archive-personioposition-shortcode.php:31
+msgid "No positions could be found."
+msgstr "Es wurden keine Stellen gefunden."
+
+#: templates/parts/part-filter.php:12 blocks/list/build/index.js:1
+#: blocks/list/src/edit.js:62
+msgid "Filter"
+msgstr "Filter"
+
+#: templates/parts/part-filter.php:18
+msgid "Search"
+msgstr "Suche"
+
+#: templates/parts/part-filter.php:19
+msgid "Reset Filter"
+msgstr "Filter zurücksetzen"
+
+#: templates/parts/properties-application-button.php:13
+msgid "Apply for this position"
+msgstr "Für diese Stelle bewerben"
+
+#: blocks/list/build/index.js:1 blocks/list/src/index.js:38
+msgid ""
+"Provides a Gutenberg Block to show a list of positions provided by Personio."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
+"Personio bereit."
+
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:64
+msgid "show filter"
+msgstr "zeige Filter an"
+
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:71
+msgid "choose filter"
+msgstr "Wähle Filter-Typ"
+
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:88
+msgid "type of filter"
+msgstr "Filter-Typ"
+
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:109
+msgid "Sort direction"
+msgstr "Sortierrichtung"
+
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:127
+#: blocks/show/build/index.js:1 blocks/show/src/edit.js:98
+msgid "show title"
+msgstr "zeige Titel an"
+
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:137
+#: blocks/show/build/index.js:1 blocks/show/src/edit.js:110
+msgid "show excerpt"
+msgstr "zeige Auszug"
+
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:164
+#: blocks/show/build/index.js:1 blocks/show/src/edit.js:139
+msgid "view content"
+msgstr "zeige Inhalt an"
+
+#: blocks/list/build/index.js:1 blocks/list/src/edit.js:169
+#: blocks/show/build/index.js:1 blocks/show/src/edit.js:145
+msgid "view application link"
+msgstr "zeige Link zum Bewerbungsformular an"
+
+#: blocks/show/build/index.js:1 blocks/show/src/index.js:39
+msgid "Provides a Gutenberg Block to show a position provided by personio."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
+"Personio bereit."
+
+#: blocks/show/build/index.js:1 blocks/show/src/edit.js:75
+msgid "Please choose"
+msgstr "Bitte wählen"
+
+#: blocks/list/block.json
+msgctxt "block title"
+msgid "Personio Positions"
+msgstr "Personio Stellen"
+
+#: blocks/list/block.json
+msgctxt "block description"
+msgid ""
+"Provides a Gutenberg block to show a list of positions provided by Personio."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
+"Personio bereit."
+
+#: blocks/show/block.json
+msgctxt "block title"
+msgid "Personio Position"
+msgstr "Personio Stelle"
+
+#: blocks/show/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg Block to show a position managed by Personio."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
+
+#~ msgid "view application form"
+#~ msgstr "zeige Link zum Bewerbungsformular an"
+
+#~ msgid "meta"
+#~ msgstr "Meta"

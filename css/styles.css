@@ -1,0 +1,61 @@
+.tb-module-personiopositionsingle:before, .tb-module-personiopositionlist:before {
+    content: url(../gfx/personio_icon.png);
+    display: block;
+}
+
+#fl-builder-blocks-personio .fl-builder-block[data-type='class-personio-positions'] .fl-builder-block-icon svg,
+#fl-builder-blocks-personio .fl-builder-block[data-type='class-personio-position'] .fl-builder-block-icon svg {
+    display: none
+}
+#fl-builder-blocks-personio .fl-builder-block[data-type='class-personio-positions'] .fl-builder-block-icon:before,
+#fl-builder-blocks-personio .fl-builder-block[data-type='class-personio-position'] .fl-builder-block-icon:before {
+    content: url(../gfx/personio_icon.png);
+    display: block;
+}
+
+span[itemprop="jobLocation"], span[itemprop="hiringOrganization"] { display: none }
+
+.personio-position-filter-linklist, .personio-position-filter-select {
+    display: flex;
+    flex-direction: row;
+}
+
+.personio-position-filter-linklist legend, .personio-position-filter-select legend {
+    font-weight: bold;
+    margin-right: 1.4em;
+}
+
+.personio-position-filter-linklist button { display: none; }
+
+.personio-position-filter-linklist > div, .personio-position-filter-select > div {
+    cursor: pointer;
+    margin-right: 1.4em;
+    position: relative;
+    z-index :1;
+}
+
+.personio-position-filter-linklist > div ul {
+    background-color: #fff;
+    display: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+}
+
+.personio-position-filter-linklist > div li {
+    list-style: none;
+    white-space: nowrap;
+}
+
+.personio-position-filter-linklist > div:hover ul {
+    display: block;
+}
+
+.personio-position-filter-select label {
+    display: block;
+}
+
+.wpforms-container .wpforms-field.personioId { display: none }

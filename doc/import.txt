@@ -1,0 +1,41 @@
+Import of positions from Personio
+=================================
+
+Condition:
+- An URL for the Personio-account, whose positions are to be imported, must be set under Positions > Settings
+
+Method 1: Automatic
+-------------------
+
+Steps:
+* enable automatic import under Positions > Settings
+* set an interval for the automatic import under Positions > Settings
+
+Hints:
+- Import is started automatically at the specified intervals when Personio content has changed.
+- The import is controlled on the way via WP Cron and is thus also dependent on visitor traffic.
+- If more than 200 items are imported, it is not recommended to use this way because of the time it takes to import them.
+
+Method 2: Manual
+----------------
+
+Steps:
+* disable automatic import under Positions > Settings
+* set up a cronjob on the hosting that calls the following command at intervals you specify: wp personio getPositions
+
+Hints:
+- It is not necessary to disable WP Cron in Wordpress.
+- This method is recommended when large amounts of data are to be imported.
+
+Method 3: Partial
+-----------------
+
+Steps:
+* enable partial import under Positions > Settings
+* set an interval for the partial import under Positions > Settings
+
+Hints:
+This import can be initialized in 2 ways:
+* Per WP Cron in the defined interval.
+* Or via system cronjob in hosting by calling this command: wp personio runPartialImport
+It will be used automatically if automatic import is active.
