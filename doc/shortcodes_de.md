@@ -1,6 +1,6 @@
 # Shortcodes
 
-Die folgenden Shortcodes können verwendet werden um in das WordPress-Projekt importierte offene Stellen in der Webseite auszugeben.
+Die folgenden Shortcodes können verwendet werden, um in das WordPress-Projekt importierte offene Stellen in der Webseite auszugeben.
 
 Bis auf einen, sind alle Parameter an beiden Shortcodes sind optional. Wenn ein Parameter nicht angegeben wird, gelten die Einstellungen zu Templates aus den Plugin-Einstellungen.
 
@@ -63,6 +63,7 @@ Die Parameter in den Shortcodes haben folgende Aufgaben:
   * excerpt => für die Liste der Kategorien denen die Stelle zugeordnet ist
   * content => für den Beschreibungstext zur Stelle
   * formular => für den Link zum Bewerbungsformular
+  * meta => nur in Pro-Version verfügbar, wenn SEO aktiviert ist
 
 ### excerpt
 

@@ -1,6 +1,94 @@
-Hooks
-=====
+Filter-Hooks
+============
 
-wp_personio_licence_url
------------------------
-* prüfen und ändern der Lizenz-URL (nur für Entwicklungszwecke)
+personio_integration_class_dirs
+-------------------------------
+* add directories for classes
+* return an array with absolute paths
+
+personio_integration_set_template_directory
+-------------------------------------------
+* set directory for templates
+* return the absolute path to the directory
+* this must contain all for the plugin necessary templates
+
+personio_integration_supported_languages
+----------------------------------------
+* adds supported languages
+* return array with format: ['iso-2-char' => 'enabled'] where "enabled" must be the number 1
+
+personio_integration_languages_names
+------------------------------------
+* adds names for supported languages
+* return array with the language-specific names of languages
+
+personio_integration_import_single_position
+-------------------------------------------
+* filter for changes during the import of a single position
+* return true for normal single import
+
+personio_integration_get_template
+---------------------------------
+* filter for changes on template-names which must reflect in the file-name of the template
+* return string of the change
+
+personio_integration_archive_slug
+---------------------------------
+* filter the archive slug
+* return string with the archive slug
+
+personio_integration_detail_slug
+---------------------------------
+* filter the detail slug
+* return string with the detail slug
+
+dynamic taxonomy filter
+---------------------------------------
+* could change the setting for a single taxonomy
+
+personio_integration_admin_template_labels
+------------------------------------------
+* could change the allowed template-parts for single- and list-view
+* return an array of the allowed parts
+
+Action-Hooks
+============
+
+personio_integration_advanced_settings
+--------------------------------------
+* adds advanced settings
+* must contain add_settings_field()-entries for each additional field
+
+personio_integration_add_settings_generell
+--------------------------------------
+* adds generell settings
+* must contain add_settings_field()-entries for each additional field
+
+personio_integration_import_settings
+--------------------------------------
+* adds import settings
+* must contain add_settings_field()-entries for each additional field
+
+personio_integration_settings_add_settings
+------------------------------------------
+* adds settings for admin-page
+
+personio_integration_admin_show_pro_hint
+----------------------------------------
+* show the pro-version-hin if not suppressed
+
+personio_integration_settings_add_tab
+-------------------------------------
+* adds settings tab for settings page
+
+personio_integration_settings_*
+-------------------------------
+* adds settings content for admin-page depending on chosen tab
+
+personio_integration_get_*
+--------------------------
+* show single template in frontend
+
+personio_integration_get_filter
+-------------------------------
+* show single filter in frontend
