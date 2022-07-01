@@ -264,14 +264,14 @@ function personio_integration_add_custom_toolbar($admin_bar) {
 add_action('admin_bar_menu', 'personio_integration_add_custom_toolbar', 100);
 
 /**
- * Get archive-template.
+ * Get template for archive or single.
  *
  * @param $template
  * @return mixed|string
  * @noinspection PhpUnused
  */
 function personio_integration_use_cpt_template( $template ) {
-    if ( is_post_type_archive(WP_PERSONIO_INTEGRATION_CPT) ) {
+    if ( get_post_type(get_the_ID()) == WP_PERSONIO_INTEGRATION_CPT ) {
         // if the theme is a fse-theme
         if( Helper::theme_is_fse_theme() ) {
             return ABSPATH . WPINC . '/template-canvas.php';
