@@ -244,7 +244,7 @@ class Import {
             $sendTo = get_bloginfo('admin_email');
             $subject = get_bloginfo('name') . ": ".__('Error during Personio Positions Import', 'wp-personio-integration');
             $msg = __('The following error occurred when importing positions provided by Personio:', 'wp-personio-integration').'\r\n' . $ausgabe;
-            $msg .= '\r\n\r\n'.__('Sent by the plugin WP Personio Integration', 'wp-personio-integration');
+            $msg .= '\r\n\r\n'.__('Sent by the plugin Personio Integration', 'wp-personio-integration');
             wp_mail($sendTo, $subject, $msg);
         }
     }

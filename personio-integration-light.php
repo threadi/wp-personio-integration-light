@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       WP Personio Integration Light
+ * Plugin Name:       Personio Integration Light
  * Description:       Provides recruiting handling for Personio.
  * Requires at least: 5.9
  * Requires PHP:      7.4

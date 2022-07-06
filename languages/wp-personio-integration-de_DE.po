@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-personio-"
 "integration-light\n"
-"POT-Creation-Date: 2022-06-29T04:20:48-05:00\n"
-"PO-Revision-Date: 2022-06-29 11:21+0200\n"
+"POT-Creation-Date: 2022-07-06T07:17:30-05:00\n"
+"PO-Revision-Date: 2022-07-06 14:31+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,8 +18,8 @@ msgstr ""
 "X-Domain: wp-personio-integration\n"
 
 #. Plugin Name of the plugin
-msgid "WP Personio Integration Light"
-msgstr "WP Personio Integration Light"
+msgid "Personio Integration Light"
+msgstr "Personio Integration Light"
 
 #. Description of the plugin
 msgid "Provides recruiting handling for Personio."
@@ -438,8 +438,8 @@ msgstr ""
 "folgender Fehler aufgetreten:"
 
 #: classes/class-import.php:247
-msgid "Sent by the plugin WP Personio Integration"
-msgstr "Gesendet vom Plugin WP Personio Integration"
+msgid "Sent by the plugin Personio Integration"
+msgstr "Gesendet vom Plugin Personio Integration"
 
 #: classes/class-logs.php:44
 msgid "state"
@@ -561,8 +561,8 @@ msgid "Select position"
 msgstr "Anzuzeigende Stelle wählen"
 
 #: inc/admin.php:40
-msgid "Get WP Personio Integration Pro"
-msgstr "Get WP Personio Integration Pro"
+msgid "Get Personio Integration Pro"
+msgstr "Get Personio Integration Pro"
 
 #: inc/admin.php:42
 msgid "Reset sorting"
@@ -878,8 +878,8 @@ msgid "Hint"
 msgstr "Hinweis"
 
 #: inc/settings/settings.php:25
-msgid "WP Personio Integration Settings"
-msgstr "WP Personio Integration Einstellungen"
+msgid "Personio Integration Settings"
+msgstr "Personio Integration Einstellungen"
 
 #: inc/settings/settings.php:62
 msgid "Enter Personio URL to get more options"
@@ -1100,6 +1100,15 @@ msgctxt "block description"
 msgid "Provides a Gutenberg Block to show a position managed by Personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
+
+#~ msgid "Sent by the plugin WP Personio Integration"
+#~ msgstr "Gesendet vom Plugin Personio Integration"
+
+#~ msgid "Get WP Personio Integration Pro"
+#~ msgstr "Get Personio Integration Pro"
+
+#~ msgid "WP Personio Integration Settings"
+#~ msgstr "Personio Integration Einstellungen"
 
 #~ msgid "view application form"
 #~ msgstr "zeige Link zum Bewerbungsformular an"

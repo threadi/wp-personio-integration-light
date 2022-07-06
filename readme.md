@@ -1,8 +1,8 @@
-# WP Personio Integration Light
+# Personio Integration Light
 
 ## About
 
-This repository provides the features of the Light version of the WordPress plugin _WP Personio Integration_. The repository is used as a basis for deploying the plugin to the WordPress repository. It is not intended to run as a plugin as it is, even if that is possible for development. 
+This repository provides the features of the Light version of the WordPress plugin _Personio Integration_. The repository is used as a basis for deploying the plugin to the WordPress repository. It is not intended to run as a plugin as it is, even if that is possible for development. 
 
 ## Usage
 

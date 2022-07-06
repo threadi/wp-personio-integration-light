@@ -37,7 +37,7 @@ function personio_integration_add_styles_and_js_admin() {
     wp_localize_script( 'personio_integration-admin-js', 'customJsVars', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'pro_url' => helper::get_pro_url(),
-            'label_go_pro' => __('Get WP Personio Integration Pro', 'wp-personio-integration'),
+            'label_go_pro' => __('Get Personio Integration Pro', 'wp-personio-integration'),
             'dismiss_nonce' => wp_create_nonce( 'wp-dismiss-notice' ),
             'label_reset_sort' => __('Reset sorting', 'wp-personio-integration'),
             'label_run_import' => __('Run import', 'wp-personio-integration'),
@@ -383,7 +383,7 @@ add_action( 'admin_init', function() {
  * @return void
  */
 function personio_integration_admin_show_pro_hint( $hint ) {
-    echo '<p class="personio-pro-hint">'.sprintf($hint, '<a href="'.helper::get_pro_url().'" target="_blank">WP Personio Integration Pro</a>').'</p>';
+    echo '<p class="personio-pro-hint">'.sprintf($hint, '<a href="'.helper::get_pro_url().'" target="_blank">Personio Integration Pro</a>').'</p>';
 }
 add_action( 'personio_integration_admin_show_pro_hint', 'personio_integration_admin_show_pro_hint', 10, 1);
 
