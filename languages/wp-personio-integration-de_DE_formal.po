@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-personio-"
 "integration-light\n"
-"POT-Creation-Date: 2022-07-06T07:17:30-05:00\n"
-"PO-Revision-Date: 2022-07-06 14:31+0200\n"
+"POT-Creation-Date: 2022-06-29T04:20:48-05:00\n"
+"PO-Revision-Date: 2022-07-04 10:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,8 +18,8 @@ msgstr ""
 "X-Domain: wp-personio-integration\n"
 
 #. Plugin Name of the plugin
-msgid "Personio Integration Light"
-msgstr "Personio Integration Light"
+msgid "WP Personio Integration Light"
+msgstr "WP Personio Integration Light"
 
 #. Description of the plugin
 msgid "Provides recruiting handling for Personio."
@@ -67,7 +67,7 @@ msgstr "Die Angabe Ihrer Personio-URL steht noch aus."
 #. translators: %1$s is replaced with "string"
 #: classes/class-helper.php:77
 msgid "To do this, please go to the <a href=\"%s\">settings page</a>."
-msgstr "Gehe dazu bitte auf die <a href=\"%s\">Einstellungsseite</a>."
+msgstr "Gehen Sie dazu bitte auf die <a href=\"%s\">Einstellungsseite</a>."
 
 #: classes/class-helper.php:88
 msgid "You have not imported your open positions from Personio until now."
@@ -99,7 +99,7 @@ msgstr ""
 
 #: classes/class-helper.php:125 inc/admin.php:43 inc/settings/import.php:167
 msgid "Run import"
-msgstr "führe Import jetzt aus"
+msgstr "jetzt Import ausführen"
 
 #. translators: %1$s is replaced with "string"
 #: classes/class-helper.php:132
@@ -438,8 +438,8 @@ msgstr ""
 "folgender Fehler aufgetreten:"
 
 #: classes/class-import.php:247
-msgid "Sent by the plugin Personio Integration"
-msgstr "Gesendet vom Plugin Personio Integration"
+msgid "Sent by the plugin WP Personio Integration"
+msgstr "Gesendet vom Plugin WP Personio Integration"
 
 #: classes/class-logs.php:44
 msgid "state"
@@ -561,8 +561,8 @@ msgid "Select position"
 msgstr "Anzuzeigende Stelle wählen"
 
 #: inc/admin.php:40
-msgid "Get Personio Integration Pro"
-msgstr "Get Personio Integration Pro"
+msgid "Get WP Personio Integration Pro"
+msgstr "Get WP Personio Integration Pro"
 
 #: inc/admin.php:42
 msgid "Reset sorting"
@@ -765,10 +765,10 @@ msgid ""
 "any questions about the URL provided by Personio, please contact the "
 "Personio support: "
 msgstr ""
-"Du findest diese URL in deinem <a href=\"%s\" target=\"_blank\">Personio-"
+"Sie finden diese URL in Ihrem <a href=\"%s\" target=\"_blank\">Personio-"
 "Konto</a> unter Einstellungen > Recruiting > Karriereseite > Aktivierungen."
-"<br>Wenn du Fragen zu der von Personio bereitgestellten URL hast, wende dich "
-"bitte an den Personio-Support: "
+"<br>Wenn Sie Fragen zu der von Personio bereitgestellten URL haben, wenden "
+"Sie sich bitte an den Personio-Support: "
 
 #: inc/settings/general.php:74
 msgid "Used languages"
@@ -850,7 +850,7 @@ msgid ""
 "If enabled, new positions stored in Personio will be retrieved automatically "
 "every hour.<br>If disabled, new positions are retrieved manually only."
 msgstr ""
-"Wenn diese Option aktiviert ist, werden neue Stelle, die in Personio "
+"Wenn diese Option aktiviert ist, werden neue Stellen, die in Personio "
 "gespeichert sind, in dem unten angegebenen Intervall abgerufen.<br>Wenn sie "
 "deaktiviert ist, werden neue Stellen nur manuell abgerufen."
 
@@ -878,8 +878,8 @@ msgid "Hint"
 msgstr "Hinweis"
 
 #: inc/settings/settings.php:25
-msgid "Personio Integration Settings"
-msgstr "Personio Integration Einstellungen"
+msgid "WP Personio Integration Settings"
+msgstr "WP Personio Integration Einstellungen"
 
 #: inc/settings/settings.php:62
 msgid "Enter Personio URL to get more options"
@@ -1100,15 +1100,6 @@ msgctxt "block description"
 msgid "Provides a Gutenberg Block to show a position managed by Personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
-
-#~ msgid "Sent by the plugin WP Personio Integration"
-#~ msgstr "Gesendet vom Plugin Personio Integration"
-
-#~ msgid "Get WP Personio Integration Pro"
-#~ msgstr "Get Personio Integration Pro"
-
-#~ msgid "WP Personio Integration Settings"
-#~ msgstr "Personio Integration Einstellungen"
 
 #~ msgid "view application form"
 #~ msgstr "zeige Link zum Bewerbungsformular an"

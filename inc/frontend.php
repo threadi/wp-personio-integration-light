@@ -439,7 +439,7 @@ function personio_integration_get_archive_template( $archive_template ) {
 add_filter( 'archive_template', 'personio_integration_get_archive_template' ) ;
 
 /**
- * Show an filter in frontend.
+ * Show a filter in frontend.
  *
  * @return void
  * @noinspection PhpUnused

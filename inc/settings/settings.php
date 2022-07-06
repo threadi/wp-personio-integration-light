@@ -22,7 +22,7 @@ add_action( 'admin_init', 'personio_integration_admin_add_settings' );
 function personio_integration_admin_add_settings_menu() {
     add_submenu_page(
         'edit.php?post_type='.WP_PERSONIO_INTEGRATION_CPT,
-        __( 'WP Personio Integration Settings', 'wp-personio-integration' ),
+        __( 'Personio Integration Settings', 'wp-personio-integration' ),
         __( 'Settings', 'wp-personio-integration' ),
         'manage_options',
         'personioPositions',

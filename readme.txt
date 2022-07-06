@@ -1,4 +1,4 @@
-=== WP Personio Integration Light ===
+=== Personio Integration Light ===
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment
 Requires at least: 5.9.3
@@ -22,20 +22,20 @@ This plugin provides support for personnel management with [Personio](https://ww
 - data protection friendly, as no applicant data is collected and stored
 - support for classic as well as block themes
 
-### Requirements
+#### Requirements
 
 - Personio account with XML interface enabled
 - PHP module simpleXML
 - PHP module curl
 
-== Compatibility tested with ==
+#### Compatibility tested with
 
 - WPML
 - Polylang
 - Post Types Order
 - Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder
 
-### the Pro license includes:
+#### the Pro license includes:
 
 - manual sorting of open positions in list views via drag&drop
 - supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese
