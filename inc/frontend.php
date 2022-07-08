@@ -263,21 +263,21 @@ add_filter('the_excerpt' , 'personio_integration_excerpt_output', 10);
 function personio_integration_get_title( $position, $attributes ) {
     // set the header-size (h1 for single, h2 for list)
     $hSize = "2";
-    if( is_single() ) {
+    if( !did_action( 'elementor/loaded' ) && is_single() ) {
         $hSize = "1";
     }
 
     if( false !== $attributes["donotlink"] ) {
         ?>
         <header class="entry-content default-max-width">
-            <h<?php echo $hSize; ?> class="entry-title"><?php echo $position->getTitle(); ?></h<?php echo $hSize; ?>>
+            <h<?php echo absint($hSize); ?> class="entry-title"><?php echo esc_html($position->getTitle()); ?></h<?php echo absint($hSize); ?>>
         </header>
         <?php
     }
     else {
         ?>
         <header class="entry-content default-max-width">
-            <h<?php echo $hSize; ?> class="entry-title"><a href="<?php echo get_permalink($position->ID); ?>"><?php echo $position->getTitle(); ?></a></h<?php echo $hSize; ?>>
+            <h<?php echo absint($hSize); ?> class="entry-title"><a href="<?php echo esc_url(get_permalink($position->ID)); ?>"><?php echo $position->getTitle(); ?></a></h<?php echo absint($hSize); ?>>
         </header>
         <?php
     }
@@ -330,7 +330,7 @@ function personio_integration_get_excerpt( $position, $attributes ) {
     if( !empty($excerpt) ) {
         ?>
         <div class="entry-content">
-            <p><?php echo $excerpt; ?></p>
+            <p><?php echo esc_html($excerpt); ?></p>
         </div>
         <?php
     }
@@ -351,7 +351,7 @@ function personio_integration_get_content( $position, $attributes ) {
         ?>
         <div class="entry-content">
             <?php
-            echo $position->getContent();
+            echo wp_kses_post($position->getContent());
             ?>
         </div>
         <?php

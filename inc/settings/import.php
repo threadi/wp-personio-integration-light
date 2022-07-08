@@ -164,7 +164,7 @@ add_action( 'admin_action_personioPositionsImport', 'personio_integration_admin_
  */
 function personio_integration_admin_start_import_now() {
     ?>
-        <p><a href="<?php echo helper::get_import_url(); ?>" class="button button-primary"><?php echo __('Run import', 'wp-personio-integration'); ?></a></p>
+        <p><a href="<?php echo esc_url(helper::get_import_url()); ?>" class="button button-primary"><?php echo __('Run import', 'wp-personio-integration'); ?></a></p>
         <p><i><?php echo __('Hint', 'wp-personio-integration'); ?>:</i> <?php echo __('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'wp-personio-integration'); ?></p>
     <?php
 }

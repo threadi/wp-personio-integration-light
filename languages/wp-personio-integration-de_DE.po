@@ -3,10 +3,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-personio-"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2022-07-06T07:17:30-05:00\n"
-"PO-Revision-Date: 2022-07-06 14:31+0200\n"
+"POT-Creation-Date: 2022-07-08T06:27:24-05:00\n"
+"PO-Revision-Date: 2022-07-08 13:27+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -34,52 +34,52 @@ msgid "https://laolaweb.com"
 msgstr "https://laolaweb.com"
 
 #: classes/class-helper.php:62 classes/class-helper.php:68
-#: classes/class-helper.php:74 classes/class-helper.php:87
-#: classes/class-helper.php:99 classes/class-helper.php:124
-#: classes/class-helper.php:129
+#: classes/class-helper.php:81 classes/class-helper.php:88
+#: classes/class-helper.php:113 classes/class-helper.php:118
 msgid "Personio Integration"
 msgstr "Personio Integration"
 
-#: classes/class-helper.php:63 classes/class-helper.php:69
+#: classes/class-helper.php:63
 msgid "Plugin was not activated!"
 msgstr "Das Plugin wurde nicht aktiviert!"
 
 #: classes/class-helper.php:64
 msgid ""
-"The PHP extension curl is missing on the system. Please contact your hoster "
-"about this."
-msgstr ""
-"Die PHP-Erweiterung curl fehlt auf dem System. Bitte wenden Sie sich "
-"diesbezüglich an Ihren Hoster."
-
-#: classes/class-helper.php:70
-msgid ""
 "The PHP extension simplexml is missing on the system. Please contact your "
 "hoster about this."
 msgstr ""
-"Die PHP-Erweiterung simplexml fehlt auf dem System. Bitte wenden Sie sich "
-"diesbezüglich an Ihren Hoster."
+"Die PHP-Erweiterung simplexml fehlt auf dem System. Bitte wende dich "
+"diesbezüglich an deinen Hoster."
 
-#: classes/class-helper.php:75
+#: classes/class-helper.php:69
 msgid "The specification of your Personio URL is still pending."
 msgstr "Die Angabe Ihrer Personio-URL steht noch aus."
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:77
+#: classes/class-helper.php:71
 msgid "To do this, please go to the <a href=\"%s\">settings page</a>."
 msgstr "Gehe dazu bitte auf die <a href=\"%s\">Einstellungsseite</a>."
 
-#: classes/class-helper.php:88
+#: classes/class-helper.php:82
 msgid "You have not imported your open positions from Personio until now."
 msgstr "Es wurden bisher noch keine offenen Stellen aus Personio importiert."
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:90
-msgid "To start the import click <a href=\"%s\">here</a>."
-msgstr "Zum Starten des Imports <a href=\"%s\">hier</a> klicken."
+#: classes/class-helper.php:84
+msgid ""
+"Click on the following button to import your positions from Personio now:"
+msgstr ""
+"Klicke auf die folgende Schaltfläche, um die offenen Stellen jetzt aus "
+"Personio zu importieren:"
+
+#. translators: %1$s is replaced with "string"
+#: classes/class-helper.php:84 classes/class-helper.php:114 inc/admin.php:43
+#: inc/settings/import.php:167
+msgid "Run import"
+msgstr "führe Import jetzt aus"
 
 #. translators: %1$s is replaced with "string", %2$s is replaced with "string"
-#: classes/class-helper.php:102
+#: classes/class-helper.php:91
 msgid ""
 "<strong>The import has been manually run.</strong> Please check the <a href="
 "\"%1$s\">list of positions</a> or <a href=\"%2$s\">the log</a> for possible "
@@ -89,330 +89,326 @@ msgstr ""
 "\">die Liste der Stellen</a> oder <a href=\"%2$s\">das Logfile</a> wegen "
 "möglicherweise aufgetretener Fehler prüfen."
 
-#: classes/class-helper.php:125
+#: classes/class-helper.php:114
 msgid ""
 "The specified Personio URL is reachable. Click on the following button to "
 "import your positions from Personio now:"
 msgstr ""
-"Die angegebene Personio-URL ist erreichbar. Klicken Sie auf die folgende "
-"Schaltfläche, um Ihre Positionen jetzt aus Personio zu importieren:"
-
-#: classes/class-helper.php:125 inc/admin.php:43 inc/settings/import.php:167
-msgid "Run import"
-msgstr "führe Import jetzt aus"
+"Die angegebene Personio-URL ist erreichbar. Klicke auf die folgende "
+"Schaltfläche, um die offenen Stellen jetzt aus Personio zu importieren:"
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:132
+#: classes/class-helper.php:121
 msgid ""
 "The specified Personio URL %s is not usable for this plugin. Please double-"
 "check the URL in your Personio-account under Settings > Recruiting > Career "
 "Page > Activations."
 msgstr ""
 "Die angegebene Personio-URL %s ist für dieses Plugin nicht verwendbar. Bitte "
-"überprüfen Sie die URL in Ihrem Personio-Account unter Einstellungen > "
+"überprüfe die URL in deinem Personio-Account unter Einstellungen > "
 "Recruiting > Karriereseite > Aktivierungen."
 
-#: classes/class-helper.php:614
+#: classes/class-helper.php:603
 msgctxt "taxonomy general name"
 msgid "recruiting categories"
 msgstr "Kategorien"
 
-#: classes/class-helper.php:615
+#: classes/class-helper.php:604
 msgctxt "taxonomy singular name"
 msgid "recruiting category"
 msgstr "Kategorie"
 
-#: classes/class-helper.php:616
+#: classes/class-helper.php:605
 msgid "Search recruiting category"
 msgstr "Suche nach Kategorie"
 
-#: classes/class-helper.php:617
+#: classes/class-helper.php:606
 msgid "Edit recruiting category"
 msgstr "Kategorie bearbeiten"
 
-#: classes/class-helper.php:618
+#: classes/class-helper.php:607
 msgid "Update recruiting category"
 msgstr "Kategorie aktualisieren"
 
-#: classes/class-helper.php:619
+#: classes/class-helper.php:608
 msgid "recruiting categories"
 msgstr "Kategorien"
 
-#: classes/class-helper.php:622
+#: classes/class-helper.php:611
 msgctxt "taxonomy general name"
 msgid "occupation categories"
 msgstr "Berufsarten"
 
-#: classes/class-helper.php:623
+#: classes/class-helper.php:612
 msgctxt "taxonomy singular name"
 msgid "occupation category"
 msgstr "Berufsart"
 
-#: classes/class-helper.php:624
+#: classes/class-helper.php:613
 msgid "Search occupation category"
 msgstr "Suche nach Berufsart"
 
-#: classes/class-helper.php:625
+#: classes/class-helper.php:614
 msgid "Edit occupation category"
 msgstr "Berufsart bearbeiten"
 
-#: classes/class-helper.php:626
+#: classes/class-helper.php:615
 msgid "Update occupation category"
 msgstr "Berufsart aktualisieren"
 
-#: classes/class-helper.php:627
+#: classes/class-helper.php:616
 msgid "occupation categories"
 msgstr "Berufsarten"
 
-#: classes/class-helper.php:630
+#: classes/class-helper.php:619
 msgctxt "taxonomy general name"
 msgid "offices"
 msgstr "Standorte"
 
-#: classes/class-helper.php:631
+#: classes/class-helper.php:620
 msgctxt "taxonomy singular name"
 msgid "office"
 msgstr "Standort"
 
-#: classes/class-helper.php:632
+#: classes/class-helper.php:621
 msgid "Search office"
 msgstr "Suchen Standort"
 
-#: classes/class-helper.php:633
+#: classes/class-helper.php:622
 msgid "Edit office"
 msgstr "Bearbeite Standort"
 
-#: classes/class-helper.php:634
+#: classes/class-helper.php:623
 msgid "Update office"
 msgstr "Aktualisiere Standort"
 
-#: classes/class-helper.php:635
+#: classes/class-helper.php:624
 msgid "offices"
 msgstr "Standorte"
 
-#: classes/class-helper.php:638
+#: classes/class-helper.php:627
 msgctxt "taxonomy general name"
 msgid "departments"
 msgstr "Abteilungen"
 
-#: classes/class-helper.php:639
+#: classes/class-helper.php:628
 msgctxt "taxonomy singular name"
 msgid "department"
 msgstr "Abteilung"
 
-#: classes/class-helper.php:640
+#: classes/class-helper.php:629
 msgid "Search department"
 msgstr "Suche nach Abteilung"
 
-#: classes/class-helper.php:641
+#: classes/class-helper.php:630
 msgid "Edit department"
 msgstr "Bearbeite Abteilung"
 
-#: classes/class-helper.php:642
+#: classes/class-helper.php:631
 msgid "Update department"
 msgstr "Aktualisierung Abteilung"
 
-#: classes/class-helper.php:643
+#: classes/class-helper.php:632
 msgid "departments"
 msgstr "Abteilungen"
 
-#: classes/class-helper.php:646
+#: classes/class-helper.php:635
 msgctxt "taxonomy general name"
 msgid "employment types"
 msgstr "Anstellungsarten"
 
-#: classes/class-helper.php:647
+#: classes/class-helper.php:636
 msgctxt "taxonomy singular name"
 msgid "employment type"
 msgstr "Anstellungsart"
 
-#: classes/class-helper.php:648
+#: classes/class-helper.php:637
 msgid "Search employment type"
 msgstr "Suche nach Anstellungsart"
 
-#: classes/class-helper.php:649
+#: classes/class-helper.php:638
 msgid "Edit employment type"
 msgstr "Bearbeite Anstellungsart"
 
-#: classes/class-helper.php:650
+#: classes/class-helper.php:639
 msgid "Update employment type"
 msgstr "Aktualisiere Anstellungsart"
 
-#: classes/class-helper.php:651 inc/init.php:321
+#: classes/class-helper.php:640 inc/init.php:316
 msgid "employment types"
 msgstr "Anstellungsarten"
 
-#: classes/class-helper.php:654
+#: classes/class-helper.php:643
 msgctxt "taxonomy general name"
 msgid "seniority"
 msgstr "Dienstalter"
 
-#: classes/class-helper.php:655
+#: classes/class-helper.php:644
 msgctxt "taxonomy singular name"
 msgid "seniority"
 msgstr "Dienstalter"
 
-#: classes/class-helper.php:656
+#: classes/class-helper.php:645
 msgid "Search seniority"
 msgstr "Suche nach Dienstalter"
 
-#: classes/class-helper.php:657
+#: classes/class-helper.php:646
 msgid "Edit seniority"
 msgstr "Bearbeite Dienstalter"
 
-#: classes/class-helper.php:658
+#: classes/class-helper.php:647
 msgid "Update seniority"
 msgstr "Aktualisiere Dienstalter"
 
-#: classes/class-helper.php:659 inc/init.php:322 blocks/list/build/index.js:1
+#: classes/class-helper.php:648 inc/init.php:317 blocks/list/build/index.js:1
 #: blocks/list/src/edit.js:78 blocks/list/src/edit.js:154
 #: blocks/show/build/index.js:1 blocks/show/src/edit.js:128
 msgid "seniority"
 msgstr "Dienstalter"
 
-#: classes/class-helper.php:662
+#: classes/class-helper.php:651
 msgctxt "taxonomy general name"
 msgid "schedules"
 msgstr "Arbeitszeiten"
 
-#: classes/class-helper.php:663
+#: classes/class-helper.php:652
 msgctxt "taxonomy singular name"
 msgid "schedule"
 msgstr "Arbeitszeit"
 
-#: classes/class-helper.php:664
+#: classes/class-helper.php:653
 msgid "Search schedule"
 msgstr "Suche nach Arbeitszeit"
 
-#: classes/class-helper.php:665
+#: classes/class-helper.php:654
 msgid "Edit schedule"
 msgstr "Bearbeite Arbeitszeit"
 
-#: classes/class-helper.php:666
+#: classes/class-helper.php:655
 msgid "Update schedule"
 msgstr "Aktualisiere Arbeitszeit"
 
-#: classes/class-helper.php:667
+#: classes/class-helper.php:656
 msgid "schedules"
 msgstr "Arbeitszeiten"
 
-#: classes/class-helper.php:670
+#: classes/class-helper.php:659
 msgctxt "taxonomy general name"
 msgid "experiences"
 msgstr "Berufserfahrungen"
 
-#: classes/class-helper.php:671
+#: classes/class-helper.php:660
 msgctxt "taxonomy singular name"
 msgid "experience"
 msgstr "Berufserfahrung"
 
-#: classes/class-helper.php:672
+#: classes/class-helper.php:661
 msgid "Search experience"
 msgstr "Suche nach Berufserfahrung"
 
-#: classes/class-helper.php:673
+#: classes/class-helper.php:662
 msgid "Edit experience"
 msgstr "Bearbeite Berufserfahrung"
 
-#: classes/class-helper.php:674
+#: classes/class-helper.php:663
 msgid "Update experience"
 msgstr "Aktualisiere Berufserfahrung"
 
-#: classes/class-helper.php:675
+#: classes/class-helper.php:664
 msgid "experiences"
 msgstr "Berufserfahrungen"
 
-#: classes/class-helper.php:678
+#: classes/class-helper.php:667
 msgctxt "taxonomy general name"
 msgid "languages"
 msgstr "Sprachen"
 
-#: classes/class-helper.php:679
+#: classes/class-helper.php:668
 msgctxt "taxonomy singular name"
 msgid "language"
 msgstr "Sprache"
 
-#: classes/class-helper.php:680
+#: classes/class-helper.php:669
 msgid "Search language"
 msgstr "Suche nach Sprache"
 
-#: classes/class-helper.php:681
+#: classes/class-helper.php:670
 msgid "Edit language"
 msgstr "Bearbeite Sprache"
 
-#: classes/class-helper.php:682
+#: classes/class-helper.php:671
 msgid "Update language"
 msgstr "Aktualisiere Sprache"
 
-#: classes/class-helper.php:683
+#: classes/class-helper.php:672
 msgid "languages"
 msgstr "Sprachen"
 
-#: classes/class-helper.php:711
+#: classes/class-helper.php:700
 msgid "permanent"
 msgstr "Dauerhaft"
 
-#: classes/class-helper.php:712
+#: classes/class-helper.php:701
 msgid "intern"
 msgstr "intern"
 
-#: classes/class-helper.php:713
+#: classes/class-helper.php:702
 msgid "trainee"
 msgstr "Praktikant/in"
 
-#: classes/class-helper.php:714
+#: classes/class-helper.php:703
 msgid "freelance"
 msgstr "Freelancer"
 
-#: classes/class-helper.php:717
+#: classes/class-helper.php:706
 msgid "entry-level"
 msgstr "Einstiegslevel"
 
-#: classes/class-helper.php:718
+#: classes/class-helper.php:707
 msgid "experienced"
 msgstr "Erfahrung"
 
-#: classes/class-helper.php:719
+#: classes/class-helper.php:708
 msgid "executive"
 msgstr "Geschäftsführer"
 
-#: classes/class-helper.php:720
+#: classes/class-helper.php:709
 msgid "student"
 msgstr "Student"
 
-#: classes/class-helper.php:723
+#: classes/class-helper.php:712
 msgid "full-time"
 msgstr "Vollzeit"
 
-#: classes/class-helper.php:724
+#: classes/class-helper.php:713
 msgid "part-time"
 msgstr "Teil-Zeit"
 
-#: classes/class-helper.php:727
+#: classes/class-helper.php:716
 msgid "less than 1 year"
 msgstr "weniger als 1 Jahr"
 
-#: classes/class-helper.php:728
+#: classes/class-helper.php:717
 msgid "1-2 years"
 msgstr "1-2 Jahre"
 
-#: classes/class-helper.php:729
+#: classes/class-helper.php:718
 msgid "2-5 years"
 msgstr "2-5 Jahre"
 
-#: classes/class-helper.php:730
+#: classes/class-helper.php:719
 msgid "5-7 years"
 msgstr "5-7 Jahre"
 
-#: classes/class-helper.php:731
+#: classes/class-helper.php:720
 msgid "7-10 years"
 msgstr "7-10 Jahre"
 
-#: classes/class-helper.php:732
+#: classes/class-helper.php:721
 msgid "10-15 years"
 msgstr "10-15 Jahre"
 
-#: classes/class-helper.php:733
+#: classes/class-helper.php:722
 msgid "more than 15 years"
 msgstr "mehr als 15 Jahre"
 
@@ -420,24 +416,24 @@ msgstr "mehr als 15 Jahre"
 msgid "Personio URL not configured."
 msgstr "Personio URL nicht konfiguriert."
 
-#: classes/class-import.php:182
+#: classes/class-import.php:171
 msgid "Personio URL not available. Please check the URL you configured."
 msgstr ""
 "Personio URL nicht verfügbar. Bitte überprüfen Sie die von Ihnen "
 "konfigurierte URL."
 
-#: classes/class-import.php:245
+#: classes/class-import.php:233
 msgid "Error during Personio Positions Import"
 msgstr "Fehler beim Personio Positions Import"
 
-#: classes/class-import.php:246
+#: classes/class-import.php:234
 msgid ""
 "The following error occurred when importing positions provided by Personio:"
 msgstr ""
-"Beim Importieren von Positionen, die von Personio bereitgestellt wurden, ist "
+"Beim Importieren von Stellen, die von Personio bereitgestellt wurden, ist "
 "folgender Fehler aufgetreten:"
 
-#: classes/class-import.php:247
+#: classes/class-import.php:235
 msgid "Sent by the plugin Personio Integration"
 msgstr "Gesendet vom Plugin Personio Integration"
 
@@ -497,7 +493,7 @@ msgstr "absteigend"
 msgid "Sort by"
 msgstr "sortieren nach"
 
-#: classes/class-positionswidget.php:56 inc/init.php:338
+#: classes/class-positionswidget.php:56 inc/init.php:333
 #: blocks/list/build/index.js:1 blocks/list/src/edit.js:121
 msgid "title"
 msgstr "Titel"
@@ -530,13 +526,13 @@ msgstr "verlinke den Titel"
 
 #: classes/class-positionswidget.php:80 classes/class-positionwidget.php:71
 msgid "Show excerpt"
-msgstr "Zeige Auszug"
+msgstr "Zeige Eigenschaften"
 
 #: classes/class-positionswidget.php:89 classes/class-positionwidget.php:80
 #: blocks/list/build/index.js:1 blocks/list/src/edit.js:144
 #: blocks/show/build/index.js:1 blocks/show/src/edit.js:118
 msgid "Choose excerpt components"
-msgstr "Wähle Auszug-Komponenten"
+msgstr "Wähle Eigenschafts-Komponenten"
 
 #: classes/class-positionswidget.php:96 classes/class-positionwidget.php:87
 msgid "Show content"
@@ -606,7 +602,7 @@ msgstr "Einstellungen"
 
 #: inc/frontend.php:68
 msgid "Detail-view called without Id of a position."
-msgstr "Detail-Ansicht ohne Id einer Stelle aufgerufen."
+msgstr "Detailansicht ohne Id einer Stelle aufgerufen."
 
 #: inc/frontend.php:80
 msgid "Given Id is not a valid position-Id."
@@ -652,51 +648,51 @@ msgstr "In Papierkorb nicht gefunden"
 msgid "every 5th Minute"
 msgstr "jede 5. Minute"
 
-#: inc/init.php:317 blocks/list/build/index.js:1 blocks/list/src/edit.js:74
+#: inc/init.php:312 blocks/list/build/index.js:1 blocks/list/src/edit.js:74
 #: blocks/list/src/edit.js:148 blocks/show/build/index.js:1
 #: blocks/show/src/edit.js:122
 msgid "recruiting category"
 msgstr "Kategorie"
 
-#: inc/init.php:318 blocks/list/build/index.js:1 blocks/list/src/edit.js:75
+#: inc/init.php:313 blocks/list/build/index.js:1 blocks/list/src/edit.js:75
 #: blocks/list/src/edit.js:151 blocks/show/build/index.js:1
 #: blocks/show/src/edit.js:125
 msgid "schedule"
 msgstr "Arbeitszeit"
 
-#: inc/init.php:319 blocks/list/build/index.js:1 blocks/list/src/edit.js:76
+#: inc/init.php:314 blocks/list/build/index.js:1 blocks/list/src/edit.js:76
 #: blocks/list/src/edit.js:152 blocks/show/build/index.js:1
 #: blocks/show/src/edit.js:126
 msgid "office"
 msgstr "Standort"
 
-#: inc/init.php:320 blocks/list/build/index.js:1 blocks/list/src/edit.js:77
+#: inc/init.php:315 blocks/list/build/index.js:1 blocks/list/src/edit.js:77
 #: blocks/list/src/edit.js:153 blocks/show/build/index.js:1
 #: blocks/show/src/edit.js:127
 msgid "department"
 msgstr "Abteilung"
 
-#: inc/init.php:323 blocks/list/build/index.js:1 blocks/list/src/edit.js:79
+#: inc/init.php:318 blocks/list/build/index.js:1 blocks/list/src/edit.js:79
 #: blocks/list/src/edit.js:155 blocks/show/build/index.js:1
 #: blocks/show/src/edit.js:129
 msgid "experience"
 msgstr "Berufserfahrung"
 
-#: inc/init.php:324 blocks/list/build/index.js:1 blocks/list/src/edit.js:80
+#: inc/init.php:319 blocks/list/build/index.js:1 blocks/list/src/edit.js:80
 #: blocks/list/src/edit.js:156 blocks/show/build/index.js:1
 #: blocks/show/src/edit.js:130
 msgid "occupation"
 msgstr "Beschäftigung"
 
-#: inc/init.php:339
+#: inc/init.php:334
 msgid "excerpt"
-msgstr "Auszug"
+msgstr "Eigenschaften"
 
-#: inc/init.php:340
+#: inc/init.php:335
 msgid "content"
 msgstr "Inhalt"
 
-#: inc/init.php:341
+#: inc/init.php:336
 msgid "formular"
 msgstr "Formular"
 
@@ -803,7 +799,7 @@ msgstr "Englisch"
 
 #: inc/settings/general.php:217
 msgid "You must enable one language. English will be set."
-msgstr "Sie müssen eine Sprache aktivieren. Es wird Englisch eingestellt."
+msgstr "Eine Sprache muss aktiviert sein. Es wird Englisch eingestellt."
 
 #: inc/settings/general.php:250
 msgid ""
@@ -821,7 +817,7 @@ msgstr "Die ausgewählte Hauptsprache ist nicht als Sprache aktiviert."
 msgid "The specification of the Personio URL is mandatory."
 msgstr "Die Angabe der Personio-URL ist obligatorisch."
 
-#: inc/settings/general.php:288
+#: inc/settings/general.php:297
 msgid ""
 "The Personio URL must end with \".jobs.personio.com\" or \".jobs.personio.de"
 "\"!"
@@ -829,7 +825,7 @@ msgstr ""
 "Die Personio URL muss mit \".jobs.personio.com\" oder \".jobs.personio.de\" "
 "enden!"
 
-#: inc/settings/general.php:295
+#: inc/settings/general.php:304
 msgid "Please enter a valid URL."
 msgstr "Bitte eine gültige URL eintragen."
 
@@ -893,15 +889,19 @@ msgstr "Logfile"
 msgid "Template Settings"
 msgstr "Template Einstellungen"
 
-#: inc/settings/templates.php:71
+#: inc/settings/templates.php:73
+msgid "List View"
+msgstr "Listenansicht"
+
+#: inc/settings/templates.php:81
 msgid "Enable filter on list-view"
 msgstr "Filter in der Listenansicht einschalten"
 
-#: inc/settings/templates.php:86
+#: inc/settings/templates.php:96
 msgid "Available filter"
 msgstr "Verfügbarer Filter"
 
-#: inc/settings/templates.php:94
+#: inc/settings/templates.php:104
 msgid ""
 "Mark multiple default filter for each list-view of positions. This setting "
 "will be overridden by individual settings on the blocks or widgets of your "
@@ -911,21 +911,21 @@ msgstr ""
 "Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
 "Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
 
-#: inc/settings/templates.php:103
+#: inc/settings/templates.php:113
 msgid "Set filter-type"
 msgstr "Setze Filter-Typ"
 
-#: inc/settings/templates.php:111 blocks/list/build/index.js:1
+#: inc/settings/templates.php:121 blocks/list/build/index.js:1
 #: blocks/list/src/edit.js:92
 msgid "select-box"
 msgstr "Auswahl-Box"
 
-#: inc/settings/templates.php:112 blocks/list/build/index.js:1
+#: inc/settings/templates.php:122 blocks/list/build/index.js:1
 #: blocks/list/src/edit.js:91
 msgid "list of links"
 msgstr "Linkliste"
 
-#: inc/settings/templates.php:114
+#: inc/settings/templates.php:124
 msgid ""
 "This setting will be overridden by individual settings on the blocks or "
 "widgets of your shortcode or PageBuilder."
@@ -933,75 +933,79 @@ msgstr ""
 "Diese Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
 "Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
 
-#: inc/settings/templates.php:123
+#: inc/settings/templates.php:133
 msgid "Templates for list-view of positions"
-msgstr "Vorlagen für die Listenansicht von Positionen"
+msgstr "Vorlagen für die Listenansicht von Stellen"
 
-#: inc/settings/templates.php:131
+#: inc/settings/templates.php:141
 msgid ""
 "Mark multiple default templates for each list-view of positions. This "
 "setting will be overridden by individual settings on the blocks or widgets "
 "of your shortcode or PageBuilder."
 msgstr ""
-"Markier mehrere Standardvorlagen für jede Listenansicht von Positionen. "
-"Diese Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
+"Markiere mehrere Standardvorlagen für jede Listenansicht von Stellen. Diese "
+"Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
 "Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
 
-#: inc/settings/templates.php:140
+#: inc/settings/templates.php:150
 msgid "Excerpt-parts for list-view of positions"
-msgstr "Auszugsteile für Listenansicht der Positionen"
+msgstr "Stellen-Eigenschaften für Listenansicht"
 
-#: inc/settings/templates.php:148
+#: inc/settings/templates.php:158
 msgid ""
 "Mark multiple default excerpt-parts for each frontend-output. This setting "
 "will be overridden by individual settings on the blocks or widgets of your "
 "shortcode or PageBuilder."
 msgstr ""
-"Markiere mehrere Standard-Excerpt-Teile für jede Frontend-Ausgabe. Diese "
-"Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
-"Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
+"Markiere mehrere Eigenschaften für jede Frontend-Ausgabe. Diese Einstellung "
+"wird durch individuelle Einstellungen an den Blöcken oder Widgets deines "
+"Shortcodes oder PageBuilders außer Kraft gesetzt."
 
-#: inc/settings/templates.php:157
+#: inc/settings/templates.php:169
+msgid "Detail View"
+msgstr "Detailansicht"
+
+#: inc/settings/templates.php:177
 msgid "Templates for detail-view of single positions"
-msgstr "Vorlagen für Detailansichten einzelner Positionen"
+msgstr "Vorlagen für Detailansichten einzelner Stellen"
 
-#: inc/settings/templates.php:165
+#: inc/settings/templates.php:185
 msgid ""
 "Mark multiple default templates for each detail-view of single positions. "
 "This setting will be overridden by individual settings on the blocks or "
 "widgets of your shortcode or PageBuilder."
 msgstr ""
 "Markiere mehrere Standardvorlagen für jede Detailansicht der einzelnen "
-"Positionen. Diese Einstellung wird durch individuelle Einstellungen an den "
+"Stellen. Diese Einstellung wird durch individuelle Einstellungen an den "
 "Blöcken oder Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
 
-#: inc/settings/templates.php:174
+#: inc/settings/templates.php:194
 msgid "Excerpt-parts for detail-view of positions"
-msgstr "Auszug-Teile für Detail-Ansicht der Positionen"
+msgstr "Stellen-Eigenschaften für Detailansicht"
 
-#: inc/settings/templates.php:182
+#: inc/settings/templates.php:202
 msgid ""
 "Mark multiple excerpt-parts for detail-view of positions. Only used if "
 "template \"excerpt\" is enabled for detail-view. This setting will be "
 "overridden by individual settings on the blocks or widgets of your shortcode "
 "or PageBuilder."
 msgstr ""
-"Mehrere Auszugsteile für die Detailansicht von Positionen markieren. Wird "
-"nur verwendet, wenn das Template \"Auszug\" für die Detail-Ansicht aktiviert "
-"ist. Diese Einstellung wird durch individuelle Einstellungen an den Blöcken "
-"oder Widgets deines Shortcodes oder PageBuilders überschrieben."
+"Mehrere Eigenschaften für die Detailansicht von Stellen markieren. Wird nur "
+"verwendet, wenn das Template \"Eigenschaften\" für die Detailansicht "
+"aktiviert ist. Diese Einstellung wird durch individuelle Einstellungen an "
+"den Blöcken oder Widgets deines Shortcodes oder PageBuilders überschrieben."
 
-#: inc/settings/templates.php:191
+#: inc/settings/templates.php:211
 msgid "Enable link to detail on list-view"
 msgstr "Link zum Detail in der Listenansicht aktivieren"
 
-#: inc/settings/templates.php:206
+#: inc/settings/templates.php:226
 msgid "Enable link to detail on detail-view"
 msgstr "Link zum Detail in der Detailansicht aktivieren"
 
-#: inc/settings/templates.php:221
+#: inc/settings/templates.php:241
 msgid "Separator for excerpt-list"
-msgstr "Trennzeichen für Auszugliste"
+msgstr "Trennzeichen für Liste der Stellen-Eigenschaften"
 
 #: templates/archive-personioposition-shortcode.php:31
 msgid "No positions could be found."
@@ -1055,7 +1059,7 @@ msgstr "zeige Titel an"
 #: blocks/list/build/index.js:1 blocks/list/src/edit.js:137
 #: blocks/show/build/index.js:1 blocks/show/src/edit.js:110
 msgid "show excerpt"
-msgstr "zeige Auszug"
+msgstr "zeige Eigenschaften"
 
 #: blocks/list/build/index.js:1 blocks/list/src/edit.js:164
 #: blocks/show/build/index.js:1 blocks/show/src/edit.js:139
@@ -1077,19 +1081,6 @@ msgstr ""
 msgid "Please choose"
 msgstr "Bitte wählen"
 
-#: blocks/list/block.json
-msgctxt "block title"
-msgid "Personio Positions"
-msgstr "Personio Stellen"
-
-#: blocks/list/block.json
-msgctxt "block description"
-msgid ""
-"Provides a Gutenberg block to show a list of positions provided by Personio."
-msgstr ""
-"Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
-"Personio bereit."
-
 #: blocks/show/block.json
 msgctxt "block title"
 msgid "Personio Position"
@@ -1100,6 +1091,28 @@ msgctxt "block description"
 msgid "Provides a Gutenberg Block to show a position managed by Personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
+
+#~ msgid "To start the import click <a href=\"%s\">here</a>."
+#~ msgstr "Zum Starten des Imports <a href=\"%s\">hier</a> klicken."
+
+#~ msgid ""
+#~ "The PHP extension curl is missing on the system. Please contact your "
+#~ "hoster about this."
+#~ msgstr ""
+#~ "Die PHP-Erweiterung curl fehlt auf dem System. Bitte wenden Sie sich "
+#~ "diesbezüglich an Ihren Hoster."
+
+#~ msgctxt "block title"
+#~ msgid "Personio Positions"
+#~ msgstr "Personio Stellen"
+
+#~ msgctxt "block description"
+#~ msgid ""
+#~ "Provides a Gutenberg block to show a list of positions provided by "
+#~ "Personio."
+#~ msgstr ""
+#~ "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
+#~ "Personio bereit."
 
 #~ msgid "Sent by the plugin WP Personio Integration"
 #~ msgstr "Gesendet vom Plugin Personio Integration"

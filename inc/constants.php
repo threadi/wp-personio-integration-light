@@ -77,12 +77,6 @@ include_once 'taxonomies.php';
  * Set transient-based hints for the backend.
  */
 const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
-    "personio_integration_no_curl" => [
-        'type' => 'error',
-        'options' => [
-            'disable_plugin' => true
-        ]
-    ],
     "personio_integration_no_simplexml" => [
         'type' => 'error',
         'options' => [
@@ -101,10 +95,11 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
         'type' => 'error',
         'options' => [
             'hideIfTransients' => [
-                'personio_integration_no_url_set'
-            ],
-            'hideOnPages' => [
-                'personioPositions'
+                'personio_integration_no_url_set',
+                'personio_integration_import_now',
+                'personio_integration_url_not_usable',
+                'personio_integration_import_run',
+                'personio_integration_update_slugs'
             ]
         ]
     ],

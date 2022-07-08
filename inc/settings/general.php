@@ -132,8 +132,8 @@ function personio_integration_admin_languages_field( $attr ) {
             // output
             ?>
             <div>
-                <input type="checkbox" id="<?php echo $attr['fieldId'].$key; ?>" name="<?php echo $attr['fieldId']; ?>[<?php echo $key; ?>]" value="1"<?php echo $checked.$readonly; ?> title="<?php echo $title; ?>">
-                <label for="<?php echo $attr['fieldId'].$key; ?>"><?php echo $languageName; ?></label>
+                <input type="checkbox" id="<?php echo esc_attr($attr['fieldId'].$key); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>[<?php echo esc_attr($key); ?>]" value="1"<?php echo esc_attr($checked).esc_attr($readonly); ?> title="<?php echo esc_attr($title); ?>">
+                <label for="<?php echo esc_attr($attr['fieldId'].$key); ?>"><?php echo esc_html($languageName); ?></label>
             </div>
             <?php
         }
@@ -175,8 +175,8 @@ function personio_integration_admin_languages_radio_field( $attr ) {
             // output
             ?>
             <div>
-                <input type="radio" id="<?php echo $attr['fieldId'].$key; ?>" name="<?php echo $attr['fieldId']; ?>" value="<?php echo $key; ?>"<?php echo $checked.$readonly; ?> title="<?php echo $title; ?>">
-                <label for="<?php echo $attr['fieldId'].$key; ?>"><?php echo $languageName; ?></label>
+                <input type="radio" id="<?php echo esc_attr($attr['fieldId'].$key); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>" value="<?php echo esc_attr($key); ?>"<?php echo esc_attr($checked).esc_attr($readonly); ?> title="<?php echo esc_attr($title); ?>">
+                <label for="<?php echo esc_attr($attr['fieldId'].$key); ?>"><?php echo esc_html($languageName); ?></label>
             </div>
             <?php
         }
@@ -283,8 +283,17 @@ function personio_integration_admin_validatePersonioURL( $value ) {
         $error = true;
     }
     if( strlen($value) > 0 ) {
+        // remove slash on the end of the given url
+        $value = rtrim($value, "/");
+
         // check if URL ends with ".jobs.personio.com" or ".jobs.personio.de"
-        if( !(substr($value, -strlen(".jobs.personio.com")) === ".jobs.personio.com" || substr($value, -strlen(".jobs.personio.de")) === ".jobs.personio.de") ) {
+        // with or without "/" on the end
+        if(
+            !(
+                substr($value, -strlen(".jobs.personio.com")) === ".jobs.personio.com"
+                || substr($value, -strlen(".jobs.personio.de")) === ".jobs.personio.de"
+            )
+        ) {
             add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __('The Personio URL must end with ".jobs.personio.com" or ".jobs.personio.de"!', 'wp-personio-integration'), 'error' );
             $error = true;
             $value = "";
@@ -333,44 +342,4 @@ function personio_integration_admin_validatePersonioURL( $value ) {
 
     // return value if all is ok
     return $value;
-}
-
-/**
- * Show selection of possible intervals.
- *
- * @param $attr
- * @return void
- */
-function personio_integration_admin_select_intervals_field( $attr ) {
-    if( !empty($attr['fieldId']) ) {
-        // actual value
-        $value = get_option($attr['fieldId'], '');
-
-        // readonly
-        $readonly = '';
-        if( isset($attr['readonly']) && false !== $attr['readonly'] ) {
-            $readonly = ' disabled="disabled"';
-        }
-
-        // get title
-        $title = '';
-        if( isset($attr['title']) ) {
-            $title = $attr['title'];
-        }
-
-        // output
-        ?>
-            <select id="<?php echo $attr['fieldId']; ?>" name="<?php echo $attr['fieldId']; ?>" class="personio-field-width"<?php echo $readonly; ?> title="<?php echo $title; ?>">
-                <?php
-                foreach( wp_get_schedules() as $key => $schedule ) {
-                    $selected = ($value == $key) ? ' selected="selected"' : '';
-                    ?><option value="<?php echo $key; ?>"<?php echo $selected; ?>><?php echo $schedule["display"] ?></option><?php
-                }
-                ?>
-            </select>
-        <?php
-        if( !empty($attr['description']) ) {
-            echo "<p>".$attr['description']."</p>";
-        }
-    }
 }

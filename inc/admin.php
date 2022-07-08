@@ -90,10 +90,10 @@ function personio_integration_dashboard_widget_function( $post, $callback_args )
 
         ?><ul class="personio_positions"><?php
         foreach( $positionsList as $position ) {
-            ?><li><a href="<?php echo get_permalink($position->ID); ?>"><?php echo $position->getTitle(); ?></a></li><?php
+            ?><li><a href="<?php echo get_permalink($position->ID); ?>"><?php echo esc_html($position->getTitle()); ?></a></li><?php
         }
         ?></ul><?php
-        ?><p><a href="<?php echo $link; ?>"><?php echo __('Show all positions', 'wp-personio-integration'); ?></a></p><?php
+        ?><p><a href="<?php echo esc_url($link); ?>"><?php echo __('Show all positions', 'wp-personio-integration'); ?></a></p><?php
     }
 }
 
@@ -141,8 +141,8 @@ function personio_integration_admin_notices() {
             // show it
             if( $show ) {
                 ?>
-                <div class="wp-personio-integration-transient updated <?php echo $settings['type']; ?>" data-dismissible="<?php echo $transient; ?>-14">
-                    <?php echo $settings['content']; ?>
+                <div class="wp-personio-integration-transient updated <?php echo esc_attr($settings['type']); ?>" data-dismissible="<?php echo esc_attr($transient); ?>-14">
+                    <?php echo wp_kses_post($settings['content']); ?>
                     <button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php echo esc_html__( 'Dismiss this notice.', 'wp-personio-integration' ); ?></span></button>
                 </div>
                 <?php
@@ -194,7 +194,7 @@ add_filter( 'manage_'.WP_PERSONIO_INTEGRATION_CPT.'_posts_columns', 'personio_in
 function personio_integration_admin_add_position_column_content( $column, $post_id ) {
     if ($column == 'id') {
         $position = new Position($post_id);
-        echo $position->getPersonioId();
+        echo absint($position->getPersonioId());
     }
 }
 add_action( 'manage_'.WP_PERSONIO_INTEGRATION_CPT.'_posts_custom_column' , 'personio_integration_admin_add_position_column_content', 10, 2 );
@@ -287,12 +287,12 @@ function personio_integration_admin_add_filter() {
                 // list terms only if they are available
                 if( !empty($terms) ) {
                     ?>
-                        <select name="admin_filter_<?php echo $taxonomy_name; ?>">
-                            <option value="0"><?php echo $taxonomy->label; ?></option>
+                        <select name="admin_filter_<?php echo esc_attr($taxonomy_name); ?>">
+                            <option value="0"><?php echo esc_html($taxonomy->label); ?></option>
                             <?php
                             foreach( $terms as $term ) {
                                 $selected = (isset($_GET['admin_filter_'.$taxonomy_name]) && absint($_GET['admin_filter_'.$taxonomy_name]) == $term->term_id ) ? ' selected="selected"' : '';
-                                ?><option value="<?php echo $term->term_id; ?>"<?php echo $selected; ?>><?php echo $term->name; ?></option><?php
+                                ?><option value="<?php echo esc_attr($term->term_id); ?>"<?php echo $selected; ?>><?php echo esc_html($term->name); ?></option><?php
                             }
                             ?>
                         </select>
@@ -383,7 +383,7 @@ add_action( 'admin_init', function() {
  * @return void
  */
 function personio_integration_admin_show_pro_hint( $hint ) {
-    echo '<p class="personio-pro-hint">'.sprintf($hint, '<a href="'.helper::get_pro_url().'" target="_blank">Personio Integration Pro</a>').'</p>';
+    echo '<p class="personio-pro-hint">'.sprintf(wp_kses_post($hint), '<a href="'.esc_url(helper::get_pro_url()).'" target="_blank">Personio Integration Pro</a>').'</p>';
 }
 add_action( 'personio_integration_admin_show_pro_hint', 'personio_integration_admin_show_pro_hint', 10, 1);
 
