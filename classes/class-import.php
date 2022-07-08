@@ -59,40 +59,27 @@ class Import {
             $progress = $this->isCLI() ? \WP_CLI\Utils\make_progress_bar('Get positions from Personio by language', $languageCount) : false;
             $languages = helper::getActiveLanguagesWithDefaultFirst();
             foreach( $languages as $key => $enabled ) {
-                // create curl instance
-                $curl = curl_init();
-
                 // define the url
                 $url = $domain . "/xml?language=" . $key;
 
-                // define main settings for curl-request
-                $curlArrayMain = [
-                    CURLOPT_URL => $url,
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => "",
-                    CURLOPT_MAXREDIRS => 0,
-                    CURLOPT_TIMEOUT => get_option('personioIntegrationUrlTimeout', 30),
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => "GET",
-                    CURLOPT_HTTPHEADER => [
-                        "Accept: application/xml"
-                    ]
+                // define settings for first request to get the last-modified-date
+                $args = [
+                    'timeout' => get_option('personioIntegrationUrlTimeout', 30),
+                    'httpversion' => '1.1',
+                    'redirection' => 0
                 ];
+                $response = wp_remote_head($url, $args);
 
-                // first get only the http-state and the last-modified-stamp
-                $curlArray = $curlArrayMain;
-                $curlArray[CURLOPT_NOBODY] = 1;
-                $curlArray[CURLOPT_FILETIME] = 1;
-                curl_setopt_array($curl, $curlArray);
+                // check the response and get its http-status and last-modified-date as timestamp
+                $lastModifiedTimestamp = 0;
+                $httpStatus = 500;
+                if( !is_wp_error($response) && !empty($response) ) {
+                    // get the http-status to check if call results in acceptable results
+                    $httpStatus = $response["http_response"]->get_status();
 
-                // call it
-                curl_exec($curl);
-
-                // get the http-status to check if call results in acceptable results
-                $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-                // get the last modified-timestamp from http-response
-                $lastModifiedTimestamp = curl_getinfo($curl, CURLINFO_FILETIME);
+                    // get the last modified-timestamp from http-response
+                    $lastModifiedTimestamp = strtotime($response["http_response"]->get_headers()->offsetGet('last-modified'));
+                }
 
                 // check if response was with http-status 200
                 // and also 301 in debug-mode
@@ -106,17 +93,19 @@ class Import {
                         continue;
                     }
 
-                    // now get the body in a second request
-                    $curlArray = $curlArrayMain;
-                    $curlArray[CURLOPT_NOBODY] = 0;
-                    $curlArray[CURLOPT_FILETIME] = 0;
-                    curl_setopt_array($curl, $curlArray);
+                    // define settings for second request to get the contents
+                    $args = [
+                        'timeout' => get_option('personioIntegrationUrlTimeout', 30),
+                        'httpversion' => '1.1',
+                        'redirection' => 0
+                    ];
+                    $response = wp_remote_get($url, $args);
 
-                    // call the URL and get the response
-                    $response = curl_exec($curl);
+                    // get the body with the contents
+                    $body = wp_remote_retrieve_body($response);
 
                     // get the md5-hash of the response
-                    $md5hash = md5($response);
+                    $md5hash = md5($body);
                     // check if md5-hash has been changed
                     if ($md5hash == get_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key, '') && !$this->_debug) {
                         // md5-hash did not change
@@ -127,7 +116,7 @@ class Import {
 
                     // load content as simplexml
                     try {
-                        $positions = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+                        $positions = simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA);
                     } catch (Exception $e) {
                         $this->_errors[] = __("XML file from Personio for language " . $key . " contains incorrect code and therefore cannot be read in. Technical Error: ") . $e->getMessage();
                         // show progress
@@ -180,7 +169,6 @@ class Import {
                     wp_defer_term_counting(false);
                 } else {
                     $this->_errors[] = __('Personio URL not available. Please check the URL you configured.', 'wp-personio-integration');
-                    curl_close($curl);
                 }
                 // show progress
                 !$progress ?: $progress->tick();

@@ -9,5 +9,5 @@ defined( 'ABSPATH' ) || exit;
 $contentArray = $position->getContentAsArray();
 foreach( $contentArray as $content ) {
     ?><h3><?php echo esc_html($content['name']); ?></h3><?php
-    ?><p><?php echo $content['value']; ?></p><?php
+    ?><p><?php echo wp_kses_post($content['value']); ?></p><?php
 }

@@ -57,12 +57,6 @@ trait helper {
     public static function get_admin_transient_content( $transient ): string
     {
         $array = [
-            'personio_integration_no_curl' => sprintf(
-                '<h3>'.helper::getLogoImg().'%s</h3><p><u>%s</u> %s</p>',
-                __('Personio Integration', 'wp-personio-integration'),
-                __('Plugin was not activated!', 'wp-personio-integration'),
-                __('The PHP extension curl is missing on the system. Please contact your hoster about this.', 'wp-personio-integration')
-            ),
             'personio_integration_no_simplexml' => sprintf(
                 '<h3>'.helper::getLogoImg().'%s</h3><p><u>%s</u> %s</p>',
                 __('Personio Integration', 'wp-personio-integration'),
@@ -87,12 +81,7 @@ trait helper {
                 __('Personio Integration', 'wp-personio-integration'),
                 __('You have not imported your open positions from Personio until now.', 'wp-personio-integration'),
                 /* translators: %1$s is replaced with "string" */
-                sprintf(__('To start the import click <a href="%s">here</a>.', 'wp-personio-integration'), esc_url( add_query_arg(
-                    [
-                        'action' => 'personioPositionsImport',
-                    ],
-                    get_admin_url() . 'admin.php'
-                ) ))
+                __('Click on the following button to import your positions from Personio now:', 'wp-personio-integration').' <br><br><a href="'.helper::get_import_url().'" class="button button-primary">'.__('Run import', 'wp-personio-integration').'</a>'
             ),
             'personio_integration_import_run' => sprintf(
                 '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
@@ -459,12 +448,12 @@ trait helper {
                     }
                     ?>
                     <p>
-                        <label for="<?php echo $this->get_field_name($name); ?>"><?php echo $field["title"]; ?></label>
+                        <label for="<?php echo $this->get_field_name($name); ?>"><?php echo esc_html($field["title"]); ?></label>
                         <select class="widefat" id="<?php echo $this->get_field_name($name); ?>" name="<?php echo $this->get_field_name($name);echo (isset($field["multiple"]) && false !== $field["multiple"]) ? '[]' : ''; ?>"<?php echo $multiple; ?>>
                             <?php
                             foreach( $field["values"] as $value => $title ) {
                                 $selected = in_array($value, $selectedValue) ? ' selected="selected"' : '';
-                                ?><option value="<?php echo $value; ?>"<?php echo $selected; ?>><?php echo $title; ?></option><?php
+                                ?><option value="<?php echo esc_attr($value); ?>"<?php echo $selected; ?>><?php echo esc_html($title); ?></option><?php
                             }
                             ?>
                         </select>
@@ -475,7 +464,7 @@ trait helper {
                     $value = !empty($instance[$name]) ? $instance[$name] : $field["default"];
                     ?>
                     <p>
-                        <label for="<?php echo $this->get_field_id($name); ?>"><?php echo $field["title"]; ?></label>
+                        <label for="<?php echo $this->get_field_id($name); ?>"><?php echo esc_html($field["title"]); ?></label>
                         <input class="widefat" type="number" id="<?php echo $this->get_field_id($name); ?>" name="<?php echo $this->get_field_name($name); ?>" value="<?php echo esc_attr( $value ); ?>" /></p>
                     </p>
                     <?php

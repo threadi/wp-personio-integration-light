@@ -20,11 +20,6 @@ class installer
     {
         $error = false;
 
-        // check if curl is available on this system
-        if( !function_exists("curl_init") ) {
-            set_transient("personio_integration_no_curl", 1);
-            $error = true;
-        }
         // check if simplexml is available on this system
         if( !function_exists("simplexml_load_string") ) {
             set_transient("personio_integration_no_simplexml", 1);
