@@ -269,14 +269,14 @@ function personio_integration_get_title( $position, $attributes ) {
 
     if( false !== $attributes["donotlink"] ) {
         ?>
-        <header class="entry-header default-max-width">
+        <header class="entry-content default-max-width">
             <h<?php echo $hSize; ?> class="entry-title"><?php echo $position->getTitle(); ?></h<?php echo $hSize; ?>>
         </header>
         <?php
     }
     else {
         ?>
-        <header class="entry-header default-max-width">
+        <header class="entry-content default-max-width">
             <h<?php echo $hSize; ?> class="entry-title"><a href="<?php echo get_permalink($position->ID); ?>"><?php echo $position->getTitle(); ?></a></h<?php echo $hSize; ?>>
         </header>
         <?php
