@@ -278,15 +278,10 @@ function personio_integration_use_cpt_template( $template ) {
         }
 
         // for classic themes
-        $theme_files = [
-            'archive-'.WP_PERSONIO_INTEGRATION_CPT.'.php'
-        ];
-        $exists_in_theme = locate_template($theme_files);
-        if ( $exists_in_theme != '' ) {
-            return $exists_in_theme;
-        } else {
-            return plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN) . 'templates/archive-'.WP_PERSONIO_INTEGRATION_CPT.'.php';
+        if( is_single() ) {
+            return personio_integration_get_single_template($template);
         }
+        return personio_integration_get_archive_template($template);
     }
     return $template;
 }
