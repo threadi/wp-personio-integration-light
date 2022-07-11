@@ -33,12 +33,6 @@ class cli {
 
         // delete position
         $this->deletePositionsFromDb();
-
-        // delete options regarding the import
-        foreach( WP_PERSONIO_INTEGRATION_LANGUAGES as $key => $lang ) {
-            delete_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP.$key);
-            delete_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5.$key);
-        }
     }
 
     /**

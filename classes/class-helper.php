@@ -108,6 +108,14 @@ trait helper {
                     ))
                 )
             ),
+            'personio_integration_delete_run' => sprintf(
+                '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
+                __('Personio Integration', 'wp-personio-integration'),
+                __(
+                    '<strong>The positions has been deleted.</strong> You can run the import anytime again to import positions.',
+                    'wp-personio-integration'
+                )
+            ),
             'personio_integration_import_now' => sprintf(
                 '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
                 __('Personio Integration', 'wp-personio-integration'),
@@ -186,6 +194,22 @@ trait helper {
     }
 
     /**
+     * Return the url to remove all positions.
+     *
+     * @return string
+     */
+    public static function get_delete_url(): string
+    {
+        return esc_url(add_query_arg(
+            [
+                'action' => 'personioPositionsDelete',
+                'nonce' => wp_create_nonce( 'wp-personio-integration-delete' )
+            ],
+            get_admin_url() . 'admin.php'
+        ));
+    }
+
+    /**
      * Prüfe, ob der Import per CLI aufgerufen wird.
      * Z.B. um einen Fortschrittsbalken anzuzeigen.
      *
@@ -218,6 +242,12 @@ trait helper {
 
         // delete position count
         delete_option('personioIntegrationPositionCount');
+
+        // delete options regarding the import
+        foreach( WP_PERSONIO_INTEGRATION_LANGUAGES as $key => $lang ) {
+            delete_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP.$key);
+            delete_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5.$key);
+        }
 
         // output success-message
         $this->isCLI() ? \WP_CLI::success($positionCount." positions deleted.") : false;

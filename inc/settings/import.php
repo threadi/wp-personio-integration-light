@@ -1,5 +1,6 @@
 <?php
 
+use personioIntegration\cli;
 use personioIntegration\helper;
 use personioIntegration\Import;
 
@@ -53,6 +54,7 @@ add_action('personio_integration_settings_importexport_page', 'personio_integrat
  * Get import/export options.
  *
  * @return void
+ * @noinspection PhpUnused
  */
 function personio_integration_admin_add_settings_importexport()
 {
@@ -76,6 +78,19 @@ function personio_integration_admin_add_settings_importexport()
         [
             'label_for' => 'personioIntegrationImportNow',
             'fieldId' => 'personioIntegrationImportNow',
+        ]
+    );
+
+    // delete all positions button
+    add_settings_field(
+        'personioIntegrationDeleteNow',
+        __( 'Delete positions', 'wp-personio-integration' ),
+        'personio_integration_admin_delete_positions_now',
+        'personioIntegrationPositionsImportExport',
+        'settings_section_import',
+        [
+            'label_for' => 'personioIntegrationDeleteNow',
+            'fieldId' => 'personioIntegrationDeleteNow',
         ]
     );
 
@@ -158,6 +173,26 @@ function personio_integration_admin_action_manual_import() {
 add_action( 'admin_action_personioPositionsImport', 'personio_integration_admin_action_manual_import');
 
 /**
+ * Start import manually.
+ *
+ * @return void
+ * @noinspection PhpUnused
+ */
+function personio_integration_admin_action_delete_positions() {
+    check_ajax_referer( 'wp-personio-integration-delete', 'nonce' );
+
+    // delete positions
+    (new cli())->deletePositions();
+
+    // add hint
+    set_transient('personio_integration_delete_run', 1, 0);
+
+    // redirect user
+    wp_redirect($_SERVER['HTTP_REFERER']);
+}
+add_action( 'admin_action_personioPositionsDelete', 'personio_integration_admin_action_delete_positions');
+
+/**
  * Add button to start import now on settings-page.
  *
  * @return void
@@ -167,4 +202,21 @@ function personio_integration_admin_start_import_now() {
         <p><a href="<?php echo esc_url(helper::get_import_url()); ?>" class="button button-primary"><?php echo __('Run import', 'wp-personio-integration'); ?></a></p>
         <p><i><?php echo __('Hint', 'wp-personio-integration'); ?>:</i> <?php echo __('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'wp-personio-integration'); ?></p>
     <?php
+}
+
+/**
+ * Add button to delete all positions.
+ *
+ * @return void
+ */
+function personio_integration_admin_delete_positions_now() {
+    if( helper::is_personioUrl_set() && get_option( 'personioIntegrationPositionCount', 0 ) > 0 ) {
+        ?>
+        <p><a href="<?php echo esc_url(helper::get_delete_url()); ?>" class="button button-primary"><?php echo __('Delete all positions', 'wp-personio-integration'); ?></a></p>
+        <p><i><?php echo __('Hint', 'wp-personio-integration'); ?>:</i> <?php echo __('Removes all actual imported positions.', 'wp-personio-integration'); ?></p>
+        <?php
+    }
+    else {
+        echo __('There are currently no imported positions.', 'wp-personio-integration');
+    }
 }

@@ -99,11 +99,15 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
                 'personio_integration_import_now',
                 'personio_integration_url_not_usable',
                 'personio_integration_import_run',
+                'personio_integration_delete_run',
                 'personio_integration_update_slugs'
             ]
         ]
     ],
-    "personio_integration_import_run" => [
+    'personio_integration_import_run' => [
+        'type' => 'success'
+    ],
+    'personio_integration_delete_run' => [
         'type' => 'success'
     ],
     'personio_integration_update_slugs' => [
