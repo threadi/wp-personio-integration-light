@@ -27,7 +27,7 @@ I recommend to use [PoEdit](https://poedit.net/) to translate texts for this plu
 
 Run in main directory:
 
-`wp i18n make-pot . languages/wp-personio-integration.pot`
+`wp i18n make-pot . languages/wp-personio-integration.pot --exclude=blocks/show/src/,blocks/list/src/`
 
 ### update translation-file
 
