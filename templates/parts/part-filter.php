@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 if( !empty($personio_attributes["filter"]) && false !== $personio_attributes["showfilter"] ) :
     ?>
     <article class="site-main entry entry-content">
-        <form action="" class="entry-content personio-position-filter personio-position-filter-<?php echo $personio_attributes['filtertype']; ?>">
+        <form action="" class="entry-content personio-position-filter personio-position-filter-<?php echo esc_attr($personio_attributes['filtertype']); ?>">
             <legend><?php echo __('Filter', 'wp-personio-integration'); ?></legend>
             <?php
             foreach ( $personio_attributes["filter"] as $filter ) :
