@@ -174,7 +174,6 @@ class Import {
 
                             // update counter
                             update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
-                            sleep(5);
                         }
 
                         // delete all not updated positions
