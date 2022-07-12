@@ -89,7 +89,7 @@ trait helper {
                 sprintf(
                     /* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
                     __(
-                        '<strong>The import has been manually run.</strong> Please check the <a href="%1$s">list of positions</a> or <a href="%2$s">the log</a> for possible errors.',
+                        '<strong>The import has been manually run.</strong> Please check the <a href="%1$s">list of positions</a> or <a href="%2$s">the log</a>.',
                         'wp-personio-integration'
                     ),
                     esc_url(add_query_arg(
@@ -116,10 +116,18 @@ trait helper {
                     'wp-personio-integration'
                 )
             ),
+            'personio_integration_could_not_delete' => sprintf(
+                '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
+                __('Personio Integration', 'wp-personio-integration'),
+                __(
+                    '<strong>The positions could not been deleted.</strong> An import is actual running.',
+                    'wp-personio-integration'
+                )
+            ),
             'personio_integration_import_now' => sprintf(
                 '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
                 __('Personio Integration', 'wp-personio-integration'),
-                __('The specified Personio URL is reachable. Click on the following button to import your positions from Personio now:', 'wp-personio-integration').' <br><br><a href="'.helper::get_import_url().'" class="button button-primary">'.__('Run import', 'wp-personio-integration').'</a>'
+                __('The specified Personio URL is reachable. Click on the following button to import your positions from Personio now:', 'wp-personio-integration').' <br><br><a href="'.helper::get_import_url().'" class="button button-primary personio-integration-import-hint">'.__('Run import', 'wp-personio-integration').'</a>'
             ),
             'personio_integration_url_not_usable' => sprintf(
                 '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
@@ -478,12 +486,11 @@ trait helper {
                     }
                     ?>
                     <p>
-                        <label for="<?php echo $this->get_field_name($name); ?>"><?php echo esc_html($field["title"]); ?></label>
-                        <select class="widefat" id="<?php echo $this->get_field_name($name); ?>" name="<?php echo $this->get_field_name($name);echo (isset($field["multiple"]) && false !== $field["multiple"]) ? '[]' : ''; ?>"<?php echo $multiple; ?>>
+                        <label for="<?php echo esc_attr($this->get_field_name($name)); ?>"><?php echo esc_html($field["title"]); ?></label>
+                        <select class="widefat" id="<?php echo esc_attr($this->get_field_name($name)); ?>" name="<?php echo esc_attr($this->get_field_name($name));echo (isset($field["multiple"]) && false !== $field["multiple"]) ? '[]' : ''; ?>"<?php echo esc_attr($multiple); ?>>
                             <?php
                             foreach( $field["values"] as $value => $title ) {
-                                $selected = in_array($value, $selectedValue) ? ' selected="selected"' : '';
-                                ?><option value="<?php echo esc_attr($value); ?>"<?php echo $selected; ?>><?php echo esc_html($title); ?></option><?php
+                                ?><option value="<?php echo esc_attr($value); ?>"<?php echo (in_array($value, $selectedValue) ? ' selected="selected"' : ''); ?>><?php echo esc_html($title); ?></option><?php
                             }
                             ?>
                         </select>
@@ -494,8 +501,8 @@ trait helper {
                     $value = !empty($instance[$name]) ? $instance[$name] : $field["default"];
                     ?>
                     <p>
-                        <label for="<?php echo $this->get_field_id($name); ?>"><?php echo esc_html($field["title"]); ?></label>
-                        <input class="widefat" type="number" id="<?php echo $this->get_field_id($name); ?>" name="<?php echo $this->get_field_name($name); ?>" value="<?php echo esc_attr( $value ); ?>" /></p>
+                        <label for="<?php echo esc_attr($this->get_field_id($name)); ?>"><?php echo esc_html($field["title"]); ?></label>
+                        <input class="widefat" type="number" id="<?php echo esc_attr($this->get_field_id($name)); ?>" name="<?php echo esc_attr($this->get_field_name($name)); ?>" value="<?php echo esc_attr( $value ); ?>" /></p>
                     </p>
                     <?php
                     break;

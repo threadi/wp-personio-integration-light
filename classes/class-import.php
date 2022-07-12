@@ -30,14 +30,30 @@ class Import {
     public function __construct() {
         global $wpdb;
 
+        // do not import if it is already running in another process
+        if( get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0) == 1 ) {
+            return;
+        }
+
+        // mark import as running
+        update_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 1);
+
         // get debug-mode
         $this->_debug = get_option('personioIntegration_debug', 0) == 1;
 
         // get database-connection
         $this->_wpdb = $wpdb;
 
+        // get the languages
+        $languages = helper::getActiveLanguagesWithDefaultFirst();
+
         // get the language-count
-        $languageCount = count(WP_PERSONIO_INTEGRATION_LANGUAGES);
+        $languageCount = count($languages);
+
+        // set counter for progressbar in backend
+        update_option(WP_PERSONIO_OPTION_MAX, $languageCount);
+        update_option(WP_PERSONIO_OPTION_COUNT, 0);
+        $doNotUpdateMaxCounter = false;
 
         // create array for positions
         $countPositions = [];
@@ -51,13 +67,14 @@ class Import {
         libxml_use_internal_errors(true);
 
         if( empty($this->_errors) ) {
-
             // get the Personio URL
             $domain = get_option('personioIntegrationUrl');
 
+            // define counter
+            $count = 0;
+
             // CLI-Output
             $progress = $this->isCLI() ? \WP_CLI\Utils\make_progress_bar('Get positions from Personio by language', $languageCount) : false;
-            $languages = helper::getActiveLanguagesWithDefaultFirst();
             foreach( $languages as $key => $enabled ) {
                 // define the url
                 $url = $domain . "/xml?language=" . $key;
@@ -89,6 +106,7 @@ class Import {
                     if ($lastModifiedTimestamp == get_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key, 0) && !$this->_debug) {
                         // timestamp did not change
                         // -> do nothing
+                        update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
                         !$progress ?: $progress->tick();
                         continue;
                     }
@@ -110,6 +128,7 @@ class Import {
                     if ($md5hash == get_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key, '') && !$this->_debug) {
                         // md5-hash did not change
                         // -> do nothing
+                        update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
                         !$progress ?: $progress->tick();
                         continue;
                     }
@@ -120,6 +139,7 @@ class Import {
                     } catch (Exception $e) {
                         $this->_errors[] = __("XML file from Personio for language " . $key . " contains incorrect code and therefore cannot be read in. Technical Error: ") . $e->getMessage();
                         // show progress
+                        update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
                         !$progress ?: $progress->tick();
                         continue;
                     }
@@ -136,6 +156,13 @@ class Import {
 
                     // loop through the results and import each position
                     if( !empty($positions) ) {
+                        // update max-counter
+                        // -> only once per import
+                        if( !$doNotUpdateMaxCounter ) {
+                            update_option(WP_PERSONIO_OPTION_MAX, $languageCount * count($positions));
+                            $doNotUpdateMaxCounter = true;
+                        }
+
                         foreach ($positions as $position) {
                             // add to list for counting
                             $countPositions[(int)$position->id] = $position;
@@ -144,6 +171,10 @@ class Import {
                                 // import the position
                                 $this->importPosition($position, $key);
                             }
+
+                            // update counter
+                            update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
+                            sleep(5);
                         }
 
                         // delete all not updated positions
@@ -203,6 +234,9 @@ class Import {
             /** @noinspection PhpUndefinedClassInspection */
             $this->showErrors();
         }
+
+        // mark import as not running anymore
+        update_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0);
     }
 
     /**

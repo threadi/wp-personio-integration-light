@@ -109,3 +109,7 @@ body.post-type-personioposition.edit-tags-php #col-right th:first-child, body.po
     margin-left: 4px;
     vertical-align: middle;
 }
+
+.personio-dialog-no-close .ui-dialog-titlebar-close {
+    display: none;
+}

@@ -193,7 +193,10 @@ class installer
                 'personioIntegrationMaxAgeLogEntries',
                 'personioIntegrationEnableForm',
                 'personioIntegrationPositionCount',
-                WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION
+                WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION,
+                WP_PERSONIO_OPTION_COUNT,
+                WP_PERSONIO_OPTION_MAX,
+                WP_PERSONIO_INTEGRATION_IMPORT_RUNNING
             ];
             foreach ($options as $option) {
                 delete_option($option);

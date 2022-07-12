@@ -101,6 +101,9 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
                 'personio_integration_import_run',
                 'personio_integration_delete_run',
                 'personio_integration_update_slugs'
+            ],
+            'hideOnSettingsTabs' => [
+                'importexport'
             ]
         ]
     ],
@@ -109,6 +112,9 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
     ],
     'personio_integration_delete_run' => [
         'type' => 'success'
+    ],
+    'personio_integration_could_not_delete' => [
+        'type' => 'error'
     ],
     'personio_integration_update_slugs' => [
         'type' => 'success'
@@ -205,3 +211,9 @@ const WP_PERSONIO_INTEGRATION_TAXONOMIES = [
         'useInFilter' => 0
     ],
 ];
+
+/**
+ * Define names for progressbar during import.
+ */
+const WP_PERSONIO_OPTION_COUNT = 'piImportCount';
+const WP_PERSONIO_OPTION_MAX = 'piImportMax';
