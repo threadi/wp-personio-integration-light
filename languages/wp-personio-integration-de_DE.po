@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2022-07-08T06:27:24-05:00\n"
-"PO-Revision-Date: 2022-07-08 13:27+0200\n"
+"POT-Creation-Date: 2022-07-11T04:49:41-05:00\n"
+"PO-Revision-Date: 2022-07-11 11:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -35,7 +35,8 @@ msgstr "https://laolaweb.com"
 
 #: classes/class-helper.php:62 classes/class-helper.php:68
 #: classes/class-helper.php:81 classes/class-helper.php:88
-#: classes/class-helper.php:113 classes/class-helper.php:118
+#: classes/class-helper.php:113 classes/class-helper.php:121
+#: classes/class-helper.php:126
 msgid "Personio Integration"
 msgstr "Personio Integration"
 
@@ -73,8 +74,8 @@ msgstr ""
 "Personio zu importieren:"
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:84 classes/class-helper.php:114 inc/admin.php:43
-#: inc/settings/import.php:167
+#: classes/class-helper.php:84 classes/class-helper.php:122 inc/admin.php:43
+#: inc/settings/import.php:202
 msgid "Run import"
 msgstr "führe Import jetzt aus"
 
@@ -91,6 +92,14 @@ msgstr ""
 
 #: classes/class-helper.php:114
 msgid ""
+"<strong>The positions has been deleted.</strong> You can run the import "
+"anytime again to import positions."
+msgstr ""
+"<strong>Die Stellen wurden entfernt.</strong> Du kannst den Import jederzeit "
+"ausführen um die Stellen erneut zu importieren."
+
+#: classes/class-helper.php:122
+msgid ""
 "The specified Personio URL is reachable. Click on the following button to "
 "import your positions from Personio now:"
 msgstr ""
@@ -98,7 +107,7 @@ msgstr ""
 "Schaltfläche, um die offenen Stellen jetzt aus Personio zu importieren:"
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:121
+#: classes/class-helper.php:129
 msgid ""
 "The specified Personio URL %s is not usable for this plugin. Please double-"
 "check the URL in your Personio-account under Settings > Recruiting > Career "
@@ -108,307 +117,307 @@ msgstr ""
 "überprüfe die URL in deinem Personio-Account unter Einstellungen > "
 "Recruiting > Karriereseite > Aktivierungen."
 
-#: classes/class-helper.php:603
+#: classes/class-helper.php:633
 msgctxt "taxonomy general name"
 msgid "recruiting categories"
 msgstr "Kategorien"
 
-#: classes/class-helper.php:604
+#: classes/class-helper.php:634
 msgctxt "taxonomy singular name"
 msgid "recruiting category"
 msgstr "Kategorie"
 
-#: classes/class-helper.php:605
+#: classes/class-helper.php:635
 msgid "Search recruiting category"
 msgstr "Suche nach Kategorie"
 
-#: classes/class-helper.php:606
+#: classes/class-helper.php:636
 msgid "Edit recruiting category"
 msgstr "Kategorie bearbeiten"
 
-#: classes/class-helper.php:607
+#: classes/class-helper.php:637
 msgid "Update recruiting category"
 msgstr "Kategorie aktualisieren"
 
-#: classes/class-helper.php:608
+#: classes/class-helper.php:638
 msgid "recruiting categories"
 msgstr "Kategorien"
 
-#: classes/class-helper.php:611
+#: classes/class-helper.php:641
 msgctxt "taxonomy general name"
 msgid "occupation categories"
 msgstr "Berufsarten"
 
-#: classes/class-helper.php:612
+#: classes/class-helper.php:642
 msgctxt "taxonomy singular name"
 msgid "occupation category"
 msgstr "Berufsart"
 
-#: classes/class-helper.php:613
+#: classes/class-helper.php:643
 msgid "Search occupation category"
 msgstr "Suche nach Berufsart"
 
-#: classes/class-helper.php:614
+#: classes/class-helper.php:644
 msgid "Edit occupation category"
 msgstr "Berufsart bearbeiten"
 
-#: classes/class-helper.php:615
+#: classes/class-helper.php:645
 msgid "Update occupation category"
 msgstr "Berufsart aktualisieren"
 
-#: classes/class-helper.php:616
+#: classes/class-helper.php:646
 msgid "occupation categories"
 msgstr "Berufsarten"
 
-#: classes/class-helper.php:619
+#: classes/class-helper.php:649
 msgctxt "taxonomy general name"
 msgid "offices"
 msgstr "Standorte"
 
-#: classes/class-helper.php:620
+#: classes/class-helper.php:650
 msgctxt "taxonomy singular name"
 msgid "office"
 msgstr "Standort"
 
-#: classes/class-helper.php:621
+#: classes/class-helper.php:651
 msgid "Search office"
 msgstr "Suchen Standort"
 
-#: classes/class-helper.php:622
+#: classes/class-helper.php:652
 msgid "Edit office"
 msgstr "Bearbeite Standort"
 
-#: classes/class-helper.php:623
+#: classes/class-helper.php:653
 msgid "Update office"
 msgstr "Aktualisiere Standort"
 
-#: classes/class-helper.php:624
+#: classes/class-helper.php:654
 msgid "offices"
 msgstr "Standorte"
 
-#: classes/class-helper.php:627
+#: classes/class-helper.php:657
 msgctxt "taxonomy general name"
 msgid "departments"
 msgstr "Abteilungen"
 
-#: classes/class-helper.php:628
+#: classes/class-helper.php:658
 msgctxt "taxonomy singular name"
 msgid "department"
 msgstr "Abteilung"
 
-#: classes/class-helper.php:629
+#: classes/class-helper.php:659
 msgid "Search department"
 msgstr "Suche nach Abteilung"
 
-#: classes/class-helper.php:630
+#: classes/class-helper.php:660
 msgid "Edit department"
 msgstr "Bearbeite Abteilung"
 
-#: classes/class-helper.php:631
+#: classes/class-helper.php:661
 msgid "Update department"
 msgstr "Aktualisierung Abteilung"
 
-#: classes/class-helper.php:632
+#: classes/class-helper.php:662
 msgid "departments"
 msgstr "Abteilungen"
 
-#: classes/class-helper.php:635
+#: classes/class-helper.php:665
 msgctxt "taxonomy general name"
 msgid "employment types"
 msgstr "Anstellungsarten"
 
-#: classes/class-helper.php:636
+#: classes/class-helper.php:666
 msgctxt "taxonomy singular name"
 msgid "employment type"
 msgstr "Anstellungsart"
 
-#: classes/class-helper.php:637
+#: classes/class-helper.php:667
 msgid "Search employment type"
 msgstr "Suche nach Anstellungsart"
 
-#: classes/class-helper.php:638
+#: classes/class-helper.php:668
 msgid "Edit employment type"
 msgstr "Bearbeite Anstellungsart"
 
-#: classes/class-helper.php:639
+#: classes/class-helper.php:669
 msgid "Update employment type"
 msgstr "Aktualisiere Anstellungsart"
 
-#: classes/class-helper.php:640 inc/init.php:316
+#: classes/class-helper.php:670 inc/init.php:316
 msgid "employment types"
 msgstr "Anstellungsarten"
 
-#: classes/class-helper.php:643
+#: classes/class-helper.php:673
 msgctxt "taxonomy general name"
 msgid "seniority"
 msgstr "Dienstalter"
 
-#: classes/class-helper.php:644
+#: classes/class-helper.php:674
 msgctxt "taxonomy singular name"
 msgid "seniority"
 msgstr "Dienstalter"
 
-#: classes/class-helper.php:645
+#: classes/class-helper.php:675
 msgid "Search seniority"
 msgstr "Suche nach Dienstalter"
 
-#: classes/class-helper.php:646
+#: classes/class-helper.php:676
 msgid "Edit seniority"
 msgstr "Bearbeite Dienstalter"
 
-#: classes/class-helper.php:647
+#: classes/class-helper.php:677
 msgid "Update seniority"
 msgstr "Aktualisiere Dienstalter"
 
-#: classes/class-helper.php:648 inc/init.php:317 blocks/list/build/index.js:1
+#: classes/class-helper.php:678 inc/init.php:317 blocks/list/build/index.js:1
 #: blocks/list/src/edit.js:78 blocks/list/src/edit.js:154
 #: blocks/show/build/index.js:1 blocks/show/src/edit.js:128
 msgid "seniority"
 msgstr "Dienstalter"
 
-#: classes/class-helper.php:651
+#: classes/class-helper.php:681
 msgctxt "taxonomy general name"
 msgid "schedules"
 msgstr "Arbeitszeiten"
 
-#: classes/class-helper.php:652
+#: classes/class-helper.php:682
 msgctxt "taxonomy singular name"
 msgid "schedule"
 msgstr "Arbeitszeit"
 
-#: classes/class-helper.php:653
+#: classes/class-helper.php:683
 msgid "Search schedule"
 msgstr "Suche nach Arbeitszeit"
 
-#: classes/class-helper.php:654
+#: classes/class-helper.php:684
 msgid "Edit schedule"
 msgstr "Bearbeite Arbeitszeit"
 
-#: classes/class-helper.php:655
+#: classes/class-helper.php:685
 msgid "Update schedule"
 msgstr "Aktualisiere Arbeitszeit"
 
-#: classes/class-helper.php:656
+#: classes/class-helper.php:686
 msgid "schedules"
 msgstr "Arbeitszeiten"
 
-#: classes/class-helper.php:659
+#: classes/class-helper.php:689
 msgctxt "taxonomy general name"
 msgid "experiences"
 msgstr "Berufserfahrungen"
 
-#: classes/class-helper.php:660
+#: classes/class-helper.php:690
 msgctxt "taxonomy singular name"
 msgid "experience"
 msgstr "Berufserfahrung"
 
-#: classes/class-helper.php:661
+#: classes/class-helper.php:691
 msgid "Search experience"
 msgstr "Suche nach Berufserfahrung"
 
-#: classes/class-helper.php:662
+#: classes/class-helper.php:692
 msgid "Edit experience"
 msgstr "Bearbeite Berufserfahrung"
 
-#: classes/class-helper.php:663
+#: classes/class-helper.php:693
 msgid "Update experience"
 msgstr "Aktualisiere Berufserfahrung"
 
-#: classes/class-helper.php:664
+#: classes/class-helper.php:694
 msgid "experiences"
 msgstr "Berufserfahrungen"
 
-#: classes/class-helper.php:667
+#: classes/class-helper.php:697
 msgctxt "taxonomy general name"
 msgid "languages"
 msgstr "Sprachen"
 
-#: classes/class-helper.php:668
+#: classes/class-helper.php:698
 msgctxt "taxonomy singular name"
 msgid "language"
 msgstr "Sprache"
 
-#: classes/class-helper.php:669
+#: classes/class-helper.php:699
 msgid "Search language"
 msgstr "Suche nach Sprache"
 
-#: classes/class-helper.php:670
+#: classes/class-helper.php:700
 msgid "Edit language"
 msgstr "Bearbeite Sprache"
 
-#: classes/class-helper.php:671
+#: classes/class-helper.php:701
 msgid "Update language"
 msgstr "Aktualisiere Sprache"
 
-#: classes/class-helper.php:672
+#: classes/class-helper.php:702
 msgid "languages"
 msgstr "Sprachen"
 
-#: classes/class-helper.php:700
+#: classes/class-helper.php:730
 msgid "permanent"
 msgstr "Dauerhaft"
 
-#: classes/class-helper.php:701
+#: classes/class-helper.php:731
 msgid "intern"
 msgstr "intern"
 
-#: classes/class-helper.php:702
+#: classes/class-helper.php:732
 msgid "trainee"
 msgstr "Praktikant/in"
 
-#: classes/class-helper.php:703
+#: classes/class-helper.php:733
 msgid "freelance"
 msgstr "Freelancer"
 
-#: classes/class-helper.php:706
+#: classes/class-helper.php:736
 msgid "entry-level"
 msgstr "Einstiegslevel"
 
-#: classes/class-helper.php:707
+#: classes/class-helper.php:737
 msgid "experienced"
 msgstr "Erfahrung"
 
-#: classes/class-helper.php:708
+#: classes/class-helper.php:738
 msgid "executive"
 msgstr "Geschäftsführer"
 
-#: classes/class-helper.php:709
+#: classes/class-helper.php:739
 msgid "student"
 msgstr "Student"
 
-#: classes/class-helper.php:712
+#: classes/class-helper.php:742
 msgid "full-time"
 msgstr "Vollzeit"
 
-#: classes/class-helper.php:713
+#: classes/class-helper.php:743
 msgid "part-time"
 msgstr "Teil-Zeit"
 
-#: classes/class-helper.php:716
+#: classes/class-helper.php:746
 msgid "less than 1 year"
 msgstr "weniger als 1 Jahr"
 
-#: classes/class-helper.php:717
+#: classes/class-helper.php:747
 msgid "1-2 years"
 msgstr "1-2 Jahre"
 
-#: classes/class-helper.php:718
+#: classes/class-helper.php:748
 msgid "2-5 years"
 msgstr "2-5 Jahre"
 
-#: classes/class-helper.php:719
+#: classes/class-helper.php:749
 msgid "5-7 years"
 msgstr "5-7 Jahre"
 
-#: classes/class-helper.php:720
+#: classes/class-helper.php:750
 msgid "7-10 years"
 msgstr "7-10 Jahre"
 
-#: classes/class-helper.php:721
+#: classes/class-helper.php:751
 msgid "10-15 years"
 msgstr "10-15 Jahre"
 
-#: classes/class-helper.php:722
+#: classes/class-helper.php:752
 msgid "more than 15 years"
 msgstr "mehr als 15 Jahre"
 
@@ -564,7 +573,7 @@ msgstr "Get Personio Integration Pro"
 msgid "Reset sorting"
 msgstr "Sortierung zurücksetzen"
 
-#: inc/admin.php:44 inc/settings/import.php:168
+#: inc/admin.php:44 inc/settings/import.php:203
 msgid ""
 "Performing the import could take a few minutes. If a timeout occurs, a "
 "manual import is not possible this way. Then the automatic import should be "
@@ -829,19 +838,23 @@ msgstr ""
 msgid "Please enter a valid URL."
 msgstr "Bitte eine gültige URL eintragen."
 
-#: inc/settings/import.php:64
+#: inc/settings/import.php:66
 msgid "Import Settings"
 msgstr "Import-Einstellungen"
 
-#: inc/settings/import.php:72
+#: inc/settings/import.php:74
 msgid "Start import now"
 msgstr "Starte Import jetzt"
 
-#: inc/settings/import.php:85
+#: inc/settings/import.php:87
+msgid "Delete positions"
+msgstr "Stelle löschen"
+
+#: inc/settings/import.php:100
 msgid "Enable automatic import"
 msgstr "Aktiviere automatischen Import"
 
-#: inc/settings/import.php:92
+#: inc/settings/import.php:107
 msgid ""
 "If enabled, new positions stored in Personio will be retrieved automatically "
 "every hour.<br>If disabled, new positions are retrieved manually only."
@@ -851,7 +864,7 @@ msgstr ""
 "deaktiviert ist, werden neue Stellen nur manuell abgerufen."
 
 #. translators: %1$s is replaced with "string"
-#: inc/settings/import.php:95
+#: inc/settings/import.php:110
 msgid ""
 "Use more import options with the %s. Among other things, you get the "
 "possibility to change the time interval for imports and partial imports of "
@@ -861,17 +874,29 @@ msgstr ""
 "Möglichkeit das Intervall zum Import zu ändern sowie partielle Importe für "
 "sehr große Stellen-Listen durchzuführen."
 
-#: inc/settings/import.php:115
+#: inc/settings/import.php:130
 msgid "An interval for the automatic import has to be set."
 msgstr "Es muss ein Intervall für den automatischen Import festgelegt werden."
 
-#: inc/settings/import.php:122
+#: inc/settings/import.php:137
 msgid "The given interval does not exists."
 msgstr "Das angegebene Intervall existiert nicht."
 
-#: inc/settings/import.php:168
+#: inc/settings/import.php:203 inc/settings/import.php:216
 msgid "Hint"
 msgstr "Hinweis"
+
+#: inc/settings/import.php:215
+msgid "Delete all positions"
+msgstr "Entferne alle Stellen"
+
+#: inc/settings/import.php:216
+msgid "Removes all actual imported positions."
+msgstr "Entfernt alle aktuell importierten Stellen."
+
+#: inc/settings/import.php:220
+msgid "There are currently no imported positions."
+msgstr "Es sind aktuell keine Stellen importiert."
 
 #: inc/settings/settings.php:25
 msgid "Personio Integration Settings"
