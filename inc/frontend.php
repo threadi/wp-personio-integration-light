@@ -277,7 +277,7 @@ function personio_integration_get_title( $position, $attributes ) {
     else {
         ?>
         <header class="entry-content default-max-width">
-            <h<?php echo absint($hSize); ?> class="entry-title"><a href="<?php echo esc_url(get_permalink($position->ID)); ?>"><?php echo $position->getTitle(); ?></a></h<?php echo absint($hSize); ?>>
+            <h<?php echo absint($hSize); ?> class="entry-title"><a href="<?php echo esc_url(get_permalink($position->ID)); ?>"><?php echo esc_html($position->getTitle()); ?></a></h<?php echo absint($hSize); ?>>
         </header>
         <?php
     }

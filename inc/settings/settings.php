@@ -266,7 +266,7 @@ function personio_integration_admin_select_field( $attr ) {
             <option value=""></option>
             <?php
             foreach( $attr['values'] as $key => $label ) {
-                ?><option value="<?php echo esc_attr($key); ?>"<?php echo $value == $key ? ' selected="selected"' : ''; ?>><?php echo esc_html($label); ?></option><?php
+                ?><option value="<?php echo esc_attr($key); ?>"<?php echo ($value == $key ? ' selected="selected"' : ''); ?>><?php echo esc_html($label); ?></option><?php
             }
             ?></select>
         <?php

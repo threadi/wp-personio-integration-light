@@ -291,8 +291,7 @@ function personio_integration_admin_add_filter() {
                             <option value="0"><?php echo esc_html($taxonomy->label); ?></option>
                             <?php
                             foreach( $terms as $term ) {
-                                $selected = (isset($_GET['admin_filter_'.$taxonomy_name]) && absint($_GET['admin_filter_'.$taxonomy_name]) == $term->term_id ) ? ' selected="selected"' : '';
-                                ?><option value="<?php echo esc_attr($term->term_id); ?>"<?php echo $selected; ?>><?php echo esc_html($term->name); ?></option><?php
+                                ?><option value="<?php echo esc_attr($term->term_id); ?>"<?php echo (isset($_GET['admin_filter_'.$taxonomy_name]) && absint($_GET['admin_filter_'.$taxonomy_name]) == $term->term_id ) ? ' selected="selected"' : ''; ?>><?php echo esc_html($term->name); ?></option><?php
                             }
                             ?>
                         </select>
