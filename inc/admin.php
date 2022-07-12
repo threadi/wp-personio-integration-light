@@ -1,6 +1,7 @@
 <?php
 
 use personioIntegration\helper;
+use personioIntegration\Import;
 use personioIntegration\Position;
 use personioIntegration\Positions;
 
@@ -39,11 +40,51 @@ function personio_integration_add_styles_and_js_admin() {
             'pro_url' => helper::get_pro_url(),
             'label_go_pro' => __('Get Personio Integration Pro', 'wp-personio-integration'),
             'dismiss_nonce' => wp_create_nonce( 'wp-dismiss-notice' ),
+            'run_import_nonce' => wp_create_nonce( 'personio-run-import' ),
+            'get_import_nonce' => wp_create_nonce( 'personio-get-import-info' ),
             'label_reset_sort' => __('Reset sorting', 'wp-personio-integration'),
             'label_run_import' => __('Run import', 'wp-personio-integration'),
-            'txt_import_hint' => __('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'wp-personio-integration')
+            'label_import_is_running' => __('Import is running', 'wp-personio-integration'),
+            'txt_please_wait' => __('Please wait', 'wp-personio-integration'),
+            'txt_import_hint' => __('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'wp-personio-integration'),
+            'txt_import_has_been_run' => sprintf(
+                /* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
+                __(
+                    '<strong>The import has been manually run.</strong> Please check the <a href="%1$s">list of positions</a> or <a href="%2$s">the log</a>.',
+                    'wp-personio-integration'
+                ),
+                esc_url(add_query_arg(
+                    [
+                        'post_type' => WP_PERSONIO_INTEGRATION_CPT,
+                    ],
+                    get_admin_url() . 'edit.php'
+                )),
+                esc_url(add_query_arg(
+                    [
+                        'post_type' => WP_PERSONIO_INTEGRATION_CPT,
+                        'page' => 'personioPositions',
+                        'tab' => 'logs'
+                    ],
+                    get_admin_url() . 'edit.php'
+                ))
+            ),
+            'label_ok' => __('OK', 'wp-personio-integration')
         ]
     );
+
+    // embed necessary scripts for progressbar
+    if( !empty($_GET["post_type"]) && $_GET["post_type"] === WP_PERSONIO_INTEGRATION_CPT ) {
+        $wp_scripts = wp_scripts();
+        wp_enqueue_script('jquery-ui-progressbar');
+        wp_enqueue_script('jquery-ui-dialog');
+        wp_enqueue_style(
+            'personio-jquery-ui-styles',
+            'https://code.jquery.com/ui/' . $wp_scripts->registered['jquery-ui-core']->ver . '/themes/smoothness/jquery-ui.min.css',
+            false,
+            '1.0.0',
+            false
+        );
+    }
 }
 add_action( 'admin_enqueue_scripts', 'personio_integration_add_styles_and_js_admin', PHP_INT_MAX );
 
@@ -128,6 +169,12 @@ function personio_integration_admin_notices() {
                         $show = false;
                     }
                 }
+            }
+
+            // hide on settings-tab
+            $tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : '';
+            if( isset($settings['options']['hideOnSettingsTabs']) && in_array($tab, $settings['options']['hideOnSettingsTabs']) ) {
+                $show = false;
             }
 
             // get the translated content
@@ -370,9 +417,53 @@ function personio_integration_admin_dismiss() {
     // return nothing
     wp_die();
 }
+
+/**
+ * Start Import via AJAX.
+ *
+ * @return void
+ * @noinspection PhpUnused
+ */
+function personio_integration_admin_run_import() {
+    // check nonce
+    check_ajax_referer( 'personio-run-import', 'nonce' );
+
+    // run import
+    new Import();
+
+    // return nothing
+    wp_die();
+}
+
+/**
+ * Return state of the actual running import.
+ *
+ * @return void
+ * @noinspection PhpUnused
+ */
+function personio_integration_admin_get_import_info() {
+    // check nonce
+    check_ajax_referer( 'personio-get-import-info', 'nonce' );
+
+    // return actual and max count of import steps
+    echo get_option(WP_PERSONIO_OPTION_COUNT, 0).";".get_option(WP_PERSONIO_OPTION_MAX).";".get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0);
+
+    // return nothing else
+    wp_die();
+}
+
+/**
+ * Add AJAX-endpoints.
+ */
 add_action( 'admin_init', function() {
     add_action('wp_ajax_nopriv_dismiss_admin_notice', 'personio_integration_admin_dismiss');
     add_action('wp_ajax_dismiss_admin_notice', 'personio_integration_admin_dismiss');
+
+    add_action('wp_ajax_nopriv_personio_run_import', 'personio_integration_admin_run_import');
+    add_action('wp_ajax_personio_run_import', 'personio_integration_admin_run_import');
+
+    add_action('wp_ajax_nopriv_personio_get_import_info', 'personio_integration_admin_get_import_info');
+    add_action('wp_ajax_personio_get_import_info', 'personio_integration_admin_get_import_info');
 });
 
 /**

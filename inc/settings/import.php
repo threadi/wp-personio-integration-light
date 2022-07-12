@@ -173,7 +173,7 @@ function personio_integration_admin_action_manual_import() {
 add_action( 'admin_action_personioPositionsImport', 'personio_integration_admin_action_manual_import');
 
 /**
- * Start import manually.
+ * Delete all positions manually.
  *
  * @return void
  * @noinspection PhpUnused
@@ -181,11 +181,17 @@ add_action( 'admin_action_personioPositionsImport', 'personio_integration_admin_
 function personio_integration_admin_action_delete_positions() {
     check_ajax_referer( 'wp-personio-integration-delete', 'nonce' );
 
-    // delete positions
-    (new cli())->deletePositions();
+    // do not delete positions if import is running atm
+    if( get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) == 0 ) {
+        // delete positions
+        (new cli())->deletePositions();
 
-    // add hint
-    set_transient('personio_integration_delete_run', 1, 0);
+        // add hint
+        set_transient('personio_integration_delete_run', 1, 0);
+    }
+    else {
+        set_transient('personio_integration_could_not_delete', 1, 0);
+    }
 
     // redirect user
     wp_redirect($_SERVER['HTTP_REFERER']);
@@ -198,10 +204,17 @@ add_action( 'admin_action_personioPositionsDelete', 'personio_integration_admin_
  * @return void
  */
 function personio_integration_admin_start_import_now() {
-    ?>
-        <p><a href="<?php echo esc_url(helper::get_import_url()); ?>" class="button button-primary"><?php echo __('Run import', 'wp-personio-integration'); ?></a></p>
-        <p><i><?php echo __('Hint', 'wp-personio-integration'); ?>:</i> <?php echo __('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'wp-personio-integration'); ?></p>
-    <?php
+    if( get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0) == 0 ) {
+        ?>
+            <p><a href="<?php echo esc_url(helper::get_import_url()); ?>" class="button button-primary personio-integration-import-hint"><?php echo __('Run import', 'wp-personio-integration'); ?></a></p>
+            <p><i><?php echo __('Hint', 'wp-personio-integration'); ?>:</i> <?php echo __('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'wp-personio-integration'); ?></p>
+        <?php
+    }
+    else {
+        ?>
+            <p><?php echo __('The import is already running. Please wait some moments.', 'wp-personio-integration'); ?></p>
+        <?php
+    }
 }
 
 /**
@@ -217,6 +230,6 @@ function personio_integration_admin_delete_positions_now() {
         <?php
     }
     else {
-        echo __('There are currently no imported positions.', 'wp-personio-integration');
+        ?><p><?php echo __('There are currently no imported positions.', 'wp-personio-integration'); ?></p><?php
     }
 }
