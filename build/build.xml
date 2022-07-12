@@ -45,6 +45,7 @@
 
     <!-- generate json-translations -->
     <target name="json-translations" depends="npm-build">
+        <delete file="${src.dir}/languages/*.json"/>
         <exec dir="${src.dir}" failonerror="true" executable="wp">
             <arg line="i18n make-json languages --no-purge"/>
         </exec>

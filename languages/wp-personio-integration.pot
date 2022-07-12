@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-07-11T04:49:41-05:00\n"
+"POT-Creation-Date: 2022-07-11T05:43:27-05:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -248,10 +248,7 @@ msgstr ""
 #: classes/class-helper.php:678
 #: inc/init.php:317
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:78
-#: blocks/list/src/edit.js:154
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:128
 msgid "seniority"
 msgstr ""
 
@@ -428,7 +425,6 @@ msgstr ""
 #: classes/class-logs.php:45
 #: classes/class-positionswidget.php:57
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:122
 msgid "date"
 msgstr ""
 
@@ -452,13 +448,11 @@ msgstr ""
 #: classes/class-positionswidget.php:24
 #: inc/init.php:259
 #: blocks/list/build/index.js:1
-#: blocks/list/src/index.js:37
 msgid "Personio Positions"
 msgstr ""
 
 #: classes/class-positionswidget.php:39
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:101
 msgid "amount"
 msgstr ""
 
@@ -468,26 +462,22 @@ msgstr ""
 
 #: classes/class-positionswidget.php:47
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:112
 msgid "ascending"
 msgstr ""
 
 #: classes/class-positionswidget.php:48
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:113
 msgid "descending"
 msgstr ""
 
 #: classes/class-positionswidget.php:53
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:118
 msgid "Sort by"
 msgstr ""
 
 #: classes/class-positionswidget.php:56
 #: inc/init.php:333
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:121
 msgid "title"
 msgstr ""
 
@@ -525,9 +515,7 @@ msgstr ""
 #: classes/class-positionswidget.php:71
 #: classes/class-positionwidget.php:62
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:132
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:104
 msgid "link title"
 msgstr ""
 
@@ -539,9 +527,7 @@ msgstr ""
 #: classes/class-positionswidget.php:89
 #: classes/class-positionwidget.php:80
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:144
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:118
 msgid "Choose excerpt components"
 msgstr ""
 
@@ -561,13 +547,11 @@ msgstr ""
 
 #: classes/class-positionwidget.php:24
 #: blocks/show/build/index.js:1
-#: blocks/show/src/index.js:38
 msgid "Personio Position"
 msgstr ""
 
 #: classes/class-positionwidget.php:47
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:92
 msgid "Select position"
 msgstr ""
 
@@ -607,9 +591,7 @@ msgstr ""
 #: inc/admin.php:220
 #: inc/settings/settings.php:26
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:99
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:90
 msgid "Settings"
 msgstr ""
 
@@ -664,55 +646,37 @@ msgstr ""
 
 #: inc/init.php:312
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:74
-#: blocks/list/src/edit.js:148
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:122
 msgid "recruiting category"
 msgstr ""
 
 #: inc/init.php:313
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:75
-#: blocks/list/src/edit.js:151
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:125
 msgid "schedule"
 msgstr ""
 
 #: inc/init.php:314
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:76
-#: blocks/list/src/edit.js:152
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:126
 msgid "office"
 msgstr ""
 
 #: inc/init.php:315
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:77
-#: blocks/list/src/edit.js:153
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:127
 msgid "department"
 msgstr ""
 
 #: inc/init.php:318
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:79
-#: blocks/list/src/edit.js:155
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:129
 msgid "experience"
 msgstr ""
 
 #: inc/init.php:319
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:80
-#: blocks/list/src/edit.js:156
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:130
 msgid "occupation"
 msgstr ""
 
@@ -926,13 +890,11 @@ msgstr ""
 
 #: inc/settings/templates.php:121
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:92
 msgid "select-box"
 msgstr ""
 
 #: inc/settings/templates.php:122
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:91
 msgid "list of links"
 msgstr ""
 
@@ -994,7 +956,6 @@ msgstr ""
 
 #: templates/parts/part-filter.php:12
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:62
 msgid "Filter"
 msgstr ""
 
@@ -1011,65 +972,50 @@ msgid "Apply for this position"
 msgstr ""
 
 #: blocks/list/build/index.js:1
-#: blocks/list/src/index.js:38
 msgid "Provides a Gutenberg Block to show a list of positions provided by Personio."
 msgstr ""
 
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:64
 msgid "show filter"
 msgstr ""
 
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:71
 msgid "choose filter"
 msgstr ""
 
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:88
 msgid "type of filter"
 msgstr ""
 
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:109
 msgid "Sort direction"
 msgstr ""
 
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:127
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:98
 msgid "show title"
 msgstr ""
 
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:137
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:110
 msgid "show excerpt"
 msgstr ""
 
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:164
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:139
 msgid "view content"
 msgstr ""
 
 #: blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:169
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:145
 msgid "view application link"
 msgstr ""
 
 #: blocks/show/build/index.js:1
-#: blocks/show/src/index.js:39
 msgid "Provides a Gutenberg Block to show a position provided by personio."
 msgstr ""
 
 #: blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:75
 msgid "Please choose"
 msgstr ""
 

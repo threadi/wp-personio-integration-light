@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2022-07-11T04:49:41-05:00\n"
-"PO-Revision-Date: 2022-07-11 11:51+0200\n"
+"POT-Creation-Date: 2022-07-11T05:43:27-05:00\n"
+"PO-Revision-Date: 2022-07-11 12:44+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -270,8 +270,7 @@ msgid "Update seniority"
 msgstr "Aktualisiere Dienstalter"
 
 #: classes/class-helper.php:678 inc/init.php:317 blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:78 blocks/list/src/edit.js:154
-#: blocks/show/build/index.js:1 blocks/show/src/edit.js:128
+#: blocks/show/build/index.js:1
 msgid "seniority"
 msgstr "Dienstalter"
 
@@ -451,7 +450,7 @@ msgid "state"
 msgstr "Status"
 
 #: classes/class-logs.php:45 classes/class-positionswidget.php:57
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:122
+#: blocks/list/build/index.js:1
 msgid "date"
 msgstr "Datum"
 
@@ -474,12 +473,11 @@ msgstr ""
 "Stellt ein Widget zur Verfügung, um eine Liste der von Stellen anzuzeigen."
 
 #: classes/class-positionswidget.php:24 inc/init.php:259
-#: blocks/list/build/index.js:1 blocks/list/src/index.js:37
+#: blocks/list/build/index.js:1
 msgid "Personio Positions"
 msgstr "Personio Stellen"
 
 #: classes/class-positionswidget.php:39 blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:101
 msgid "amount"
 msgstr "Anzahl"
 
@@ -488,22 +486,19 @@ msgid "Sort Direction"
 msgstr "Sortierrichtung"
 
 #: classes/class-positionswidget.php:47 blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:112
 msgid "ascending"
 msgstr "aufsteigend"
 
 #: classes/class-positionswidget.php:48 blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:113
 msgid "descending"
 msgstr "absteigend"
 
 #: classes/class-positionswidget.php:53 blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:118
 msgid "Sort by"
 msgstr "sortieren nach"
 
 #: classes/class-positionswidget.php:56 inc/init.php:333
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:121
+#: blocks/list/build/index.js:1
 msgid "title"
 msgstr "Titel"
 
@@ -528,8 +523,7 @@ msgid "Hide"
 msgstr "Verstecken"
 
 #: classes/class-positionswidget.php:71 classes/class-positionwidget.php:62
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:132
-#: blocks/show/build/index.js:1 blocks/show/src/edit.js:104
+#: blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "link title"
 msgstr "verlinke den Titel"
 
@@ -538,8 +532,7 @@ msgid "Show excerpt"
 msgstr "Zeige Eigenschaften"
 
 #: classes/class-positionswidget.php:89 classes/class-positionwidget.php:80
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:144
-#: blocks/show/build/index.js:1 blocks/show/src/edit.js:118
+#: blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "Choose excerpt components"
 msgstr "Wähle Eigenschafts-Komponenten"
 
@@ -556,12 +549,10 @@ msgid "Provides a Widget to show a single position provided by Personio."
 msgstr "Stellt ein Widget zur Verfügung, um eine einzelne Stelle anzuzeigen."
 
 #: classes/class-positionwidget.php:24 blocks/show/build/index.js:1
-#: blocks/show/src/index.js:38
 msgid "Personio Position"
 msgstr "Personio Stelle"
 
 #: classes/class-positionwidget.php:47 blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:92
 msgid "Select position"
 msgstr "Anzuzeigende Stelle wählen"
 
@@ -604,8 +595,7 @@ msgid "PersonioID"
 msgstr "PersonioID"
 
 #: inc/admin.php:220 inc/settings/settings.php:26 blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:99 blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:90
+#: blocks/show/build/index.js:1
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -657,39 +647,27 @@ msgstr "In Papierkorb nicht gefunden"
 msgid "every 5th Minute"
 msgstr "jede 5. Minute"
 
-#: inc/init.php:312 blocks/list/build/index.js:1 blocks/list/src/edit.js:74
-#: blocks/list/src/edit.js:148 blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:122
+#: inc/init.php:312 blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "recruiting category"
 msgstr "Kategorie"
 
-#: inc/init.php:313 blocks/list/build/index.js:1 blocks/list/src/edit.js:75
-#: blocks/list/src/edit.js:151 blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:125
+#: inc/init.php:313 blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "schedule"
 msgstr "Arbeitszeit"
 
-#: inc/init.php:314 blocks/list/build/index.js:1 blocks/list/src/edit.js:76
-#: blocks/list/src/edit.js:152 blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:126
+#: inc/init.php:314 blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "office"
 msgstr "Standort"
 
-#: inc/init.php:315 blocks/list/build/index.js:1 blocks/list/src/edit.js:77
-#: blocks/list/src/edit.js:153 blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:127
+#: inc/init.php:315 blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "department"
 msgstr "Abteilung"
 
-#: inc/init.php:318 blocks/list/build/index.js:1 blocks/list/src/edit.js:79
-#: blocks/list/src/edit.js:155 blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:129
+#: inc/init.php:318 blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "experience"
 msgstr "Berufserfahrung"
 
-#: inc/init.php:319 blocks/list/build/index.js:1 blocks/list/src/edit.js:80
-#: blocks/list/src/edit.js:156 blocks/show/build/index.js:1
-#: blocks/show/src/edit.js:130
+#: inc/init.php:319 blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "occupation"
 msgstr "Beschäftigung"
 
@@ -941,12 +919,10 @@ msgid "Set filter-type"
 msgstr "Setze Filter-Typ"
 
 #: inc/settings/templates.php:121 blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:92
 msgid "select-box"
 msgstr "Auswahl-Box"
 
 #: inc/settings/templates.php:122 blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:91
 msgid "list of links"
 msgstr "Linkliste"
 
@@ -1037,7 +1013,6 @@ msgid "No positions could be found."
 msgstr "Es wurden keine Stellen gefunden."
 
 #: templates/parts/part-filter.php:12 blocks/list/build/index.js:1
-#: blocks/list/src/edit.js:62
 msgid "Filter"
 msgstr "Filter"
 
@@ -1053,56 +1028,52 @@ msgstr "Filter zurücksetzen"
 msgid "Apply for this position"
 msgstr "Für diese Stelle bewerben"
 
-#: blocks/list/build/index.js:1 blocks/list/src/index.js:38
+#: blocks/list/build/index.js:1
 msgid ""
 "Provides a Gutenberg Block to show a list of positions provided by Personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
 "Personio bereit."
 
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:64
+#: blocks/list/build/index.js:1
 msgid "show filter"
 msgstr "zeige Filter an"
 
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:71
+#: blocks/list/build/index.js:1
 msgid "choose filter"
 msgstr "Wähle Filter-Typ"
 
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:88
+#: blocks/list/build/index.js:1
 msgid "type of filter"
 msgstr "Filter-Typ"
 
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:109
+#: blocks/list/build/index.js:1
 msgid "Sort direction"
 msgstr "Sortierrichtung"
 
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:127
-#: blocks/show/build/index.js:1 blocks/show/src/edit.js:98
+#: blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "show title"
 msgstr "zeige Titel an"
 
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:137
-#: blocks/show/build/index.js:1 blocks/show/src/edit.js:110
+#: blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "show excerpt"
 msgstr "zeige Eigenschaften"
 
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:164
-#: blocks/show/build/index.js:1 blocks/show/src/edit.js:139
+#: blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "view content"
 msgstr "zeige Inhalt an"
 
-#: blocks/list/build/index.js:1 blocks/list/src/edit.js:169
-#: blocks/show/build/index.js:1 blocks/show/src/edit.js:145
+#: blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "view application link"
 msgstr "zeige Link zum Bewerbungsformular an"
 
-#: blocks/show/build/index.js:1 blocks/show/src/index.js:39
+#: blocks/show/build/index.js:1
 msgid "Provides a Gutenberg Block to show a position provided by personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
 "Personio bereit."
 
-#: blocks/show/build/index.js:1 blocks/show/src/edit.js:75
+#: blocks/show/build/index.js:1
 msgid "Please choose"
 msgstr "Bitte wählen"
 
