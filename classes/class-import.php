@@ -258,7 +258,7 @@ class Import {
         $log->addLog($ausgabe, !empty($this->_errors) ? 'error' : 'success');
 
         // output results in WP-CLI
-        echo ($this->isCLI() ? $ausgabe : "");
+        echo ($this->isCLI() ? esc_html($ausgabe) : "");
 
         // send info to admin about the problem
         if( !empty($this->_errors) && !$this->_debug ) {
