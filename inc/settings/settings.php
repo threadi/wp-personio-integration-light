@@ -51,7 +51,7 @@ function personio_integration_admin_add_settings_content() {
     <div class="wrap">
         <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
         <nav class="nav-tab-wrapper">
-            <a href="?post_type=personioposition&page=personioPositions" class="nav-tab <?php if($tab===null):?>nav-tab-active<?php endif; ?>"><?php echo __('General Settings', 'wp-personio-integration'); ?></a>
+            <a href="?post_type=personioposition&page=personioPositions" class="nav-tab <?php if($tab===null):?>nav-tab-active<?php endif; ?>"><?php _e('General Settings', 'wp-personio-integration'); ?></a>
             <?php
             // only show all options if Personio URL is available
             if( get_option('personioIntegrationUrl', false) ) {
@@ -59,7 +59,7 @@ function personio_integration_admin_add_settings_content() {
                 }
             else {
                 ?>
-                    <span class="nav-tab"><?php echo __('Enter Personio URL to get more options', 'wp-personio-integration'); ?></span>
+                    <span class="nav-tab"><?php _e('Enter Personio URL to get more options', 'wp-personio-integration'); ?></span>
                 <?php
             }
             ?>
@@ -89,7 +89,7 @@ function personio_integration_settings_add_logs_tab( $tab ): void
     if( $tab === 'logs' ) $activeClass = ' nav-tab-active';
 
     // output tab
-    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=logs" class="nav-tab'.$activeClass.'">'._x('Logs', 'wp-personio-integration').'</a>';
+    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=logs" class="nav-tab'.esc_attr($activeClass).'">'._x('Logs', 'wp-personio-integration').'</a>';
 }
 add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_logs_tab', 60, 1 );
 
@@ -110,7 +110,7 @@ function personio_integration_admin_add_menu_content_logs()
     ?>
         <div class="wrap">
             <div id="icon-users" class="icon32"></div>
-            <h2><?php echo __('Logs', 'wp-personio-integration'); ?></h2>
+            <h2><?php _e('Logs', 'wp-personio-integration'); ?></h2>
             <?php $log->display(); ?>
         </div>
     <?php

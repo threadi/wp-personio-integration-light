@@ -134,7 +134,7 @@ function personio_integration_dashboard_widget_function( $post, $callback_args )
             ?><li><a href="<?php echo get_permalink($position->ID); ?>"><?php echo esc_html($position->getTitle()); ?></a></li><?php
         }
         ?></ul><?php
-        ?><p><a href="<?php echo esc_url($link); ?>"><?php echo __('Show all positions', 'wp-personio-integration'); ?></a></p><?php
+        ?><p><a href="<?php echo esc_url($link); ?>"><?php  _e('Show all positions', 'wp-personio-integration'); ?></a></p><?php
     }
 }
 
@@ -446,7 +446,7 @@ function personio_integration_admin_get_import_info() {
     check_ajax_referer( 'personio-get-import-info', 'nonce' );
 
     // return actual and max count of import steps
-    echo get_option(WP_PERSONIO_OPTION_COUNT, 0).";".get_option(WP_PERSONIO_OPTION_MAX).";".get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0);
+    echo absint(get_option(WP_PERSONIO_OPTION_COUNT, 0)).";".absint(get_option(WP_PERSONIO_OPTION_MAX)).";".absint(get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0));
 
     // return nothing else
     wp_die();
