@@ -10,7 +10,7 @@ Stable tag: 1.0.0
 
 == Description ==
 
-This plugin provides support for personnel management with [Personio](https://www.personio.com/). Open positions can be imported from Personio and displayed in the website. Applicants can apply for these jobs directly.
+This plugin provides support for personnel management with [Personio](https://www.personio.com/). Open positions can be imported from Personio and displayed in the website.
 
 #### Features
 
@@ -26,7 +26,6 @@ This plugin provides support for personnel management with [Personio](https://ww
 
 - Personio account with XML interface enabled
 - PHP module simpleXML
-- PHP module curl
 
 #### Compatibility tested with
 

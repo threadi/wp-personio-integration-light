@@ -2,13 +2,13 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment
 Requires at least: 5.9.3
-Tested up to: 6.0
+Tested up to: 6.0.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: 1.0.0
 
-Dieses Plugin bietet Unterstützung beim Personalmanagement mit <a href="https://www.personio.com/">Personio</a>. Offene Stellen können aus Personio importiert und in der Webseite angezeigt werden. Bewerber können sich auf diese Stellen direkt bewerben.
+Dieses Plugin bietet Unterstützung beim Personalmanagement mit <a href="https://www.personio.com/">Personio</a>. Offene Stellen können aus Personio importiert und in der Webseite angezeigt werden.
 
 #### Features
 
@@ -24,7 +24,6 @@ Dieses Plugin bietet Unterstützung beim Personalmanagement mit <a href="https:/
 
 - Personio Konto mit aktivierter XML-Schnittstelle
 - PHP-Modul simpleXML
-- PHP-Modul curl
 
 ####Kompatibilität getestet mit
 
@@ -39,7 +38,7 @@ Dieses Plugin bietet Unterstützung beim Personalmanagement mit <a href="https:/
 - unterstützt alle Sprachen die Personio selbst anbietet: Deutsch, Englisch, Französisch, Spanisch, Niederländisch, Italienisch, Portugiesisch
 - weitere Einstellungen zum Import, z.B. Import-Intervalle und partieller Import für sehr große Listen offener Stellen
 - RichSnippets für optimale Auffindbarkeit über Suchmaschinen wie Google
-- Anpassung der Slugs (URLs) für Listen- und Detail-Ansichten von Positionen
+- Anpassung der Slugs (URLs) für Listen- und Detail-Ansichten von Stellen
 - Shortcode-Generator zur individuellen Ansicht von Listen und Details
 - Erweiterungen für folgende PageBuilder: Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder
 
@@ -47,13 +46,14 @@ Dieses Plugin bietet Unterstützung beim Personalmanagement mit <a href="https:/
 
 ####Installation
 
-1. Lade "wp-personio-integration-light" in das Verzeichnis "/wp-content/plugins/" hoch.
+1. Lade "personio-integration-light" in das Verzeichnis "/wp-content/plugins/" hoch.
 2. Aktiviere das Plugin über das Menü "Plugins" in WordPress.
-3. Gib in den Einstellungen deine Personio-URL an.
+3. Füge in den Einstellungen deine Personio-URL ein.
 4. Verwende eine der verschiedenen Ausgabemöglichkeiten für offene Stellen in deinem Unternehmen.
 
 ####Screenshots
 
-1. Pic1
-2. Pic2
-3. Pic3
+1. Feld zum Einfügen der Personio URL
+2. Import-Einstellungen
+3. Liste der Stellen im Backend
+4. Gutenberg Block zur Ausgabe von Stellen als Liste
