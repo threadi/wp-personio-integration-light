@@ -2,7 +2,7 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment
 Requires at least: 5.9.3
-Tested up to: 6.0
+Tested up to: 6.0.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,7 +51,7 @@ This plugin provides support for personnel management with [Personio](https://ww
 
 == Installation ==
 
-1. Upload "wp-personio-integration-light" to the "/wp-content/plugins/" directory.
+1. Upload "personio-integration-light" to the "/wp-content/plugins/" directory.
 2. Activate the plugin through the "Plugins" menu in WordPress.
 3. Enter your Personio URL in the settings.
 4. Include one of the different output options for open positions in your company in your website.
@@ -72,6 +72,7 @@ No, this is not possible (at this moment). In order to send an application, the 
 
 == Screenshots ==
 
-1. Pic1
-2. Pic2
-3. Pic3
+1. Field to insert your Personio URL
+2. Import-Settings
+3. List of imported positions
+4. Gutenberg Block for listings
