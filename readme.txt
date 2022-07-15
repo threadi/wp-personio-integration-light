@@ -75,3 +75,8 @@ No, this is not possible (at this moment). In order to send an application, the 
 2. Import-Settings
 3. List of imported positions
 4. Gutenberg Block for listings
+
+== Changelog ==
+
+= 1.0.0 =
+* Initial release
