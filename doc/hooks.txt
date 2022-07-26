@@ -1,5 +1,5 @@
-Filter-Hooks
-============
+Hook this plugin provides
+=========================
 
 personio_integration_class_dirs
 -------------------------------

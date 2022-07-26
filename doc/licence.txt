@@ -1,6 +1,0 @@
-License-Handling
-================
-
-* um Lizenz zu aktivieren => Key eintragen und speichern
-* um Lizenz zu aktualisieren => "Change licence" anklicken
-* 1 mal täglich wird Lizenz auch gegen API geprüft
