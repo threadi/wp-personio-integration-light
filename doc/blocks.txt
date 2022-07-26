@@ -8,5 +8,5 @@ npm initialize:
 update npm dependencies:
 * npm update
 
-update npm for locale developement:
+update npm for locale development:
 * npm run start

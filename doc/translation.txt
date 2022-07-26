@@ -6,8 +6,8 @@ Translations
 
 Hints
 -----
-* Personio sends all taxonomy-data in english not matter which language is used for XML-request
-* some values are fixed in personio and therefore predefined
+* Personio sends all taxonomy-data in english no matter which language is used for XML-request
+* some values are fixed in Personio and therefore predefined
 -> these are translated by the plugin
 * other values can be changed by the user in personio
--> the user can change these values in WordPress afterwards.
+-> the user can change these values in WordPress afterwards
