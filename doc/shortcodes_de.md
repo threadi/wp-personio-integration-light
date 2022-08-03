@@ -55,7 +55,7 @@ Die Parameter in den Shortcodes haben folgende Aufgaben:
   * linklist
   * selectbox
 
-### template
+### templates
 
 * legt den Aufbau des Templates für eine Stelle fest
 * verfügbare Werte werden kommagetrennt angegeben:

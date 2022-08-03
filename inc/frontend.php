@@ -22,7 +22,7 @@ add_action( 'init', 'personio_integration_frontend_init' );
  * Parameter:
  * - personioid => PersonioId of the position (required)
  * - lang => sets the language for the output, defaults to default-language from plugin-settings
- * - template => comma-separated list of template to use, defaults to title and excerpt
+ * - templates => comma-separated list of template to use, defaults to title and excerpt
  * - excerpt => comma-separated list of terms to display, defaults to recruitingCategory, schedule, office
  * - donotlink => if position-title should be linked (0) or not (1), defaults to link (0)
  *
@@ -103,7 +103,7 @@ function personio_integration_position_shortcode( $attributes = [] ): string
  * - showfilter => enables the filter for this list-view, default: disabled
  * - filter => comma-separated list of filter which will be visible above the list, default: empty
  * - filtertype => sets the type of filter to use (select or linklist), default: select
- * - template => comma-separated list of template to use, defaults to title and excerpt
+ * - templates => comma-separated list of template to use, defaults to title and excerpt
  * - excerpt => comma-separated list of terms to display, defaults to recruitingCategory, schedule, office
  * - ids => comma-separated list of PositionIDs to display, default: empty
  * - sort => direction for sorting the resulting list (asc or desc), default: asc

@@ -55,7 +55,7 @@ The parameters in the shortcodes have the following tasks:
   * linklist
   * selectbox
 
-### template
+### templates
 
 * specifies the structure of the template for a job
 * available values are specified comma separated:
