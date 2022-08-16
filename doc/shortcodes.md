@@ -8,11 +8,11 @@ Except for one, all parameters at both shortcodes are optional. If a parameter i
 
 Structure of the shortcode:
 
-`[personioPositions lang="en" showfilter="1" filter="recruitingCategory,schedule" filtertype="linklist" template="title,excerpt" excerpt="recruitingCategory,schedule" sort="asc" sortby="title"]`
+`[personioPositions lang="en" showfilter="1" filter="recruitingCategory,schedule" filtertype="linklist" templates="title,excerpt" excerpt="recruitingCategory,schedule" sort="asc" sortby="title"]`
 
 ## for a single view
 
-`[personioPosition lang="en" template="title,content,form" id="42"]`
+`[personioPosition lang="en" templates="title,content,form" id="42"]`
 
 ## parameters
 
@@ -111,12 +111,12 @@ The parameters in the shortcodes have the following tasks:
 
 ### list without filter & with title & description text per position
 
-`[personioPositions template="title,content"]`
+`[personioPositions templates="title,content"]`
 
 ### List with filter & title & excerpt per position
 
-`[personioPositions showfilter="1" filter="recruitingCategory,schedule" template="title,excerpt"]`
+`[personioPositions showfilter="1" filter="recruitingCategory,schedule" templates="title,excerpt"]`
 
 ### Single view of a position with title, content & application link
 
-`[personioPosition id="42" template="title,content,form"]`
+`[personioPosition id="42" templates="title,content,form"]`
