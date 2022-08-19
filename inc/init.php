@@ -15,7 +15,7 @@ use personioIntegration\Position;
 function personio_integration_init() {
     load_plugin_textdomain( 'wp-personio-integration', false, dirname( plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . '/languages' );
 }
-add_action( 'init', 'personio_integration_init', 0 );
+add_action( 'init', 'personio_integration_init', -1 );
 
 /**
  * Add position as custom posttype.
@@ -120,7 +120,7 @@ function personio_integration_add_taxonomies() {
         'query_var' => true,
         'capabilities' => [
             'manage_terms' => 'manage_options',
-            'edit_terms' => 'god',
+            'edit_terms' => 'manage_options',
             'delete_terms' => 'god',
             'assign_terms' => 'manage_options',
         ]
@@ -152,7 +152,7 @@ function personio_integration_add_taxonomies() {
         }
     }
 }
-add_action( 'init', 'personio_integration_add_taxonomies', 2 );
+add_action( 'init', 'personio_integration_add_taxonomies', 0 );
 
 /**
  * Change the REST API-response for own cpt.
@@ -365,3 +365,24 @@ function personio_integration_add_styles_frontend()
     );
 }
 add_action('wp_enqueue_scripts', 'personio_integration_add_styles_frontend', PHP_INT_MAX);
+
+/**
+ * Change all attributes zu lowercase
+ *
+ * @param $values
+ * @return array
+ * @noinspection PhpUnused
+ */
+function personio_integration_lowercase_attributes( $values ): array
+{
+    $array = [];
+    foreach( $values['attributes'] as $name => $attribute ) {
+        $array[strtolower($name)] = $attribute;
+    }
+    return [
+        'defaults' => $values['defaults'],
+        'settings' => $values['settings'],
+        'attributes' => $array
+    ];
+}
+add_filter('personio_integration_get_shortcode_attributes', 'personio_integration_lowercase_attributes', 5, 1);
