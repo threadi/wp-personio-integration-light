@@ -12,8 +12,8 @@ defined( 'ABSPATH' ) || exit;
 include "parts/part-filter.php";
 
 // loop through the list
-if( $wpQueryResults->have_posts() ) :
-    while ( $wpQueryResults->have_posts() ) : $wpQueryResults->the_post();
+if( $GLOBALS['personio_query_results']->have_posts() ) :
+    while ( $GLOBALS['personio_query_results']->have_posts() ) : $GLOBALS['personio_query_results']->the_post();
         // get the Position as object
         $position = new Position(get_the_id());
         ?>

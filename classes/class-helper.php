@@ -373,7 +373,7 @@ trait helper {
     }
 
     /**
-     * Check and secure the shortcode-attributes.
+     * Check and secure the allowed shortcode-attributes.
      *
      * @param array $attribute_defaults
      * @param array $attribute_settings
@@ -382,6 +382,15 @@ trait helper {
      */
     public static function get_shortcode_attributes( array $attribute_defaults, array $attribute_settings, array $attributes ): array
     {
+        // pre-filter the given attributes
+        $filtered = apply_filters('personio_integration_get_shortcode_attributes', ['defaults' => $attribute_defaults, 'settings' => $attribute_settings, 'attributes' => $attributes]);
+
+        // get pre-filtered array
+        $attribute_defaults = $filtered['defaults'];
+        $attribute_settings = $filtered['settings'];
+        $attributes = $filtered['attributes'];
+
+        // concat the lists
         $attributes = shortcode_atts($attribute_defaults, $attributes);
 
         // check if language-setting is valid
@@ -394,7 +403,12 @@ trait helper {
             if( !empty($attribute_settings[$name]) ) {
                 if ($attribute_settings[$name] == "array") {
                     if( !empty($attribute) ) {
-                        $attributes[$name] = array_map('trim', explode(",", $attribute));
+                        if( !is_array($attribute) ) {
+                            $attributes[$name] = array_map('trim', explode(",", $attribute));
+                        }
+                        else {
+                            $attributes[$name] = $attribute;
+                        }
                     }
                     else {
                         $attributes[$name] = [];

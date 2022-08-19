@@ -80,3 +80,7 @@ No, this is not possible (at this moment). In order to send an application, the 
 
 = 1.0.0 =
 * Initial release
+
+= 1.1.0 =
+* Add some hooks for changes in position-listings
+* Optimized loading of filters in listings

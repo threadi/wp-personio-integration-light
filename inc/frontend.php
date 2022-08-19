@@ -166,14 +166,17 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
     // add taxonomies which are available as filter
     foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
         if( !empty($taxonomy['slug']) && $taxonomy['useInFilter'] == 1 ) {
-            $attribute_defaults[$taxonomy['slug']] = 0;
-            $attribute_settings[$taxonomy['slug']] = 'filter';
+            if( !empty($_GET['personiofilter']) && !empty($_GET['personiofilter'][$taxonomy['slug']]) ) {
+                $attribute_defaults[$taxonomy['slug']] = 0;
+                $attribute_settings[$taxonomy['slug']] = 'filter';
+            }
         }
         if( !empty($taxonomy['slug']) && $taxonomy['useInFilter'] == 0 ) {
             unset($attribute_defaults[$taxonomy['slug']]);
             unset($attribute_settings[$taxonomy['slug']]);
         }
     }
+
     // get the attributes to filter
     $personio_attributes = helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
 
@@ -185,7 +188,7 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
     // get the positions
     $positionsObj = new Positions();
     $positions = $positionsObj->getPositions( $personio_attributes['limit'], $personio_attributes );
-    $wpQueryResults = $positionsObj->getResult();
+    $GLOBALS['personio_query_results'] = $positionsObj->getResult();
 
     // change settings for output
     $personio_attributes = apply_filters('personio_integration_get_template', $personio_attributes, $attribute_defaults);
@@ -439,23 +442,30 @@ function personio_integration_get_archive_template( $archive_template ) {
 add_filter( 'archive_template', 'personio_integration_get_archive_template' ) ;
 
 /**
- * Show a filter in frontend.
+ * Show a filter in frontend restricted to positions which are visible in list.
  *
  * @return void
  * @noinspection PhpUnused
  */
 function personio_integration_get_filter( $filter, $attributes ) {
     $taxonomyToUse = '';
+    $term_ids = [];
     foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
         if( $taxonomy['slug'] == $filter && $taxonomy['useInFilter'] == 1 ) {
             $taxonomyToUse = $taxonomy_name;
+            foreach( $GLOBALS['personio_query_results']->posts as $position ) {
+                $terms = get_the_terms($position, $taxonomy_name);
+                foreach( $terms as $term ) {
+                    $term_ids[] = $term->term_id;
+                }
+            }
         }
     }
 
     // show term as filter only if its name is known
     if( strlen($taxonomyToUse) > 0 ) {
         // get the terms of this taxonomy
-        $terms = get_terms(["taxonomy" => $taxonomyToUse]);
+        $terms = get_terms(["taxonomy" => $taxonomyToUse, "include" => $term_ids]);
 
         if( !empty($terms) ) {
 
