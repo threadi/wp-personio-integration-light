@@ -2,11 +2,11 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment
 Requires at least: 5.9.3
-Tested up to: 6.0.1
+Tested up to: 6.0.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 
 Dieses Plugin bietet Unterstützung beim Personalmanagement mit <a href="https://www.personio.com/">Personio</a>. Offene Stellen können aus Personio importiert und in der Webseite angezeigt werden.
 
@@ -14,7 +14,7 @@ Dieses Plugin bietet Unterstützung beim Personalmanagement mit <a href="https:/
 
 - manueller oder automatischer Import der offenen Stellen
 - Import von Stellen in Deutsch und Englisch
-- Darstellung über 2 Gutenberg-Blöcke, 2 klassische Widgets oder per individuellen Shortcode
+- Darstellung über 2 Gutenberg-Blöcke, 2 klassische Widgets oder per individuellen [Shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes_de.md)
 - von Suchmaschinen indizierbare Ausgabe (SEO) der Listenansichten und offenen Stellen
 - offene Stelle (Stellenbeschreibung) unter Webseiten-eigener URL
 - datenschutzfreundlich, da keine Bewerber-Daten erfasst und gespeichert werden
@@ -42,7 +42,9 @@ Dieses Plugin bietet Unterstützung beim Personalmanagement mit <a href="https:/
 - Shortcode-Generator zur individuellen Ansicht von Listen und Details
 - Erweiterungen für folgende PageBuilder: Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder
 
-[mehr Informationen zur Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
+[Pro-Version holen](https://laolaweb.com/plugins/personio-wordpress-plugin/)
+
+Das Entwicklungsrepository ist auf [GitHub](https://github.com/threadi/wp-personio-integration-light).
 
 ####Installation
 

@@ -16,7 +16,7 @@ This plugin provides support for personnel management with [Personio](https://ww
 
 - manual or automatic import of open positions
 - import of positions in German and English
-- display via 2 Gutenberg blocks, 2 classic widgets or via individual shortcode
+- display via 2 Gutenberg blocks, 2 classic widgets or via individual [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
 - search engine indexable output (SEO) of list views and open positions
 - open position (job description) under website's own URL
 - data protection friendly, as no applicant data is collected and stored
@@ -44,7 +44,9 @@ This plugin provides support for personnel management with [Personio](https://ww
 - Shortcode generator for individual views of lists and details
 - Extensions for the following PageBuilders: Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder.
 
-[more information about the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
+[get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
+
+The development repository is on [GitHub](https://github.com/threadi/wp-personio-integration-light).
 
 ---
 
@@ -84,3 +86,4 @@ No, this is not possible (at this moment). In order to send an application, the 
 = 1.1.0 =
 * Add some hooks for changes in position-listings
 * Optimized loading of filters in listings
+* Compatibility with WordPress 6.0.2
