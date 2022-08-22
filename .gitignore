@@ -6,3 +6,4 @@
 /blocks/show/build/
 /inc/constants2.php
 *.zip
+languages/*.json

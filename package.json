@@ -2,7 +2,7 @@
   "name": "@wp-personio-integration/wp-personio-integration",
   "version": "1.0.0",
   "description": "Provides a Gutenberg Block to display positions managed by personio.",
-  "author": "LaOlaWeb GmbH",
+  "author": "laOlaWeb GmbH",
   "license": "GPL-2.0-or-later",
   "scripts": {
     "build": "concurrently --kill-others \"npm run build:list\" \"npm run build:show\"",
