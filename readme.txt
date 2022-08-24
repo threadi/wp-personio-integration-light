@@ -21,6 +21,7 @@ This plugin provides support for personnel management with [Personio](https://ww
 - open position (job description) under website's own URL
 - data protection friendly, as no applicant data is collected and stored
 - support for classic as well as block themes
+- some [WP CLI commands](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/cli.md) for simplified handling of data
 
 #### Requirements
 
