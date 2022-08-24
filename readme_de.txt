@@ -19,6 +19,7 @@ Dieses Plugin bietet Unterstützung beim Personalmanagement mit <a href="https:/
 - offene Stelle (Stellenbeschreibung) unter Webseiten-eigener URL
 - datenschutzfreundlich, da keine Bewerber-Daten erfasst und gespeichert werden
 - Unterstützung für klassische wie auch Block-Themes
+- einige [WP CLI Kommandos](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/cli_de.md) zur vereinfachten Handhabung von Daten
 
 ####erforderlich
 
