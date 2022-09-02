@@ -310,7 +310,7 @@ trait helper {
 
     /**
      * Load a template if it exists.
-     * Also load the requested file if is located in the /wp-content/themes/xy/wp-personio-integration/ directory.
+     * Also load the requested file if is located in the /wp-content/themes/xy/personio-integration-light/ directory.
      *
      * @param $template
      * @return mixed|string
@@ -321,13 +321,11 @@ trait helper {
             return $template;
         }
 
-        $themeTemplate = locate_template($template);
-
-        if( !$themeTemplate ) {
-            $template = plugin_dir_path(apply_filters('personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN)).'templates/'.$template;
+        $themeTemplate = locate_template(trailingslashit(basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) )).$template);
+        if( $themeTemplate ) {
+            return $themeTemplate;
         }
-
-        return $template;
+        return plugin_dir_path(apply_filters('personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN)).'templates/'.$template;
     }
 
     /**
