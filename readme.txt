@@ -6,7 +6,7 @@ Tested up to: 6.0.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 
 == Description ==
 
@@ -88,3 +88,6 @@ No, this is not possible (at this moment). In order to send an application, the 
 * Add some hooks for changes in position-listings
 * Optimized loading of filters in listings
 * Compatibility with WordPress 6.0.2
+
+= 1.1.1 =
+* Fixed usage of templates in child-themes
