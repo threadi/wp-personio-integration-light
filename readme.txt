@@ -10,7 +10,7 @@ Stable tag: 1.1.1
 
 == Description ==
 
-This plugin provides support for personnel management with [Personio](https://www.personio.com/). Open positions can be imported from Personio and displayed in the website.
+Import and display your positions from [Personio](https://www.personio.com/) directly on your website. Get full control over how they are displayed.
 
 #### Features
 
