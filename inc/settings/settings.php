@@ -177,7 +177,7 @@ function personio_integration_admin_text_field( $attr ) {
 
         // output
         ?>
-        <input type="text" id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>" value="<?php echo esc_attr($value); ?>"<?php echo !empty($attr['placeholder']) ? ' placeholder="'.$attr['placeholder'].'"' : '';echo isset($attr['readonly']) && false !== $attr['readonly'] ? ' disabled="disabled"' : ''; ?> class="widefat" title="<?php echo esc_attr($title); ?>">
+        <input type="text" id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>" value="<?php echo esc_attr($value); ?>"<?php echo !empty($attr['placeholder']) ? ' placeholder="'.esc_attr($attr['placeholder']).'"' : '';echo isset($attr['readonly']) && false !== $attr['readonly'] ? ' disabled="disabled"' : ''; ?> class="widefat" title="<?php echo esc_attr($title); ?>">
         <?php
         if( !empty($attr['description']) ) {
             echo "<p>".wp_kses_post($attr['description'])."</p>";
