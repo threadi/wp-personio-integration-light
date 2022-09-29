@@ -77,7 +77,7 @@ class Import {
             $progress = $this->isCLI() ? \WP_CLI\Utils\make_progress_bar('Get positions from Personio by language', $languageCount) : false;
             foreach( $languages as $key => $enabled ) {
                 // define the url
-                $url = $domain . "/xml?language=" . $key;
+                $url = $domain . "/xml?language=" . esc_attr($key);
 
                 // define settings for first request to get the last-modified-date
                 $args = [
@@ -137,7 +137,7 @@ class Import {
                     try {
                         $positions = simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA);
                     } catch (Exception $e) {
-                        $this->_errors[] = __("XML file from Personio for language " . $key . " contains incorrect code and therefore cannot be read in. Technical Error: ") . $e->getMessage();
+                        $this->_errors[] = __("XML file from Personio for language " . esc_html($key) . " contains incorrect code and therefore cannot be read in. Technical Error: ") . $e->getMessage();
                         // show progress
                         update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
                         !$progress ?: $progress->tick();
@@ -147,7 +147,7 @@ class Import {
                     // get xml-errors
                     $xmlErrors = libxml_get_errors();
                     if( !empty($xmlErrors) ) {
-                        $this->_errors[] = __("XML file from Personio for language " . $key . " contains incorrect code and therefore cannot be read in.");
+                        $this->_errors[] = __("XML file from Personio for language " . esc_html($key) . " contains incorrect code and therefore cannot be read in.");
                         continue;
                     }
 

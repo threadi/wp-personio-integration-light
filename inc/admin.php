@@ -255,16 +255,16 @@ add_action( 'manage_'.WP_PERSONIO_INTEGRATION_CPT.'_posts_custom_column' , 'pers
  */
 function personio_integration_admin_add_setting_link( $links ) {
     // build and escape the URL
-    $url = esc_url( add_query_arg(
+    $url = add_query_arg(
         [
             'page' => 'personioPositions',
             'post_type' => WP_PERSONIO_INTEGRATION_CPT
         ],
         get_admin_url() . 'edit.php'
-    ) );
+    );
 
     // create the link
-    $settings_link = "<a href='".$url."'>" . __( 'Settings', 'wp-personio-integration' ) . '</a>';
+    $settings_link = "<a href='".esc_url($url)."'>" . __( 'Settings', 'wp-personio-integration' ) . '</a>';
 
     // adds the link to the end of the array
     $links[] = $settings_link;
