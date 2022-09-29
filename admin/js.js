@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
     // add option near to list-headline
-    $('body.post-type-personioposition.personio-integration-free:not(.edit-tags-php) h1.wp-heading-inline').after('<a class="page-title-action personio-pro-hint" href="' + customJsVars.pro_url + '" target="_blank">' + customJsVars.label_go_pro + '</a>');
-    $('body.post-type-personioposition:not(.edit-tags-php):not(.personio-integration-url-missing) h1.wp-heading-inline').after('<a class="page-title-action personio-integration-import-hint" href="admin.php?action=personioPositionsImport">' + customJsVars.label_run_import + '</a>');
+    $('body.post-type-personioposition.personio-integration-free:not(.edit-tags-php) h1.wp-heading-inline').after('<a class="page-title-action personio-pro-hint" href="' + personioIntegrationLightVars.pro_url + '" target="_blank">' + personioIntegrationLightVars.label_go_pro + '</a>');
+    $('body.post-type-personioposition:not(.edit-tags-php):not(.personio-integration-url-missing) h1.wp-heading-inline').after('<a class="page-title-action personio-integration-import-hint" href="admin.php?action=personioPositionsImport">' + personioIntegrationLightVars.label_run_import + '</a>');
 
     // save to hide transient-messages via ajax-request
     $('div[data-dismissible] button.notice-dismiss').on('click',
@@ -18,11 +18,11 @@ jQuery(document).ready(function($) {
                 'action': 'dismiss_admin_notice',
                 'option_name': option_name,
                 'dismissible_length': dismissible_length,
-                'nonce': customJsVars.dismiss_nonce
+                'nonce': personioIntegrationLightVars.dismiss_nonce
             };
 
             // run ajax request to save this setting
-            $.post(customJsVars.ajax_url, data);
+            $.post(personioIntegrationLightVars.ajax_url, data);
             $this.closest('div[data-dismissible]').hide('slow');
         }
     );
@@ -33,7 +33,7 @@ jQuery(document).ready(function($) {
 
         // create dialog if if does not exists atm
         if( $('#personioImportDialog').length == 0 ) {
-            $('<div id="personioImportDialog" title="' + customJsVars.label_import_is_running + '"><div id="personioStepDescription"></div><div id="personioImportProgressbar"></div></div>').dialog({
+            $('<div id="personioImportDialog" title="' + personioIntegrationLightVars.label_import_is_running + '"><div id="personioStepDescription"></div><div id="personioImportProgressbar"></div></div>').dialog({
                 width: 500,
                 closeOnEscape: false,
                 dialogClass: "personio-dialog-no-close",
@@ -42,7 +42,7 @@ jQuery(document).ready(function($) {
                 draggable: false,
                 buttons: [
                     {
-                        text: customJsVars.label_ok,
+                        text: personioIntegrationLightVars.label_ok,
                         click: function () {
                             location.reload();
                         }
@@ -59,7 +59,7 @@ jQuery(document).ready(function($) {
 
         // init description
         let stepDescription = $('#personioStepDescription');
-        stepDescription.html('<p>' + customJsVars.txt_please_wait + '</p>');
+        stepDescription.html('<p>' + personioIntegrationLightVars.txt_please_wait + '</p>');
 
         // init progressbar
         let progressbar = jQuery("#personioImportProgressbar");
@@ -70,10 +70,10 @@ jQuery(document).ready(function($) {
         // start import
         $.ajax({
             type: "POST",
-            url: customJsVars.ajax_url,
+            url: personioIntegrationLightVars.ajax_url,
             data: {
                 'action': 'personio_run_import',
-                'nonce': customJsVars.run_import_nonce
+                'nonce': personioIntegrationLightVars.run_import_nonce
             },
             beforeSend: function() {
                 // get import-infos
@@ -92,10 +92,10 @@ jQuery(document).ready(function($) {
 function personio_get_import_info(progressbar, stepDescription) {
     jQuery.ajax({
         type: "POST",
-        url: customJsVars.ajax_url,
+        url: personioIntegrationLightVars.ajax_url,
         data: {
             'action': 'personio_get_import_info',
-            'nonce': customJsVars.get_import_nonce
+            'nonce': personioIntegrationLightVars.get_import_nonce
         },
         success: function(data) {
             let stepData = data.split(";");
@@ -114,7 +114,7 @@ function personio_get_import_info(progressbar, stepDescription) {
             }
             else {
                 progressbar.addClass("hidden");
-                stepDescription.html(customJsVars.txt_import_has_been_run);
+                stepDescription.html(personioIntegrationLightVars.txt_import_has_been_run);
                 jQuery('.personio-dialog-no-close .ui-button').prop('disabled', false);
             }
         }

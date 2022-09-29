@@ -35,7 +35,7 @@ function personio_integration_add_styles_and_js_admin() {
     );
 
     // add php-vars to our js-script
-    wp_localize_script( 'personio_integration-admin-js', 'customJsVars', [
+    wp_localize_script( 'personio_integration-admin-js', 'personioIntegrationLightVars', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'pro_url' => helper::get_pro_url(),
             'label_go_pro' => __('Get Personio Integration Pro', 'wp-personio-integration'),
