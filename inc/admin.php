@@ -271,7 +271,7 @@ function personio_integration_admin_add_setting_link( $links ) {
 
     return $links;
 }
-add_filter( 'plugin_action_links_wp-personio-integration-light/wp-personio-integration-light.php', 'personio_integration_admin_add_setting_link' );
+add_filter( 'plugin_action_links_'.plugin_basename(WP_PERSONIO_INTEGRATION_PLUGIN), 'personio_integration_admin_add_setting_link' );
 
 /**
  * Activate transient-based hint if configuration does not contain the necessary URL.
