@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
 "POT-Creation-Date: 2022-08-22T11:15:47+02:00\n"
-"PO-Revision-Date: 2022-08-22 11:16+0200\n"
+"PO-Revision-Date: 2022-09-29 11:46+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -866,7 +866,7 @@ msgstr "Starte Import jetzt"
 
 #: inc/settings/import.php:87
 msgid "Delete positions"
-msgstr "Stelle löschen"
+msgstr "Stellen löschen"
 
 #: inc/settings/import.php:100
 msgid "Enable automatic import"
