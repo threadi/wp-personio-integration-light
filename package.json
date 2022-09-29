@@ -17,11 +17,11 @@
     "build:list": "wp-scripts build blocks/list/src/index.js --output-path=blocks/list/build/"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^23.7.2",
+    "@wordpress/scripts": "^24.2.0",
     "npm-pack-zip": "^1.3.0"
   },
   "dependencies": {
-    "@wordpress/i18n": "^4.2.4",
-    "concurrently": "^7.2.2"
+    "@wordpress/i18n": "^4.18.0",
+    "concurrently": "^7.3.0"
   }
 }
