@@ -89,7 +89,7 @@ trait helper {
                 sprintf(
                     /* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
                     __(
-                        '<strong>The import has been manually run.</strong> Please check the <a href="%1$s">list of positions</a> or <a href="%2$s">the log</a>.',
+                        '<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.',
                         'wp-personio-integration'
                     ),
                     esc_url(add_query_arg(
@@ -98,14 +98,7 @@ trait helper {
                         ],
                         get_admin_url() . 'edit.php'
                     )),
-                    esc_url(add_query_arg(
-                        [
-                            'post_type' => WP_PERSONIO_INTEGRATION_CPT,
-                            'page' => 'personioPositions',
-                            'tab' => 'logs'
-                        ],
-                        get_admin_url() . 'edit.php'
-                    ))
+                    get_post_type_archive_link(WP_PERSONIO_INTEGRATION_CPT)
                 )
             ),
             'personio_integration_delete_run' => sprintf(
