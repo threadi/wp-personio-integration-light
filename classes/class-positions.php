@@ -32,7 +32,7 @@ class Positions {
             'posts_per_page' => $limit,
             'order' => 'asc',
             'orderby' => 'title',
-            'paged' => get_query_var('page')
+            'paged' => (get_query_var('paged')) ? get_query_var('paged') : 1
         ];
         if( !empty($parameterToAdd['ids']) ) {
             $query['post__in'] = $parameterToAdd['ids'];
