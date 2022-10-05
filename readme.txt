@@ -92,9 +92,10 @@ No, this is not possible (at this moment). In order to send an application, the 
 = 1.1.1 =
 * Fixed usage of templates in child-themes
 
-= 1.1.2 =
+= 1.2.0 =
 * Optimized compatibility with other plugins using JavaScript in wp-admin
 * Compatibility with WordPress 6.1
 * Fixed visibility of settings-link in plugin-list
-* Fixed some texts
+* Fixed pagination of position-list
+* Changed some texts
 * Update dependencies for Gutenberg-scripts
