@@ -2,7 +2,7 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment
 Requires at least: 5.9.3
-Tested up to: 6.0.2
+Tested up to: 6.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -91,3 +91,10 @@ No, this is not possible (at this moment). In order to send an application, the 
 
 = 1.1.1 =
 * Fixed usage of templates in child-themes
+
+= 1.1.2 =
+* Optimized compatibility with other plugins using JavaScript in wp-admin
+* Compatibility with WordPress 6.1
+* Fixed visibility of settings-link in plugin-list
+* Fixed some texts
+* Update dependencies for Gutenberg-scripts
