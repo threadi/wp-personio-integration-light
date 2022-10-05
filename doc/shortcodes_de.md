@@ -38,8 +38,8 @@ Die Parameter in den Shortcodes haben folgende Aufgaben:
 * nur für Listen-Ansicht verfügbar
 * legt fest, welche Filter angezeigt werden
 * verfügbare Werte werden kommagetrennt angegeben:
+  * office
   * recruitingCategory => für die Kategorie
-  * schedule
   * occupationCategory
   * department
   * employmenttype
@@ -69,8 +69,8 @@ Die Parameter in den Shortcodes haben folgende Aufgaben:
 
 * legt fest welche Kategorien an der Stelle als Ausschnitt angezeigt werden
 * verfügbare Werte werden kommagetrennt angegeben:
+  * office
   * recruitingCategory => für die Kategorie
-  * schedule
   * occupationCategory
   * department
   * employmenttype

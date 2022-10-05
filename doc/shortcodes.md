@@ -38,14 +38,14 @@ The parameters in the shortcodes have the following tasks:
 * only available for list view
 * defines which filters are displayed
 * available values are specified comma separated:
+  * office 
   * recruitingCategory => for the category
-  * schedule
   * occupationCategory
   * department
   * employmenttype
   * seniority
-  * schedule
   * experience
+  * schedule
 
 ### filtertype
 
@@ -69,8 +69,8 @@ The parameters in the shortcodes have the following tasks:
 
 * defines which categories will be displayed as excerpt at the position
 * available values are specified comma separated:
+  * office
   * recruitingCategory => for the category
-  * schedule
   * occupationCategory
   * department
   * employmenttype
