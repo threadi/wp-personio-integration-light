@@ -12,8 +12,8 @@ defined( 'ABSPATH' ) || exit;
         <select name="personiofilter[<?php echo esc_attr($filter); ?>]">
             <option value="0">Please choose</option>
             <?php
-            foreach( $terms as $term ) {
-                ?><option value="<?php echo absint($term->term_id); ?>"<?php echo ($term->term_id == $value ? ' selected="selected"' : ''); ?>><?php echo esc_html($term->name); ?></option><?php
+            for( $t=0;$t<count($terms);$t++ ) {
+                ?><option value="<?php echo absint($terms[$t]->term_id); ?>"<?php echo ($terms[$t]->term_id == $value ? ' selected="selected"' : ''); ?>><?php echo esc_html($terms[$t]->name); ?></option><?php
             }
             ?>
         </select>

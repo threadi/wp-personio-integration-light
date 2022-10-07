@@ -113,4 +113,14 @@ class Positions {
         return null;
     }
 
+    /**
+     * Return the request-query.
+     *
+     * @return array
+     */
+    public function getQuery(): array
+    {
+        return $this->_results->query;
+    }
+
 }
