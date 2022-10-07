@@ -146,7 +146,8 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
         'donotlink' => (get_option('personioIntegrationEnableLinkInList', 0) == 0),
         'sort' => 'asc',
         'sortby' => 'title',
-        'limit' => 0
+        'limit' => 0,
+        'nopagination' => apply_filters('personio_integration_pagination', true)
     ];
     // define the settings for each attribute (array or string)
     $attribute_settings = [
@@ -161,7 +162,8 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
         'sort' => 'string',
         'sortby' => 'string',
         'limit' => 'unsignedint',
-        'filtertype' => 'string'
+        'filtertype' => 'string',
+        'nopagination' => 'bool'
     ];
     // add taxonomies which are available as filter
     foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
@@ -184,6 +186,10 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
     if( empty($personio_attributes['ids'][0]) ) {
         unset($personio_attributes['ids']);
     }
+
+    // set limit
+    $limitByWp = get_option('posts_per_page');
+    $personio_attributes['limit'] = apply_filters('personio_integration_limit', $limitByWp > 10 ? 10 : $limitByWp, $personio_attributes['limit']);
 
     // get the positions
     $positionsObj = new Positions();

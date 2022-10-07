@@ -30,6 +30,7 @@ class Positions {
             'post_type' => WP_PERSONIO_INTEGRATION_CPT,
             'post_status' => 'publish',
             'posts_per_page' => $limit,
+            'no_found_rows' => empty($parameterToAdd['nopagination']) ? false: $parameterToAdd['nopagination'],
             'order' => 'asc',
             'orderby' => 'title',
             'paged' => (get_query_var('paged')) ? get_query_var('paged') : 1
