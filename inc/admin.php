@@ -139,8 +139,8 @@ function personio_integration_dashboard_widget_function( $post, $callback_args )
  */
 function personio_integration_admin_notices() {
     // show transients
-    foreach( WP_PERSONIO_INTEGRATION_TRANSIENTS as $transient => $settings ) {
-        if( get_transient( $transient ) ) {
+    foreach( apply_filters('personio_integration_admin_transients', WP_PERSONIO_INTEGRATION_TRANSIENTS) as $transient => $settings ) {
+        if( false !== get_transient( $transient ) ) {
             // marker to show the transient
             $show = true;
 
@@ -158,7 +158,7 @@ function personio_integration_admin_notices() {
             // hide if other transient is also visible
             if( isset($settings['options']['hideIfTransients']) ){
                 foreach( $settings['options']['hideIfTransients'] as $transientToCheck ) {
-                    if( get_transient($transientToCheck) ) {
+                    if( false !== get_transient($transientToCheck) ) {
                         $show = false;
                     }
                 }
@@ -275,6 +275,9 @@ add_filter( 'plugin_action_links_'.plugin_basename(WP_PERSONIO_INTEGRATION_PLUGI
 function personio_integration_admin_checkConfig() {
     if( !helper::is_personioUrl_set() ) {
         set_transient('personio_integration_no_url_set', 1, 60);
+    }
+    elseif( get_option('personioIntegrationPositionCount', 0) > 0 ) {
+        set_transient('personio_integration_limit_hint', 0);
     }
 }
 add_action( 'admin_init', 'personio_integration_admin_checkConfig');
