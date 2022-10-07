@@ -61,7 +61,7 @@ function personio_integration_admin_add_settings_template()
     add_settings_section(
         'settings_section_template',
         __( 'Template Settings', 'wp-personio-integration' ),
-        '__return_true',
+        'personio_integration_admin_settings_template',
         'personioIntegrationPositionsTemplates'
     );
 
@@ -220,20 +220,15 @@ function personio_integration_admin_add_settings_template()
     );
     register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationEnableLinkInList', ['sanitize_callback' => 'personio_integration_admin_validateCheckBox'] );
 
-    // enable link to detail on detail-view
-    add_settings_field(
-        'personioIntegrationEnableLinkInDetail',
-        __( 'Enable link to detail on detail-view', 'wp-personio-integration' ),
-        'personio_integration_admin_checkbox_field',
-        'personioIntegrationPositionsTemplates',
-        'settings_section_template_detail',
-        [
-            'label_for' => 'personioIntegrationEnableLinkInDetail',
-            'fieldId' => 'personioIntegrationEnableLinkInDetail',
-            'readonly' => !helper::is_personioUrl_set()
-        ]
+    /**
+     * Other section
+     */
+    add_settings_section(
+        'settings_section_template_other',
+        __( 'Other settings', 'wp-personio-integration' ),
+        '__return_true',
+        'personioIntegrationPositionsTemplates'
     );
-    register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationEnableLinkInDetail', ['sanitize_callback' => 'personio_integration_admin_validateCheckBox'] );
 
     // separator for excerpt-listing
     add_settings_field(
@@ -241,7 +236,7 @@ function personio_integration_admin_add_settings_template()
         __( 'Separator for excerpt-list', 'wp-personio-integration' ),
         'personio_integration_admin_text_field',
         'personioIntegrationPositionsTemplates',
-        'settings_section_template',
+        'settings_section_template_other',
         [
             'label_for' => 'personioIntegrationTemplateExcerptSeparator',
             'fieldId' => 'personioIntegrationTemplateExcerptSeparator',
@@ -251,3 +246,16 @@ function personio_integration_admin_add_settings_template()
     register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationTemplateExcerptSeparator' );
 }
 add_action( 'personio_integration_settings_add_settings', 'personio_integration_admin_add_settings_template');
+
+/**
+ * Add hints for using the template-settings.
+ *
+ * @return void
+ */
+function personio_integration_admin_settings_template() {
+    $lang = helper::get_wp_lang();
+    if( !in_array($lang, ['de','en']) ) {
+        $lang = 'en';
+    }
+    ?><img src="<?php echo plugin_dir_url(WP_PERSONIO_INTEGRATION_PLUGIN); ?>gfx/list_<?php echo $lang; ?>.png" alt=""><?php
+}

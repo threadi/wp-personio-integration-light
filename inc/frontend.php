@@ -455,8 +455,10 @@ function personio_integration_get_filter( $filter, $attributes ) {
             $taxonomyToUse = $taxonomy_name;
             foreach( $GLOBALS['personio_query_results']->posts as $position ) {
                 $terms = get_the_terms($position, $taxonomy_name);
-                foreach( $terms as $term ) {
-                    $term_ids[] = $term->term_id;
+                if( !empty($terms) ) {
+                    foreach ($terms as $term) {
+                        $term_ids[] = $term->term_id;
+                    }
                 }
             }
         }
