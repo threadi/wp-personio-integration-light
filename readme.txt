@@ -93,6 +93,7 @@ No, this is not possible (at this moment). In order to send an application, the 
 * Fixed usage of templates in child-themes
 
 = 1.2.0 =
+* Added limit for list of positions in frontend to 10 per list and without pagination
 * Optimized compatibility with other plugins using JavaScript in wp-admin
 * Compatibility with WordPress 6.1
 * Fixed visibility of settings-link in plugin-list
