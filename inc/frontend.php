@@ -196,6 +196,33 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
     $positions = $positionsObj->getPositions( $personio_attributes['limit'], $personio_attributes );
     $GLOBALS['personio_query_results'] = $positionsObj->getResult();
 
+    // get the unlimited list for filter-creation
+    $unlimitedQuery = $positionsObj->getQuery();
+    $unlimitedQuery['no_found_rows'] = false;
+    $unlimitedQuery['posts_per_page'] = -1;
+    $unlimitedQuery['paged'] = 1;
+    $unlimitedQuery['cache_results'] = false;
+    $unlimitedResults = new WP_Query($unlimitedQuery);
+
+    // get only the necessary taxonomies for this list
+    $fromListUsedTaxonomies = [];
+    $taxonomyArrayByKey = array_keys(WP_PERSONIO_INTEGRATION_TAXONOMIES);
+    foreach( $personio_attributes['filter'] as $taxonomy ) {
+        $key = array_search($taxonomy, array_column(WP_PERSONIO_INTEGRATION_TAXONOMIES, 'slug'));
+        $fromListUsedTaxonomies[$taxonomyArrayByKey[$key]] = $taxonomyArrayByKey[$key];
+    }
+
+    // get the list of taxonomies positions of this list uses
+    $taxonomiesOfPosition = [];
+    foreach( $unlimitedResults->posts as $position ) {
+        $terms = wp_get_post_terms($position->ID, $fromListUsedTaxonomies);
+        foreach ($terms as $term) {
+            $taxonomiesOfPosition[$position->ID][$term->taxonomy] = $term->term_id;
+        }
+    }
+    $GLOBALS['personio_query_results_taxonomies'] = $taxonomiesOfPosition;
+    $GLOBALS['personio_query_results_unlimited'] = $unlimitedResults->posts;
+
     // change settings for output
     $personio_attributes = apply_filters('personio_integration_get_template', $personio_attributes, $attribute_defaults);
 
@@ -456,14 +483,27 @@ add_filter( 'archive_template', 'personio_integration_get_archive_template' ) ;
 function personio_integration_get_filter( $filter, $attributes ) {
     $taxonomyToUse = '';
     $term_ids = [];
-    foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
-        if( $taxonomy['slug'] == $filter && $taxonomy['useInFilter'] == 1 ) {
-            $taxonomyToUse = $taxonomy_name;
-            foreach( $GLOBALS['personio_query_results']->posts as $position ) {
-                $terms = get_the_terms($position, $taxonomy_name);
-                if( !empty($terms) ) {
-                    foreach ($terms as $term) {
-                        $term_ids[] = $term->term_id;
+
+    // get the given taxonomy from array
+    $key = array_search($filter, array_column(WP_PERSONIO_INTEGRATION_TAXONOMIES, 'slug'));
+    $taxonomyArrayByKey = array_keys(WP_PERSONIO_INTEGRATION_TAXONOMIES);
+
+    // get the unlimited count of positions in this list
+    $positionCount = count($GLOBALS['personio_query_results_unlimited']);
+    if( !empty(WP_PERSONIO_INTEGRATION_TAXONOMIES[$taxonomyArrayByKey[$key]]) ) {
+        $entry = WP_PERSONIO_INTEGRATION_TAXONOMIES[$taxonomyArrayByKey[$key]];
+        if( $entry['useInFilter'] == 1) {
+            $taxonomyToUse = $taxonomyArrayByKey[$key];
+            // loop through the products to check if they use this taxonomy
+            for( $p=0;$p<$positionCount;$p++ ) {
+                if( !empty($GLOBALS['personio_query_results_unlimited'][$p]) ) {
+                    $position = $GLOBALS['personio_query_results_unlimited'][$p];
+                    if( !empty($GLOBALS['personio_query_results_taxonomies'][$position->ID]) ) {
+                        $terms = $GLOBALS['personio_query_results_taxonomies'][$position->ID];
+                        if (!empty($terms[$taxonomyToUse])) {
+                            // add this taxonomy to list for filter
+                            $term_ids[$terms[$taxonomyToUse]] = $terms[$taxonomyToUse];
+                        }
                     }
                 }
             }
@@ -496,5 +536,6 @@ function personio_integration_get_filter( $filter, $attributes ) {
             include helper::getTemplate('parts/term-filter-' . $attributes['filtertype'] . '.php');
         }
     }
+
 }
 add_action( 'personio_integration_get_filter', 'personio_integration_get_filter', 10, 2 );
