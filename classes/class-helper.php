@@ -130,6 +130,15 @@ trait helper {
                     __('The specified Personio URL %s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations.', 'wp-personio-integration'),
                     ''
                 )
+            ),
+            'personio_integration_limit_hint' => sprintf(
+                '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
+                __('Personio Integration', 'wp-personio-integration'),
+                sprintf(
+                /* translators: %1$s is replaced with "string" */
+                    __('The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%s">Personio Integration Pro version</a>, any number of entries can be displayed.', 'wp-personio-integration'),
+                    helper::get_pro_url()
+                )
             )
         ];
 
