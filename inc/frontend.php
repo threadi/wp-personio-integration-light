@@ -464,7 +464,9 @@ function personio_integration_get_filter( $filter, $attributes ) {
             $terms = get_terms(['taxonomy' => $taxonomy_name]);
             if (!empty($terms)) {
                 foreach ($terms as $term) {
-                    $term_ids[] = $term->term_id;
+                    if( $term->count > 0 ) {
+                        $term_ids[] = $term->term_id;
+                    }
                 }
             }
         }
