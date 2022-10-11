@@ -50,15 +50,6 @@
 
 .personio-field-width { width: 250px }
 
-body.post-type-personioposition.edit-tags-php #col-left { display: none }
-body.post-type-personioposition.edit-tags-php #col-right {
-    float: none;
-    width: auto;
-}
-body.post-type-personioposition.edit-tags-php #col-right .col-wrap { padding: 0 }
-
-body.post-type-personioposition.edit-tags-php #col-right th:first-child, body.post-type-personioposition.edit-tags-php #col-right td:first-child { display: none }
-
 .wp-personio-integration-transient {
     position: relative;
     z-index: 1;

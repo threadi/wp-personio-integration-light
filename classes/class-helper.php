@@ -808,7 +808,7 @@ trait helper {
         if( empty($array[$taxonomy]) ) {
             return [];
         }
-        return $array[$taxonomy];
+        return apply_filters('personio_integration_filter_taxonomy_label', $array[$taxonomy]);
     }
 
     /**
