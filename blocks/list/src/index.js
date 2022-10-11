@@ -68,6 +68,10 @@ registerBlockType( 'wp-personio-integration/list', {
 			type: 'string',
 			default: 'title'
 		},
+		groupby: {
+			type: 'string',
+			default: ''
+		},
 		showTitle: {
 			type: 'boolean',
 			default: true

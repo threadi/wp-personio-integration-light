@@ -147,7 +147,8 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
         'sort' => 'asc',
         'sortby' => 'title',
         'limit' => 0,
-        'nopagination' => apply_filters('personio_integration_pagination', true)
+        'nopagination' => apply_filters('personio_integration_pagination', true),
+        'groupby' => ''
     ];
     // define the settings for each attribute (array or string)
     $attribute_settings = [
@@ -163,7 +164,8 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
         'sortby' => 'string',
         'limit' => 'unsignedint',
         'filtertype' => 'string',
-        'nopagination' => 'bool'
+        'nopagination' => 'bool',
+        'groupby' => 'string'
     ];
     // add taxonomies which are available as filter
     foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
@@ -188,7 +190,7 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
     }
 
     // set limit
-    $limitByWp = get_option('posts_per_page');
+    $limitByWp = $personio_attributes['limit'] ?: get_option('posts_per_page');
     $personio_attributes['limit'] = apply_filters('personio_integration_limit', $limitByWp > 10 ? 10 : $limitByWp, $personio_attributes['limit']);
 
     // get the positions
@@ -275,6 +277,10 @@ function personio_integration_get_title( $position, $attributes ) {
     if( !did_action( 'elementor/loaded' ) && is_single() ) {
         $hSize = "1";
     }
+    // and h3 if list is grouped
+    if( !empty($attributes['groupby']) ) {
+        $hSize = "3";
+    }
 
     if( false !== $attributes["donotlink"] ) {
         ?>
@@ -305,33 +311,7 @@ function personio_integration_get_excerpt( $position, $attributes ) {
     $separator = get_option('personioIntegrationTemplateExcerptSeparator', ', ')." ";
     if( !empty($attributes['excerpt']) ) {
         foreach ($attributes['excerpt'] as $excerptTemplate) {
-            $stringToAdd = '';
-            switch ($excerptTemplate) {
-                case 'recruitingCategory':
-                    $stringToAdd = $position->getRecruitingCategoryName();
-                    break;
-                case 'schedule':
-                    $stringToAdd = $position->getScheduleName();
-                    break;
-                case 'office':
-                    $stringToAdd = $position->getOfficeName();
-                    break;
-                case 'department':
-                    $stringToAdd = $position->getDepartmentName();
-                    break;
-                case 'seniority':
-                    $stringToAdd = $position->getSeniorityName();
-                    break;
-                case 'experience':
-                    $stringToAdd = $position->getExperienceName();
-                    break;
-                case 'occupation':
-                    $stringToAdd = $position->getOccupationCategoryName();
-                    break;
-                case 'employmentTypes':
-                    $stringToAdd = $position->getEmploymentTypeName();
-                    break;
-            }
+            $stringToAdd = helper::get_taxonomy_name_of_position( $excerptTemplate, $position );
             if (strlen($excerpt) > 0 && strlen($stringToAdd) > 0) $excerpt .= $separator;
             $excerpt .= $stringToAdd;
         }

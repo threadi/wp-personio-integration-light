@@ -6,7 +6,7 @@ Tested up to: 6.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 
 == Description ==
 
@@ -16,11 +16,12 @@ Import and display your positions from [Personio](https://www.personio.com/) dir
 
 - manual or automatic import of open positions
 - import of positions in German and English
-- display via 2 Gutenberg blocks, 2 classic widgets or via individual [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
+- output via 2 Gutenberg blocks, 2 classic widgets or via individual [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
 - search engine indexable output (SEO) of list views and open positions
 - open position (job description) under website's own URL
 - data protection friendly, as no applicant data is collected and stored
 - support for classic as well as block themes
+- optionally group the lists by categories, departments, offices etc.
 - some [WP CLI commands](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/cli.md) for simplified handling of data
 
 #### Requirements
@@ -94,9 +95,9 @@ No, this is not possible (at this moment). In order to send an application, the 
 
 = 1.2.0 =
 * Added limit for list of positions in frontend to 10 per list and without pagination
+* Added possibility to group the list of positions (also added in Gutenberg-Block)
 * Optimized compatibility with other plugins using JavaScript in wp-admin
 * Compatibility with WordPress 6.1
+* Updated dependencies for Gutenberg-scripts
 * Fixed visibility of settings-link in plugin-list
 * Fixed pagination of position-list
-* Changed some texts
-* Update dependencies for Gutenberg-scripts

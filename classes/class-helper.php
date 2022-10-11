@@ -220,6 +220,84 @@ trait helper {
     }
 
     /**
+     * Get the name of a taxonomy on a position.
+     *
+     * @param $taxonomy
+     * @param $position
+     * @return mixed|string
+     */
+    public static function get_taxonomy_name_of_position( $taxonomy, $position)
+    {
+        $name = '';
+        switch ($taxonomy) {
+            case 'recruitingCategory':
+                $name = $position->getRecruitingCategoryName();
+                break;
+            case 'schedule':
+                $name = $position->getScheduleName();
+                break;
+            case 'office':
+                $name = $position->getOfficeName();
+                break;
+            case 'department':
+                $name = $position->getDepartmentName();
+                break;
+            case 'seniority':
+                $name = $position->getSeniorityName();
+                break;
+            case 'experience':
+                $name = $position->getExperienceName();
+                break;
+            case 'occupation':
+                $name = $position->getOccupationCategoryName();
+                break;
+            case 'employmentTypes':
+                $name = $position->getEmploymentTypeName();
+                break;
+        }
+        return $name;
+    }
+
+    /**
+     * Get the taxonomy name by its simple name.
+     * E.g. from "recruitingCategory" to "personioRecruitingCategory".
+     *
+     * @param $simpleName
+     * @return string
+     */
+    public static function get_taxonomy_name_by_simple_name( $simpleName ): string
+    {
+        $taxonomy = '';
+        switch( $simpleName ) {
+            case 'recruitingCategory':
+                $taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY;
+                break;
+            case 'schedule':
+                $taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE;
+                break;
+            case 'office':
+                $taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE;
+                break;
+            case 'department':
+                $taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT;
+                break;
+            case 'seniority':
+                $taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY;
+                break;
+            case 'experience':
+                $taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE;
+                break;
+            case 'occupation':
+                $taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY;
+                break;
+            case 'employmentTypes':
+                $taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE;
+                break;
+        }
+        return $taxonomy;
+    }
+
+    /**
      * Prüfe, ob der Import per CLI aufgerufen wird.
      * Z.B. um einen Fortschrittsbalken anzuzeigen.
      *
