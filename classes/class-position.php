@@ -228,7 +228,7 @@ class Position {
     private function _getTermName( $taxonomy, $field ): string
     {
         if( empty($this->_taxonomyTerms[$taxonomy]) ) {
-            $this->_taxonomyTerms[$taxonomy] = wp_get_post_terms($this->data['ID'], $taxonomy);
+            $this->_taxonomyTerms[$taxonomy] = get_the_terms($this->data['ID'], $taxonomy);
         }
         if( !empty($this->_taxonomyTerms[$taxonomy]) ) {
             return $this->_taxonomyTerms[$taxonomy][0]->$field;
