@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-07T13:57:28+02:00\n"
+"POT-Creation-Date: 2022-10-11T12:46:09+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -104,309 +104,315 @@ msgstr ""
 msgid "The list of positions is limited to a maximum of 10 entries in the frontend. With <a href=\"%s\">Personio Integration Pro version</a>, any number of entries can be displayed."
 msgstr ""
 
-#: classes/class-helper.php:654
+#: classes/class-helper.php:732
 msgctxt "taxonomy general name"
 msgid "recruiting categories"
 msgstr ""
 
-#: classes/class-helper.php:655
+#: classes/class-helper.php:733
 msgctxt "taxonomy singular name"
 msgid "recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:656
+#: classes/class-helper.php:734
 msgid "Search recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:657
+#: classes/class-helper.php:735
 msgid "Edit recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:658
+#: classes/class-helper.php:736
 msgid "Update recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:659
+#: classes/class-helper.php:737
 msgid "recruiting categories"
 msgstr ""
 
-#: classes/class-helper.php:662
+#: classes/class-helper.php:740
 msgctxt "taxonomy general name"
 msgid "occupation categories"
 msgstr ""
 
-#: classes/class-helper.php:663
+#: classes/class-helper.php:741
 msgctxt "taxonomy singular name"
 msgid "occupation category"
 msgstr ""
 
-#: classes/class-helper.php:664
+#: classes/class-helper.php:742
 msgid "Search occupation category"
 msgstr ""
 
-#: classes/class-helper.php:665
+#: classes/class-helper.php:743
 msgid "Edit occupation category"
 msgstr ""
 
-#: classes/class-helper.php:666
+#: classes/class-helper.php:744
 msgid "Update occupation category"
 msgstr ""
 
-#: classes/class-helper.php:667
+#: classes/class-helper.php:745
 msgid "occupation categories"
 msgstr ""
 
-#: classes/class-helper.php:670
+#: classes/class-helper.php:748
 msgctxt "taxonomy general name"
 msgid "offices"
 msgstr ""
 
-#: classes/class-helper.php:671
+#: classes/class-helper.php:749
 msgctxt "taxonomy singular name"
 msgid "office"
 msgstr ""
 
-#: classes/class-helper.php:672
+#: classes/class-helper.php:750
 msgid "Search office"
 msgstr ""
 
-#: classes/class-helper.php:673
+#: classes/class-helper.php:751
 msgid "Edit office"
 msgstr ""
 
-#: classes/class-helper.php:674
+#: classes/class-helper.php:752
 msgid "Update office"
 msgstr ""
 
-#: classes/class-helper.php:675
+#: classes/class-helper.php:753
 msgid "offices"
 msgstr ""
 
-#: classes/class-helper.php:678
+#: classes/class-helper.php:756
 msgctxt "taxonomy general name"
 msgid "departments"
 msgstr ""
 
-#: classes/class-helper.php:679
+#: classes/class-helper.php:757
 msgctxt "taxonomy singular name"
 msgid "department"
 msgstr ""
 
-#: classes/class-helper.php:680
+#: classes/class-helper.php:758
 msgid "Search department"
 msgstr ""
 
-#: classes/class-helper.php:681
+#: classes/class-helper.php:759
 msgid "Edit department"
 msgstr ""
 
-#: classes/class-helper.php:682
+#: classes/class-helper.php:760
 msgid "Update department"
 msgstr ""
 
-#: classes/class-helper.php:683
+#: classes/class-helper.php:761
 msgid "departments"
 msgstr ""
 
-#: classes/class-helper.php:686
+#: classes/class-helper.php:764
 msgctxt "taxonomy general name"
 msgid "employment types"
 msgstr ""
 
-#: classes/class-helper.php:687
+#: classes/class-helper.php:765
 msgctxt "taxonomy singular name"
 msgid "employment type"
 msgstr ""
 
-#: classes/class-helper.php:688
+#: classes/class-helper.php:766
 msgid "Search employment type"
 msgstr ""
 
-#: classes/class-helper.php:689
+#: classes/class-helper.php:767
 msgid "Edit employment type"
 msgstr ""
 
-#: classes/class-helper.php:690
+#: classes/class-helper.php:768
 msgid "Update employment type"
 msgstr ""
 
-#: classes/class-helper.php:691
+#: classes/class-helper.php:769
 #: inc/init.php:316
 msgid "employment types"
 msgstr ""
 
-#: classes/class-helper.php:694
+#: classes/class-helper.php:772
 msgctxt "taxonomy general name"
 msgid "seniority"
 msgstr ""
 
-#: classes/class-helper.php:695
+#: classes/class-helper.php:773
 msgctxt "taxonomy singular name"
 msgid "seniority"
 msgstr ""
 
-#: classes/class-helper.php:696
+#: classes/class-helper.php:774
 msgid "Search seniority"
 msgstr ""
 
-#: classes/class-helper.php:697
+#: classes/class-helper.php:775
 msgid "Edit seniority"
 msgstr ""
 
-#: classes/class-helper.php:698
+#: classes/class-helper.php:776
 msgid "Update seniority"
 msgstr ""
 
-#: classes/class-helper.php:699
+#: classes/class-helper.php:777
 #: inc/init.php:317
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:190
+#: blocks/list/build/index.js:262
+#: blocks/list/build/index.js:302
+#: blocks/show/build/index.js:240
+#: blocks/list/build/index.js:137
+#: blocks/list/build/index.js:194
+#: blocks/list/build/index.js:225
+#: blocks/show/build/index.js:186
 msgid "seniority"
 msgstr ""
 
-#: classes/class-helper.php:702
+#: classes/class-helper.php:780
 msgctxt "taxonomy general name"
 msgid "schedules"
 msgstr ""
 
-#: classes/class-helper.php:703
+#: classes/class-helper.php:781
 msgctxt "taxonomy singular name"
 msgid "schedule"
 msgstr ""
 
-#: classes/class-helper.php:704
+#: classes/class-helper.php:782
 msgid "Search schedule"
 msgstr ""
 
-#: classes/class-helper.php:705
+#: classes/class-helper.php:783
 msgid "Edit schedule"
 msgstr ""
 
-#: classes/class-helper.php:706
+#: classes/class-helper.php:784
 msgid "Update schedule"
 msgstr ""
 
-#: classes/class-helper.php:707
+#: classes/class-helper.php:785
 msgid "schedules"
 msgstr ""
 
-#: classes/class-helper.php:710
+#: classes/class-helper.php:788
 msgctxt "taxonomy general name"
 msgid "experiences"
 msgstr ""
 
-#: classes/class-helper.php:711
+#: classes/class-helper.php:789
 msgctxt "taxonomy singular name"
 msgid "experience"
 msgstr ""
 
-#: classes/class-helper.php:712
+#: classes/class-helper.php:790
 msgid "Search experience"
 msgstr ""
 
-#: classes/class-helper.php:713
+#: classes/class-helper.php:791
 msgid "Edit experience"
 msgstr ""
 
-#: classes/class-helper.php:714
+#: classes/class-helper.php:792
 msgid "Update experience"
 msgstr ""
 
-#: classes/class-helper.php:715
+#: classes/class-helper.php:793
 msgid "experiences"
 msgstr ""
 
-#: classes/class-helper.php:718
+#: classes/class-helper.php:796
 msgctxt "taxonomy general name"
 msgid "languages"
 msgstr ""
 
-#: classes/class-helper.php:719
+#: classes/class-helper.php:797
 msgctxt "taxonomy singular name"
 msgid "language"
 msgstr ""
 
-#: classes/class-helper.php:720
+#: classes/class-helper.php:798
 msgid "Search language"
 msgstr ""
 
-#: classes/class-helper.php:721
+#: classes/class-helper.php:799
 msgid "Edit language"
 msgstr ""
 
-#: classes/class-helper.php:722
+#: classes/class-helper.php:800
 msgid "Update language"
 msgstr ""
 
-#: classes/class-helper.php:723
+#: classes/class-helper.php:801
 msgid "languages"
 msgstr ""
 
-#: classes/class-helper.php:751
+#: classes/class-helper.php:829
 msgid "permanent"
 msgstr ""
 
-#: classes/class-helper.php:752
+#: classes/class-helper.php:830
 msgid "intern"
 msgstr ""
 
-#: classes/class-helper.php:753
+#: classes/class-helper.php:831
 msgid "trainee"
 msgstr ""
 
-#: classes/class-helper.php:754
+#: classes/class-helper.php:832
 msgid "freelance"
 msgstr ""
 
-#: classes/class-helper.php:757
+#: classes/class-helper.php:835
 msgid "entry-level"
 msgstr ""
 
-#: classes/class-helper.php:758
+#: classes/class-helper.php:836
 msgid "experienced"
 msgstr ""
 
-#: classes/class-helper.php:759
+#: classes/class-helper.php:837
 msgid "executive"
 msgstr ""
 
-#: classes/class-helper.php:760
+#: classes/class-helper.php:838
 msgid "student"
 msgstr ""
 
-#: classes/class-helper.php:763
+#: classes/class-helper.php:841
 msgid "full-time"
 msgstr ""
 
-#: classes/class-helper.php:764
+#: classes/class-helper.php:842
 msgid "part-time"
 msgstr ""
 
-#: classes/class-helper.php:767
+#: classes/class-helper.php:845
 msgid "less than 1 year"
 msgstr ""
 
-#: classes/class-helper.php:768
+#: classes/class-helper.php:846
 msgid "1-2 years"
 msgstr ""
 
-#: classes/class-helper.php:769
+#: classes/class-helper.php:847
 msgid "2-5 years"
 msgstr ""
 
-#: classes/class-helper.php:770
+#: classes/class-helper.php:848
 msgid "5-7 years"
 msgstr ""
 
-#: classes/class-helper.php:771
+#: classes/class-helper.php:849
 msgid "7-10 years"
 msgstr ""
 
-#: classes/class-helper.php:772
+#: classes/class-helper.php:850
 msgid "10-15 years"
 msgstr ""
 
-#: classes/class-helper.php:773
+#: classes/class-helper.php:851
 msgid "more than 15 years"
 msgstr ""
 
@@ -436,7 +442,8 @@ msgstr ""
 
 #: classes/class-logs.php:45
 #: classes/class-positionswidget.php:57
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:239
+#: blocks/list/build/index.js:181
 msgid "date"
 msgstr ""
 
@@ -459,12 +466,14 @@ msgstr ""
 
 #: classes/class-positionswidget.php:24
 #: inc/init.php:259
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:381
+#: blocks/list/build/index.js:291
 msgid "Personio Positions"
 msgstr ""
 
 #: classes/class-positionswidget.php:39
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:215
+#: blocks/list/build/index.js:160
 msgid "amount"
 msgstr ""
 
@@ -473,23 +482,27 @@ msgid "Sort Direction"
 msgstr ""
 
 #: classes/class-positionswidget.php:47
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:225
+#: blocks/list/build/index.js:171
 msgid "ascending"
 msgstr ""
 
 #: classes/class-positionswidget.php:48
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:228
+#: blocks/list/build/index.js:172
 msgid "descending"
 msgstr ""
 
 #: classes/class-positionswidget.php:53
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:233
+#: blocks/list/build/index.js:177
 msgid "Sort by"
 msgstr ""
 
 #: classes/class-positionswidget.php:56
 #: inc/init.php:333
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:236
+#: blocks/list/build/index.js:180
 msgid "title"
 msgstr ""
 
@@ -526,8 +539,10 @@ msgstr ""
 
 #: classes/class-positionswidget.php:71
 #: classes/class-positionwidget.php:62
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:277
+#: blocks/show/build/index.js:213
+#: blocks/list/build/index.js:206
+#: blocks/show/build/index.js:162
 msgid "link title"
 msgstr ""
 
@@ -538,8 +553,10 @@ msgstr ""
 
 #: classes/class-positionswidget.php:89
 #: classes/class-positionwidget.php:80
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:287
+#: blocks/show/build/index.js:225
+#: blocks/list/build/index.js:218
+#: blocks/show/build/index.js:176
 msgid "Choose excerpt components"
 msgstr ""
 
@@ -558,12 +575,14 @@ msgid "Provides a Widget to show a single position provided by Personio."
 msgstr ""
 
 #: classes/class-positionwidget.php:24
-#: blocks/show/build/index.js:1
+#: blocks/show/build/index.js:322
+#: blocks/show/build/index.js:255
 msgid "Personio Position"
 msgstr ""
 
 #: classes/class-positionwidget.php:47
-#: blocks/show/build/index.js:1
+#: blocks/show/build/index.js:203
+#: blocks/show/build/index.js:150
 msgid "Select position"
 msgstr ""
 
@@ -614,8 +633,10 @@ msgstr ""
 
 #: inc/admin.php:260
 #: inc/settings/settings.php:26
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:213
+#: blocks/show/build/index.js:201
+#: blocks/list/build/index.js:158
+#: blocks/show/build/index.js:148
 msgid "Settings"
 msgstr ""
 
@@ -669,38 +690,73 @@ msgid "every 5th Minute"
 msgstr ""
 
 #: inc/init.php:312
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:178
+#: blocks/list/build/index.js:250
+#: blocks/list/build/index.js:290
+#: blocks/show/build/index.js:228
+#: blocks/list/build/index.js:133
+#: blocks/list/build/index.js:190
+#: blocks/list/build/index.js:221
+#: blocks/show/build/index.js:180
 msgid "recruiting category"
 msgstr ""
 
 #: inc/init.php:313
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:181
+#: blocks/list/build/index.js:253
+#: blocks/list/build/index.js:293
+#: blocks/show/build/index.js:231
+#: blocks/list/build/index.js:134
+#: blocks/list/build/index.js:191
+#: blocks/list/build/index.js:222
+#: blocks/show/build/index.js:183
 msgid "schedule"
 msgstr ""
 
 #: inc/init.php:314
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:184
+#: blocks/list/build/index.js:256
+#: blocks/list/build/index.js:296
+#: blocks/show/build/index.js:234
+#: blocks/list/build/index.js:135
+#: blocks/list/build/index.js:192
+#: blocks/list/build/index.js:223
+#: blocks/show/build/index.js:184
 msgid "office"
 msgstr ""
 
 #: inc/init.php:315
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:187
+#: blocks/list/build/index.js:259
+#: blocks/list/build/index.js:299
+#: blocks/show/build/index.js:237
+#: blocks/list/build/index.js:136
+#: blocks/list/build/index.js:193
+#: blocks/list/build/index.js:224
+#: blocks/show/build/index.js:185
 msgid "department"
 msgstr ""
 
 #: inc/init.php:318
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:193
+#: blocks/list/build/index.js:265
+#: blocks/list/build/index.js:305
+#: blocks/show/build/index.js:243
+#: blocks/list/build/index.js:138
+#: blocks/list/build/index.js:195
+#: blocks/list/build/index.js:226
+#: blocks/show/build/index.js:187
 msgid "experience"
 msgstr ""
 
 #: inc/init.php:319
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:196
+#: blocks/list/build/index.js:268
+#: blocks/list/build/index.js:308
+#: blocks/show/build/index.js:246
+#: blocks/list/build/index.js:139
+#: blocks/list/build/index.js:227
+#: blocks/show/build/index.js:188
 msgid "occupation"
 msgstr ""
 
@@ -917,12 +973,14 @@ msgid "Set filter-type"
 msgstr ""
 
 #: inc/settings/templates.php:121
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:208
+#: blocks/list/build/index.js:151
 msgid "select-box"
 msgstr ""
 
 #: inc/settings/templates.php:122
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:205
+#: blocks/list/build/index.js:150
 msgid "list of links"
 msgstr ""
 
@@ -978,12 +1036,13 @@ msgstr ""
 msgid "Separator for excerpt-list"
 msgstr ""
 
-#: templates/archive-personioposition-shortcode.php:31
+#: templates/archive-personioposition-shortcode.php:38
 msgid "No positions could be found."
 msgstr ""
 
 #: templates/parts/part-filter.php:12
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:167
+#: blocks/list/build/index.js:121
 msgid "Filter"
 msgstr ""
 
@@ -999,52 +1058,77 @@ msgstr ""
 msgid "Apply for this position"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-msgid "Provides a Gutenberg Block to show a list of positions provided by Personio."
-msgstr ""
-
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:169
+#: blocks/list/build/index.js:123
 msgid "show filter"
 msgstr ""
 
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:175
+#: blocks/list/build/index.js:130
 msgid "choose filter"
 msgstr ""
 
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:202
+#: blocks/list/build/index.js:147
 msgid "type of filter"
 msgstr ""
 
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:222
+#: blocks/list/build/index.js:168
 msgid "Sort direction"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:244
+#: blocks/list/build/index.js:186
+msgid "Group by"
+msgstr ""
+
+#: blocks/list/build/index.js:247
+#: blocks/list/build/index.js:189
+msgid "not grouped"
+msgstr ""
+
+#: blocks/list/build/index.js:273
+#: blocks/show/build/index.js:208
+#: blocks/list/build/index.js:201
+#: blocks/show/build/index.js:156
 msgid "show title"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:281
+#: blocks/show/build/index.js:218
+#: blocks/list/build/index.js:211
+#: blocks/show/build/index.js:168
 msgid "show excerpt"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:314
+#: blocks/show/build/index.js:253
+#: blocks/list/build/index.js:235
+#: blocks/show/build/index.js:197
 msgid "view content"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:318
+#: blocks/show/build/index.js:258
+#: blocks/list/build/index.js:240
+#: blocks/show/build/index.js:203
 msgid "view application link"
 msgstr ""
 
-#: blocks/show/build/index.js:1
-msgid "Provides a Gutenberg Block to show a position provided by personio."
+#: blocks/list/build/index.js:382
+#: blocks/list/build/index.js:292
+msgid "Provides a Gutenberg Block to show a list of positions provided by Personio."
 msgstr ""
 
-#: blocks/show/build/index.js:1
+#: blocks/show/build/index.js:187
+#: blocks/show/build/index.js:133
 msgid "Please choose"
+msgstr ""
+
+#: blocks/show/build/index.js:323
+#: blocks/show/build/index.js:256
+msgid "Provides a Gutenberg Block to show a position provided by personio."
 msgstr ""
 
 #: blocks/list/block.json

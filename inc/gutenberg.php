@@ -91,6 +91,7 @@ function personio_integration_get_list( $attributes ): string
         'donotlink' => $doNotLink,
         'sort' => $attributes["sort"],
         'sortby' => $attributes["sortby"],
+        'groupby' => $attributes["groupby"],
         'limit' => $attributes["limit"],
         'filter' => implode(",", $attributes['filter']),
         'filtertype' => $attributes['filtertype'],
@@ -175,6 +176,10 @@ function personio_integration_add_blocks()
             'sortby' => [
                 'type' => 'string',
                 'default' => 'title'
+            ],
+            'groupby' => [
+                'type' => 'string',
+                'default' => ''
             ],
             'showTitle' => [
                 'type' => 'boolean',

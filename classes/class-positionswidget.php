@@ -57,6 +57,12 @@ class PositionsWidget extends WP_Widget {
                     'date' => esc_html__( 'date', 'wp-personio-integration' )
                 ]
             ),
+            'groupby'     => array(
+                'type'          => 'select',
+                'title'         => __( 'Group by', 'wp-personio-integration' ),
+                'std'       => 'title',
+                'values'       => array_merge(['' => __('ungrouped', 'wp-personio-integration')], personio_integration_admin_categories_labels())
+            ),
             'showTitle'     => array(
                 'type'          => 'select',
                 'title'         => __( 'Show title', 'wp-personio-integration' ),
@@ -181,6 +187,7 @@ class PositionsWidget extends WP_Widget {
             'donotlink' => $doNotLink,
             'sort' => $settings["sort"],
             'sortby' => $settings["sortby"],
+            'groupby' => $settings["groupby"],
             'limit' => $limit
         ];
 

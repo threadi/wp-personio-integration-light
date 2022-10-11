@@ -26,6 +26,10 @@ export const onChangeSortBy = ( newValue, object ) => {
     object.setAttributes( { sortby: newValue } );
 }
 
+export const onChangeGroupBy = ( newValue, object ) => {
+    object.setAttributes( { groupby: newValue } );
+}
+
 export const onChangeExcerptTemplates = ( newValue, object ) => {
     object.setAttributes( { excerptTemplates: newValue } );
 }

@@ -39,7 +39,8 @@ import {
 	onChangeFilter,
 	onChangeFilterType,
 	onChangeShowFilter,
-	onChangeSortBy
+	onChangeSortBy,
+	onChangeGroupBy
 } from '../../components'
 
 /**
@@ -123,6 +124,21 @@ export default function Edit( object ) {
 						] }
 						onChange={ value => onChangeSortBy( value, object ) }
 					/>
+					<SelectControl
+						label={__('Group by', 'wp-personio-integration')}
+						value={ object.attributes.groupby }
+						options={[
+							{label: __('not grouped', 'wp-personio-integration'), value: ''},
+							{label: __('recruiting category', 'wp-personio-integration'), value: 'recruitingCategory'},
+							{label: __('schedule', 'wp-personio-integration'), value: 'schedule'},
+							{label: __('office', 'wp-personio-integration'), value: 'office'},
+							{label: __('department', 'wp-personio-integration'), value: 'department'},
+							{label: __('seniority', 'wp-personio-integration'), value: 'seniority'},
+							{label: __('experience', 'wp-personio-integration'), value: 'experience'},
+							{label: __('occupation', 'wp-personio-integration'), value: 'occupation'}
+						]}
+						onChange={ value => onChangeGroupBy( value, object ) }
+					/>
 					<ToggleControl
 						label={__('show title', 'wp-personio-integration')}
 						checked={ object.attributes.showTitle }
@@ -144,10 +160,7 @@ export default function Edit( object ) {
 								label={__('Choose excerpt components', 'wp-personio-integration')}
 								value={object.attributes.excerptTemplates}
 								options={[
-									{
-										label: __('recruiting category', 'wp-personio-integration'),
-										value: 'recruitingCategory'
-									},
+									{label: __('recruiting category', 'wp-personio-integration'), value: 'recruitingCategory'},
 									{label: __('schedule', 'wp-personio-integration'), value: 'schedule'},
 									{label: __('office', 'wp-personio-integration'), value: 'office'},
 									{label: __('department', 'wp-personio-integration'), value: 'department'},
