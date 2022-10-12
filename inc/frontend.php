@@ -400,7 +400,7 @@ add_action( 'the_post', 'personio_integration_update_post_object', 10, 2 );
  */
 function personio_integration_get_single_template( $single_template ) {
     if( get_post_type(get_the_ID()) == WP_PERSONIO_INTEGRATION_CPT ) {
-        $path = trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'templates/single-personioposition.php';
+        $path = helper::getTemplate('single-personioposition.php');
         if (file_exists($path)) {
             $single_template = $path;
         }
@@ -418,7 +418,7 @@ add_filter( 'single_template', 'personio_integration_get_single_template' ) ;
  */
 function personio_integration_get_archive_template( $archive_template ) {
     if ( is_post_type_archive(WP_PERSONIO_INTEGRATION_CPT) ) {
-        $path = trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'templates/archive-personioposition.php';
+        $path = helper::getTemplate('archive-personioposition.php');
         if( file_exists($path) ) {
             $archive_template = $path;
         }
