@@ -44,7 +44,7 @@ Import and display your positions from [Personio](https://www.personio.com/) dir
 - RichSnippets for optimal findability via search engines like Google
 - Customization of slugs (URLs) for list and detailed views of positions
 - Shortcode generator for individual views of lists and details
-- Extensions for the following PageBuilders: Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder.
+- Extensions for the following PageBuilders: Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
 
@@ -99,5 +99,6 @@ No, this is not possible (at this moment). In order to send an application, the 
 * Optimized compatibility with other plugins using JavaScript in wp-admin
 * Compatibility with WordPress 6.1
 * Updated dependencies for Gutenberg-scripts
+* Fixed usage of archive template for child-themes
 * Fixed visibility of settings-link in plugin-list
 * Fixed pagination of position-list
