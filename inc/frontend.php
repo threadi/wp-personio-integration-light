@@ -222,7 +222,7 @@ function personio_integration_content_output( $content ) {
 
         // set attributes for single output
         $attributes = [
-            'id' => get_the_ID()
+            'id' => get_post_meta( get_the_ID(), WP_PERSONIO_INTEGRATION_CPT_PM_PID, true )
         ];
 
         // return the output of shortcode-function
@@ -243,19 +243,18 @@ add_filter( 'the_content', 'personio_integration_content_output', 5 );
  */
 function personio_integration_excerpt_output( $excerpt )
 {
-    if( !helper::is_admin_api_request() && !is_admin()
-        && !is_single() && get_post_type(get_the_ID()) == WP_PERSONIO_INTEGRATION_CPT ) {
+    if( !helper::is_admin_api_request()
+        && !is_single()
+        && get_post_type(get_the_ID()) == WP_PERSONIO_INTEGRATION_CPT
+    ) {
         // set attributes for single output
         $attributes = [
-            'id' => get_the_ID(),
+            'personioId' => get_post_meta( get_the_ID(), WP_PERSONIO_INTEGRATION_CPT_PM_PID, true ),
             'templates' => 'excerpt'
         ];
 
         // return the output of shortcode-function
-        echo personio_integration_position_shortcode( $attributes );
-
-        // prevent any further output
-        return "";
+        return personio_integration_position_shortcode( $attributes );
     }
     return $excerpt;
 }
@@ -407,7 +406,7 @@ function personio_integration_get_single_template( $single_template ) {
     }
     return $single_template;
 }
-add_filter( 'single_template', 'personio_integration_get_single_template' ) ;
+add_filter( 'single_template', 'personio_integration_get_single_template' );
 
 /**
  * Get archive template.
