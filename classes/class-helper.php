@@ -194,13 +194,13 @@ trait helper {
      */
     public static function get_import_url(): string
     {
-        return esc_url(add_query_arg(
+        return add_query_arg(
             [
                 'action' => 'personioPositionsImport',
                 'nonce' => wp_create_nonce( 'wp-personio-integration-import' )
             ],
             get_admin_url() . 'admin.php'
-        ));
+        );
     }
 
     /**
