@@ -259,6 +259,7 @@ function personio_integration_excerpt_output( $excerpt )
     return $excerpt;
 }
 add_filter('the_excerpt' , 'personio_integration_excerpt_output', 10);
+add_filter('get_the_excerpt' , 'personio_integration_excerpt_output', 10);
 
 /**
  * Get position title for list.
@@ -308,6 +309,9 @@ add_action( 'personio_integration_get_title', 'personio_integration_get_title', 
 function personio_integration_get_excerpt( $position, $attributes ) {
     $excerpt = '';
     $separator = get_option('personioIntegrationTemplateExcerptSeparator', ', ')." ";
+    if( empty($attributes['excerpt']) ) {
+        $attributes['excerpt'] = $attributes;
+    }
     if( !empty($attributes['excerpt']) ) {
         foreach ($attributes['excerpt'] as $excerptTemplate) {
             $stringToAdd = helper::get_taxonomy_name_of_position( $excerptTemplate, $position );
