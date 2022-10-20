@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2022-10-11T12:46:09+02:00\n"
-"PO-Revision-Date: 2022-10-11 12:47+0200\n"
+"POT-Creation-Date: 2022-10-20T16:31:32+02:00\n"
+"PO-Revision-Date: 2022-10-20 16:31+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -108,11 +108,12 @@ msgstr ""
 
 #: classes/class-helper.php:123
 msgid ""
-"The specified Personio URL is reachable. Click on the following button to "
-"import your positions from Personio now:"
+"<strong>The specified Personio URL is reachable.</strong> Click on the "
+"following button to import your positions from Personio now:"
 msgstr ""
-"Die angegebene Personio-URL ist erreichbar. Klicken Sie auf die folgende "
-"Schaltfläche, um Ihre offenen Stellen jetzt aus Personio zu importieren:"
+"<strong>Die angegebene Personio-URL ist erreichbar</strong>. Klicken Sie auf "
+"die folgende Schaltfläche, um Ihre offenen Stellen jetzt aus Personio zu "
+"importieren:"
 
 #. translators: %1$s is replaced with "string"
 #: classes/class-helper.php:130
@@ -130,11 +131,11 @@ msgstr ""
 msgid ""
 "The list of positions is limited to a maximum of 10 entries in the frontend. "
 "With <a href=\"%s\">Personio Integration Pro version</a>, any number of "
-"entries can be displayed."
+"positions can be displayed."
 msgstr ""
 "Die Liste der Stellen wird im Frontend auf maximal 10 Einträge beschränkt. "
-"Mit der <a href=\"%s\">Personio Integration Pro</a>-Version lassen sich eine "
-"beliebige Anzahl an Einträgen anzeigen."
+"Mit <a href=\"%s\">Personio Integration Pro</a> lassen sich eine beliebige "
+"Anzahl an Einträgen anzeigen."
 
 #: classes/class-helper.php:732
 msgctxt "taxonomy general name"
@@ -528,47 +529,56 @@ msgstr "sortieren nach"
 msgid "title"
 msgstr "Titel"
 
-#: classes/class-positionswidget.php:62 classes/class-positionwidget.php:53
+#: classes/class-positionswidget.php:62 blocks/list/build/index.js:244
+#: blocks/list/build/index.js:186
+msgid "Group by"
+msgstr "Gruppieren nach"
+
+#: classes/class-positionswidget.php:64
+msgid "ungrouped"
+msgstr "nicht gruppiert"
+
+#: classes/class-positionswidget.php:68 classes/class-positionwidget.php:53
 msgid "Show title"
 msgstr "Zeige Titel an"
 
-#: classes/class-positionswidget.php:65 classes/class-positionswidget.php:74
-#: classes/class-positionswidget.php:83 classes/class-positionswidget.php:99
-#: classes/class-positionswidget.php:108 classes/class-positionwidget.php:56
+#: classes/class-positionswidget.php:71 classes/class-positionswidget.php:80
+#: classes/class-positionswidget.php:89 classes/class-positionswidget.php:105
+#: classes/class-positionswidget.php:114 classes/class-positionwidget.php:56
 #: classes/class-positionwidget.php:65 classes/class-positionwidget.php:74
 #: classes/class-positionwidget.php:90 classes/class-positionwidget.php:99
 msgid "Show"
 msgstr "Zeigen"
 
-#: classes/class-positionswidget.php:66 classes/class-positionswidget.php:75
-#: classes/class-positionswidget.php:84 classes/class-positionswidget.php:100
-#: classes/class-positionswidget.php:109 classes/class-positionwidget.php:57
+#: classes/class-positionswidget.php:72 classes/class-positionswidget.php:81
+#: classes/class-positionswidget.php:90 classes/class-positionswidget.php:106
+#: classes/class-positionswidget.php:115 classes/class-positionwidget.php:57
 #: classes/class-positionwidget.php:66 classes/class-positionwidget.php:75
 #: classes/class-positionwidget.php:91 classes/class-positionwidget.php:100
 msgid "Hide"
 msgstr "Verstecken"
 
-#: classes/class-positionswidget.php:71 classes/class-positionwidget.php:62
+#: classes/class-positionswidget.php:77 classes/class-positionwidget.php:62
 #: blocks/list/build/index.js:277 blocks/show/build/index.js:213
 #: blocks/list/build/index.js:206 blocks/show/build/index.js:162
 msgid "link title"
 msgstr "verlinke den Titel"
 
-#: classes/class-positionswidget.php:80 classes/class-positionwidget.php:71
+#: classes/class-positionswidget.php:86 classes/class-positionwidget.php:71
 msgid "Show excerpt"
 msgstr "Zeige Eigenschaften"
 
-#: classes/class-positionswidget.php:89 classes/class-positionwidget.php:80
+#: classes/class-positionswidget.php:95 classes/class-positionwidget.php:80
 #: blocks/list/build/index.js:287 blocks/show/build/index.js:225
 #: blocks/list/build/index.js:218 blocks/show/build/index.js:176
 msgid "Choose excerpt components"
 msgstr "Wähle Eigenschaften"
 
-#: classes/class-positionswidget.php:96 classes/class-positionwidget.php:87
+#: classes/class-positionswidget.php:102 classes/class-positionwidget.php:87
 msgid "Show content"
 msgstr "zeige Inhalt an"
 
-#: classes/class-positionswidget.php:105 classes/class-positionwidget.php:96
+#: classes/class-positionswidget.php:111 classes/class-positionwidget.php:96
 msgid "Show application link"
 msgstr "zeige Link zum Bewerbungsformular an"
 
@@ -746,8 +756,8 @@ msgid "content"
 msgstr "Inhalt"
 
 #: inc/init.php:336
-msgid "formular"
-msgstr "Formular"
+msgid "application link"
+msgstr "Link zum Bewerbungsformular"
 
 #: inc/settings/advanced.php:19
 msgid "Advanced"
@@ -794,9 +804,9 @@ msgstr ""
 msgid "A timeout must have a value greater than 0."
 msgstr "Ein Timeout muss einen Wert größer als 0 haben."
 
-#: inc/settings/forms.php:12
-msgid "Application Forms"
-msgstr "Bewerbungsformulare"
+#: inc/settings/applications.php:12
+msgid "Applications"
+msgstr "Bewerbungen"
 
 #: inc/settings/general.php:45 inc/settings/settings.php:54
 msgid "General Settings"
@@ -1117,10 +1127,6 @@ msgstr "Filter-Typ"
 msgid "Sort direction"
 msgstr "Sortierrichtung"
 
-#: blocks/list/build/index.js:244 blocks/list/build/index.js:186
-msgid "Group by"
-msgstr "Gruppieren nach"
-
 #: blocks/list/build/index.js:247 blocks/list/build/index.js:189
 msgid "not grouped"
 msgstr "nicht gruppiert"
@@ -1186,20 +1192,32 @@ msgid "Provides a Gutenberg Block to show a position managed by Personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
 
+#~ msgid ""
+#~ "<strong>The import has been manually run.</strong> Please check the <a "
+#~ "href=\"%1$s\">list of positions</a> or <a href=\"%2$s\">the log</a>."
+#~ msgstr ""
+#~ "<strong>Der Import wurde manuell ausgeführt.</strong> Bitte prüfen Sie <a "
+#~ "href=\"%1$s\">die Liste der Stellen</a> oder <a href=\"%2$s\">das "
+#~ "Logfile</a>."
+
+#~ msgid ""
+#~ "The specified Personio URL is reachable. Click on the following button to "
+#~ "import your positions from Personio now:"
+#~ msgstr ""
+#~ "Die angegebene Personio-URL ist erreichbar. Klicken Sie auf die folgende "
+#~ "Schaltfläche, um Ihre offenen Stellen jetzt aus Personio zu importieren:"
+
+#~ msgid "formular"
+#~ msgstr "Formular"
+
+#~ msgid "Application Forms"
+#~ msgstr "Bewerbungsformulare"
+
 #~ msgid "Enable link to detail on detail-view"
 #~ msgstr "Link zum Detail in der Detailansicht aktivieren"
 
 #~ msgid "view application form"
 #~ msgstr "zeige Link zum Bewerbungsformular an"
-
-#~ msgid ""
-#~ "<strong>The import has been manually run.</strong> Please check the <a "
-#~ "href=\"%1$s\">list of positions</a> or <a href=\"%2$s\">the log</a> for "
-#~ "possible errors."
-#~ msgstr ""
-#~ "<strong>Der Import wurde manuell ausgeführt.</strong> Bitte <a href=\"%1$s"
-#~ "\">die Liste der Stellen</a> oder <a href=\"%2$s\">das Logfile</a> wegen "
-#~ "möglicherweise aufgetretener Fehler prüfen."
 
 #~ msgid "To start the import click <a href=\"%s\">here</a>."
 #~ msgstr "Zum Starten des Imports <a href=\"%s\">hier</a> klicken."

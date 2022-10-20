@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-11T12:46:09+02:00\n"
+"POT-Creation-Date: 2022-10-20T16:31:32+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -91,7 +91,7 @@ msgid "<strong>The positions could not been deleted.</strong> An import is actua
 msgstr ""
 
 #: classes/class-helper.php:123
-msgid "The specified Personio URL is reachable. Click on the following button to import your positions from Personio now:"
+msgid "<strong>The specified Personio URL is reachable.</strong> Click on the following button to import your positions from Personio now:"
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
@@ -101,7 +101,7 @@ msgstr ""
 
 #. translators: %1$s is replaced with "string"
 #: classes/class-helper.php:139
-msgid "The list of positions is limited to a maximum of 10 entries in the frontend. With <a href=\"%s\">Personio Integration Pro version</a>, any number of entries can be displayed."
+msgid "The list of positions is limited to a maximum of 10 entries in the frontend. With <a href=\"%s\">Personio Integration Pro version</a>, any number of positions can be displayed."
 msgstr ""
 
 #: classes/class-helper.php:732
@@ -507,15 +507,25 @@ msgid "title"
 msgstr ""
 
 #: classes/class-positionswidget.php:62
+#: blocks/list/build/index.js:244
+#: blocks/list/build/index.js:186
+msgid "Group by"
+msgstr ""
+
+#: classes/class-positionswidget.php:64
+msgid "ungrouped"
+msgstr ""
+
+#: classes/class-positionswidget.php:68
 #: classes/class-positionwidget.php:53
 msgid "Show title"
 msgstr ""
 
-#: classes/class-positionswidget.php:65
-#: classes/class-positionswidget.php:74
-#: classes/class-positionswidget.php:83
-#: classes/class-positionswidget.php:99
-#: classes/class-positionswidget.php:108
+#: classes/class-positionswidget.php:71
+#: classes/class-positionswidget.php:80
+#: classes/class-positionswidget.php:89
+#: classes/class-positionswidget.php:105
+#: classes/class-positionswidget.php:114
 #: classes/class-positionwidget.php:56
 #: classes/class-positionwidget.php:65
 #: classes/class-positionwidget.php:74
@@ -524,11 +534,11 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: classes/class-positionswidget.php:66
-#: classes/class-positionswidget.php:75
-#: classes/class-positionswidget.php:84
-#: classes/class-positionswidget.php:100
-#: classes/class-positionswidget.php:109
+#: classes/class-positionswidget.php:72
+#: classes/class-positionswidget.php:81
+#: classes/class-positionswidget.php:90
+#: classes/class-positionswidget.php:106
+#: classes/class-positionswidget.php:115
 #: classes/class-positionwidget.php:57
 #: classes/class-positionwidget.php:66
 #: classes/class-positionwidget.php:75
@@ -537,7 +547,7 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: classes/class-positionswidget.php:71
+#: classes/class-positionswidget.php:77
 #: classes/class-positionwidget.php:62
 #: blocks/list/build/index.js:277
 #: blocks/show/build/index.js:213
@@ -546,12 +556,12 @@ msgstr ""
 msgid "link title"
 msgstr ""
 
-#: classes/class-positionswidget.php:80
+#: classes/class-positionswidget.php:86
 #: classes/class-positionwidget.php:71
 msgid "Show excerpt"
 msgstr ""
 
-#: classes/class-positionswidget.php:89
+#: classes/class-positionswidget.php:95
 #: classes/class-positionwidget.php:80
 #: blocks/list/build/index.js:287
 #: blocks/show/build/index.js:225
@@ -560,12 +570,12 @@ msgstr ""
 msgid "Choose excerpt components"
 msgstr ""
 
-#: classes/class-positionswidget.php:96
+#: classes/class-positionswidget.php:102
 #: classes/class-positionwidget.php:87
 msgid "Show content"
 msgstr ""
 
-#: classes/class-positionswidget.php:105
+#: classes/class-positionswidget.php:111
 #: classes/class-positionwidget.php:96
 msgid "Show application link"
 msgstr ""
@@ -769,7 +779,7 @@ msgid "content"
 msgstr ""
 
 #: inc/init.php:336
-msgid "formular"
+msgid "application link"
 msgstr ""
 
 #: inc/settings/advanced.php:19
@@ -809,8 +819,8 @@ msgstr ""
 msgid "A timeout must have a value greater than 0."
 msgstr ""
 
-#: inc/settings/forms.php:12
-msgid "Application Forms"
+#: inc/settings/applications.php:12
+msgid "Applications"
 msgstr ""
 
 #: inc/settings/general.php:45
@@ -1076,11 +1086,6 @@ msgstr ""
 #: blocks/list/build/index.js:222
 #: blocks/list/build/index.js:168
 msgid "Sort direction"
-msgstr ""
-
-#: blocks/list/build/index.js:244
-#: blocks/list/build/index.js:186
-msgid "Group by"
 msgstr ""
 
 #: blocks/list/build/index.js:247
