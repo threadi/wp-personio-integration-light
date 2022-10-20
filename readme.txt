@@ -95,10 +95,14 @@ No, this is not possible (at this moment). In order to send an application, the 
 
 = 1.2.0 =
 * Added limit for list of positions in frontend to 10 per list and without pagination
-* Added possibility to group the list of positions (also added in Gutenberg-Block)
+* Added possibility to group the list of positions by one of the taxonomies
+  (also added in Gutenberg-Block as filter-option)
 * Optimized compatibility with other plugins using JavaScript in wp-admin
+* Optimized support for some popular WordPress-themes like Astra
+* Removed possibility to link the position-title in detail-view
 * Compatibility with WordPress 6.1
 * Updated dependencies for Gutenberg-scripts
 * Fixed usage of archive template for child-themes
+* Fixed REST-API reading of excerpt of positions
 * Fixed visibility of settings-link in plugin-list
-* Fixed pagination of position-list
+* Fixed pagination of positions-archive

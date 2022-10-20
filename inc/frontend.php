@@ -49,7 +49,7 @@ function personio_integration_position_shortcode( $attributes = [] ): string
         'template' => '',
         'templates' => implode(',', get_option('personioIntegrationTemplateContentDefaults', '')),
         'excerpt' => implode(",", get_option('personioIntegrationTemplateExcerptDetail', '')),
-        'donotlink' => (get_option('personioIntegrationEnableLinkInDetail', 0) == 1)
+        'donotlink' => 1
     ];
 
     // define the settings for each attribute (array or string)

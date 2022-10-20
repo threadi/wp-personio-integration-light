@@ -92,7 +92,7 @@ class Positions {
                     ]
                 ];
                 add_filter('posts_join', [$this, 'addTaxonomyTableToPositionQuery']);
-                add_filter('posts_orderby', [$this, 'setPositionQueryOrderBy']);
+                add_filter('posts_orderby', [$this, 'setPositionQueryOrderByForGroup']);
             }
         }
         // get the results
@@ -100,7 +100,7 @@ class Positions {
 
         // remove filter
         remove_filter('posts_join', [$this, 'addTaxonomyTableToPositionQuery']);
-        remove_filter('posts_orderby', [$this, 'setPositionQueryOrderBy']);
+        remove_filter('posts_orderby', [$this, 'setPositionQueryOrderByForGroup']);
 
         // get the positions as object in array
         // -> optionally grouped by a given taxonomy
@@ -169,7 +169,7 @@ class Positions {
      * @param $orderby_statement
      * @return string
      */
-    public function setPositionQueryOrderBy($orderby_statement): string
+    public function setPositionQueryOrderByForGroup($orderby_statement): string
     {
         return " wp_terms.name ASC, ".$orderby_statement;
     }

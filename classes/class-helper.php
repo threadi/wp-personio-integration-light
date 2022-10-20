@@ -120,7 +120,7 @@ trait helper {
             'personio_integration_import_now' => sprintf(
                 '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
                 __('Personio Integration', 'wp-personio-integration'),
-                __('The specified Personio URL is reachable. Click on the following button to import your positions from Personio now:', 'wp-personio-integration').' <br><br><a href="'.helper::get_import_url().'" class="button button-primary personio-integration-import-hint">'.__('Run import', 'wp-personio-integration').'</a>'
+                __('<strong>The specified Personio URL is reachable.</strong> Click on the following button to import your positions from Personio now:', 'wp-personio-integration').' <br><br><a href="'.helper::get_import_url().'" class="button button-primary personio-integration-import-hint">'.__('Run import', 'wp-personio-integration').'</a>'
             ),
             'personio_integration_url_not_usable' => sprintf(
                 '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
@@ -136,7 +136,7 @@ trait helper {
                 __('Personio Integration', 'wp-personio-integration'),
                 sprintf(
                 /* translators: %1$s is replaced with "string" */
-                    __('The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%s">Personio Integration Pro version</a>, any number of entries can be displayed.', 'wp-personio-integration'),
+                    __('The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%s">Personio Integration Pro version</a>, any number of positions can be displayed.', 'wp-personio-integration'),
                     helper::get_pro_url()
                 )
             )

@@ -31,7 +31,7 @@ add_action( 'personio_integration_settings_add_tab', 'personio_integration_setti
 function personio_integration_admin_add_menu_content_importexport()
 {
     // check user capabilities
-    if ( ! current_user_can( 'manage_options' ) ) {
+    if ( ! current_user_can( 'manage_options' ) || !helper::is_personioUrl_set() ) {
         return;
     }
 
