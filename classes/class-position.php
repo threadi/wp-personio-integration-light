@@ -387,7 +387,10 @@ class Position {
      * @noinspection PhpUnused
      */
     public function getPersonioId() {
-        return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_PM_PID, true );
+        if( !empty($this->data['ID']) ) {
+            return get_post_meta($this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_PM_PID, true);
+        }
+        return 0;
     }
 
     /**
