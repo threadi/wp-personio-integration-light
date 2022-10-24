@@ -100,6 +100,7 @@ No, this is not possible (at this moment). In order to send an application, the 
 * Optimized compatibility with other plugins using JavaScript in wp-admin
 * Optimized support for some popular WordPress-themes like Astra
 * Removed possibility to link the position-title in detail-view
+* Removed our own custom post type from post type list in Redirection-plugin
 * Compatibility with WordPress 6.1
 * Updated dependencies for Gutenberg-scripts
 * Fixed usage of archive template for child-themes
