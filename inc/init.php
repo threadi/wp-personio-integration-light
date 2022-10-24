@@ -386,3 +386,16 @@ function personio_integration_lowercase_attributes( $values ): array
     ];
 }
 add_filter('personio_integration_get_shortcode_attributes', 'personio_integration_lowercase_attributes', 5, 1);
+
+/**
+ * Remove our own cpt from post type list in Redirection-plugin.
+ *
+ * @param $array
+ * @return mixed
+ * @noinspection PhpUnused
+ */
+function personio_integration_redirection_post_types( $array ) {
+    unset($array[WP_PERSONIO_INTEGRATION_CPT]);
+    return $array;
+}
+add_filter( 'redirection_post_types', 'personio_integration_redirection_post_types');
