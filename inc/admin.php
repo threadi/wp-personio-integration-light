@@ -308,6 +308,21 @@ function personio_integration_admin_remove_bulk_actions( $actions ): array
 add_filter( 'bulk_actions-edit-'.WP_PERSONIO_INTEGRATION_CPT, 'personio_integration_admin_remove_bulk_actions' );
 
 /**
+ * Remove all actions except "view" for our own cpt.
+ *
+ * @param $actions
+ * @return array
+ * @noinspection PhpUnused
+ */
+function personio_integration_admin_remove_actions( $actions ): array {
+    if( get_post_type() === WP_PERSONIO_INTEGRATION_CPT ) {
+        return ['view' => $actions['view']];
+    }
+    return $actions;
+}
+add_filter('post_row_actions', 'personio_integration_admin_remove_actions', 10, 1 );
+
+/**
  * Add filter for our own cpt on lists in admin.
  *
  * @return void
