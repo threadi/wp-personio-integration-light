@@ -228,22 +228,6 @@ function personio_integration_schudule_event_import_positions() {
 add_action( 'personio_integration_schudule_events', 'personio_integration_schudule_event_import_positions', 10, 0 );
 
 /**
- * Filter output of language-taxonomy to exclude the languages which are not active atm.
- *
- * @param $_term
- * @param $taxonomy
- * @return mixed|null
- * @noinspection PhpUnused
- */
-function personio_integration_exclude_inactive_languages( $_term, $taxonomy ) {
-    if( empty(WP_PERSONIO_INTEGRATION_LANGUAGES[$_term->slug]) ) {
-        return null;
-    }
-    return $_term;
-}
-add_filter( 'get_'.WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES , 'personio_integration_exclude_inactive_languages', 10, 2 );
-
-/**
  * Add link in toolbar to list of positions.
  * Only if Personio URL is given and list-view is not disabled.
  *
