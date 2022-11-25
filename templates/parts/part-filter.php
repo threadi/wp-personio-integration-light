@@ -6,17 +6,18 @@ defined( 'ABSPATH' ) || exit;
  * Output of filter-list.
  */
 if( !empty($personio_attributes["filter"]) && false !== $personio_attributes["showfilter"] ) :
+    $formId = "pif".md5(serialize($personio_attributes["filter"]));
     ?>
-    <article class="site-main entry entry-content">
-        <form action="" class="entry-content personio-position-filter personio-position-filter-<?php echo esc_attr($personio_attributes['filtertype']); ?>">
-            <legend><?php _e('Filter', 'wp-personio-integration'); ?></legend>
+    <article class="site-main entry entry-content" id="<?php echo $formId; ?>">
+        <form action="#<?php echo $formId; ?>" class="entry-content personio-position-filter personio-position-filter-<?php echo $personio_attributes['filtertype']; ?>">
+            <legend><?php echo __('Filter', 'wp-personio-integration'); ?></legend>
             <?php
             foreach ( $personio_attributes["filter"] as $filter ) :
                 do_action( 'personio_integration_get_filter', $filter, $personio_attributes );
             endforeach;
             ?>
-            <button type="submit"><?php _e('Search', 'wp-personio-integration'); ?></button>
-            <a href="<?php echo remove_query_arg('personiofilter'); ?>"><?php _e('Reset Filter', 'wp-personio-integration'); ?></a>
+            <button type="submit"><?php echo __('Search', 'wp-personio-integration'); ?></button>
+            <a href="<?php echo remove_query_arg('personiofilter'); ?>"><?php echo __('Reset Filter', 'wp-personio-integration'); ?></a>
         </form>
     </article>
 <?php

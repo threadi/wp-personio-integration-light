@@ -4,12 +4,13 @@
  * Template for output of a list of positions via shortcode.
  */
 
+use personioIntegration\helper;
 use personioIntegration\Position;
 
 defined( 'ABSPATH' ) || exit;
 
 // embed filter
-include "parts/part-filter.php";
+include helper::getTemplate("parts/part-filter.php");
 
 // set the group-title
 $groupTitle = '';
@@ -33,7 +34,7 @@ if( $GLOBALS['personio_query_results']->have_posts() ) :
             </article>
         <?php
     endwhile;
-    include "parts/part-pagination.php";
+    include helper::getTemplate("parts/part-pagination.php");
 else:
     echo '<article><div class="entry-content"><p>'.__('No positions could be found.', 'wp-personio-integration').'</p></div></article>';
 endif;
