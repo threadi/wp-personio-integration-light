@@ -107,3 +107,7 @@ No, this is not possible (at this moment). In order to send an application, the 
 * Fixed REST-API reading of excerpt of positions
 * Fixed visibility of settings-link in plugin-list
 * Fixed pagination of positions-archive
+
+= 1.2.1 =
+* Optimized filter-formular for better scrolling in website after submitting
+* Previously untranslatable texts adapted
