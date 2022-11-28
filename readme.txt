@@ -111,3 +111,4 @@ No, this is not possible (at this moment). In order to send an application, the 
 = 1.2.1 =
 * Optimized filter-formular for better scrolling in website after submitting
 * Previously untranslatable texts adapted
+* Fixed parameter "ids" on Shortcode "personioPositions"
