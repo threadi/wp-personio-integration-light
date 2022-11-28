@@ -22,7 +22,7 @@ if( $GLOBALS['personio_query_results']->have_posts() ) :
         $position = new Position(get_the_id());
 
         // get group title
-        include 'parts/part-grouptitle.php';
+        include helper::getTemplate('parts/part-grouptitle.php');
 
         ?>
             <article id="post-<?php echo absint($position->ID); ?>" class="site-main post-<?php echo absint($position->ID); ?> <?php echo get_post_type($position->ID); ?> type-<?php echo get_post_type($position->ID); ?> status-<?php echo get_post_status($position->ID); ?> entry">
