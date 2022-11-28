@@ -107,6 +107,36 @@ Die Parameter in den Shortcodes haben folgende Aufgaben:
 * legt fest, welche konkrete Stelle angezeigt wird
 * welche IDs verfügbar sind, ist in der Liste "offene Stellen" in der Spalte "PersonioId" zu sehen
 
+### groupby
+
+* nur für Listen-Ansicht verfügbar
+* gruppiert die Liste von Stellen nach einer der Eigenschaften
+* verfügbare Werte sind:
+  * office
+  * recruitingCategory => für die Kategorie
+  * occupationCategory
+  * department
+  * employmenttype
+  * seniority
+  * schedule
+  * experience
+
+### nur Stellen mit spezifischen Eigenschaften aufzulisten
+
+* nur für Listen-Ansicht verfügbar
+* Anwendungsfälle: 
+  * Stellen nur aus einer Abteilung anzuzeigen
+  * nur Vollzeit-Stellen anzeigen
+* die Eigenschaft muss (englischsprachig) als Parameter angegeben werden, als Wert dazu die Datenbank-ID des gewünschten Wertes
+* Beispiel:
+  `[personioPositions department="42"]`
+* die Datenbank-ID kann man auf folgendem Weg ermitteln:
+  1. Richten Sie eine Liste mit Filter ein.
+  2. Am Filter ergänzen Sie die Eigenschaft, die Sie suchen, z.B. "Abteilung".
+  3. Schauen Sie sich die Liste im Browser an und filtern Sie nach der gesuchten Abteilung.
+  4. In der URL ist daraufhin sowohl der Parameter als auch der Wert zu sehen, Beispiel: `?personiofilter[department]=42`
+  5. Kopieren Sie das in Klammern stehende sowie die Zahl dahinter um diese im Shortcode wie in o.g. Beispiel zu sehen zusammen zu setzen.
+
 ## Beispiele
 
 ### Liste ohne Filter & mit Titel & Beschreibungstext pro Stelle

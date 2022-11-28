@@ -107,6 +107,36 @@ The parameters in the shortcodes have the following tasks:
 * determines which specific job is displayed
 * which IDs are available can be seen in the "open jobs" list in the "PersonioId" column
 
+### groupby
+
+* only available for list view
+* groups the list of jobs by one of the properties
+* available values are:
+  * office
+  * recruitingCategory => for the category
+  * occupationCategory
+  * department
+  * employmenttype
+  * seniority
+  * schedule
+  * experience
+
+### show only positions with specific attributes
+
+* only available for list view
+* Use cases:
+  * Display jobs from one department only
+  * show only full time jobs
+* the property must be specified as a parameter, as a value the database ID of the desired value must be specified
+* Example:
+  `[personioPositions department="42"]`
+* the database ID can be determined in the following way:
+  1. set up a list with filter.
+  2. at the filter add the property you are looking for, e.g. "department".
+  3. look at the list in the browser and filter by the searched department.
+  4. in the URL you will see both the parameter and the value, for example: `?personiofilter[department]=42`.
+  5. copy the value in brackets and the number behind them to put them together in the shortcode as shown in the above example.
+
 ## Examples
 
 ### list without filter & with title & description text per position
