@@ -1,6 +1,7 @@
 <?php
 
 use personioIntegration\helper;
+use personioIntegration\Position;
 use personioIntegration\Positions;
 
 /**
@@ -184,9 +185,23 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
     // get the attributes to filter
     $personio_attributes = helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
 
+    // get positions-object for search
+    $positionsObj = new Positions();
+
     // unset the id-list if it is empty
     if( empty($personio_attributes['ids'][0]) ) {
         unset($personio_attributes['ids']);
+    }
+    else {
+        // convert id-list from PersonioId in post_id
+        $resultingList = [];
+        foreach( $personio_attributes['ids'] as $personioId ) {
+            $position = $positionsObj->getPositionByPersonioId($personioId);
+            if( $position instanceof Position ) {
+                $resultingList[] = $position->ID;
+            }
+        }
+        $personio_attributes['ids'] = $resultingList;
     }
 
     // set limit
@@ -194,7 +209,6 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
     $personio_attributes['limit'] = apply_filters('personio_integration_limit', $limitByWp > 10 ? 10 : $limitByWp, $personio_attributes['limit']);
 
     // get the positions
-    $positionsObj = new Positions();
     $positions = $positionsObj->getPositions( $personio_attributes['limit'], $personio_attributes );
     $GLOBALS['personio_query_results'] = $positionsObj->getResult();
 
