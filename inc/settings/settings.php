@@ -288,6 +288,9 @@ function personio_integration_admin_multiselect_field( $attr ) {
     if( !empty($attr['fieldId']) && !empty($attr['values']) ) {
         // get value from config
         $actualValues = get_option($attr['fieldId'], []);
+        if( empty($actualValues) ) {
+            $actualValues = [];
+        }
 
         // or get them from request
         if( isset($_POST[$attr['fieldId']]) && is_array($_POST[$attr['fieldId']]) ) {
@@ -296,6 +299,15 @@ function personio_integration_admin_multiselect_field( $attr ) {
             foreach( $values as $key => $item ) {
                 $actualValues[absint($key)] = sanitize_text_field($item);
             }
+        }
+
+        // use values as key if set
+        if(!empty($attr['useValuesAsKeys'])) {
+            $newArray = [];
+            foreach( $attr['values'] as $value ) {
+                $newArray[$value] = $value;
+            }
+            $attr['values'] = $newArray;
         }
 
         // get title
@@ -307,8 +319,8 @@ function personio_integration_admin_multiselect_field( $attr ) {
         ?>
             <select id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>[]" multiple class="personio-field-width"<?php echo isset($attr['readonly']) && false !== $attr['readonly'] ? ' disabled="disabled"' : ''; ?> title="<?php echo esc_attr($title); ?>">
                 <?php
-                foreach( $attr['values'] as $key => $schedule ) {
-                    ?><option value="<?php echo esc_attr($key); ?>"<?php echo in_array($key, $actualValues) ? ' selected="selected"' : ''; ?>><?php echo esc_html($schedule); ?></option><?php
+                foreach( $attr['values'] as $key => $value ) {
+                    ?><option value="<?php echo esc_attr($key); ?>"<?php echo in_array($key, $actualValues) ? ' selected="selected"' : ''; ?>><?php echo esc_html($value); ?></option><?php
                 }
             ?></select>
         <?php
