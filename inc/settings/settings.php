@@ -262,7 +262,7 @@ function personio_integration_admin_select_field( $attr ) {
         }
 
         ?>
-        <select id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>" class="personio-field-width"<?php echo isset($attr['readonly']) && false !== $attr['readonly'] ? ' readonly="readonly"' : '' ; ?> title="<?php echo esc_attr($title); ?>">
+        <select id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>" class="personio-field-width"<?php echo isset($attr['readonly']) && false !== $attr['readonly'] ? ' disabled="disabled"' : '' ; ?> title="<?php echo esc_attr($title); ?>">
             <option value=""></option>
             <?php
             foreach( $attr['values'] as $key => $label ) {
