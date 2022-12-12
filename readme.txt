@@ -113,3 +113,6 @@ No, this is not possible (at this moment). In order to send an application, the 
 * Previously untranslatable texts adapted
 * Fixed embedding of new group-title-template
 * Fixed parameter "ids" on Shortcode "personioPositions"
+
+= 1.2.2 =
+* Fixed wrong occupation slug for filter in archive listings
