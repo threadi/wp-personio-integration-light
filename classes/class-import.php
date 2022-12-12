@@ -36,7 +36,7 @@ class Import {
         }
 
         // mark import as running
-        update_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 1);
+        update_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time());
 
         // get debug-mode
         $this->_debug = get_option('personioIntegration_debug', 0) == 1;

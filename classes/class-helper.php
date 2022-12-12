@@ -101,6 +101,24 @@ trait helper {
                     get_post_type_archive_link(WP_PERSONIO_INTEGRATION_CPT)
                 )
             ),
+            'personio_integration_import_cancel' => sprintf(
+                '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
+                __('Personio Integration', 'wp-personio-integration'),
+                sprintf(
+                /* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
+                    __(
+                        '<strong>The import has been canceled.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.',
+                        'wp-personio-integration'
+                    ),
+                    esc_url(add_query_arg(
+                        [
+                            'post_type' => WP_PERSONIO_INTEGRATION_CPT,
+                        ],
+                        get_admin_url() . 'edit.php'
+                    )),
+                    get_post_type_archive_link(WP_PERSONIO_INTEGRATION_CPT)
+                )
+            ),
             'personio_integration_delete_run' => sprintf(
                 '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
                 __('Personio Integration', 'wp-personio-integration'),
