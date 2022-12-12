@@ -204,6 +204,7 @@ class Position {
      * @return void
      */
     private function updateTerm($value, $taxonomy, $append, bool $doNotAdd = false ) {
+        $this->data[$value] = str_replace("-", "", $this->data[$value]);
         if( !empty($this->data[$value]) ) {
             // get the term-object
             $term = get_term_by('slug', $this->data[$value], $taxonomy);
