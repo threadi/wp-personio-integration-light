@@ -155,7 +155,7 @@ const WP_PERSONIO_INTEGRATION_TAXONOMIES = [
         'attr' => [ // taxonomy settings deviating from default
             'rewrite' => ['slug' => 'occupationCategory'],
         ],
-        'slug' => 'occupationCategory',
+        'slug' => 'occupation',
         'useInFilter' => 1
     ],
     WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE => [
