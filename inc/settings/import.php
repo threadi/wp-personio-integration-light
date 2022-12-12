@@ -173,6 +173,28 @@ function personio_integration_admin_action_manual_import() {
 add_action( 'admin_action_personioPositionsImport', 'personio_integration_admin_action_manual_import');
 
 /**
+ * Set marker to cancel running import.
+ *
+ * @return void
+ */
+function personio_integration_admin_action_cancel_import() {
+    check_ajax_referer( 'wp-personio-integration-cancel-import', 'nonce' );
+
+    // check if import as running
+    if( get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) > 0 ) {
+        // remove running marker
+        update_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0);
+
+        // add hint
+        set_transient('personio_integration_import_canceled', 1, 0);
+    }
+
+    // redirect user
+    wp_redirect($_SERVER['HTTP_REFERER']);
+}
+add_action( 'admin_action_personioPositionsCancelImport', 'personio_integration_admin_action_cancel_import');
+
+/**
  * Delete all positions manually.
  *
  * @return void
@@ -204,7 +226,8 @@ add_action( 'admin_action_personioPositionsDelete', 'personio_integration_admin_
  * @return void
  */
 function personio_integration_admin_start_import_now() {
-    if( get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0) == 0 ) {
+    $importRunning = absint(get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0));
+    if( $importRunning == 0 ) {
         ?>
             <p><a href="<?php echo esc_url(helper::get_import_url()); ?>" class="button button-primary personio-integration-import-hint"><?php _e('Run import', 'wp-personio-integration'); ?></a></p>
             <p><i><?php _e('Hint', 'wp-personio-integration'); ?>:</i> <?php _e('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'wp-personio-integration'); ?></p>
@@ -214,6 +237,19 @@ function personio_integration_admin_start_import_now() {
         ?>
             <p><?php _e('The import is already running. Please wait some moments.', 'wp-personio-integration'); ?></p>
         <?php
+        // show import-break button if import is running min. 1 hour
+        if( $importRunning > 1 ) {
+            if( $importRunning+60*60 < time() ) {
+                $url = add_query_arg(
+                    [
+                        'action' => 'personioPositionsCancelImport',
+                        'nonce' => wp_create_nonce( 'wp-personio-integration-cancel-import' )
+                    ],
+                    get_admin_url() . 'admin.php'
+                );
+                ?><p><a href="<?php echo esc_url($url); ?>" class="button button-primary"><?php _e('Cancel running import', 'wp-personio-integration'); ?></a></p><?php
+            }
+        }
     }
 }
 

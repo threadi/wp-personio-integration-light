@@ -109,7 +109,7 @@ function personio_get_import_info(progressbar, stepDescription) {
             });
 
             // get next info until running is not 1
-            if( running === 1 ) {
+            if( running >= 1 ) {
                 setTimeout(function() { personio_get_import_info(progressbar, stepDescription) }, 500);
             }
             else {
