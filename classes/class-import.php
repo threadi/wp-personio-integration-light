@@ -23,12 +23,22 @@ class Import {
     private $_wpdb;
 
     /**
+     * Log-Object
+     *
+     * @var Log
+     */
+    private LOG $_log;
+
+    /**
      * Constructor which starts the import directly.
      *
      * @noinspection PhpUndefinedFunctionInspection
      */
     public function __construct() {
         global $wpdb;
+
+        // get log-object
+        $this->_log = new Log();
 
         // do not import if it is already running in another process
         if( get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0) == 1 ) {
@@ -179,11 +189,16 @@ class Import {
                         // delete all not updated positions
                         $positionsObject = new Positions();
                         foreach ($positionsObject->getPositions() as $position) {
-                            if (get_post_meta($position->ID, WP_PERSONIO_INTEGRATION_UPDATED, true) == 1) {
-                                delete_post_meta($position->ID, WP_PERSONIO_INTEGRATION_UPDATED);
+                            $positionPostId = $position->ID;
+                            $personioId = $position->getPersonioId();
+                            if (get_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED, true) == 1) {
+                                delete_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED);
                             } else {
                                 // delete this position from database
-                                wp_delete_post($position->ID, true);
+                                wp_delete_post($positionPostId, true);
+
+                                // log this event
+                                $this->_log->addLog('Position '.$personioId.' has been deleted as it does not return from Personio.', 'success');
                             }
                         }
 
@@ -254,8 +269,7 @@ class Import {
         $ausgabe .= "\n";
 
         // save results in database
-        $log = new Log(true);
-        $log->addLog($ausgabe, !empty($this->_errors) ? 'error' : 'success');
+        $this->_log->addLog($ausgabe, !empty($this->_errors) ? 'error' : 'success');
 
         // output results in WP-CLI
         echo ($this->isCLI() ? esc_html($ausgabe) : "");
@@ -310,8 +324,7 @@ class Import {
     private function logSuccess(string $string)
     {
         // save result in database
-        $log = new Log(true);
-        $log->addLog($string, !empty($this->_errors) ? 'error' : 'success');
+        $this->_log->addLog($string, !empty($this->_errors) ? 'error' : 'success');
     }
 
 }

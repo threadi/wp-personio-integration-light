@@ -116,4 +116,5 @@ No, this is not possible (at this moment). In order to send an application, the 
 
 = 1.2.2 =
 * Add button to cancel running import after it runs for 1 hour
+* Extended logging on import of positions by Personio
 * Fixed wrong occupation slug for filter in archive listings

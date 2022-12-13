@@ -157,6 +157,11 @@ class Position {
                 }
                 // set ID to 0
                 $this->data['ID'] = 0;
+
+                // log this event
+                if( false !== $this->_debug ) {
+                    $this->_log->addLog('PersonioId '.$this->data['personioId'].' existed in database multiple times. Cleanup done.', 'error');
+                }
             }
             else {
                 // set ID to 0
@@ -209,6 +214,14 @@ class Position {
 
             // mark as changed
             update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_UPDATED, 1);
+
+            // add log in debug-mode
+            if( false !== $this->_debug ) {
+                $this->_log->addLog('Position '.$this->data['personioId'].' successfully imported or updated.', 'success');
+            }
+        }
+        elseif( false !== $this->_debug ) {
+            $this->_log->addLog('Error during import of Position '.$this->data['personioId'], 'error');
         }
     }
 
