@@ -35,10 +35,29 @@ class Position {
     private array $_taxonomyTerms = [];
 
     /**
+     * Log-Object.
+     *
+     * @var Log
+     */
+    private Log $_log;
+
+    /**
+     * Marker if debug-Mode is active
+     *
+     * @var bool
+     */
+    private bool $_debug = false;
+
+    /**
      * Constructor for this position.
-     * @noinspection PhpUndefinedFieldInspection
      */
     public function __construct( $postId ) {
+        // get log-object
+        $this->_log = new Log();
+
+        // get debug-mode
+        $this->_debug = get_option('personioIntegration_debug', 0) == 1;
+
         if( $postId > 0 ) {
             // set the main language
             $this->lang = get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY);
@@ -98,8 +117,7 @@ class Position {
     {
         // do not save anything without personioId
         if( empty($this->data['personioId']) ) {
-            $log = new Log();
-            $log->addLog(__('Position could not be saved as the PersonioId is missing.', 'wp-personio-integration'), 'error');
+            $this->_log->addLog(__('Position could not be saved as the PersonioId is missing.', 'wp-personio-integration'), 'error');
             return;
         }
 
@@ -204,14 +222,18 @@ class Position {
      * @return void
      */
     private function updateTerm($value, $taxonomy, $append, bool $doNotAdd = false ) {
-        $this->data[$value] = str_replace("-", "", $this->data[$value]);
         if( !empty($this->data[$value]) ) {
             // get the term-object
-            $term = get_term_by('slug', $this->data[$value], $taxonomy);
+            $term = get_term_by('name', $this->data[$value], $taxonomy);
             // if no term is found add it
             if (!$term && !$doNotAdd) {
                 $termArray = wp_insert_term($this->data[$value], $taxonomy);
-                $term = get_term($termArray['term_id'], $taxonomy);
+                if( !is_wp_error($termArray) ) {
+                    $term = get_term($termArray['term_id'], $taxonomy);
+                }
+                elseif( false !== $this->_debug ) {
+                    $this->_log->addLog('Term '.$this->data[$value].' could not be imported in '.$taxonomy, 'error');
+                }
             }
             if ($term instanceof WP_Term) {
                 wp_set_post_terms($this->data['ID'], $term->term_id, $taxonomy, $append);
