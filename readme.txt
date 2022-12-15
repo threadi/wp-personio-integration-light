@@ -6,7 +6,7 @@ Tested up to: 6.1.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 == Description ==
 
@@ -118,3 +118,4 @@ No, this is not possible (at this moment). In order to send an application, the 
 * Add button to cancel running import after it runs for 1 hour
 * Extended logging on import of positions by Personio
 * Fixed wrong occupation slug for filter in archive listings
+* Fixed some typos in texts

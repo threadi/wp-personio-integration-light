@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
 "POT-Creation-Date: 2022-12-13T10:48:39+01:00\n"
-"PO-Revision-Date: 2022-12-13 10:52+0100\n"
+"PO-Revision-Date: 2022-12-13 16:06+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -55,7 +55,7 @@ msgstr ""
 
 #: classes/class-helper.php:69
 msgid "The specification of your Personio URL is still pending."
-msgstr "Die Angabe Ihrer Personio-URL steht noch aus."
+msgstr "Die Angabe deiner Personio-URL steht noch aus."
 
 #. translators: %1$s is replaced with "string"
 #: classes/class-helper.php:71
