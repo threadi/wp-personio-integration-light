@@ -4,14 +4,46 @@ use personioIntegration\Logs;
 
 /**
  * Add settings for admin-page via custom hook.
+ * And add filter for each settings-field of our own plugin.
  *
  * @return void
  * @noinspection PhpUnused
  */
 function personio_integration_admin_add_settings() {
     do_action('personio_integration_settings_add_settings');
+
+    // get settings-fields
+    global $wp_settings_fields;
+
+    // loop through the fields
+    foreach( $wp_settings_fields as $name => $sections ) {
+        // filter for our own settings
+        if (false !== strpos($name, 'personioIntegration')) {
+            // loop through the sections of this setting
+            foreach ($sections as $section) {
+                // loop through the field of this section
+                foreach ($section as $field) {
+                    add_filter('sanitize_option_' . $field['args']['fieldId'], 'personio_integration_admin_sanitize_settings_field', 10, 2);
+                }
+            }
+        }
+    }
 }
 add_action( 'admin_init', 'personio_integration_admin_add_settings' );
+
+/**
+ * Sanitize field regarding its readonly-state.
+ *
+ * @param $value
+ * @param $option
+ * @return mixed
+ */
+function personio_integration_admin_sanitize_settings_field( $value, $option ) {
+    if( empty($value) && !empty($_REQUEST[$option.'_ro']) ) {
+        $value = sanitize_text_field($_REQUEST[$option.'_ro']);
+    }
+    return $value;
+}
 
 /**
  * Add settings-page for the plugin.
@@ -170,6 +202,13 @@ function personio_integration_admin_text_field( $attr ) {
             $title = $attr['title'];
         }
 
+        // set readonly attribute
+        $readonly = '';
+        if( isset($attr['readonly']) && false !== $attr['readonly'] ) {
+            $readonly = ' disabled="disabled"';
+            ?><input type="hidden" name="<?php echo esc_attr($attr['fieldId']); ?>_ro" value="<?php echo esc_attr($value); ?>"><?php
+        }
+
         // mark as highlighted if set
         if( isset($attr['highlight']) && false !== $attr['highlight'] ) {
             ?><div class="highlight"><?php
@@ -177,7 +216,7 @@ function personio_integration_admin_text_field( $attr ) {
 
         // output
         ?>
-        <input type="text" id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>" value="<?php echo esc_attr($value); ?>"<?php echo !empty($attr['placeholder']) ? ' placeholder="'.esc_attr($attr['placeholder']).'"' : '';echo isset($attr['readonly']) && false !== $attr['readonly'] ? ' disabled="disabled"' : ''; ?> class="widefat" title="<?php echo esc_attr($title); ?>">
+        <input type="text" id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>" value="<?php echo esc_attr($value); ?>"<?php echo !empty($attr['placeholder']) ? ' placeholder="'.esc_attr($attr['placeholder']).'"' : '';echo $readonly; ?> class="widefat" title="<?php echo esc_attr($title); ?>">
         <?php
         if( !empty($attr['description']) ) {
             echo "<p>".wp_kses_post($attr['description'])."</p>";
@@ -204,13 +243,20 @@ function personio_integration_admin_checkbox_field( $attr ) {
             $title = $attr['title'];
         }
 
+        // set readonly attribute
+        $readonly = '';
+        if( isset($attr['readonly']) && false !== $attr['readonly'] ) {
+            $readonly = ' disabled="disabled"';
+            ?><input type="hidden" name="<?php echo esc_attr($attr['fieldId']); ?>_ro" value="<?php echo (get_option($attr['fieldId'], 0) == 1 || ( isset($_POST[$attr['fieldId']]) && absint($_POST[$attr['fieldId']]) == 1 ) ) ? '1' : '0'; ?>"><?php
+        }
+
         ?>
         <input type="checkbox" id="<?php echo esc_attr($attr['fieldId']); ?>"
                name="<?php echo esc_attr($attr['fieldId']); ?>"
                value="1"
                 <?php
                     echo (get_option($attr['fieldId'], 0) == 1 || ( isset($_POST[$attr['fieldId']]) && absint($_POST[$attr['fieldId']]) == 1 ) ) ? ' checked="checked"' : '';
-                    echo isset($attr['readonly']) && false !== $attr['readonly'] ? ' disabled="disabled"' : '' ?>
+                    echo $readonly; ?>
                class="personio-field-width"
                title="<?php echo esc_attr($title); ?>"
         >
@@ -261,8 +307,15 @@ function personio_integration_admin_select_field( $attr ) {
             $title = $attr['title'];
         }
 
+        // set readonly attribute
+        $readonly = '';
+        if( isset($attr['readonly']) && false !== $attr['readonly'] ) {
+            $readonly = ' disabled="disabled"';
+            ?><input type="hidden" name="<?php echo esc_attr($attr['fieldId']); ?>_ro" value="<?php echo esc_attr($value);?>" /><?php
+        }
+
         ?>
-        <select id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>" class="personio-field-width"<?php echo isset($attr['readonly']) && false !== $attr['readonly'] ? ' disabled="disabled"' : '' ; ?> title="<?php echo esc_attr($title); ?>">
+        <select id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>" class="personio-field-width"<?php echo $readonly ; ?> title="<?php echo esc_attr($title); ?>">
             <option value=""></option>
             <?php
             foreach( $attr['values'] as $key => $label ) {
@@ -301,6 +354,11 @@ function personio_integration_admin_multiselect_field( $attr ) {
             }
         }
 
+        // if $actualValues is an string, convert it
+        if( !is_array($actualValues) ) {
+            $actualValues = explode(',', $actualValues);
+        }
+
         // use values as key if set
         if(!empty($attr['useValuesAsKeys'])) {
             $newArray = [];
@@ -316,8 +374,15 @@ function personio_integration_admin_multiselect_field( $attr ) {
             $title = $attr['title'];
         }
 
+        // set readonly attribute
+        $readonly = '';
+        if( isset($attr['readonly']) && false !== $attr['readonly'] ) {
+            $readonly = ' disabled="disabled"';
+            ?><input type="hidden" name="<?php echo esc_attr($attr['fieldId']); ?>_ro" value="<?php echo implode(",", $actualValues);?>" /><?php
+        }
+
         ?>
-            <select id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>[]" multiple class="personio-field-width"<?php echo isset($attr['readonly']) && false !== $attr['readonly'] ? ' disabled="disabled"' : ''; ?> title="<?php echo esc_attr($title); ?>">
+            <select id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>[]" multiple class="personio-field-width"<?php echo $readonly; ?> title="<?php echo esc_attr($title); ?>">
                 <?php
                 foreach( $attr['values'] as $key => $value ) {
                     ?><option value="<?php echo esc_attr($key); ?>"<?php echo in_array($key, $actualValues) ? ' selected="selected"' : ''; ?>><?php echo esc_html($value); ?></option><?php
