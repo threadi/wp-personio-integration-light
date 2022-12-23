@@ -23,7 +23,11 @@ function personio_integration_admin_add_settings() {
             foreach ($sections as $section) {
                 // loop through the field of this section
                 foreach ($section as $field) {
-                    add_filter('sanitize_option_' . $field['args']['fieldId'], 'personio_integration_admin_sanitize_settings_field', 10, 2);
+                    $functionName = 'personio_integration_admin_sanitize_settings_field';
+                    if( !empty($field['args']['sanitizeFunction']) && function_exists($field['args']['sanitizeFunction']) ) {
+                        $functionName = $field['args']['sanitizeFunction'];
+                    }
+                    add_filter('sanitize_option_' . $field['args']['fieldId'], $functionName, 10, 2);
                 }
             }
         }
@@ -32,15 +36,31 @@ function personio_integration_admin_add_settings() {
 add_action( 'admin_init', 'personio_integration_admin_add_settings' );
 
 /**
- * Sanitize field regarding its readonly-state.
+ * Sanitize string-field regarding its readonly-state.
  *
  * @param $value
  * @param $option
  * @return mixed
+ * @noinspection PhpUnused
  */
 function personio_integration_admin_sanitize_settings_field( $value, $option ) {
     if( empty($value) && !empty($_REQUEST[$option.'_ro']) ) {
         $value = sanitize_text_field($_REQUEST[$option.'_ro']);
+    }
+    return $value;
+}
+
+/**
+ * Sanitize array-field regarding its readonly-state.
+ *
+ * @param $value
+ * @param $option
+ * @return mixed
+ * @noinspection PhpUnused
+ */
+function personio_integration_admin_sanitize_settings_field_array( $value, $option ) {
+    if( empty($value) && !empty($_REQUEST[$option.'_ro']) ) {
+        $value = explode(',', sanitize_text_field($_REQUEST[$option.'_ro']));
     }
     return $value;
 }
@@ -354,7 +374,7 @@ function personio_integration_admin_multiselect_field( $attr ) {
             }
         }
 
-        // if $actualValues is an string, convert it
+        // if $actualValues is a string, convert it
         if( !is_array($actualValues) ) {
             $actualValues = explode(',', $actualValues);
         }

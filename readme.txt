@@ -73,6 +73,10 @@ No, no iframe of any kind is used to embed data.
 
 No, this is not possible (at this moment). In order to send an application, the applicant must access the link to the Personio website.
 
+= Does this plugin set any cookies or load data from external? =
+
+No, this plugin does not set cookies nor does it load data externally within the front end of the website. The exception is when images and videos are embedded in the job descriptions coming from Personio. In this case, please check to what extent this affects the privacy of your own website.
+
 == Screenshots ==
 
 1. Field to insert your Personio URL
@@ -119,3 +123,6 @@ No, this is not possible (at this moment). In order to send an application, the 
 * Extended logging on import of positions by Personio
 * Fixed wrong occupation slug for filter in archive listings
 * Fixed some typos in texts
+
+= 1.2.3 =
+* Optimized select- and multi-select-field for plugin-settings.
