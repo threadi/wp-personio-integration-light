@@ -383,3 +383,40 @@ function personio_integration_redirection_post_types( $array ) {
     return $array;
 }
 add_filter( 'redirection_post_types', 'personio_integration_redirection_post_types');
+
+/**
+ * Optimize Yoast-generated og:description-text.
+ * Without this Yoast uses the page content with formular or button-texts.
+ *
+ * @param $meta_og_description
+ * @param $presentation
+ * @return array|mixed|string|string[]|null
+ */
+function personio_integration_yoast_description( $meta_og_description, $presentation ) {
+    if( $presentation->model->object_sub_type == WP_PERSONIO_INTEGRATION_CPT ) {
+        $position = new Position($presentation->model->object_id);
+        return preg_replace("/\s+/", " ", $position->getContent());
+    }
+    return $meta_og_description;
+}
+add_filter( 'wpseo_opengraph_desc', 'personio_integration_yoast_description', 10, 2);
+
+/**
+ * Optimize RankMath-generated meta-description and og:description.
+ * Without this RankMath uses plain post_content, which is JSON and not really nice to read.
+ *
+ * @param $description
+ * @return string
+ */
+function personio_integration_rankmath_description( $description )
+{
+    if( is_single() ) {
+        $object = get_queried_object();
+        if( $object instanceof WP_Post && $object->post_type == WP_PERSONIO_INTEGRATION_CPT ) {
+            $position = new Position($object->ID);
+            return preg_replace("/\s+/", " ", $position->getContent());
+        }
+    }
+    return $description;
+}
+add_filter( 'rank_math/frontend/description', 'personio_integration_rankmath_description', 10, 1);
