@@ -10,6 +10,11 @@ Aufbau des Shortcodes:
 
 `[personioPositions lang="de" showfilter="1" filter="recruitingCategory,schedule" filtertype="linklist" templates="title,excerpt" excerpt="recruitingCategory,schedule" sort="asc" sortby="title"]`
 
+### Hinweis
+
+Dieses Plugin beschränkt die Anzahl der Einträge auf max. 10.
+Die Pro-Version hat diese Beschränkung nicht.
+
 ## für eine Einzel-Ansicht
 
 `[personioPosition lang="de" templates="title,content,formular" id="42"]`

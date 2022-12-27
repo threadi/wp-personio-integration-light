@@ -8,8 +8,8 @@ defined( 'ABSPATH' ) || exit;
 if( !empty($personio_attributes["filter"]) && false !== $personio_attributes["showfilter"] ) :
     $formId = "pif".md5(serialize($personio_attributes["filter"]));
     ?>
-    <article class="site-main entry entry-content" id="<?php echo $formId; ?>">
-        <form action="#<?php echo $formId; ?>" class="entry-content personio-position-filter personio-position-filter-<?php echo $personio_attributes['filtertype']; ?>">
+    <article id="<?php echo $formId; ?>" class="site-main entry entry-content container inside-article container qodef-container-inner site-content site-content site-container content-bg content-area">
+        <form action="#<?php echo $formId; ?>" class="entry-content personio-position-filter personio-position-filter-<?php echo $personio_attributes['filtertype']; ?> qodef-container-inner site-content site-container content-bg content-area"">
             <legend><?php echo __('Filter', 'wp-personio-integration'); ?></legend>
             <?php
             foreach ( $personio_attributes["filter"] as $filter ) :

@@ -6,11 +6,13 @@ Tested up to: 6.1.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 
 == Description ==
 
 Import and display your positions from [Personio](https://www.personio.com/) directly on your website. Get full control over how they are displayed.
+
+Show application forms on your positions and transfer applications from your website to Personio with [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/).
 
 #### Features
 
@@ -45,6 +47,7 @@ Import and display your positions from [Personio](https://www.personio.com/) dir
 - Customization of slugs (URLs) for list and detailed views of positions
 - Shortcode generator for individual views of lists and details
 - Extensions for the following PageBuilders: Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder
+- Application formulars incl. export of them to Personio
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
 
@@ -125,4 +128,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Fixed some typos in texts
 
 = 1.2.3 =
-* Optimized select- and multi-select-field for plugin-settings.
+* Added link "back to list" on detail-view (optional).
+* Optimized select- and multi-select-field for plugin-settings
+* Advanced support for themes: GeneratePress, OceanWP, StartIt, Twenty Fourteen, Kadence, Neve, Hestia, Total, BeTheme
+* Fixed loading of position content in detail page
