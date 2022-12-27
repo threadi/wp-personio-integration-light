@@ -375,6 +375,10 @@ add_action( 'personio_integration_get_content', 'personio_integration_get_conten
  * @noinspection PhpUnusedParameterInspection
  */
 function personio_integration_get_formular( $position, $attributes ) {
+    $textPosition = 'archive';
+    if( is_single() ) {
+        $textPosition = 'single';
+    }
     include helper::getTemplate('parts/properties-application-button.php');
 }
 add_action( 'personio_integration_get_formular', 'personio_integration_get_formular', 10, 2 );

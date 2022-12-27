@@ -129,6 +129,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 1.2.3 =
 * Added link "back to list" on detail-view (optional).
+* Added possibility to different translate/change "Apply to this position" in archive- and single-view
 * Optimized select- and multi-select-field for plugin-settings
 * Advanced support for themes: GeneratePress, OceanWP, StartIt, Twenty Fourteen, Kadence, Neve, Hestia, Total, BeTheme
 * Fixed loading of position content in detail page
