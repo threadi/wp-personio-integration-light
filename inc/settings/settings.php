@@ -62,6 +62,9 @@ function personio_integration_admin_sanitize_settings_field_array( $value, $opti
     if( empty($value) && !empty($_REQUEST[$option.'_ro']) ) {
         $value = explode(',', sanitize_text_field($_REQUEST[$option.'_ro']));
     }
+    if( is_null($value) ) {
+        return [];
+    }
     return $value;
 }
 

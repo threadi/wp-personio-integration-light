@@ -9,9 +9,18 @@ defined( 'ABSPATH' ) || exit;
 ?>
 <div class="entry-content">
     <p class="personio-integration-application-button">
-        <a href="<?php echo get_option('personioIntegrationUrl', ''); ?>/job/<?php echo absint($position->getPersonioId()); ?>?display=<?php echo get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY); ?>#apply" target="_blank">
+        <a class="personio-integration-application-button" href="<?php echo get_option('personioIntegrationUrl', ''); ?>/job/<?php echo absint($position->getPersonioId()); ?>?display=<?php echo get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY); ?>#apply" target="_blank">
             <?php _e('Apply for this position', 'wp-personio-integration'); ?>
         </a>
+        <?php
+        if( get_option('personioIntegrationTemplateBackToListButton', 0) == 1 ) {
+            ?>
+            <a class="personio-integration-back-button" href="<?php echo get_post_type_archive_link(WP_PERSONIO_INTEGRATION_CPT) ;?>">
+                <?php _e('back to list', 'wp-personio-integration'); ?>
+            </a>
+        <?php
+        }
+    ?>
     </p>
 </div>
 <?php

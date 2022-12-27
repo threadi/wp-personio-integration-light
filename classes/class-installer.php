@@ -112,6 +112,9 @@ class installer
                 update_option('personioIntegrationMaxAgeLogEntries', 50);
             }
 
+            // run all updates
+            updates::runAllUpdates();
+
             // save the current DB-version of this plugin
             update_option('personioIntegrationVersion', WP_PERSONIO_INTEGRATION_VERSION);
 
@@ -193,6 +196,7 @@ class installer
                 'personioIntegrationMaxAgeLogEntries',
                 'personioIntegrationEnableForm',
                 'personioIntegrationPositionCount',
+                'personioIntegrationTemplateBackToListButton',
                 WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION,
                 WP_PERSONIO_OPTION_COUNT,
                 WP_PERSONIO_OPTION_MAX,

@@ -48,8 +48,8 @@ function personio_integration_position_shortcode( $attributes = [] ): string
         'personioid' => 0,
         'lang' => get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY),
         'template' => '',
-        'templates' => implode(',', get_option('personioIntegrationTemplateContentDefaults', '')),
-        'excerpt' => implode(",", get_option('personioIntegrationTemplateExcerptDetail', '')),
+        'templates' => implode(',', get_option('personioIntegrationTemplateContentDefaults', [])),
+        'excerpt' => implode(",", get_option('personioIntegrationTemplateExcerptDetail', [])),
         'donotlink' => 1
     ];
 
@@ -236,7 +236,7 @@ function personio_integration_content_output( $content ) {
 
         // set attributes for single output
         $attributes = [
-            'id' => get_post_meta( get_the_ID(), WP_PERSONIO_INTEGRATION_CPT_PM_PID, true )
+            'personioid' => get_post_meta( get_the_ID(), WP_PERSONIO_INTEGRATION_CPT_PM_PID, true )
         ];
 
         // return the output of shortcode-function
