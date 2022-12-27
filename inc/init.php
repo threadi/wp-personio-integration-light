@@ -420,3 +420,33 @@ function personio_integration_rankmath_description( $description )
     return $description;
 }
 add_filter( 'rank_math/frontend/description', 'personio_integration_rankmath_description', 10, 1);
+
+/**
+ * Check on each load if plugin-version has been changed.
+ * If yes, run appropriated functions for migrate to the new version.
+ *
+ * @return void
+ */
+function personio_integration_update() {
+    // get installed plugin-version (version of the actual files in this plugin)
+    $installedPluginVersion = WP_PERSONIO_INTEGRATION_VERSION;
+
+    // get db-version (version which was last installed)
+    $dbPluginVersion = get_option('personioIntegrationVersion', '1.0.0');
+
+    // compare version if we are not in development-mode
+    if( $installedPluginVersion != '@@VersionNumber@@' && version_compare($installedPluginVersion, $dbPluginVersion, '>') ) {
+        switch( $dbPluginVersion ) {
+            case '1.2.3':
+                // nothing to do as 1.2.3 is the first version with this update-check
+                break;
+            default:
+                updates::version123();
+                break;
+        }
+
+        // save new plugin-version in DB
+        update_option('personioIntegrationVersion', $installedPluginVersion);
+    }
+}
+add_action( 'plugins_loaded', 'personio_integration_update' );
