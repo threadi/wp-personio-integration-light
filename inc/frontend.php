@@ -46,7 +46,7 @@ function personio_integration_position_shortcode( $attributes = [] ): string
     // define the default values for each attribute
     $attribute_defaults = [
         'personioid' => 0,
-        'lang' => get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY),
+        'lang' => helper::get_current_lang(),
         'template' => '',
         'templates' => implode(',', get_option('personioIntegrationTemplateContentDefaults', [])),
         'excerpt' => implode(",", get_option('personioIntegrationTemplateExcerptDetail', [])),
@@ -136,7 +136,7 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
 
     // define the default values for each attribute
     $attribute_defaults = [
-        'lang' => get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY),
+        'lang' => helper::get_current_lang(),
         'showfilter' => (get_option('personioIntegrationEnableFilter', 0) == 1),
         'filter' => implode(',', get_option('personioIntegrationTemplateFilter', '')),
         'filtertype' => get_option('personioIntegrationFilterType', 'select'),
@@ -151,6 +151,7 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
         'nopagination' => apply_filters('personio_integration_pagination', true),
         'groupby' => ''
     ];
+
     // define the settings for each attribute (array or string)
     $attribute_settings = [
         'id' => 'string',
@@ -168,6 +169,7 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
         'nopagination' => 'bool',
         'groupby' => 'string'
     ];
+
     // add taxonomies which are available as filter
     foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
         if( !empty($taxonomy['slug']) && $taxonomy['useInFilter'] == 1 ) {

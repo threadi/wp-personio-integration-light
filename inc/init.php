@@ -118,12 +118,12 @@ function personio_integration_add_taxonomies() {
         'show_in_quick_edit' => true,
         'show_in_rest' => true,
         'query_var' => true,
-        'capabilities' => [
+        /*'capabilities' => [
             'manage_terms' => 'manage_options',
             'edit_terms' => 'manage_options',
             'delete_terms' => 'god',
             'assign_terms' => 'manage_options',
-        ]
+        ]*/
     ];
 
     // loop through our own taxonomies and configure them
@@ -450,3 +450,13 @@ function personio_integration_update() {
     }
 }
 add_action( 'plugins_loaded', 'personio_integration_update' );
+
+/**
+ * Add each position to list during import.
+ *
+ * @return true
+ */
+function personio_integration_import_single_position_filter_existing() {
+    return true;
+}
+add_filter( 'personio_integration_import_single_position_filter_existing', 'personio_integration_import_single_position_filter_existing', 10);
