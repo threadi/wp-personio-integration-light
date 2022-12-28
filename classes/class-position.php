@@ -91,7 +91,6 @@ class Position {
             return apply_filters('the_excerpt', $this->data[$varName]);
         }
         else return $this->data[$varName];
-
     }
 
     /**
@@ -250,7 +249,7 @@ class Position {
      * @param bool $doNotAdd
      * @return void
      */
-    private function updateTerm($value, $taxonomy, $append, bool $doNotAdd = false ) {
+    public function updateTerm($value, $taxonomy, $append, bool $doNotAdd = false ) {
         if( !empty($this->data[$value]) ) {
             // get the term-object
             $term = get_term_by('name', $this->data[$value], $taxonomy);

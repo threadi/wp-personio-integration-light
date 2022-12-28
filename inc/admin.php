@@ -333,7 +333,7 @@ function personio_integration_admin_add_filter() {
 
     if( $post_type == WP_PERSONIO_INTEGRATION_CPT ) {
         // add filter for each taxonomy
-        foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
+        foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
             // show only taxonomies which are visible in filter
             if( $taxonomy['useInFilter'] == 1 ) {
                 // get the taxonomy as object
@@ -375,7 +375,7 @@ function personio_integration_admin_use_filter($query) {
     if ($post_type == WP_PERSONIO_INTEGRATION_CPT && $pagenow == 'edit.php') {
         // add filter for each taxonomy
         $tax_query = [];
-        foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
+        foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
             if ($taxonomy['useInFilter'] == 1) {
                 if( isset($_GET['admin_filter_'.$taxonomy_name]) && absint($_GET['admin_filter_'.$taxonomy_name]) > 0 ) {
                     $tax_query[] = [

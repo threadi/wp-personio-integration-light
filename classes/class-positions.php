@@ -56,7 +56,7 @@ class Positions {
 
         // add taxonomies as filter
         $tax_query = [];
-        foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
+        foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
             if( !empty($parameterToAdd[$taxonomy['slug']]) ) {
                 $tax_query[] = [
                     'taxonomy' => $taxonomy_name,

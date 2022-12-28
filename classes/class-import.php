@@ -73,6 +73,9 @@ class Import {
             $this->_errors[] = __('Personio URL not configured.', 'wp-personio-integration');
         }
 
+        // marker if result should do nothing
+        $doNothing = false;
+
         // enable xml-error-handling
         libxml_use_internal_errors(true);
 
@@ -117,6 +120,7 @@ class Import {
                         // timestamp did not change
                         // -> do nothing
                         update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
+                        $doNothing = true;
                         !$progress ?: $progress->tick();
                         continue;
                     }
@@ -139,6 +143,7 @@ class Import {
                         // md5-hash did not change
                         // -> do nothing
                         update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
+                        $doNothing = true;
                         !$progress ?: $progress->tick();
                         continue;
                     }
@@ -191,7 +196,6 @@ class Import {
 
                         // save the last-modified-timestamp
                         update_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key, $lastModifiedTimestamp);
-
                     }
 
                     // re-enable taxonomy-counting
@@ -214,18 +218,20 @@ class Import {
             $positionCount = count($countPositions);
 
             // delete all not updated positions
-            $positionsObject = new Positions();
-            foreach ($positionsObject->getPositions() as $position) {
-                $positionPostId = $position->ID;
-                $personioId = $position->getPersonioId();
-                if (get_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED, true) == 1) {
-                    delete_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED);
-                } else {
-                    // delete this position from database
-                    wp_delete_post($positionPostId, true);
+            if( !$doNothing ) {
+                $positionsObject = new Positions();
+                foreach ($positionsObject->getPositions() as $position) {
+                    $positionPostId = $position->ID;
+                    $personioId = $position->getPersonioId();
+                    if (get_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED, true) == 1) {
+                        delete_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED);
+                    } else {
+                        // delete this position from database
+                        wp_delete_post($positionPostId, true);
 
-                    // log this event
-                    $this->_log->addLog('Position '.$personioId.' has been deleted as it does not return from Personio.', 'success');
+                        // log this event
+                        $this->_log->addLog('Position ' . $personioId . ' has been deleted as it does not return from Personio.', 'success');
+                    }
                 }
             }
 
@@ -315,6 +321,7 @@ class Import {
         $positionObject->occupation = (string)$position->occupation;
         $positionObject->occupationCategory = (string)$position->occupationCategory;
         $positionObject->createdAt = (string)$position->createdAt;
+        $positionObject = apply_filters('personio_integration_import_single_position_xml', $positionObject, $position);
         $positionObject->save();
     }
 
