@@ -143,18 +143,26 @@ class Position {
                     ]
                 ]
             ];
-            $posts = new WP_Query($query);
-            if( $posts->post_count == 1 ) {
-                // get the post-id to update its data
-                $this->data['ID'] = $posts->posts[0];
+            $results = new WP_Query($query);
+            $posts = [];
+            foreach( $results->posts as $postId ) {
+                // optional filter the post-ID
+                if( apply_filters('personio_integration_import_single_position_filter_existing', $postId, $this->lang) ) {
+                    $posts[] = $postId;
+                }
             }
-            elseif( $posts->post_count > 1 ) {
+            if( count($posts) == 1 ) {
+                // get the post-id to update its data
+                $this->data['ID'] = $results->posts[0];
+            }
+            elseif( count($posts) > 1 ) {
                 // something is wrong
                 // -> delete all entries with this personioId
                 // -> it will be saved as new entry after this
-                foreach( $posts->posts as $position ) {
-                    wp_delete_post($position);
+                foreach( $posts as $postId ) {
+                    wp_delete_post($postId);
                 }
+
                 // set ID to 0
                 $this->data['ID'] = 0;
 
@@ -173,7 +181,7 @@ class Position {
             $this->data['ID'] = 0;
         }
 
-        // save the position
+        // prepare data to be saved
         // -> overwrite title and content only for the main language
         $array = [
             'ID' => $this->data['ID'],
@@ -189,9 +197,17 @@ class Position {
             $array['post_title'] = get_post_field('post_title', $this->data['ID']);
             $array['post_content'] = get_post_field('post_content', $this->data['ID']);
         }
+
+        // filter the prepared position-data
+        $array = apply_filters('personio_integration_import_single_position_filter_before_saving', $array, $this);
+
+        // save the position
         $this->data['ID'] = wp_insert_post($array);
 
         if( $this->data['ID'] > 0 ) {
+            // run hook on save of position
+            do_action('personio_integration_import_single_position_save', $this);
+
             // add personioId
             update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_PM_PID, $this->data['personioId']);
 
@@ -217,7 +233,7 @@ class Position {
 
             // add log in debug-mode
             if( false !== $this->_debug ) {
-                $this->_log->addLog('Position '.$this->data['personioId'].' successfully imported or updated.', 'success');
+                $this->_log->addLog('Position '.$this->data['personioId'].' successfully imported or updated in '.$this->data['lang'].'.', 'success');
             }
         }
         elseif( false !== $this->_debug ) {

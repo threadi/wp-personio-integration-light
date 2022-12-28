@@ -186,22 +186,6 @@ class Import {
                             update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
                         }
 
-                        // delete all not updated positions
-                        $positionsObject = new Positions();
-                        foreach ($positionsObject->getPositions() as $position) {
-                            $positionPostId = $position->ID;
-                            $personioId = $position->getPersonioId();
-                            if (get_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED, true) == 1) {
-                                delete_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED);
-                            } else {
-                                // delete this position from database
-                                wp_delete_post($positionPostId, true);
-
-                                // log this event
-                                $this->_log->addLog('Position '.$personioId.' has been deleted as it does not return from Personio.', 'success');
-                            }
-                        }
-
                         // save the md5-hash of this import-file to prevent reimport
                         update_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key, $md5hash);
 
@@ -228,6 +212,25 @@ class Import {
         if( empty($this->_errors) ) {
             // get count of importes positions
             $positionCount = count($countPositions);
+
+            // delete all not updated positions
+            $positionsObject = new Positions();
+            foreach ($positionsObject->getPositions() as $position) {
+                $positionPostId = $position->ID;
+                $personioId = $position->getPersonioId();
+                if (get_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED, true) == 1) {
+                    delete_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED);
+                } else {
+                    // delete this position from database
+                    wp_delete_post($positionPostId, true);
+
+                    // log this event
+                    $this->_log->addLog('Position '.$personioId.' has been deleted as it does not return from Personio.', 'success');
+                }
+            }
+
+            // run actions after import has been done
+            do_action('personio_integration_import_ended');
 
             // output success-message
             /** @noinspection PhpUndefinedClassInspection */

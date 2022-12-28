@@ -680,7 +680,7 @@ trait helper {
     }
 
     /**
-     * Return the active language depending on our own support.
+     * Return the active Wordpress-language depending on our own support.
      * If language is unknown for our plugin, use english.
      *
      * @return false|string
@@ -708,7 +708,44 @@ trait helper {
             $wpLang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
         }
 
-        // if language not known, use default language
+        // if language is not known, use default language
+        $languages = helper::get_supported_languages();
+        if (empty($languages[$wpLang])) {
+            $wpLang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
+        }
+        return $wpLang;
+    }
+
+    /**
+     * Return the current language depending on our own support.
+     * If language is unknown for our plugin, use english.
+     *
+     * @return false|string
+     * @noinspection PhpUnused
+     */
+    public static function get_current_lang() {
+        $wpLang = substr(get_bloginfo('language'), 0, 2);
+
+        /**
+         * Consider the main language set in Polylang for the web page
+         */
+        if( self::is_plugin_active('polylang/polylang.php') && function_exists('pll_current_language') ) {
+            $wpLang = pll_current_language();
+        }
+
+        /**
+         * Consider the main language set in WPML for the web page
+         */
+        if( self::is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
+            $wpLang = apply_filters('wpml_current_language', NULL );
+        }
+
+        // if language not set, use default language
+        if( empty($wpLang) ) {
+            $wpLang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
+        }
+
+        // if language is not known, use default language
         $languages = helper::get_supported_languages();
         if (empty($languages[$wpLang])) {
             $wpLang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;

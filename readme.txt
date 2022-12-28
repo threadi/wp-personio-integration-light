@@ -33,15 +33,14 @@ Show application forms on your positions and transfer applications from your web
 
 #### Compatibility tested with
 
-- WPML
-- Polylang
+- WPML and Polylang for language-detection
 - Post Types Order
 - Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder
 
 #### the Pro license includes:
 
 - manual sorting of open positions in list views via drag&drop
-- supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese
+- supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese - compatible with translations via Polylang
 - additional import settings, e.g. import intervals and partial import for very large lists of open jobs
 - RichSnippets for optimal findability via search engines like Google
 - Customization of slugs (URLs) for list and detailed views of positions
