@@ -371,7 +371,7 @@ trait helper {
 
         // delete the content of all taxonomies
         // -> hint: some will be newly insert after next wp-init
-        $taxonomies = WP_PERSONIO_INTEGRATION_TAXONOMIES;
+        $taxonomies = apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES);
         $progress = $this->isCLI() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count($taxonomies) ) : false;
         foreach( $taxonomies as $taxonomy => $settings ) {
             // delete all terms of this taxonomy
@@ -861,9 +861,9 @@ trait helper {
             switch_to_locale($locale);
         }
         if( empty($array[$taxonomy]) ) {
-            return [];
+            $array[$taxonomy] = [];
         }
-        return apply_filters('personio_integration_filter_taxonomy_label', $array[$taxonomy]);
+        return apply_filters('personio_integration_filter_taxonomy_label', $array[$taxonomy], $taxonomy);
     }
 
     /**

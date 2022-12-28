@@ -126,7 +126,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Fixed wrong occupation slug for filter in archive listings
 * Fixed some typos in texts
 
-= 1.2.3 =
+= 2.0.0 =
 * Added link "back to list" on detail-view (optional).
 * Added possibility to different translate/change "Apply to this position" in archive- and single-view
 * Optimized support for Yoast SEO and Rank Math

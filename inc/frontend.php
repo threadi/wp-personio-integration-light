@@ -171,7 +171,7 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
     ];
 
     // add taxonomies which are available as filter
-    foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
+    foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
         if( !empty($taxonomy['slug']) && $taxonomy['useInFilter'] == 1 ) {
             if( !empty($_GET['personiofilter']) && !empty($_GET['personiofilter'][$taxonomy['slug']]) ) {
                 $attribute_defaults[$taxonomy['slug']] = 0;
@@ -461,7 +461,7 @@ function personio_integration_get_filter( $filter, $attributes ) {
     $term_ids = [];
 
     // get the terms of this taxonomy
-    foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
+    foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
         if ($taxonomy['slug'] == $filter && $taxonomy['useInFilter'] == 1) {
             $taxonomyToUse = $taxonomy_name;
             $terms = get_terms(['taxonomy' => $taxonomy_name]);

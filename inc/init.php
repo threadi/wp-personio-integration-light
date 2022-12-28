@@ -118,16 +118,16 @@ function personio_integration_add_taxonomies() {
         'show_in_quick_edit' => true,
         'show_in_rest' => true,
         'query_var' => true,
-        /*'capabilities' => [
+        'capabilities' => [
             'manage_terms' => 'manage_options',
             'edit_terms' => 'manage_options',
             'delete_terms' => 'god',
             'assign_terms' => 'manage_options',
-        ]*/
+        ]
     ];
 
     // loop through our own taxonomies and configure them
-    foreach( WP_PERSONIO_INTEGRATION_TAXONOMIES as $taxonomy_name => $taxonomy ) {
+    foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
         // get properties
         $taxonomy_array = array_merge( $taxonomy_array_default, $taxonomy["attr"] );
         $taxonomy_array['labels'] = helper::get_taxonomy_label($taxonomy_name);
@@ -292,7 +292,7 @@ add_action('wp', 'personio_integration_update_slugs', 10 );
  */
 function personio_integration_admin_categories_labels(): array
 {
-    return [
+    return apply_filters('personio_integration_cat_labels', [
         'recruitingCategory' => esc_html__('recruiting category', 'wp-personio-integration'),
         'schedule' => esc_html__('schedule', 'wp-personio-integration'),
         'office' => esc_html__('office', 'wp-personio-integration'),
@@ -301,7 +301,7 @@ function personio_integration_admin_categories_labels(): array
         'seniority' => esc_html__('seniority', 'wp-personio-integration'),
         'experience' => esc_html__('experience', 'wp-personio-integration'),
         'occupation' => esc_html__('occupation', 'wp-personio-integration'),
-    ];
+    ]);
 }
 
 /**
