@@ -118,10 +118,7 @@ function personio_integration_admin_add_settings_template()
         [
             'label_for' => 'personioIntegrationFilterType',
             'fieldId' => 'personioIntegrationFilterType',
-            'values' => [
-                'select' => __('select-box', 'wp-personio-integration'),
-                'linklist' => __('list of links', 'wp-personio-integration')
-            ],
+            'values' => helper::get_filter_types(),
             'description' => __('This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'wp-personio-integration'),
             'readonly' => !helper::is_personioUrl_set()
         ]

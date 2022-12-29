@@ -316,6 +316,20 @@ trait helper {
     }
 
     /**
+     * Get list of available filter types.
+     *
+     * @return mixed|null
+     */
+    public static function get_filter_types()
+    {
+        $types = [
+            'select' => __('select-box', 'wp-personio-integration'),
+            'linklist' => __('list of links', 'wp-personio-integration')
+        ];
+        return apply_filters('personio_integration_filter_types', $types);
+    }
+
+    /**
      * Prüfe, ob der Import per CLI aufgerufen wird.
      * Z.B. um einen Fortschrittsbalken anzuzeigen.
      *

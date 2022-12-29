@@ -297,7 +297,7 @@ function personio_integration_admin_categories_labels(): array
         'schedule' => esc_html__('schedule', 'wp-personio-integration'),
         'office' => esc_html__('office', 'wp-personio-integration'),
         'department' => esc_html__('department', 'wp-personio-integration'),
-        'employmentTypes' => esc_html__('employment types', 'wp-personio-integration'),
+        'employmenttype' => esc_html__('employment types', 'wp-personio-integration'),
         'seniority' => esc_html__('seniority', 'wp-personio-integration'),
         'experience' => esc_html__('experience', 'wp-personio-integration'),
         'occupation' => esc_html__('occupation', 'wp-personio-integration'),
@@ -460,3 +460,62 @@ function personio_integration_import_single_position_filter_existing() {
     return true;
 }
 add_filter( 'personio_integration_import_single_position_filter_existing', 'personio_integration_import_single_position_filter_existing', 10);
+
+/**
+ * Add endpoint for requests from our own Blocks.
+ *
+ * @return void
+ * @noinspection PhpUnused
+ */
+function personio_integration_rest_api() {
+    register_rest_route( 'personio/v1', '/taxonomies/', array(
+        'methods' => WP_REST_SERVER::READABLE,
+        'callback' => 'personio_integration_rest_api_taxonomies',
+        'permission_callback' => function () {
+            return true;//current_user_can( 'edit_posts' );
+        }
+    ) );
+}
+add_action( 'rest_api_init', 'personio_integration_rest_api');
+
+/**
+ * Return list of available taxonomies for REST-API.
+ *
+ * @return array
+ * @noinspection PhpUnused
+ */
+function personio_integration_rest_api_taxonomies(): array
+{
+    $taxonomies_labels_array = personio_integration_admin_categories_labels();
+    $taxonomies = [];
+    $count = 0;
+    foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
+        if( $taxonomy['useInFilter'] == 1 ) {
+            $count++;
+            $termsAsObjects = get_terms(['taxonomy' => $taxonomy_name]);
+            $termCount = 0;
+            $terms = [
+                [
+                    'id' => $termCount,
+                    'label' => __('Please choose', 'wp-personio-integration'),
+                    'value' => 0
+                ]
+            ];
+            foreach( $termsAsObjects as $term ) {
+                $termCount++;
+                $terms[] = [
+                    'id' => $termCount,
+                    'label' => $term->name,
+                    'value' => $term->term_id
+                ];
+            }
+            $taxonomies[] = [
+                'id' => $count,
+                'label' => $taxonomies_labels_array[$taxonomy['slug']],
+                'value' => $taxonomy['slug'],
+                'entries' => $terms
+            ];
+        }
+    }
+    return $taxonomies;
+}
