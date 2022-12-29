@@ -25,6 +25,7 @@ span[itemprop="jobLocation"], span[itemprop="hiringOrganization"] { display: non
 }
 
 .personio-position-filter-linklist legend, .personio-position-filter-select legend {
+    display: inline-block;
     font-weight: bold;
     margin-right: 1.4em;
     padding: 0;
@@ -35,6 +36,7 @@ span[itemprop="jobLocation"], span[itemprop="hiringOrganization"] { display: non
 
 .personio-position-filter-linklist > div, .personio-position-filter-select > div, .personio-position-filter-linklist > a {
     cursor: pointer;
+    display: inline-block;
     margin: 0 1.4em 0 0;
     position: relative;
     z-index :1;

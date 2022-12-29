@@ -42,6 +42,7 @@ import {
 	onChangeSortBy,
 	onChangeGroupBy
 } from '../../components'
+const { dispatch, useSelect } = wp.data;
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -53,6 +54,25 @@ import {
  * @return {WPElement} Element to render.
  */
 export default function Edit( object ) {
+
+	// get filter types
+	let filter_types = wp.hooks.applyFilters('personio_integration_filter_types', [
+		{ label: __('list of links', 'wp-personio-integration'), value: 'linklist' },
+		{ label: __('select-box', 'wp-personio-integration'), value: 'select' }
+	]);
+
+	// get taxonomies
+	dispatch('core').addEntities([
+		{
+			name: 'taxonomies', // route name
+			kind: 'personio/v1', // namespace
+			baseURL: '/personio/v1/taxonomies' // API path without /wp-json
+		}
+	]);
+	let personioTaxonomies = useSelect( ( select ) => {
+			return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
+		}
+	);
 
 	/**
 	 * Collect return for the edit-function
@@ -71,15 +91,7 @@ export default function Edit( object ) {
 							<SelectControl
 								label={__('choose filter', 'wp-personio-integration')}
 								value={object.attributes.filter}
-								options={[
-									{label: __('recruiting category', 'wp-personio-integration'),value: 'recruitingCategory'},
-									{label: __('schedule', 'wp-personio-integration'), value: 'schedule'},
-									{label: __('office', 'wp-personio-integration'), value: 'office'},
-									{label: __('department', 'wp-personio-integration'), value: 'department'},
-									{label: __('seniority', 'wp-personio-integration'), value: 'seniority'},
-									{label: __('experience', 'wp-personio-integration'), value: 'experience'},
-									{label: __('occupation', 'wp-personio-integration'), value: 'occupation'}
-								]}
+								options={ personioTaxonomies }
 								multiple={true}
 								onChange={value => onChangeFilter(value, object)}
 							/>
@@ -88,10 +100,7 @@ export default function Edit( object ) {
 					<SelectControl
 						label={__('type of filter', 'wp-personio-integration')}
 						value={ object.attributes.filtertype }
-						options={ [
-							{ label: __('list of links', 'wp-personio-integration'), value: 'linklist' },
-							{ label: __('select-box', 'wp-personio-integration'), value: 'select' }
-						] }
+						options={ filter_types }
 						onChange={ value => onChangeFilterType( value, object ) }
 					/>
 				</PanelBody>
@@ -127,16 +136,7 @@ export default function Edit( object ) {
 					<SelectControl
 						label={__('Group by', 'wp-personio-integration')}
 						value={ object.attributes.groupby }
-						options={[
-							{label: __('not grouped', 'wp-personio-integration'), value: ''},
-							{label: __('recruiting category', 'wp-personio-integration'), value: 'recruitingCategory'},
-							{label: __('schedule', 'wp-personio-integration'), value: 'schedule'},
-							{label: __('office', 'wp-personio-integration'), value: 'office'},
-							{label: __('department', 'wp-personio-integration'), value: 'department'},
-							{label: __('seniority', 'wp-personio-integration'), value: 'seniority'},
-							{label: __('experience', 'wp-personio-integration'), value: 'experience'},
-							{label: __('occupation', 'wp-personio-integration'), value: 'occupation'}
-						]}
+						options={ personioTaxonomies }
 						onChange={ value => onChangeGroupBy( value, object ) }
 					/>
 					<ToggleControl
@@ -159,15 +159,7 @@ export default function Edit( object ) {
 							<SelectControl
 								label={__('Choose excerpt components', 'wp-personio-integration')}
 								value={object.attributes.excerptTemplates}
-								options={[
-									{label: __('recruiting category', 'wp-personio-integration'), value: 'recruitingCategory'},
-									{label: __('schedule', 'wp-personio-integration'), value: 'schedule'},
-									{label: __('office', 'wp-personio-integration'), value: 'office'},
-									{label: __('department', 'wp-personio-integration'), value: 'department'},
-									{label: __('seniority', 'wp-personio-integration'), value: 'seniority'},
-									{label: __('experience', 'wp-personio-integration'), value: 'experience'},
-									{label: __('occupation', 'wp-personio-integration'), value: 'occupation'}
-								]}
+								options={ personioTaxonomies }
 								multiple={true}
 								onChange={value => onChangeExcerptTemplates(value, object)}
 							/>

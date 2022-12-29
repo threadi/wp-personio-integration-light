@@ -504,3 +504,26 @@ function personio_integration_get_filter( $filter, $attributes ) {
 
 }
 add_action( 'personio_integration_get_filter', 'personio_integration_get_filter', 10, 2 );
+
+/**
+ * Convert term-name to term-id if it is set in shortcode-attributes and configure shortcode-attribute.
+ *
+ * @param $values
+ * @return array
+ */
+function personio_integration_check_filter_type( $values ): array
+{
+    if( !empty($values['attributes']['filtertype']) ) {
+        if( !in_array($values['attributes']['filtertype'], ['linklist', 'select']) ) {
+            $values['attributes']['filtertype'] = 'linklist';
+        }
+    }
+
+    // return resulting arrays
+    return [
+        'defaults' => $values['defaults'],
+        'settings' => $values['settings'],
+        'attributes' => $values['attributes']
+    ];
+}
+add_filter( 'personio_integration_get_shortcode_attributes', 'personio_integration_check_filter_type', 10, 1);

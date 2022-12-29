@@ -59,6 +59,7 @@ The parameters in the shortcodes have the following tasks:
 * only one of the following values may be specified:
   * linklist
   * selectbox
+  * linklist_without_categories (only Pro)
 
 ### templates
 
