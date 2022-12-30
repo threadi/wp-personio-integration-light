@@ -111,7 +111,7 @@ function personio_integration_admin_add_settings_template()
     // set filter-type
     add_settings_field(
         'personioIntegrationFilterType',
-        __('Set filter-type', 'wp-personio-integration'),
+        __('Choose filter-type', 'wp-personio-integration'),
         'personio_integration_admin_select_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_list',

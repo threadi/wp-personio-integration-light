@@ -1,5 +1,7 @@
 <?php
 
+namespace personioIntegration;
+
 /**
  * Object which holds all version-specific updates.
  */

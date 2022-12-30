@@ -242,9 +242,11 @@ class Import {
             /** @noinspection PhpUndefinedClassInspection */
             $this->isCLI() ? \WP_CLI::success($languageCount . " languages grabbed, " . $positionCount . " positions imported.") : false;
 
+            // save position count
+            update_option('personioIntegrationPositionCount', $positionCount);
+
             // set position count if > 0
             if( $positionCount > 0 ) {
-                update_option('personioIntegrationPositionCount', $positionCount);
                 // remove transient with no-import-hint
                 delete_transient('personio_integration_no_position_imported');
             }
