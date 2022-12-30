@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
     // add option near to list-headline
-    $('body.post-type-personioposition.personio-integration-free:not(.edit-tags-php):not(.personioposition_page_personioApplication) h1.wp-heading-inline').after('<a class="page-title-action personio-pro-hint" href="' + customJsVars.pro_url + '" target="_blank">' + customJsVars.label_go_pro + '</a>');
-    $('body.post-type-personioposition:not(.edit-tags-php):not(.personio-integration-url-missing):not(.personioposition_page_personioApplication) h1.wp-heading-inline').after('<a class="page-title-action personio-integration-import-hint" href="admin.php?action=personioPositionsImport">' + customJsVars.label_run_import + '</a>');
+    $('body.post-type-personioposition.personio-integration-free:not(.edit-tags-php):not(.personioposition_page_personioApplication):not(.personioposition_page_personioformtemplate) h1.wp-heading-inline').after('<a class="page-title-action personio-pro-hint" href="' + customJsVars.pro_url + '" target="_blank">' + customJsVars.label_go_pro + '</a>');
+    $('body.post-type-personioposition:not(.edit-tags-php):not(.personio-integration-url-missing):not(.personioposition_page_personioApplication):not(.personioposition_page_personioformtemplate) h1.wp-heading-inline').after('<a class="page-title-action personio-integration-import-hint" href="admin.php?action=personioPositionsImport">' + customJsVars.label_run_import + '</a>');
 
     // save to hide transient-messages via ajax-request
     $('div[data-dismissible] button.notice-dismiss').on('click',
