@@ -4,7 +4,7 @@ namespace personioIntegration;
 
 use WP_Rewrite;
 
-trait helper {
+class helper {
 
     /**
      * Add terms from an array to a taxonomy.
@@ -330,97 +330,6 @@ trait helper {
     }
 
     /**
-     * Prüfe, ob der Import per CLI aufgerufen wird.
-     * Z.B. um einen Fortschrittsbalken anzuzeigen.
-     *
-     * @return bool
-     */
-    public static function isCLI(): bool
-    {
-        return defined( 'WP_CLI' ) && WP_CLI;
-    }
-
-    /**
-     * Delete all imported positions.
-     *
-     * @return void
-     */
-    private function deletePositionsFromDb() {
-        $positionsObject = new Positions();
-        $positions = $positionsObject->getPositions();
-        $positionCount = count($positions);
-        $progress = $this->isCLI() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local positions', $positionCount ) : false;
-        foreach( $positions as $position ) {
-            // delete it
-            wp_delete_post($position->ID, true);
-
-            // show progress
-            !$progress ?: $progress->tick();
-        }
-        // finalize progress
-        !$progress ?: $progress->finish();
-
-        // delete position count
-        delete_option('personioIntegrationPositionCount');
-
-        // delete options regarding the import
-        foreach( WP_PERSONIO_INTEGRATION_LANGUAGES as $key => $lang ) {
-            delete_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP.$key);
-            delete_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5.$key);
-        }
-
-        // output success-message
-        $this->isCLI() ? \WP_CLI::success($positionCount." positions deleted.") : false;
-    }
-
-    /**
-     * Delete all taxonomies which depends on our own custom post type.
-     *
-     * @return void
-     * @noinspection SqlResolve
-     */
-    private function deleteTaxonomies()
-    {
-        global $wpdb;
-
-        // delete the content of all taxonomies
-        // -> hint: some will be newly insert after next wp-init
-        $taxonomies = apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES);
-        $progress = $this->isCLI() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count($taxonomies) ) : false;
-        foreach( $taxonomies as $taxonomy => $settings ) {
-            // delete all terms of this taxonomy
-            $sql = "
-                DELETE FROM ".$wpdb->terms."
-                WHERE term_id IN
-                ( 
-                    SELECT ".$wpdb->terms.".term_id
-                    FROM ".$wpdb->terms."
-                    JOIN ".$wpdb->term_taxonomy."
-                    ON ".$wpdb->term_taxonomy.".term_id = ".$wpdb->terms.".term_id
-                    WHERE taxonomy = '".$taxonomy."'
-                )";
-            $wpdb->query($sql);
-
-            // delete all taxonomy-entries
-            $sql = "
-                DELETE FROM ".$wpdb->term_taxonomy."
-                WHERE taxonomy = '".$taxonomy."'";
-            $wpdb->query($sql);
-
-            // cleanup options
-            delete_option($taxonomy."_children");
-
-            // show progress
-            !$progress ?: $progress->tick();
-        }
-        // finalize progress
-        !$progress ?: $progress->finish();
-
-        // output success-message
-        $this->isCLI() ? \WP_CLI::success(count($taxonomies)." taxonomies where cleaned.") : false;
-    }
-
-    /**
      * Load a template if it exists.
      * Also load the requested file if is located in the /wp-content/themes/xy/personio-integration-light/ directory.
      *
@@ -546,92 +455,6 @@ trait helper {
 
         // return the resulting array with checked and secured attributes
         return $attributes;
-    }
-
-    /**
-     * Secure the widget-fields.
-     *
-     * @param $fields
-     * @param $new_instance
-     * @param $instance
-     * @return mixed
-     */
-    protected function secureWidgetFields( $fields, $new_instance, $instance  ) {
-        foreach( $fields as $name => $field ) {
-            switch( $field["type"] ) {
-                case "select":
-                    if( !empty($field["multiple"]) ) {
-                        $values = [];
-                        if( !empty($new_instance[$name]) ) {
-                            foreach ($new_instance[$name] as $v) {
-                                $values[] = sanitize_text_field($v);
-                            }
-                        }
-                        $instance[$name] = $values;
-                    }
-                    else {
-                        $instance[$name] = sanitize_text_field($new_instance[$name]);
-                    }
-                    break;
-                case "number":
-                    $instance[$name] = absint($new_instance[$name]);
-                    break;
-            }
-        }
-        return $instance;
-    }
-
-    /**
-     * Create output for Widget-fields.
-     *
-     * @param $fields
-     * @param $instance
-     * @return void
-     */
-    protected function createWidgetFieldOutput( $fields, $instance ) {
-        foreach( $fields as $name => $field ) {
-            switch( $field["type"] ) {
-                case "select":
-                    // get actual value
-                    $selectedValue = [!empty($instance[$name]) ? $instance[$name] : $field["std"]];
-
-                    // multiselect
-                    $multiple = '';
-                    if( isset($field["multiple"]) && false !== $field["multiple"]) {
-                        $multiple = ' multiple="multiple"';
-                        if( !empty($instance[$name]) && is_array($instance[$name]) ) {
-                            $selectedValue = [];
-                            foreach( $field["values"] as $n => $v ) {
-                                if( false !== in_array($n, $instance[$name]) ) {
-                                    $selectedValue[] = $n;
-                                }
-                            }
-                        }
-                    }
-                    ?>
-                    <p>
-                        <label for="<?php echo esc_attr($this->get_field_name($name)); ?>"><?php echo esc_html($field["title"]); ?></label>
-                        <select class="widefat" id="<?php echo esc_attr($this->get_field_name($name)); ?>" name="<?php echo esc_attr($this->get_field_name($name));echo (isset($field["multiple"]) && false !== $field["multiple"]) ? '[]' : ''; ?>"<?php echo esc_attr($multiple); ?>>
-                            <?php
-                            foreach( $field["values"] as $value => $title ) {
-                                ?><option value="<?php echo esc_attr($value); ?>"<?php echo (in_array($value, $selectedValue) ? ' selected="selected"' : ''); ?>><?php echo esc_html($title); ?></option><?php
-                            }
-                            ?>
-                        </select>
-                    </p>
-                    <?php
-                    break;
-                case "number":
-                    $value = !empty($instance[$name]) ? $instance[$name] : $field["default"];
-                    ?>
-                    <p>
-                        <label for="<?php echo esc_attr($this->get_field_id($name)); ?>"><?php echo esc_html($field["title"]); ?></label>
-                        <input class="widefat" type="number" id="<?php echo esc_attr($this->get_field_id($name)); ?>" name="<?php echo esc_attr($this->get_field_name($name)); ?>" value="<?php echo esc_attr( $value ); ?>" /></p>
-                    </p>
-                    <?php
-                    break;
-            }
-        }
     }
 
     /**
@@ -1011,6 +834,17 @@ trait helper {
      */
     public static function get_supported_languages() {
         return apply_filters('personio_integration_supported_languages', WP_PERSONIO_INTEGRATION_LANGUAGES_COMPLETE);
+    }
+
+    /**
+     * Prüfe, ob der Import per CLI aufgerufen wird.
+     * Z.B. um einen Fortschrittsbalken anzuzeigen.
+     *
+     * @return bool
+     */
+    public static function isCLI(): bool
+    {
+        return defined( 'WP_CLI' ) && WP_CLI;
     }
 
 }

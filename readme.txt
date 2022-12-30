@@ -73,7 +73,7 @@ No, no iframe of any kind is used to embed data.
 
 = How can I use a form as an application form and submit the applications to Personio? =
 
-No, this is not possible (at this moment). In order to send an application, the applicant must access the link to the Personio website.
+This is supported by the Pro version of the plugin since version 2.0.0. You can find instructions on how to do this [here](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/applications/quickstart.md).
 
 = Does this plugin set any cookies or load data from external? =
 
@@ -131,5 +131,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Added possibility to different translate/change "Apply to this position" in archive- and single-view
 * Optimized support for Yoast SEO and Rank Math
 * Optimized select- and multi-select-field for plugin-settings
+* Fully compatible with PHP 7.4, 8.0, 8.1 and 8.2
+* More logging of events with enabled plugin-debug-mode
 * Advanced support for themes: GeneratePress, OceanWP, StartIt, Twenty Fourteen, Kadence, Neve, Hestia, Total, BeTheme
 * Fixed loading of position content in detail page

@@ -37,5 +37,5 @@ if( $GLOBALS['personio_query_results']->have_posts() ) :
     endwhile;
     include helper::getTemplate("parts/part-pagination.php");
 else:
-    ?><article class="site-main entry inside-article container qodef-container-inner site-content site-container content-bg content-area ht-container ht-container"><div class="entry-content"><p><?php __('No positions could be found.', 'wp-personio-integration'); ?></p></div></article><?php
+    ?><article class="site-main entry inside-article container qodef-container-inner site-content site-container content-bg content-area ht-container ht-container"><div class="entry-content"><p><?php _e('No positions could be found.', 'wp-personio-integration'); ?></p></div></article><?php
 endif;

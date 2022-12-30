@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Output of filter-list.
  */
-if( !empty($personio_attributes["filter"]) && false !== $personio_attributes["showfilter"] ) :
+if( !empty($personio_attributes["filter"]) && false !== $personio_attributes["showfilter"] && get_option('personioIntegrationPositionCount', 0) > 0 ) :
     $formId = "pif".md5(serialize($personio_attributes["filter"]));
     ?>
     <article id="<?php echo $formId; ?>" class="site-main entry entry-content container inside-article container qodef-container-inner site-content site-content site-container content-bg content-area">

@@ -10,17 +10,11 @@ use SimpleXMLElement;
  */
 class Import {
 
-    // get helper
-    use helper;
-
     // Debug-Marker
     private bool $_debug;
 
     // Array to collect all errors on import
     private array $_errors = [];
-
-    // db-connection
-    private $_wpdb;
 
     /**
      * Log-Object
@@ -35,8 +29,6 @@ class Import {
      * @noinspection PhpUndefinedFunctionInspection
      */
     public function __construct() {
-        global $wpdb;
-
         // get log-object
         $this->_log = new Log();
 
@@ -50,9 +42,6 @@ class Import {
 
         // get debug-mode
         $this->_debug = get_option('personioIntegration_debug', 0) == 1;
-
-        // get database-connection
-        $this->_wpdb = $wpdb;
 
         // get the languages
         $languages = helper::getActiveLanguagesWithDefaultFirst();
@@ -87,7 +76,7 @@ class Import {
             $count = 0;
 
             // CLI-Output
-            $progress = $this->isCLI() ? \WP_CLI\Utils\make_progress_bar('Get positions from Personio by language', $languageCount) : false;
+            $progress = helper::isCLI() ? \WP_CLI\Utils\make_progress_bar('Get positions from Personio by language', $languageCount) : false;
             foreach( $languages as $key => $enabled ) {
                 // define the url
                 $url = $domain . "/xml?language=" . esc_attr($key);
@@ -240,11 +229,13 @@ class Import {
 
             // output success-message
             /** @noinspection PhpUndefinedClassInspection */
-            $this->isCLI() ? \WP_CLI::success($languageCount . " languages grabbed, " . $positionCount . " positions imported.") : false;
+            helper::isCLI() ? \WP_CLI::success($languageCount . " languages grabbed, " . $positionCount . " positions imported.") : false;
+
+            // save position count
+            update_option('personioIntegrationPositionCount', $positionCount);
 
             // set position count if > 0
             if( $positionCount > 0 ) {
-                update_option('personioIntegrationPositionCount', $positionCount);
                 // remove transient with no-import-hint
                 delete_transient('personio_integration_no_position_imported');
             }
@@ -281,7 +272,7 @@ class Import {
         $this->_log->addLog($ausgabe, !empty($this->_errors) ? 'error' : 'success');
 
         // output results in WP-CLI
-        echo ($this->isCLI() ? esc_html($ausgabe) : "");
+        echo (helper::isCLI() ? esc_html($ausgabe) : "");
 
         // send info to admin about the problem
         if( !empty($this->_errors) && !$this->_debug ) {

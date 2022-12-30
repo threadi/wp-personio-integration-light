@@ -140,7 +140,7 @@ function personio_integration_admin_languages_field( $attr ) {
 
         // pro hint
         /* translators: %1$s is replaced with "string" */
-        do_action('personio_integration_admin_show_pro_hint', __('Use all languages supported by Personio with %s', 'wp-personio-integration'));
+        do_action('personio_integration_admin_show_pro_hint', __('Use all languages supported by Personio with %s.', 'wp-personio-integration'));
     }
 }
 
