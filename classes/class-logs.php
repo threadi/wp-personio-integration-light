@@ -9,8 +9,6 @@ use WP_List_Table;
  */
 class Logs extends WP_List_Table {
 
-    use helper;
-
     // database-object
     private $_wpdb;
 

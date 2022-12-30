@@ -7,7 +7,7 @@ namespace personioIntegration;
  */
 class cli {
 
-    use helper;
+    use helper_cli;
 
     /**
      * Get actual open positions via PersonioAPI.

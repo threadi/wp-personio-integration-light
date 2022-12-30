@@ -7,8 +7,6 @@ namespace personioIntegration;
  */
 class installer
 {
-    use helper;
-
     /**
      * Initialize the plugin.
      *

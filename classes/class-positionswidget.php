@@ -9,7 +9,7 @@ use WP_Widget;
  */
 class PositionsWidget extends WP_Widget {
 
-    use helper;
+    use helper_widget;
 
     /**
      * Initialize this widget.

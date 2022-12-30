@@ -8,9 +8,6 @@ use WP_Widget;
  * Object to provide an old-fashion widget for positions.
  */
 class PositionWidget extends WP_Widget {
-
-    use helper;
-
     /**
      * Initialize this widget.
      */

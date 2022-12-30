@@ -6,9 +6,6 @@ namespace personioIntegration;
  * Handler for logging in this plugin.
  */
 class Log {
-
-    use helper;
-
     // database-object
     private $_wpdb;
 
