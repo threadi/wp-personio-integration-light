@@ -3,6 +3,7 @@
 use personioIntegration\helper;
 use personioIntegration\Import;
 use personioIntegration\Position;
+use personioIntegration\updates;
 
 /**
  * General initialization.
@@ -408,7 +409,7 @@ add_filter( 'wpseo_opengraph_desc', 'personio_integration_yoast_description', 10
  * @param $description
  * @return string
  */
-function personio_integration_rankmath_description( $description )
+function personio_integration_rankmath_description( $description ): string
 {
     if( is_single() ) {
         $object = get_queried_object();
@@ -456,7 +457,8 @@ add_action( 'plugins_loaded', 'personio_integration_update' );
  *
  * @return true
  */
-function personio_integration_import_single_position_filter_existing() {
+function personio_integration_import_single_position_filter_existing(): bool
+{
     return true;
 }
 add_filter( 'personio_integration_import_single_position_filter_existing', 'personio_integration_import_single_position_filter_existing', 10);
