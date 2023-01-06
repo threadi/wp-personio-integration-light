@@ -63,7 +63,7 @@ function personio_integration_admin_add_settings_importexport()
      */
     add_settings_section(
         'settings_section_import',
-        __('Import Settings', 'wp-personio-integration'),
+        __('Import of positions from Personio', 'wp-personio-integration'),
         '__return_true',
         'personioIntegrationPositionsImportExport'
     );
