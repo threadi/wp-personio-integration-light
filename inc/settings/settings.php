@@ -144,7 +144,7 @@ function personio_integration_settings_add_logs_tab( $tab ): void
     if( $tab === 'logs' ) $activeClass = ' nav-tab-active';
 
     // output tab
-    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=logs" class="nav-tab'.esc_attr($activeClass).'">'._x('Logs', 'wp-personio-integration').'</a>';
+    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=logs" class="nav-tab'.esc_attr($activeClass).'">'.__('Logs', 'wp-personio-integration').'</a>';
 }
 add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_logs_tab', 60, 1 );
 

@@ -18,7 +18,7 @@ function personio_integration_settings_add_importexport_tab( $tab ): void
     if( $tab === 'importexport' ) $activeClass = ' nav-tab-active';
 
     // output tab
-    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=importexport" class="nav-tab'.esc_attr($activeClass).'">'._x('Import', 'wp-personio-integration').'</a>';
+    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=importexport" class="nav-tab'.esc_attr($activeClass).'">'.__('Import', 'wp-personio-integration').'</a>';
 }
 add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_importexport_tab', 20, 1 );
 

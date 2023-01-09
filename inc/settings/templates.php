@@ -16,7 +16,7 @@ function personio_integration_settings_add_template_tab( $tab ): void
     if( $tab === 'template' ) $activeClass = ' nav-tab-active';
 
     // output tab
-    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=template" class="nav-tab'.esc_attr($activeClass).'">'._x('Templates', 'wp-personio-integration').'</a>';
+    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=template" class="nav-tab'.esc_attr($activeClass).'">'.__('Templates', 'wp-personio-integration').'</a>';
 }
 add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_template_tab', 10, 1 );
 
