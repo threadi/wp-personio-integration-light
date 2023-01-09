@@ -56,16 +56,6 @@ add_action('personio_integration_settings_template_page', 'personio_integration_
 function personio_integration_admin_add_settings_template()
 {
     /**
-     * Template section
-     */
-    add_settings_section(
-        'settings_section_template',
-        __('Template Settings', 'wp-personio-integration'),
-        'personio_integration_admin_settings_template',
-        'personioIntegrationPositionsTemplates'
-    );
-
-    /**
      * List section
      */
     add_settings_section(
@@ -264,16 +254,3 @@ function personio_integration_admin_add_settings_template()
 
 }
 add_action( 'personio_integration_settings_add_settings', 'personio_integration_admin_add_settings_template');
-
-/**
- * Add hints for using the template-settings.
- *
- * @return void
- */
-function personio_integration_admin_settings_template() {
-    $lang = helper::get_wp_lang();
-    if( !in_array($lang, ['de','en']) ) {
-        $lang = 'en';
-    }
-    ?><img src="<?php echo plugin_dir_url(WP_PERSONIO_INTEGRATION_PLUGIN); ?>gfx/list_<?php echo $lang; ?>.png" alt=""><?php
-}
