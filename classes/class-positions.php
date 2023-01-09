@@ -187,4 +187,14 @@ class Positions {
         return $join." LEFT JOIN $wpdb->terms ON $wpdb->terms.term_id = $wpdb->term_relationships.term_taxonomy_id";
     }
 
+    /**
+     * Return count of positions in db.
+     *
+     * @return int|null
+     */
+    public function getPositionsCount(): int
+    {
+        return count($this->getPositions());
+    }
+
 }

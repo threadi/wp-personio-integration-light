@@ -55,7 +55,7 @@ class Import {
         $doNotUpdateMaxCounter = false;
 
         // create array for positions
-        $countPositions = [];
+        $importedPositions = [];
 
         // check if PersonioUrl is set
         if( !helper::is_personioUrl_set() ) {
@@ -169,7 +169,7 @@ class Import {
 
                         foreach ($positions as $position) {
                             // add to list for counting
-                            $countPositions[(int)$position->id] = $position;
+                            $importedPositions[(int)$position->id] = $position;
 
                             if( false !== apply_filters('personio_integration_import_single_position', $position, $key) ) {
                                 // import the position
@@ -203,12 +203,11 @@ class Import {
         libxml_use_internal_errors(false);
 
         if( empty($this->_errors) ) {
-            // get count of importes positions
-            $positionCount = count($countPositions);
+            // get Positions-object
+            $positionsObject = new Positions();
 
             // delete all not updated positions
             if( !$doNothing ) {
-                $positionsObject = new Positions();
                 foreach ($positionsObject->getPositions() as $position) {
                     $positionPostId = $position->ID;
                     $personioId = $position->getPersonioId();
@@ -229,19 +228,20 @@ class Import {
 
             // output success-message
             /** @noinspection PhpUndefinedClassInspection */
-            helper::isCLI() ? \WP_CLI::success($languageCount . " languages grabbed, " . $positionCount . " positions imported.") : false;
+            helper::isCLI() ? \WP_CLI::success($languageCount . " languages grabbed, " . count($importedPositions) . " positions imported.") : false;
 
             // save position count
-            update_option('personioIntegrationPositionCount', $positionCount);
+            $countPositions = $positionsObject->getPositionsCount();
+            update_option('personioIntegrationPositionCount', $countPositions);
 
             // set position count if > 0
-            if( $positionCount > 0 ) {
+            if( $countPositions > 0 ) {
                 // remove transient with no-import-hint
                 delete_transient('personio_integration_no_position_imported');
             }
 
             // log ok
-            $this->logSuccess($languageCount . " languages grabbed, " . $positionCount . " positions imported.");
+            $this->logSuccess($languageCount . " languages grabbed, " . count($importedPositions) . " positions imported.");
         }
         else {
             // output error-message
