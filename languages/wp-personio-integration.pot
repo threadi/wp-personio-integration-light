@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-01-09T10:29:46+01:00\n"
+"POT-Creation-Date: 2023-01-09T11:06:12+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -778,6 +778,11 @@ msgid "A timeout must have a value greater than 0."
 msgstr ""
 
 #: inc/settings/applications.php:12
+#: inc/settings/seo.php:12
+msgid "Only in Pro."
+msgstr ""
+
+#: inc/settings/applications.php:12
 msgid "Applications"
 msgstr ""
 
@@ -850,6 +855,10 @@ msgstr ""
 msgid "Please enter a valid URL."
 msgstr ""
 
+#: inc/settings/import.php:21
+msgid "Import"
+msgstr ""
+
 #: inc/settings/import.php:66
 msgid "Import of positions from Personio"
 msgstr ""
@@ -908,6 +917,10 @@ msgstr ""
 msgid "There are currently no imported positions."
 msgstr ""
 
+#: inc/settings/seo.php:12
+msgid "SEO"
+msgstr ""
+
 #: inc/settings/settings.php:80
 msgid "Personio Integration Settings"
 msgstr ""
@@ -916,8 +929,13 @@ msgstr ""
 msgid "Enter Personio URL to get more options"
 msgstr ""
 
+#: inc/settings/settings.php:147
 #: inc/settings/settings.php:168
 msgid "Logs"
+msgstr ""
+
+#: inc/settings/templates.php:19
+msgid "Templates"
 msgstr ""
 
 #: inc/settings/templates.php:63
