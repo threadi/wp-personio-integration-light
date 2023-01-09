@@ -131,6 +131,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Added possibility to different translate/change "Apply to this position" in archive- and single-view
 * Optimized support for Yoast SEO and Rank Math
 * Optimized select- and multi-select-field for plugin-settings
+* Optimized translation for german and german_formal.
 * Fully compatible with PHP 7.4, 8.0, 8.1 and 8.2
 * More logging of events with enabled plugin-debug-mode
 * Advanced support for themes: GeneratePress, OceanWP, StartIt, Twenty Fourteen, Kadence, Neve, Hestia, Total, BeTheme
