@@ -2,6 +2,7 @@
 /build/
 !/build/build.properties.dist
 !/build/build.xml
+!/build/languages
 /blocks/list/build/
 /blocks/show/build/
 /inc/constants2.php
