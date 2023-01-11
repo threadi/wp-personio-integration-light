@@ -104,7 +104,7 @@ function personio_integration_admin_add_settings_importexport()
         [
             'label_for' => 'personioIntegrationEnablePositionSchedule',
             'fieldId' => 'personioIntegrationEnablePositionSchedule',
-            'description' => __('If enabled, new positions stored in Personio will be retrieved automatically every hour.<br>If disabled, new positions are retrieved manually only.', 'wp-personio-integration'),
+            'description' => __('If enabled, new positions stored in Personio will be retrieved automatically daily.<br>If disabled, new positions are retrieved manually only.', 'wp-personio-integration'),
             'readonly' => !helper::is_personioUrl_set(),
             /* translators: %1$s is replaced with "string" */
             'pro_hint' => __('Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'wp-personio-integration')
