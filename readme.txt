@@ -136,3 +136,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 * More logging of events with enabled plugin-debug-mode
 * Advanced support for themes: GeneratePress, OceanWP, StartIt, Twenty Fourteen, Kadence, Neve, Hestia, Total, BeTheme
 * Fixed loading of position content in detail page
+
+= 2.0.1 =
+* Fixed usage of classic position widget

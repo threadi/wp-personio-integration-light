@@ -122,8 +122,9 @@ class PositionsWidget extends WP_Widget {
      * Add entry-formular with settings for the widget.
      *
      * @param $instance
+     *
      * @return void
-     */
+     * @noinspection PhpMissingReturnTypeInspection*/
     function form( $instance ) {
         $this->createWidgetFieldOutput( $this->getFields(), $instance );
     }
@@ -145,7 +146,11 @@ class PositionsWidget extends WP_Widget {
      *
      * @param $args
      * @param $settings
+     *
      * @return void
+     * @noinspection PhpMissingReturnTypeInspection
+     * @noinspection PhpParameterNameChangedDuringInheritanceInspection
+     * @noinspection DuplicatedCode
      */
     function widget( $args, $settings ) {
         // collect the configured templates
