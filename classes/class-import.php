@@ -171,7 +171,7 @@ class Import {
                             // add to list for counting
                             $importedPositions[(int)$position->id] = $position;
 
-                            if( false !== apply_filters('personio_integration_import_single_position', $position, $key) ) {
+                            if( false !== apply_filters('personio_integration_import_single_position', true, $position, $key) ) {
                                 // import the position
                                 $this->importPosition($position, $key);
                             }
