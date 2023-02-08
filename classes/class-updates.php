@@ -32,6 +32,9 @@ class updates {
     public static function runAllUpdates()
     {
         self::version123();
+
+        // reset import-flag
+        delete_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING);
     }
 
 }
