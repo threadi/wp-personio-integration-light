@@ -6,7 +6,7 @@ Tested up to: 6.1.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 
 == Description ==
 
@@ -139,3 +139,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.0.1 =
 * Fixed usage of classic position widget
+
+= 2.0.2 =
+* Reset import-flag on plugin-activation
+* Fixed compatibility with import of Pro-plugin
