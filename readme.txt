@@ -14,6 +14,10 @@ Import and display your positions from [Personio](https://www.personio.com/) dir
 
 Show application forms on your positions and transfer applications from your website to Personio with [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/).
 
+#### Hint ####
+
+The output of the positions is limited to a maximum of 10. Only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/) there is no limitation.
+
 #### Features
 
 - manual or automatic import of open positions
