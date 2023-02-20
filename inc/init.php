@@ -144,6 +144,23 @@ function personio_integration_add_taxonomies() {
 
         // register taxonomy
         register_taxonomy($taxonomy_name, [WP_PERSONIO_INTEGRATION_CPT], $taxonomy_array);
+    }
+}
+add_action( 'init', 'personio_integration_add_taxonomies', 0 );
+
+/**
+ * One-time function to create taxonomy-defaults.
+ *
+ * @return void
+ */
+function personio_integration_add_taxonomy_defaults() {
+    // Exit if the work has already been done.
+    if ( get_option( 'personioTaxonomyDefaults', 0 ) == 1 ) {
+        return;
+    }
+
+    // loop through our own taxonomies and configure them
+    foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
         // add default terms to taxonomy if they do not exist (only in admin or via CLI)
         if( !empty($taxonomy_array['defaults']) && ( is_admin() || helper::isCli()) ) {
             $hasTerms = get_terms(['taxonomy' => $taxonomy_name]);
@@ -152,8 +169,11 @@ function personio_integration_add_taxonomies() {
             }
         }
     }
+
+    // Add or update the wp_option
+    update_option( 'personioTaxonomyDefaults', 1 );
 }
-add_action( 'init', 'personio_integration_add_taxonomies', 0 );
+add_action( 'init', 'personio_integration_add_taxonomy_defaults', 20 );
 
 /**
  * Change the REST API-response for own cpt.
