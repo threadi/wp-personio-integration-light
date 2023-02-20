@@ -23,6 +23,18 @@ class updates {
     }
 
     /**
+     * To run on update to (exact) version 2.0.3
+     *
+     * @return void
+     */
+    public static function version203() {
+        // set max age for log entries in days
+        if (!get_option('personioIntegrationUrl')) {
+            update_option('personioIntegrationUrl', '', true);
+        }
+    }
+
+    /**
      * Wrapper to run all version-specific updates, which are in this class.
      *
      * ADD HERE ANY NEW version-update-function.
@@ -32,6 +44,7 @@ class updates {
     public static function runAllUpdates()
     {
         self::version123();
+        self::version203();
 
         // reset import-flag
         delete_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING);
