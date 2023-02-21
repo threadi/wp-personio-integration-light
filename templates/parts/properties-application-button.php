@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
         <?php
         if( get_option('personioIntegrationTemplateBackToListButton', 0) == 1 ) {
             ?>
-            <a class="personio-integration-back-button" href="<?php echo get_post_type_archive_link(WP_PERSONIO_INTEGRATION_CPT) ;?>">
+            <a class="personio-integration-back-button" href="<?php echo $back_to_list_url ;?>">
                 <?php _e('back to list', 'wp-personio-integration'); ?>
             </a>
         <?php

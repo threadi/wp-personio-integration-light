@@ -227,6 +227,22 @@ function personio_integration_admin_add_settings_template()
     );
     register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationTemplateBackToListButton' );
 
+    // link-target for back-to-list-button in detail-view
+    add_settings_field(
+        'personioIntegrationTemplateBackToListUrl',
+        __( 'URL for back to list-link', 'wp-personio-integration' ),
+        'personio_integration_admin_text_field',
+        'personioIntegrationPositionsTemplates',
+        'settings_section_template_detail',
+        [
+            'label_for' => 'personioIntegrationTemplateBackToListUrl',
+            'fieldId' => 'personioIntegrationTemplateBackToListUrl',
+            'description' => __('If empty the link will be set to list-slug.' , 'wp-personio-integration'),
+            'readonly' => !helper::is_personioUrl_set()
+        ]
+    );
+    register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationTemplateBackToListUrl' );
+
     /**
      * Other section
      */
