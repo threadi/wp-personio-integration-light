@@ -374,13 +374,20 @@ add_action( 'personio_integration_get_content', 'personio_integration_get_conten
  * @param $attributes
  * @return void
  * @noinspection PhpUnused
- * @noinspection PhpUnusedParameterInspection
  */
 function personio_integration_get_formular( $position, $attributes ) {
     $textPosition = 'archive';
     if( is_single() ) {
         $textPosition = 'single';
     }
+
+    // set back to list-link
+    $back_to_list_url = get_option('personioIntegrationTemplateBackToListUrl', '');
+    if( empty($back_to_list_url) ) {
+        $back_to_list_url = get_post_type_archive_link(WP_PERSONIO_INTEGRATION_CPT);
+    }
+
+    // get template
     include helper::getTemplate('parts/properties-application-button.php');
 }
 add_action( 'personio_integration_get_formular', 'personio_integration_get_formular', 10, 2 );
@@ -392,7 +399,6 @@ add_action( 'personio_integration_get_formular', 'personio_integration_get_formu
  * @param $query
  * @return void
  * @noinspection PhpUnused
- * @noinspection PhpUnusedParameterInspection
  */
 function personio_integration_update_post_object( $post, $query ) {
     if( $post->post_type == WP_PERSONIO_INTEGRATION_CPT ) {

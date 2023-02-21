@@ -147,3 +147,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 = 2.0.2 =
 * Reset import-flag on plugin-activation
 * Fixed compatibility with import of Pro-plugin
+
+= 2.0.3 =
+* Added field for custom back to list url in template-settings
