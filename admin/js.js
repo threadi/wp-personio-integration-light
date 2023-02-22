@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
     // add option near to list-headline
     $('body.post-type-personioposition.personio-integration-free:not(.edit-tags-php):not(.personioposition_page_personioApplication):not(.personioposition_page_personioformtemplate) h1.wp-heading-inline').after('<a class="page-title-action personio-pro-hint" href="' + customJsVars.pro_url + '" target="_blank">' + customJsVars.label_go_pro + '</a>');
-    $('body.post-type-personioposition:not(.edit-tags-php):not(.personio-integration-url-missing):not(.personioposition_page_personioApplication):not(.personioposition_page_personioformtemplate) h1.wp-heading-inline').after('<a class="page-title-action personio-integration-import-hint" href="admin.php?action=personioPositionsImport">' + customJsVars.label_run_import + '</a>');
+    $('body.post-type-personioposition.edit-php:not(.personio-integration-url-missing) h1.wp-heading-inline').after('<a class="page-title-action personio-integration-import-hint" href="admin.php?action=personioPositionsImport">' + customJsVars.label_run_import + '</a>');
 
     // save to hide transient-messages via ajax-request
     $('div[data-dismissible] button.notice-dismiss').on('click',
@@ -31,8 +31,8 @@ jQuery(document).ready(function($) {
     $('a.personio-integration-import-hint').on('click', function (e) {
         e.preventDefault();
 
-        // create dialog if if does not exists atm
-        if( $('#personioImportDialog').length == 0 ) {
+        // create dialog if it does not exist atm
+        if( $('#personioImportDialog').length === 0 ) {
             $('<div id="personioImportDialog" title="' + customJsVars.label_import_is_running + '"><div id="personioStepDescription"></div><div id="personioImportProgressbar"></div></div>').dialog({
                 width: 500,
                 closeOnEscape: false,
