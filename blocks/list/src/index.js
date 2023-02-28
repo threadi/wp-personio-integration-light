@@ -37,11 +37,6 @@ registerBlockType( 'wp-personio-integration/list', {
 	title: __( 'Personio Positions', 'wp-personio-integration' ),
 	description: __('Provides a Gutenberg Block to show a list of positions provided by Personio.', 'wp-personio-integration'),
 	icon: iconEl,
-	example: {
-		attributes: {
-			mode: 'preview'
-		}
-	},
 
 	attributes: {
 		showFilter: {
