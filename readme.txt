@@ -150,3 +150,4 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.0.3 =
 * Added field for custom back to list url in template-settings
+* Removed Block preview in Block Editor

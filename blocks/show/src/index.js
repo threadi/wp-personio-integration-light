@@ -38,11 +38,6 @@ registerBlockType( 'wp-personio-integration/show', {
 	title: __( 'Personio Position', 'wp-personio-integration' ),
 	description: __('Provides a Gutenberg Block to show a position provided by personio.', 'wp-personio-integration'),
 	icon: iconEl,
-	example: {
-		attributes: {
-			mode: 'preview'
-		}
-	},
 
 	/**
 	 * Attributes for this block.
