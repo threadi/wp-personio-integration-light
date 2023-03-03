@@ -6,7 +6,7 @@ Tested up to: 6.1.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 
 == Description ==
 
@@ -151,4 +151,5 @@ No, this plugin does not set cookies nor does it load data externally within the
 = 2.0.3 =
 * Added field for custom back to list url in template-settings
 * Removed Block preview in Block Editor for fix error in Block-themes
+* Updates Blocks for actual Gutenberg-enhancements
 * Fixed some typos in texts
