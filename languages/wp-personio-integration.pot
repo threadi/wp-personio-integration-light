@@ -4,12 +4,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-integration-light\n"
-"Last-Translator: Thomas Zwirner <tz@laolaweb.com>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-01-11T11:33:21+01:00\n"
+"POT-Creation-Date: 2023-03-03T16:22:27+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -111,12 +111,14 @@ msgid "The list of positions is limited to a maximum of 10 entries in the fronte
 msgstr ""
 
 #: classes/class-helper.php:326
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:172
+#: blocks/list/build/index.js:119
 msgid "select-box"
 msgstr ""
 
 #: classes/class-helper.php:327
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:169
+#: blocks/list/build/index.js:118
 msgid "list of links"
 msgstr ""
 
@@ -247,7 +249,7 @@ msgid "Update employment type"
 msgstr ""
 
 #: classes/class-helper.php:661
-#: inc/init.php:301
+#: inc/init.php:321
 msgid "employment types"
 msgstr ""
 
@@ -274,8 +276,9 @@ msgid "Update seniority"
 msgstr ""
 
 #: classes/class-helper.php:669
-#: inc/init.php:302
-#: blocks/show/build/index.js:1
+#: inc/init.php:322
+#: blocks/show/build/index.js:240
+#: blocks/show/build/index.js:186
 msgid "seniority"
 msgstr ""
 
@@ -451,7 +454,8 @@ msgstr ""
 
 #: classes/class-logs.php:43
 #: classes/class-positionswidget.php:57
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:237
+#: blocks/list/build/index.js:190
 msgid "date"
 msgstr ""
 
@@ -473,13 +477,15 @@ msgid "Provides a Widget to show a list of positions provided by Personio."
 msgstr ""
 
 #: classes/class-positionswidget.php:24
-#: inc/init.php:244
-#: blocks/list/build/index.js:1
+#: inc/init.php:264
+#: blocks/list/build/index.js:334
+#: blocks/list/build/index.js:283
 msgid "Personio Positions"
 msgstr ""
 
 #: classes/class-positionswidget.php:39
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:213
+#: blocks/list/build/index.js:169
 msgid "amount"
 msgstr ""
 
@@ -488,28 +494,33 @@ msgid "Sort Direction"
 msgstr ""
 
 #: classes/class-positionswidget.php:47
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:223
+#: blocks/list/build/index.js:180
 msgid "ascending"
 msgstr ""
 
 #: classes/class-positionswidget.php:48
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:226
+#: blocks/list/build/index.js:181
 msgid "descending"
 msgstr ""
 
 #: classes/class-positionswidget.php:53
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:231
+#: blocks/list/build/index.js:186
 msgid "Sort by"
 msgstr ""
 
 #: classes/class-positionswidget.php:56
-#: inc/init.php:318
-#: blocks/list/build/index.js:1
+#: inc/init.php:338
+#: blocks/list/build/index.js:234
+#: blocks/list/build/index.js:189
 msgid "title"
 msgstr ""
 
 #: classes/class-positionswidget.php:62
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:242
+#: blocks/list/build/index.js:195
 msgid "Group by"
 msgstr ""
 
@@ -518,7 +529,9 @@ msgid "ungrouped"
 msgstr ""
 
 #: classes/class-positionswidget.php:68
-#: classes/class-positionwidget.php:50
+#: classes/class-positionwidget.php:53
+#: blocks/list/build/index.js:247
+#: blocks/list/build/index.js:201
 msgid "Show title"
 msgstr ""
 
@@ -527,11 +540,11 @@ msgstr ""
 #: classes/class-positionswidget.php:89
 #: classes/class-positionswidget.php:105
 #: classes/class-positionswidget.php:114
-#: classes/class-positionwidget.php:53
-#: classes/class-positionwidget.php:62
-#: classes/class-positionwidget.php:71
-#: classes/class-positionwidget.php:87
-#: classes/class-positionwidget.php:96
+#: classes/class-positionwidget.php:56
+#: classes/class-positionwidget.php:65
+#: classes/class-positionwidget.php:74
+#: classes/class-positionwidget.php:90
+#: classes/class-positionwidget.php:99
 msgid "Show"
 msgstr ""
 
@@ -540,54 +553,58 @@ msgstr ""
 #: classes/class-positionswidget.php:90
 #: classes/class-positionswidget.php:106
 #: classes/class-positionswidget.php:115
-#: classes/class-positionwidget.php:54
-#: classes/class-positionwidget.php:63
-#: classes/class-positionwidget.php:72
-#: classes/class-positionwidget.php:88
-#: classes/class-positionwidget.php:97
+#: classes/class-positionwidget.php:57
+#: classes/class-positionwidget.php:66
+#: classes/class-positionwidget.php:75
+#: classes/class-positionwidget.php:91
+#: classes/class-positionwidget.php:100
 msgid "Hide"
 msgstr ""
 
 #: classes/class-positionswidget.php:77
-#: classes/class-positionwidget.php:59
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: classes/class-positionwidget.php:62
+#: blocks/show/build/index.js:213
+#: blocks/show/build/index.js:162
 msgid "link title"
 msgstr ""
 
 #: classes/class-positionswidget.php:86
-#: classes/class-positionwidget.php:68
+#: classes/class-positionwidget.php:71
 msgid "Show excerpt"
 msgstr ""
 
 #: classes/class-positionswidget.php:95
-#: classes/class-positionwidget.php:77
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: classes/class-positionwidget.php:80
+#: blocks/list/build/index.js:261
+#: blocks/show/build/index.js:225
+#: blocks/list/build/index.js:218
+#: blocks/show/build/index.js:176
 msgid "Choose excerpt components"
 msgstr ""
 
 #: classes/class-positionswidget.php:102
-#: classes/class-positionwidget.php:84
+#: classes/class-positionwidget.php:87
 msgid "Show content"
 msgstr ""
 
 #: classes/class-positionswidget.php:111
-#: classes/class-positionwidget.php:93
+#: classes/class-positionwidget.php:96
 msgid "Show application link"
 msgstr ""
 
-#: classes/class-positionwidget.php:17
+#: classes/class-positionwidget.php:20
 msgid "Provides a Widget to show a single position provided by Personio."
 msgstr ""
 
-#: classes/class-positionwidget.php:21
-#: blocks/show/build/index.js:1
+#: classes/class-positionwidget.php:24
+#: blocks/show/build/index.js:322
+#: blocks/show/build/index.js:255
 msgid "Personio Position"
 msgstr ""
 
-#: classes/class-positionwidget.php:44
-#: blocks/show/build/index.js:1
+#: classes/class-positionwidget.php:47
+#: blocks/show/build/index.js:203
+#: blocks/show/build/index.js:150
 msgid "Select position"
 msgstr ""
 
@@ -638,8 +655,10 @@ msgstr ""
 
 #: inc/admin.php:260
 #: inc/settings/settings.php:81
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:211
+#: blocks/show/build/index.js:201
+#: blocks/list/build/index.js:167
+#: blocks/show/build/index.js:148
 msgid "Settings"
 msgstr ""
 
@@ -688,55 +707,62 @@ msgstr ""
 msgid "Not found in Trash"
 msgstr ""
 
-#: inc/init.php:211
+#: inc/init.php:231
 msgid "every 5th Minute"
 msgstr ""
 
-#: inc/init.php:297
-#: blocks/show/build/index.js:1
+#: inc/init.php:317
+#: blocks/show/build/index.js:228
+#: blocks/show/build/index.js:180
 msgid "recruiting category"
 msgstr ""
 
-#: inc/init.php:298
-#: blocks/show/build/index.js:1
+#: inc/init.php:318
+#: blocks/show/build/index.js:231
+#: blocks/show/build/index.js:183
 msgid "schedule"
 msgstr ""
 
-#: inc/init.php:299
-#: blocks/show/build/index.js:1
+#: inc/init.php:319
+#: blocks/show/build/index.js:234
+#: blocks/show/build/index.js:184
 msgid "office"
 msgstr ""
 
-#: inc/init.php:300
-#: blocks/show/build/index.js:1
+#: inc/init.php:320
+#: blocks/show/build/index.js:237
+#: blocks/show/build/index.js:185
 msgid "department"
 msgstr ""
 
-#: inc/init.php:303
-#: blocks/show/build/index.js:1
+#: inc/init.php:323
+#: blocks/show/build/index.js:243
+#: blocks/show/build/index.js:187
 msgid "experience"
 msgstr ""
 
-#: inc/init.php:304
-#: blocks/show/build/index.js:1
+#: inc/init.php:324
+#: blocks/show/build/index.js:246
+#: blocks/show/build/index.js:188
 msgid "occupation"
 msgstr ""
 
-#: inc/init.php:319
+#: inc/init.php:339
 msgid "excerpt"
 msgstr ""
 
-#: inc/init.php:320
+#: inc/init.php:340
 msgid "content"
 msgstr ""
 
-#: inc/init.php:321
+#: inc/init.php:341
 msgid "application link"
 msgstr ""
 
-#: inc/init.php:502
+#: inc/init.php:522
 #: templates/parts/term-filter-select.php:13
-#: blocks/show/build/index.js:1
+#: blocks/show/build/index.js:187
+#: blocks/show/build/index.js:133
 msgid "Please choose"
 msgstr ""
 
@@ -1006,11 +1032,19 @@ msgstr ""
 msgid "Enable back to list-link"
 msgstr ""
 
-#: inc/settings/templates.php:235
+#: inc/settings/templates.php:233
+msgid "URL for back to list-link"
+msgstr ""
+
+#: inc/settings/templates.php:240
+msgid "If empty the link will be set to list-slug."
+msgstr ""
+
+#: inc/settings/templates.php:251
 msgid "Other settings"
 msgstr ""
 
-#: inc/settings/templates.php:243
+#: inc/settings/templates.php:259
 msgid "Separator for excerpt-list"
 msgstr ""
 
@@ -1019,7 +1053,8 @@ msgid "No positions could be found."
 msgstr ""
 
 #: templates/parts/part-filter.php:13
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:192
+#: blocks/list/build/index.js:141
 msgid "Filter"
 msgstr ""
 
@@ -1045,47 +1080,70 @@ msgstr ""
 msgid "back to list"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-msgid "Provides a Gutenberg Block to show a list of positions provided by Personio."
+#: blocks/list/build/index.js:194
+#: blocks/list/build/index.js:143
+msgid "Show filter"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-msgid "show filter"
+#: blocks/list/build/index.js:200
+#: blocks/list/build/index.js:150
+msgid "Choose filter"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-msgid "choose filter"
+#: blocks/list/build/index.js:206
+#: blocks/list/build/index.js:159
+msgid "Type of filter"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-msgid "type of filter"
-msgstr ""
-
-#: blocks/list/build/index.js:1
+#: blocks/list/build/index.js:220
+#: blocks/list/build/index.js:177
 msgid "Sort direction"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
-msgid "show title"
+#: blocks/list/build/index.js:251
+#: blocks/list/build/index.js:206
+msgid "Link title"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:255
+#: blocks/show/build/index.js:218
+#: blocks/list/build/index.js:211
+#: blocks/show/build/index.js:168
 msgid "show excerpt"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/list/build/index.js:267
+#: blocks/list/build/index.js:227
+msgid "View content"
+msgstr ""
+
+#: blocks/list/build/index.js:271
+#: blocks/list/build/index.js:232
+msgid "View application link"
+msgstr ""
+
+#: blocks/list/build/index.js:335
+#: blocks/list/build/index.js:284
+msgid "Provides a Gutenberg Block to show a list of positions provided by Personio."
+msgstr ""
+
+#: blocks/show/build/index.js:208
+#: blocks/show/build/index.js:156
+msgid "show title"
+msgstr ""
+
+#: blocks/show/build/index.js:253
+#: blocks/show/build/index.js:197
 msgid "view content"
 msgstr ""
 
-#: blocks/list/build/index.js:1
-#: blocks/show/build/index.js:1
+#: blocks/show/build/index.js:258
+#: blocks/show/build/index.js:203
 msgid "view application link"
 msgstr ""
 
-#: blocks/show/build/index.js:1
+#: blocks/show/build/index.js:323
+#: blocks/show/build/index.js:256
 msgid "Provides a Gutenberg Block to show a position provided by personio."
 msgstr ""
 
