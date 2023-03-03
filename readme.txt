@@ -43,6 +43,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 #### the Pro license includes:
 
+- Application formulars incl. export of them via Personio API
 - manual sorting of open positions in list views via drag&drop
 - supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese - compatible with translations via Polylang
 - additional import settings, e.g. import intervals and partial import for very large lists of open jobs
@@ -50,7 +51,6 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Customization of slugs (URLs) for list and detailed views of positions
 - Shortcode generator for individual views of lists and details
 - Extensions for the following PageBuilders: Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder
-- Application formulars incl. export of them to Personio
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
 
@@ -150,4 +150,5 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.0.3 =
 * Added field for custom back to list url in template-settings
-* Removed Block preview in Block Editor
+* Removed Block preview in Block Editor for fix error in Block-themes
+* Fixed some typos in texts
