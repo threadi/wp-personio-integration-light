@@ -43,6 +43,7 @@ import {
 	onChangeGroupBy
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
+const { useEffect } = wp.element;
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -62,13 +63,15 @@ export default function Edit( object ) {
 	]);
 
 	// get taxonomies
-	dispatch('core').addEntities([
-		{
-			name: 'taxonomies', // route name
-			kind: 'personio/v1', // namespace
-			baseURL: '/personio/v1/taxonomies' // API path without /wp-json
-		}
-	]);
+	useEffect(() => {
+		dispatch('core').addEntities([
+			{
+				name: 'taxonomies', // route name
+				kind: 'personio/v1', // namespace
+				baseURL: '/personio/v1/taxonomies' // API path without /wp-json
+			}
+		]);
+	}, []);
 	let personioTaxonomies = useSelect( ( select ) => {
 			return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
 		}
@@ -82,14 +85,14 @@ export default function Edit( object ) {
 			<InspectorControls>
 				<PanelBody title={ __( 'Filter', 'wp-personio-integration' ) }>
 					<ToggleControl
-						label={__('show filter', 'wp-personio-integration')}
+						label={__('Show filter', 'wp-personio-integration')}
 						checked={ object.attributes.showFilter }
 						onChange={ value => onChangeShowFilter( value, object ) }
 					/>
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
-								label={__('choose filter', 'wp-personio-integration')}
+								label={__('Choose filter', 'wp-personio-integration')}
 								value={object.attributes.filter}
 								options={ personioTaxonomies }
 								multiple={true}
@@ -98,7 +101,7 @@ export default function Edit( object ) {
 						}
 					</div>
 					<SelectControl
-						label={__('type of filter', 'wp-personio-integration')}
+						label={__('Type of filter', 'wp-personio-integration')}
 						value={ object.attributes.filtertype }
 						options={ filter_types }
 						onChange={ value => onChangeFilterType( value, object ) }
@@ -140,12 +143,12 @@ export default function Edit( object ) {
 						onChange={ value => onChangeGroupBy( value, object ) }
 					/>
 					<ToggleControl
-						label={__('show title', 'wp-personio-integration')}
+						label={__('Show title', 'wp-personio-integration')}
 						checked={ object.attributes.showTitle }
 						onChange={ value => onChangeTitleVisibility( value, object ) }
 					/>
 					<ToggleControl
-						label={__('link title', 'wp-personio-integration')}
+						label={__('Link title', 'wp-personio-integration')}
 						checked={ object.attributes.linkTitle }
 						onChange={ value => onChangeLinkingTitle( value, object ) }
 					/>
@@ -166,12 +169,12 @@ export default function Edit( object ) {
 						}
 					</div>
 					<ToggleControl
-						label={__('view content', 'wp-personio-integration')}
+						label={__('View content', 'wp-personio-integration')}
 						checked={ object.attributes.showContent }
 						onChange={ value => onChangeContentVisibility( value, object )  }
 					/>
 					<ToggleControl
-						label={__('view application link', 'wp-personio-integration')}
+						label={__('View application link', 'wp-personio-integration')}
 						checked={ object.attributes.showApplicationForm }
 						onChange={ value => onChangeApplicationFormVisibility( value, object )  }
 					/>
