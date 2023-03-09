@@ -2,7 +2,7 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment
 Requires at least: 5.9.3
-Tested up to: 6.1.1
+Tested up to: 6.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -152,4 +152,5 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Added field for custom back to list url in template-settings
 * Removed Block preview in Block Editor for fix error in Block-themes
 * Updates Blocks for actual Gutenberg-enhancements
+* Compatibility with WordPress 6.2
 * Fixed some typos in texts
