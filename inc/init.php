@@ -134,6 +134,11 @@ function personio_integration_add_taxonomies() {
         $taxonomy_array['labels'] = helper::get_taxonomy_label($taxonomy_name);
         $taxonomy_array['defaults'] = helper::get_taxonomy_defaults($taxonomy_name);
 
+        // remove slugs for not logged in users
+        if( !is_user_logged_in() ) {
+            $taxonomy_array['rewrite'] = false;
+        }
+
         // apply additional settings for taxonomy
         $taxonomy_array = apply_filters('get_' . $taxonomy_name.'_translate_taxonomy', $taxonomy_array, $taxonomy_name);
 
