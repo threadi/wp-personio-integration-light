@@ -6,7 +6,7 @@ Tested up to: 6.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 
 == Description ==
 
@@ -154,3 +154,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Updates Blocks for actual Gutenberg-enhancements
 * Compatibility with WordPress 6.2
 * Fixed some typos in texts
+
+= 2.0.4 =
+* Optimized taxonomy-handling
+* Fixed typo in filter-template
