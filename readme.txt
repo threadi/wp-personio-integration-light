@@ -158,3 +158,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 = 2.0.4 =
 * Optimized taxonomy-handling
 * Fixed typo in filter-template
+
+= 2.0.5 =
+* Fixed filter regarding pagination

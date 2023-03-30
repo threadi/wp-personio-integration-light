@@ -503,6 +503,12 @@ function personio_integration_get_filter( $filter, $attributes ) {
             $taxonomy = get_taxonomy($taxonomyToUse);
             $filtername = $taxonomy->labels->singular_name;
 
+            // get actual object id
+            $post_id = get_queried_object_id();
+
+            // get url
+            $page_url = get_permalink($post_id);
+
             // output of filter
             include helper::getTemplate('parts/term-filter-' . $attributes['filtertype'] . '.php');
         }
