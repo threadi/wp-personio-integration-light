@@ -123,7 +123,7 @@ class Position {
         // get the language to data-array
         $this->data['lang'] = $this->lang;
 
-        // set ordering of not set atm
+        // set ordering if not set atm
         if( empty($this->data['menu_order']) ) {
             $this->data['menu_order'] = 0;
         }
@@ -153,6 +153,8 @@ class Position {
             if( count($posts) == 1 ) {
                 // get the post-id to update its data
                 $this->data['ID'] = $results->posts[0];
+                // get the menu_order to obtain its value during update
+                $this->data['menu_order'] = get_post_field('menu_order', $results->posts[0]);
             }
             elseif( count($posts) > 1 ) {
                 // something is wrong
@@ -186,7 +188,7 @@ class Position {
             'ID' => $this->data['ID'],
             'post_status' => 'publish',
             'post_type' => WP_PERSONIO_INTEGRATION_CPT,
-            'menu_order' => (int)$this->data['menu_order']
+            'menu_order' => absint($this->data['menu_order'])
         ];
         if( $this->lang == get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY) ) {
             $array['post_title'] = $this->data['post_title'];
