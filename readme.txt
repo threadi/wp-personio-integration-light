@@ -160,5 +160,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Fixed typo in filter-template
 
 = 2.0.5 =
+* make sure that the cronjob are installed in any case
 * Fixed resetting of position order during import
 * Fixed filter regarding pagination

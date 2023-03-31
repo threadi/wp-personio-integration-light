@@ -468,6 +468,7 @@ function personio_integration_update() {
                 break;
             default:
                 updates::version123();
+                updates::version205();
                 break;
         }
 
