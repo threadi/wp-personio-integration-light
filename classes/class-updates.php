@@ -45,9 +45,22 @@ class updates {
     {
         self::version123();
         self::version203();
+        self::version205();
 
         // reset import-flag
         delete_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING);
     }
 
+    /**
+     * To run on update to (exact) version 2.0.5
+     *
+     * @return void
+     */
+    public static function version205()
+    {
+        // take care that import schedule is installed and active
+        if (!wp_next_scheduled('personio_integration_schudule_events')) {
+            wp_schedule_event(time(), 'daily', 'personio_integration_schudule_events');
+        }
+    }
 }
