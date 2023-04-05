@@ -6,7 +6,7 @@ Tested up to: 6.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 
 == Description ==
 
@@ -160,6 +160,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Fixed typo in filter-template
 
 = 2.0.5 =
-* make sure that the cronjob are installed in any case
+* Make sure that the cronjob are installed in any case
+* Support for positions without descriptions
 * Fixed resetting of position order during import
 * Fixed filter regarding pagination

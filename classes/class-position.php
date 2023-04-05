@@ -102,6 +102,16 @@ class Position {
      */
     public function __set( $varName, $value ){
         if( $value instanceof SimpleXMLElement ) {
+            if( $varName == 'post_content' ) {
+                foreach( $value as $v ) {
+                    if( $v->count() == 0 ) {
+                        $value = ['jobDescription' => []];
+                    }
+                    if( $v->count() == 1 ) {
+                        $value = ['jobDescription' => [$v->jobDescription]];
+                    }
+                }
+            }
             $value = json_encode($value);
         }
         $this->data[$varName] = $value;
