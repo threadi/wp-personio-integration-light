@@ -29,6 +29,11 @@ const WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE = 'personioIntegrationMainLanguage';
 const WP_PERSONIO_INTEGRATION_CPT_PM_PID = 'personioId';
 
 /**
+ * Name of the postmeta-field with the createdAt-setting.
+ */
+const WP_PERSONIO_INTEGRATION_CPT_CREATEDAT = 'personioCreatedAt';
+
+/**
  * Marker for running import.
  */
 const WP_PERSONIO_INTEGRATION_IMPORT_RUNNING = 'personioIntegrationImportRunning';

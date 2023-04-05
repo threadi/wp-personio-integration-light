@@ -547,3 +547,33 @@ function personio_integration_rest_api_taxonomies(): array
     }
     return $taxonomies;
 }
+
+/**
+ * Optimize output of plugin OG.
+ *
+ * @source https://de.wordpress.org/plugins/og/
+ * @param $array
+ * @return array
+ */
+function personio_integration_og_optimizer( $array ): array {
+    if( is_singular(WP_PERSONIO_INTEGRATION_CPT) ) {
+        // get position as object
+        $post_id = get_queried_object_id();
+        $position = new Position($post_id);
+        $position->lang = helper::get_wp_lang();
+
+        // get description
+        $description = wp_strip_all_tags($position->getContent());
+        $description = preg_replace("/\s+/", " ", $description);
+
+        // update settings
+        $array['og']['title'] = $position->getTitle();
+        $array['og']['description'] = $description;
+        $array['twitter']['title'] = $position->getTitle();
+        $array['twitter']['description'] = $description;
+        $array['schema']['title'] = $position->getTitle();
+        $array['schema']['description'] = $description;
+    }
+    return $array;
+}
+add_filter( 'og_array', 'personio_integration_og_optimizer');

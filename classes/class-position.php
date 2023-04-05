@@ -233,6 +233,9 @@ class Position {
             $this->updateTerm( 'schedule', 'personioSchedule', false, true );
             $this->updateTerm( 'yearsOfExperience', 'personioExperience', false, true );
 
+            // add created at as post meta field
+            update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, $this->data['createdAt']);
+
             // add all language-specific titles ..
             update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE.'_'.$this->lang, $this->data['post_title']);
 
@@ -498,6 +501,16 @@ class Position {
     {
         $this->data['menu_order'] = $i;
         wp_insert_post($this->data);
+    }
+
+    /**
+     * Return created at date.
+     *
+     * @return string
+     */
+    public function get_created_at(): string
+    {
+        return get_post_meta($this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, true);
     }
 
 }
