@@ -162,5 +162,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 = 2.0.5 =
 * Make sure that the cronjob are installed in any case
 * Support for positions without descriptions
+* Fixed import of missing createdAt from Personio
 * Fixed resetting of position order during import
 * Fixed filter regarding pagination
