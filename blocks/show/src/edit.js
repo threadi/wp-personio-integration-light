@@ -51,7 +51,7 @@ export default function Edit( object ) {
 
 	// useSelect to retrieve all post types
 	const positions = useSelect(
-		(select) => select('core').getEntityRecords('postType', 'personioposition'), []
+		(select) => select('core').getEntityRecords('postType', 'personioposition', { per_page: -1 }), []
 	);
 
 	// Options expects [{label: ..., value: ...}]
@@ -60,7 +60,7 @@ export default function Edit( object ) {
 		.map(
 			// Format the options for display in the <SelectControl/>
 			(position) => ({
-				label: position.title.rendered,
+				label: position.title.raw,
 				value: position.meta.personioId, // the value saved as postType in attributes
 			})
 		);
@@ -76,9 +76,17 @@ export default function Edit( object ) {
 		value: 0
 	});
 
+	// disable fields if no position is selected
 	let disabledFields = false;
 	if( object.attributes.id === 0 ) {
 		disabledFields = true;
+	}
+	else {
+		let found = false;
+		positionOptions.map(function(position) { if( position.value === object.attributes.id ) { found = true; } });
+		if( !found ) {
+			disabledFields = true;
+		}
 	}
 
 	/**
