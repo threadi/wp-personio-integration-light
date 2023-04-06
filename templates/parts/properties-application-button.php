@@ -1,5 +1,7 @@
 <?php
 
+use personioIntegration\helper;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -9,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 ?>
 <div class="entry-content">
     <p class="personio-integration-application-button">
-        <a class="personio-integration-application-button" href="<?php echo get_option('personioIntegrationUrl', ''); ?>/job/<?php echo absint($position->getPersonioId()); ?>?display=<?php echo get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY); ?>#apply" target="_blank">
+        <a class="personio-integration-application-button" href="<?php echo helper::get_personio_application_url($position); ?>" target="_blank">
             <?php
             if( $textPosition == 'archive' ) {
                 echo _x('Apply for this position', 'archive', 'wp-personio-integration');

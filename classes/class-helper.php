@@ -847,4 +847,15 @@ class helper {
         return defined( 'WP_CLI' ) && WP_CLI;
     }
 
+    /**
+     * Get generated Personio-application-URL.
+     *
+     * @param $position
+     * @return string
+     */
+    public static function get_personio_application_url( $position ): string
+    {
+        return get_option('personioIntegrationUrl', '').'/job/'.absint($position->getPersonioId()).'?display='.get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY).'#apply';
+    }
+
 }

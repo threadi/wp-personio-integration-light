@@ -163,6 +163,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Make sure that the cronjob are installed in any case
 * Support for Open Graph-settings by plugin [OG](https://wordpress.org/plugins/og/)
 * Optimized Block Editor single block: load unlimited positions for select-field
+* Code-optimization for Personio application URL
 * Fixed Block Editor single block: disable fields if given PersonioID is not available anymore
 * Fixed support for positions without descriptions
 * Fixed import of missing createdAt from Personio
