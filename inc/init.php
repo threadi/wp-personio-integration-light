@@ -298,20 +298,6 @@ function personio_integration_use_cpt_template( $template ) {
 add_filter('template_include', 'personio_integration_use_cpt_template');
 
 /**
- * Update slugs on request.
- *
- * @return void
- * @noinspection PhpUnused
- */
-function personio_integration_update_slugs() {
-    if( false !== get_transient('personio_integration_update_slugs') ) {
-        flush_rewrite_rules();
-        delete_transient('personio_integration_update_slugs');
-    }
-}
-add_action('wp', 'personio_integration_update_slugs', 10 );
-
-/**
  * Get language-specific labels for categories.
  *
  * @return array

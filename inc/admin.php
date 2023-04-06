@@ -504,3 +504,17 @@ function personio_integration_admin_add_body_class_free( $classes ): string
     return $classes;
 }
 add_filter( 'admin_body_class', 'personio_integration_admin_add_body_class_free', 10, 1);
+
+/**
+ * Update slugs on request.
+ *
+ * @return void
+ * @noinspection PhpUnused
+ */
+function personio_integration_update_slugs() {
+    if( false !== get_transient('personio_integration_update_slugs') ) {
+        flush_rewrite_rules();
+        delete_transient('personio_integration_update_slugs');
+    }
+}
+add_action('wp', 'personio_integration_update_slugs', 10 );

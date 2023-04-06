@@ -62,5 +62,20 @@ class updates {
         if (!wp_next_scheduled('personio_integration_schudule_events')) {
             wp_schedule_event(time(), 'daily', 'personio_integration_schudule_events');
         }
+
+        // set initial value for debug to disabled if not set
+        if (!get_option('personioIntegration_debug')) {
+            update_option('personioIntegration_debug', 0);
+        }
+
+        // set initial value for debug to disabled if not set
+        if (!get_option('personioIntegrationTemplateBackToListUrl')) {
+            update_option('personioIntegrationTemplateBackToListUrl', '');
+        }
+
+        // set initial value for debug to disabled if not set
+        if (!get_option('personioIntegrationEnableFilter')) {
+            update_option('personioIntegrationEnableFilter', 0);
+        }
     }
 }
