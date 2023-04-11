@@ -271,7 +271,6 @@ class Position {
             // if no term is found add it
             if (!$term && !$doNotAdd) {
                 $termArray = wp_insert_term($this->data[$value], $taxonomy);
-                var_dump($value, $termArray);
                 if( !is_wp_error($termArray) ) {
                     $term = get_term($termArray['term_id'], $taxonomy);
                 }
