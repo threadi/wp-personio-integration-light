@@ -299,6 +299,7 @@ class Import {
         $positionObject->lang = $key;
         $positionObject->post_title = (string)$position->name;
         $positionObject->post_content = $position->jobDescriptions;
+        $positionObject->department = '';
         if( !empty($position->department) ) {
             $positionObject->department = (string)$position->department;
         }

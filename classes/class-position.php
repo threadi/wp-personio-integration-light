@@ -227,11 +227,11 @@ class Position {
             $this->updateTerm( 'occupationCategory', 'personioOccupationCategory', false );
             $this->updateTerm( 'office', 'personioOffice', false );
             $this->updateTerm( 'department', 'personioDepartment', false );
-            $this->updateTerm( 'lang', 'personioLanguages', true, true );
-            $this->updateTerm( 'employmentType', 'personioEmploymentType', false, true );
-            $this->updateTerm( 'seniority', 'personioSeniority', false, true );
-            $this->updateTerm( 'schedule', 'personioSchedule', false, true );
-            $this->updateTerm( 'yearsOfExperience', 'personioExperience', false, true );
+            $this->updateTerm( 'lang', 'personioLanguages', true );
+            $this->updateTerm( 'employmentType', 'personioEmploymentType', false );
+            $this->updateTerm( 'seniority', 'personioSeniority', false );
+            $this->updateTerm( 'schedule', 'personioSchedule', false );
+            $this->updateTerm( 'yearsOfExperience', 'personioExperience', false );
 
             // add created at as post meta field
             update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, $this->data['createdAt']);
@@ -271,6 +271,7 @@ class Position {
             // if no term is found add it
             if (!$term && !$doNotAdd) {
                 $termArray = wp_insert_term($this->data[$value], $taxonomy);
+                var_dump($value, $termArray);
                 if( !is_wp_error($termArray) ) {
                     $term = get_term($termArray['term_id'], $taxonomy);
                 }
