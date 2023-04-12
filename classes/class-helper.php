@@ -2,6 +2,7 @@
 
 namespace personioIntegration;
 
+use WP_Post_Type;
 use WP_Rewrite;
 
 class helper {
@@ -858,4 +859,22 @@ class helper {
         return get_option('personioIntegrationUrl', '').'/job/'.absint($position->getPersonioId()).'?display='.get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY).'#apply';
     }
 
+    /**
+     * Get current url for frontend.
+     *
+     * @return string
+     */
+    public static function get_current_url(): string {
+        // set page url
+        $page_url = '';
+
+        // get actual object
+        $object = get_queried_object();
+        if( $object instanceof WP_Post_Type ) {
+            $page_url = get_post_type_archive_link($object->name);
+        }
+
+        // return result
+        return $page_url;
+    }
 }
