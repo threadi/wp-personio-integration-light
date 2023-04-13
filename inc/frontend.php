@@ -66,13 +66,13 @@ function personio_integration_position_shortcode( $attributes = [] ): string
     // do not output anything without ID
     if( $personio_attributes['personioid'] <= 0 ) {
         if( get_option('personioIntegration_debug', 0) == 1 ) {
-            return '<div><p>'.__('Detail-view called without Id of a position.', 'wp-personio-integration').'</p></div>';
+            return '<div><p>'.__('Detail-view called without the PersonioId of a position.', 'wp-personio-integration').'</p></div>';
         }
         return '';
     }
 
-    // get the position
-    $positions = new Positions();
+    // get the position by its PersonioId
+    $positions = Positions::get_instance();
     $position = $positions->getPositionByPersonioId( $personio_attributes['personioid'] );
 
     // do not show this position if it is not valid or could not be loaded
@@ -188,7 +188,7 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
     $personio_attributes = helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
 
     // get positions-object for search
-    $positionsObj = new Positions();
+    $positionsObj = Positions::get_instance();
 
     // unset the id-list if it is empty
     if( empty($personio_attributes['ids'][0]) ) {

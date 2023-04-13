@@ -109,7 +109,7 @@ add_action( 'wp_dashboard_setup', 'personio_integration_add_dashboard_widgets' )
  * @noinspection PhpUnusedParameterInspection
  */
 function personio_integration_dashboard_widget_function( $post, $callback_args ) {
-    $positionsObj = new Positions();
+    $positionsObj = Positions::get_instance();
     $positionsList = $positionsObj->getPositions(3);
     if( count($positionsList) == 0 ) {
         echo '<p>'.__('Actually there are no positions imported from Personio.', 'wp-personio-integration').'</p>';

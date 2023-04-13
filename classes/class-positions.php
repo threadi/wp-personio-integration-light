@@ -9,11 +9,60 @@ use WP_Query;
  */
 class Positions {
 
-    // result of positions-query
+    /**
+     * Variable for instance of this Singleton object.
+     */
+    protected static $instance;
+
+    /**
+     * Variable to hold the results of a query.
+     *
+     * @var WP_Query
+     */
     private WP_Query $_results;
 
-    public function __construct()
+    /**
+     * Variable to hold the list of initialized Positions.
+     *
+     * @var array
+     */
+    private array $_positions = [];
+
+    /**
+     * Constructor, not used as this a Singleton object.
+     */
+    private function __construct() {}
+
+    /**
+     * Prevent cloning of this object.
+     *
+     * @return void
+     */
+    private function __clone() { }
+
+    /**
+     * Return the instance of this Singleton object.
+     */
+    public static function get_instance()
     {
+        if( !static::$instance instanceof static ) {
+            static::$instance = new static();
+        }
+        return static::$instance;
+    }
+
+    /**
+     * Return Position object of given id.
+     *
+     * @param $post_id
+     * @return Position
+     */
+    public function get_position( $post_id ): Position
+    {
+        if( empty($this->_positions[$post_id]) ) {
+            $this->_positions[$post_id] = new Position($post_id);
+        }
+        return $this->_positions[$post_id];
     }
 
     /**
@@ -107,7 +156,7 @@ class Positions {
         $array = [];
         foreach( $this->_results->posts as $post ) {
             // get the position object
-            $positionObject = new Position($post->ID);
+            $positionObject = $this->get_position($post->ID);
 
             // set used language on position-object
             if( !empty($parameterToAdd["lang"]) ) {
@@ -145,10 +194,9 @@ class Positions {
      */
     public function getPositionByPersonioId($personioid): ?Position
     {
-        $this->getPositions(1, ['personioid' => $personioid]);
-        $result = $this->getResult();
-        if( $result->post_count == 1 ) {
-            return new Position($result->posts[0]->ID);
+        $array = $this->getPositions(1, ['personioid' => $personioid]);
+        if( !empty($array) ) {
+            return $array[0];
         }
         return null;
     }
