@@ -15,7 +15,8 @@ class cli {
      * @since  1.0.0
      * @noinspection PhpUnused
      */
-    public function getPositions() {
+    public function getPositions(): void
+    {
         new Import();
     }
 
@@ -26,7 +27,7 @@ class cli {
      * @return void
      * @noinspection PhpUnused
      */
-    public function deleteAll()
+    public function deleteAll(): void
     {
         // delete taxonomies
         $this->deleteTaxonomies();
@@ -41,17 +42,20 @@ class cli {
      * @since  1.0.0
      * @noinspection PhpUnused
      */
-    public function deletePositions() {
+    public function deletePositions(): void
+    {
         $this->deletePositionsFromDb();
     }
 
     /**
      * Resets all settings of this plugin.
      *
-     * @since  1.0.0
+     * @param array $deleteData
      * @return void
+     * @since  1.0.0
      */
-    public function resetPlugin( $deleteData = [] ) {
+    public function resetPlugin( $deleteData = [] ): void
+    {
         (new installer)->removeAllData( $deleteData );
         (new installer)->initializePlugin();
     }

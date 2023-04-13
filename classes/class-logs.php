@@ -64,7 +64,7 @@ class Logs extends WP_List_Table {
      *
      * @return void
      */
-    public function prepare_items()
+    public function prepare_items(): void
     {
         $columns = $this->get_columns();
         $hidden = $this->get_hidden_columns();
@@ -100,7 +100,9 @@ class Logs extends WP_List_Table {
      * @param  array $item        Data
      * @param  String $column_name - Current column name
      *
-     * @return Mixed
+     * @return mixed
+     * @noinspection PhpMissingReturnTypeInspection
+     * @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection
      */
     public function column_default( $item, $column_name )
     {

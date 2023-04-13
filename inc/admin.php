@@ -11,7 +11,8 @@ use personioIntegration\Positions;
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_add_styles_and_js_admin() {
+function personio_integration_add_styles_and_js_admin(): void
+{
     // admin-specific styles
     wp_enqueue_style('personio_integration-admin-css',
         plugin_dir_url(WP_PERSONIO_INTEGRATION_PLUGIN) . '/admin/styles.css',
@@ -86,7 +87,8 @@ add_action( 'admin_enqueue_scripts', 'personio_integration_add_styles_and_js_adm
  *
  * @noinspection PhpUnused
  */
-function personio_integration_add_dashboard_widgets() {
+function personio_integration_add_dashboard_widgets(): void
+{
     // only if Personio URL is available
     if( !helper::is_personioUrl_set() ) {
         return;
@@ -108,7 +110,8 @@ add_action( 'wp_dashboard_setup', 'personio_integration_add_dashboard_widgets' )
  *
  * @noinspection PhpUnusedParameterInspection
  */
-function personio_integration_dashboard_widget_function( $post, $callback_args ) {
+function personio_integration_dashboard_widget_function( $post, $callback_args ): void
+{
     $positionsObj = Positions::get_instance();
     $positionsList = $positionsObj->getPositions(3);
     if( count($positionsList) == 0 ) {
@@ -137,7 +140,8 @@ function personio_integration_dashboard_widget_function( $post, $callback_args )
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_notices() {
+function personio_integration_admin_notices(): void
+{
     // show transients
     foreach( apply_filters('personio_integration_admin_transients', WP_PERSONIO_INTEGRATION_TRANSIENTS) as $transient => $settings ) {
         if( false !== get_transient( $transient ) ) {
@@ -231,7 +235,8 @@ add_filter( 'manage_'.WP_PERSONIO_INTEGRATION_CPT.'_posts_columns', 'personio_in
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_add_position_column_content( $column, $post_id ) {
+function personio_integration_admin_add_position_column_content( $column, $post_id ): void
+{
     if ($column == 'id') {
         $position = new Position($post_id);
         echo absint($position->getPersonioId());
@@ -243,10 +248,11 @@ add_action( 'manage_'.WP_PERSONIO_INTEGRATION_CPT.'_posts_custom_column' , 'pers
  * Add link to plugin-settings in plugin-list.
  *
  * @param $links
- * @return mixed
+ * @return array
  * @noinspection PhpUnused
  */
-function personio_integration_admin_add_setting_link( $links ) {
+function personio_integration_admin_add_setting_link( $links ): array
+{
     // build and escape the URL
     $url = add_query_arg(
         [
@@ -272,7 +278,8 @@ add_filter( 'plugin_action_links_'.plugin_basename(WP_PERSONIO_INTEGRATION_PLUGI
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_checkConfig() {
+function personio_integration_admin_checkConfig(): void
+{
     if( !helper::is_personioUrl_set() ) {
         set_transient('personio_integration_no_url_set', 1, 60);
     }
@@ -288,12 +295,13 @@ add_action( 'admin_init', 'personio_integration_admin_checkConfig');
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_checkPositionCount() {
+function personio_integration_admin_check_position_count(): void
+{
     if( helper::is_personioUrl_set() && get_option( 'personioIntegrationPositionCount', 0 ) == 0 ) {
         set_transient('personio_integration_no_position_imported', 1, 60);
     }
 }
-add_action( 'admin_init', 'personio_integration_admin_checkPositionCount');
+add_action( 'admin_init', 'personio_integration_admin_check_position_count');
 
 /**
  * Remove any bulk actions for our own cpt.
@@ -328,7 +336,8 @@ add_filter('post_row_actions', 'personio_integration_admin_remove_actions', 10, 
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_add_filter() {
+function personio_integration_admin_add_filter(): void
+{
     $post_type = (isset($_GET['post_type'])) ? sanitize_text_field($_GET['post_type']) : 'post';
 
     if( $post_type == WP_PERSONIO_INTEGRATION_CPT ) {
@@ -345,6 +354,7 @@ function personio_integration_admin_add_filter() {
                 // list terms only if they are available
                 if( !empty($terms) ) {
                     ?>
+                        <!--suppress HtmlFormInputWithoutLabel -->
                         <select name="admin_filter_<?php echo esc_attr($taxonomy_name); ?>">
                             <option value="0"><?php echo esc_html($taxonomy->label); ?></option>
                             <?php
@@ -368,7 +378,8 @@ add_action( 'restrict_manage_posts', 'personio_integration_admin_add_filter');
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_use_filter($query) {
+function personio_integration_admin_use_filter($query): void
+{
     global $pagenow;
     $post_type = (isset($_GET['post_type'])) ? sanitize_text_field($_GET['post_type']) : 'post';
 
@@ -407,8 +418,10 @@ add_filter( 'parse_query', 'personio_integration_admin_use_filter');
  *
  * @return void
  * @noinspection PhpUnused
+ * @noinspection PhpNoReturnAttributeCanBeAddedInspection
  */
-function personio_integration_admin_dismiss() {
+function personio_integration_admin_dismiss(): void
+{
     // get values
     $option_name        = isset( $_POST['option_name'] ) ? sanitize_text_field( wp_unslash( $_POST['option_name'] ) ) : false;
     $dismissible_length = isset( $_POST['dismissible_length'] ) ? sanitize_text_field( wp_unslash( $_POST['dismissible_length'] ) ) : 14;
@@ -434,8 +447,10 @@ function personio_integration_admin_dismiss() {
  *
  * @return void
  * @noinspection PhpUnused
+ * @noinspection PhpNoReturnAttributeCanBeAddedInspection
  */
-function personio_integration_admin_run_import() {
+function personio_integration_admin_run_import(): void
+{
     // check nonce
     check_ajax_referer( 'personio-run-import', 'nonce' );
 
@@ -451,8 +466,10 @@ function personio_integration_admin_run_import() {
  *
  * @return void
  * @noinspection PhpUnused
+ * @noinspection PhpNoReturnAttributeCanBeAddedInspection
  */
-function personio_integration_admin_get_import_info() {
+function personio_integration_admin_get_import_info(): void
+{
     // check nonce
     check_ajax_referer( 'personio-get-import-info', 'nonce' );
 
@@ -483,7 +500,8 @@ add_action( 'admin_init', function() {
  * @param $hint
  * @return void
  */
-function personio_integration_admin_show_pro_hint( $hint ) {
+function personio_integration_admin_show_pro_hint( $hint ): void
+{
     echo '<p class="personio-pro-hint">'.sprintf(wp_kses_post($hint), '<a href="'.esc_url(helper::get_pro_url()).'" target="_blank">Personio Integration Pro</a>').'</p>';
 }
 add_action( 'personio_integration_admin_show_pro_hint', 'personio_integration_admin_show_pro_hint', 10, 1);
@@ -511,7 +529,8 @@ add_filter( 'admin_body_class', 'personio_integration_admin_add_body_class_free'
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_update_slugs() {
+function personio_integration_update_slugs(): void
+{
     if( false !== get_transient('personio_integration_update_slugs') ) {
         flush_rewrite_rules();
         delete_transient('personio_integration_update_slugs');

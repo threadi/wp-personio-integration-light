@@ -40,7 +40,8 @@ if( is_admin() ) {
 /**
  * On plugin activation.
  */
-function personio_integration_on_activation() {
+function personio_integration_on_activation(): void
+{
     installer::initializePlugin();
 }
 register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, 'personio_integration_on_activation' );
@@ -50,7 +51,8 @@ register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, 'personio_integration_
  *
  * @return void
  */
-function personio_integration_on_deactivation() {
+function personio_integration_on_deactivation(): void
+{
     // remove schedules
     wp_clear_scheduled_hook( 'personio_integration_schudule_events' );
 }
@@ -62,7 +64,8 @@ register_deactivation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, 'personio_integratio
  * @noinspection PhpUnused
  * @noinspection PhpUndefinedClassInspection
  */
-function personio_integration_cli_register_commands() {
+function personio_integration_cli_register_commands(): void
+{
     WP_CLI::add_command('personio', 'personioIntegration\cli');
 }
 add_action( 'cli_init', 'personio_integration_cli_register_commands' );

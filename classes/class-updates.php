@@ -12,7 +12,8 @@ class updates {
      *
      * @return void
      */
-    public static function version123() {
+    public static function version123(): void
+    {
         // set max age for log entries in days
         if (!get_option('personioIntegrationTemplateBackToListButton')) {
             update_option('personioIntegrationTemplateBackToListButton', 0);
@@ -27,7 +28,8 @@ class updates {
      *
      * @return void
      */
-    public static function version203() {
+    public static function version203(): void
+    {
         // set max age for log entries in days
         if (!get_option('personioIntegrationUrl')) {
             update_option('personioIntegrationUrl', '', true);
@@ -41,7 +43,7 @@ class updates {
      *
      * @return void
      */
-    public static function runAllUpdates()
+    public static function runAllUpdates(): void
     {
         self::version123();
         self::version203();
@@ -56,7 +58,7 @@ class updates {
      *
      * @return void
      */
-    public static function version205()
+    public static function version205(): void
     {
         // take care that import schedule is installed and active
         if (!wp_next_scheduled('personio_integration_schudule_events')) {

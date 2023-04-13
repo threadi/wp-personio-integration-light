@@ -30,7 +30,8 @@ class Log {
      *
      * @return void
      */
-    public function createTable() {
+    public function createTable(): void
+    {
         $charset_collate = $this->_wpdb->get_charset_collate();
 
         // table for import-log
@@ -53,7 +54,8 @@ class Log {
      * @param $state
      * @return void
      */
-    public function addLog( $log, $state ) {
+    public function addLog( $log, $state ): void
+    {
         $this->_wpdb->insert($this->_tableName, [
             'time' => date('Y-m-d H:i:s'),
             'log' => $log,
@@ -67,7 +69,8 @@ class Log {
      *
      * @return void
      */
-    public function cleanLog() {
+    public function cleanLog(): void
+    {
         $sql = sprintf("DELETE FROM `".$this->_tableName."` WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY)", get_option('personioIntegrationMaxAgeLogEntries', 50));
         $this->_wpdb->query($sql);
     }

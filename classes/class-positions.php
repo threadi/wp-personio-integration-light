@@ -190,7 +190,7 @@ class Positions {
      * Get a single position by its personioId.
      *
      * @param $personioid
-     * @return Position
+     * @return Position|null
      */
     public function getPositionByPersonioId($personioid): ?Position
     {
@@ -238,7 +238,8 @@ class Positions {
     /**
      * Return count of positions in db.
      *
-     * @return int|null
+     * @return int
+     * @noinspection PhpUnused
      */
     public function getPositionsCount(): int
     {

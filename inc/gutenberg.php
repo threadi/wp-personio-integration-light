@@ -108,7 +108,7 @@ function personio_integration_get_list( $attributes ): string
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_add_blocks()
+function personio_integration_add_blocks(): void
 {
     // include Blocks only if Gutenberg exists and the PersonioURL is set
     if( function_exists('register_block_type') && helper::is_personioUrl_set() ) {
