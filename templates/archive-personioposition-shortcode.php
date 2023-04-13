@@ -19,7 +19,7 @@ $groupTitle = '';
 if( $GLOBALS['personio_query_results']->have_posts() ) :
     while ( $GLOBALS['personio_query_results']->have_posts() ) : $GLOBALS['personio_query_results']->the_post();
         // get the Position as object
-        $position = new Position(get_the_id());
+        $position = $positionsObj->get_position(get_the_id());
         $position->lang = $personio_attributes['lang'];
 
         // get group title

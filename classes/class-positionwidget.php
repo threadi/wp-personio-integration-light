@@ -34,7 +34,7 @@ class PositionWidget extends WP_Widget {
     private function getFields(): array
     {
         // get the actual positions
-        $positionsObj = new Positions();
+        $positionsObj = Positions::get_instance();
         $positionsList = $positionsObj->getPositions(0);
         $positions = [];
         foreach ( $positionsList as $position ) {

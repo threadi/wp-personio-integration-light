@@ -204,7 +204,7 @@ class Import {
 
         if( empty($this->_errors) ) {
             // get Positions-object
-            $positionsObject = new Positions();
+            $positionsObject = Positions::get_instance();
 
             // delete all not updated positions
             if( !$doNothing ) {

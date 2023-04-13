@@ -10,7 +10,7 @@ trait helper_cli {
      * @return void
      */
     private function deletePositionsFromDb() {
-        $positionsObject = new Positions();
+        $positionsObject = Positions::get_instance();
         $positions = $positionsObject->getPositions();
         $positionCount = count($positions);
         $progress = helper::isCLI() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local positions', $positionCount ) : false;
