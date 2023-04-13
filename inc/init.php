@@ -3,6 +3,7 @@
 use personioIntegration\helper;
 use personioIntegration\Import;
 use personioIntegration\Position;
+use personioIntegration\Positions;
 use personioIntegration\updates;
 
 /**
@@ -13,7 +14,8 @@ use personioIntegration\updates;
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_init() {
+function personio_integration_init(): void
+{
     load_plugin_textdomain( 'wp-personio-integration', false, dirname( plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . '/languages' );
 }
 add_action( 'init', 'personio_integration_init', -1 );
@@ -24,7 +26,8 @@ add_action( 'init', 'personio_integration_init', -1 );
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_add_position_posttype() {
+function personio_integration_add_position_posttype(): void
+{
     $labels = [
         'name'                => __( 'Positions', 'wp-personio-integration' ),
         'singular_name'       => __( 'Position', 'wp-personio-integration'),
@@ -104,7 +107,8 @@ add_action( 'init', 'personio_integration_add_position_posttype', 10 );
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_add_taxonomies() {
+function personio_integration_add_taxonomies(): void
+{
     // set default taxonomy-settings
     // -> could be overwritten by each taxonomy in taxonomies.php
     $taxonomy_array_default = [
@@ -158,7 +162,8 @@ add_action( 'init', 'personio_integration_add_taxonomies', 0 );
  *
  * @return void
  */
-function personio_integration_add_taxonomy_defaults() {
+function personio_integration_add_taxonomy_defaults(): void
+{
     // Exit if the work has already been done.
     if ( get_option( 'personioTaxonomyDefaults', 0 ) == 1 ) {
         return;
@@ -186,13 +191,16 @@ add_action( 'init', 'personio_integration_add_taxonomy_defaults', 20 );
  * @param $data
  * @param $post
  * @param $context
- * @return mixed
+ * @return WP_REST_Response
  * @noinspection PhpUnused
  * @noinspection PhpUnusedParameterInspection
  */
-function personio_integration_rest_changes($data, $post, $context) {
+function personio_integration_rest_changes($data, $post, $context): WP_REST_Response {
+    // get positions-object
+    $positions = positions::get_instance();
+
     // get the position as object
-    $position = new Position($post->ID);
+    $position = $positions->get_position($post->ID);
 
     // generate content
     $content = $position->getContent();
@@ -215,7 +223,8 @@ add_filter('rest_prepare_'.WP_PERSONIO_INTEGRATION_CPT, 'personio_integration_re
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_register_widget() {
+function personio_integration_register_widget(): void
+{
     if( !wp_use_widgets_block_editor() ) {
         register_widget('personioIntegration\PositionWidget');
         register_widget('personioIntegration\PositionsWidget');
@@ -227,10 +236,11 @@ add_action( 'widgets_init', 'personio_integration_register_widget' );
  * Add some cron-intervals.
  *
  * @param $schedules
- * @return mixed
+ * @return array
  * @noinspection PhpUnused
  */
-function personio_integration_add_cron_intervals( $schedules ) {
+function personio_integration_add_cron_intervals( $schedules ): array
+{
     $schedules['5minutely'] = [
         'interval'  => 5*60,
         'display'   => __('every 5th Minute', 'wp-personio-integration')
@@ -246,7 +256,8 @@ add_filter( 'cron_schedules', 'personio_integration_add_cron_intervals' );
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_schudule_event_import_positions() {
+function personio_integration_schudule_event_import_positions(): void
+{
     if( get_option('personioIntegrationEnablePositionSchedule', 0) == 1 ) {
         new Import();
     }
@@ -261,7 +272,8 @@ add_action( 'personio_integration_schudule_events', 'personio_integration_schudu
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_add_custom_toolbar($admin_bar) {
+function personio_integration_add_custom_toolbar($admin_bar): void
+{
     if( get_option('personioIntegrationUrl', false) && get_option('personioIntegrationDisableListSlug', 0) == 0 ) {
         $admin_bar->add_menu([
             'id' => 'personio-position-list',
@@ -277,10 +289,11 @@ add_action('admin_bar_menu', 'personio_integration_add_custom_toolbar', 100);
  * Get template for archive or single.
  *
  * @param $template
- * @return mixed|string
+ * @return string
  * @noinspection PhpUnused
  */
-function personio_integration_use_cpt_template( $template ) {
+function personio_integration_use_cpt_template( $template ): string
+{
     if ( get_post_type(get_the_ID()) == WP_PERSONIO_INTEGRATION_CPT ) {
         // if the theme is a fse-theme
         if( Helper::theme_is_fse_theme() ) {
@@ -351,7 +364,7 @@ add_filter( 'personio_integration_import_single_position', 'personio_integration
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_add_styles_frontend()
+function personio_integration_add_styles_frontend(): void
 {
     wp_enqueue_style(
         'personio-integration-styles',
@@ -387,10 +400,11 @@ add_filter('personio_integration_get_shortcode_attributes', 'personio_integratio
  * Remove our own cpt from post type list in Redirection-plugin.
  *
  * @param $array
- * @return mixed
+ * @return array
  * @noinspection PhpUnused
  */
-function personio_integration_redirection_post_types( $array ) {
+function personio_integration_redirection_post_types( $array ): array
+{
     unset($array[WP_PERSONIO_INTEGRATION_CPT]);
     return $array;
 }
@@ -402,9 +416,10 @@ add_filter( 'redirection_post_types', 'personio_integration_redirection_post_typ
  *
  * @param $meta_og_description
  * @param $presentation
- * @return array|mixed|string|string[]|null
+ * @return string
  */
-function personio_integration_yoast_description( $meta_og_description, $presentation ) {
+function personio_integration_yoast_description( $meta_og_description, $presentation ): string
+{
     if( $presentation->model->object_sub_type == WP_PERSONIO_INTEGRATION_CPT ) {
         $position = new Position($presentation->model->object_id);
         return preg_replace("/\s+/", " ", $position->getContent());
@@ -439,7 +454,8 @@ add_filter( 'rank_math/frontend/description', 'personio_integration_rankmath_des
  *
  * @return void
  */
-function personio_integration_update() {
+function personio_integration_update(): void
+{
     // get installed plugin-version (version of the actual files in this plugin)
     $installedPluginVersion = WP_PERSONIO_INTEGRATION_VERSION;
 
@@ -481,7 +497,8 @@ add_filter( 'personio_integration_import_single_position_filter_existing', 'pers
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_rest_api() {
+function personio_integration_rest_api(): void
+{
     register_rest_route( 'personio/v1', '/taxonomies/', array(
         'methods' => WP_REST_SERVER::READABLE,
         'callback' => 'personio_integration_rest_api_taxonomies',

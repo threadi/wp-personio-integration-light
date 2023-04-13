@@ -129,7 +129,8 @@ class installer
      *
      * @return void
      */
-    private static function initializeDB() {
+    private static function initializeDB(): void
+    {
         // initialize Log-database-table
         $log = new Log();
         $log->createTable();
@@ -143,8 +144,8 @@ class installer
      * @param array $deleteData
      * @return void
      */
-    public static function removeAllData(array $deleteData = [] ) {
-
+    public static function removeAllData(array $deleteData = [] ): void
+    {
         // remove schedule
         wp_clear_scheduled_hook( 'personio_integration_schudule_events' );
 

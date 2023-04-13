@@ -172,4 +172,5 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Fixed filter regarding pagination
 
 = 2.0.6 =
+* Optimized loading of database-objects
 * Fixed target url for filter in frontend

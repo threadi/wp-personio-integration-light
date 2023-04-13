@@ -10,7 +10,8 @@ use personioIntegration\Positions;
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_frontend_init() {
+function personio_integration_frontend_init(): void
+{
     add_shortcode('personioPosition', 'personio_integration_position_shortcode');
     add_shortcode('personioPositions', 'personio_integration_positions_shortcode');
 }
@@ -127,9 +128,11 @@ function personio_integration_position_shortcode( $attributes = [] ): string
  * - content => show language-specific content
  * - formular => show application-button
  *
- * @return false|string
+ * @param $attributes
+ * @return string
+ * @noinspection PhpMissingParamTypeInspection
  */
-function personio_integration_positions_shortcode( $attributes = [] ) {
+function personio_integration_positions_shortcode( $attributes = [] ): string {
     if( !is_array($attributes) ) {
         $attributes = [];
     }
@@ -227,10 +230,11 @@ function personio_integration_positions_shortcode( $attributes = [] ) {
  * Change output of post_content for the custom post type of this plugin.
  *
  * @param $content
- * @return mixed|string
+ * @return string
  * @noinspection PhpUnused
  */
-function personio_integration_content_output( $content ) {
+function personio_integration_content_output( $content ): string
+{
 
     // change the output for our own cpt
     if( !helper::is_admin_api_request() && !is_admin()
@@ -254,10 +258,10 @@ add_filter( 'the_content', 'personio_integration_content_output', 5 );
  * Change output of excerpt in archive-pages for the custom post type of this plugin.
  *
  * @param $excerpt
- * @return mixed
+ * @return string
  * @noinspection PhpUnused
  */
-function personio_integration_excerpt_output( $excerpt )
+function personio_integration_excerpt_output( $excerpt ): string
 {
     if( !helper::is_admin_api_request()
         && !is_single()
@@ -287,7 +291,8 @@ add_filter('get_the_excerpt' , 'personio_integration_excerpt_output', 10);
  * @noinspection PhpUnusedParameterInspection
  * @noinspection DuplicatedCode
  */
-function personio_integration_get_title( $position, $attributes ) {
+function personio_integration_get_title( $position, $attributes ): void
+{
     // set the header-size (h1 for single, h2 for list)
     $hSize = "2";
     if( !did_action( 'elementor/loaded' ) && is_single() ) {
@@ -322,7 +327,8 @@ add_action( 'personio_integration_get_title', 'personio_integration_get_title', 
  * @param $attributes
  * @return void
  */
-function personio_integration_get_excerpt( $position, $attributes ) {
+function personio_integration_get_excerpt( $position, $attributes ): void
+{
     $excerpt = '';
     $separator = get_option('personioIntegrationTemplateExcerptSeparator', ', ')." ";
     if( empty($attributes['excerpt']) ) {
@@ -354,7 +360,8 @@ add_action( 'personio_integration_get_excerpt', 'personio_integration_get_excerp
  * @noinspection PhpUnused
  * @noinspection PhpUnusedParameterInspection
  */
-function personio_integration_get_content( $position, $attributes ) {
+function personio_integration_get_content( $position, $attributes ): void
+{
     if( !empty($position->getContentAsArray()) ) {
         ?>
         <div class="entry-content">
@@ -374,8 +381,10 @@ add_action( 'personio_integration_get_content', 'personio_integration_get_conten
  * @param $attributes
  * @return void
  * @noinspection PhpUnused
+ * @noinspection PhpUnusedParameterInspection
  */
-function personio_integration_get_formular( $position, $attributes ) {
+function personio_integration_get_formular( $position, $attributes ): void
+{
     $textPosition = 'archive';
     if( is_single() ) {
         $textPosition = 'single';
@@ -396,14 +405,17 @@ add_action( 'personio_integration_get_formular', 'personio_integration_get_formu
  * Update each post-object with the language-specific texts of a position.
  *
  * @param $post
- * @param $query
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_update_post_object( $post, $query ) {
+function personio_integration_update_post_object( $post ): void
+{
     if( $post->post_type == WP_PERSONIO_INTEGRATION_CPT ) {
+        // get positions object
+        $positions = positions::get_instance();
+
         // get the position as object
-        $position = new personioIntegration\Position(get_the_ID());
+        $position = $positions->get_position(get_the_ID());
 
         // set language
         $position->lang = get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY);
@@ -418,16 +430,17 @@ function personio_integration_update_post_object( $post, $query ) {
         $post->post_excerpt = $position->getExcerpt();
     }
 }
-add_action( 'the_post', 'personio_integration_update_post_object', 10, 2 );
+add_action( 'the_post', 'personio_integration_update_post_object', 10, 1 );
 
 /**
  * Get single template.
  *
  * @param $single_template
- * @return mixed|string
+ * @return string
  * @noinspection PhpUnused
  */
-function personio_integration_get_single_template( $single_template ) {
+function personio_integration_get_single_template( $single_template ): string
+{
     if( get_post_type(get_the_ID()) == WP_PERSONIO_INTEGRATION_CPT ) {
         $path = helper::getTemplate('single-personioposition.php');
         if (file_exists($path)) {
@@ -442,10 +455,11 @@ add_filter( 'single_template', 'personio_integration_get_single_template' );
  * Get archive template.
  *
  * @param $archive_template
- * @return mixed|string
+ * @return string
  * @noinspection PhpUnused
  */
-function personio_integration_get_archive_template( $archive_template ) {
+function personio_integration_get_archive_template( $archive_template ): string
+{
     if ( is_post_type_archive(WP_PERSONIO_INTEGRATION_CPT) ) {
         $path = helper::getTemplate('archive-personioposition.php');
         if( file_exists($path) ) {
@@ -459,10 +473,13 @@ add_filter( 'archive_template', 'personio_integration_get_archive_template' ) ;
 /**
  * Show a filter in frontend restricted to positions which are visible in list.
  *
+ * @param $filter
+ * @param $attributes
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_get_filter( $filter, $attributes ) {
+function personio_integration_get_filter( $filter, $attributes ): void
+{
     $taxonomyToUse = '';
     $term_ids = [];
 

@@ -133,9 +133,9 @@ class PositionWidget extends WP_Widget {
      * @param $settings
      *
      * @return void
-     * @noinspection PhpMissingReturnTypeInspection
      * @noinspection PhpParameterNameChangedDuringInheritanceInspection
      * @noinspection DuplicatedCode
+     * @noinspection PhpMissingReturnTypeInspection
      */
     function widget( $args, $settings ) {
         // collect the configured templates

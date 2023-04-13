@@ -10,9 +10,12 @@ class helper {
     /**
      * Add terms from an array to a taxonomy.
      *
+     * @param $array
+     * @param $taxonomy
      * @return void
      */
-    public static function addTerms( $array, $taxonomy ) {
+    public static function addTerms( $array, $taxonomy ): void
+    {
         foreach( $array as $key => $termTitle ) {
             if( !term_exists( $key, $taxonomy ) ){
                 wp_insert_term(
@@ -243,9 +246,9 @@ class helper {
      *
      * @param $taxonomy
      * @param $position
-     * @return mixed|string
+     * @return string
      */
-    public static function get_taxonomy_name_of_position( $taxonomy, $position)
+    public static function get_taxonomy_name_of_position( $taxonomy, $position): string
     {
         $name = '';
         switch ($taxonomy) {
@@ -319,9 +322,9 @@ class helper {
     /**
      * Get list of available filter types.
      *
-     * @return mixed|null
+     * @return array
      */
-    public static function get_filter_types()
+    public static function get_filter_types(): array
     {
         $types = [
             'select' => __('select-box', 'wp-personio-integration'),
@@ -335,9 +338,9 @@ class helper {
      * Also load the requested file if is located in the /wp-content/themes/xy/personio-integration-light/ directory.
      *
      * @param $template
-     * @return mixed|string
+     * @return string
      */
-    public static function getTemplate( $template )
+    public static function getTemplate( $template ): string
     {
         if( is_embed() ) {
             return $template;
@@ -521,10 +524,11 @@ class helper {
      * Return the active Wordpress-language depending on our own support.
      * If language is unknown for our plugin, use english.
      *
-     * @return false|string
+     * @return string
      * @noinspection PhpUnused
      */
-    public static function get_wp_lang() {
+    public static function get_wp_lang(): string
+    {
         $wpLang = substr(get_bloginfo('language'), 0, 2);
 
         /**
@@ -558,10 +562,11 @@ class helper {
      * Return the current language depending on our own support.
      * If language is unknown for our plugin, use english.
      *
-     * @return false|string
+     * @return string
      * @noinspection PhpUnused
      */
-    public static function get_current_lang() {
+    public static function get_current_lang(): string
+    {
         $wpLang = substr(get_bloginfo('language'), 0, 2);
 
         /**

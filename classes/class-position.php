@@ -46,7 +46,7 @@ class Position {
      *
      * @var bool
      */
-    private bool $_debug = false;
+    private bool $_debug;
 
     /**
      * Constructor for this position.
@@ -66,6 +66,7 @@ class Position {
             if( !is_array($postArray) ) {
                 $postArray = [];
                 // get post-object
+                /** @noinspection PhpDynamicFieldDeclarationInspection */
                 $this->post = get_post($postId);
             }
             if( !empty($postArray["post_type"]) && $postArray["post_type"] !== WP_PERSONIO_INTEGRATION_CPT ) {
@@ -507,6 +508,7 @@ class Position {
      * Return created at date.
      *
      * @return string
+     * @noinspection PhpUnused
      */
     public function get_created_at(): string
     {
