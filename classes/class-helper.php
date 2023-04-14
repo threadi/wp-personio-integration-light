@@ -857,10 +857,14 @@ class helper {
      * Get generated Personio-application-URL.
      *
      * @param $position
+     * @param bool $without_application
      * @return string
      */
-    public static function get_personio_application_url( $position ): string
+    public static function get_personio_application_url( $position, $without_application = false ): string
     {
+        if( $without_application ) {
+            return get_option('personioIntegrationUrl', '').'/job/'.absint($position->getPersonioId()).'?display='.get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY);
+        }
         return get_option('personioIntegrationUrl', '').'/job/'.absint($position->getPersonioId()).'?display='.get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY).'#apply';
     }
 

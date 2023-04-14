@@ -489,7 +489,10 @@ class Position {
      */
     public function getLink(): string
     {
-        return get_permalink($this->data['ID']);
+        if (!empty($this->data['ID'])) {
+            return get_permalink($this->data['ID']);
+        }
+        return '';
     }
 
     /**
