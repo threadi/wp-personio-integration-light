@@ -24,7 +24,9 @@ import {
 } from '@wordpress/components';
 import {
 	InspectorControls,
-	useBlockProps
+	PanelColorSettings,
+	useBlockProps,
+	withColors
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
@@ -55,6 +57,8 @@ const { useEffect } = wp.element;
  * @return {WPElement} Element to render.
  */
 export default function Edit( object ) {
+
+	const { setTextColor } = object;
 
 	// get filter types
 	let filter_types = wp.hooks.applyFilters('personio_integration_filter_types', [
@@ -179,6 +183,19 @@ export default function Edit( object ) {
 						onChange={ value => onChangeApplicationFormVisibility( value, object )  }
 					/>
 				</PanelBody>
+			</InspectorControls>
+			<InspectorControls>
+				<PanelColorSettings
+					title={__('Color settings')}
+					initialOpen={false}
+					colorSettings={[
+						{
+							value: object.attributes.color,
+							onChange: setTextColor,
+							label: __('Text color')
+						},
+					]}
+				/>
 			</InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/list"

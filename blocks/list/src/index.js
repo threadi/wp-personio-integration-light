@@ -90,6 +90,9 @@ registerBlockType( 'wp-personio-integration/list', {
 		showApplicationForm: {
 			type: 'boolean',
 			default: false
+		},
+		color: {
+			type: 'string'
 		}
 	},
 

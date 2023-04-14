@@ -396,6 +396,10 @@ function personio_integration_get_formular( $position, $attributes ): void
         $back_to_list_url = get_post_type_archive_link(WP_PERSONIO_INTEGRATION_CPT);
     }
 
+    if( get_option('personioIntegrationTemplateBackToListButton', 0) == 0 || $textPosition == 'archive' || empty($attributes['show_back_to_list']) ) {
+        $back_to_list_url = '';
+    }
+
     // get template
     include helper::getTemplate('parts/properties-application-button.php');
 }

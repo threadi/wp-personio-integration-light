@@ -85,7 +85,7 @@ function personio_integration_get_list( $attributes ): string
         $doNotLink = false;
     }
 
-    $attribute_defaults = [
+    $attributes = [
         'templates' => $templates,
         'excerpt' => $excerptTemplates,
         'donotlink' => $doNotLink,
@@ -95,11 +95,12 @@ function personio_integration_get_list( $attributes ): string
         'limit' => $attributes["limit"],
         'filter' => implode(",", $attributes['filter']),
         'filtertype' => $attributes['filtertype'],
-        'showfilter' => $attributes['showFilter']
+        'showfilter' => $attributes['showFilter'],
+        'show_back_to_list' => ''
     ];
 
     // get the output
-    return personio_integration_positions_shortcode( apply_filters( 'personio_integration_get_gutenberg_list_attributes', $attributes, $attribute_defaults) );
+    return personio_integration_positions_shortcode( apply_filters( 'personio_integration_get_gutenberg_list_attributes', $attributes) );
 }
 
 /**
@@ -204,6 +205,9 @@ function personio_integration_add_blocks(): void
             'showApplicationForm' => [
                 'type' => 'boolean',
                 'default' => false
+            ],
+            'color' => [
+                'type' => 'string'
             ]
         ];
         $list_attributes = apply_filters('personio_integration_gutenberg_block_list_attributes', $list_attributes);
