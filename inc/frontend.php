@@ -51,7 +51,9 @@ function personio_integration_position_shortcode( $attributes = [] ): string
         'template' => '',
         'templates' => implode(',', get_option('personioIntegrationTemplateContentDefaults', [])),
         'excerpt' => implode(",", get_option('personioIntegrationTemplateExcerptDetail', [])),
-        'donotlink' => 1
+        'donotlink' => 1,
+        'styles' => '',
+        'classes' => ''
     ];
 
     // define the settings for each attribute (array or string)
@@ -60,7 +62,9 @@ function personio_integration_position_shortcode( $attributes = [] ): string
         'lang' => 'string',
         'templates' => 'array',
         'excerpt' => 'array',
-        'donotlink' => 'bool'
+        'donotlink' => 'bool',
+        'styles' => 'string',
+        'classes' => 'string'
     ];
     $personio_attributes = helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
 
@@ -89,6 +93,9 @@ function personio_integration_position_shortcode( $attributes = [] ): string
 
     // change settings for output
     $personio_attributes = apply_filters('personio_integration_get_template', $personio_attributes, $attribute_defaults);
+
+    // generate styling
+    $styles = !empty($personio_attributes['styles']) ? $personio_attributes['styles'] : '';
 
     // collect the output
     ob_start();
@@ -152,7 +159,9 @@ function personio_integration_positions_shortcode( $attributes = [] ): string {
         'sortby' => 'title',
         'limit' => 0,
         'nopagination' => apply_filters('personio_integration_pagination', true),
-        'groupby' => ''
+        'groupby' => '',
+        'styles' => '',
+        'classes' => ''
     ];
 
     // define the settings for each attribute (array or string)
@@ -170,7 +179,9 @@ function personio_integration_positions_shortcode( $attributes = [] ): string {
         'limit' => 'unsignedint',
         'filtertype' => 'string',
         'nopagination' => 'bool',
-        'groupby' => 'string'
+        'groupby' => 'string',
+        'styles' => 'string',
+        'classes' => 'string'
     ];
 
     // add taxonomies which are available as filter
@@ -219,6 +230,9 @@ function personio_integration_positions_shortcode( $attributes = [] ): string {
 
     // change settings for output
     $personio_attributes = apply_filters('personio_integration_get_template', $personio_attributes, $attribute_defaults);
+
+    // generate styling
+    $styles = !empty($personio_attributes['styles']) ? $personio_attributes['styles'] : '';
 
     // collect the output
     ob_start();

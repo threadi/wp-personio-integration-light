@@ -25,8 +25,7 @@ import {
 import {
 	InspectorControls,
 	PanelColorSettings,
-	useBlockProps,
-	withColors
+	useBlockProps
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
@@ -58,7 +57,10 @@ const { useEffect } = wp.element;
  */
 export default function Edit( object ) {
 
-	const { setTextColor } = object;
+	// secure id of this block
+	useEffect(() => {
+		object.setAttributes({blockId: object.clientId});
+	});
 
 	// get filter types
 	let filter_types = wp.hooks.applyFilters('personio_integration_filter_types', [
@@ -190,10 +192,20 @@ export default function Edit( object ) {
 					initialOpen={false}
 					colorSettings={[
 						{
-							value: object.attributes.color,
-							onChange: setTextColor,
+							value: object.attributes.textColor,
+							onChange: (color) => object.setAttributes({ textColor: color }),
 							label: __('Text color')
 						},
+						{
+							value: object.attributes.linkColor,
+							onChange: (color) => object.setAttributes({ linkColor: color }),
+							label: __('Link color')
+						},
+						{
+							value: object.attributes.backgroundColor,
+							onChange: (color) => object.setAttributes({ backgroundColor: color }),
+							label: __('Background color')
+						}
 					]}
 				/>
 			</InspectorControls>

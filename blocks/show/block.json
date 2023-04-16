@@ -7,6 +7,12 @@
 	"category": "widgets",
 	"description": "Provides a Gutenberg Block to show a position managed by Personio.",
 	"textdomain": "wp-personio-integration",
+	"supports": {
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
 	"editorScript": "file:build/index.js",
 	"editorStyle": "file:build/index.css"
 }

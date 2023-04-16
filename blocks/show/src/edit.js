@@ -22,8 +22,9 @@ import {
 	PanelBody
 } from '@wordpress/components';
 import {
-	useBlockProps,
-	InspectorControls
+	InspectorControls,
+	PanelColorSettings,
+	useBlockProps
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
@@ -35,8 +36,8 @@ import {
 	onChangeId,
 	onChangeLinkingTitle
 } from '../../components';
-const { useSelect, select } = wp.data;
-import { store as coreStore } from '@wordpress/core-data';
+const { useSelect } = wp.data;
+const { useEffect } = wp.element;
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -48,6 +49,11 @@ import { store as coreStore } from '@wordpress/core-data';
  * @return {WPElement} Element to render.
  */
 export default function Edit( object ) {
+
+	// secure id of this block
+	useEffect(() => {
+		object.setAttributes({blockId: object.clientId});
+	});
 
 	// useSelect to retrieve all post types
 	const positions = useSelect(
@@ -156,6 +162,29 @@ export default function Edit( object ) {
 						disabled={ disabledFields }
 					/>
 				</PanelBody>
+			</InspectorControls>
+			<InspectorControls>
+				<PanelColorSettings
+					title={__('Color settings')}
+					initialOpen={false}
+					colorSettings={[
+						{
+							value: object.attributes.textColor,
+							onChange: (color) => object.setAttributes({ textColor: color }),
+							label: __('Text color')
+						},
+						{
+							value: object.attributes.linkColor,
+							onChange: (color) => object.setAttributes({ linkColor: color }),
+							label: __('Link color')
+						},
+						{
+							value: object.attributes.backgroundColor,
+							onChange: (color) => object.setAttributes({ backgroundColor: color }),
+							label: __('Background color')
+						}
+					]}
+				/>
 			</InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/show"
