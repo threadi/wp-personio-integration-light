@@ -200,6 +200,48 @@ function personio_integration_get_filter_list( $attributes ): string
 }
 
 /**
+ * Gutenberg-Callback to get the filter as select-boxes.
+ *
+ * @param $attributes
+ * @return string
+ * @noinspection PhpUnused
+ */
+function personio_integration_get_filter_select( $attributes ): string
+{
+    // set ID as class
+    $class = '';
+    if( !empty($attributes['blockId']) ) {
+        $class = 'personio-integration-block-' . $attributes['blockId'];
+    }
+
+    $stylesArray = [];
+    if( !empty($class) ) {
+        if (!empty($attributes['textColor'])) {
+            $stylesArray[] = '.wp-block-post-content .' . $class . ' { color: ' . $attributes['textColor'] . ' }';
+        }
+        if (!empty($attributes['backgroundColor'])) {
+            $stylesArray[] = '.wp-block-post-content .' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
+        }
+        if (!empty($attributes['linkColor'])) {
+            $stylesArray[] = '.wp-block-post-content .' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
+        }
+    }
+
+    // collect all settings for this block
+    $attributes = [
+        'templates' => '',
+        'filter' => implode(",", $attributes['filter']),
+        'filtertype' => 'select',
+        'showfilter' => true,
+        'styles' => implode(PHP_EOL, $stylesArray),
+        'classes' => $class
+    ];
+
+    // get the output
+    return personio_integration_positions_shortcode( apply_filters( 'personio_integration_get_gutenberg_filter_select_attributes', $attributes) );
+}
+
+/**
  * Register the Gutenberg-Blocks with all necessary settings.
  *
  * @return void
@@ -364,10 +406,39 @@ function personio_integration_add_blocks(): void
             'attributes' => $list_attributes
         ]);
 
+        // collect attributes for filter-select block
+        $list_attributes = [
+            'filter' => [
+                'type' => 'array',
+                'default' => ['recruitingCategory','schedule','office']
+            ],
+            'blockId' => [
+                'type' => 'string',
+                'default' => ''
+            ],
+            'textColor' => [
+                'type' => 'string'
+            ],
+            'linkColor' => [
+                'type' => 'string'
+            ],
+            'backgroundColor' => [
+                'type' => 'string'
+            ]
+        ];
+        $list_attributes = apply_filters('personio_integration_gutenberg_block_filter_select_attributes', $list_attributes);
+
+        // register filter-list block
+        register_block_type(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN).'blocks/filter-select/', [
+            'render_callback' => 'personio_integration_get_filter_select',
+            'attributes' => $list_attributes
+        ]);
+
         // register translations
         wp_set_script_translations('wp-personio-integration-show-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-list-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-filter-list-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+        wp_set_script_translations('wp-personio-integration-filter-select-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
     }
 }
 add_action( 'init', 'personio_integration_add_blocks', 10 );

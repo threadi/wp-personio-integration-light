@@ -33,9 +33,9 @@ import {iconEl} from "../../components";
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( 'wp-personio-integration/filter-list', {
-	title: __( 'Personio List Filter', 'wp-personio-integration' ),
-	description: __('Provides a Gutenberg block to show filter as link-based dropdown-list for Personio Positions.', 'wp-personio-integration'),
+registerBlockType( 'wp-personio-integration/filter-select', {
+	title: __( 'Personio Select Filter', 'wp-personio-integration' ),
+	description: __('Provides a Gutenberg block to show filter as dropdown-list for Personio Positions.', 'wp-personio-integration'),
 	icon: iconEl,
 
 	attributes: {

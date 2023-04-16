@@ -2,11 +2,11 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
 	"name": "wp-personio-integration/filter-list",
-	"version": "2.3.0",
+	"version": "2.1.0",
 	"title": "Personio Filter",
 	"category": "widgets",
 	"icon": "list-view",
-	"description": "Provides a Gutenberg block to show filter as dropdown-list for Personio Positions.",
+	"description": "Provides a Gutenberg block to show filter as link-based dropdown-list for Personio Positions.",
 	"supports": {
 		"html": false,
 	  	"anchor": true,

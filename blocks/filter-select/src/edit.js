@@ -107,7 +107,7 @@ export default function Edit( object ) {
 				/>
 			</InspectorControls>
 			<ServerSideRender
-				block="wp-personio-integration/filter-list"
+				block="wp-personio-integration/filter-select"
 				attributes={ object.attributes }
 				httpMethod="POST"
 			/>
