@@ -18,7 +18,8 @@ import './editor.scss';
  */
 import {
 	PanelBody,
-	SelectControl
+	SelectControl,
+	ToggleControl
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -27,7 +28,10 @@ import {
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
-	onChangeFilter
+	onChangeFilter,
+	onChangeHideFilterTitle,
+	onChangeHideResetLink,
+	onChangeHideSubmitButton
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -81,6 +85,21 @@ export default function Edit( object ) {
 							/>
 						}
 					</div>
+					<ToggleControl
+						label={__('Hide filter title', 'wp-personio-integration')}
+						checked={ object.attributes.hideFilterTitle }
+						onChange={ value => onChangeHideFilterTitle( value, object ) }
+					/>
+					<ToggleControl
+						label={__('Hide submit button', 'wp-personio-integration')}
+						checked={ object.attributes.hideSubmitButton }
+						onChange={ value => onChangeHideSubmitButton( value, object ) }
+					/>
+					<ToggleControl
+						label={__('Hide reset link', 'wp-personio-integration')}
+						checked={ object.attributes.hideResetLink }
+						onChange={ value => onChangeHideResetLink( value, object ) }
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<InspectorControls>

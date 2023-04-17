@@ -41,7 +41,7 @@ registerBlockType( 'wp-personio-integration/list', {
 	attributes: {
 		showFilter: {
 			type: 'boolean',
-			default: true
+			default: false
 		},
 		filter: {
 			type: 'array',

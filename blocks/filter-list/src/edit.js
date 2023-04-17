@@ -18,7 +18,9 @@ import './editor.scss';
  */
 import {
 	PanelBody,
-	SelectControl
+	RangeControl,
+	SelectControl,
+	ToggleControl
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -27,7 +29,10 @@ import {
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
-	onChangeFilter
+	onChangeFilter,
+	onChangeHideFilterTitle,
+	onChangeHideResetLink,
+	onChangeSpaceBetween
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -73,15 +78,36 @@ export default function Edit( object ) {
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
-								label={__('Choose filter', 'wp-personio-integration')}
-								value={object.attributes.filter}
+								label={ __('Choose filter', 'wp-personio-integration') }
+								value={ object.attributes.filter }
 								options={ personioTaxonomies }
-								multiple={true}
-								onChange={value => onChangeFilter(value, object)}
+								multiple={ true }
+								onChange={ value => onChangeFilter(value, object) }
 							/>
 						}
 					</div>
+					<ToggleControl
+						label={__('Hide filter title', 'wp-personio-integration')}
+						checked={ object.attributes.hideFilterTitle }
+						onChange={ value => onChangeHideFilterTitle( value, object ) }
+					/>
+					<ToggleControl
+						label={__('Hide reset link', 'wp-personio-integration')}
+						checked={ object.attributes.hideResetLink }
+						onChange={ value => onChangeHideResetLink( value, object ) }
+					/>
 				</PanelBody>
+			</InspectorControls>
+			<InspectorControls>
+				<div className="wp-personio-integration-range">
+					<RangeControl
+						label={__('Space between filters', 'wp-personio-integration')}
+						value={ object.attributes.space_between }
+						onChange={ value => onChangeSpaceBetween( value, object ) }
+						min={ 0 }
+						max={ 100 }
+					/>
+				</div>
 			</InspectorControls>
 			<InspectorControls>
 				<PanelColorSettings

@@ -91,25 +91,27 @@ export default function Edit( object ) {
 			<InspectorControls>
 				<PanelBody title={ __( 'Filter', 'wp-personio-integration' ) }>
 					<ToggleControl
-						label={__('Show filter', 'wp-personio-integration')}
+						label={ __('Show filter', 'wp-personio-integration') }
 						checked={ object.attributes.showFilter }
 						onChange={ value => onChangeShowFilter( value, object ) }
 					/>
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
-								label={__('Choose filter', 'wp-personio-integration')}
-								value={object.attributes.filter}
+								label={ __('Choose filter', 'wp-personio-integration') }
+								value={ object.attributes.filter }
 								options={ personioTaxonomies }
-								multiple={true}
-								onChange={value => onChangeFilter(value, object)}
+								multiple={ true }
+								disabled={ !object.attributes.showFilter }
+								onChange={ value => onChangeFilter(value, object) }
 							/>
 						}
 					</div>
 					<SelectControl
-						label={__('Type of filter', 'wp-personio-integration')}
+						label={ __('Type of filter', 'wp-personio-integration') }
 						value={ object.attributes.filtertype }
 						options={ filter_types }
+						disabled={ !object.attributes.showFilter }
 						onChange={ value => onChangeFilterType( value, object ) }
 					/>
 				</PanelBody>
@@ -170,6 +172,7 @@ export default function Edit( object ) {
 								value={object.attributes.excerptTemplates}
 								options={ personioTaxonomies }
 								multiple={true}
+								disabled={ !object.attributes.showExcerpt }
 								onChange={value => onChangeExcerptTemplates(value, object)}
 							/>
 						}

@@ -55,6 +55,18 @@ registerBlockType( 'wp-personio-integration/filter-select', {
 		},
 		backgroundColor: {
 			type: 'string'
+		},
+		hideFilterTitle: {
+			type: 'bool',
+			default: false
+		},
+		hideSubmitButton: {
+			type: 'bool',
+			default: false
+		},
+		hideResetLink: {
+			type: 'bool',
+			default: false
 		}
 	},
 

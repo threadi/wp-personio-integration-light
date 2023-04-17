@@ -172,7 +172,8 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Fixed filter regarding pagination
 
 = 2.1.0 =
-* Advanced support for Block Editor: 2 new Blocks (for filter), new options for styling
+* Enhanced support for Block Editor: 2 new Blocks (for filter), new options for styling
+* Filter on list Block is not automatic enabled for new Blocks anymore
 * Optimized loading of database-objects
 * Fixed usage of some Gutenberg-options on list-Block
 * Fixed target url for filter in frontend

@@ -127,7 +127,7 @@ function personio_integration_get_list( $attributes ): string
         if (!empty($attributes['style']) && !empty($attributes['style']['spacing']) && !empty($attributes['style']['spacing']['blockGap'])) {
             $value = $attributes['style']['spacing']['blockGap'];
             // convert var-setting to var-style-entity
-            if (strpos($attributes['style']['spacing']['blockGap'], 'var:')) {
+            if(false !== strpos($attributes['style']['spacing']['blockGap'], 'var:')) {
                 $value = str_replace('|', '--', $value);
                 $value = str_replace('var:', '', $value);
                 $value = 'var(--wp--' . $value . ')';
@@ -183,6 +183,15 @@ function personio_integration_get_filter_list( $attributes ): string
         if (!empty($attributes['linkColor'])) {
             $stylesArray[] = '.wp-block-post-content .' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
         }
+        if (!empty($attributes['hideResetLink'])) {
+            $stylesArray[] = '.wp-block-post-content .' . $class . ' .personio-position-filter-reset { display: none }';
+        }
+        if (!empty($attributes['hideFilterTitle'])) {
+            $stylesArray[] = '.wp-block-post-content .' . $class . ' legend { display: none }';
+        }
+        if (!empty($attributes['space_between'])) {
+            $stylesArray[] = '.wp-block-post-content .' . $class . ' .personio-position-filter-linklist > div { margin-right: ' . $attributes['space_between'] . 'px }';
+        }
     }
 
     // collect all settings for this block
@@ -224,6 +233,15 @@ function personio_integration_get_filter_select( $attributes ): string
         }
         if (!empty($attributes['linkColor'])) {
             $stylesArray[] = '.wp-block-post-content .' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
+        }
+        if (!empty($attributes['hideResetLink'])) {
+            $stylesArray[] = '.wp-block-post-content .' . $class . ' .personio-position-filter-reset { display: none }';
+        }
+        if (!empty($attributes['hideSubmitButton'])) {
+            $stylesArray[] = '.wp-block-post-content .' . $class . ' button { display: none }';
+        }
+        if (!empty($attributes['hideFilterTitle'])) {
+            $stylesArray[] = '.wp-block-post-content .' . $class . ' legend { display: none }';
         }
     }
 
@@ -306,7 +324,7 @@ function personio_integration_add_blocks(): void
         $list_attributes = [
             'showFilter' => [
                 'type' => 'boolean',
-                'default' => true
+                'default' => false
             ],
             'filter' => [
                 'type' => 'array',
@@ -396,6 +414,18 @@ function personio_integration_add_blocks(): void
             ],
             'backgroundColor' => [
                 'type' => 'string'
+            ],
+            'hideResetLink' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
+            'hideFilterTitle' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
+            'space_between' => [
+                'type' => 'integer',
+                'default' => 0
             ]
         ];
         $list_attributes = apply_filters('personio_integration_gutenberg_block_filter_list_attributes', $list_attributes);
@@ -424,6 +454,18 @@ function personio_integration_add_blocks(): void
             ],
             'backgroundColor' => [
                 'type' => 'string'
+            ],
+            'hideResetLink' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
+            'hideSubmitButton' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
+            'hideFilterTitle' => [
+                'type' => 'boolean',
+                'default' => false
             ]
         ];
         $list_attributes = apply_filters('personio_integration_gutenberg_block_filter_select_attributes', $list_attributes);
