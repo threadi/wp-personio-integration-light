@@ -737,7 +737,8 @@ class helper {
             ],
             WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE => [
                 'full-time' => __('full-time', 'wp-personio-integration'),
-                'part-time' => __('part-time', 'wp-personio-integration')
+                'part-time' => __('part-time', 'wp-personio-integration'),
+                'full-or-part-time' => __('full- or part-time', 'wp-personio-integration')
             ],
             WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE => [
                 'lt-1' => __('less than 1 year', 'wp-personio-integration'),

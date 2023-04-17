@@ -175,6 +175,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Enhanced support for Block Editor: 2 new Blocks (for filter), new options for styling
 * Filter on list Block is not automatic enabled for new Blocks anymore
 * Optimized loading of database-objects
+* Added missing Personio-driven schedule time
 * Fixed usage of some Gutenberg-options on list-Block
 * Fixed target url for filter in frontend
 * Fixed visibility of back to list link
