@@ -31,19 +31,13 @@
     height: 120px !important;
 }
 
-/* Elementor-Widget-Icon */
-.wp-personio-integration-icon:after {
-    content: url(../gfx/personio_icon.png);
-    display: block;
+/* Gutenberg range slider */
+.wp-personio-integration-range {
+    padding: 0 24px;
 }
 
-/* SiteOrigin Widget Icon */
-#sow-widgets-page #widgets-list .so-widget[data-id='personio-positions'] .so-widget-banner svg,
-#sow-widgets-page #widgets-list .so-widget[data-id='personio-position'] .so-widget-banner svg {
-    display: none
-}
-#sow-widgets-page #widgets-list .so-widget[data-id='personio-positions'] .so-widget-banner:before,
-#sow-widgets-page #widgets-list .so-widget[data-id='personio-position'] .so-widget-banner:before {
+/* Elementor-Widget-Icon */
+.wp-personio-integration-icon:after {
     content: url(../gfx/personio_icon.png);
     display: block;
 }
@@ -96,7 +90,7 @@
 .personioposition_page_personioPositions .highlight a:after, .post-type-personioposition .personio-pro-hint a:after {
     content: "\f504";
     display: inline-block;
-    font-family: "dashicons";
+    font-family: "dashicons", sans-serif;
     margin-left: 4px;
     vertical-align: middle;
 }

@@ -70,6 +70,18 @@ registerBlockType( 'wp-personio-integration/show', {
 		showApplicationForm: {
 			type: 'boolean',
 			default: true
+		},
+		blockId: {
+			type: 'string'
+		},
+		textColor: {
+			type: 'string'
+		},
+		linkColor: {
+			type: 'string'
+		},
+		backgroundColor: {
+			type: 'string'
 		}
 	},
 

@@ -33,63 +33,15 @@ import {iconEl} from "../../components";
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( 'wp-personio-integration/list', {
-	title: __( 'Personio Positions', 'wp-personio-integration' ),
-	description: __('Provides a Gutenberg Block to show a list of positions provided by Personio.', 'wp-personio-integration'),
+registerBlockType( 'wp-personio-integration/filter-select', {
+	title: __( 'Personio Select Filter', 'wp-personio-integration' ),
+	description: __('Provides a Gutenberg block to show filter as dropdown-list for Personio Positions.', 'wp-personio-integration'),
 	icon: iconEl,
 
 	attributes: {
-		showFilter: {
-			type: 'boolean',
-			default: false
-		},
 		filter: {
 			type: 'array',
 			default: ['recruitingCategory','schedule','office']
-		},
-		filtertype: {
-			type: 'string',
-			default: 'linklist'
-		},
-		limit: {
-			type: 'integer',
-			default: 0
-		},
-		sort: {
-			type: 'string',
-			default: 'asc'
-		},
-		sortby: {
-			type: 'string',
-			default: 'title'
-		},
-		groupby: {
-			type: 'string',
-			default: ''
-		},
-		showTitle: {
-			type: 'boolean',
-			default: true
-		},
-		linkTitle: {
-			type: 'boolean',
-			default: true
-		},
-		showExcerpt: {
-			type: 'boolean',
-			default: true
-		},
-		excerptTemplates: {
-			type: 'array',
-			default: ['recruitingCategory','schedule','office']
-		},
-		showContent: {
-			type: 'boolean',
-			default: false
-		},
-		showApplicationForm: {
-			type: 'boolean',
-			default: false
 		},
 		blockId: {
 			type: 'string',
@@ -103,6 +55,18 @@ registerBlockType( 'wp-personio-integration/list', {
 		},
 		backgroundColor: {
 			type: 'string'
+		},
+		hideFilterTitle: {
+			type: 'bool',
+			default: false
+		},
+		hideSubmitButton: {
+			type: 'bool',
+			default: false
+		},
+		hideResetLink: {
+			type: 'bool',
+			default: false
 		}
 	},
 

@@ -1,20 +1,24 @@
 {
   "name": "@wp-personio-integration/wp-personio-integration",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "Provides a Gutenberg Block to display positions managed by personio.",
   "author": "laOlaWeb GmbH",
   "license": "GPL-2.0-or-later",
   "scripts": {
-    "build": "concurrently --kill-others \"npm run build:list\" \"npm run build:show\"",
+    "build": "concurrently --kill-others \"npm run build:list\" \"npm run build:show\" \"npm run build:filter-list\" \"npm run build:filter-select\"",
     "format": "wp-scripts format",
     "lint:css": "wp-scripts lint-style",
     "lint:js": "wp-scripts lint-js",
-    "start": "concurrently --kill-others \"npm run start:list\" \"npm run start:show\"",
+    "start": "concurrently --kill-others \"npm run start:list\" \"npm run start:show\" \"npm run start:filter-list\" \"npm run start:filter-select\"",
     "packages-update": "wp-scripts packages-update",
     "start:show": "wp-scripts start blocks/show/src/index.js --output-path=blocks/show/build/",
     "build:show": "wp-scripts build blocks/show/src/index.js --output-path=blocks/show/build/",
     "start:list": "wp-scripts start blocks/list/src/index.js --output-path=blocks/list/build/",
-    "build:list": "wp-scripts build blocks/list/src/index.js --output-path=blocks/list/build/"
+    "build:list": "wp-scripts build blocks/list/src/index.js --output-path=blocks/list/build/",
+    "start:filter-list": "wp-scripts start blocks/filter-list/src/index.js --output-path=blocks/filter-list/build/",
+    "build:filter-list": "wp-scripts build blocks/filter-list/src/index.js --output-path=blocks/filter-list/build/",
+    "start:filter-select": "wp-scripts start blocks/filter-select/src/index.js --output-path=blocks/filter-select/build/",
+    "build:filter-select": "wp-scripts build blocks/filter-select/src/index.js --output-path=blocks/filter-select/build/"
   },
   "devDependencies": {
     "@wordpress/scripts": "^24.2.0",

@@ -6,7 +6,7 @@ Tested up to: 6.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.0.6
+Stable tag: 2.1.0
 
 == Description ==
 
@@ -171,6 +171,10 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Fixed resetting of position order during import
 * Fixed filter regarding pagination
 
-= 2.0.6 =
+= 2.1.0 =
+* Enhanced support for Block Editor: 2 new Blocks (for filter), new options for styling
+* Filter on list Block is not automatic enabled for new Blocks anymore
 * Optimized loading of database-objects
+* Fixed usage of some Gutenberg-options on list-Block
 * Fixed target url for filter in frontend
+* Fixed visibility of back to list link
