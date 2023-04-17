@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-05T17:55:44+02:00\n"
+"POT-Creation-Date: 2023-04-17T16:59:50+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -30,398 +30,402 @@ msgstr ""
 msgid "https://laolaweb.com"
 msgstr ""
 
-#: classes/class-helper.php:62
-#: classes/class-helper.php:68
-#: classes/class-helper.php:81
-#: classes/class-helper.php:88
-#: classes/class-helper.php:106
-#: classes/class-helper.php:124
-#: classes/class-helper.php:132
-#: classes/class-helper.php:140
-#: classes/class-helper.php:145
-#: classes/class-helper.php:154
+#: classes/class-helper.php:66
+#: classes/class-helper.php:72
+#: classes/class-helper.php:85
+#: classes/class-helper.php:92
+#: classes/class-helper.php:110
+#: classes/class-helper.php:128
+#: classes/class-helper.php:136
+#: classes/class-helper.php:144
+#: classes/class-helper.php:149
+#: classes/class-helper.php:158
 msgid "Personio Integration"
 msgstr ""
 
-#: classes/class-helper.php:63
+#: classes/class-helper.php:67
 msgid "Plugin was not activated!"
 msgstr ""
 
-#: classes/class-helper.php:64
+#: classes/class-helper.php:68
 msgid "The PHP extension simplexml is missing on the system. Please contact your hoster about this."
 msgstr ""
 
-#: classes/class-helper.php:69
+#: classes/class-helper.php:73
 msgid "The specification of your Personio URL is still pending."
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:71
+#: classes/class-helper.php:75
 msgid "To do this, please go to the <a href=\"%s\">settings page</a>."
 msgstr ""
 
-#: classes/class-helper.php:82
+#: classes/class-helper.php:86
 msgid "You have not imported your open positions from Personio until now."
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:84
+#: classes/class-helper.php:88
 msgid "Click on the following button to import your positions from Personio now:"
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:84
-#: classes/class-helper.php:141
-#: inc/admin.php:46
+#: classes/class-helper.php:88
+#: classes/class-helper.php:145
+#: inc/admin.php:47
 #: inc/settings/import.php:232
 msgid "Run import"
 msgstr ""
 
 #. translators: %1$s is replaced with "string", %2$s is replaced with "string"
-#: classes/class-helper.php:91
-#: inc/admin.php:52
+#: classes/class-helper.php:95
+#: inc/admin.php:53
 msgid "<strong>The import has been manually run.</strong> Please check the list of positions <a href=\"%1$s\">in backend</a> and <a href=\"%2$s\">frontend</a>."
 msgstr ""
 
 #. translators: %1$s is replaced with "string", %2$s is replaced with "string"
-#: classes/class-helper.php:109
+#: classes/class-helper.php:113
 msgid "<strong>The import has been canceled.</strong> Please check the list of positions <a href=\"%1$s\">in backend</a> and <a href=\"%2$s\">frontend</a>."
 msgstr ""
 
-#: classes/class-helper.php:125
+#: classes/class-helper.php:129
 msgid "<strong>The positions has been deleted.</strong> You can run the import anytime again to import positions."
 msgstr ""
 
-#: classes/class-helper.php:133
+#: classes/class-helper.php:137
 msgid "<strong>The positions could not been deleted.</strong> An import is actual running."
 msgstr ""
 
-#: classes/class-helper.php:141
+#: classes/class-helper.php:145
 msgid "<strong>The specified Personio URL is reachable.</strong> Click on the following button to import your positions from Personio now:"
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:148
+#: classes/class-helper.php:152
 msgid "The specified Personio URL %s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations."
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:157
+#: classes/class-helper.php:161
 msgid "The list of positions is limited to a maximum of 10 entries in the frontend. With <a href=\"%s\">Personio Integration Pro version</a>, any number of positions can be displayed."
 msgstr ""
 
-#: classes/class-helper.php:326
+#: classes/class-helper.php:330
 #: blocks/list/build/index.js:1
 msgid "select-box"
 msgstr ""
 
-#: classes/class-helper.php:327
+#: classes/class-helper.php:331
 #: blocks/list/build/index.js:1
 msgid "list of links"
 msgstr ""
 
-#: classes/class-helper.php:624
+#: classes/class-helper.php:630
 msgctxt "taxonomy general name"
 msgid "recruiting categories"
 msgstr ""
 
-#: classes/class-helper.php:625
+#: classes/class-helper.php:631
 msgctxt "taxonomy singular name"
 msgid "recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:626
+#: classes/class-helper.php:632
 msgid "Search recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:627
+#: classes/class-helper.php:633
 msgid "Edit recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:628
+#: classes/class-helper.php:634
 msgid "Update recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:629
+#: classes/class-helper.php:635
 msgid "recruiting categories"
 msgstr ""
 
-#: classes/class-helper.php:632
+#: classes/class-helper.php:638
 msgctxt "taxonomy general name"
 msgid "occupation categories"
 msgstr ""
 
-#: classes/class-helper.php:633
+#: classes/class-helper.php:639
 msgctxt "taxonomy singular name"
 msgid "occupation category"
 msgstr ""
 
-#: classes/class-helper.php:634
+#: classes/class-helper.php:640
 msgid "Search occupation category"
 msgstr ""
 
-#: classes/class-helper.php:635
+#: classes/class-helper.php:641
 msgid "Edit occupation category"
 msgstr ""
 
-#: classes/class-helper.php:636
+#: classes/class-helper.php:642
 msgid "Update occupation category"
 msgstr ""
 
-#: classes/class-helper.php:637
+#: classes/class-helper.php:643
 msgid "occupation categories"
 msgstr ""
 
-#: classes/class-helper.php:640
+#: classes/class-helper.php:646
 msgctxt "taxonomy general name"
 msgid "offices"
 msgstr ""
 
-#: classes/class-helper.php:641
+#: classes/class-helper.php:647
 msgctxt "taxonomy singular name"
 msgid "office"
 msgstr ""
 
-#: classes/class-helper.php:642
+#: classes/class-helper.php:648
 msgid "Search office"
 msgstr ""
 
-#: classes/class-helper.php:643
+#: classes/class-helper.php:649
 msgid "Edit office"
 msgstr ""
 
-#: classes/class-helper.php:644
+#: classes/class-helper.php:650
 msgid "Update office"
 msgstr ""
 
-#: classes/class-helper.php:645
+#: classes/class-helper.php:651
 msgid "offices"
 msgstr ""
 
-#: classes/class-helper.php:648
+#: classes/class-helper.php:654
 msgctxt "taxonomy general name"
 msgid "departments"
 msgstr ""
 
-#: classes/class-helper.php:649
+#: classes/class-helper.php:655
 msgctxt "taxonomy singular name"
 msgid "department"
 msgstr ""
 
-#: classes/class-helper.php:650
+#: classes/class-helper.php:656
 msgid "Search department"
 msgstr ""
 
-#: classes/class-helper.php:651
+#: classes/class-helper.php:657
 msgid "Edit department"
 msgstr ""
 
-#: classes/class-helper.php:652
+#: classes/class-helper.php:658
 msgid "Update department"
 msgstr ""
 
-#: classes/class-helper.php:653
+#: classes/class-helper.php:659
 msgid "departments"
 msgstr ""
 
-#: classes/class-helper.php:656
+#: classes/class-helper.php:662
 msgctxt "taxonomy general name"
 msgid "employment types"
 msgstr ""
 
-#: classes/class-helper.php:657
+#: classes/class-helper.php:663
 msgctxt "taxonomy singular name"
 msgid "employment type"
 msgstr ""
 
-#: classes/class-helper.php:658
+#: classes/class-helper.php:664
 msgid "Search employment type"
 msgstr ""
 
-#: classes/class-helper.php:659
+#: classes/class-helper.php:665
 msgid "Edit employment type"
 msgstr ""
 
-#: classes/class-helper.php:660
+#: classes/class-helper.php:666
 msgid "Update employment type"
 msgstr ""
 
-#: classes/class-helper.php:661
-#: inc/init.php:326
+#: classes/class-helper.php:667
+#: inc/init.php:325
 msgid "employment types"
 msgstr ""
 
-#: classes/class-helper.php:664
+#: classes/class-helper.php:670
 msgctxt "taxonomy general name"
 msgid "seniority"
 msgstr ""
 
-#: classes/class-helper.php:665
+#: classes/class-helper.php:671
 msgctxt "taxonomy singular name"
-msgid "seniority"
-msgstr ""
-
-#: classes/class-helper.php:666
-msgid "Search seniority"
-msgstr ""
-
-#: classes/class-helper.php:667
-msgid "Edit seniority"
-msgstr ""
-
-#: classes/class-helper.php:668
-msgid "Update seniority"
-msgstr ""
-
-#: classes/class-helper.php:669
-#: inc/init.php:327
-#: blocks/show/build/index.js:1
 msgid "seniority"
 msgstr ""
 
 #: classes/class-helper.php:672
+msgid "Search seniority"
+msgstr ""
+
+#: classes/class-helper.php:673
+msgid "Edit seniority"
+msgstr ""
+
+#: classes/class-helper.php:674
+msgid "Update seniority"
+msgstr ""
+
+#: classes/class-helper.php:675
+#: inc/init.php:326
+#: blocks/show/build/index.js:1
+msgid "seniority"
+msgstr ""
+
+#: classes/class-helper.php:678
 msgctxt "taxonomy general name"
 msgid "schedules"
 msgstr ""
 
-#: classes/class-helper.php:673
+#: classes/class-helper.php:679
 msgctxt "taxonomy singular name"
 msgid "schedule"
 msgstr ""
 
-#: classes/class-helper.php:674
+#: classes/class-helper.php:680
 msgid "Search schedule"
 msgstr ""
 
-#: classes/class-helper.php:675
+#: classes/class-helper.php:681
 msgid "Edit schedule"
 msgstr ""
 
-#: classes/class-helper.php:676
+#: classes/class-helper.php:682
 msgid "Update schedule"
 msgstr ""
 
-#: classes/class-helper.php:677
+#: classes/class-helper.php:683
 msgid "schedules"
 msgstr ""
 
-#: classes/class-helper.php:680
+#: classes/class-helper.php:686
 msgctxt "taxonomy general name"
 msgid "experiences"
 msgstr ""
 
-#: classes/class-helper.php:681
+#: classes/class-helper.php:687
 msgctxt "taxonomy singular name"
 msgid "experience"
 msgstr ""
 
-#: classes/class-helper.php:682
+#: classes/class-helper.php:688
 msgid "Search experience"
 msgstr ""
 
-#: classes/class-helper.php:683
+#: classes/class-helper.php:689
 msgid "Edit experience"
 msgstr ""
 
-#: classes/class-helper.php:684
+#: classes/class-helper.php:690
 msgid "Update experience"
 msgstr ""
 
-#: classes/class-helper.php:685
+#: classes/class-helper.php:691
 msgid "experiences"
 msgstr ""
 
-#: classes/class-helper.php:688
+#: classes/class-helper.php:694
 msgctxt "taxonomy general name"
 msgid "languages"
 msgstr ""
 
-#: classes/class-helper.php:689
+#: classes/class-helper.php:695
 msgctxt "taxonomy singular name"
 msgid "language"
 msgstr ""
 
-#: classes/class-helper.php:690
+#: classes/class-helper.php:696
 msgid "Search language"
 msgstr ""
 
-#: classes/class-helper.php:691
+#: classes/class-helper.php:697
 msgid "Edit language"
 msgstr ""
 
-#: classes/class-helper.php:692
+#: classes/class-helper.php:698
 msgid "Update language"
 msgstr ""
 
-#: classes/class-helper.php:693
+#: classes/class-helper.php:699
 msgid "languages"
 msgstr ""
 
-#: classes/class-helper.php:721
+#: classes/class-helper.php:727
 msgid "permanent"
 msgstr ""
 
-#: classes/class-helper.php:722
+#: classes/class-helper.php:728
 msgid "intern"
 msgstr ""
 
-#: classes/class-helper.php:723
+#: classes/class-helper.php:729
 msgid "trainee"
 msgstr ""
 
-#: classes/class-helper.php:724
+#: classes/class-helper.php:730
 msgid "freelance"
 msgstr ""
 
-#: classes/class-helper.php:727
+#: classes/class-helper.php:733
 msgid "entry-level"
 msgstr ""
 
-#: classes/class-helper.php:728
+#: classes/class-helper.php:734
 msgid "experienced"
 msgstr ""
 
-#: classes/class-helper.php:729
+#: classes/class-helper.php:735
 msgid "executive"
 msgstr ""
 
-#: classes/class-helper.php:730
+#: classes/class-helper.php:736
 msgid "student"
 msgstr ""
 
-#: classes/class-helper.php:733
+#: classes/class-helper.php:739
 msgid "full-time"
 msgstr ""
 
-#: classes/class-helper.php:734
+#: classes/class-helper.php:740
 msgid "part-time"
 msgstr ""
 
-#: classes/class-helper.php:737
+#: classes/class-helper.php:741
+msgid "full- or part-time"
+msgstr ""
+
+#: classes/class-helper.php:744
 msgid "less than 1 year"
 msgstr ""
 
-#: classes/class-helper.php:738
+#: classes/class-helper.php:745
 msgid "1-2 years"
 msgstr ""
 
-#: classes/class-helper.php:739
+#: classes/class-helper.php:746
 msgid "2-5 years"
 msgstr ""
 
-#: classes/class-helper.php:740
+#: classes/class-helper.php:747
 msgid "5-7 years"
 msgstr ""
 
-#: classes/class-helper.php:741
+#: classes/class-helper.php:748
 msgid "7-10 years"
 msgstr ""
 
-#: classes/class-helper.php:742
+#: classes/class-helper.php:749
 msgid "10-15 years"
 msgstr ""
 
-#: classes/class-helper.php:743
+#: classes/class-helper.php:750
 msgid "more than 15 years"
 msgstr ""
 
@@ -460,11 +464,11 @@ msgid "log"
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
-#: classes/class-position.php:88
+#: classes/class-position.php:89
 msgid "Unknown property %s."
 msgstr ""
 
-#: classes/class-position.php:129
+#: classes/class-position.php:130
 msgid "Position could not be saved as the PersonioId is missing."
 msgstr ""
 
@@ -473,7 +477,7 @@ msgid "Provides a Widget to show a list of positions provided by Personio."
 msgstr ""
 
 #: classes/class-positionswidget.php:24
-#: inc/init.php:269
+#: inc/init.php:281
 #: blocks/list/build/index.js:1
 msgid "Personio Positions"
 msgstr ""
@@ -503,7 +507,7 @@ msgid "Sort by"
 msgstr ""
 
 #: classes/class-positionswidget.php:56
-#: inc/init.php:343
+#: inc/init.php:342
 #: blocks/list/build/index.js:1
 msgid "title"
 msgstr ""
@@ -591,150 +595,150 @@ msgstr ""
 msgid "Select position"
 msgstr ""
 
-#: inc/admin.php:41
+#: inc/admin.php:42
 msgid "Get Personio Integration Pro"
 msgstr ""
 
-#: inc/admin.php:45
+#: inc/admin.php:46
 msgid "Reset sorting"
 msgstr ""
 
-#: inc/admin.php:47
+#: inc/admin.php:48
 msgid "Import is running"
 msgstr ""
 
-#: inc/admin.php:48
+#: inc/admin.php:49
 msgid "Please wait"
 msgstr ""
 
-#: inc/admin.php:49
+#: inc/admin.php:50
 #: inc/settings/import.php:233
 msgid "Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used."
 msgstr ""
 
-#: inc/admin.php:64
+#: inc/admin.php:65
 msgid "OK"
 msgstr ""
 
-#: inc/admin.php:97
+#: inc/admin.php:99
 msgid "Positions imported from Personio"
 msgstr ""
 
-#: inc/admin.php:115
+#: inc/admin.php:118
 msgid "Actually there are no positions imported from Personio."
 msgstr ""
 
-#: inc/admin.php:130
+#: inc/admin.php:133
 msgid "Show all positions"
 msgstr ""
 
-#: inc/admin.php:186
+#: inc/admin.php:190
 msgid "Dismiss this notice."
 msgstr ""
 
-#: inc/admin.php:216
+#: inc/admin.php:220
 msgid "PersonioID"
 msgstr ""
 
-#: inc/admin.php:260
+#: inc/admin.php:266
 #: inc/settings/settings.php:81
 #: blocks/list/build/index.js:1
 #: blocks/show/build/index.js:1
 msgid "Settings"
 msgstr ""
 
-#: inc/frontend.php:69
-msgid "Detail-view called without Id of a position."
+#: inc/frontend.php:74
+msgid "Detail-view called without the PersonioId of a position."
 msgstr ""
 
-#: inc/frontend.php:81
+#: inc/frontend.php:86
 msgid "Given Id is not a valid position-Id."
 msgstr ""
 
-#: inc/init.php:29
-#: inc/init.php:31
+#: inc/init.php:32
+#: inc/init.php:34
 msgid "Positions"
 msgstr ""
 
-#: inc/init.php:30
+#: inc/init.php:33
 msgid "Position"
 msgstr ""
 
-#: inc/init.php:32
+#: inc/init.php:35
 msgid "Parent Position"
 msgstr ""
 
-#: inc/init.php:33
+#: inc/init.php:36
 msgid "All Positions"
 msgstr ""
 
-#: inc/init.php:34
+#: inc/init.php:37
 msgid "View Position"
 msgstr ""
 
-#: inc/init.php:35
+#: inc/init.php:38
 msgid "View Positions"
 msgstr ""
 
-#: inc/init.php:36
+#: inc/init.php:39
 msgid "Search Position"
 msgstr ""
 
-#: inc/init.php:37
+#: inc/init.php:40
 msgid "Not Found"
 msgstr ""
 
-#: inc/init.php:38
+#: inc/init.php:41
 msgid "Not found in Trash"
 msgstr ""
 
-#: inc/init.php:236
+#: inc/init.php:246
 msgid "every 5th Minute"
 msgstr ""
 
-#: inc/init.php:322
+#: inc/init.php:321
 #: blocks/show/build/index.js:1
 msgid "recruiting category"
 msgstr ""
 
-#: inc/init.php:323
+#: inc/init.php:322
 #: blocks/show/build/index.js:1
 msgid "schedule"
 msgstr ""
 
-#: inc/init.php:324
+#: inc/init.php:323
 #: blocks/show/build/index.js:1
 msgid "office"
 msgstr ""
 
-#: inc/init.php:325
+#: inc/init.php:324
 #: blocks/show/build/index.js:1
 msgid "department"
 msgstr ""
 
-#: inc/init.php:328
+#: inc/init.php:327
 #: blocks/show/build/index.js:1
 msgid "experience"
 msgstr ""
 
-#: inc/init.php:329
+#: inc/init.php:328
 #: blocks/show/build/index.js:1
 msgid "occupation"
 msgstr ""
 
-#: inc/init.php:344
+#: inc/init.php:343
 msgid "excerpt"
 msgstr ""
 
-#: inc/init.php:345
+#: inc/init.php:344
 msgid "content"
 msgstr ""
 
-#: inc/init.php:346
+#: inc/init.php:345
 msgid "application link"
 msgstr ""
 
-#: inc/init.php:528
+#: inc/init.php:531
 #: templates/parts/term-filter-select.php:13
 #: blocks/show/build/index.js:1
 msgid "Please choose"
@@ -1022,35 +1026,105 @@ msgstr ""
 msgid "Separator for excerpt-list"
 msgstr ""
 
-#: templates/archive-personioposition-shortcode.php:40
+#: templates/archive-personioposition-shortcode.php:45
 msgid "No positions could be found."
 msgstr ""
 
-#: templates/parts/part-filter.php:20
+#: templates/parts/part-filter.php:16
+#: blocks/filter-list/build/index.js:1
+#: blocks/filter-select/build/index.js:1
 #: blocks/list/build/index.js:1
 msgid "Filter"
 msgstr ""
 
-#: templates/parts/part-filter.php:32
+#: templates/parts/part-filter.php:28
 msgid "Search"
 msgstr ""
 
-#: templates/parts/part-filter.php:33
+#: templates/parts/part-filter.php:29
 msgid "Reset Filter"
 msgstr ""
 
-#: templates/parts/properties-application-button.php:15
+#: templates/parts/properties-application-button.php:17
 msgctxt "archive"
 msgid "Apply for this position"
 msgstr ""
 
-#: templates/parts/properties-application-button.php:18
+#: templates/parts/properties-application-button.php:20
 msgctxt "single"
 msgid "Apply for this position"
 msgstr ""
 
-#: templates/parts/properties-application-button.php:26
+#: templates/parts/properties-application-button.php:28
 msgid "back to list"
+msgstr ""
+
+#: blocks/filter-list/build/index.js:1
+msgid "Personio List Filter"
+msgstr ""
+
+#: blocks/filter-list/build/index.js:1
+msgid "Provides a Gutenberg block to show filter as link-based dropdown-list for Personio Positions."
+msgstr ""
+
+#: blocks/filter-list/build/index.js:1
+#: blocks/filter-select/build/index.js:1
+#: blocks/list/build/index.js:1
+msgid "Choose filter"
+msgstr ""
+
+#: blocks/filter-list/build/index.js:1
+#: blocks/filter-select/build/index.js:1
+msgid "Hide filter title"
+msgstr ""
+
+#: blocks/filter-list/build/index.js:1
+#: blocks/filter-select/build/index.js:1
+msgid "Hide reset link"
+msgstr ""
+
+#: blocks/filter-list/build/index.js:1
+msgid "Space between filters"
+msgstr ""
+
+#: blocks/filter-list/build/index.js:1
+#: blocks/filter-select/build/index.js:1
+#: blocks/list/build/index.js:1
+#: blocks/show/build/index.js:1
+msgid "Color settings"
+msgstr ""
+
+#: blocks/filter-list/build/index.js:1
+#: blocks/filter-select/build/index.js:1
+#: blocks/list/build/index.js:1
+#: blocks/show/build/index.js:1
+msgid "Text color"
+msgstr ""
+
+#: blocks/filter-list/build/index.js:1
+#: blocks/filter-select/build/index.js:1
+#: blocks/list/build/index.js:1
+#: blocks/show/build/index.js:1
+msgid "Link color"
+msgstr ""
+
+#: blocks/filter-list/build/index.js:1
+#: blocks/filter-select/build/index.js:1
+#: blocks/list/build/index.js:1
+#: blocks/show/build/index.js:1
+msgid "Background color"
+msgstr ""
+
+#: blocks/filter-select/build/index.js:1
+msgid "Personio Select Filter"
+msgstr ""
+
+#: blocks/filter-select/build/index.js:1
+msgid "Provides a Gutenberg block to show filter as dropdown-list for Personio Positions."
+msgstr ""
+
+#: blocks/filter-select/build/index.js:1
+msgid "Hide submit button"
 msgstr ""
 
 #: blocks/list/build/index.js:1
@@ -1059,10 +1133,6 @@ msgstr ""
 
 #: blocks/list/build/index.js:1
 msgid "Show filter"
-msgstr ""
-
-#: blocks/list/build/index.js:1
-msgid "Choose filter"
 msgstr ""
 
 #: blocks/list/build/index.js:1
@@ -1104,6 +1174,22 @@ msgstr ""
 
 #: blocks/show/build/index.js:1
 msgid "view application link"
+msgstr ""
+
+#: blocks/filter-list/block.json
+#: blocks/filter-select/block.json
+msgctxt "block title"
+msgid "Personio Filter"
+msgstr ""
+
+#: blocks/filter-list/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg block to show filter as link-based dropdown-list for Personio Positions."
+msgstr ""
+
+#: blocks/filter-select/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg block to show filter as dropdown-list for Personio Positions."
 msgstr ""
 
 #: blocks/list/block.json
