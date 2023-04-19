@@ -131,9 +131,12 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
     'personio_integration_url_not_usable' => [
         'type' => 'error'
     ],
-    "personio_integration_limit_hint" => [
+    'personio_integration_limit_hint' => [
         'type' => 'error',
     ],
+    'personio_integration_import_canceled' => [
+        'type' => 'success'
+    ]
 ];
 
 /**
