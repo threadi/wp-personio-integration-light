@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-17T16:59:50+02:00\n"
+"POT-Creation-Date: 2023-04-19T14:47:00+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -40,6 +40,7 @@ msgstr ""
 #: classes/class-helper.php:144
 #: classes/class-helper.php:149
 #: classes/class-helper.php:158
+#: classes/class-helper.php:167
 msgid "Personio Integration"
 msgstr ""
 
@@ -72,8 +73,9 @@ msgstr ""
 #. translators: %1$s is replaced with "string"
 #: classes/class-helper.php:88
 #: classes/class-helper.php:145
+#: classes/class-helper.php:168
 #: inc/admin.php:47
-#: inc/settings/import.php:232
+#: inc/settings/import.php:200
 msgid "Run import"
 msgstr ""
 
@@ -110,322 +112,326 @@ msgstr ""
 msgid "The list of positions is limited to a maximum of 10 entries in the frontend. With <a href=\"%s\">Personio Integration Pro version</a>, any number of positions can be displayed."
 msgstr ""
 
-#: classes/class-helper.php:330
+#: classes/class-helper.php:168
+msgid "<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes to long please check your hosting logfiles for possible restrictions mentioned there."
+msgstr ""
+
+#: classes/class-helper.php:335
 #: blocks/list/build/index.js:1
 msgid "select-box"
 msgstr ""
 
-#: classes/class-helper.php:331
+#: classes/class-helper.php:336
 #: blocks/list/build/index.js:1
 msgid "list of links"
 msgstr ""
 
-#: classes/class-helper.php:630
+#: classes/class-helper.php:635
 msgctxt "taxonomy general name"
 msgid "recruiting categories"
 msgstr ""
 
-#: classes/class-helper.php:631
+#: classes/class-helper.php:636
 msgctxt "taxonomy singular name"
 msgid "recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:632
+#: classes/class-helper.php:637
 msgid "Search recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:633
+#: classes/class-helper.php:638
 msgid "Edit recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:634
+#: classes/class-helper.php:639
 msgid "Update recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:635
+#: classes/class-helper.php:640
 msgid "recruiting categories"
 msgstr ""
 
-#: classes/class-helper.php:638
+#: classes/class-helper.php:643
 msgctxt "taxonomy general name"
 msgid "occupation categories"
 msgstr ""
 
-#: classes/class-helper.php:639
+#: classes/class-helper.php:644
 msgctxt "taxonomy singular name"
 msgid "occupation category"
 msgstr ""
 
-#: classes/class-helper.php:640
+#: classes/class-helper.php:645
 msgid "Search occupation category"
 msgstr ""
 
-#: classes/class-helper.php:641
+#: classes/class-helper.php:646
 msgid "Edit occupation category"
 msgstr ""
 
-#: classes/class-helper.php:642
+#: classes/class-helper.php:647
 msgid "Update occupation category"
 msgstr ""
 
-#: classes/class-helper.php:643
+#: classes/class-helper.php:648
 msgid "occupation categories"
 msgstr ""
 
-#: classes/class-helper.php:646
+#: classes/class-helper.php:651
 msgctxt "taxonomy general name"
 msgid "offices"
 msgstr ""
 
-#: classes/class-helper.php:647
+#: classes/class-helper.php:652
 msgctxt "taxonomy singular name"
 msgid "office"
 msgstr ""
 
-#: classes/class-helper.php:648
+#: classes/class-helper.php:653
 msgid "Search office"
 msgstr ""
 
-#: classes/class-helper.php:649
+#: classes/class-helper.php:654
 msgid "Edit office"
 msgstr ""
 
-#: classes/class-helper.php:650
+#: classes/class-helper.php:655
 msgid "Update office"
 msgstr ""
 
-#: classes/class-helper.php:651
+#: classes/class-helper.php:656
 msgid "offices"
 msgstr ""
 
-#: classes/class-helper.php:654
+#: classes/class-helper.php:659
 msgctxt "taxonomy general name"
 msgid "departments"
 msgstr ""
 
-#: classes/class-helper.php:655
+#: classes/class-helper.php:660
 msgctxt "taxonomy singular name"
 msgid "department"
 msgstr ""
 
-#: classes/class-helper.php:656
+#: classes/class-helper.php:661
 msgid "Search department"
 msgstr ""
 
-#: classes/class-helper.php:657
+#: classes/class-helper.php:662
 msgid "Edit department"
 msgstr ""
 
-#: classes/class-helper.php:658
+#: classes/class-helper.php:663
 msgid "Update department"
 msgstr ""
 
-#: classes/class-helper.php:659
+#: classes/class-helper.php:664
 msgid "departments"
 msgstr ""
 
-#: classes/class-helper.php:662
+#: classes/class-helper.php:667
 msgctxt "taxonomy general name"
 msgid "employment types"
 msgstr ""
 
-#: classes/class-helper.php:663
+#: classes/class-helper.php:668
 msgctxt "taxonomy singular name"
 msgid "employment type"
 msgstr ""
 
-#: classes/class-helper.php:664
+#: classes/class-helper.php:669
 msgid "Search employment type"
 msgstr ""
 
-#: classes/class-helper.php:665
+#: classes/class-helper.php:670
 msgid "Edit employment type"
 msgstr ""
 
-#: classes/class-helper.php:666
+#: classes/class-helper.php:671
 msgid "Update employment type"
 msgstr ""
 
-#: classes/class-helper.php:667
+#: classes/class-helper.php:672
 #: inc/init.php:325
 msgid "employment types"
 msgstr ""
 
-#: classes/class-helper.php:670
+#: classes/class-helper.php:675
 msgctxt "taxonomy general name"
 msgid "seniority"
 msgstr ""
 
-#: classes/class-helper.php:671
+#: classes/class-helper.php:676
 msgctxt "taxonomy singular name"
 msgid "seniority"
 msgstr ""
 
-#: classes/class-helper.php:672
+#: classes/class-helper.php:677
 msgid "Search seniority"
 msgstr ""
 
-#: classes/class-helper.php:673
+#: classes/class-helper.php:678
 msgid "Edit seniority"
 msgstr ""
 
-#: classes/class-helper.php:674
+#: classes/class-helper.php:679
 msgid "Update seniority"
 msgstr ""
 
-#: classes/class-helper.php:675
+#: classes/class-helper.php:680
 #: inc/init.php:326
 #: blocks/show/build/index.js:1
 msgid "seniority"
 msgstr ""
 
-#: classes/class-helper.php:678
+#: classes/class-helper.php:683
 msgctxt "taxonomy general name"
 msgid "schedules"
 msgstr ""
 
-#: classes/class-helper.php:679
+#: classes/class-helper.php:684
 msgctxt "taxonomy singular name"
 msgid "schedule"
 msgstr ""
 
-#: classes/class-helper.php:680
+#: classes/class-helper.php:685
 msgid "Search schedule"
 msgstr ""
 
-#: classes/class-helper.php:681
+#: classes/class-helper.php:686
 msgid "Edit schedule"
 msgstr ""
 
-#: classes/class-helper.php:682
+#: classes/class-helper.php:687
 msgid "Update schedule"
 msgstr ""
 
-#: classes/class-helper.php:683
+#: classes/class-helper.php:688
 msgid "schedules"
 msgstr ""
 
-#: classes/class-helper.php:686
+#: classes/class-helper.php:691
 msgctxt "taxonomy general name"
 msgid "experiences"
 msgstr ""
 
-#: classes/class-helper.php:687
+#: classes/class-helper.php:692
 msgctxt "taxonomy singular name"
 msgid "experience"
 msgstr ""
 
-#: classes/class-helper.php:688
+#: classes/class-helper.php:693
 msgid "Search experience"
 msgstr ""
 
-#: classes/class-helper.php:689
+#: classes/class-helper.php:694
 msgid "Edit experience"
 msgstr ""
 
-#: classes/class-helper.php:690
+#: classes/class-helper.php:695
 msgid "Update experience"
 msgstr ""
 
-#: classes/class-helper.php:691
+#: classes/class-helper.php:696
 msgid "experiences"
 msgstr ""
 
-#: classes/class-helper.php:694
+#: classes/class-helper.php:699
 msgctxt "taxonomy general name"
 msgid "languages"
 msgstr ""
 
-#: classes/class-helper.php:695
+#: classes/class-helper.php:700
 msgctxt "taxonomy singular name"
 msgid "language"
 msgstr ""
 
-#: classes/class-helper.php:696
+#: classes/class-helper.php:701
 msgid "Search language"
 msgstr ""
 
-#: classes/class-helper.php:697
+#: classes/class-helper.php:702
 msgid "Edit language"
 msgstr ""
 
-#: classes/class-helper.php:698
+#: classes/class-helper.php:703
 msgid "Update language"
 msgstr ""
 
-#: classes/class-helper.php:699
+#: classes/class-helper.php:704
 msgid "languages"
 msgstr ""
 
-#: classes/class-helper.php:727
+#: classes/class-helper.php:732
 msgid "permanent"
 msgstr ""
 
-#: classes/class-helper.php:728
+#: classes/class-helper.php:733
 msgid "intern"
 msgstr ""
 
-#: classes/class-helper.php:729
+#: classes/class-helper.php:734
 msgid "trainee"
 msgstr ""
 
-#: classes/class-helper.php:730
+#: classes/class-helper.php:735
 msgid "freelance"
 msgstr ""
 
-#: classes/class-helper.php:733
+#: classes/class-helper.php:738
 msgid "entry-level"
 msgstr ""
 
-#: classes/class-helper.php:734
+#: classes/class-helper.php:739
 msgid "experienced"
 msgstr ""
 
-#: classes/class-helper.php:735
+#: classes/class-helper.php:740
 msgid "executive"
 msgstr ""
 
-#: classes/class-helper.php:736
+#: classes/class-helper.php:741
 msgid "student"
 msgstr ""
 
-#: classes/class-helper.php:739
+#: classes/class-helper.php:744
 msgid "full-time"
 msgstr ""
 
-#: classes/class-helper.php:740
+#: classes/class-helper.php:745
 msgid "part-time"
 msgstr ""
 
-#: classes/class-helper.php:741
+#: classes/class-helper.php:746
 msgid "full- or part-time"
 msgstr ""
 
-#: classes/class-helper.php:744
+#: classes/class-helper.php:749
 msgid "less than 1 year"
 msgstr ""
 
-#: classes/class-helper.php:745
+#: classes/class-helper.php:750
 msgid "1-2 years"
 msgstr ""
 
-#: classes/class-helper.php:746
+#: classes/class-helper.php:751
 msgid "2-5 years"
 msgstr ""
 
-#: classes/class-helper.php:747
+#: classes/class-helper.php:752
 msgid "5-7 years"
 msgstr ""
 
-#: classes/class-helper.php:748
+#: classes/class-helper.php:753
 msgid "7-10 years"
 msgstr ""
 
-#: classes/class-helper.php:749
+#: classes/class-helper.php:754
 msgid "10-15 years"
 msgstr ""
 
-#: classes/class-helper.php:750
+#: classes/class-helper.php:755
 msgid "more than 15 years"
 msgstr ""
 
@@ -612,7 +618,7 @@ msgid "Please wait"
 msgstr ""
 
 #: inc/admin.php:50
-#: inc/settings/import.php:233
+#: inc/settings/import.php:201
 msgid "Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used."
 msgstr ""
 
@@ -888,36 +894,28 @@ msgstr ""
 msgid "Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists."
 msgstr ""
 
-#: inc/settings/import.php:130
-msgid "An interval for the automatic import has to be set."
-msgstr ""
-
-#: inc/settings/import.php:137
-msgid "The given interval does not exists."
-msgstr ""
-
+#: inc/settings/import.php:201
 #: inc/settings/import.php:233
-#: inc/settings/import.php:265
 msgid "Hint"
 msgstr ""
 
-#: inc/settings/import.php:238
+#: inc/settings/import.php:206
 msgid "The import is already running. Please wait some moments."
 msgstr ""
 
-#: inc/settings/import.php:250
+#: inc/settings/import.php:218
 msgid "Cancel running import"
 msgstr ""
 
-#: inc/settings/import.php:264
+#: inc/settings/import.php:232
 msgid "Delete all positions"
 msgstr ""
 
-#: inc/settings/import.php:265
+#: inc/settings/import.php:233
 msgid "Removes all actual imported positions."
 msgstr ""
 
-#: inc/settings/import.php:269
+#: inc/settings/import.php:237
 msgid "There are currently no imported positions."
 msgstr ""
 

@@ -14,7 +14,7 @@ class installer
      *
      * @return void
      */
-    public static function initializePlugin()
+    public static function initializePlugin(): void
     {
         $error = false;
 
@@ -150,8 +150,7 @@ class installer
         wp_clear_scheduled_hook( 'personio_integration_schudule_events' );
 
         // remove widgets
-        unregister_widget( 'personioIntegration\PositionWidget' );
-        unregister_widget( 'personioIntegration\PositionsWidget' );
+        do_action('widgets_init');
 
         // remove transients
         foreach( WP_PERSONIO_INTEGRATION_TRANSIENTS as $transient => $setting ) {
@@ -197,6 +196,7 @@ class installer
                 'personioIntegrationPositionCount',
                 'personioIntegrationTemplateBackToListButton',
                 'personioIntegrationTemplateBackToListUrl',
+                'personioTaxonomyDefaults',
                 WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION,
                 WP_PERSONIO_OPTION_COUNT,
                 WP_PERSONIO_OPTION_MAX,

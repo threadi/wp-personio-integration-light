@@ -28,7 +28,7 @@ add_action( 'personio_integration_settings_add_tab', 'personio_integration_setti
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_add_menu_content_importexport()
+function personio_integration_admin_add_menu_content_importexport(): void
 {
     // check user capabilities
     if ( ! current_user_can( 'manage_options' ) || !helper::is_personioUrl_set() ) {
@@ -56,7 +56,7 @@ add_action('personio_integration_settings_importexport_page', 'personio_integrat
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_add_settings_importexport()
+function personio_integration_admin_add_settings_importexport(): void
 {
     /**
      * Import Section
@@ -118,51 +118,19 @@ function personio_integration_admin_add_settings_importexport()
 add_action( 'personio_integration_settings_add_settings', 'personio_integration_admin_add_settings_importexport');
 
 /**
- * Check and save the new interval.
- *
- * @param $value
- * @return void
- * @noinspection PhpUnused
- */
-function personio_integration_admin_validatePositionScheduleInterval( $value ) {
-    $error = false;
-    if( strlen($value) == 0 ) {
-        add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __('An interval for the automatic import has to be set.', 'wp-personio-integration'), 'error' );
-        $error = true;
-    }
-    else {
-        // check if the given interval exists
-        $intervals = wp_get_schedules();
-        if( empty($intervals[$value]) ) {
-            add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __('The given interval does not exists.', 'wp-personio-integration'), 'error' );
-            $error = true;
-        }
-    }
-
-    // update the schedule if interval has been changed
-    if( !$error && get_option('personioIntegrationPositionScheduleInterval') != $value ) {
-        wp_clear_scheduled_hook( 'personio_integration_schudule_events' );
-        wp_schedule_event(time(), $value, 'personio_integration_schudule_events');
-    }
-
-    // return saved value
-    return $value;
-}
-
-/**
  * Start import manually.
  *
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_action_manual_import() {
+function personio_integration_admin_action_manual_import(): void {
     check_ajax_referer( 'wp-personio-integration-import', 'nonce' );
 
     // run import
     new Import();
 
     // add hint
-    set_transient('personio_integration_import_run', 1, 0);
+    set_transient('personio_integration_import_run', 1);
 
     // remove other hint
     delete_transient('personio_integration_no_position_imported');
@@ -177,7 +145,7 @@ add_action( 'admin_action_personioPositionsImport', 'personio_integration_admin_
  *
  * @return void
  */
-function personio_integration_admin_action_cancel_import() {
+function personio_integration_admin_action_cancel_import(): void {
     check_ajax_referer( 'wp-personio-integration-cancel-import', 'nonce' );
 
     // check if import as running
@@ -186,7 +154,7 @@ function personio_integration_admin_action_cancel_import() {
         update_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0);
 
         // add hint
-        set_transient('personio_integration_import_canceled', 1, 0);
+        set_transient('personio_integration_import_canceled', 1);
     }
 
     // redirect user
@@ -200,7 +168,7 @@ add_action( 'admin_action_personioPositionsCancelImport', 'personio_integration_
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_action_delete_positions() {
+function personio_integration_admin_action_delete_positions(): void {
     check_ajax_referer( 'wp-personio-integration-delete', 'nonce' );
 
     // do not delete positions if import is running atm
@@ -209,10 +177,10 @@ function personio_integration_admin_action_delete_positions() {
         (new cli())->deletePositions();
 
         // add hint
-        set_transient('personio_integration_delete_run', 1, 0);
+        set_transient('personio_integration_delete_run', 1);
     }
     else {
-        set_transient('personio_integration_could_not_delete', 1, 0);
+        set_transient('personio_integration_could_not_delete', 1);
     }
 
     // redirect user
@@ -225,7 +193,7 @@ add_action( 'admin_action_personioPositionsDelete', 'personio_integration_admin_
  *
  * @return void
  */
-function personio_integration_admin_start_import_now() {
+function personio_integration_admin_start_import_now(): void {
     $importRunning = absint(get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0));
     if( $importRunning == 0 ) {
         ?>
@@ -239,7 +207,7 @@ function personio_integration_admin_start_import_now() {
         <?php
         // show import-break button if import is running min. 1 hour
         if( $importRunning > 1 ) {
-            if( $importRunning+60*60 < time() ) {
+        if( $importRunning+60*60 < time() ) {
                 $url = add_query_arg(
                     [
                         'action' => 'personioPositionsCancelImport',
@@ -248,7 +216,7 @@ function personio_integration_admin_start_import_now() {
                     get_admin_url() . 'admin.php'
                 );
                 ?><p><a href="<?php echo esc_url($url); ?>" class="button button-primary"><?php _e('Cancel running import', 'wp-personio-integration'); ?></a></p><?php
-            }
+        }
         }
     }
 }
@@ -258,7 +226,7 @@ function personio_integration_admin_start_import_now() {
  *
  * @return void
  */
-function personio_integration_admin_delete_positions_now() {
+function personio_integration_admin_delete_positions_now(): void {
     if( helper::is_personioUrl_set() && get_option( 'personioIntegrationPositionCount', 0 ) > 0 ) {
         ?>
         <p><a href="<?php echo esc_url(helper::get_delete_url()); ?>" class="button button-primary"><?php _e('Delete all positions', 'wp-personio-integration'); ?></a></p>
