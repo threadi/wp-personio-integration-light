@@ -98,3 +98,9 @@
 .personio-dialog-no-close .ui-dialog-titlebar-close {
     display: none;
 }
+
+body.post-type-personioposition .tab-content {
+    overflow: visible;
+    height: auto;
+    min-height: auto;
+}
