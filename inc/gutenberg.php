@@ -12,19 +12,7 @@ use personioIntegration\helper;
 function personio_integration_get_single( $attributes ): string
 {
     // collect the configured templates
-    $templates = '';
-    if( $attributes["showTitle"] ) {
-        $templates .= (strlen($templates) > 0 ? ',': '').'title';
-    }
-    if( $attributes["showExcerpt"] ) {
-        $templates .= (strlen($templates) > 0 ? ',': '').'excerpt';
-    }
-    if( $attributes["showContent"] ) {
-        $templates .= (strlen($templates) > 0 ? ',': '').'content';
-    }
-    if( $attributes["showApplicationForm"] ) {
-        $templates .= (strlen($templates) > 0 ? ',': '').'formular';
-    }
+    $templates = personio_integration_get_gutenberg_templates($attributes);
 
     // get the excerpt-templates
     $excerptTemplates = '';
@@ -48,13 +36,13 @@ function personio_integration_get_single( $attributes ): string
     if( !empty($class) ) {
         // generate styles
         if (!empty($attributes['textColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' { color: ' . $attributes['textColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' { color: ' . $attributes['textColor'] . ' }';
         }
         if (!empty($attributes['backgroundColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
         }
         if (!empty($attributes['linkColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
         }
     }
 
@@ -81,19 +69,7 @@ function personio_integration_get_single( $attributes ): string
 function personio_integration_get_list( $attributes ): string
 {
     // collect the configured templates
-    $templates = '';
-    if( $attributes["showTitle"] ) {
-        $templates .= (strlen($templates) > 0 ? ',': '').'title';
-    }
-    if( $attributes["showExcerpt"] ) {
-        $templates .= (strlen($templates) > 0 ? ',': '').'excerpt';
-    }
-    if( $attributes["showContent"] ) {
-        $templates .= (strlen($templates) > 0 ? ',': '').'content';
-    }
-    if( $attributes["showApplicationForm"] ) {
-        $templates .= (strlen($templates) > 0 ? ',': '').'formular';
-    }
+    $templates = personio_integration_get_gutenberg_templates($attributes);
 
     // get the excerpt-templates
     $excerptTemplates = '';
@@ -116,13 +92,13 @@ function personio_integration_get_list( $attributes ): string
     $stylesArray = [];
     if( !empty($class) ) {
         if (!empty($attributes['textColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' { color: ' . $attributes['textColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' { color: ' . $attributes['textColor'] . ' }';
         }
         if (!empty($attributes['backgroundColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
         }
         if (!empty($attributes['linkColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
         }
         if (!empty($attributes['style']) && !empty($attributes['style']['spacing']) && !empty($attributes['style']['spacing']['blockGap'])) {
             $value = $attributes['style']['spacing']['blockGap'];
@@ -132,7 +108,7 @@ function personio_integration_get_list( $attributes ): string
                 $value = str_replace('var:', '', $value);
                 $value = 'var(--wp--' . $value . ')';
             }
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' { margin-bottom: ' . $value . '; }';
+            $stylesArray[] = '.' . $class . ' { margin-bottom: ' . $value . '; }';
         }
     }
 
@@ -144,7 +120,7 @@ function personio_integration_get_list( $attributes ): string
         'sort' => $attributes["sort"],
         'sortby' => $attributes["sortby"],
         'groupby' => $attributes["groupby"],
-        'limit' => $attributes["limit"],
+        'limit' => absint($attributes["limit"]),
         'filter' => implode(",", $attributes['filter']),
         'filtertype' => $attributes['filtertype'],
         'showfilter' => $attributes['showFilter'],
@@ -175,22 +151,22 @@ function personio_integration_get_filter_list( $attributes ): string
     $stylesArray = [];
     if( !empty($class) ) {
         if (!empty($attributes['textColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' { color: ' . $attributes['textColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' { color: ' . $attributes['textColor'] . ' }';
         }
         if (!empty($attributes['backgroundColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
         }
         if (!empty($attributes['linkColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
         }
         if (!empty($attributes['hideResetLink'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' .personio-position-filter-reset { display: none }';
+            $stylesArray[] = '.entry.' . $class . ' .personio-position-filter-reset { display: none }';
         }
         if (!empty($attributes['hideFilterTitle'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' legend { display: none }';
+            $stylesArray[] = '.entry.' . $class . ' legend { display: none }';
         }
         if (!empty($attributes['space_between'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' .personio-position-filter-linklist > div { margin-right: ' . $attributes['space_between'] . 'px }';
+            $stylesArray[] = '.entry.' . $class . ' .personio-position-filter-linklist > div { margin-right: ' . $attributes['space_between'] . 'px }';
         }
     }
 
@@ -226,22 +202,22 @@ function personio_integration_get_filter_select( $attributes ): string
     $stylesArray = [];
     if( !empty($class) ) {
         if (!empty($attributes['textColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' { color: ' . $attributes['textColor'] . ' }';
+            $stylesArray[] = '.' . $class . ' { color: ' . $attributes['textColor'] . ' }';
         }
         if (!empty($attributes['backgroundColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
         }
         if (!empty($attributes['linkColor'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
+            $stylesArray[] = '.entry.' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
         }
         if (!empty($attributes['hideResetLink'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' .personio-position-filter-reset { display: none }';
+            $stylesArray[] = '.entry.' . $class . ' .personio-position-filter-reset { display: none }';
         }
         if (!empty($attributes['hideSubmitButton'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' button { display: none }';
+            $stylesArray[] = '.entry.' . $class . ' button { display: none }';
         }
         if (!empty($attributes['hideFilterTitle'])) {
-            $stylesArray[] = '.wp-block-post-content .' . $class . ' legend { display: none }';
+            $stylesArray[] = '.entry.' . $class . ' legend { display: none }';
         }
     }
 
@@ -484,3 +460,27 @@ function personio_integration_add_blocks(): void
     }
 }
 add_action( 'init', 'personio_integration_add_blocks', 10 );
+
+/**
+ * Generate template-string from given attributes.
+ *
+ * @param $attributes
+ * @return string
+ */
+function personio_integration_get_gutenberg_templates( $attributes ): string
+{
+    $templates = '';
+    if( $attributes["showTitle"] ) {
+        $templates .= (strlen($templates) > 0 ? ',': '').'title';
+    }
+    if( $attributes["showExcerpt"] ) {
+        $templates .= (strlen($templates) > 0 ? ',': '').'excerpt';
+    }
+    if( $attributes["showContent"] ) {
+        $templates .= (strlen($templates) > 0 ? ',': '').'content';
+    }
+    if( $attributes["showApplicationForm"] ) {
+        $templates .= (strlen($templates) > 0 ? ',': '').'formular';
+    }
+    return $templates;
+}

@@ -83,6 +83,9 @@ export default function Edit( object ) {
 		}
 	);
 
+	// set max amount for listings
+	let max_amount = wp.hooks.applyFilters('personio.list.amount', 10);
+
 	/**
 	 * Collect return for the edit-function
 	 */
@@ -124,6 +127,8 @@ export default function Edit( object ) {
 						isShiftStepEnabled={ true }
 						onChange={ value => onChangeLimit( value, object ) }
 						shiftStep={ 1 }
+						max={ max_amount }
+						min={ 0 }
 						value={ object.attributes.limit }
 					/>
 					<SelectControl

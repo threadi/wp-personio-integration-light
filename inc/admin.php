@@ -536,4 +536,28 @@ function personio_integration_update_slugs(): void
         delete_transient('personio_integration_update_slugs');
     }
 }
-add_action('wp', 'personio_integration_update_slugs', 10 );
+add_action( 'wp', 'personio_integration_update_slugs', 10 );
+
+/**
+ * Hide cpt filter-view.
+ *
+ * @return array
+ */
+function personio_integration_hide_cpt_filter(): array {
+    return [];
+}
+add_filter( 'views_edit-'.WP_PERSONIO_INTEGRATION_CPT, 'personio_integration_hide_cpt_filter', 10, 0);
+
+/**
+ * Force list-view of our own cpt to ignore author as filter.
+ *
+ * @param $query
+ * @return WP_Query
+ */
+function personio_integration_ignore_author( $query ): WP_Query {
+    if( is_admin() && $query->query_vars['post_type'] == WP_PERSONIO_INTEGRATION_CPT ) {
+        $query->set('author', 0);
+    }
+    return $query;
+}
+add_filter( 'pre_get_posts', 'personio_integration_ignore_author');

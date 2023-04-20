@@ -15,6 +15,9 @@ export const onChangeApplicationFormVisibility = ( newAlignment, object ) => {
 }
 
 export const onChangeLimit = ( newValue, object ) => {
+    if( newValue.length === 0 ) {
+        newValue = 0;
+    }
     object.setAttributes({ limit: newValue });
 }
 
