@@ -37,7 +37,6 @@
         <delete file="${log.dir}/npm-build2.txt"/>
         <delete file="${log.dir}/npm-build3.txt"/>
         <delete file="${log.dir}/npm-build4.txt"/>
-        <delete file="${log.dir}/npm-build5.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build1.txt">
             <arg line="run build:show"/>
         </exec>
@@ -49,9 +48,6 @@
         </exec>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build4.txt">
             <arg line="run build:filter-select"/>
-        </exec>
-        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build5.txt">
-            <arg line="version ${plugin.version}"/>
         </exec>
     </target>
 

@@ -26,8 +26,7 @@ import './style.scss';
  */
 import Edit from './edit';
 import Save from "./save";
-
-import { iconEl } from '../../components'
+import { personioIcon } from '../../components'
 
 /**
  * Every block starts by registering a new block type definition.
@@ -37,53 +36,7 @@ import { iconEl } from '../../components'
 registerBlockType( 'wp-personio-integration/show', {
 	title: __( 'Personio Position', 'wp-personio-integration' ),
 	description: __('Provides a Gutenberg Block to show a position provided by personio.', 'wp-personio-integration'),
-	icon: iconEl,
-
-	/**
-	 * Attributes for this block.
-	 */
-	attributes: {
-		id: {
-			type: 'integer',
-			default: 0
-		},
-		showTitle: {
-			type: 'boolean',
-			default: true
-		},
-		linkTitle: {
-			type: 'boolean',
-			default: false
-		},
-		showExcerpt: {
-			type: 'boolean',
-			default: false
-		},
-		excerptTemplates: {
-			type: 'array',
-			default: ['recruitingCategory','schedule','office']
-		},
-		showContent: {
-			type: 'boolean',
-			default: true
-		},
-		showApplicationForm: {
-			type: 'boolean',
-			default: true
-		},
-		blockId: {
-			type: 'string'
-		},
-		textColor: {
-			type: 'string'
-		},
-		linkColor: {
-			type: 'string'
-		},
-		backgroundColor: {
-			type: 'string'
-		}
-	},
+	icon: personioIcon,
 
 	/**
 	 * @see ./edit.js

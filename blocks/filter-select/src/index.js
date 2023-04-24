@@ -26,7 +26,7 @@ import './style.scss';
  */
 import Edit from './edit';
 import Save from "./save";
-import {iconEl} from "../../components";
+import {personioIcon} from "../../components";
 
 /**
  * Every block starts by registering a new block type definition.
@@ -36,39 +36,7 @@ import {iconEl} from "../../components";
 registerBlockType( 'wp-personio-integration/filter-select', {
 	title: __( 'Personio Select Filter', 'wp-personio-integration' ),
 	description: __('Provides a Gutenberg block to show filter as dropdown-list for Personio Positions.', 'wp-personio-integration'),
-	icon: iconEl,
-
-	attributes: {
-		filter: {
-			type: 'array',
-			default: ['recruitingCategory','schedule','office']
-		},
-		blockId: {
-			type: 'string',
-			default: ''
-		},
-		textColor: {
-			type: 'string'
-		},
-		linkColor: {
-			type: 'string'
-		},
-		backgroundColor: {
-			type: 'string'
-		},
-		hideFilterTitle: {
-			type: 'bool',
-			default: false
-		},
-		hideSubmitButton: {
-			type: 'bool',
-			default: false
-		},
-		hideResetLink: {
-			type: 'bool',
-			default: false
-		}
-	},
+	icon: personioIcon,
 
 	/**
 	 * @see ./edit.js
