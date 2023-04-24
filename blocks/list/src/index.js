@@ -26,7 +26,7 @@ import './style.scss';
  */
 import Edit from './edit';
 import Save from "./save";
-import {iconEl} from "../../components";
+import {personioIcon} from "../../components";
 
 /**
  * Every block starts by registering a new block type definition.
@@ -36,75 +36,7 @@ import {iconEl} from "../../components";
 registerBlockType( 'wp-personio-integration/list', {
 	title: __( 'Personio Positions', 'wp-personio-integration' ),
 	description: __('Provides a Gutenberg Block to show a list of positions provided by Personio.', 'wp-personio-integration'),
-	icon: iconEl,
-
-	attributes: {
-		showFilter: {
-			type: 'boolean',
-			default: false
-		},
-		filter: {
-			type: 'array',
-			default: ['recruitingCategory','schedule','office']
-		},
-		filtertype: {
-			type: 'string',
-			default: 'linklist'
-		},
-		limit: {
-			type: 'integer',
-			default: 0
-		},
-		sort: {
-			type: 'string',
-			default: 'asc'
-		},
-		sortby: {
-			type: 'string',
-			default: 'title'
-		},
-		groupby: {
-			type: 'string',
-			default: ''
-		},
-		showTitle: {
-			type: 'boolean',
-			default: true
-		},
-		linkTitle: {
-			type: 'boolean',
-			default: true
-		},
-		showExcerpt: {
-			type: 'boolean',
-			default: true
-		},
-		excerptTemplates: {
-			type: 'array',
-			default: ['recruitingCategory','schedule','office']
-		},
-		showContent: {
-			type: 'boolean',
-			default: false
-		},
-		showApplicationForm: {
-			type: 'boolean',
-			default: false
-		},
-		blockId: {
-			type: 'string',
-			default: ''
-		},
-		textColor: {
-			type: 'string'
-		},
-		linkColor: {
-			type: 'string'
-		},
-		backgroundColor: {
-			type: 'string'
-		}
-	},
+	icon: personioIcon,
 
 	/**
 	 * @see ./edit.js

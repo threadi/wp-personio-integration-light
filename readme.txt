@@ -179,3 +179,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Fixed usage of some Gutenberg-options on list-Block
 * Fixed target url for filter in frontend
 * Fixed visibility of back to list link
+
+= 2.1.1 =
+* Optimized Block-definitions

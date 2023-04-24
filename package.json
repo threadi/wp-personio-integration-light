@@ -18,7 +18,9 @@
     "start:filter-list": "wp-scripts start blocks/filter-list/src/index.js --output-path=blocks/filter-list/build/",
     "build:filter-list": "wp-scripts build blocks/filter-list/src/index.js --output-path=blocks/filter-list/build/",
     "start:filter-select": "wp-scripts start blocks/filter-select/src/index.js --output-path=blocks/filter-select/build/",
-    "build:filter-select": "wp-scripts build blocks/filter-select/src/index.js --output-path=blocks/filter-select/build/"
+    "build:filter-select": "wp-scripts build blocks/filter-select/src/index.js --output-path=blocks/filter-select/build/",
+    "make-pot": "wp i18n make-pot . languages/wp-personio-integration.pot --exclude=blocks/show/src/,blocks/list/src/,blocks/filter-list/src/,blocks/filter-select/src/,svn/",
+    "make-json": "wp i18n make-json languages"
   },
   "devDependencies": {
     "@wordpress/scripts": "^24.2.0",

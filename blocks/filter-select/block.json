@@ -3,10 +3,11 @@
 	"apiVersion": 2,
 	"name": "wp-personio-integration/filter-select",
 	"version": "2.1.0",
-	"title": "Personio Filter",
+	"title": "Personio Select Filter",
 	"category": "widgets",
 	"icon": "list-view",
 	"description": "Provides a Gutenberg block to show filter as dropdown-list for Personio Positions.",
+	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {
 		"html": false,
 	  	"anchor": true,
@@ -17,5 +18,36 @@
 	},
 	"textdomain": "wp-personio-integration",
 	"editorScript": "file:build/index.js",
-	"editorStyle": "file:build/index.css"
+	"editorStyle": "file:build/index.css",
+	"attributes": {
+		"filter": {
+			"type": "array",
+			"default": ["recruitingCategory","schedule","office"]
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		},
+		"textColor": {
+			"type": "string"
+		},
+		"linkColor": {
+			"type": "string"
+		},
+		"backgroundColor": {
+			"type": "string"
+		},
+		"hideFilterTitle": {
+			"type": "boolean",
+			"default": false
+		},
+		"hideSubmitButton": {
+			"type": "boolean",
+			"default": false
+		},
+		"hideResetLink": {
+			"type": "boolean",
+			"default": false
+		}
+	}
 }

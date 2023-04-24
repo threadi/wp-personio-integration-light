@@ -6,13 +6,56 @@
 	"title": "Personio Position",
 	"category": "widgets",
 	"description": "Provides a Gutenberg Block to show a position managed by Personio.",
-	"textdomain": "wp-personio-integration",
+	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {
 		"spacing": {
 			"margin": true,
 			"padding": true
 		}
 	},
+	"textdomain": "wp-personio-integration",
 	"editorScript": "file:build/index.js",
-	"editorStyle": "file:build/index.css"
+	"editorStyle": "file:build/index.css",
+	"attributes": {
+		"id": {
+			"type": "integer",
+			"default": 0
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"linkTitle": {
+			"type": "boolean",
+			"default": false
+		},
+		"showExcerpt": {
+			"type": "boolean",
+			"default": false
+		},
+		"excerptTemplates": {
+			"type": "array",
+			"default": ["recruitingCategory","schedule","office"]
+		},
+		"showContent": {
+			"type": "boolean",
+			"default": true
+		},
+		"showApplicationForm": {
+			"type": "boolean",
+			"default": true
+		},
+		"blockId": {
+			"type": "string"
+		},
+		"textColor": {
+			"type": "string"
+		},
+		"linkColor": {
+			"type": "string"
+		},
+		"backgroundColor": {
+			"type": "string"
+		}
+	}
 }
