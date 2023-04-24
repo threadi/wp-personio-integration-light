@@ -571,3 +571,33 @@ function personio_integration_check_filter_type( $values ): array
     ];
 }
 add_filter( 'personio_integration_get_shortcode_attributes', 'personio_integration_check_filter_type', 10, 1);
+
+/**
+ * Convert term-name to term-id if it is set in shortcode-attributes and configure shortcode-attribute.
+ *
+ * @param $values
+ * @return array
+ */
+function personio_integration_get_shortcode_attributes( $values ): array
+{
+    // check each taxonomy if it is used as restriction for this list
+    foreach (apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy) {
+        $slug = strtolower($taxonomy['slug']);
+        if (!empty($values['attributes'][$slug])) {
+            $term = get_term_by('id', $values['attributes'][$slug], $taxonomy_name);
+            if (!empty($term)) {
+                $values['defaults'][$taxonomy['slug']] = 0;
+                $values['settings'][$taxonomy['slug']] = 'filter';
+                $values['attributes'][$taxonomy['slug']] = $term->term_id;
+            }
+        }
+    }
+
+    // return resulting arrays
+    return [
+        'defaults' => $values['defaults'],
+        'settings' => $values['settings'],
+        'attributes' => $values['attributes']
+    ];
+}
+add_filter( 'personio_integration_get_shortcode_attributes', 'personio_integration_get_shortcode_attributes', 10, 1);
