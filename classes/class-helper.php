@@ -892,4 +892,17 @@ class helper {
         // return result
         return $page_url;
     }
+
+    /**
+     * Regex to get html tag attribute value
+     */
+    public static function get_attribute_value_from_html($attrib, $tag): string
+    {
+        //get attribute from html tag
+        $re = '/' . preg_quote($attrib) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
+        if (preg_match($re, $tag, $match)) {
+            return urldecode($match[2]);
+        }
+        return false;
+    }
 }

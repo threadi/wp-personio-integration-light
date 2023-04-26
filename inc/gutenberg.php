@@ -11,9 +11,6 @@ use personioIntegration\helper;
  */
 function personio_integration_get_single( $attributes ): string
 {
-    // collect the configured templates
-    $templates = personio_integration_get_gutenberg_templates($attributes);
-
     // get the excerpt-templates
     $excerptTemplates = '';
     if( !empty($attributes["excerptTemplates"]) ) {
@@ -32,27 +29,23 @@ function personio_integration_get_single( $attributes ): string
         $class = 'personio-integration-block-' . $attributes['blockId'];
     }
 
+    // get block-classes
+    $block_html_attributes = get_block_wrapper_attributes();
+
+    // get styles
     $stylesArray = [];
-    if( !empty($class) ) {
-        // generate styles
-        if (!empty($attributes['textColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' { color: ' . $attributes['textColor'] . ' }';
-        }
-        if (!empty($attributes['backgroundColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
-        }
-        if (!empty($attributes['linkColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
-        }
+    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+    if( !empty($styles) ) {
+        $stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
     }
 
     $attribute_defaults = [
-        'templates' => $templates,
+        'templates' => personio_integration_get_gutenberg_templates($attributes),
         'excerpt' => $excerptTemplates,
         'donotlink' => $doNotLink,
         'personioid' => $attributes['id'],
         'styles' => implode(PHP_EOL, $stylesArray),
-        'classes' => $class
+        'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
     ];
 
     // get the output
@@ -89,27 +82,24 @@ function personio_integration_get_list( $attributes ): string
         $class = 'personio-integration-block-' . $attributes['blockId'];
     }
 
+    // get block-classes
+    $block_html_attributes = get_block_wrapper_attributes();
+
+    // get styles
     $stylesArray = [];
-    if( !empty($class) ) {
-        if (!empty($attributes['textColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' { color: ' . $attributes['textColor'] . ' }';
+    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+    if( !empty($styles) ) {
+        $stylesArray[] = '.' . $class . ' { ' . $styles . ' }';
+    }
+    if (!empty($attributes['style']) && !empty($attributes['style']['spacing']) && !empty($attributes['style']['spacing']['blockGap'])) {
+        $value = $attributes['style']['spacing']['blockGap'];
+        // convert var-setting to var-style-entity
+        if(false !== strpos($attributes['style']['spacing']['blockGap'], 'var:')) {
+            $value = str_replace('|', '--', $value);
+            $value = str_replace('var:', '', $value);
+            $value = 'var(--wp--' . $value . ')';
         }
-        if (!empty($attributes['backgroundColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
-        }
-        if (!empty($attributes['linkColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
-        }
-        if (!empty($attributes['style']) && !empty($attributes['style']['spacing']) && !empty($attributes['style']['spacing']['blockGap'])) {
-            $value = $attributes['style']['spacing']['blockGap'];
-            // convert var-setting to var-style-entity
-            if(false !== strpos($attributes['style']['spacing']['blockGap'], 'var:')) {
-                $value = str_replace('|', '--', $value);
-                $value = str_replace('var:', '', $value);
-                $value = 'var(--wp--' . $value . ')';
-            }
-            $stylesArray[] = '.' . $class . ' { margin-bottom: ' . $value . '; }';
-        }
+        $stylesArray[] = 'body .' . $class . ' { margin-bottom: ' . $value . '; }';
     }
 
     // collect all settings for this block
@@ -126,7 +116,7 @@ function personio_integration_get_list( $attributes ): string
         'showfilter' => $attributes['showFilter'],
         'show_back_to_list' => '',
         'styles' => implode(PHP_EOL, $stylesArray),
-        'classes' => $class
+        'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
     ];
 
     // get the output
@@ -148,17 +138,18 @@ function personio_integration_get_filter_list( $attributes ): string
         $class = 'personio-integration-block-' . $attributes['blockId'];
     }
 
+    // get block-classes
+    $block_html_attributes = get_block_wrapper_attributes();
+
+    // get styles
+    $stylesArray = [];
+    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+    if( !empty($styles) ) {
+        $stylesArray[] = '.' . $class . ' { ' . $styles . ' }';
+    }
+
     $stylesArray = [];
     if( !empty($class) ) {
-        if (!empty($attributes['textColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' { color: ' . $attributes['textColor'] . ' }';
-        }
-        if (!empty($attributes['backgroundColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
-        }
-        if (!empty($attributes['linkColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
-        }
         if (!empty($attributes['hideResetLink'])) {
             $stylesArray[] = '.entry.' . $class . ' .personio-position-filter-reset { display: none }';
         }
@@ -177,7 +168,7 @@ function personio_integration_get_filter_list( $attributes ): string
         'filtertype' => 'linklist',
         'showfilter' => true,
         'styles' => implode(PHP_EOL, $stylesArray),
-        'classes' => $class
+        'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
     ];
 
     // get the output
@@ -199,17 +190,18 @@ function personio_integration_get_filter_select( $attributes ): string
         $class = 'personio-integration-block-' . $attributes['blockId'];
     }
 
+    // get block-classes
+    $block_html_attributes = get_block_wrapper_attributes();
+
+    // get styles
+    $stylesArray = [];
+    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+    if( !empty($styles) ) {
+        $stylesArray[] = '.' . $class . ' { ' . $styles . ' }';
+    }
+
     $stylesArray = [];
     if( !empty($class) ) {
-        if (!empty($attributes['textColor'])) {
-            $stylesArray[] = '.' . $class . ' { color: ' . $attributes['textColor'] . ' }';
-        }
-        if (!empty($attributes['backgroundColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' { background-color: ' . $attributes['backgroundColor'] . ' }';
-        }
-        if (!empty($attributes['linkColor'])) {
-            $stylesArray[] = '.entry.' . $class . ' a { color: ' . $attributes['linkColor'] . ' }';
-        }
         if (!empty($attributes['hideResetLink'])) {
             $stylesArray[] = '.entry.' . $class . ' .personio-position-filter-reset { display: none }';
         }
@@ -228,7 +220,7 @@ function personio_integration_get_filter_select( $attributes ): string
         'filtertype' => 'select',
         'showfilter' => true,
         'styles' => implode(PHP_EOL, $stylesArray),
-        'classes' => $class
+        'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
     ];
 
     // get the output
@@ -276,15 +268,6 @@ function personio_integration_add_blocks(): void
                 'default' => true
             ],
             'blockId' => [
-                'type' => 'string'
-            ],
-            'textColor' => [
-                'type' => 'string'
-            ],
-            'linkColor' => [
-                'type' => 'string'
-            ],
-            'backgroundColor' => [
                 'type' => 'string'
             ]
         ];
@@ -353,15 +336,6 @@ function personio_integration_add_blocks(): void
             'blockId' => [
                 'type' => 'string',
                 'default' => ''
-            ],
-            'textColor' => [
-                'type' => 'string'
-            ],
-            'linkColor' => [
-                'type' => 'string'
-            ],
-            'backgroundColor' => [
-                'type' => 'string'
             ]
         ];
         $list_attributes = apply_filters('personio_integration_gutenberg_block_list_attributes', $list_attributes);
@@ -381,15 +355,6 @@ function personio_integration_add_blocks(): void
              'blockId' => [
                 'type' => 'string',
                 'default' => ''
-            ],
-            'textColor' => [
-                'type' => 'string'
-            ],
-            'linkColor' => [
-                'type' => 'string'
-            ],
-            'backgroundColor' => [
-                'type' => 'string'
             ],
             'hideResetLink' => [
                 'type' => 'boolean',
@@ -421,15 +386,6 @@ function personio_integration_add_blocks(): void
             'blockId' => [
                 'type' => 'string',
                 'default' => ''
-            ],
-            'textColor' => [
-                'type' => 'string'
-            ],
-            'linkColor' => [
-                'type' => 'string'
-            ],
-            'backgroundColor' => [
-                'type' => 'string'
             ],
             'hideResetLink' => [
                 'type' => 'boolean',

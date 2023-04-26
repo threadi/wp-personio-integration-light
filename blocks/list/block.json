@@ -9,13 +9,22 @@
 	"description": "Provides a Gutenberg block to show a list of positions provided by Personio.",
 	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {
-		"html": false,
 	  	"anchor": true,
+		"color": {
+			"gradients": true,
+			"link": true
+		},
+		"html": false,
 		"spacing": {
 			"margin": true,
 			"padding": true,
 			"blockGap": true
-		}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"__experimentalBorder": true
 	},
 	"textdomain": "wp-personio-integration",
 	"editorScript": "file:build/index.js",
@@ -76,15 +85,6 @@
 		"blockId": {
 			"type": "string",
 			"default": ""
-		},
-		"textColor": {
-			"type": "string"
-		},
-		"linkColor": {
-			"type": "string"
-		},
-		"backgroundColor": {
-			"type": "string"
 		}
 	}
 }
