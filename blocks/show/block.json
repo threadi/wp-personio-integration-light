@@ -2,16 +2,26 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
 	"name": "wp-personio-integration/show",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"title": "Personio Position",
 	"category": "widgets",
 	"description": "Provides a Gutenberg Block to show a position managed by Personio.",
 	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {
+		"color": {
+			"gradients": true,
+			"link": true
+		},
+		"html": false,
 		"spacing": {
 			"margin": true,
 			"padding": true
-		}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"__experimentalBorder": true
 	},
 	"textdomain": "wp-personio-integration",
 	"editorScript": "file:build/index.js",
@@ -46,15 +56,6 @@
 			"default": true
 		},
 		"blockId": {
-			"type": "string"
-		},
-		"textColor": {
-			"type": "string"
-		},
-		"linkColor": {
-			"type": "string"
-		},
-		"backgroundColor": {
 			"type": "string"
 		}
 	}

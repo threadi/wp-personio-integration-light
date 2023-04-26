@@ -23,7 +23,6 @@ import {
 } from '@wordpress/components';
 import {
 	InspectorControls,
-	PanelColorSettings,
 	useBlockProps
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
@@ -101,29 +100,6 @@ export default function Edit( object ) {
 						onChange={ value => onChangeHideResetLink( value, object ) }
 					/>
 				</PanelBody>
-			</InspectorControls>
-			<InspectorControls>
-				<PanelColorSettings
-					title={__('Color settings', 'wp-personio-integration')}
-					initialOpen={false}
-					colorSettings={[
-						{
-							value: object.attributes.textColor,
-							onChange: (color) => object.setAttributes({ textColor: color }),
-							label: __('Text color', 'wp-personio-integration')
-						},
-						{
-							value: object.attributes.linkColor,
-							onChange: (color) => object.setAttributes({ linkColor: color }),
-							label: __('Link color', 'wp-personio-integration')
-						},
-						{
-							value: object.attributes.backgroundColor,
-							onChange: (color) => object.setAttributes({ backgroundColor: color }),
-							label: __('Background color', 'wp-personio-integration')
-						}
-					]}
-				/>
 			</InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/filter-select"
