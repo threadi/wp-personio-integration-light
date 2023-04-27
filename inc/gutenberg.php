@@ -124,7 +124,7 @@ function personio_integration_get_list( $attributes ): string
 }
 
 /**
- * Gutenberg-Callback to get the filter as linklist.
+ * Gutenberg-Callback to get the filter as dropdown-links.
  *
  * @param $attributes
  * @return string
