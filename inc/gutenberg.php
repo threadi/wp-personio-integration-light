@@ -281,6 +281,10 @@ function personio_integration_add_blocks(): void
 
         // collect attributes for list block
         $list_attributes = [
+            'preview' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
             'showFilter' => [
                 'type' => 'boolean',
                 'default' => false
@@ -348,6 +352,10 @@ function personio_integration_add_blocks(): void
 
         // collect attributes for filter-list block
         $list_attributes = [
+            'preview' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
             'filter' => [
                 'type' => 'array',
                 'default' => ['recruitingCategory','schedule','office']
@@ -379,6 +387,10 @@ function personio_integration_add_blocks(): void
 
         // collect attributes for filter-select block
         $list_attributes = [
+            'preview' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
             'filter' => [
                 'type' => 'array',
                 'default' => ['recruitingCategory','schedule','office']

@@ -53,19 +53,22 @@ export default function Edit( object ) {
 	});
 
 	// get taxonomies
-	useEffect(() => {
-		dispatch('core').addEntities([
-			{
-				name: 'taxonomies', // route name
-				kind: 'personio/v1', // namespace
-				baseURL: '/personio/v1/taxonomies' // API path without /wp-json
+	let personioTaxonomies = [];
+	if( !object.attributes.preview ) {
+		useEffect(() => {
+			dispatch('core').addEntities([
+				{
+					name: 'taxonomies', // route name
+					kind: 'personio/v1', // namespace
+					baseURL: '/personio/v1/taxonomies' // API path without /wp-json
+				}
+			]);
+		}, []);
+		personioTaxonomies = useSelect((select) => {
+				return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
 			}
-		]);
-	}, []);
-	let personioTaxonomies = useSelect( ( select ) => {
-			return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
-		}
-	);
+		);
+	}
 
 	/**
 	 * Collect return for the edit-function

@@ -2,6 +2,8 @@
 
 namespace personioIntegration;
 
+use WP_Query;
+
 /**
  * Object which holds all version-specific updates.
  */
@@ -48,6 +50,7 @@ class updates {
         self::version123();
         self::version203();
         self::version205();
+        self::version211();
 
         // reset import-flag
         delete_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING);
@@ -80,4 +83,43 @@ class updates {
             update_option('personioIntegrationEnableFilter', 0);
         }
     }
+
+    /**
+     * To run on update to (exact) version 2.1.1
+     *
+     * @return void
+     */
+    public static function version211(): void
+    {
+        $query = [
+            'post_type' => 'wp_template',
+            'post_name' => 'archive-'.WP_PERSONIO_INTEGRATION_CPT,
+            'post_status' => 'any',
+            'fields' => 'ids'
+        ];
+        $result = new WP_Query($query);
+        if( $result->post_count == 0 ) {
+            $archive_template = '
+            <!-- wp:template-part {"slug":"header"} /-->
+        
+            <!-- wp:group {"tagName":"main","style":{"spacing":{"margin":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
+            <main class="wp-block-group" style="margin-top:var(--wp--preset--spacing--70);margin-bottom:var(--wp--preset--spacing--70)"><!-- wp:query-title {"type":"archive","showPrefix":false,"align":"wide","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|50"}}}} /-->
+            
+            <!-- wp:wp-personio-integration/filter-list {"filter":["recruitingCategory","office","schedule"],"blockId":"061798b9-b51f-4903-8c3e-8d6d0e617011"} /-->
+            
+            <!-- wp:wp-personio-integration/list {"blockId":"ae57e576-b490-4ae6-b5cf-7cef4c9a8102"} /--></main>
+            <!-- /wp:group -->
+            
+            <!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
+            $array = [
+                'post_type' => 'wp_template',
+                'post_status' => 'publish',
+                'post_name' => 'archive-'.WP_PERSONIO_INTEGRATION_CPT,
+                'post_content' => $archive_template,
+                'post_title' => 'Archive: Stelle'
+            ];
+            wp_insert_post($array);
+        }
+    }
+
 }

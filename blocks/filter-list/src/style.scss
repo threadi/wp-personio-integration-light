@@ -1,7 +1,45 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
+.personio-position-filter-linklist {
+  display: flex;
+  flex-direction: row;
+}
 
+.personio-position-filter-linklist legend {
+  display: inline-block;
+  font-weight: bold;
+  margin-right: 1.4em;
+  padding: 0;
+  width: auto;
+}
+
+.personio-position-filter-linklist button { display: none; }
+
+.personio-position-filter-linklist > div, .personio-position-filter-linklist > a {
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 1.4em 0 0;
+  position: relative;
+  z-index :1;
+}
+
+.personio-position-filter-linklist > div ul {
+  background-color: #fff;
+  display: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+}
+
+.personio-position-filter-linklist > div li {
+  line-height: 2;
+  list-style: none;
+  margin: 0;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.personio-position-filter-linklist > div:hover ul {
+  display: block;
+}

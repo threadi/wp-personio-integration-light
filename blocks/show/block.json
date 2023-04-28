@@ -26,6 +26,7 @@
 	"textdomain": "wp-personio-integration",
 	"editorScript": "file:build/index.js",
 	"editorStyle": "file:build/index.css",
+	"style": "file:build/style-index.css",
 	"attributes": {
 		"id": {
 			"type": "integer",
@@ -57,6 +58,11 @@
 		},
 		"blockId": {
 			"type": "string"
+		}
+	},
+	"example": {
+		"attributes": {
+			"preview": true
 		}
 	}
 }
