@@ -27,7 +27,12 @@
 	"textdomain": "wp-personio-integration",
 	"editorScript": "file:build/index.js",
 	"editorStyle": "file:build/index.css",
+	"style": "file:build/style-index.css",
 	"attributes": {
+		"preview": {
+			"type": "boolean",
+			"default": false
+		},
 		"filter": {
 			"type": "array",
 			"default": ["recruitingCategory","schedule","office"]
@@ -47,6 +52,16 @@
 		"hideResetLink": {
 			"type": "boolean",
 			"default": false
+		}
+	},
+	"example": {
+		"attributes": {
+			"preview": true,
+			"filter": ["recruitingCategory","schedule","office"],
+			"blockId": "personio-example",
+			"hideFilterTitle": true,
+			"hideSubmitButton": true,
+			"hideResetLink": true
 		}
 	}
 }

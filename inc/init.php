@@ -385,9 +385,9 @@ function personio_integration_add_styles_frontend(): void
 {
     wp_enqueue_style(
         'personio-integration-styles',
-        plugin_dir_url(WP_PERSONIO_INTEGRATION_PLUGIN) . '/css/styles.css',
+            trailingslashit(plugin_dir_url(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'css/styles.css',
         [],
-        filemtime(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN) . '/css/styles.css')
+        filemtime(trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'css/styles.css')
     );
 }
 add_action('wp_enqueue_scripts', 'personio_integration_add_styles_frontend', PHP_INT_MAX);
