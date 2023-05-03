@@ -25,7 +25,7 @@ require_once 'inc/autoload.php';
 require_once 'inc/constants.php';
 require_once 'inc/init.php';
 require_once 'inc/frontend.php';
-require_once 'inc/gutenberg.php';
+require_once 'inc/pagebuilder/gutenberg.php';
 
 // only in admin
 if( is_admin() ) {

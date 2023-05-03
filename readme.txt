@@ -182,5 +182,4 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.1.1 =
 * Added more styling-options to each Block
-* Added Polylang Context for translatable strings
 * Optimized Block-definitions

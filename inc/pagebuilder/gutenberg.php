@@ -1,6 +1,8 @@
 <?php
 
+use personioIntegration\gutenberg\templates;
 use personioIntegration\helper;
+use personioIntegration\Positions;
 
 /**
  * Gutenberg-Callback to get the content for single position.
@@ -228,6 +230,59 @@ function personio_integration_get_filter_select( $attributes ): string
 }
 
 /**
+ * Return application-button.
+ *
+ * @param $attributes
+ * @return string
+ * @noinspection PhpUnused
+ */
+function personio_integration_get_application_button( $attributes ): string
+{
+    // get positions object
+    $positions = positions::get_instance();
+
+    // get the position as object
+    // -> is no id is available choose a random one (e.g. for preview in Gutenberg)
+    $post_id = get_the_ID();
+    if( empty($post_id) ) {
+        $position_array = $positions->getPositions(1);
+        $position = $position_array[0];
+    }
+    else {
+        $position = $positions->get_position($post_id);
+    }
+    if( !$position->isValid() ) {
+        return '';
+    }
+
+    // set ID as class
+    $class = '';
+    if( !empty($attributes['blockId']) ) {
+        $class = 'personio-integration-block-' . $attributes['blockId'];
+    }
+
+    // get block-classes
+    $block_html_attributes = get_block_wrapper_attributes();
+
+    // get styles
+    $stylesArray = [];
+    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+    if( !empty($styles) ) {
+        $stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
+    }
+
+    $attribute_defaults = [
+        'personioid' => absint($position->getPersonioId()),
+        'templates' => ['formular'],
+        'styles' => implode(PHP_EOL, $stylesArray),
+        'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
+    ];
+
+    // get the output
+    return personio_integration_position_shortcode( apply_filters( 'personio_integration_get_gutenberg_application_button_attributes', $attribute_defaults ) );
+}
+
+/**
  * Register the Gutenberg-Blocks with all necessary settings.
  *
  * @return void
@@ -420,6 +475,25 @@ function personio_integration_add_blocks(): void
             'attributes' => $list_attributes
         ]);
 
+        // collect attributes for application-button block
+        $list_attributes = [
+            'preview' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
+            'blockId' => [
+                'type' => 'string',
+                'default' => ''
+            ]
+        ];
+        $list_attributes = apply_filters('personio_integration_gutenberg_block_application_button_select_attributes', $list_attributes);
+
+        // register application-button block
+        register_block_type(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN).'blocks/application-button/', [
+            'render_callback' => 'personio_integration_get_application_button',
+            'attributes' => $list_attributes
+        ]);
+
         // register translations
         wp_set_script_translations('wp-personio-integration-show-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-list-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
@@ -452,3 +526,15 @@ function personio_integration_get_gutenberg_templates( $attributes ): string
     }
     return $templates;
 }
+
+/**
+ * Initialize the block template handling.
+ *
+ * @return void
+ */
+function personio_integration_add_templates(): void
+{
+    $templates_obj = templates::get_instance();
+    $templates_obj->init();
+}
+add_action( 'init', 'personio_integration_add_templates', 10 );

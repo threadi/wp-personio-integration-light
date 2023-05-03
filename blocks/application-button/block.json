@@ -1,0 +1,44 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "wp-personio-integration/application-button",
+	"version": "2.1.1",
+	"title": "Personio Position Application Button",
+	"category": "widgets",
+	"description": "Provides a Gutenberg Block to show the application button for single position.",
+	"keywords": ["Personio", "Positions", "Position"],
+	"supports": {
+		"color": {
+			"gradients": true,
+			"link": true
+		},
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"__experimentalBorder": true
+	},
+	"textdomain": "wp-personio-integration",
+	"editorScript": "file:build/index.js",
+	"editorStyle": "file:build/index.css",
+	"style": "file:build/style-index.css",
+	"attributes": {
+		"id": {
+			"type": "integer",
+			"default": 0
+		},
+		"blockId": {
+			"type": "string"
+		}
+	},
+	"example": {
+		"attributes": {
+			"preview": true
+		}
+	}
+}
