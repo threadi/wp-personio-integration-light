@@ -6,6 +6,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Output an application-button for a single position.
+ *
+ * @version: 1.0.0
  */
 
 ?>

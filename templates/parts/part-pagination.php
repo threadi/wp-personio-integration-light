@@ -4,6 +4,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Output of pagination.
+ *
+ * @version: 1.0.0
  */
 ?>
     <div class="entry-content">

@@ -4,6 +4,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Output of the content a single position.
+ *
+ * @version: 1.0.0
  */
 
 $contentArray = $position->getContentAsArray();

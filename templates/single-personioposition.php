@@ -2,6 +2,8 @@
 
 /**
  * Template for output of a single position.
+ *
+ * @version: 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;

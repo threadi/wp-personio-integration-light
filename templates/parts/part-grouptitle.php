@@ -2,6 +2,8 @@
 
 /**
  * Selects and show the group-title if list is grouped by a taxonomy
+ *
+ * @version: 1.0.0
  */
 
 use personioIntegration\helper;

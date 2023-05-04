@@ -2,6 +2,8 @@
 
 /**
  * Template for output of a list of positions as archive of our custom post type.
+ *
+ * @version: 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;

@@ -136,6 +136,9 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
     ],
     'personio_integration_import_canceled' => [
         'type' => 'success'
+    ],
+    'personio_integration_old_templates' => [
+        'type' => 'error'
     ]
 ];
 
