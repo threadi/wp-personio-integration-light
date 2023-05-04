@@ -42,6 +42,7 @@ class templates {
     {
         add_filter( 'get_block_templates', [$this, 'add_block_templates'], 10, 3 );
         add_filter( 'pre_get_block_file_template', [$this, 'get_block_file_template'], 10, 3 );
+        add_action( 'switch_theme', [$this, 'update_db_templates'], 10, 0 );
     }
 
     /**
@@ -263,17 +264,42 @@ class templates {
         $templates = [];
         foreach( $saved_woo_templates as $post ) {
             $template_obj = new template();
-            $template_obj->set_template($post->post_name);
-            $template_obj->set_type($post->post_type);
-            $template_obj->set_slug($post->post_name);
+            $template_obj->set_post_id( $post->ID );
+            $template_obj->set_template( $post->post_name );
+            $template_obj->set_type( $post->post_type );
+            $template_obj->set_slug( $post->post_name );
             $template_obj->set_source('custom');
-            $template_obj->set_title($post->post_title);
-            $template_obj->set_description($post->post_excerpt);
-            $template_obj->set_content($post->post_content);
+            $template_obj->set_title( $post->post_title );
+            $template_obj->set_description( $post->post_excerpt );
+            $template_obj->set_content( $post->post_content );
             $templates[$post->post_name] = $template_obj;
         }
 
         // return list of templates
         return $templates;
     }
+
+    /**
+     * Update the db-based themes if theme has been switched to another block-theme.
+     *
+     * @return void
+     */
+    public function update_db_templates(): void
+    {
+        if( !$this->current_theme_is_fse_theme() ) {
+            return;
+        }
+
+        // loop through the templates an update their template-parts in content to the new theme
+        foreach( $this->get_templates_from_db([], 'wp_template') as $template ) {
+            $updated_content = $template->update_theme_attribute_in_content($template->get_content());
+            $query = [
+                'ID' => $template->get_post_id(),
+                'post_content' => $updated_content
+            ];
+            wp_update_post($query);
+        }
+
+    }
+
 }

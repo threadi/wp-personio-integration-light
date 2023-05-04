@@ -15,6 +15,7 @@ class template {
     private string $_description;
     private string $_template;
     private string $_content;
+    private int $_post_id;
 
     /**
      * Constructor, not used as this a Singleton object.
@@ -199,7 +200,7 @@ class template {
      * @param $template_content
      * @return string Updated wp_template content.
      */
-    private function inject_theme_attribute_in_content($template_content): string
+    private function inject_theme_attribute_in_content( $template_content ): string
     {
         $theme               = wp_get_theme()->get_stylesheet();
         $has_updated_content = false;
@@ -229,6 +230,39 @@ class template {
     }
 
     /**
+     * Parse block template content to inject theme-specific attributes in it (e.g. for header and footer).
+     *
+     * @source WooCommerce BlockTemplateUtils.php
+     * @param $template_content
+     * @return string Updated wp_template content.
+     */
+    public function update_theme_attribute_in_content( $template_content ): string
+    {
+        $theme               = wp_get_theme()->get_stylesheet();
+        $has_updated_content = false;
+        $new_content         = '';
+        $template_blocks     = parse_blocks( $template_content );
+
+        $blocks = $this->flatten_blocks( $template_blocks );
+        foreach ( $blocks as &$block ) {
+            if ('core/template-part' === $block['blockName'] ) {
+                $block['attrs']['theme'] = $theme;
+                $has_updated_content     = true;
+            }
+        }
+
+        if ( $has_updated_content ) {
+            foreach ( $template_blocks as &$block ) {
+                $new_content .= serialize_block( $block );
+            }
+
+            return $new_content;
+        }
+
+        return $template_content;
+    }
+
+    /**
      * Returns an array containing the references of
      * the passed blocks and their inner blocks.
      *
@@ -236,7 +270,7 @@ class template {
      * @param $blocks
      * @return array block references to the passed blocks and their inner blocks.
      */
-    private function flatten_blocks(&$blocks): array
+    private function flatten_blocks( &$blocks ): array
     {
         $all_blocks = array();
         $queue      = array();
@@ -315,5 +349,26 @@ class template {
     public function set_content( $content ): void
     {
         $this->_content = $content;
+    }
+
+    /**
+     * Get post_id if template resists in DB.
+     *
+     * @return int
+     */
+    public function get_post_id(): int
+    {
+        return $this->_post_id;
+    }
+
+    /**
+     * Set post_id if template resists in DB.
+     *
+     * @param $post_id
+     * @return void
+     */
+    public function set_post_id( $post_id ): void
+    {
+        $this->_post_id = $post_id;
     }
 }
