@@ -180,6 +180,8 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Fixed target url for filter in frontend
 * Fixed visibility of back to list link
 
-= 2.1.1 =
+= 2.2.0 =
+* Added 2 Block Templates for Block Themes
+* Added one more Block for application links
 * Added more styling-options to each Block
 * Optimized Block-definitions
