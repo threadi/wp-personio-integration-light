@@ -561,3 +561,82 @@ function personio_integration_ignore_author( $query ): WP_Query {
     return $query;
 }
 add_filter( 'pre_get_posts', 'personio_integration_ignore_author');
+
+/**
+ * Check for changed templates of our own plugin in the child-theme, if one is used.
+ *
+ * @return void
+ */
+function personio_integration_check_child_theme_templates(): void {
+    // bail if it is not a child-theme
+    if( !is_child_theme() ) {
+        delete_transient('personio_integration_old_templates');
+        return;
+    }
+
+    // get path for child-theme-templates-directory and check its existence
+    $path = trailingslashit(get_stylesheet_directory()).'personio-integration-light';
+    if( !file_exists($path) ) {
+        delete_transient('personio_integration_old_templates');
+        return;
+    }
+
+    // get all files from child-theme-templates-directory
+    $files = helper::get_file_from_directory($path);
+    if( empty($files) ) {
+        delete_transient('personio_integration_old_templates');
+        return;
+    }
+
+    // get list of all templates of this plugin
+    $plugin_files = helper::get_file_from_directory(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN).'/templates');
+
+    // collect warnings
+    $warnings = [];
+
+    // set headers to check
+    $headers = [
+        'version' => 'Version'
+    ];
+
+    // check the files from child-theme and compare them with our own
+    foreach( $files as $file ) {
+        // check only files wich are exist in our plugin
+        if( isset($plugin_files[basename($file)]) ) {
+            // get the file-version-data
+            $file_data = get_file_data($file, $headers);
+            // only check more if something could be read
+            if (isset($file_data['version'])) {
+                // if version is not set, show warning
+                if (empty($file_data['version'])) {
+                    $warnings[] = $file;
+                } // compare the files
+                elseif (!empty($plugin_files[basename($file)])) {
+                    // compare files
+                    $plugin_file_data = get_file_data($plugin_files[basename($file)], $headers);
+                    if (isset($plugin_file_data['version'])) {
+                        if (version_compare($plugin_file_data['version'], $file_data['version'], '>')) {
+                            $warnings[] = $file;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if( !empty($warnings) ) {
+        // generate html-list of the files
+        $html_list = '<ul>';
+        foreach( $warnings as $file ) {
+            $html_list .= '<li>'.esc_html(basename($file)).'</li>';
+        }
+        $html_list .= '</ul>';
+
+        // show a transient
+        set_transient('personio_integration_old_templates', $html_list);
+    }
+    else {
+        delete_transient('personio_integration_old_templates');
+    }
+}
+add_action( 'admin_init', 'personio_integration_check_child_theme_templates');

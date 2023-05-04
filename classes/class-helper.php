@@ -60,6 +60,8 @@ class helper {
      */
     public static function get_admin_transient_content( $transient ): string
     {
+        $transient_value = get_transient($transient);
+
         $array = [
             'personio_integration_no_simplexml' => sprintf(
                 '<h3>'.helper::getLogoImg().'%s</h3><p><u>%s</u> %s</p>',
@@ -167,6 +169,13 @@ class helper {
                 __('Personio Integration', 'wp-personio-integration'),
                 __('<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes to long please check your hosting logfiles for possible restrictions mentioned there.', 'wp-personio-integration').' <br><br><a href="'.helper::get_import_url().'" class="button button-primary personio-integration-import-hint">'.__('Run import', 'wp-personio-integration').'</a>'
             ),
+            'personio_integration_old_templates' => sprintf(
+                '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>%s<p>%s</p>',
+                __('Personio Integration', 'wp-personio-integration'),
+                __('<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'wp-personio-integration'),
+                $transient_value,
+                __('Hint: the version-number in the header of the files must match.', 'wp-personio-integration')
+            )
         ];
 
         if( empty($array[$transient]) ) {
@@ -904,5 +913,36 @@ class helper {
             return urldecode($match[2]);
         }
         return false;
+    }
+
+    /**
+     * Get all files of directory recursively.
+     *
+     * @param $path
+     * @param $list
+     * @return array
+     * @noinspection PhpMissingParamTypeInspection
+     */
+    public static function get_file_from_directory( $path = '.', $list = [] ): array
+    {
+        $ignore = array( '.', '..' );
+        $dh = @opendir( $path );
+        while( false !== ( $file = readdir( $dh ) ) )
+        {
+            if( !in_array( $file, $ignore ) )
+            {
+                $filepath = $path.'/'.$file;
+                if( is_dir( $filepath ) )
+                {
+                    $list = self::get_file_from_directory( $filepath, $list );
+                }
+                else
+                {
+                    $list[$file] = $filepath;
+                }
+            }
+        }
+        closedir( $dh );
+        return $list;
     }
 }

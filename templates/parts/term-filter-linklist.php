@@ -4,6 +4,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Template for output a single term filter a linklist.
+ *
+ * @version: 1.0.0
  */
 ?>
     <div>

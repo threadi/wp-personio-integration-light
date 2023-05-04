@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Template: part-filter.php
+ *
+ * @version: 1.0.0
+ */
+
 use personioIntegration\helper;
 
 defined( 'ABSPATH' ) || exit;

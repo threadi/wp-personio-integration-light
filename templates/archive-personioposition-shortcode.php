@@ -2,6 +2,8 @@
 
 /**
  * Template for output of a list of positions via shortcode.
+ *
+ * @version: 1.0.0
  */
 
 use personioIntegration\helper;
