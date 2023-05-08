@@ -184,5 +184,5 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Added 2 Block Templates for Block Themes
 * Added one more Block for application links
 * Added more styling-options to each Block
-* Added warning about
+* Added warning about changed templates in Child-themes
 * Optimized Block-definitions
