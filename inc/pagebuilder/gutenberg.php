@@ -499,6 +499,7 @@ function personio_integration_add_blocks(): void
         wp_set_script_translations('wp-personio-integration-list-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-filter-list-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-filter-select-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+        wp_set_script_translations('wp-personio-integration-application-button-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
     }
 }
 add_action( 'init', 'personio_integration_add_blocks', 10 );
