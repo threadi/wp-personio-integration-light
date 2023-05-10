@@ -69,9 +69,6 @@ class Import {
         libxml_use_internal_errors(true);
 
         if( empty($this->_errors) ) {
-            // get the Personio URL
-            $domain = get_option('personioIntegrationUrl');
-
             // define counter
             $count = 0;
 
@@ -79,7 +76,7 @@ class Import {
             $progress = helper::isCLI() ? \WP_CLI\Utils\make_progress_bar('Get positions from Personio by language', $languageCount) : false;
             foreach( $languages as $key => $enabled ) {
                 // define the url
-                $url = $domain . "/xml?language=" . esc_attr($key);
+                $url = helper::get_personio_xml_url(get_option('personioIntegrationUrl', '')).'?language=' . esc_attr($key);
 
                 // define settings for first request to get the last-modified-date
                 $args = [

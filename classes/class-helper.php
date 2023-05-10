@@ -150,8 +150,8 @@ class helper {
                 '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
                 __('Personio Integration', 'wp-personio-integration'),
                 sprintf(
-                    /* translators: %1$s is replaced with "string" */
-                    __('The specified Personio URL %s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations.', 'wp-personio-integration'),
+                    /* translators: %1$s is replaced with the entered Personio-URL */
+                    __('The specified Personio URL %s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there.', 'wp-personio-integration'),
                     ''
                 )
             ),
@@ -945,4 +945,18 @@ class helper {
         closedir( $dh );
         return $list;
     }
+
+    /**
+     * Return the Personio-XML-URL without any parameter.
+     *
+     * @param $domain
+     * @return string
+     */
+    public static function get_personio_xml_url( $domain ): string {
+        if( empty($domain) ) {
+            return '';
+        }
+        return $domain.'/xml';
+    }
+
 }

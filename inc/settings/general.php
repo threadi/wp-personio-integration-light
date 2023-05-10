@@ -309,14 +309,16 @@ function personio_integration_admin_validatePersonioURL( $value ) {
                 // -> only if it has been changed
                 if (get_option('personioIntegrationUrl', '') != $value) {
                     // -> should return HTTP-Status 200
-                    $response = wp_remote_get($value,
+                    $response = wp_remote_get(helper::get_personio_xml_url($value),
                         array(
                             'timeout' => 30,
                             'redirection' => 0
                         )
                     );
-                    if( is_array($response) && !empty($response["response"]["code"]) && $response["response"]["code"] != 200) {
-                        // error occurred, show hin
+                    // get the body with the contents
+                    $body = wp_remote_retrieve_body($response);
+                    if( ( is_array($response) && !empty($response["response"]["code"]) && $response["response"]["code"] != 200 ) || 0 === strpos($body, '<!doctype html>') ) {
+                        // error occurred => show hint
                         set_transient('personio_integration_url_not_usable', 1);
                         $error = true;
                         $value = "";
