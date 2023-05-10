@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-05-08T09:19:56+02:00\n"
+"POT-Creation-Date: 2023-05-10T10:04:26+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -103,9 +103,9 @@ msgstr ""
 msgid "<strong>The specified Personio URL is reachable.</strong> Click on the following button to import your positions from Personio now:"
 msgstr ""
 
-#. translators: %1$s is replaced with "string"
+#. translators: %1$s is replaced with the entered Personio-URL
 #: classes/class-helper.php:154
-msgid "The specified Personio URL %s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations."
+msgid "The specified Personio URL %s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there."
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
@@ -448,19 +448,19 @@ msgstr ""
 msgid "Personio URL not configured."
 msgstr ""
 
-#: classes/class-import.php:193
+#: classes/class-import.php:190
 msgid "Personio URL not available. Please check the URL you configured."
 msgstr ""
 
-#: classes/class-import.php:280
+#: classes/class-import.php:277
 msgid "Error during Personio Positions Import"
 msgstr ""
 
-#: classes/class-import.php:281
+#: classes/class-import.php:278
 msgid "The following error occurred when importing positions provided by Personio:"
 msgstr ""
 
-#: classes/class-import.php:282
+#: classes/class-import.php:279
 msgid "Sent by the plugin Personio Integration"
 msgstr ""
 
