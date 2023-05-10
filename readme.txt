@@ -6,7 +6,7 @@ Tested up to: 6.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 
 == Description ==
 
@@ -186,3 +186,4 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Added more styling-options to each Block
 * Added warning about changed templates in Child-themes
 * Optimized Block-definitions
+* Fixed usage of Personio-XML-URL for validating the Personio-URL (e.g. if the career-pages on Personio are disabled)
