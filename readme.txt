@@ -187,3 +187,9 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Added warning about changed templates in Child-themes
 * Optimized Block-definitions
 * Fixed usage of Personio-XML-URL for validating the Personio-URL (e.g. if the career-pages on Personio are disabled)
+
+= 2.2.1 =
+* Solved SVN-problems
+
+= 2.2.2 =
+* Cleanup SVN
