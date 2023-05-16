@@ -105,7 +105,7 @@ function personio_integration_get_list( $attributes ): string
     }
 
     // collect all settings for this block
-    $attributes = [
+    $attribute_defaults = [
         'templates' => $templates,
         'excerpt' => $excerptTemplates,
         'donotlink' => $doNotLink,
@@ -122,7 +122,7 @@ function personio_integration_get_list( $attributes ): string
     ];
 
     // get the output
-    return personio_integration_positions_shortcode( apply_filters( 'personio_integration_get_gutenberg_list_attributes', $attributes) );
+    return personio_integration_positions_shortcode( apply_filters( 'personio_integration_get_gutenberg_list_attributes', $attributes, $attribute_defaults ) );
 }
 
 /**
