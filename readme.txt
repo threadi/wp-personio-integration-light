@@ -196,3 +196,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.2.3 =
 * Fixed missing files in SVN
+
+= 2.2.4 =
+* Fixed usage of attributes in Gutenberg list-block
