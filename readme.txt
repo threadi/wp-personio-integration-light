@@ -6,7 +6,7 @@ Tested up to: 6.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.2.4
+Stable tag: 2.2.5
 
 == Description ==
 
@@ -199,3 +199,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.2.4 =
 * Fixed usage of attributes in Gutenberg list-block
+
+= 2.2.5 =
+* Optimized check for post-type in list-view

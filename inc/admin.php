@@ -555,7 +555,7 @@ add_filter( 'views_edit-'.WP_PERSONIO_INTEGRATION_CPT, 'personio_integration_hid
  * @return WP_Query
  */
 function personio_integration_ignore_author( $query ): WP_Query {
-    if( is_admin() && $query->query_vars['post_type'] == WP_PERSONIO_INTEGRATION_CPT ) {
+    if( is_admin() && !empty($query->query_vars['post_type']) && WP_PERSONIO_INTEGRATION_CPT === $query->query_vars['post_type'] ) {
         $query->set('author', 0);
     }
     return $query;
