@@ -203,3 +203,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 = 2.2.5 =
 * Optimized check for post-type in list-view
 * Compatibility with WordPress 6.2.2
+
+= 2.2.6 =
+* Added filter for excerpt-taxonomy
