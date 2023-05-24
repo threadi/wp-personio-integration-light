@@ -291,7 +291,7 @@ class helper {
                 $name = $position->getEmploymentTypeName();
                 break;
         }
-        return $name;
+        return apply_filters( 'personio_integration_get_taxonomy_from_position', $name, $taxonomy, $position );
     }
 
     /**

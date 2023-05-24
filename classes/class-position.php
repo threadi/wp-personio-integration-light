@@ -292,7 +292,7 @@ class Position {
      * @param $field
      * @return string
      */
-    private function _getTermName( $taxonomy, $field ): string
+    protected function _getTermName($taxonomy, $field ): string
     {
         if( empty($this->_taxonomyTerms[$taxonomy]) ) {
             $this->_taxonomyTerms[$taxonomy] = get_the_terms($this->data['ID'], $taxonomy);
