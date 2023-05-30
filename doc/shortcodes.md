@@ -17,7 +17,7 @@ The Pro-version does not have such restriction.
 
 ## for a single view
 
-`[personioPosition lang="en" templates="title,content,form" id="42"]`
+`[personioPosition lang="en" templates="title,content,form" personioid="42"]`
 
 ## parameters
 
@@ -155,4 +155,4 @@ The parameters in the shortcodes have the following tasks:
 
 ### Single view of a position with title, content & application link
 
-`[personioPosition id="42" templates="title,content,form"]`
+`[personioPosition personioid="42" templates="title,content,form"]`

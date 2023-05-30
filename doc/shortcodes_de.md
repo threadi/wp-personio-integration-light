@@ -17,7 +17,7 @@ Die Pro-Version hat diese Beschränkung nicht.
 
 ## für eine Einzel-Ansicht
 
-`[personioPosition lang="de" templates="title,content,formular" id="42"]`
+`[personioPosition lang="de" templates="title,content,formular" personioid="42"]`
 
 ## Parameter
 
@@ -155,4 +155,4 @@ Die Parameter in den Shortcodes haben folgende Aufgaben:
 
 ### Einzelansicht einer Stelle mit Titel, Inhalt & Bewerbungslink
 
-`[personioPosition id="42" templates="title,content,formular"]`
+`[personioPosition personioid="42" templates="title,content,formular"]`
