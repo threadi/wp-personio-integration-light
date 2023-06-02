@@ -228,6 +228,13 @@ const WP_PERSONIO_INTEGRATION_TAXONOMIES = [
         'slug' => 'language',
         'useInFilter' => 0
     ],
+    WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS => [
+	    'attr' => [ // taxonomy settings deviating from default
+		    'rewrite' => ['slug' => 'keyword'],
+	    ],
+	    'slug' => 'keyword',
+	    'useInFilter' => 1
+    ],
 ];
 
 /**

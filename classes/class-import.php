@@ -300,6 +300,10 @@ class Import {
         if( !empty($position->department) ) {
             $positionObject->department = (string)$position->department;
         }
+	    $positionObject->keywords = '';
+	    if( !empty($position->keywords) ) {
+		    $positionObject->keywords = (string)$position->keywords;
+	    }
         $positionObject->office = (string)$position->office;
         $positionObject->personioId = (int)$position->id;
         $positionObject->recruitingCategory = (string)$position->recruitingCategory;

@@ -297,6 +297,9 @@ class helper {
             case 'employmentTypes':
                 $name = $position->getEmploymentTypeName();
                 break;
+	        case 'keyword':
+		        $name = $position->getKeywordsTypeName();
+		        break;
         }
         return apply_filters( 'personio_integration_get_taxonomy_from_position', $name, $taxonomy, $position );
     }
@@ -336,6 +339,9 @@ class helper {
             case 'employmentTypes':
                 $taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE;
                 break;
+	        case 'keyword':
+		        $taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS;
+		        break;
         }
         return $taxonomy;
     }
@@ -718,6 +724,14 @@ class helper {
                 'edit_item' => __( 'Edit language', 'wp-personio-integration' ),
                 'update_item' => __( 'Update language', 'wp-personio-integration' ),
                 'menu_name' => __( 'languages', 'wp-personio-integration' ),
+            ],
+            WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS => [
+	            'name' => _x( 'keywords', 'taxonomy general name', 'wp-personio-integration' ),
+	            'singular_name' => _x( 'keyword', 'taxonomy singular name', 'wp-personio-integration' ),
+	            'search_items' =>  __( 'Search keywords', 'wp-personio-integration' ),
+	            'edit_item' => __( 'Edit keyword', 'wp-personio-integration' ),
+	            'update_item' => __( 'Update keyword', 'wp-personio-integration' ),
+	            'menu_name' => __( 'keywords', 'wp-personio-integration' ),
             ]
         ];
         // revert the locale-setting

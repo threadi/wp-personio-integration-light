@@ -69,7 +69,8 @@ function personio_integration_add_position_posttype(): void
             WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE,
             WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY,
             WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE,
-            WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE
+            WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE,
+	        WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS
         ],
         'publicly_queryable'  => (bool)$detailSlug,
         'show_in_rest'        => true,

@@ -601,3 +601,53 @@ function personio_integration_get_shortcode_attributes( $values ): array
     ];
 }
 add_filter( 'personio_integration_get_shortcode_attributes', 'personio_integration_get_shortcode_attributes', 10, 1);
+
+/**
+ * Extend the WP-own search.
+ *
+ * @param $search
+ * @param $wp_query
+ *
+ * @return string
+ */
+function personio_integration_extend_search( $search, $wp_query ): string {
+    global $wpdb;
+
+    // bail on search in backend.
+    if( is_admin() ) {
+        return $search;
+    }
+
+    // bail if extension of search is not enabled.
+    if( 0 === absint(get_option('personioIntegrationExtendSearch', 0 )) ) {
+        return $search;
+    }
+
+    // bail of search string is empty.
+    if ( empty( $search ))
+        return $search;
+
+    // get search request.
+    $term = $wp_query->query_vars[ 's' ];
+
+    // create and return changed statement.
+    return " AND (
+        (
+            1 = 1 ".$search."
+        )
+        OR (
+            ".$wpdb->posts.".post_type = '".WP_PERSONIO_INTEGRATION_CPT."'
+            AND EXISTS(
+                SELECT * FROM ".$wpdb->terms."
+                INNER JOIN ".$wpdb->term_taxonomy."
+                    ON ".$wpdb->term_taxonomy.".term_id = ".$wpdb->terms.".term_id
+                INNER JOIN ".$wpdb->term_relationships."
+                    ON ".$wpdb->term_relationships.".term_taxonomy_id = ".$wpdb->term_taxonomy.".term_taxonomy_id
+                WHERE taxonomy = 'personioKeywords'
+                    AND object_id = ".$wpdb->posts.".ID
+                    AND ".$wpdb->terms.".name LIKE '%".$term."%'
+            )
+        )
+    )";
+}
+add_filter( 'posts_search', 'personio_integration_extend_search', 10, 2 );

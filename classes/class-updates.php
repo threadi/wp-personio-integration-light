@@ -51,6 +51,7 @@ class updates {
         self::version203();
         self::version205();
         self::version211();
+		self::version227();
 
         // reset import-flag
         delete_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING);
@@ -122,4 +123,15 @@ class updates {
         }
     }
 
+	/**
+	 * To run on update to (exact) version 2.2.7
+	 *
+	 * @return void
+	 */
+	private static function version227(): void {
+		// enable search extension.
+		if (!get_option('personioIntegrationExtendSearch')) {
+			update_option('personioIntegrationExtendSearch', 1);
+		}
+	}
 }
