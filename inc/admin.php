@@ -647,7 +647,7 @@ add_action( 'admin_init', 'personio_integration_check_child_theme_templates');
  * @return void
  */
 function personio_integration_admin_check_for_divi(): void {
-    if( Helper::is_plugin_active( 'divi-builder/divi-builder.php' ) || 'Divi' === wp_get_theme()->get( 'Name' ) ) {
+    if( false === Helper::is_plugin_active( 'personio-integration-divi/personio-integration-divi.php' ) && ( Helper::is_plugin_active( 'divi-builder/divi-builder.php' ) || 'Divi' === wp_get_theme()->get( 'Name' ) ) ) {
         set_transient( 'personio_integration_divi', 1 );
     }
     else {
