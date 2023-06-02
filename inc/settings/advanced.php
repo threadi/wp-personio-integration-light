@@ -81,6 +81,21 @@ function personio_integration_admin_add_settings_advanced()
     // add more advanced settings
     do_action('personio_integration_advanced_settings');
 
+    // extend search.
+    add_settings_field(
+        'personioIntegrationExtendSearch',
+        __( 'Note the position-keywords in search in frontend', 'wp-personio-integration' ),
+        'personio_integration_admin_checkbox_field',
+        'personioIntegrationPositionsAdvanced',
+        'settings_section_advanced',
+        [
+            'label_for' => 'personioIntegrationExtendSearch',
+            'fieldId' => 'personioIntegrationExtendSearch',
+            'readonly' => !helper::is_personioUrl_set()
+        ]
+    );
+    register_setting( 'personioIntegrationPositionsAdvanced', 'personioIntegrationExtendSearch', ['sanitize_callback' => 'personio_integration_admin_validateCheckBox'] );
+
     // max age for log-entries
     add_settings_field(
         'personioIntegrationMaxAgeLogEntries',

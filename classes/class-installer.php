@@ -200,7 +200,8 @@ class installer
                 WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION,
                 WP_PERSONIO_OPTION_COUNT,
                 WP_PERSONIO_OPTION_MAX,
-                WP_PERSONIO_INTEGRATION_IMPORT_RUNNING
+                WP_PERSONIO_INTEGRATION_IMPORT_RUNNING,
+	            'personioIntegrationExtendSearch'
             ];
             foreach ($options as $option) {
                 delete_option($option);

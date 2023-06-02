@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2023-06-02T10:55:02+02:00\n"
-"PO-Revision-Date: 2023-06-02 10:55+0200\n"
+"POT-Creation-Date: 2023-06-02T13:04:54+02:00\n"
+"PO-Revision-Date: 2023-06-02 13:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -189,317 +189,343 @@ msgstr ""
 "Weitere Informationen zur Pro-Version findest Du <a href=\"%1$s\" target="
 "\"_blank\">hier</a>."
 
-#: classes/class-helper.php:351 blocks/list/build/index.js:1
+#: classes/class-helper.php:357 blocks/list/build/index.js:1
 msgid "select-box"
 msgstr "Auswahl-Box"
 
-#: classes/class-helper.php:352 blocks/list/build/index.js:1
+#: classes/class-helper.php:358 blocks/list/build/index.js:1
 msgid "list of links"
 msgstr "Linkliste"
 
-#: classes/class-helper.php:651
+#: classes/class-helper.php:657
 msgctxt "taxonomy general name"
 msgid "recruiting categories"
 msgstr "Kategorien"
 
-#: classes/class-helper.php:652
+#: classes/class-helper.php:658
 msgctxt "taxonomy singular name"
 msgid "recruiting category"
 msgstr "Kategorie"
 
-#: classes/class-helper.php:653
+#: classes/class-helper.php:659
 msgid "Search recruiting category"
 msgstr "Suche nach Kategorie"
 
-#: classes/class-helper.php:654
+#: classes/class-helper.php:660
 msgid "Edit recruiting category"
 msgstr "Kategorie bearbeiten"
 
-#: classes/class-helper.php:655
+#: classes/class-helper.php:661
 msgid "Update recruiting category"
 msgstr "Kategorie aktualisieren"
 
-#: classes/class-helper.php:656
+#: classes/class-helper.php:662
 msgid "recruiting categories"
 msgstr "Kategorien"
 
-#: classes/class-helper.php:659
+#: classes/class-helper.php:665
 msgctxt "taxonomy general name"
 msgid "occupation categories"
 msgstr "Berufsarten"
 
-#: classes/class-helper.php:660
+#: classes/class-helper.php:666
 msgctxt "taxonomy singular name"
 msgid "occupation category"
 msgstr "Berufsart"
 
-#: classes/class-helper.php:661
+#: classes/class-helper.php:667
 msgid "Search occupation category"
 msgstr "Suche nach Berufsart"
 
-#: classes/class-helper.php:662
+#: classes/class-helper.php:668
 msgid "Edit occupation category"
 msgstr "Berufsart bearbeiten"
 
-#: classes/class-helper.php:663
+#: classes/class-helper.php:669
 msgid "Update occupation category"
 msgstr "Berufsart aktualisieren"
 
-#: classes/class-helper.php:664
+#: classes/class-helper.php:670
 msgid "occupation categories"
 msgstr "Berufsarten"
 
-#: classes/class-helper.php:667
+#: classes/class-helper.php:673
 msgctxt "taxonomy general name"
 msgid "offices"
 msgstr "Standorte"
 
-#: classes/class-helper.php:668
+#: classes/class-helper.php:674
 msgctxt "taxonomy singular name"
 msgid "office"
 msgstr "Standort"
 
-#: classes/class-helper.php:669
+#: classes/class-helper.php:675
 msgid "Search office"
 msgstr "Suchen Standort"
 
-#: classes/class-helper.php:670
+#: classes/class-helper.php:676
 msgid "Edit office"
 msgstr "Bearbeite Standort"
 
-#: classes/class-helper.php:671
+#: classes/class-helper.php:677
 msgid "Update office"
 msgstr "Aktualisiere Standort"
 
-#: classes/class-helper.php:672
+#: classes/class-helper.php:678
 msgid "offices"
 msgstr "Standorte"
 
-#: classes/class-helper.php:675
+#: classes/class-helper.php:681
 msgctxt "taxonomy general name"
 msgid "departments"
 msgstr "Abteilungen"
 
-#: classes/class-helper.php:676
+#: classes/class-helper.php:682
 msgctxt "taxonomy singular name"
 msgid "department"
 msgstr "Abteilung"
 
-#: classes/class-helper.php:677
+#: classes/class-helper.php:683
 msgid "Search department"
 msgstr "Suche nach Abteilung"
 
-#: classes/class-helper.php:678
+#: classes/class-helper.php:684
 msgid "Edit department"
 msgstr "Bearbeite Abteilung"
 
-#: classes/class-helper.php:679
+#: classes/class-helper.php:685
 msgid "Update department"
 msgstr "Aktualisierung Abteilung"
 
-#: classes/class-helper.php:680
+#: classes/class-helper.php:686
 msgid "departments"
 msgstr "Abteilungen"
 
-#: classes/class-helper.php:683
+#: classes/class-helper.php:689
 msgctxt "taxonomy general name"
 msgid "employment types"
 msgstr "Anstellungsarten"
 
-#: classes/class-helper.php:684
+#: classes/class-helper.php:690
 msgctxt "taxonomy singular name"
 msgid "employment type"
 msgstr "Anstellungsart"
 
-#: classes/class-helper.php:685
+#: classes/class-helper.php:691
 msgid "Search employment type"
 msgstr "Suche nach Anstellungsart"
 
-#: classes/class-helper.php:686
+#: classes/class-helper.php:692
 msgid "Edit employment type"
 msgstr "Bearbeite Anstellungsart"
 
-#: classes/class-helper.php:687
+#: classes/class-helper.php:693
 msgid "Update employment type"
 msgstr "Aktualisiere Anstellungsart"
 
-#: classes/class-helper.php:688 inc/init.php:342
+#: classes/class-helper.php:694 inc/init.php:343
 msgid "employment types"
 msgstr "Anstellungsarten"
 
-#: classes/class-helper.php:691
+#: classes/class-helper.php:697
 msgctxt "taxonomy general name"
 msgid "seniority"
 msgstr "Dienstalter"
 
-#: classes/class-helper.php:692
+#: classes/class-helper.php:698
 msgctxt "taxonomy singular name"
-msgid "seniority"
-msgstr "Dienstalter"
-
-#: classes/class-helper.php:693
-msgid "Search seniority"
-msgstr "Suche nach Dienstalter"
-
-#: classes/class-helper.php:694
-msgid "Edit seniority"
-msgstr "Bearbeite Dienstalter"
-
-#: classes/class-helper.php:695
-msgid "Update seniority"
-msgstr "Aktualisiere Dienstalter"
-
-#: classes/class-helper.php:696 inc/init.php:343 blocks/show/build/index.js:1
 msgid "seniority"
 msgstr "Dienstalter"
 
 #: classes/class-helper.php:699
+msgid "Search seniority"
+msgstr "Suche nach Dienstalter"
+
+#: classes/class-helper.php:700
+msgid "Edit seniority"
+msgstr "Bearbeite Dienstalter"
+
+#: classes/class-helper.php:701
+msgid "Update seniority"
+msgstr "Aktualisiere Dienstalter"
+
+#: classes/class-helper.php:702 inc/init.php:344 blocks/show/build/index.js:1
+msgid "seniority"
+msgstr "Dienstalter"
+
+#: classes/class-helper.php:705
 msgctxt "taxonomy general name"
 msgid "schedules"
 msgstr "Arbeitszeiten"
 
-#: classes/class-helper.php:700
+#: classes/class-helper.php:706
 msgctxt "taxonomy singular name"
 msgid "schedule"
 msgstr "Arbeitszeit"
 
-#: classes/class-helper.php:701
+#: classes/class-helper.php:707
 msgid "Search schedule"
 msgstr "Suche nach Arbeitszeit"
 
-#: classes/class-helper.php:702
+#: classes/class-helper.php:708
 msgid "Edit schedule"
 msgstr "Bearbeite Arbeitszeit"
 
-#: classes/class-helper.php:703
+#: classes/class-helper.php:709
 msgid "Update schedule"
 msgstr "Aktualisiere Arbeitszeit"
 
-#: classes/class-helper.php:704
+#: classes/class-helper.php:710
 msgid "schedules"
 msgstr "Arbeitszeiten"
 
-#: classes/class-helper.php:707
+#: classes/class-helper.php:713
 msgctxt "taxonomy general name"
 msgid "experiences"
 msgstr "Berufserfahrungen"
 
-#: classes/class-helper.php:708
+#: classes/class-helper.php:714
 msgctxt "taxonomy singular name"
 msgid "experience"
 msgstr "Berufserfahrung"
 
-#: classes/class-helper.php:709
+#: classes/class-helper.php:715
 msgid "Search experience"
 msgstr "Suche nach Berufserfahrung"
 
-#: classes/class-helper.php:710
+#: classes/class-helper.php:716
 msgid "Edit experience"
 msgstr "Bearbeite Berufserfahrung"
 
-#: classes/class-helper.php:711
+#: classes/class-helper.php:717
 msgid "Update experience"
 msgstr "Aktualisiere Berufserfahrung"
 
-#: classes/class-helper.php:712
+#: classes/class-helper.php:718
 msgid "experiences"
 msgstr "Berufserfahrungen"
 
-#: classes/class-helper.php:715
+#: classes/class-helper.php:721
 msgctxt "taxonomy general name"
 msgid "languages"
 msgstr "Sprachen"
 
-#: classes/class-helper.php:716
+#: classes/class-helper.php:722
 msgctxt "taxonomy singular name"
 msgid "language"
 msgstr "Sprache"
 
-#: classes/class-helper.php:717
+#: classes/class-helper.php:723
 msgid "Search language"
 msgstr "Suche nach Sprache"
 
-#: classes/class-helper.php:718
+#: classes/class-helper.php:724
 msgid "Edit language"
 msgstr "Bearbeite Sprache"
 
-#: classes/class-helper.php:719
+#: classes/class-helper.php:725
 msgid "Update language"
 msgstr "Aktualisiere Sprache"
 
-#: classes/class-helper.php:720
+#: classes/class-helper.php:726
 msgid "languages"
 msgstr "Sprachen"
 
-#: classes/class-helper.php:748
+#: classes/class-helper.php:729
+msgctxt "taxonomy general name"
+msgid "keywords"
+msgstr "Stichwörter"
+
+#: classes/class-helper.php:730
+msgctxt "taxonomy singular name"
+msgid "keyword"
+msgstr "Stichwort"
+
+#: classes/class-helper.php:731
+msgid "Search keywords"
+msgstr "Suche nach Stichwort"
+
+#: classes/class-helper.php:732
+msgid "Edit keyword"
+msgstr "Bearbeite Stichwort"
+
+#: classes/class-helper.php:733
+msgid "Update keyword"
+msgstr "Aktualisiere Stichwort"
+
+#: classes/class-helper.php:734
+msgid "keywords"
+msgstr "Stichwörter"
+
+#: classes/class-helper.php:762
 msgid "permanent"
 msgstr "Dauerhaft"
 
-#: classes/class-helper.php:749
+#: classes/class-helper.php:763
 msgid "intern"
 msgstr "intern"
 
-#: classes/class-helper.php:750
+#: classes/class-helper.php:764
 msgid "trainee"
 msgstr "Praktikant/in"
 
-#: classes/class-helper.php:751
+#: classes/class-helper.php:765
 msgid "freelance"
 msgstr "Freelancer"
 
-#: classes/class-helper.php:754
+#: classes/class-helper.php:768
 msgid "entry-level"
 msgstr "Einstiegslevel"
 
-#: classes/class-helper.php:755
+#: classes/class-helper.php:769
 msgid "experienced"
 msgstr "Erfahrung"
 
-#: classes/class-helper.php:756
+#: classes/class-helper.php:770
 msgid "executive"
 msgstr "Geschäftsführer"
 
-#: classes/class-helper.php:757
+#: classes/class-helper.php:771
 msgid "student"
 msgstr "Student"
 
-#: classes/class-helper.php:760
+#: classes/class-helper.php:774
 msgid "full-time"
 msgstr "Vollzeit"
 
-#: classes/class-helper.php:761
+#: classes/class-helper.php:775
 msgid "part-time"
 msgstr "Teil-Zeit"
 
-#: classes/class-helper.php:762
+#: classes/class-helper.php:776
 msgid "full- or part-time"
 msgstr "Voll- oder Teil-Zeit"
 
-#: classes/class-helper.php:765
+#: classes/class-helper.php:779
 msgid "less than 1 year"
 msgstr "weniger als 1 Jahr"
 
-#: classes/class-helper.php:766
+#: classes/class-helper.php:780
 msgid "1-2 years"
 msgstr "1-2 Jahre"
 
-#: classes/class-helper.php:767
+#: classes/class-helper.php:781
 msgid "2-5 years"
 msgstr "2-5 Jahre"
 
-#: classes/class-helper.php:768
+#: classes/class-helper.php:782
 msgid "5-7 years"
 msgstr "5-7 Jahre"
 
-#: classes/class-helper.php:769
+#: classes/class-helper.php:783
 msgid "7-10 years"
 msgstr "7-10 Jahre"
 
-#: classes/class-helper.php:770
+#: classes/class-helper.php:784
 msgid "10-15 years"
 msgstr "10-15 Jahre"
 
-#: classes/class-helper.php:771
+#: classes/class-helper.php:785
 msgid "more than 15 years"
 msgstr "mehr als 15 Jahre"
 
@@ -555,7 +581,7 @@ msgid "Provides a Widget to show a list of positions provided by Personio."
 msgstr ""
 "Stellt ein Widget zur Verfügung, um eine Liste der von Stellen anzuzeigen."
 
-#: classes/class-positionswidget.php:24 inc/init.php:298
+#: classes/class-positionswidget.php:24 inc/init.php:299
 #: blocks/list/build/index.js:1
 msgid "Personio Positions"
 msgstr "Personio Stellen"
@@ -580,7 +606,7 @@ msgstr "absteigend"
 msgid "Sort by"
 msgstr "sortieren nach"
 
-#: classes/class-positionswidget.php:56 inc/init.php:359
+#: classes/class-positionswidget.php:56 inc/init.php:360
 #: blocks/list/build/index.js:1
 msgid "title"
 msgstr "Titel"
@@ -763,47 +789,47 @@ msgstr "Nicht gefunden"
 msgid "Not found in Trash"
 msgstr "In Papierkorb nicht gefunden"
 
-#: inc/init.php:263
+#: inc/init.php:264
 msgid "every 5th Minute"
 msgstr "jede 5. Minute"
 
-#: inc/init.php:338 blocks/show/build/index.js:1
+#: inc/init.php:339 blocks/show/build/index.js:1
 msgid "recruiting category"
 msgstr "Kategorie"
 
-#: inc/init.php:339 blocks/show/build/index.js:1
+#: inc/init.php:340 blocks/show/build/index.js:1
 msgid "schedule"
 msgstr "Arbeitszeit"
 
-#: inc/init.php:340 blocks/show/build/index.js:1
+#: inc/init.php:341 blocks/show/build/index.js:1
 msgid "office"
 msgstr "Standort"
 
-#: inc/init.php:341 blocks/show/build/index.js:1
+#: inc/init.php:342 blocks/show/build/index.js:1
 msgid "department"
 msgstr "Abteilung"
 
-#: inc/init.php:344 blocks/show/build/index.js:1
+#: inc/init.php:345 blocks/show/build/index.js:1
 msgid "experience"
 msgstr "Berufserfahrung"
 
-#: inc/init.php:345 blocks/show/build/index.js:1
+#: inc/init.php:346 blocks/show/build/index.js:1
 msgid "occupation"
 msgstr "Beschäftigung"
 
-#: inc/init.php:360
+#: inc/init.php:361
 msgid "excerpt"
 msgstr "Eigenschaften"
 
-#: inc/init.php:361
+#: inc/init.php:362
 msgid "content"
 msgstr "Inhalt"
 
-#: inc/init.php:362
+#: inc/init.php:363
 msgid "application link"
 msgstr "Link zum Bewerbungsformular"
 
-#: inc/init.php:548 templates/parts/term-filter-select.php:15
+#: inc/init.php:549 templates/parts/term-filter-select.php:15
 #: blocks/show/build/index.js:1
 msgid "Please choose"
 msgstr "Bitte wählen"
@@ -817,22 +843,26 @@ msgid "Advanced Settings"
 msgstr "erweiterte Einstellungen"
 
 #: inc/settings/advanced.php:87
+msgid "Note the position-keywords in search in frontend"
+msgstr "Beachte Stichwörter bei Suche im Frontend"
+
+#: inc/settings/advanced.php:102
 msgid "max. Age for log entries in days"
 msgstr "maximales Alter für Log-Einträge in Tagen"
 
-#: inc/settings/advanced.php:102
+#: inc/settings/advanced.php:117
 msgid "Timeout for URL-request in Seconds"
 msgstr "Timeout für URL-Requests in Sekunden"
 
-#: inc/settings/advanced.php:117
+#: inc/settings/advanced.php:132
 msgid "Delete all imported data on uninstall"
 msgstr "Löschen aller importierten Daten bei der Deinstallation"
 
-#: inc/settings/advanced.php:132
+#: inc/settings/advanced.php:147
 msgid "Debug-Mode"
 msgstr "Debug-Modus"
 
-#: inc/settings/advanced.php:139
+#: inc/settings/advanced.php:154
 msgid ""
 "If activated, the import will be executed every time even if there are no "
 "changes."
@@ -841,7 +871,7 @@ msgstr ""
 "auch wenn keine Änderungen vorliegen."
 
 #. translators: %1$s is replaced with "string"
-#: inc/settings/advanced.php:155
+#: inc/settings/advanced.php:170
 msgid ""
 "With %s you get more advanced options, e.g. to change the URL of archives "
 "with positions."
@@ -849,7 +879,7 @@ msgstr ""
 "Mit %s erhältst Du weitere Optionen, z.B. die Möglichkeit die URL von "
 "Stellen-Listen zu ändern."
 
-#: inc/settings/advanced.php:169
+#: inc/settings/advanced.php:184
 msgid "A timeout must have a value greater than 0."
 msgstr "Ein Timeout muss einen Wert größer als 0 haben."
 

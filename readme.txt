@@ -209,3 +209,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.2.7 =
 * Added hint for pro-version if Divi is used
+* Added keyword-import for each position (if set)
+* Extended Wordpress-own search regarding the keywords for positions (only for exact match)
+  incl. new option in settings to disable it
