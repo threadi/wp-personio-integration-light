@@ -640,3 +640,18 @@ function personio_integration_check_child_theme_templates(): void {
     }
 }
 add_action( 'admin_init', 'personio_integration_check_child_theme_templates');
+
+/**
+ * Check if Divi Theme or Builder is used and show hint for new Divi-plugin for Personio Integration.
+ *
+ * @return void
+ */
+function personio_integration_admin_check_for_divi(): void {
+    if( Helper::is_plugin_active( 'divi-builder/divi-builder.php' ) || 'Divi' === wp_get_theme()->get( 'Name' ) ) {
+        set_transient( 'personio_integration_divi', 1 );
+    }
+    else {
+        delete_transient( 'personio_integration_divi' );
+    }
+}
+add_action( 'admin_init', 'personio_integration_admin_check_for_divi');
