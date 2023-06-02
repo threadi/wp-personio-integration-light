@@ -6,7 +6,7 @@ Tested up to: 6.2.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.2.6
+Stable tag: 2.2.7
 
 == Description ==
 
@@ -39,7 +39,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 - WPML and Polylang for language-detection
 - Post Types Order
-- Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder
+- Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, Divi
 
 #### the Pro license includes:
 
@@ -50,7 +50,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - RichSnippets for optimal findability via search engines like Google
 - Customization of slugs (URLs) for list and detailed views of positions
 - Shortcode generator for individual views of lists and details
-- Extensions for the following PageBuilders: Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder
+- Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
 
@@ -206,3 +206,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.2.6 =
 * Added filter for excerpt-taxonomy
+
+= 2.2.7 =
+* Added hint for pro-version if Divi is used

@@ -175,8 +175,15 @@ class helper {
                 __('<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'wp-personio-integration'),
                 $transient_value,
                 __('Hint: the version-number in the header of the files must match.', 'wp-personio-integration')
-            )
+            ),
+	        'personio_integration_divi' => sprintf(
+		        '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
+		        __('Personio Integration', 'wp-personio-integration'),
+				/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
+		        sprintf(__('We realized that you are using Divi - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Divi. More information about the Pro version can be found <a href="%1$s" target="_blank">here</a>.', 'wp-personio-integration'), helper::get_pro_url()),
+	        ),
         ];
+
 
         if( empty($array[$transient]) ) {
             return '';
