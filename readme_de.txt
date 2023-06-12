@@ -8,7 +8,15 @@ License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: 1.1.0
 
-Dieses Plugin bietet Unterstützung beim Personalmanagement mit <a href="https://www.personio.com/">Personio</a>. Offene Stellen können aus Personio importiert und in der Webseite angezeigt werden.
+== Beschreibung ==
+
+Importieren und zeigen Sie Ihre Positionen aus [Personio] (https://www.personio.com/) direkt auf Ihrer Website an. Sie haben die volle Kontrolle darüber, wie sie angezeigt werden.
+
+Zeigen Sie Bewerbungsformulare auf Ihren Positionen an und übertragen Sie Bewerbungen von Ihrer Website zu Personio mit [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/).
+
+#### Hinweis ####
+
+Die Ausgabe der Positionen ist auf maximal 10 begrenzt. Nur in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/) gibt es keine Begrenzung.
 
 #### Features
 

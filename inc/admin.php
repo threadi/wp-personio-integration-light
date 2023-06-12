@@ -642,16 +642,80 @@ function personio_integration_check_child_theme_templates(): void {
 add_action( 'admin_init', 'personio_integration_check_child_theme_templates');
 
 /**
- * Check if Divi Theme or Builder is used and show hint for new Divi-plugin for Personio Integration.
+ * Check for supported PageBuilder and show hint if Pro-version would support it.
  *
  * @return void
  */
 function personio_integration_admin_check_for_divi(): void {
-    if( false === Helper::is_plugin_active( 'personio-integration-divi/personio-integration-divi.php' ) && false === Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) && ( Helper::is_plugin_active( 'divi-builder/divi-builder.php' ) || 'Divi' === wp_get_theme()->get( 'Name' ) ) ) {
+    // bail if our Pro-plugin is active.
+    if( false !== Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
+        delete_transient( 'personio_integration_divi' );
+        delete_transient( 'personio_integration_elementor' );
+        delete_transient( 'personio_integration_wpbakery' );
+        delete_transient( 'personio_integration_beaver' );
+        delete_transient( 'personio_integration_siteorigin' );
+        delete_transient( 'personio_integration_themify' );
+        return;
+    }
+
+    /**
+     * Check for Divi PageBuilder or Divi Theme.
+     */
+    if( false === Helper::is_plugin_active( 'personio-integration-divi/personio-integration-divi.php' ) && ( Helper::is_plugin_active( 'divi-builder/divi-builder.php' ) || 'Divi' === wp_get_theme()->get( 'Name' ) ) ) {
         set_transient( 'personio_integration_divi', 1 );
     }
     else {
         delete_transient( 'personio_integration_divi' );
+    }
+
+    /**
+     * Check for Elementor.
+     */
+    if( did_action('elementor/loaded') ) {
+        set_transient( 'personio_integration_elementor', 1 );
+    }
+    else {
+        delete_transient( 'personio_integration_elementor' );
+    }
+
+    /**
+     * Check for WPBakery.
+     */
+    if( Helper::is_plugin_active( 'js_composer/js_composer.php' ) ) {
+        set_transient( 'personio_integration_wpbakery', 1 );
+    }
+    else {
+        delete_transient( 'personio_integration_wpbakery' );
+    }
+
+    /**
+     * Check for Beaver Builder.
+     */
+    if( class_exists( 'FLBuilder' ) ) {
+        set_transient( 'personio_integration_beaver', 1 );
+    }
+    else {
+        delete_transient( 'personio_integration_beaver' );
+    }
+
+    /**
+     * Check for SiteOrigin.
+     */
+    if( Helper::is_plugin_active( 'siteorigin-panels/siteorigin-panels.php' ) ) {
+        set_transient( 'personio_integration_siteorigin', 1 );
+    }
+    else {
+        delete_transient( 'personio_integration_siteorigin' );
+    }
+
+    /**
+     * Check for Themify.
+     */
+    if( Helper::is_plugin_active( 'themify-builder/themify-builder.php' ) ) {
+        set_transient( 'personio_integration_themify', 1 );
+    }
+    else {
+        delete_transient( 'personio_integration_themify' );
     }
 }
 add_action( 'admin_init', 'personio_integration_admin_check_for_divi');
