@@ -6,7 +6,7 @@ Tested up to: 6.2.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.2.7
+Stable tag: 2.2.8
 
 == Description ==
 
@@ -212,3 +212,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Added keyword-import for each position (if set)
 * Extended Wordpress-own search regarding the keywords for positions (only for exact match)
   incl. new option in settings to disable it
+
+= 2.2.8 =
+* Added hints for other supported page builder.

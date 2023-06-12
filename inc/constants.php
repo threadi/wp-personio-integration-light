@@ -142,6 +142,21 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
     ],
     'personio_integration_divi' => [
 	    'type' => 'success'
+    ],
+    'personio_integration_elementor' => [
+	    'type' => 'success'
+    ],
+    'personio_integration_wpbakery' => [
+	    'type' => 'success'
+    ],
+    'personio_integration_beaver' => [
+	    'type' => 'success'
+    ],
+    'personio_integration_siteorigin' => [
+	    'type' => 'success'
+    ],
+    'personio_integration_themify' => [
+	    'type' => 'success'
     ]
 ];
 

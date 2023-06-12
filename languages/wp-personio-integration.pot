@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-02T13:04:54+02:00\n"
+"POT-Creation-Date: 2023-06-12T11:47:52+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -43,6 +43,11 @@ msgstr ""
 #: classes/class-helper.php:169
 #: classes/class-helper.php:174
 #: classes/class-helper.php:181
+#: classes/class-helper.php:187
+#: classes/class-helper.php:193
+#: classes/class-helper.php:199
+#: classes/class-helper.php:205
+#: classes/class-helper.php:211
 msgid "Personio Integration"
 msgstr ""
 
@@ -131,348 +136,373 @@ msgstr ""
 msgid "We realized that you are using Divi - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Divi. More information about the Pro version can be found <a href=\"%1$s\" target=\"_blank\">here</a>."
 msgstr ""
 
-#: classes/class-helper.php:357
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: classes/class-helper.php:189
+msgid "We realized that you are using Elementor - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Elementor. More information about the Pro version can be found <a href=\"%1$s\" target=\"_blank\">here</a>."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: classes/class-helper.php:195
+msgid "We realized that you are using WPBakery - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in WPBakery. More information about the Pro version can be found <a href=\"%1$s\" target=\"_blank\">here</a>."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: classes/class-helper.php:201
+msgid "We realized that you are using Beaver Builder - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Beaver Builder. More information about the Pro version can be found <a href=\"%1$s\" target=\"_blank\">here</a>."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: classes/class-helper.php:207
+msgid "We realized that you are using Site Origin - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Site Origin. More information about the Pro version can be found <a href=\"%1$s\" target=\"_blank\">here</a>."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: classes/class-helper.php:213
+msgid "We realized that you are using Themify - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Themify. More information about the Pro version can be found <a href=\"%1$s\" target=\"_blank\">here</a>."
+msgstr ""
+
+#: classes/class-helper.php:387
 #: blocks/list/build/index.js:1
 msgid "select-box"
 msgstr ""
 
-#: classes/class-helper.php:358
+#: classes/class-helper.php:388
 #: blocks/list/build/index.js:1
 msgid "list of links"
 msgstr ""
 
-#: classes/class-helper.php:657
+#: classes/class-helper.php:687
 msgctxt "taxonomy general name"
 msgid "recruiting categories"
 msgstr ""
 
-#: classes/class-helper.php:658
+#: classes/class-helper.php:688
 msgctxt "taxonomy singular name"
 msgid "recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:659
+#: classes/class-helper.php:689
 msgid "Search recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:660
+#: classes/class-helper.php:690
 msgid "Edit recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:661
+#: classes/class-helper.php:691
 msgid "Update recruiting category"
 msgstr ""
 
-#: classes/class-helper.php:662
+#: classes/class-helper.php:692
 msgid "recruiting categories"
 msgstr ""
 
-#: classes/class-helper.php:665
+#: classes/class-helper.php:695
 msgctxt "taxonomy general name"
 msgid "occupation categories"
 msgstr ""
 
-#: classes/class-helper.php:666
+#: classes/class-helper.php:696
 msgctxt "taxonomy singular name"
 msgid "occupation category"
 msgstr ""
 
-#: classes/class-helper.php:667
+#: classes/class-helper.php:697
 msgid "Search occupation category"
 msgstr ""
 
-#: classes/class-helper.php:668
+#: classes/class-helper.php:698
 msgid "Edit occupation category"
 msgstr ""
 
-#: classes/class-helper.php:669
+#: classes/class-helper.php:699
 msgid "Update occupation category"
 msgstr ""
 
-#: classes/class-helper.php:670
+#: classes/class-helper.php:700
 msgid "occupation categories"
 msgstr ""
 
-#: classes/class-helper.php:673
+#: classes/class-helper.php:703
 msgctxt "taxonomy general name"
 msgid "offices"
 msgstr ""
 
-#: classes/class-helper.php:674
+#: classes/class-helper.php:704
 msgctxt "taxonomy singular name"
 msgid "office"
 msgstr ""
 
-#: classes/class-helper.php:675
+#: classes/class-helper.php:705
 msgid "Search office"
 msgstr ""
 
-#: classes/class-helper.php:676
+#: classes/class-helper.php:706
 msgid "Edit office"
 msgstr ""
 
-#: classes/class-helper.php:677
+#: classes/class-helper.php:707
 msgid "Update office"
 msgstr ""
 
-#: classes/class-helper.php:678
+#: classes/class-helper.php:708
 msgid "offices"
 msgstr ""
 
-#: classes/class-helper.php:681
+#: classes/class-helper.php:711
 msgctxt "taxonomy general name"
 msgid "departments"
 msgstr ""
 
-#: classes/class-helper.php:682
+#: classes/class-helper.php:712
 msgctxt "taxonomy singular name"
 msgid "department"
 msgstr ""
 
-#: classes/class-helper.php:683
+#: classes/class-helper.php:713
 msgid "Search department"
 msgstr ""
 
-#: classes/class-helper.php:684
+#: classes/class-helper.php:714
 msgid "Edit department"
 msgstr ""
 
-#: classes/class-helper.php:685
+#: classes/class-helper.php:715
 msgid "Update department"
 msgstr ""
 
-#: classes/class-helper.php:686
+#: classes/class-helper.php:716
 msgid "departments"
 msgstr ""
 
-#: classes/class-helper.php:689
+#: classes/class-helper.php:719
 msgctxt "taxonomy general name"
 msgid "employment types"
 msgstr ""
 
-#: classes/class-helper.php:690
+#: classes/class-helper.php:720
 msgctxt "taxonomy singular name"
 msgid "employment type"
 msgstr ""
 
-#: classes/class-helper.php:691
+#: classes/class-helper.php:721
 msgid "Search employment type"
 msgstr ""
 
-#: classes/class-helper.php:692
+#: classes/class-helper.php:722
 msgid "Edit employment type"
 msgstr ""
 
-#: classes/class-helper.php:693
+#: classes/class-helper.php:723
 msgid "Update employment type"
 msgstr ""
 
-#: classes/class-helper.php:694
+#: classes/class-helper.php:724
 #: inc/init.php:343
 msgid "employment types"
 msgstr ""
 
-#: classes/class-helper.php:697
+#: classes/class-helper.php:727
 msgctxt "taxonomy general name"
 msgid "seniority"
 msgstr ""
 
-#: classes/class-helper.php:698
+#: classes/class-helper.php:728
 msgctxt "taxonomy singular name"
 msgid "seniority"
 msgstr ""
 
-#: classes/class-helper.php:699
+#: classes/class-helper.php:729
 msgid "Search seniority"
 msgstr ""
 
-#: classes/class-helper.php:700
+#: classes/class-helper.php:730
 msgid "Edit seniority"
 msgstr ""
 
-#: classes/class-helper.php:701
+#: classes/class-helper.php:731
 msgid "Update seniority"
 msgstr ""
 
-#: classes/class-helper.php:702
+#: classes/class-helper.php:732
 #: inc/init.php:344
 #: blocks/show/build/index.js:1
 msgid "seniority"
 msgstr ""
 
-#: classes/class-helper.php:705
+#: classes/class-helper.php:735
 msgctxt "taxonomy general name"
 msgid "schedules"
 msgstr ""
 
-#: classes/class-helper.php:706
+#: classes/class-helper.php:736
 msgctxt "taxonomy singular name"
 msgid "schedule"
 msgstr ""
 
-#: classes/class-helper.php:707
+#: classes/class-helper.php:737
 msgid "Search schedule"
 msgstr ""
 
-#: classes/class-helper.php:708
+#: classes/class-helper.php:738
 msgid "Edit schedule"
 msgstr ""
 
-#: classes/class-helper.php:709
+#: classes/class-helper.php:739
 msgid "Update schedule"
 msgstr ""
 
-#: classes/class-helper.php:710
+#: classes/class-helper.php:740
 msgid "schedules"
 msgstr ""
 
-#: classes/class-helper.php:713
+#: classes/class-helper.php:743
 msgctxt "taxonomy general name"
 msgid "experiences"
 msgstr ""
 
-#: classes/class-helper.php:714
+#: classes/class-helper.php:744
 msgctxt "taxonomy singular name"
 msgid "experience"
 msgstr ""
 
-#: classes/class-helper.php:715
+#: classes/class-helper.php:745
 msgid "Search experience"
 msgstr ""
 
-#: classes/class-helper.php:716
+#: classes/class-helper.php:746
 msgid "Edit experience"
 msgstr ""
 
-#: classes/class-helper.php:717
+#: classes/class-helper.php:747
 msgid "Update experience"
 msgstr ""
 
-#: classes/class-helper.php:718
+#: classes/class-helper.php:748
 msgid "experiences"
 msgstr ""
 
-#: classes/class-helper.php:721
+#: classes/class-helper.php:751
 msgctxt "taxonomy general name"
 msgid "languages"
 msgstr ""
 
-#: classes/class-helper.php:722
+#: classes/class-helper.php:752
 msgctxt "taxonomy singular name"
 msgid "language"
 msgstr ""
 
-#: classes/class-helper.php:723
+#: classes/class-helper.php:753
 msgid "Search language"
 msgstr ""
 
-#: classes/class-helper.php:724
+#: classes/class-helper.php:754
 msgid "Edit language"
 msgstr ""
 
-#: classes/class-helper.php:725
+#: classes/class-helper.php:755
 msgid "Update language"
 msgstr ""
 
-#: classes/class-helper.php:726
+#: classes/class-helper.php:756
 msgid "languages"
 msgstr ""
 
-#: classes/class-helper.php:729
+#: classes/class-helper.php:759
 msgctxt "taxonomy general name"
 msgid "keywords"
 msgstr ""
 
-#: classes/class-helper.php:730
+#: classes/class-helper.php:760
 msgctxt "taxonomy singular name"
 msgid "keyword"
 msgstr ""
 
-#: classes/class-helper.php:731
+#: classes/class-helper.php:761
 msgid "Search keywords"
 msgstr ""
 
-#: classes/class-helper.php:732
+#: classes/class-helper.php:762
 msgid "Edit keyword"
 msgstr ""
 
-#: classes/class-helper.php:733
+#: classes/class-helper.php:763
 msgid "Update keyword"
 msgstr ""
 
-#: classes/class-helper.php:734
+#: classes/class-helper.php:764
 msgid "keywords"
 msgstr ""
 
-#: classes/class-helper.php:762
+#: classes/class-helper.php:792
 msgid "permanent"
 msgstr ""
 
-#: classes/class-helper.php:763
+#: classes/class-helper.php:793
 msgid "intern"
 msgstr ""
 
-#: classes/class-helper.php:764
+#: classes/class-helper.php:794
 msgid "trainee"
 msgstr ""
 
-#: classes/class-helper.php:765
+#: classes/class-helper.php:795
 msgid "freelance"
 msgstr ""
 
-#: classes/class-helper.php:768
+#: classes/class-helper.php:798
 msgid "entry-level"
 msgstr ""
 
-#: classes/class-helper.php:769
+#: classes/class-helper.php:799
 msgid "experienced"
 msgstr ""
 
-#: classes/class-helper.php:770
+#: classes/class-helper.php:800
 msgid "executive"
 msgstr ""
 
-#: classes/class-helper.php:771
+#: classes/class-helper.php:801
 msgid "student"
 msgstr ""
 
-#: classes/class-helper.php:774
+#: classes/class-helper.php:804
 msgid "full-time"
 msgstr ""
 
-#: classes/class-helper.php:775
+#: classes/class-helper.php:805
 msgid "part-time"
 msgstr ""
 
-#: classes/class-helper.php:776
+#: classes/class-helper.php:806
 msgid "full- or part-time"
 msgstr ""
 
-#: classes/class-helper.php:779
+#: classes/class-helper.php:809
 msgid "less than 1 year"
 msgstr ""
 
-#: classes/class-helper.php:780
+#: classes/class-helper.php:810
 msgid "1-2 years"
 msgstr ""
 
-#: classes/class-helper.php:781
+#: classes/class-helper.php:811
 msgid "2-5 years"
 msgstr ""
 
-#: classes/class-helper.php:782
+#: classes/class-helper.php:812
 msgid "5-7 years"
 msgstr ""
 
-#: classes/class-helper.php:783
+#: classes/class-helper.php:813
 msgid "7-10 years"
 msgstr ""
 
-#: classes/class-helper.php:784
+#: classes/class-helper.php:814
 msgid "10-15 years"
 msgstr ""
 
-#: classes/class-helper.php:785
+#: classes/class-helper.php:815
 msgid "more than 15 years"
 msgstr ""
 
