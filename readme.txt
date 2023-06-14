@@ -215,3 +215,4 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.2.8 =
 * Added hints for other supported page builder.
+* Fixed template loading of template does not exist in theme or Pro-plugin.

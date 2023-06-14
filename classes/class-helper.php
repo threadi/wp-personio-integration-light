@@ -392,7 +392,8 @@ class helper {
 
     /**
      * Load a template if it exists.
-     * Also load the requested file if is located in the /wp-content/themes/xy/personio-integration-light/ directory.
+     *
+     * Also load the requested file if it is located in the /wp-content/themes/xy/personio-integration-light/ directory.
      *
      * @param $template
      * @return string
@@ -403,11 +404,20 @@ class helper {
             return $template;
         }
 
+		// check if requested template exist in theme.
         $themeTemplate = locate_template(trailingslashit(basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) )).$template);
         if( $themeTemplate ) {
             return $themeTemplate;
         }
-        return plugin_dir_path(apply_filters('personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN)).'templates/'.$template;
+
+		// check if requested template exist in plugin which uses our hook.
+		$pluginTemplate = plugin_dir_path(apply_filters('personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN)).'templates/'.$template;
+		if( file_exists( $pluginTemplate ) ) {
+			return $pluginTemplate;
+		}
+
+		// return template from light-plugin.
+	    return plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN).'templates/'.$template;
     }
 
     /**
