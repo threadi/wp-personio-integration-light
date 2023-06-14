@@ -6,7 +6,7 @@ Tested up to: 6.2.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.2.8
+Stable tag: 2.2.9
 
 == Description ==
 
@@ -216,3 +216,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 = 2.2.8 =
 * Added hints for other supported page builder.
 * Fixed template loading of template does not exist in theme or Pro-plugin.
+
+= 2.2.9 =
+* Fixed release-number.
