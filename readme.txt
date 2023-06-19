@@ -222,3 +222,4 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.2.10 =
 * Restrict access to REST API Endpoint for taxonomies
+* Fixed saving of taxonomy-defaults after first installation
