@@ -173,10 +173,11 @@ function personio_integration_add_taxonomy_defaults(): void
     // loop through our own taxonomies and configure them
     foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
         // add default terms to taxonomy if they do not exist (only in admin or via CLI)
-        if( !empty($taxonomy_array['defaults']) && ( is_admin() || helper::isCli()) ) {
+	    $taxonomy_obj = get_taxonomy($taxonomy_name);
+        if( !empty($taxonomy_obj->defaults) && ( is_admin() || helper::isCli()) ) {
             $hasTerms = get_terms(['taxonomy' => $taxonomy_name]);
             if( empty($hasTerms) ) {
-                personioIntegration\helper::addTerms($taxonomy_array['defaults'], $taxonomy_name);
+                personioIntegration\helper::addTerms($taxonomy_obj->defaults, $taxonomy_name);
             }
         }
     }
@@ -521,7 +522,7 @@ function personio_integration_rest_api(): void
         'methods' => WP_REST_SERVER::READABLE,
         'callback' => 'personio_integration_rest_api_taxonomies',
         'permission_callback' => function () {
-            return true;//current_user_can( 'edit_posts' );
+            return current_user_can( 'edit_posts' );
         }
     ) );
 }
@@ -558,12 +559,14 @@ function personio_integration_rest_api_taxonomies(): array
                     'value' => $term->term_id
                 ];
             }
-            $taxonomies[] = [
-                'id' => $count,
-                'label' => $taxonomies_labels_array[$taxonomy['slug']],
-                'value' => $taxonomy['slug'],
-                'entries' => $terms
-            ];
+			if( !empty($taxonomies_labels_array[$taxonomy['slug']]) ) {
+				$taxonomies[] = [
+					'id'      => $count,
+					'label'   => $taxonomies_labels_array[ $taxonomy['slug'] ],
+					'value'   => $taxonomy['slug'],
+					'entries' => $terms
+				];
+			}
         }
     }
     return $taxonomies;
