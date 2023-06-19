@@ -6,7 +6,7 @@ Tested up to: 6.2.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.2.9
+Stable tag: 2.2.10
 
 == Description ==
 
@@ -219,3 +219,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.2.9 =
 * Fixed release-number.
+
+= 2.2.10 =
+* Restrict access to REST API Endpoint for taxonomies

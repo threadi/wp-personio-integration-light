@@ -521,7 +521,7 @@ function personio_integration_rest_api(): void
         'methods' => WP_REST_SERVER::READABLE,
         'callback' => 'personio_integration_rest_api_taxonomies',
         'permission_callback' => function () {
-            return true;//current_user_can( 'edit_posts' );
+            return current_user_can( 'edit_posts' );
         }
     ) );
 }
@@ -558,12 +558,14 @@ function personio_integration_rest_api_taxonomies(): array
                     'value' => $term->term_id
                 ];
             }
-            $taxonomies[] = [
-                'id' => $count,
-                'label' => $taxonomies_labels_array[$taxonomy['slug']],
-                'value' => $taxonomy['slug'],
-                'entries' => $terms
-            ];
+			if( !empty($taxonomies_labels_array[$taxonomy['slug']]) ) {
+				$taxonomies[] = [
+					'id'      => $count,
+					'label'   => $taxonomies_labels_array[ $taxonomy['slug'] ],
+					'value'   => $taxonomy['slug'],
+					'entries' => $terms
+				];
+			}
         }
     }
     return $taxonomies;
