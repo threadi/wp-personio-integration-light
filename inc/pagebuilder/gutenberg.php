@@ -122,7 +122,7 @@ function personio_integration_get_list( $attributes ): string
     ];
 
     // get the output
-    return personio_integration_positions_shortcode( apply_filters( 'personio_integration_get_gutenberg_list_attributes', $attribute_defaults ) );
+    return personio_integration_positions_shortcode( apply_filters( 'personio_integration_get_gutenberg_list_attributes', $attribute_defaults, $attributes ) );
 }
 
 /**
