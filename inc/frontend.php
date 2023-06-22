@@ -493,10 +493,12 @@ add_filter( 'archive_template', 'personio_integration_get_archive_template' ) ;
  *
  * @param $filter
  * @param $attributes
+ * @param $form_id
  * @return void
  * @noinspection PhpUnused
+ * @noinspection PhpUnusedParameterInspection
  */
-function personio_integration_get_filter( $filter, $attributes ): void
+function personio_integration_get_filter( $filter, $attributes, $form_id = '' ): void
 {
     $taxonomyToUse = '';
     $term_ids = [];
@@ -547,7 +549,7 @@ function personio_integration_get_filter( $filter, $attributes ): void
     }
 
 }
-add_action( 'personio_integration_get_filter', 'personio_integration_get_filter', 10, 2 );
+add_action( 'personio_integration_get_filter', 'personio_integration_get_filter', 10, 3 );
 
 /**
  * Convert term-name to term-id if it is set in shortcode-attributes and configure shortcode-attribute.
