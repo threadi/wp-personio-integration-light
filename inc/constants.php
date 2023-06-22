@@ -157,6 +157,9 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
     ],
     'personio_integration_themify' => [
 	    'type' => 'success'
+    ],
+    'personio_integration_avada' => [
+        'type' => 'success'
     ]
 ];
 

@@ -212,6 +212,12 @@ class helper {
 	            /* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 	            sprintf(__('We realized that you are using Themify - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Themify. More information about the Pro version can be found <a href="%1$s" target="_blank">here</a>.', 'wp-personio-integration'), helper::get_pro_url()),
             ),
+            'personio_integration_avada' => sprintf(
+                '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
+                __('Personio Integration', 'wp-personio-integration'),
+                /* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
+                sprintf(__('We realized that you are using Avada - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Avada. More information about the Pro version can be found <a href="%1$s" target="_blank">here</a>.', 'wp-personio-integration'), helper::get_pro_url()),
+            ),
         ];
 
 

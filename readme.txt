@@ -50,7 +50,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - RichSnippets for optimal findability via search engines like Google
 - Customization of slugs (URLs) for list and detailed views of positions
 - Shortcode generator for individual views of lists and details
-- Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, WPBakery
+- Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, WPBakery, Avada
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
 
@@ -226,3 +226,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.2.11 =
 * Fixed usage of attribute filter
+
+= 2.2.12 =
+* Added hint for Avada-support in Pro-version

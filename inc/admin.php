@@ -655,6 +655,7 @@ function personio_integration_admin_check_for_divi(): void {
         delete_transient( 'personio_integration_beaver' );
         delete_transient( 'personio_integration_siteorigin' );
         delete_transient( 'personio_integration_themify' );
+        delete_transient( 'personio_integration_avada' );
         return;
     }
 
@@ -716,6 +717,16 @@ function personio_integration_admin_check_for_divi(): void {
     }
     else {
         delete_transient( 'personio_integration_themify' );
+    }
+
+    /**
+     * Check for Avada.
+     */
+    if( Helper::is_plugin_active( 'fusion-builder/fusion-builder.php' ) ) {
+        set_transient( 'personio_integration_avada', 1 );
+    }
+    else {
+        delete_transient( 'personio_integration_avada' );
     }
 }
 add_action( 'admin_init', 'personio_integration_admin_check_for_divi');
