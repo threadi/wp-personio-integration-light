@@ -104,3 +104,14 @@ body.post-type-personioposition .tab-content {
     height: auto;
     min-height: auto;
 }
+
+body.post-type-personioposition #submitdiv { display: none }
+
+body.post-type-personioposition #personio-edit-hints {
+    background-color: var(--personio-pro-hint-bg);
+    border: 0;
+}
+
+body.post-type-personioposition #personio-edit-hints .postbox-header { border: 0 }
+
+body.post-type-personioposition #personio-edit-hints .handle-actions { display: none }

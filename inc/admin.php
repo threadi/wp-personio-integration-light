@@ -311,24 +311,29 @@ add_action( 'admin_init', 'personio_integration_admin_check_position_count');
  */
 function personio_integration_admin_remove_bulk_actions( $actions ): array
 {
-    return [];
+    return array();
 }
 add_filter( 'bulk_actions-edit-'.WP_PERSONIO_INTEGRATION_CPT, 'personio_integration_admin_remove_bulk_actions' );
 
 /**
- * Remove all actions except "view" for our own cpt.
+ * Remove all actions except "view" and "edit" for our own cpt.
  *
  * @param $actions
+ * @param $post
  * @return array
  * @noinspection PhpUnused
  */
-function personio_integration_admin_remove_actions( $actions ): array {
+function personio_integration_admin_remove_actions( $actions, $post ): array {
     if( get_post_type() === WP_PERSONIO_INTEGRATION_CPT ) {
-        return ['view' => $actions['view']];
+        $actions = array(
+            'view' => $actions['view']
+        );
+        $actions['edit'] = '<a href="' . esc_url(get_edit_post_link( $post->ID )) . '">' . __('Edit', 'wp-personio-integration') . '</a>';
+        return $actions;
     }
     return $actions;
 }
-add_filter('post_row_actions', 'personio_integration_admin_remove_actions', 10, 1 );
+add_filter('post_row_actions', 'personio_integration_admin_remove_actions', 10, 2 );
 
 /**
  * Add filter for our own cpt on lists in admin.
@@ -730,3 +735,137 @@ function personio_integration_admin_check_for_divi(): void {
     }
 }
 add_action( 'admin_init', 'personio_integration_admin_check_for_divi');
+
+/**
+ * Remove supports from our own cpt and change our taxonomies.
+ * Goal: edit-page without any generic settings.
+ *
+ * @return void
+ */
+function personio_integration_light_admin_remove_cpt_supports(): void {
+    // remove title, editor and custom fields.
+    remove_post_type_support( WP_PERSONIO_INTEGRATION_CPT, 'title' );
+    remove_post_type_support( WP_PERSONIO_INTEGRATION_CPT, 'editor' );
+    remove_post_type_support( WP_PERSONIO_INTEGRATION_CPT, 'custom-fields' );
+
+    // remove meta box for slug.
+    remove_meta_box('slugdiv',WP_PERSONIO_INTEGRATION_CPT,'normal');
+
+    // remove taxonomy-meta-boxes.
+    foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $settings ) {
+        $taxonomy = get_taxonomy($taxonomy_name);
+        $taxonomy->meta_box_cb = false;
+        register_taxonomy( $taxonomy_name, WP_PERSONIO_INTEGRATION_CPT, $taxonomy );
+    }
+}
+add_action( 'admin_init', 'personio_integration_light_admin_remove_cpt_supports' );
+
+/**
+ * Add Box with hints for editing.
+ * Add Open Graph Meta-box für edit-page of positions.
+ *
+ * @return void
+ */
+function personio_integration_light_admin_add_meta_boxes_prioritized(): void {
+    add_meta_box( 'personio-edit-hints', __( 'Show Personio position data', 'wp-personio-integration' ), 'personio_integration_admin_light_personio_meta_box', WP_PERSONIO_INTEGRATION_CPT );
+}
+add_action( 'add_meta_boxes', 'personio_integration_light_admin_add_meta_boxes_prioritized', 10 );
+
+/**
+ * Add Box with hints for editing.
+ * Add Open Graph Meta-box für edit-page of positions.
+ *
+ * @return void
+ */
+function personio_integration_light_admin_add_meta_boxes(): void {
+    add_meta_box( 'personio-position-personio-id', __( 'PersonioID', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_personio_id', WP_PERSONIO_INTEGRATION_CPT );
+    add_meta_box( 'personio-position-title', __( 'Title', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_title', WP_PERSONIO_INTEGRATION_CPT );
+    add_meta_box( 'personio-position-text', __( 'Description', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_description', WP_PERSONIO_INTEGRATION_CPT );
+    add_meta_box( 'personio-position-keywords', __( 'Keywords', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_keywords', WP_PERSONIO_INTEGRATION_CPT );
+    foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $settings ) {
+        $labels = helper::get_taxonomy_label($taxonomy_name);
+        add_meta_box( 'personio-position-taxonomy-'.$taxonomy_name, $labels['name'], 'personio_integration_admin_personio_meta_box_taxonomy', WP_PERSONIO_INTEGRATION_CPT, 'side' );
+    }
+}
+add_action( 'add_meta_boxes', 'personio_integration_light_admin_add_meta_boxes', 30 );
+
+/**
+ * Box with hints why editing of Position-data is not allowed.
+ *
+ * @param $post
+ * @return void
+ */
+function personio_integration_admin_light_personio_meta_box( $post ): void {
+    if( $post->ID > 0 ) {
+        $position = new Position($post->ID);
+        if ($position->isValid()) {
+            $url = 'https://www.personio.de/login/';
+            /* translators: %1$s will be replaced by the URL for Personio */
+            echo sprintf(__('At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href="%2$s" target="_blank">Personio account</a>.', 'wp-personio-integration'), $position->getTitle(), $url);
+        }
+    }
+}
+
+/**
+ * Show personioId in meta box.
+ *
+ * @param $post
+ * @return void
+ */
+function personio_integration_admin_personio_meta_box_personio_id( $post ): void {
+    $position_obj = Positions::get_instance()->get_position( $post->ID );
+    echo wp_kses_post($position_obj->getPersonioId());
+}
+
+/**
+ * Show title of position in meta box.
+ *
+ * @param $post
+ * @return void
+ */
+function personio_integration_admin_personio_meta_box_title( $post ): void {
+    $position_obj = Positions::get_instance()->get_position( $post->ID );
+    echo wp_kses_post($position_obj->getTitle());
+}
+
+/**
+ * Show content of position in meta box.
+ *
+ * @param $post
+ * @return void
+ */
+function personio_integration_admin_personio_meta_box_description( $post ): void {
+    $position_obj = Positions::get_instance()->get_position( $post->ID );
+    echo wp_kses_post($position_obj->getContent());
+}
+
+/**
+ * Show any taxonomy of position in meta box.
+ *
+ * @param $post
+ * @param $attr
+ * @return void
+ */
+function personio_integration_admin_personio_meta_box_taxonomy( $post, $attr ): void {
+    $position_obj = Positions::get_instance()->get_position( $post->ID );
+    $taxonomy_name = str_replace( 'personio-position-taxonomy-', '', $attr['id'] );
+    $taxonomy_obj = get_taxonomy( $taxonomy_name );
+    $content = helper::get_taxonomy_name_of_position( $taxonomy_obj->rewrite['slug'], $position_obj );
+    if( empty($content) ) {
+        echo '<i>'.__( 'No data', 'wp-personio-integration' ).'</i>';
+    }
+    else {
+        echo wp_kses_post($content);
+    }
+}
+
+/**
+ * Show content of position in meta box.
+ *
+ * @param $post
+ * @return void
+ */
+function personio_integration_admin_personio_meta_box_keywords( $post ): void {
+    $position_obj = Positions::get_instance()->get_position( $post->ID );
+    echo wp_kses_post($position_obj->getKeywordsTypeName());
+}
