@@ -781,7 +781,6 @@ function personio_integration_light_admin_add_meta_boxes(): void {
     add_meta_box( 'personio-position-personio-id', __( 'PersonioID', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_personio_id', WP_PERSONIO_INTEGRATION_CPT );
     add_meta_box( 'personio-position-title', __( 'Title', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_title', WP_PERSONIO_INTEGRATION_CPT );
     add_meta_box( 'personio-position-text', __( 'Description', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_description', WP_PERSONIO_INTEGRATION_CPT );
-    add_meta_box( 'personio-position-keywords', __( 'Keywords', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_keywords', WP_PERSONIO_INTEGRATION_CPT );
     foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $settings ) {
         $labels = helper::get_taxonomy_label($taxonomy_name);
         add_meta_box( 'personio-position-taxonomy-'.$taxonomy_name, $labels['name'], 'personio_integration_admin_personio_meta_box_taxonomy', WP_PERSONIO_INTEGRATION_CPT, 'side' );
@@ -857,15 +856,4 @@ function personio_integration_admin_personio_meta_box_taxonomy( $post, $attr ): 
     else {
         echo wp_kses_post($content);
     }
-}
-
-/**
- * Show content of position in meta box.
- *
- * @param $post
- * @return void
- */
-function personio_integration_admin_personio_meta_box_keywords( $post ): void {
-    $position_obj = Positions::get_instance()->get_position( $post->ID );
-    echo wp_kses_post($position_obj->getKeywordsTypeName());
 }
