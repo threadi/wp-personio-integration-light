@@ -36,6 +36,7 @@ function personio_integration_add_position_posttype(): void
         'all_items'           => __( 'All Positions', 'wp-personio-integration'),
         'view_item'           => __( 'View Position', 'wp-personio-integration'),
         'view_items'          => __( 'View Positions', 'wp-personio-integration'),
+        'edit_item'          => __( 'View Position', 'wp-personio-integration' ),
         'search_items'        => __( 'Search Position', 'wp-personio-integration'),
         'not_found'           => __( 'Not Found', 'wp-personio-integration'),
         'not_found_in_trash'  => __( 'Not found in Trash', 'wp-personio-integration')
@@ -75,14 +76,14 @@ function personio_integration_add_position_posttype(): void
         'publicly_queryable'  => (bool)$detailSlug,
         'show_in_rest'        => true,
         'capability_type'     => 'post',
-        'capabilities' => [
-            'create_posts'      => false,
-            'edit_post'         => false,
-            'edit_others_posts' => false,
-            'read_post'         => false,
-            'publish_posts'     => false,
+        'capabilities' => array(
+            'create_posts'       => false,
+            'edit_post'          => 'manage_options',
+            'edit_others_posts'  => false,
+            'read_post'          => 'manage_options',
+            'publish_posts'      => false,
             'read_private_posts' => false
-        ],
+        ),
         'menu_icon'           => plugin_dir_url( WP_PERSONIO_INTEGRATION_PLUGIN ).'/gfx/personio_icon.png',
         'rewrite' => [
             'slug' => $detailSlug
@@ -90,8 +91,8 @@ function personio_integration_add_position_posttype(): void
     ];
     register_post_type( WP_PERSONIO_INTEGRATION_CPT, $args );
 
-    // register personioId als postmeta to be published in rest-api
-    // which is necessary for our Blocks
+    // register personioId als postmeta to be published in rest-api,
+    // which is necessary for our Blocks.
     register_post_meta( WP_PERSONIO_INTEGRATION_CPT, WP_PERSONIO_INTEGRATION_CPT_PM_PID, [
             'type' => 'integer',
             'single' => true,
@@ -154,6 +155,8 @@ function personio_integration_add_taxonomies(): void
 
         // register taxonomy
         register_taxonomy($taxonomy_name, [WP_PERSONIO_INTEGRATION_CPT], $taxonomy_array);
+
+        add_filter( 'get_'.$taxonomy_name, 'personio_integration_translate_taxonomy', 10, 2);
     }
 }
 add_action( 'init', 'personio_integration_add_taxonomies', 0 );
@@ -601,3 +604,23 @@ function personio_integration_og_optimizer( $array ): array {
     return $array;
 }
 add_filter( 'og_array', 'personio_integration_og_optimizer');
+
+/**
+ * Translate the term-names of each plugin-own taxonomy if set.
+ * Only in frontend, not in backend.
+ *
+ * @param $_term
+ * @param $taxonomy
+ * @return mixed
+ * @noinspection PhpUnused
+ */
+function personio_integration_translate_taxonomy( $_term, $taxonomy ) {
+    if( $taxonomy != WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES && $_term instanceof WP_Term ) {
+        // read from defaults for the taxonomy.
+        $array = helper::get_taxonomy_defaults($taxonomy);
+        if( !empty($array[$_term->name]) ) {
+            $_term->name = $array[$_term->name];
+        }
+    }
+    return $_term;
+}

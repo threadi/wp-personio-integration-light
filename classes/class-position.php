@@ -306,7 +306,7 @@ class Position {
     }
 
     /**
-     * Get the term of a given taxonomy.
+     * Get a term field of a given taxonomy.
      *
      * @param $taxonomy
      * @param $field
@@ -318,7 +318,14 @@ class Position {
             $this->_taxonomyTerms[$taxonomy] = get_the_terms($this->data['ID'], $taxonomy);
         }
         if( !empty($this->_taxonomyTerms[$taxonomy]) ) {
-            return $this->_taxonomyTerms[$taxonomy][0]->$field;
+            $term_string = '';
+            foreach( $this->_taxonomyTerms[$taxonomy] as $term ) {
+                if( !empty($term_string) ) {
+                    $term_string .= ', ';
+                }
+                $term_string .= $term->$field;
+            }
+            return $term_string;
         }
         return '';
     }
