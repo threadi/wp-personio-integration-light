@@ -5,10 +5,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Template for output a single term filter a linklist.
  *
- * @version: 1.0.0
+ * @version: 1.0.1
  */
 ?>
-    <div>
+    <div<?php echo !empty($_GET['personiofilter'][$filter]) ? ' class="personio-filter-selected"' : ''; ?>>
         <label><?php echo esc_html($filtername); ?></label>
         <ul>
             <?php
