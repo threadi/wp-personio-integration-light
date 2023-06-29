@@ -2,7 +2,7 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment
 Requires at least: 5.9.3
-Tested up to: 6.2.2
+Tested up to: 6.3
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -231,5 +231,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Added hint for Avada-support in Pro-version
 * Added anchor on filter of type linklist
 * Added active marker for linklist-filter on category
+* Compatibility with WordPress 6.3
 * Optimized loading of taxonomies of positions
 * default translations are now also visible in backend
