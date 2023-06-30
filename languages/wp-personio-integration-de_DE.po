@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2023-06-23T11:51:45+02:00\n"
-"PO-Revision-Date: 2023-06-23 11:54+0200\n"
+"POT-Creation-Date: 2023-06-30T10:14:03+02:00\n"
+"PO-Revision-Date: 2023-06-30 10:14+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -854,12 +854,8 @@ msgstr "Titel"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: inc/admin.php:784
-msgid "Keywords"
-msgstr "Stichwörter"
-
 #. translators: %1$s will be replaced by the URL for Personio
-#: inc/admin.php:804
+#: inc/admin.php:803
 msgid ""
 "At this point we show you the imported data of your open position <i>%1$s</"
 "i>. Please edit the job details in your <a href=\"%2$s\" target=\"_blank"
@@ -869,7 +865,7 @@ msgstr ""
 "<i>%1$s</i>. Bitte bearbeite die Stellen-Daten in deinem <a href=\"%2$s\" "
 "target=\"_blank\">Personio-Konto</a>."
 
-#: inc/admin.php:855
+#: inc/admin.php:854
 msgid "No data"
 msgstr "Keine Daten"
 
@@ -1545,6 +1541,9 @@ msgctxt "block description"
 msgid "Provides a Gutenberg Block to show a position managed by Personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
+
+#~ msgid "Keywords"
+#~ msgstr "Stichwörter"
 
 #~ msgid "Link title"
 #~ msgstr "verlinke den Titel"
