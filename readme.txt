@@ -6,7 +6,7 @@ Tested up to: 6.3
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.2.11
+Stable tag: 2.3.0
 
 == Description ==
 
@@ -227,7 +227,8 @@ No, this plugin does not set cookies nor does it load data externally within the
 = 2.2.11 =
 * Fixed usage of attribute filter
 
-= 2.2.12 =
+= 2.3.0 =
+* Added view of imported position data in backend
 * Added hint for Avada-support in Pro-version
 * Added anchor on filter of type linklist
 * Added active marker for linklist-filter on category
