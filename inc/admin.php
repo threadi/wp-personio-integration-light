@@ -798,7 +798,7 @@ function personio_integration_admin_light_personio_meta_box( $post ): void {
     if( $post->ID > 0 ) {
         $position = new Position($post->ID);
         if ($position->isValid()) {
-            $url = 'https://www.personio.de/login/';
+            $url = helper::get_personio_login_url();
             /* translators: %1$s will be replaced by the URL for Personio */
             echo sprintf(__('At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href="%2$s" target="_blank">Personio account</a>.', 'wp-personio-integration'), $position->getTitle(), $url);
         }

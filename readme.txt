@@ -232,6 +232,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Added hint for Avada-support in Pro-version
 * Added anchor on filter of type linklist
 * Added active marker for linklist-filter on category
+* Added language-specific links to Personio login and support pages
 * Compatibility with WordPress 6.3
 * Optimized loading of taxonomies of positions
 * default translations are now also visible in backend

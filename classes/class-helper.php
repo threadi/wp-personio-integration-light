@@ -1026,4 +1026,29 @@ class helper {
         return $domain.'/xml';
     }
 
+	/**
+	 * Get language-specific personio account login url.
+	 *
+	 * @return string
+	 */
+	public static function get_personio_login_url(): string {
+		if( 'de' === self::get_current_lang() ) {
+			return 'https://www.personio.de/login/';
+		}
+		return 'https://www.personio.com/login/';
+	}
+
+	/**
+	 * Get language-specific personio account support url.
+	 *
+	 * @return string
+	 */
+	public static function get_personio_support_url(): string {
+		if( 'de' === self::get_current_lang() ) {
+			return 'https://support.personio.de/';
+		}
+		return 'https://support.personio.de/hc/en-us/';
+	}
+
+
 }
