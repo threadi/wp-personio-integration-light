@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-30T10:14:03+02:00\n"
+"POT-Creation-Date: 2023-06-30T10:27:39+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -974,9 +974,9 @@ msgstr ""
 msgid "Personio URL"
 msgstr ""
 
-#. translators: %1$s is replaced with "string"
+#. translators: %1$s is replaced with the url to personio account, %2$s is replaced with the url to the personio support
 #: inc/settings/general.php:61
-msgid "You find this URL in your <a href=\"%s\" target=\"_blank\">Personio-account</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the Personio support: "
+msgid "You find this URL in your <a href=\"%1$s\" target=\"_blank\">Personio-account</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href=\"%2$s\">Personio support</a>."
 msgstr ""
 
 #: inc/settings/general.php:74
