@@ -6,7 +6,7 @@ Tested up to: 6.3
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.3.0
+Stable tag: 2.3.1
 
 == Description ==
 
@@ -236,3 +236,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Compatibility with WordPress 6.3
 * Optimized loading of taxonomies of positions
 * default translations are now also visible in backend
+
+= 2.3.1 =
+* Fixed reset query after loop

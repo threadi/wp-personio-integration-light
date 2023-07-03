@@ -46,5 +46,5 @@ if( !empty($personio_attributes["templates"]) ) {
     else:
         ?><article class="site-main entry inside-article container qodef-container-inner site-content site-container content-bg content-area ht-container ht-container"><div class="entry-content"><p><?php _e('No positions could be found.', 'wp-personio-integration'); ?></p></div></article><?php
     endif;
-
 }
+wp_reset_query();
