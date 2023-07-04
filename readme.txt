@@ -239,3 +239,4 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.3.1 =
 * Fixed reset query after loop
+* Fixed the_content running multiple times
