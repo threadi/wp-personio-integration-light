@@ -249,12 +249,9 @@ function personio_integration_positions_shortcode( $attributes = [] ): string {
  */
 function personio_integration_content_output( $content ): string
 {
-    // remove this filter to prevent double run of it.
-    remove_filter('the_content', 'personio_integration_content_output', 5);
-
     // change the output for our own cpt
     if( !helper::is_admin_api_request() && !is_admin()
-        && is_single() && get_post_type(get_the_ID()) == WP_PERSONIO_INTEGRATION_CPT ) {
+        && is_single() && get_post_type(get_the_ID()) == WP_PERSONIO_INTEGRATION_CPT && apply_filters( 'personio_integration_show_content', true ) ) {
 
         // set attributes for single output
         $attributes = [
