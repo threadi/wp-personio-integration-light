@@ -238,5 +238,5 @@ No, this plugin does not set cookies nor does it load data externally within the
 * default translations are now also visible in backend
 
 = 2.3.1 =
+* Added filter to individually prevent our custom the_content filter from being run
 * Fixed reset query after loop
-* Fixed the_content running multiple times
