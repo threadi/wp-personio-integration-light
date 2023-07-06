@@ -240,3 +240,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 = 2.3.1 =
 * Added filter to individually prevent our custom the_content filter from being run
 * Fixed reset query after loop
+
+= 2.3.2 =
+* Add anchor to pagination in position-lists
