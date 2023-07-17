@@ -86,3 +86,8 @@ Unter Stellen > Bewerbungen kann man bei jeder Bewerbung die keinen Error-Status
 An der Konsole gibt es für die Übertragung aller Bewerbungen dieses Kommando:
 
 `wp personio sendApplications`
+
+## Fehlermeldungen beim Export an Personio
+
+Treten beim Export Fehlermeldungen auf, sind diese im Log unter Stellen > Einstellungen > Logs zu finden. Die Meldungen entsprechen 1:1 der Rückgabe der Personio API. Diese sind hier dokumentiert:
+https://developer.personio.de/reference/post_v1-recruiting-applications

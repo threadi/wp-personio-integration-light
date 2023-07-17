@@ -86,3 +86,8 @@ Under Positions > Applications, you can click on "Transfer to Personio now" for 
 At the console there is this command for transferring all applications:
 
 `wp personio sendApplications`
+
+## Error messages during export to Personio
+
+If error messages occur during export, they can be found in the log under Positions > Settings > Logs. The messages correspond 1:1 to the return of the Personio API. They are documented here:
+https://developer.personio.de/reference/post_v1-recruiting-applications
