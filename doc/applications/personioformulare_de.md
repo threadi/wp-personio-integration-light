@@ -1,6 +1,6 @@
 # Personio Formulare
 
-Dieser Formulargenerator wird durch das Plugin mitgeliefert. Er ermöglicht es die von Personio unterstützten Felder für Bewerbungsformulare zu verwenden. Dazu zählen sowohl die Pflichtfelder als auch zusätzliche Felder, die in einem Formular dem Interessenten angezeigt werden können.
+Dieser Formulargenerator wird durch das Pro-Plugin mitgeliefert. Er ermöglicht es die von Personio unterstützten Felder für Bewerbungsformulare zu verwenden. Dazu zählen sowohl die Pflichtfelder als auch zusätzliche Felder, die in einem Formular dem Interessenten angezeigt werden können.
 
 Die Formulare werden in Form von Formular-Templates verwaltet. In diesen wird definiert, welche Felder im Frontend zu sehen sein sollen.
 
@@ -12,7 +12,7 @@ Seitens Personio gibt es folgende Pflichtangaben, die vom Generator berücksicht
 * E-Mail ist ein Pflichtfeld und kann ebenfalls nicht deaktiviert oder verändert werden.
 * Lebenslauf als Datei-Upload muss vorhanden sein, ist aber nicht zwingend ein Pflichtfeld.
 
-Eine E-Mail-Adresse ist pro Stelle nur 1 Mal zulässig. D.h. ein Bewerber kann sich nur 1 Mal auf eine bestimmte Stelle bewerben. Das Plugin berücksichtigt diese Maßgabe durch Personio.
+Eine E-Mail-Adresse ist pro Stelle nur 1 Mal zulässig. D.h. ein Bewerber kann sich nur 1 Mal auf eine bestimmte Stelle bewerben. Diese Vorgabe stammt von Personio und wird vom Plugin berücksichtigt.
 
 ## Einstellungen
 
@@ -57,10 +57,49 @@ Die Boxen in der Bearbeitungsseite bauen sich wie folgt auf:
   * Sie können per Drag&Drop in die Box "Konfigurierte Felder" geschoben werden, um sie im Formular zu verwenden.
   * Wenn ein Feld bereits in "Konfigurierte Felder" steht, kann man es nicht ein 2. Mal hinzufügen.
 * Individuelles Feld hinzufügen
-  * Hier kann man ein Custom Field hinzufügen. Dieses muss man zunächst in Personio unter Einstellungen > Bewerbungen > Attribute erzeugen.
-  * Danach kann man hier den Feld-Typ auswählen, den Namen des Feldes von Personio eintragen und die Beschriftung für das Formular ergänzen.
-  * Nach Klick auf "Hinzufügen" wird das Feld in der Box "Konfigurierte Felder" eingefügt.
+  * Siehe Abschnitt unten.
 * Templates zu Stellen zuordnen
   * Ein Template kann auch ein oder mehreren Stellen direkt zugewiesen werden.
   * Dadurch ist es möglich unterschiedliche Bewerbungsformulare für die eigenen offenen Stellen zu verwenden.
   * In der Box hier muss man lediglich ein Häkchen vor der Stelle setzen in der dieses Template angezeigt werden soll.
+
+### Individuelle Felder
+
+In dieser Box kann man ein Custom Field hinzufügen. Die Schritte dazu sind wie folgt:
+
+1. In Personio unter Einstellungen > Bewerbungen > Attribute das gewünschte Feld anlegen.
+2. In WordPress bei der Formular-Bearbeitung den Feld-Typ auswählen. Bitte die Hinweise unterhalb dazu beachten.
+3. Danach den Namen des Feldes von Personio übernehmen (muss mit _custom_attribute_ beginnen) und die Beschriftung für das Formular in der Webseite ergänzen.
+4. Nach Klick auf "Hinzufügen" wird das Feld in der Box "Konfigurierte Felder" eingefügt.
+
+#### Feld-Typen
+
+* Select
+  * Sollte für Personio-Attribut-Felder vom Typ "Liste mit Optionen" verwendet werden.
+  * Nach Auswahl dieses Typs muss man in einem 2. Feld die zur Auswahl stehenden Optionen eintragen.
+  * Dazu folgendes Format pro Zeile verwenden:
+    * Personio-custom-attribute:value
+  * **Personio-custom-attribute** ist dabei der Wert für das Feld von Personio (muss mit _custom_attribute_ beginnen).
+  * **value** ist die dem Nutzer angezeigte Bezeichnung
+  * Unser Plugin übergibt das custom-attribut an die API von Personio wodurch Personio die Angabe eindeutig einem Listen-Wert zuordnen kann.
+* Text
+  * Sollte für Personio-Attribut-Felder vom Typ "Text" verwendet werden.
+  * Keine weitere Konfiguration notwendig.
+* Date
+  * Sollte für Personio-Attribut-Felder vom Typ "Datum" verwendet werden.
+  * Keine weitere Konfiguration notwendig.
+* Multifile
+  * Kann für Personio-Attribut-Felder vom Typ "Text" verwendet werden.
+  * Wird durch Personio noch nicht unterstützt.
+* File
+  * Kann für Personio-Attribut-Felder vom Typ "Text" verwendet werden.
+  * Wird durch Personio noch nicht unterstützt.
+* Checkbox
+  * Kann für Personio-Attribut-Felder vom Typ "Text" verwendet werden.
+  * Wird durch Personio noch nicht unterstützt.
+* E-Mail
+  * Kann für Personio-Attribut-Felder vom Typ "Text" verwendet werden.
+  * Wird durch Personio noch nicht unterstützt.
+* Textarea
+  * Kann für Personio-Attribut-Felder vom Typ "Text" verwendet werden.
+  * Wird durch Personio noch nicht unterstützt.
