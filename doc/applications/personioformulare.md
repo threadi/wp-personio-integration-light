@@ -57,10 +57,40 @@ The boxes in the editing page are structured as follows:
   * They can be dragged and dropped into the "Configured Fields" box to use them in the form.
   * If a field is already in "Configured Fields", you cannot add it a 2nd time.
 * Add Custom Field
-  * Here you can add a Custom Field. This must first be created in Personio under Settings > Applications > Attributes.
-  * After that you can select the field type here, enter the name of the field from Personio and add the label for the form.
-  * After clicking on "Add" the field will be added to the "Configured Fields" box.
+  * See section below.
 * Assign templates to positions
   * A template can also be assigned directly to one or more positions.
   * This makes it possible to use different application forms for your own open positions.
   * In the box here you just have to put a check mark in front of the position in which this template should be displayed.
+
+#### Field types
+
+* Select
+  * Should be used for Personio attribute fields of type "List with options".
+  * After selecting this type, you must enter the options available for selection in a 2nd field.
+  * To do this, use the following format per line:
+    * Personio-custom-attribute:value
+  * **Personio-custom-attribute** is the value for the field of Personio (must start with _custom_attribute_).
+  * **value** is the name displayed to the user.
+  * Our plugin passes the custom-attribute to Personio's API so that Personio can uniquely associate it with a list value.
+* Text
+  * Should be used for Personio attribute fields of type "text".
+  * No further configuration required.
+* Date
+  * Should be used for Personio attribute fields of type "Date".
+  * No further configuration necessary.
+* Multifile
+  * Can be used for Personio attribute fields of type "Text".
+  * Not yet supported by Personio.
+* File
+  * Can be used for Personio attribute fields of type "Text".
+  * Not yet supported by Personio.
+* Checkbox
+  * Can be used for Personio attribute fields of type "Text".
+  * Not yet supported by Personio.
+* Email
+  * Can be used for Personio attribute fields of type "Text".
+  * Not yet supported by Personio.
+* Textarea
+  * Can be used for Personio attribute fields of type "Text".
+  * Not yet supported by Personio.
