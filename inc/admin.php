@@ -857,3 +857,16 @@ function personio_integration_admin_personio_meta_box_taxonomy( $post, $attr ): 
         echo wp_kses_post($content);
     }
 }
+
+/**
+ * Remove our CPTs from list of possible post-types in easy-language-plugin.
+ *
+ * @param $list
+ *
+ * @return mixed
+ */
+function personio_integration_admin_remove_easy_language_support( $list ): array {
+    unset($list[WP_PERSONIO_INTEGRATION_CPT]);
+    return $list;
+}
+add_filter( 'easy_language_possible_post_types', 'personio_integration_admin_remove_easy_language_support' );
