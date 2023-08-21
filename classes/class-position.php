@@ -226,7 +226,7 @@ class Position {
             // assign the position to its terms
             $this->updateTerm( 'recruitingCategory', 'personioRecruitingCategory', false );
             $this->updateTerm( 'occupationCategory', 'personioOccupationCategory', false );
-            $this->updateTerm( 'office', 'personioOffice', false );
+            $this->updateTerm( 'office', 'personioOffice', true );
             $this->updateTerm( 'department', 'personioDepartment', false );
             $this->updateTerm( 'lang', 'personioLanguages', true );
             $this->updateTerm( 'employmentType', 'personioEmploymentType', false );
