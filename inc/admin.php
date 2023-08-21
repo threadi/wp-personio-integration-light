@@ -219,8 +219,10 @@ function personio_integration_admin_position_add_column($columns): array
     // add column for PersonioId
     $newColumns['id'] = __( 'PersonioID', 'wp-personio-integration' );
 
-    // remove checkbox-column
-    unset($columns['cb']);
+    // remove checkbox-column if pro is not active.
+	if( false === Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
+		unset( $columns['cb'] );
+	}
 
     // return results
     return array_merge($newColumns, $columns);
