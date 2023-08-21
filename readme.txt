@@ -6,7 +6,7 @@ Tested up to: 6.3
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.3.1
+Stable tag: 2.3.2
 
 == Description ==
 
@@ -43,14 +43,15 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 #### the Pro license includes:
 
-- Application formulars incl. export of them via Personio API
+- application formulars incl. export of them via Personio API
 - manual sorting of open positions in list views via drag&drop
 - supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese - compatible with translations via Polylang
-- additional import settings, e.g. import intervals and partial import for very large lists of open jobs
+- additional import settings, e.g. import intervals and partial import for very large lists of open positions
 - RichSnippets for optimal findability via search engines like Google
 - Customization of slugs (URLs) for list and detailed views of positions
 - Shortcode generator for individual views of lists and details
 - Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, WPBakery, Avada
+- support for subcompanies and additional offices in positions
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
 
@@ -243,3 +244,4 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.3.2 =
 * Add anchor to pagination in position-lists
+* Add possibility for multiple offices per position
