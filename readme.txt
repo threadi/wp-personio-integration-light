@@ -6,7 +6,7 @@ Tested up to: 6.3
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 
 == Description ==
 
@@ -247,3 +247,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Add possibility for multiple offices per position
 * Some optimizations for compatibility with Pro-version
 * Fix keyword import
+
+= 2.3.3 =
+* Fixed missing form settings file in repository
+* Fixed some typos in texts
