@@ -246,3 +246,4 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Add anchor to pagination in position-lists
 * Add possibility for multiple offices per position
 * Some optimizations for compatibility with Pro-version
+* Fix keyword import

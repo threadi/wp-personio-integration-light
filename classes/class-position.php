@@ -234,25 +234,26 @@ class Position {
             $this->updateTerm( 'schedule', 'personioSchedule', false );
             $this->updateTerm( 'yearsOfExperience', 'personioExperience', false );
 
-			// import keywords as single terms.
-			$keywords = explode(",", $this->keywords);
-			foreach( $keywords as $keyword ) {
-				// get the term-object.
-				$term = get_term_by('name', $keyword, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS);
-				// if no term is found add it.
-				if (!$term) {
-					$termArray = wp_insert_term($keyword, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS);
-					if( !is_wp_error($termArray) ) {
-						$term = get_term($termArray['term_id'], WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS);
-					}
-					elseif( false !== $this->_debug ) {
-						$this->_log->addLog('Keyword-Term '.$keyword.' could not be imported in '.WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS.'.', 'error');
-					}
-				}
-				if ($term instanceof WP_Term) {
-					wp_set_post_terms($this->data['ID'], $term->term_id, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS, true);
-				}
-			}
+			// import keywords as single terms if set.
+	        if( strlen($this->keywords) > 0 ) {
+		        $keywords = explode( ",", $this->keywords );
+		        foreach ( $keywords as $keyword ) {
+			        // get the term-object.
+			        $term = get_term_by( 'name', $keyword, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS );
+			        // if no term is found add it.
+			        if ( ! $term ) {
+				        $termArray = wp_insert_term( $keyword, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS );
+				        if ( ! is_wp_error( $termArray ) ) {
+					        $term = get_term( $termArray['term_id'], WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS );
+				        } elseif ( false !== $this->_debug ) {
+					        $this->_log->addLog( 'Keyword-Term ' . $keyword . ' could not be imported in ' . WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS . '.', 'error' );
+				        }
+			        }
+			        if ( $term instanceof WP_Term ) {
+				        wp_set_post_terms( $this->data['ID'], $term->term_id, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS, true );
+			        }
+		        }
+	        }
 
             // add created at as post meta field
             update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, $this->data['createdAt']);
