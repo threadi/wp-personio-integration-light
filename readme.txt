@@ -6,7 +6,7 @@ Tested up to: 6.3
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.3.3
+Stable tag: 2.4.0
 
 == Description ==
 
@@ -251,3 +251,6 @@ No, this plugin does not set cookies nor does it load data externally within the
 = 2.3.3 =
 * Fixed missing form settings file in repository
 * Fixed some typos in texts
+
+= 2.4.0 =
+* Added support for accessibility with aria-labels

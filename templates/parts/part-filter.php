@@ -16,7 +16,7 @@ if( !empty($personio_attributes["filter"]) && false !== $personio_attributes["sh
     // generate random id
     $form_id = "pif".md5(serialize($personio_attributes["filter"]));
     ?>
-    <article id="<?php echo $form_id; ?>" class="site-main entry entry-content container inside-article container qodef-container-inner site-content site-content site-container content-bg content-area <?php echo esc_attr($personio_attributes['classes']); ?>">
+    <article id="<?php echo $form_id; ?>" class="site-main entry entry-content container inside-article container qodef-container-inner site-content site-content site-container content-bg content-area <?php echo esc_attr($personio_attributes['classes']); ?>" role="region" aria-label="positions-filter">
         <form action="<?php echo esc_url(helper::get_current_url()); ?>#<?php echo $form_id; ?>" class="entry-content personio-position-filter personio-position-filter-<?php echo $personio_attributes['filtertype']; ?> qodef-container-inner site-content site-container content-bg content-area">
             <legend><?php echo __('Filter', 'wp-personio-integration'); ?></legend>
             <?php
