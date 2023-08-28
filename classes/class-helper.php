@@ -181,43 +181,43 @@ class helper {
 		        '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
 		        __('Personio Integration', 'wp-personio-integration'),
 				/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-		        sprintf(__('We realized that you are using Divi - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Divi. More information about the Pro version can be found <a href="%1$s" target="_blank">here</a>.', 'wp-personio-integration'), helper::get_pro_url()),
+		        sprintf(__('We realized that you are using Divi - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Divi.', 'wp-personio-integration'), helper::get_pro_url()),
 	        ),
             'personio_integration_elementor' => sprintf(
 	            '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
 	            __('Personio Integration', 'wp-personio-integration'),
 	            /* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-	            sprintf(__('We realized that you are using Elementor - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Elementor. More information about the Pro version can be found <a href="%1$s" target="_blank">here</a>.', 'wp-personio-integration'), helper::get_pro_url()),
+	            sprintf(__('We realized that you are using Elementor - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Elementor.', 'wp-personio-integration'), helper::get_pro_url()),
             ),
             'personio_integration_wpbakery' => sprintf(
 	            '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
 	            __('Personio Integration', 'wp-personio-integration'),
 	            /* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-	            sprintf(__('We realized that you are using WPBakery - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in WPBakery. More information about the Pro version can be found <a href="%1$s" target="_blank">here</a>.', 'wp-personio-integration'), helper::get_pro_url()),
+	            sprintf(__('We realized that you are using WPBakery - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in WPBakery.', 'wp-personio-integration'), helper::get_pro_url()),
             ),
             'personio_integration_beaver' => sprintf(
 	            '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
 	            __('Personio Integration', 'wp-personio-integration'),
 	            /* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-	            sprintf(__('We realized that you are using Beaver Builder - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Beaver Builder. More information about the Pro version can be found <a href="%1$s" target="_blank">here</a>.', 'wp-personio-integration'), helper::get_pro_url()),
+	            sprintf(__('We realized that you are using Beaver Builder - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Beaver Builder.', 'wp-personio-integration'), helper::get_pro_url()),
             ),
             'personio_integration_siteorigin' => sprintf(
 	            '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
 	            __('Personio Integration', 'wp-personio-integration'),
 	            /* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-	            sprintf(__('We realized that you are using Site Origin - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Site Origin. More information about the Pro version can be found <a href="%1$s" target="_blank">here</a>.', 'wp-personio-integration'), helper::get_pro_url()),
+	            sprintf(__('We realized that you are using Site Origin - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Site Origin.', 'wp-personio-integration'), helper::get_pro_url()),
             ),
             'personio_integration_themify' => sprintf(
 	            '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
 	            __('Personio Integration', 'wp-personio-integration'),
 	            /* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-	            sprintf(__('We realized that you are using Themify - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Themify. More information about the Pro version can be found <a href="%1$s" target="_blank">here</a>.', 'wp-personio-integration'), helper::get_pro_url()),
+	            sprintf(__('We realized that you are using Themify - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Themify.', 'wp-personio-integration'), helper::get_pro_url()),
             ),
             'personio_integration_avada' => sprintf(
                 '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
                 __('Personio Integration', 'wp-personio-integration'),
                 /* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-                sprintf(__('We realized that you are using Avada - very nice! <i>Personio Integration Pro</i> allows you to design the output of positions in Avada. More information about the Pro version can be found <a href="%1$s" target="_blank">here</a>.', 'wp-personio-integration'), helper::get_pro_url()),
+                sprintf(__('We realized that you are using Avada - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Avada.', 'wp-personio-integration'), helper::get_pro_url()),
             ),
         ];
 

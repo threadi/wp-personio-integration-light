@@ -10,7 +10,7 @@ Stable tag: 2.4.0
 
 == Description ==
 
-Import and display your positions from [Personio](https://www.personio.com/) directly on your website. Get full control over how they are displayed.
+Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
 Show application forms on your positions and transfer applications from your website to Personio with [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/).
 
@@ -29,6 +29,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - support for classic as well as block themes
 - optionally group the lists by categories, departments, offices etc.
 - some [WP CLI commands](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/cli.md) for simplified handling of data
+- WCAG-compatible
 
 #### Requirements
 
@@ -83,6 +84,10 @@ This is supported by the Pro version of the plugin since version 2.0.0. You can 
 = Does this plugin set any cookies or load data from external? =
 
 No, this plugin does not set cookies nor does it load data externally within the front end of the website. The exception is when images and videos are embedded in the job descriptions coming from Personio. In this case, please check to what extent this affects the privacy of your own website.
+
+= Is this plugin GPRD-compatible? =
+
+Yes, it is without any further settings.
 
 == Screenshots ==
 
@@ -253,7 +258,8 @@ No, this plugin does not set cookies nor does it load data externally within the
 * Fixed some typos in texts
 
 = 2.4.0 =
-* Added support for accessibility with aria-labels
+* Added support for accessibility with aria-labels (regarding WCAG)
+* Added hints on all links which open new windows that they open new windows (regarding WCAG)
 * Added hook personio_integration_delete_single_position for individual manipulation of the deletion of single positions during import
 * Optimized handling of tabs in settings
 * Updated import handling of Personio-URL is not available

@@ -509,7 +509,7 @@ add_action( 'admin_init', function() {
  */
 function personio_integration_admin_show_pro_hint( $hint ): void
 {
-    echo '<p class="personio-pro-hint">'.sprintf(wp_kses_post($hint), '<a href="'.esc_url(helper::get_pro_url()).'" target="_blank">Personio Integration Pro</a>').'</p>';
+    echo '<p class="personio-pro-hint">'.sprintf(wp_kses_post($hint), '<a href="'.esc_url(helper::get_pro_url()).'" target="_blank">Personio Integration Pro (opens new window)</a>').'</p>';
 }
 add_action( 'personio_integration_admin_show_pro_hint', 'personio_integration_admin_show_pro_hint', 10, 1);
 
@@ -802,7 +802,7 @@ function personio_integration_admin_light_personio_meta_box( $post ): void {
         if ($position->isValid()) {
             $url = helper::get_personio_login_url();
             /* translators: %1$s will be replaced by the URL for Personio */
-            echo sprintf(__('At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href="%2$s" target="_blank">Personio account</a>.', 'wp-personio-integration'), $position->getTitle(), $url);
+            echo sprintf(__('At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'wp-personio-integration'), $position->getTitle(), $url);
         }
     }
 }
