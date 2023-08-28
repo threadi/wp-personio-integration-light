@@ -2,6 +2,7 @@
 
 namespace personioIntegration;
 
+use WP_Post;
 use WP_Post_Type;
 use WP_Rewrite;
 
@@ -956,13 +957,16 @@ class helper {
      * @return string
      */
     public static function get_current_url(): string {
-        // set page url
+        // set page url.
         $page_url = '';
 
-        // get actual object
+        // get actual object.
         $object = get_queried_object();
         if( $object instanceof WP_Post_Type ) {
             $page_url = get_post_type_archive_link($object->name);
+        }
+        if( $object instanceof WP_Post ) {
+            $page_url = get_permalink($object->ID);
         }
 
         // return result
