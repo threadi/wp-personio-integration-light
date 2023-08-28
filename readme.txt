@@ -254,4 +254,7 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.4.0 =
 * Added support for accessibility with aria-labels
+* Added hook personio_integration_delete_single_position for individual manipulation of the deletion of single positions during import
+* Optimized handling of tabs in settings
+* Updated import handling of Personio-URL is not available
 * Updated translations
