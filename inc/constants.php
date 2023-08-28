@@ -160,6 +160,9 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
     ],
     'personio_integration_avada' => [
         'type' => 'success'
+    ],
+    'personio_integration_admin_show_review_hint' => [
+        'type' => 'success'
     ]
 ];
 

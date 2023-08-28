@@ -219,6 +219,15 @@ class helper {
                 /* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
                 sprintf(__('We realized that you are using Avada - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Avada.', 'wp-personio-integration'), helper::get_pro_url()),
             ),
+            'personio_integration_admin_show_review_hint' => sprintf(
+                '<h3>'.helper::getLogoImg().'%s</h3><p>%s</p>',
+                __('Personio Integration', 'wp-personio-integration'),
+                sprintf(
+                /* translators: %1$s is replaced with "string" */
+                    sprintf(__('Your use the WordPress-plugin Personio Integration since more than %d days. Do you like it? Feel free to leave us a review <a href="https://wordpress.org/plugins/personio-integration-light/#reviews" target="_blank">here</a>.', 'wp-personio-integration'), ( absint(get_option( 'personioIntegrationLightInstallDate', 1 ) - time () ) / 60 / 60 / 24 )),
+                    helper::get_pro_url()
+                )
+            ),
         ];
 
 

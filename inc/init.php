@@ -493,6 +493,9 @@ function personio_integration_update(): void
             default:
                 updates::version123();
                 updates::version205();
+                updates::version211();
+                updates::version227();
+                updates::version240();
                 break;
         }
 
