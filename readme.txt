@@ -254,3 +254,4 @@ No, this plugin does not set cookies nor does it load data externally within the
 
 = 2.4.0 =
 * Added support for accessibility with aria-labels
+* Updated translations
