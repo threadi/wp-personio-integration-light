@@ -96,3 +96,7 @@ personio_integration_get_filter
 personio_positions_applications_privacy_url
 -------------------------------------------
 * change the privacy url for applications in Pro-version
+
+personio_integration_delete_single_position
+-------------------------------------------
+* manipulate the deletion of single positions during import
