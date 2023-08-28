@@ -292,6 +292,28 @@ function personio_integration_admin_checkConfig(): void
 add_action( 'admin_init', 'personio_integration_admin_checkConfig');
 
 /**
+ * Show hint to review our plugin every 90 days.
+ *
+ * @return void
+ */
+function personio_integration_admin_show_review_hint(): void {
+    $install_date = absint(get_option( 'personioIntegrationLightInstallDate', 0 ) );
+    if( $install_date > 0 ) {
+        if( time() > strtotime("+90 days", $install_date) ) {
+            for( $d=2;$d<10;$d++ ) {
+                if (time() > strtotime("+".($d*90)." days", $install_date)) {
+                    delete_option('pi-dismissed-' . md5('personio_integration_admin_show_review_hint'));
+                }
+            }
+            set_transient('personio_integration_admin_show_review_hint', 1);
+        } else {
+            delete_transient('personio_integration_admin_show_review_hint');
+        }
+    }
+}
+add_action( 'admin_init', 'personio_integration_admin_show_review_hint');
+
+/**
  * Activate transient-based hint if configuration is set but no positions are imported until now.
  *
  * @return void
@@ -652,8 +674,9 @@ add_action( 'admin_init', 'personio_integration_check_child_theme_templates');
  * Check for supported PageBuilder and show hint if Pro-version would support it.
  *
  * @return void
+ * @noinspection PhpUnused
  */
-function personio_integration_admin_check_for_divi(): void {
+function personio_integration_admin_check_for_pagebuilder(): void {
     // bail if our Pro-plugin is active.
     if( false !== Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
         delete_transient( 'personio_integration_divi' );
@@ -736,7 +759,7 @@ function personio_integration_admin_check_for_divi(): void {
         delete_transient( 'personio_integration_avada' );
     }
 }
-add_action( 'admin_init', 'personio_integration_admin_check_for_divi');
+add_action( 'admin_init', 'personio_integration_admin_check_for_pagebuilder');
 
 /**
  * Remove supports from our own cpt and change our taxonomies.

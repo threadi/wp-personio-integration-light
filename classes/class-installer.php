@@ -171,7 +171,7 @@ class installer
             (new cli)->deleteAll();
 
             // remove options
-            $options = [
+            $options = array(
                 'personioIntegrationUrlTimeout',
                 'personioIntegrationUrl',
                 'personioIntegrationLanguages',
@@ -201,8 +201,9 @@ class installer
                 WP_PERSONIO_OPTION_COUNT,
                 WP_PERSONIO_OPTION_MAX,
                 WP_PERSONIO_INTEGRATION_IMPORT_RUNNING,
-	            'personioIntegrationExtendSearch'
-            ];
+	            'personioIntegrationExtendSearch',
+                'personioIntegrationLightInstallDate'
+            );
             foreach ($options as $option) {
                 delete_option($option);
             }

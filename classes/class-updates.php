@@ -52,6 +52,7 @@ class updates {
         self::version205();
         self::version211();
 		self::version227();
+        self::version240();
 
         // reset import-flag
         delete_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING);
@@ -128,10 +129,22 @@ class updates {
 	 *
 	 * @return void
 	 */
-	private static function version227(): void {
+    public static function version227(): void {
 		// enable search extension.
 		if (!get_option('personioIntegrationExtendSearch')) {
 			update_option('personioIntegrationExtendSearch', 1);
 		}
 	}
+
+    /**
+     * To run on update to (exact) version 2.4.0
+     *
+     * @return void
+     */
+    public static function version240(): void {
+        // set install-date if not set.
+        if (!get_option('personioIntegrationLightInstallDate')) {
+            update_option('personioIntegrationLightInstallDate', time());
+        }
+    }
 }

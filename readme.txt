@@ -261,6 +261,7 @@ Yes, it is without any further settings.
 * Added support for accessibility with aria-labels (regarding WCAG)
 * Added hints on all links which open new windows that they open new windows (regarding WCAG)
 * Added hook personio_integration_delete_single_position for individual manipulation of the deletion of single positions during import
+* Added hint to review plugin every 90 days
 * Optimized handling of tabs in settings
 * Updated import handling of Personio-URL is not available
 * Updated translations
