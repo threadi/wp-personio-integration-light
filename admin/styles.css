@@ -115,3 +115,5 @@ body.post-type-personioposition #personio-edit-hints {
 body.post-type-personioposition #personio-edit-hints .postbox-header { border: 0 }
 
 body.post-type-personioposition #personio-edit-hints .handle-actions { display: none }
+
+.wp-personio-integration-transient .dashicons-star-filled { color: #ffb900 }
