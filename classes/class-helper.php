@@ -224,7 +224,7 @@ class helper {
                 __('Personio Integration', 'wp-personio-integration'),
                 sprintf(
                 /* translators: %1$s is replaced with "string" */
-                    sprintf(__('Your use the WordPress-plugin Personio Integration since more than %d days. Do you like it? Feel free to leave us <a href="https://wordpress.org/plugins/personio-integration-light/#reviews" target="_blank">a review (opens new window)</a>.', 'wp-personio-integration'), ( absint(get_option( 'personioIntegrationLightInstallDate', 1 ) - time () ) / 60 / 60 / 24 )).' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
+                    sprintf(__('Your use the WordPress-plugin Personio Integration since more than %d days. Do you like it? Feel free to <a href="https://wordpress.org/plugins/personio-integration-light/#reviews" target="_blank">leave us a review (opens new window)</a>.', 'wp-personio-integration'), ( absint(get_option( 'personioIntegrationLightInstallDate', 1 ) - time () ) / 60 / 60 / 24 )).' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
                     helper::get_pro_url()
                 )
             ),
