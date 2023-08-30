@@ -66,7 +66,7 @@ export default function Edit( object ) {
 	let filter_types = wp.hooks.applyFilters('personio_integration_filter_types', [
 		{ label: __('list of links', 'wp-personio-integration'), value: 'linklist' },
 		{ label: __('select-box', 'wp-personio-integration'), value: 'select' }
-	]);
+	], object.attributes.preview);
 
 	// get taxonomies
 	let personioTaxonomies = [];
