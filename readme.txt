@@ -262,6 +262,7 @@ Yes, it is without any further settings.
 * Added hints on all links which open new windows that they open new windows (regarding WCAG)
 * Added hook personio_integration_delete_single_position for individual manipulation of the deletion of single positions during import
 * Added hint to review plugin every 90 days
+* Added option on hook for filetypes on list block
 * Optimized handling of tabs in settings
 * Updated import handling of Personio-URL is not available
 * Updated translations
