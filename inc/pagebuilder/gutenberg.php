@@ -265,7 +265,7 @@ function personio_integration_get_application_button( $attributes ): string
     $block_html_attributes = get_block_wrapper_attributes();
 
     // get styles
-    $stylesArray = [];
+    $stylesArray = array();
     $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
     if( !empty($styles) ) {
         $stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
@@ -273,7 +273,7 @@ function personio_integration_get_application_button( $attributes ): string
 
     $attribute_defaults = [
         'personioid' => absint($position->getPersonioId()),
-        'templates' => ['formular'],
+        'templates' => array( 'formular' ),
         'styles' => implode(PHP_EOL, $stylesArray),
         'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
     ];
@@ -469,13 +469,13 @@ function personio_integration_add_blocks(): void
         ];
         $list_attributes = apply_filters('personio_integration_gutenberg_block_filter_select_attributes', $list_attributes);
 
-        // register filter-list block
+        // register filter-list block.
         register_block_type(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN).'blocks/filter-select/', [
             'render_callback' => 'personio_integration_get_filter_select',
             'attributes' => $list_attributes
         ]);
 
-        // collect attributes for application-button block
+        // collect attributes for application-button block.
         $list_attributes = [
             'preview' => [
                 'type' => 'boolean',
@@ -488,18 +488,70 @@ function personio_integration_add_blocks(): void
         ];
         $list_attributes = apply_filters('personio_integration_gutenberg_block_application_button_select_attributes', $list_attributes);
 
-        // register application-button block
+        // register application-button block.
         register_block_type(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN).'blocks/application-button/', [
             'render_callback' => 'personio_integration_get_application_button',
             'attributes' => $list_attributes
         ]);
 
-        // register translations
+        // collect attributes for details block.
+        $list_attributes = array(
+            'preview' => array(
+                'type' => 'boolean',
+                'default' => false
+            ),
+            'blockId' => array(
+                'type' => 'string',
+                'default' => ''
+            ),
+            'excerptTemplates' => array(
+                'type' => 'array',
+                'default' => ['recruitingCategory','schedule','office']
+            ),
+            'colon' => array(
+                'type' => 'boolean',
+                'default' => true
+            ),
+            'wrap' => array(
+                'type' => 'boolean',
+                'default' => true
+            ),
+        );
+        $list_attributes = apply_filters('personio_integration_gutenberg_block_detail_attributes', $list_attributes);
+
+        // register details block.
+        register_block_type(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN).'blocks/details/', [
+            'render_callback' => 'personio_integration_get_details',
+            'attributes' => $list_attributes
+        ]);
+
+        // collect attributes for description block.
+        $list_attributes = array(
+            'preview' => array(
+                'type' => 'boolean',
+                'default' => false
+            ),
+            'blockId' => array(
+                'type' => 'string',
+                'default' => ''
+            )
+        );
+        $list_attributes = apply_filters('personio_integration_gutenberg_block_description_attributes', $list_attributes);
+
+        // register details block.
+        register_block_type(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN).'blocks/description/', [
+            'render_callback' => 'personio_integration_get_description',
+            'attributes' => $list_attributes
+        ]);
+
+        // register translations.
         wp_set_script_translations('wp-personio-integration-show-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-list-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-filter-list-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-filter-select-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-application-button-editor-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+        wp_set_script_translations('wp-personio-integration-details-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+        wp_set_script_translations('wp-personio-integration-description-script', 'wp-personio-integration', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
     }
 }
 add_action( 'init', 'personio_integration_add_blocks', 10 );
@@ -539,3 +591,119 @@ function personio_integration_add_templates(): void
     $templates_obj->init();
 }
 add_action( 'init', 'personio_integration_add_templates', 10 );
+
+/**
+ * Gutenberg-Callback to get the list chosen details of single position.
+ *
+ * @param $attributes
+ * @return string
+ * @noinspection PhpUnused
+ */
+function personio_integration_get_details( $attributes ): string
+{
+    // get positions object
+    $positions = positions::get_instance();
+
+    // get the position as object
+    // -> is no id is available choose a random one (e.g. for preview in Gutenberg)
+    $post_id = get_the_ID();
+    if( empty($post_id) ) {
+        $position_array = $positions->getPositions(1);
+        $position = $position_array[0];
+    }
+    else {
+        $position = $positions->get_position($post_id);
+    }
+    if( !$position->isValid() ) {
+        return '';
+    }
+
+    // get setting for colon.
+    $colon = ': ';
+    if( false === $attributes['colon'] ) {
+        $colon = '';
+    }
+
+    // get setting for line break.
+    $line_break = '<br>';
+    if( false === $attributes['wrap'] ) {
+        $line_break = '';
+    }
+
+    // get content for output.
+    ob_start();
+    // loop through the chosen details.
+    foreach( $attributes['excerptTemplates'] as $detail ) {
+        // get the terms of this taxonomy
+        foreach (apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy) {
+            if ($detail === $taxonomy['slug']) {
+                // get value.
+                $value = Helper::get_taxonomy_name_of_position($detail, $position);
+
+                // bail if no value is available.
+                if (empty($value)) {
+                    continue;
+                }
+
+                // get labels of this taxonomy.
+                $labels = Helper::get_taxonomy_label($taxonomy_name);
+
+                // output.
+                echo "<p><strong>" . esc_html($labels['name']) . $colon . "</strong>" . $line_break. $value . "</p>";
+            }
+        }
+    }
+    return ob_get_clean();
+}
+
+/**
+ * Gutenberg-Callback to get the list chosen details of single position.
+ *
+ * @param $attributes
+ * @return string
+ * @noinspection PhpUnused
+ */
+function personio_integration_get_description( $attributes ): string
+{
+    // get positions object
+    $positions = positions::get_instance();
+
+    // get the position as object
+    // -> is no id is available choose a random one (e.g. for preview in Gutenberg)
+    $post_id = get_the_ID();
+    if (empty($post_id)) {
+        $position_array = $positions->getPositions(1);
+        $position = $position_array[0];
+    } else {
+        $position = $positions->get_position($post_id);
+    }
+    if (!$position->isValid()) {
+        return '';
+    }
+
+    // set ID as class.
+    $class = '';
+    if( !empty($attributes['blockId']) ) {
+        $class = 'personio-integration-block-' . $attributes['blockId'];
+    }
+
+    // get block-classes.
+    $block_html_attributes = get_block_wrapper_attributes();
+
+    // get styles.
+    $stylesArray = array();
+    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+    if( !empty($styles) ) {
+        $stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
+    }
+
+    $attribute_defaults = array(
+        'personioid' => absint($position->getPersonioId()),
+        'templates' => array( 'content' ),
+        'styles' => implode(PHP_EOL, $stylesArray),
+        'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
+    );
+
+    // get the output
+    return personio_integration_position_shortcode( apply_filters( 'personio_integration_get_gutenberg_description_attributes', $attribute_defaults ) );
+}

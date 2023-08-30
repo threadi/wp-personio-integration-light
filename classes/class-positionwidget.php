@@ -68,7 +68,7 @@ class PositionWidget extends WP_Widget {
             ),
             'showExcerpt'     => array(
                 'type'          => 'select',
-                'title'         => __( 'Show excerpt', 'wp-personio-integration' ),
+                'title'         => __( 'Show detail', 'wp-personio-integration' ),
                 'std'           => 'no',
                 'values'       => [
                     'yes' => esc_html__( 'Show', 'wp-personio-integration' ),
@@ -77,7 +77,7 @@ class PositionWidget extends WP_Widget {
             ),
             'excerptTemplates'     => array(
                 'type'          => 'select',
-                'title'         => __( 'Choose excerpt components', 'wp-personio-integration' ),
+                'title'         => __( 'Choose detail components', 'wp-personio-integration' ),
                 'multiple'      => true,
                 'std'           => ['recruitingCategory','schedule','office'],
                 'values'       => personio_integration_admin_categories_labels()

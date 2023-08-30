@@ -128,7 +128,7 @@ export default function Edit( object ) {
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
-								label={__('Choose excerpt components', 'wp-personio-integration')}
+								label={__('Choose details', 'wp-personio-integration')}
 								value={object.attributes.excerptTemplates}
 								options={[
 									{

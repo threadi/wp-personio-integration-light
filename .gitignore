@@ -3,6 +3,11 @@
 !/build/build.properties.dist
 !/build/build.xml
 !/build/languages
+/blocks/application-button/build/
+/blocks/description/build/
+/blocks/details/build/
+/blocks/filter-list/build/
+/blocks/filter-select/build/
 /blocks/list/build/
 /blocks/show/build/
 /inc/constants2.php

@@ -25,12 +25,12 @@ add_action( 'init', 'personio_integration_frontend_init' );
  * - personioid => PersonioId of the position (required)
  * - lang => sets the language for the output, defaults to default-language from plugin-settings
  * - templates => comma-separated list of template to use, defaults to title and excerpt
- * - excerpt => comma-separated list of terms to display, defaults to recruitingCategory, schedule, office
+ * - excerpt => comma-separated list of details to display, defaults to recruitingCategory, schedule, office
  * - donotlink => if position-title should be linked (0) or not (1), defaults to link (0)
  *
  * Templates:
  * - title => show position title
- * - excerpt => show excerpt configured by excerpt-parameter
+ * - excerpt => show detail configured by excerpt-parameter
  * - content => show language-specific content
  * - formular => show application-button
  *
@@ -113,7 +113,7 @@ function personio_integration_position_shortcode( $attributes = [] ): string
  * - filter => comma-separated list of filter which will be visible above the list, default: empty
  * - filtertype => sets the type of filter to use (select or linklist), default: select
  * - templates => comma-separated list of template to use, defaults to title and excerpt
- * - excerpt => comma-separated list of terms to display, defaults to recruitingCategory, schedule, office
+ * - excerpt => comma-separated list of details to display, defaults to recruitingCategory, schedule, office
  * - ids => comma-separated list of PositionIDs to display, default: empty
  * - sort => direction for sorting the resulting list (asc or desc), default: asc
  * - sortby => Field to be sorted by (title or date), default: title
@@ -131,7 +131,7 @@ function personio_integration_position_shortcode( $attributes = [] ): string
  *
  * Templates:
  * - title => show position title
- * - excerpt => show excerpt configured by excerpt-parameter
+ * - excerpt => show details configured by excerpt-parameter
  * - content => show language-specific content
  * - formular => show application-button
  *
@@ -268,7 +268,7 @@ function personio_integration_content_output( $content ): string
 add_filter( 'the_content', 'personio_integration_content_output', 5 );
 
 /**
- * Change output of excerpt in archive-pages for the custom post type of this plugin.
+ * Change output of detail in archive-pages for the custom post type of this plugin.
  *
  * @param $excerpt
  * @return string
