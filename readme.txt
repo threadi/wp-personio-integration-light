@@ -258,13 +258,16 @@ Yes, it is without any further settings.
 * Fixed some typos in texts
 
 = 2.4.0 =
-* Added new block for position details, usable on single page
+* Added new block for position details in Block Editor, usable on single page
+* Added new block for position description in Block Editor, usable on single page
 * Added support for accessibility with aria-labels (regarding WCAG)
 * Added hints on all links which open new windows that they open new windows (regarding WCAG)
 * Added hook personio_integration_delete_single_position for individual manipulation of the deletion of single positions during import
 * Added hint to review plugin every 90 days
 * Added option on hook for filetypes on list block
-* Optimized handling of tabs in settings
+* Optimized handling of tabs in settings-page
 * Renamed excerpt to detail for compatibility with Personio wording
-* Updated import handling of Personio-URL is not available
+* Updated import handling if Personio-URL is not available
 * Updated translations
+* Updated Block Editor single template
+* Fixed reading of employment type

@@ -10,9 +10,12 @@ defined( 'ABSPATH' ) || exit;
  * @version: 1.0.0
  */
 
+// embed block-specific styling
+include helper::getTemplate("parts/styling.php");
+
 ?>
 <div class="entry-content">
-    <p class="personio-integration-application-button">
+    <p class="personio-integration-application-button<?php echo esc_attr($attributes['classes']); ?>">
         <a class="personio-integration-application-button" href="<?php echo helper::get_personio_application_url($position); ?>" target="_blank">
             <?php
             if( $textPosition == 'archive' ) {

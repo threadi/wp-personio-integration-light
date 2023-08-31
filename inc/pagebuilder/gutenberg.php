@@ -1,4 +1,7 @@
 <?php
+/**
+ * File for handling of all Gutenberg-specifics.
+ */
 
 use personioIntegration\gutenberg\templates;
 use personioIntegration\helper;
@@ -13,12 +16,6 @@ use personioIntegration\Positions;
  */
 function personio_integration_get_single( $attributes ): string
 {
-    // get the excerpt-templates
-    $excerptTemplates = '';
-    if( !empty($attributes["excerptTemplates"]) ) {
-        $excerptTemplates = implode(",", $attributes["excerptTemplates"]);
-    }
-
     // link title?
     $doNotLink = true;
     if( $attributes["linkTitle"] ) {
@@ -26,32 +23,42 @@ function personio_integration_get_single( $attributes ): string
     }
 
     // set ID as class
-    $class = '';
-    if( !empty($attributes['blockId']) ) {
-        $class = 'personio-integration-block-' . $attributes['blockId'];
-    }
+    $class = personio_integration_get_block_class( $attributes );
 
     // get block-classes
     $block_html_attributes = get_block_wrapper_attributes();
 
     // get styles
-    $stylesArray = [];
+    $stylesArray = array();
     $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
     if( !empty($styles) ) {
         $stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
     }
 
-    $attribute_defaults = [
-        'templates' => personio_integration_get_gutenberg_templates($attributes),
-        'excerpt' => $excerptTemplates,
+    $attribute_defaults = array(
+        'templates' => personio_integration_get_gutenberg_templates( $attributes ),
+        'excerpt' => personio_integration_get_details_array( $attributes ),
         'donotlink' => $doNotLink,
         'personioid' => $attributes['id'],
         'styles' => implode(PHP_EOL, $stylesArray),
         'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
-    ];
+    );
 
     // get the output
     return personio_integration_position_shortcode( apply_filters( 'personio_integration_get_gutenberg_single_attributes', $attribute_defaults ) );
+}
+
+/**
+ * Get detail-templates from attributes-array.
+ *
+ * @param $attributes
+ * @return string
+ */
+function personio_integration_get_details_array( $attributes ): string {
+    if( !empty($attributes["excerptTemplates"]) ) {
+        return implode(",", $attributes["excerptTemplates"]);
+    }
+    return '';
 }
 
 /**
@@ -63,32 +70,17 @@ function personio_integration_get_single( $attributes ): string
  */
 function personio_integration_get_list( $attributes ): string
 {
-    // collect the configured templates
+    // collect the configured templates.
     $templates = personio_integration_get_gutenberg_templates($attributes);
 
-    // get the excerpt-templates
-    $excerptTemplates = '';
-    if( !empty($attributes["excerptTemplates"]) ) {
-        $excerptTemplates = implode(",", $attributes["excerptTemplates"]);
-    }
-
-    // link title?
-    $doNotLink = true;
-    if( $attributes["linkTitle"] ) {
-        $doNotLink = false;
-    }
-
     // set ID as class
-    $class = '';
-    if( !empty($attributes['blockId']) ) {
-        $class = 'personio-integration-block-' . $attributes['blockId'];
-    }
+    $class = personio_integration_get_block_class( $attributes );
 
-    // get block-classes
+    // get block-classes.
     $block_html_attributes = get_block_wrapper_attributes();
 
-    // get styles
-    $stylesArray = [];
+    // get styles.
+    $stylesArray = array();
     $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
     if( !empty($styles) ) {
         $stylesArray[] = '.' . $class . ' { ' . $styles . ' }';
@@ -96,7 +88,7 @@ function personio_integration_get_list( $attributes ): string
     if (!empty($attributes['style']) && !empty($attributes['style']['spacing']) && !empty($attributes['style']['spacing']['blockGap'])) {
         $value = $attributes['style']['spacing']['blockGap'];
         // convert var-setting to var-style-entity
-        if(false !== strpos($attributes['style']['spacing']['blockGap'], 'var:')) {
+        if( false !== strpos($attributes['style']['spacing']['blockGap'], 'var:') ) {
             $value = str_replace('|', '--', $value);
             $value = str_replace('var:', '', $value);
             $value = 'var(--wp--' . $value . ')';
@@ -107,8 +99,8 @@ function personio_integration_get_list( $attributes ): string
     // collect all settings for this block
     $attribute_defaults = [
         'templates' => $templates,
-        'excerpt' => $excerptTemplates,
-        'donotlink' => $doNotLink,
+        'excerpt' => personio_integration_get_details_array( $attributes ),
+        'donotlink' => !$attributes["linkTitle"],
         'sort' => $attributes["sort"],
         'sortby' => $attributes["sortby"],
         'groupby' => $attributes["groupby"],
@@ -135,10 +127,7 @@ function personio_integration_get_list( $attributes ): string
 function personio_integration_get_filter_list( $attributes ): string
 {
     // set ID as class
-    $class = '';
-    if( !empty($attributes['blockId']) ) {
-        $class = 'personio-integration-block-' . $attributes['blockId'];
-    }
+    $class = personio_integration_get_block_class( $attributes );
 
     // get block-classes
     $block_html_attributes = get_block_wrapper_attributes();
@@ -187,10 +176,7 @@ function personio_integration_get_filter_list( $attributes ): string
 function personio_integration_get_filter_select( $attributes ): string
 {
     // set ID as class
-    $class = '';
-    if( !empty($attributes['blockId']) ) {
-        $class = 'personio-integration-block-' . $attributes['blockId'];
-    }
+    $class = personio_integration_get_block_class( $attributes );
 
     // get block-classes
     $block_html_attributes = get_block_wrapper_attributes();
@@ -230,6 +216,20 @@ function personio_integration_get_filter_select( $attributes ): string
 }
 
 /**
+ * Return the block class depending on its blockId.
+ *
+ * @param $attributes
+ * @return string
+ */
+function personio_integration_get_block_class($attributes): string
+{
+    if( !empty($attributes['blockId']) ) {
+        return 'personio-integration-block-' . $attributes['blockId'];
+    }
+    return '';
+}
+
+/**
  * Return application-button.
  *
  * @param $attributes
@@ -238,11 +238,11 @@ function personio_integration_get_filter_select( $attributes ): string
  */
 function personio_integration_get_application_button( $attributes ): string
 {
-    // get positions object
+    // get positions object.
     $positions = positions::get_instance();
 
-    // get the position as object
-    // -> is no id is available choose a random one (e.g. for preview in Gutenberg)
+    // get the position as object.
+    // -> is no id is available choose a random one (e.g. for preview in Gutenberg).
     $post_id = get_the_ID();
     if( empty($post_id) ) {
         $position_array = $positions->getPositions(1);
@@ -255,31 +255,33 @@ function personio_integration_get_application_button( $attributes ): string
         return '';
     }
 
-    // set ID as class
+    // set ID as class.
     $class = '';
     if( !empty($attributes['blockId']) ) {
         $class = 'personio-integration-block-' . $attributes['blockId'];
     }
 
-    // get block-classes
+    // get block-classes.
     $block_html_attributes = get_block_wrapper_attributes();
 
-    // get styles
+    // get styles.
     $stylesArray = array();
     $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
     if( !empty($styles) ) {
         $stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
     }
 
-    $attribute_defaults = [
+    $attributes = array(
         'personioid' => absint($position->getPersonioId()),
         'templates' => array( 'formular' ),
         'styles' => implode(PHP_EOL, $stylesArray),
         'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
-    ];
+    );
 
-    // get the output
-    return personio_integration_position_shortcode( apply_filters( 'personio_integration_get_gutenberg_application_button_attributes', $attribute_defaults ) );
+    // get the output.
+    ob_start();
+    do_action( 'personio_integration_get_formular', $position, $attributes );
+    return ob_get_clean();
 }
 
 /**
@@ -697,13 +699,15 @@ function personio_integration_get_description( $attributes ): string
         $stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
     }
 
-    $attribute_defaults = array(
+    $attributes = array(
         'personioid' => absint($position->getPersonioId()),
         'templates' => array( 'content' ),
         'styles' => implode(PHP_EOL, $stylesArray),
         'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
     );
 
-    // get the output
-    return personio_integration_position_shortcode( apply_filters( 'personio_integration_get_gutenberg_description_attributes', $attribute_defaults ) );
+    // get the output.
+    ob_start();
+    do_action( 'personio_integration_get_content', $position, $attributes );
+    return ob_get_clean();
 }

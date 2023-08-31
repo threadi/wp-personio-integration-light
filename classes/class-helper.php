@@ -340,7 +340,7 @@ class helper {
             case 'occupation':
                 $name = $position->getOccupationCategoryName();
                 break;
-            case 'employmentTypes':
+            case 'employmenttype':
                 $name = $position->getEmploymentTypeName();
                 break;
 	        case 'keyword':
@@ -489,7 +489,7 @@ class helper {
     public static function get_shortcode_attributes( array $attribute_defaults, array $attribute_settings, array $attributes ): array
     {
         // pre-filter the given attributes
-        $filtered = apply_filters('personio_integration_get_shortcode_attributes', ['defaults' => $attribute_defaults, 'settings' => $attribute_settings, 'attributes' => $attributes]);
+        $filtered = apply_filters('personio_integration_get_shortcode_attributes', array( 'defaults' => $attribute_defaults, 'settings' => $attribute_settings, 'attributes' => $attributes ) );
 
         // get pre-filtered array
         $attribute_defaults = $filtered['defaults'];
