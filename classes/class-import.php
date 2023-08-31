@@ -190,7 +190,8 @@ class Import {
                     // re-enable taxonomy-counting.
                     wp_defer_term_counting(false);
                 } else {
-                    $this->_errors[] = sprintf(__('Personio URL for language %s not available. Returned HTTP-Status %d. Please check the URL you configured and if it is available.', 'wp-personio-integration'), esc_html($key), absint($httpStatus));
+                    /* translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404) */
+                    $this->_errors[] = sprintf(__('Personio URL for language %1$s not available. Returned HTTP-Status %2$d. Please check the URL you configured and if it is available.', 'wp-personio-integration'), esc_html($key), absint($httpStatus));
                 }
 
                 // show progress.
