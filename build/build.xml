@@ -38,6 +38,8 @@
         <delete file="${log.dir}/npm-build3.txt"/>
         <delete file="${log.dir}/npm-build4.txt"/>
         <delete file="${log.dir}/npm-build5.txt"/>
+        <delete file="${log.dir}/npm-build6.txt"/>
+        <delete file="${log.dir}/npm-build7.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build1.txt">
             <arg line="run build:show"/>
         </exec>
@@ -52,6 +54,12 @@
         </exec>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build5.txt">
             <arg line="run build:application-button"/>
+        </exec>
+        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build6.txt">
+            <arg line="run build:details"/>
+        </exec>
+        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build7.txt">
+            <arg line="run build:description"/>
         </exec>
     </target>
 
@@ -97,6 +105,10 @@
             <zipfileset dir="${src.dir}/admin" prefix="${plugin.slug}/admin" />
             <zipfileset dir="${src.dir}/blocks/list/" includes="block.json" prefix="${plugin.slug}/blocks/list/" />
             <zipfileset dir="${src.dir}/blocks/list/build" prefix="${plugin.slug}/blocks/list/build" />
+            <zipfileset dir="${src.dir}/blocks/details/" includes="block.json" prefix="${plugin.slug}/blocks/details/" />
+            <zipfileset dir="${src.dir}/blocks/details/build" prefix="${plugin.slug}/blocks/details/build" />
+            <zipfileset dir="${src.dir}/blocks/description/" includes="block.json" prefix="${plugin.slug}/blocks/description/" />
+            <zipfileset dir="${src.dir}/blocks/description/build" prefix="${plugin.slug}/blocks/description/build" />
             <zipfileset dir="${src.dir}/blocks/filter-list/" includes="block.json" prefix="${plugin.slug}/blocks/filter-list/" />
             <zipfileset dir="${src.dir}/blocks/filter-list/build" prefix="${plugin.slug}/blocks/filter-list/build" />
             <zipfileset dir="${src.dir}/blocks/filter-select/" includes="block.json" prefix="${plugin.slug}/blocks/filter-select/" />
