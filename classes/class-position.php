@@ -500,7 +500,7 @@ class Position {
     }
 
     /**
-     * Get the excerpt of this position.
+     * Get the details of this position.
      *
      * @return false|string
      */

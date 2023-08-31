@@ -25,12 +25,12 @@ add_action( 'init', 'personio_integration_frontend_init' );
  * - personioid => PersonioId of the position (required)
  * - lang => sets the language for the output, defaults to default-language from plugin-settings
  * - templates => comma-separated list of template to use, defaults to title and excerpt
- * - excerpt => comma-separated list of terms to display, defaults to recruitingCategory, schedule, office
+ * - excerpt => comma-separated list of details to display, defaults to recruitingCategory, schedule, office
  * - donotlink => if position-title should be linked (0) or not (1), defaults to link (0)
  *
  * Templates:
  * - title => show position title
- * - excerpt => show excerpt configured by excerpt-parameter
+ * - excerpt => show detail configured by excerpt-parameter
  * - content => show language-specific content
  * - formular => show application-button
  *
@@ -38,39 +38,18 @@ add_action( 'init', 'personio_integration_frontend_init' );
  * @return string
  * @noinspection PhpMissingParamTypeInspection
  */
-function personio_integration_position_shortcode( $attributes = [] ): string
+function personio_integration_position_shortcode( $attributes = array() ): string
 {
     if( !is_array($attributes) ) {
-        $attributes = [];
+        $attributes = array();
     }
 
-    // define the default values for each attribute
-    $attribute_defaults = [
-        'personioid' => 0,
-        'lang' => helper::get_current_lang(),
-        'template' => '',
-        'templates' => implode(',', get_option('personioIntegrationTemplateContentDefaults', [])),
-        'excerpt' => implode(",", get_option('personioIntegrationTemplateExcerptDetail', [])),
-        'donotlink' => 1,
-        'styles' => '',
-        'classes' => ''
-    ];
-
-    // define the settings for each attribute (array or string)
-    $attribute_settings = [
-        'personioid' => 'int',
-        'lang' => 'string',
-        'templates' => 'array',
-        'excerpt' => 'array',
-        'donotlink' => 'bool',
-        'styles' => 'string',
-        'classes' => 'string'
-    ];
-    $personio_attributes = helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
+    // convert single shortcode attributes.
+    $personio_attributes = personio_integration_get_single_shortcode_attributes( $attributes );
 
     // do not output anything without ID
     if( $personio_attributes['personioid'] <= 0 ) {
-        if( get_option('personioIntegration_debug', 0) == 1 ) {
+        if( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
             return '<div><p>'.__('Detail-view called without the PersonioId of a position.', 'wp-personio-integration').'</p></div>';
         }
         return '';
@@ -82,7 +61,7 @@ function personio_integration_position_shortcode( $attributes = [] ): string
 
     // do not show this position if it is not valid or could not be loaded
     if( $position && !$position->isValid() || !$position ) {
-        if( get_option('personioIntegration_debug', 0) == 1 ) {
+        if( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
             return '<div><p>'.__('Given Id is not a valid position-Id.', 'wp-personio-integration').'</p></div>';
         }
         return "";
@@ -92,7 +71,7 @@ function personio_integration_position_shortcode( $attributes = [] ): string
     $position->lang = $personio_attributes['lang'];
 
     // change settings for output
-    $personio_attributes = apply_filters('personio_integration_get_template', $personio_attributes, $attribute_defaults);
+    $personio_attributes = apply_filters('personio_integration_get_template', $personio_attributes, personio_integration_get_single_shortcode_attributes_defaults() );
 
     // generate styling
     $styles = !empty($personio_attributes['styles']) ? $personio_attributes['styles'] : '';
@@ -113,7 +92,7 @@ function personio_integration_position_shortcode( $attributes = [] ): string
  * - filter => comma-separated list of filter which will be visible above the list, default: empty
  * - filtertype => sets the type of filter to use (select or linklist), default: select
  * - templates => comma-separated list of template to use, defaults to title and excerpt
- * - excerpt => comma-separated list of terms to display, defaults to recruitingCategory, schedule, office
+ * - excerpt => comma-separated list of details to display, defaults to recruitingCategory, schedule, office
  * - ids => comma-separated list of PositionIDs to display, default: empty
  * - sort => direction for sorting the resulting list (asc or desc), default: asc
  * - sortby => Field to be sorted by (title or date), default: title
@@ -131,7 +110,7 @@ function personio_integration_position_shortcode( $attributes = [] ): string
  *
  * Templates:
  * - title => show position title
- * - excerpt => show excerpt configured by excerpt-parameter
+ * - excerpt => show details configured by excerpt-parameter
  * - content => show language-specific content
  * - formular => show application-button
  *
@@ -268,7 +247,7 @@ function personio_integration_content_output( $content ): string
 add_filter( 'the_content', 'personio_integration_content_output', 5 );
 
 /**
- * Change output of excerpt in archive-pages for the custom post type of this plugin.
+ * Change output of detail in archive-pages for the custom post type of this plugin.
  *
  * @param $excerpt
  * @return string
@@ -379,7 +358,7 @@ function personio_integration_get_content( $position, $attributes ): void
         ?>
         <div class="entry-content">
             <?php
-            echo wp_kses_post($position->getContent());
+                echo wp_kses_post($position->getContent());
             ?>
         </div>
         <?php
@@ -398,22 +377,29 @@ add_action( 'personio_integration_get_content', 'personio_integration_get_conten
  */
 function personio_integration_get_formular( $position, $attributes ): void
 {
+    // convert attributes.
+    $attributes = personio_integration_get_single_shortcode_attributes( $attributes );
+
     $textPosition = 'archive';
     if( is_single() ) {
         $textPosition = 'single';
     }
 
-    // set back to list-link
+    // set back to list-link.
     $back_to_list_url = get_option('personioIntegrationTemplateBackToListUrl', '');
     if( empty($back_to_list_url) ) {
         $back_to_list_url = get_post_type_archive_link(WP_PERSONIO_INTEGRATION_CPT);
     }
 
+    // reset back to list-link.
     if( get_option('personioIntegrationTemplateBackToListButton', 0) == 0 || $textPosition == 'archive' || (isset($attributes['show_back_to_list']) && empty($attributes['show_back_to_list'])) ) {
         $back_to_list_url = '';
     }
 
-    // get template
+    // generate styling.
+    $styles = !empty($attributes['styles']) ? $attributes['styles'] : '';
+
+    // get template.
     include helper::getTemplate('parts/properties-application-button.php');
 }
 add_action( 'personio_integration_get_formular', 'personio_integration_get_formular', 10, 2 );
@@ -579,7 +565,7 @@ add_filter( 'personio_integration_get_shortcode_attributes', 'personio_integrati
  * @param $values
  * @return array
  */
-function personio_integration_get_shortcode_attributes( $values ): array
+function personio_integration_check_taxonomies( $values ): array
 {
     // check each taxonomy if it is used as restriction for this list
     foreach (apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy) {
@@ -601,7 +587,48 @@ function personio_integration_get_shortcode_attributes( $values ): array
         'attributes' => $values['attributes']
     ];
 }
-add_filter( 'personio_integration_get_shortcode_attributes', 'personio_integration_get_shortcode_attributes', 10, 1);
+add_filter( 'personio_integration_get_shortcode_attributes', 'personio_integration_check_taxonomies', 10, 1);
+
+/**
+ * Return attribute defaults for shortcode in single-view.
+ *
+ * @return array
+ */
+function personio_integration_get_single_shortcode_attributes_defaults(): array {
+    return array(
+        'personioid' => 0,
+        'lang' => helper::get_current_lang(),
+        'template' => '',
+        'templates' => implode(',', get_option('personioIntegrationTemplateContentDefaults', array() )),
+        'excerpt' => implode(",", get_option('personioIntegrationTemplateExcerptDetail', array() )),
+        'donotlink' => 1,
+        'styles' => '',
+        'classes' => ''
+    );
+}
+
+/**
+ * Convert attributes for shortcodes.
+ *
+ * @param $attributes
+ * @return array
+ */
+function personio_integration_get_single_shortcode_attributes( $attributes ): array {
+    // define the default values for each attribute
+    $attribute_defaults = personio_integration_get_single_shortcode_attributes_defaults();
+
+    // define the settings for each attribute (array or string)
+    $attribute_settings = [
+        'personioid' => 'int',
+        'lang' => 'string',
+        'templates' => 'array',
+        'excerpt' => 'array',
+        'donotlink' => 'bool',
+        'styles' => 'string',
+        'classes' => 'string'
+    ];
+    return helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
+}
 
 /**
  * Extend the WP-own search.

@@ -362,7 +362,7 @@ function personio_integration_admin_template_labels(): array
 {
     return apply_filters('personio_integration_admin_template_labels', [
         'title' => esc_html__('title', 'wp-personio-integration'),
-        'excerpt' => esc_html__('excerpt', 'wp-personio-integration'),
+        'excerpt' => esc_html__('details', 'wp-personio-integration'),
         'content' => esc_html__('content', 'wp-personio-integration'),
         'formular' => esc_html__('application link', 'wp-personio-integration')
     ]);

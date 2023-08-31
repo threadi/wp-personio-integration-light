@@ -1,11 +1,11 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
-	"name": "wp-personio-integration/application-button",
-	"version": "2.1.1",
-	"title": "Personio Position Application Button",
+	"name": "wp-personio-integration/details",
+	"version": "2.4.0",
+	"title": "Details",
 	"category": "widgets",
-	"description": "Provides a Gutenberg Block to show the application button for single position.",
+	"description": "Provides a Gutenberg Block for details of a single position managed by Personio.",
 	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {
 		"color": {
@@ -38,6 +38,18 @@
 		},
 		"blockId": {
 			"type": "string"
+		},
+		"excerptTemplates": {
+			"type": "array",
+			"default": ["recruitingCategory","schedule","office"]
+		},
+		"colon": {
+			"type": "boolean",
+			"default": true
+		},
+		"wrap": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 	"example": {

@@ -22,7 +22,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 - manual or automatic import of open positions
 - import of positions in German and English
-- output via 2 Gutenberg blocks, 2 classic widgets or via individual [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
+- output via 7 blocks for Block Editor, 2 classic widgets or via individual [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
 - search engine indexable output (SEO) of list views and open positions
 - open position (job description) under website's own URL
 - data protection friendly, as no applicant data is collected and stored
@@ -258,11 +258,16 @@ Yes, it is without any further settings.
 * Fixed some typos in texts
 
 = 2.4.0 =
+* Added new block for position details in Block Editor, usable on single page
+* Added new block for position description in Block Editor, usable on single page
 * Added support for accessibility with aria-labels (regarding WCAG)
 * Added hints on all links which open new windows that they open new windows (regarding WCAG)
 * Added hook personio_integration_delete_single_position for individual manipulation of the deletion of single positions during import
 * Added hint to review plugin every 90 days
 * Added option on hook for filetypes on list block
-* Optimized handling of tabs in settings
-* Updated import handling of Personio-URL is not available
+* Optimized handling of tabs in settings-page
+* Renamed excerpt to detail for compatibility with Personio wording
+* Updated import handling if Personio-URL is not available
 * Updated translations
+* Updated Block Editor single template
+* Fixed reading of employment type
