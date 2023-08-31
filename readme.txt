@@ -270,4 +270,5 @@ Yes, it is without any further settings.
 * Updated import handling if Personio-URL is not available
 * Updated translations
 * Updated Block Editor single template
+* Updated dependencies for Gutenberg-scripts
 * Fixed reading of employment type
