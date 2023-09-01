@@ -89,11 +89,12 @@ add_action( 'admin_enqueue_scripts', 'personio_integration_add_styles_and_js_adm
  */
 function personio_integration_add_dashboard_widgets(): void
 {
-    // only if Personio URL is available
+    // only if Personio URL is available.
     if( !helper::is_personioUrl_set() ) {
         return;
     }
 
+    // add dashboard widget to show the newest imported positions.
     wp_add_dashboard_widget(
         'dashboard_personio_integration_positions',
         __('Positions imported from Personio', 'wp-personio-integration'),
@@ -103,7 +104,7 @@ function personio_integration_add_dashboard_widgets(): void
         'high'
     );
 }
-add_action( 'wp_dashboard_setup', 'personio_integration_add_dashboard_widgets' );
+add_action( 'wp_dashboard_setup', 'personio_integration_add_dashboard_widgets', 10 );
 
 /**
  * Output the contents of the dashboard widget
@@ -113,24 +114,26 @@ add_action( 'wp_dashboard_setup', 'personio_integration_add_dashboard_widgets' )
 function personio_integration_dashboard_widget_function( $post, $callback_args ): void
 {
     $positionsObj = Positions::get_instance();
-    $positionsList = $positionsObj->getPositions(3);
+    remove_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
+    $positionsList = $positionsObj->getPositions(3, array('sortby' => 'date', 'sort' => 'DESC'));
+    add_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
     if( count($positionsList) == 0 ) {
         echo '<p>'.__('Actually there are no positions imported from Personio.', 'wp-personio-integration').'</p>';
     }
     else {
-        $link = esc_url( add_query_arg(
-            [
+        $link = add_query_arg(
+            array(
                 'post_type' => WP_PERSONIO_INTEGRATION_CPT
-            ],
+            ),
             get_admin_url() . 'edit.php'
-        ) );
+        );
 
         ?><ul class="personio_positions"><?php
         foreach( $positionsList as $position ) {
-            ?><li><a href="<?php echo get_permalink($position->ID); ?>"><?php echo esc_html($position->getTitle()); ?></a></li><?php
+            ?><li><a href="<?php echo esc_url(get_permalink($position->ID)); ?>"><?php echo esc_html($position->getTitle()); ?></a></li><?php
         }
         ?></ul><?php
-        ?><p><a href="<?php echo esc_url($link); ?>"><?php  _e('Show all positions', 'wp-personio-integration'); ?></a></p><?php
+        ?><p><a href="<?php echo esc_url($link); ?>"><?php echo sprintf(esc_html__('Show all %1$d positions', 'wp-personio-integration'), get_option( WP_PERSONIO_OPTION_COUNT, 0 ) ); ?></a></p><?php
     }
 }
 

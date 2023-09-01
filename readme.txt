@@ -265,6 +265,7 @@ Yes, it is without any further settings.
 * Added hook personio_integration_delete_single_position for individual manipulation of the deletion of single positions during import
 * Added hint to review plugin every 90 days
 * Added option on hook for filetypes on list block
+* Extended the Dashboard widget where the newest imported positions are mentioned
 * Optimized handling of tabs in settings-page
 * Renamed excerpt to detail for compatibility with Personio wording
 * Updated import handling if Personio-URL is not available
