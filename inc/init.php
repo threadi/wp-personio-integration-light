@@ -34,9 +34,9 @@ function personio_integration_add_position_posttype(): void
         'menu_name'           => __( 'Positions', 'wp-personio-integration'),
         'parent_item_colon'   => __( 'Parent Position', 'wp-personio-integration'),
         'all_items'           => __( 'All Positions', 'wp-personio-integration'),
-        'view_item'           => __( 'View Position', 'wp-personio-integration'),
+        'view_item'           => __( 'View Position in frontend', 'wp-personio-integration'),
         'view_items'          => __( 'View Positions', 'wp-personio-integration'),
-        'edit_item'          => __( 'View Position', 'wp-personio-integration' ),
+        'edit_item'           => __( 'View Position in backend', 'wp-personio-integration' ),
         'search_items'        => __( 'Search Position', 'wp-personio-integration'),
         'not_found'           => __( 'Not Found', 'wp-personio-integration'),
         'not_found_in_trash'  => __( 'Not found in Trash', 'wp-personio-integration')

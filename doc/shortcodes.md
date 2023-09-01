@@ -44,7 +44,7 @@ The parameters in the shortcodes have the following tasks:
 * defines which filters are displayed
 * available values are specified comma separated:
   * office 
-  * recruitingCategory => for the category
+  * recruitingCategory
   * occupationCategory
   * department
   * employmenttype
@@ -76,7 +76,7 @@ The parameters in the shortcodes have the following tasks:
 * defines which categories will be displayed as excerpt at the position
 * available values are specified comma separated:
   * office
-  * recruitingCategory => for the category
+  * recruitingCategory
   * occupationCategory
   * department
   * employmenttype
@@ -119,7 +119,7 @@ The parameters in the shortcodes have the following tasks:
 * groups the list of jobs by one of the properties
 * available values are:
   * office
-  * recruitingCategory => for the category
+  * recruitingCategory
   * occupationCategory
   * department
   * employmenttype

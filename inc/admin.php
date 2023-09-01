@@ -133,6 +133,7 @@ function personio_integration_dashboard_widget_function( $post, $callback_args )
             ?><li><a href="<?php echo esc_url(get_permalink($position->ID)); ?>"><?php echo esc_html($position->getTitle()); ?></a></li><?php
         }
         ?></ul><?php
+        /* translators: %1$d will be replaced by the count of positions */
         ?><p><a href="<?php echo esc_url($link); ?>"><?php echo sprintf(esc_html__('Show all %1$d positions', 'wp-personio-integration'), get_option( WP_PERSONIO_OPTION_COUNT, 0 ) ); ?></a></p><?php
     }
 }
