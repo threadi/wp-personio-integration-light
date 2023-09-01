@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2023-08-31T17:43:24+02:00\n"
-"PO-Revision-Date: 2023-08-31 18:14+0200\n"
+"POT-Creation-Date: 2023-09-01T15:42:37+02:00\n"
+"PO-Revision-Date: 2023-09-01 15:43+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -270,102 +270,100 @@ msgstr ""
 "plugins/personio-integration-light/#reviews\" target=\"_blank\">eine "
 "Bewertung (öffnet neues Fenster)</a>."
 
-#: classes/class-helper.php:403 blocks/list/build/index.js:208
-#: blocks/list/build/index.js:145
+#: classes/class-helper.php:403 blocks/list/build/index.js:1
 msgid "select-box"
 msgstr "Auswahl-Box"
 
-#: classes/class-helper.php:404 blocks/list/build/index.js:205
-#: blocks/list/build/index.js:144
+#: classes/class-helper.php:404 blocks/list/build/index.js:1
 msgid "list of links"
 msgstr "Linkliste"
 
 #: classes/class-helper.php:713
 msgctxt "taxonomy general name"
-msgid "recruiting categories"
+msgid "Categories"
 msgstr "Kategorien"
 
 #: classes/class-helper.php:714
 msgctxt "taxonomy singular name"
-msgid "recruiting category"
+msgid "Category"
 msgstr "Kategorie"
 
 #: classes/class-helper.php:715
-msgid "Search recruiting category"
+msgid "Search category"
 msgstr "Suche nach Kategorie"
 
 #: classes/class-helper.php:716
-msgid "Edit recruiting category"
+msgid "Edit category"
 msgstr "Kategorie bearbeiten"
 
 #: classes/class-helper.php:717
-msgid "Update recruiting category"
+msgid "Update category"
 msgstr "Kategorie aktualisieren"
 
 #: classes/class-helper.php:718
-msgid "recruiting categories"
+msgid "Categories"
 msgstr "Kategorien"
 
 #: classes/class-helper.php:721
 msgctxt "taxonomy general name"
-msgid "occupation categories"
-msgstr "Berufsarten"
+msgid "Job types"
+msgstr "Stellentypen"
 
 #: classes/class-helper.php:722
 msgctxt "taxonomy singular name"
-msgid "occupation category"
-msgstr "Berufsart"
+msgid "Job type"
+msgstr "Stellentyp"
 
 #: classes/class-helper.php:723
-msgid "Search occupation category"
-msgstr "Suche nach Berufsart"
+msgid "Search Job type"
+msgstr "Suche nach Stellentyp"
 
 #: classes/class-helper.php:724
-msgid "Edit occupation category"
-msgstr "Berufsart bearbeiten"
+msgid "Edit Job type"
+msgstr "Bearbeite Stellentyp"
 
 #: classes/class-helper.php:725
-msgid "Update occupation category"
-msgstr "Berufsart aktualisieren"
+msgid "Update Job type"
+msgstr "Aktualisiere Stellentyp"
 
 #: classes/class-helper.php:726
-msgid "occupation categories"
-msgstr "Berufsarten"
+msgid "Job types"
+msgstr "Stellentypen"
 
 #: classes/class-helper.php:729
 msgctxt "taxonomy general name"
-msgid "offices"
+msgid "Locations"
 msgstr "Standorte"
 
 #: classes/class-helper.php:730
 msgctxt "taxonomy singular name"
-msgid "office"
+msgid "Location"
 msgstr "Standort"
 
 #: classes/class-helper.php:731
-msgid "Search office"
-msgstr "Suchen Standort"
+msgid "Search location"
+msgstr "Suche nach Standorten"
 
 #: classes/class-helper.php:732
-msgid "Edit office"
-msgstr "Bearbeite Standort"
+msgid "Edit location"
+msgstr "Standort bearbeiten"
 
 #: classes/class-helper.php:733
-msgid "Update office"
-msgstr "Aktualisiere Standort"
+msgid "Update location"
+msgstr "Standort aktualisieren"
 
 #: classes/class-helper.php:734
-msgid "offices"
+msgid "Locations"
 msgstr "Standorte"
 
 #: classes/class-helper.php:737
 msgctxt "taxonomy general name"
-msgid "departments"
+msgid "Departments"
 msgstr "Abteilungen"
 
 #: classes/class-helper.php:738
 msgctxt "taxonomy singular name"
-msgid "department"
+msgid "Department"
 msgstr "Abteilung"
 
 #: classes/class-helper.php:739
@@ -381,17 +379,17 @@ msgid "Update department"
 msgstr "Aktualisierung Abteilung"
 
 #: classes/class-helper.php:742
-msgid "departments"
+msgid "Departments"
 msgstr "Abteilungen"
 
 #: classes/class-helper.php:745
 msgctxt "taxonomy general name"
-msgid "employment types"
+msgid "Employment types"
 msgstr "Anstellungsarten"
 
 #: classes/class-helper.php:746
 msgctxt "taxonomy singular name"
-msgid "employment type"
+msgid "Employment type"
 msgstr "Anstellungsart"
 
 #: classes/class-helper.php:747
@@ -406,98 +404,96 @@ msgstr "Bearbeite Anstellungsart"
 msgid "Update employment type"
 msgstr "Aktualisiere Anstellungsart"
 
-#: classes/class-helper.php:750 inc/init.php:347
-msgid "employment types"
+#: classes/class-helper.php:750
+msgid "Employment types"
 msgstr "Anstellungsarten"
 
 #: classes/class-helper.php:753
 msgctxt "taxonomy general name"
-msgid "seniority"
-msgstr "Dienstalter"
+msgid "Experiences"
+msgstr "Erfahrungen"
 
 #: classes/class-helper.php:754
 msgctxt "taxonomy singular name"
-msgid "seniority"
-msgstr "Dienstalter"
+msgid "Experience"
+msgstr "Erfahrung"
 
 #: classes/class-helper.php:755
-msgid "Search seniority"
-msgstr "Suche nach Dienstalter"
+msgid "Search Experience"
+msgstr "Suche nach Erfahrung"
 
 #: classes/class-helper.php:756
-msgid "Edit seniority"
-msgstr "Bearbeite Dienstalter"
+msgid "Edit Experience"
+msgstr "Bearbeite Erfahrung"
 
 #: classes/class-helper.php:757
-msgid "Update seniority"
-msgstr "Aktualisiere Dienstalter"
+msgid "Update Experience"
+msgstr "Aktualisiere Erfahrung"
 
-#: classes/class-helper.php:758 inc/init.php:348
-#: blocks/details/build/index.js:248 blocks/show/build/index.js:288
-#: blocks/details/build/index.js:164 blocks/show/build/index.js:218
-msgid "seniority"
-msgstr "Dienstalter"
+#: classes/class-helper.php:758
+msgid "Experiences"
+msgstr "Erfahrungen"
 
 #: classes/class-helper.php:761
 msgctxt "taxonomy general name"
-msgid "schedules"
-msgstr "Arbeitszeiten"
+msgid "Contract types"
+msgstr "Vertragstypen"
 
 #: classes/class-helper.php:762
 msgctxt "taxonomy singular name"
-msgid "schedule"
-msgstr "Arbeitszeit"
+msgid "Contract type"
+msgstr "Vertragstyp"
 
 #: classes/class-helper.php:763
-msgid "Search schedule"
-msgstr "Suche nach Arbeitszeit"
+msgid "Search Contract type"
+msgstr "Suche nach Vertragstyp"
 
 #: classes/class-helper.php:764
-msgid "Edit schedule"
-msgstr "Bearbeite Arbeitszeit"
+msgid "Edit Contract type"
+msgstr "Bearbeite Vertragstyp"
 
 #: classes/class-helper.php:765
-msgid "Update schedule"
-msgstr "Aktualisiere Arbeitszeit"
+msgid "Update Contract type"
+msgstr "Aktualisiere Vertragstyp"
 
 #: classes/class-helper.php:766
-msgid "schedules"
-msgstr "Arbeitszeiten"
+msgid "Contract types"
+msgstr "Vertragstypen"
 
 #: classes/class-helper.php:769
 msgctxt "taxonomy general name"
-msgid "experiences"
-msgstr "Berufserfahrungen"
+msgid "Years of experiences"
+msgstr "Berufserfahrung in Jahren"
 
 #: classes/class-helper.php:770
 msgctxt "taxonomy singular name"
-msgid "experience"
-msgstr "Berufserfahrung"
+msgid "Years of experience"
+msgstr "Berufserfahrung in Jahren"
 
 #: classes/class-helper.php:771
-msgid "Search experience"
-msgstr "Suche nach Berufserfahrung"
+msgid "Search years of experience"
+msgstr "Suche nach Berufserfahrung in Jahren"
 
 #: classes/class-helper.php:772
-msgid "Edit experience"
-msgstr "Bearbeite Berufserfahrung"
+msgid "Edit years of experience"
+msgstr "Bearbeite Berufserfahrung in Jahren"
 
 #: classes/class-helper.php:773
-msgid "Update experience"
-msgstr "Aktualisiere Berufserfahrung"
+msgid "Update years of experience"
+msgstr "Aktualisiere Berufserfahrung in Jahren"
 
 #: classes/class-helper.php:774
-msgid "experiences"
-msgstr "Berufserfahrungen"
+msgid "Years of experiences"
+msgstr "Suche nach Berufserfahrung in Jahren"
 
 #: classes/class-helper.php:777
 msgctxt "taxonomy general name"
-msgid "languages"
+msgid "Languages"
 msgstr "Sprachen"
 
 #: classes/class-helper.php:778
 msgctxt "taxonomy singular name"
-msgid "language"
+msgid "Language"
 msgstr "Sprache"
 
 #: classes/class-helper.php:779
@@ -513,25 +509,25 @@ msgid "Update language"
 msgstr "Aktualisiere Sprache"
 
 #: classes/class-helper.php:782
-msgid "languages"
+msgid "Languages"
 msgstr "Sprachen"
 
 #: classes/class-helper.php:785
 msgctxt "taxonomy general name"
-msgid "keywords"
+msgid "Keywords"
 msgstr "Stichwörter"
 
 #: classes/class-helper.php:786
 msgctxt "taxonomy singular name"
-msgid "keyword"
+msgid "Keyword"
 msgstr "Stichwort"
 
 #: classes/class-helper.php:787
-msgid "Search keywords"
+msgid "Search Keywords"
 msgstr "Suche nach Stichwort"
 
 #: classes/class-helper.php:788
-msgid "Edit keyword"
+msgid "Edit Keyword"
 msgstr "Bearbeite Stichwort"
 
 #: classes/class-helper.php:789
@@ -539,7 +535,7 @@ msgid "Update keyword"
 msgstr "Aktualisiere Stichwort"
 
 #: classes/class-helper.php:790
-msgid "keywords"
+msgid "Keywords"
 msgstr "Stichwörter"
 
 #: classes/class-helper.php:818
@@ -648,7 +644,7 @@ msgid "state"
 msgstr "Status"
 
 #: classes/class-logs.php:43 classes/class-positionswidget.php:57
-#: blocks/list/build/index.js:287 blocks/list/build/index.js:228
+#: blocks/list/build/index.js:1
 msgid "date"
 msgstr "Datum"
 
@@ -671,12 +667,11 @@ msgstr ""
 "Stellt ein Widget zur Verfügung, um eine Liste der von Stellen anzuzeigen."
 
 #: classes/class-positionswidget.php:24 inc/init.php:303
-#: blocks/list/build/index.js:385 blocks/list/build/index.js:322
+#: blocks/list/build/index.js:1
 msgid "Personio Positions"
 msgstr "Personio Stellen"
 
-#: classes/class-positionswidget.php:39 blocks/list/build/index.js:261
-#: blocks/list/build/index.js:205
+#: classes/class-positionswidget.php:39 blocks/list/build/index.js:1
 msgid "amount"
 msgstr "Anzahl"
 
@@ -684,28 +679,24 @@ msgstr "Anzahl"
 msgid "Sort Direction"
 msgstr "Sortierrichtung"
 
-#: classes/class-positionswidget.php:47 blocks/list/build/index.js:273
-#: blocks/list/build/index.js:218
+#: classes/class-positionswidget.php:47 blocks/list/build/index.js:1
 msgid "ascending"
 msgstr "aufsteigend"
 
-#: classes/class-positionswidget.php:48 blocks/list/build/index.js:276
-#: blocks/list/build/index.js:219
+#: classes/class-positionswidget.php:48 blocks/list/build/index.js:1
 msgid "descending"
 msgstr "absteigend"
 
-#: classes/class-positionswidget.php:53 blocks/list/build/index.js:281
-#: blocks/list/build/index.js:224
+#: classes/class-positionswidget.php:53 blocks/list/build/index.js:1
 msgid "Sort by"
 msgstr "Sortieren nach"
 
 #: classes/class-positionswidget.php:56 inc/init.php:364
-#: blocks/list/build/index.js:284 blocks/list/build/index.js:227
+#: blocks/list/build/index.js:1
 msgid "title"
 msgstr "Titel"
 
-#: classes/class-positionswidget.php:62 blocks/list/build/index.js:292
-#: blocks/list/build/index.js:233
+#: classes/class-positionswidget.php:62 blocks/list/build/index.js:1
 msgid "Group by"
 msgstr "Gruppieren nach"
 
@@ -714,7 +705,7 @@ msgid "ungrouped"
 msgstr "nicht gruppiert"
 
 #: classes/class-positionswidget.php:68 classes/class-positionwidget.php:53
-#: blocks/list/build/index.js:297 blocks/list/build/index.js:239
+#: blocks/list/build/index.js:1
 msgid "Show title"
 msgstr "Zeige Titel an"
 
@@ -735,7 +726,7 @@ msgid "Hide"
 msgstr "Verstecken"
 
 #: classes/class-positionswidget.php:77 classes/class-positionwidget.php:62
-#: blocks/show/build/index.js:261 blocks/show/build/index.js:194
+#: blocks/show/build/index.js:1
 msgid "link title"
 msgstr "verlinke den Titel"
 
@@ -759,13 +750,11 @@ msgstr "Zeige Link zum Bewerbungsformular an"
 msgid "Provides a Widget to show a single position provided by Personio."
 msgstr "Stellt ein Widget zur Verfügung, um eine einzelne Stelle anzuzeigen."
 
-#: classes/class-positionwidget.php:24 blocks/show/build/index.js:370
-#: blocks/show/build/index.js:286
+#: classes/class-positionwidget.php:24 blocks/show/build/index.js:1
 msgid "Personio Position"
 msgstr "Personio Stelle"
 
-#: classes/class-positionwidget.php:47 blocks/show/build/index.js:251
-#: blocks/show/build/index.js:182
+#: classes/class-positionwidget.php:47 blocks/show/build/index.js:1
 msgid "Select position"
 msgstr "Anzuzeigende Stelle wählen"
 
@@ -815,52 +804,52 @@ msgstr ""
 msgid "OK"
 msgstr "OK"
 
-#: inc/admin.php:99
+#: inc/admin.php:100
 msgid "Positions imported from Personio"
 msgstr "Von Personio importierte Stellen"
 
-#: inc/admin.php:118
+#: inc/admin.php:121
 msgid "Actually there are no positions imported from Personio."
 msgstr "Derzeit gibt es keine aus Personio importierten Stellen."
 
-#: inc/admin.php:133
-msgid "Show all positions"
-msgstr "Zeige alle Stellen"
+#. translators: %1$d will be replaced by the count of positions
+#: inc/admin.php:137
+msgid "Show all %1$d positions"
+msgstr "Zeige alle %1$d Stellen"
 
-#: inc/admin.php:190
+#: inc/admin.php:194
 msgid "Dismiss this notice."
 msgstr "Hinweis ausblenden."
 
-#: inc/admin.php:220 inc/admin.php:806
+#: inc/admin.php:224 inc/admin.php:810
 msgid "PersonioID"
 msgstr "PersonioID"
 
-#: inc/admin.php:268 inc/settings/settings.php:81
-#: blocks/details/build/index.js:229 blocks/list/build/index.js:259
-#: blocks/show/build/index.js:249 blocks/details/build/index.js:153
-#: blocks/list/build/index.js:203 blocks/show/build/index.js:180
+#: inc/admin.php:272 inc/settings/settings.php:81
+#: blocks/details/build/index.js:1 blocks/list/build/index.js:1
+#: blocks/show/build/index.js:1
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: inc/admin.php:355
+#: inc/admin.php:359
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: inc/admin.php:795
+#: inc/admin.php:799
 msgid "Show Personio position data"
 msgstr "Zeige Daten dieser Stelle"
 
-#: inc/admin.php:807
+#: inc/admin.php:811
 msgid "Title"
 msgstr "Titel"
 
-#: inc/admin.php:808 blocks/description/build/index.js:250
-#: blocks/description/src/index.js:37 blocks/description/build/index.js:160
+#: inc/admin.php:812 blocks/description/build/index.js:1
+#: blocks/description/src/index.js:37
 msgid "Description"
 msgstr "Beschreibung"
 
 #. translators: %1$s will be replaced by the URL for Personio
-#: inc/admin.php:828
+#: inc/admin.php:832
 msgid ""
 "At this point we show you the imported data of your open position <i>%1$s</"
 "i>. Please edit the job details in your <a href=\"%2$s\" target=\"_blank"
@@ -870,7 +859,7 @@ msgstr ""
 "<i>%1$s</i>. Bitte bearbeite die Stellen-Daten in deinem <a href=\"%2$s\" "
 "target=\"_blank\">Personio-Konto (öffnet neues Fenster)</a>."
 
-#: inc/admin.php:879
+#: inc/admin.php:883
 msgid "No data"
 msgstr "Keine Daten"
 
@@ -899,13 +888,17 @@ msgstr "Eltern Stelle"
 msgid "All Positions"
 msgstr "Alle offene Stellen"
 
-#: inc/init.php:37 inc/init.php:39
-msgid "View Position"
-msgstr "Zeige Stelle an"
+#: inc/init.php:37
+msgid "View Position in frontend"
+msgstr "Zeige Stelle im Frontend"
 
 #: inc/init.php:38
 msgid "View Positions"
 msgstr "Zeige Stellen an"
+
+#: inc/init.php:39
+msgid "View Position in backend"
+msgstr "Zeige Stelle im Backend"
 
 #: inc/init.php:40
 msgid "Search Position"
@@ -923,39 +916,42 @@ msgstr "In Papierkorb nicht gefunden"
 msgid "every 5th Minute"
 msgstr "jede 5. Minute"
 
-#: inc/init.php:343 blocks/details/build/index.js:236
-#: blocks/show/build/index.js:276 blocks/details/build/index.js:160
-#: blocks/show/build/index.js:212
+#: inc/init.php:343 blocks/details/build/index.js:1
+#: blocks/show/build/index.js:1
 msgid "recruiting category"
 msgstr "Kategorie"
 
-#: inc/init.php:344 blocks/details/build/index.js:239
-#: blocks/show/build/index.js:279 blocks/details/build/index.js:161
-#: blocks/show/build/index.js:215
+#: inc/init.php:344 blocks/details/build/index.js:1
+#: blocks/show/build/index.js:1
 msgid "schedule"
 msgstr "Arbeitszeit"
 
-#: inc/init.php:345 blocks/details/build/index.js:242
-#: blocks/show/build/index.js:282 blocks/details/build/index.js:162
-#: blocks/show/build/index.js:216
+#: inc/init.php:345 blocks/details/build/index.js:1
+#: blocks/show/build/index.js:1
 msgid "office"
 msgstr "Standort"
 
-#: inc/init.php:346 blocks/details/build/index.js:245
-#: blocks/show/build/index.js:285 blocks/details/build/index.js:163
-#: blocks/show/build/index.js:217
+#: inc/init.php:346 blocks/details/build/index.js:1
+#: blocks/show/build/index.js:1
 msgid "department"
 msgstr "Abteilung"
 
-#: inc/init.php:349 blocks/details/build/index.js:251
-#: blocks/show/build/index.js:291 blocks/details/build/index.js:165
-#: blocks/show/build/index.js:219
+#: inc/init.php:347
+msgid "employment types"
+msgstr "Anstellungsarten"
+
+#: inc/init.php:348 blocks/details/build/index.js:1
+#: blocks/show/build/index.js:1
+msgid "seniority"
+msgstr "Dienstalter"
+
+#: inc/init.php:349 blocks/details/build/index.js:1
+#: blocks/show/build/index.js:1
 msgid "experience"
 msgstr "Berufserfahrung"
 
-#: inc/init.php:350 blocks/details/build/index.js:254
-#: blocks/show/build/index.js:294 blocks/details/build/index.js:166
-#: blocks/show/build/index.js:220
+#: inc/init.php:350 blocks/details/build/index.js:1
+#: blocks/show/build/index.js:1
 msgid "occupation"
 msgstr "Beschäftigung"
 
@@ -972,7 +968,7 @@ msgid "application link"
 msgstr "Link zum Bewerbungsformular"
 
 #: inc/init.php:556 templates/parts/term-filter-select.php:15
-#: blocks/show/build/index.js:223 blocks/show/build/index.js:157
+#: blocks/show/build/index.js:1
 msgid "Please choose"
 msgstr "Bitte wählen"
 
@@ -1287,10 +1283,8 @@ msgstr ""
 "Stellen. Diese Einstellung wird durch individuelle Einstellungen an den "
 "Blöcken oder Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
 
-#: inc/settings/templates.php:185 blocks/details/build/index.js:233
-#: blocks/list/build/index.js:311 blocks/show/build/index.js:273
-#: blocks/details/build/index.js:157 blocks/list/build/index.js:256
-#: blocks/show/build/index.js:208
+#: inc/settings/templates.php:185 blocks/details/build/index.js:1
+#: blocks/list/build/index.js:1 blocks/show/build/index.js:1
 msgid "Choose details"
 msgstr "Wähle Stellendetails"
 
@@ -1338,10 +1332,8 @@ msgstr "Es wurden keine Stellen gefunden."
 msgid "Filter for positions"
 msgstr "Filter für Stellen"
 
-#: templates/parts/part-filter.php:21 blocks/filter-list/build/index.js:226
-#: blocks/filter-select/build/index.js:226 blocks/list/build/index.js:238
-#: blocks/filter-list/build/index.js:156
-#: blocks/filter-select/build/index.js:155 blocks/list/build/index.js:175
+#: templates/parts/part-filter.php:21 blocks/filter-list/build/index.js:1
+#: blocks/filter-select/build/index.js:1 blocks/list/build/index.js:1
 msgid "Filter"
 msgstr "Filter"
 
@@ -1367,13 +1359,11 @@ msgstr "Für diese Stelle bewerben"
 msgid "back to list"
 msgstr "zurück zur Liste"
 
-#: blocks/application-button/build/index.js:131
-#: blocks/application-button/build/index.js:90
+#: blocks/application-button/build/index.js:1
 msgid "Personio Application link"
 msgstr "Personio Bewerbungslink"
 
-#: blocks/application-button/build/index.js:132
-#: blocks/application-button/build/index.js:91
+#: blocks/application-button/build/index.js:1
 msgid ""
 "Provides a Gutenberg Block to show the application button for single "
 "position."
@@ -1381,8 +1371,7 @@ msgstr ""
 "Stellt einen Gutenberg-Block zur Verfügung, um den Bewerbungslink für eine "
 "einzelne Stelle anzuzeigen."
 
-#: blocks/description/build/index.js:251 blocks/description/src/index.js:38
-#: blocks/description/build/index.js:161
+#: blocks/description/build/index.js:1 blocks/description/src/index.js:38
 msgid ""
 "Provides a Gutenberg Block for the description of a single position managed "
 "by Personio."
@@ -1390,19 +1379,11 @@ msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe der Beschreibung einer Stelle, "
 "verwaltet bei Personio, bereit."
 
-#: blocks/details/build/index.js:260 blocks/details/build/index.js:174
-msgid "With colon"
-msgstr "Mit Doppelpunkt"
-
-#: blocks/details/build/index.js:264 blocks/details/build/index.js:179
-msgid "With line break"
-msgstr "Mit Zeilenumbruch"
-
-#: blocks/details/build/index.js:327 blocks/details/build/index.js:229
+#: blocks/details/build/index.js:1
 msgid "Details"
 msgstr "Stellendetails"
 
-#: blocks/details/build/index.js:328 blocks/details/build/index.js:230
+#: blocks/details/build/index.js:1
 msgid ""
 "Provides a Gutenberg Block to details of a single position managed by "
 "Personio."
@@ -1410,36 +1391,19 @@ msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer einzelnen Stelle, verwaltet "
 "bei Personio, bereit."
 
-#: blocks/filter-list/build/index.js:230
-#: blocks/filter-select/build/index.js:230 blocks/list/build/index.js:246
-#: blocks/filter-list/build/index.js:160
-#: blocks/filter-select/build/index.js:159 blocks/list/build/index.js:184
-msgid "Choose filter"
-msgstr "Wähle Filter"
+#: blocks/details/build/index.js:1
+msgid "With colon"
+msgstr "Mit Doppelpunkt"
 
-#: blocks/filter-list/build/index.js:236
-#: blocks/filter-select/build/index.js:236
-#: blocks/filter-list/build/index.js:169
-#: blocks/filter-select/build/index.js:168
-msgid "Hide filter title"
-msgstr "Verstecke den Filtertitel"
+#: blocks/details/build/index.js:1
+msgid "With line break"
+msgstr "Mit Zeilenumbruch"
 
-#: blocks/filter-list/build/index.js:240
-#: blocks/filter-select/build/index.js:244
-#: blocks/filter-list/build/index.js:174
-#: blocks/filter-select/build/index.js:178
-msgid "Hide reset link"
-msgstr "Verstecke den Zurücksetzen-Link"
-
-#: blocks/filter-list/build/index.js:246 blocks/filter-list/build/index.js:183
-msgid "Space between filters"
-msgstr "Abstand zwischen den Filtern"
-
-#: blocks/filter-list/build/index.js:311 blocks/filter-list/build/index.js:236
+#: blocks/filter-list/build/index.js:1
 msgid "Personio List Filter"
 msgstr "Personio Listenfilter"
 
-#: blocks/filter-list/build/index.js:312 blocks/filter-list/build/index.js:237
+#: blocks/filter-list/build/index.js:1
 msgid ""
 "Provides a Gutenberg block to show filter as link-based dropdown-list for "
 "Personio Positions."
@@ -1447,18 +1411,28 @@ msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Links zu Filtern "
 "von Stellen von Personio bereit."
 
-#: blocks/filter-select/build/index.js:240
-#: blocks/filter-select/build/index.js:173
-msgid "Hide submit button"
-msgstr "Verstecke den Absenden-Button"
+#: blocks/filter-list/build/index.js:1 blocks/filter-select/build/index.js:1
+#: blocks/list/build/index.js:1
+msgid "Choose filter"
+msgstr "Wähle Filter"
 
-#: blocks/filter-select/build/index.js:307
-#: blocks/filter-select/build/index.js:229
+#: blocks/filter-list/build/index.js:1 blocks/filter-select/build/index.js:1
+msgid "Hide filter title"
+msgstr "Verstecke den Filtertitel"
+
+#: blocks/filter-list/build/index.js:1 blocks/filter-select/build/index.js:1
+msgid "Hide reset link"
+msgstr "Verstecke den Zurücksetzen-Link"
+
+#: blocks/filter-list/build/index.js:1
+msgid "Space between filters"
+msgstr "Abstand zwischen den Filtern"
+
+#: blocks/filter-select/build/index.js:1
 msgid "Personio Select Filter"
 msgstr "Personio Select-Filter"
 
-#: blocks/filter-select/build/index.js:308
-#: blocks/filter-select/build/index.js:230
+#: blocks/filter-select/build/index.js:1
 msgid ""
 "Provides a Gutenberg block to show filter as dropdown-list for Personio "
 "Positions."
@@ -1466,59 +1440,62 @@ msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Select-Boxen zu "
 "Filtern von Stellen von Personio bereit."
 
-#: blocks/list/build/index.js:240 blocks/list/build/index.js:177
-msgid "Show filter"
-msgstr "Zeige Filter an"
+#: blocks/filter-select/build/index.js:1
+msgid "Hide submit button"
+msgstr "Verstecke den Absenden-Button"
 
-#: blocks/list/build/index.js:253 blocks/list/build/index.js:194
-msgid "Type of filter"
-msgstr "Filter-Typ"
-
-#: blocks/list/build/index.js:270 blocks/list/build/index.js:215
-msgid "Sort direction"
-msgstr "Sortierrichtung"
-
-#: blocks/list/build/index.js:301 blocks/list/build/index.js:244
-msgid "Link title"
-msgstr "Verlinke den Titel"
-
-#: blocks/list/build/index.js:305 blocks/show/build/index.js:266
-#: blocks/list/build/index.js:249 blocks/show/build/index.js:200
-msgid "show excerpt"
-msgstr "zeige Stellendetails"
-
-#: blocks/list/build/index.js:318 blocks/list/build/index.js:266
-msgid "View content"
-msgstr "Zeige Inhalt an"
-
-#: blocks/list/build/index.js:322 blocks/list/build/index.js:271
-msgid "View application link"
-msgstr "Zeige Link zum Bewerbungsformular an"
-
-#: blocks/list/build/index.js:386 blocks/list/build/index.js:323
+#: blocks/list/build/index.js:1
 msgid ""
 "Provides a Gutenberg Block to show a list of positions provided by Personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
 "Personio bereit."
 
-#: blocks/show/build/index.js:256 blocks/show/build/index.js:188
-msgid "show title"
-msgstr "zeige Titel an"
+#: blocks/list/build/index.js:1
+msgid "Show filter"
+msgstr "Zeige Filter an"
 
-#: blocks/show/build/index.js:301 blocks/show/build/index.js:229
-msgid "view content"
-msgstr "zeige Inhalt an"
+#: blocks/list/build/index.js:1
+msgid "Type of filter"
+msgstr "Filter-Typ"
 
-#: blocks/show/build/index.js:306 blocks/show/build/index.js:235
-msgid "view application link"
-msgstr "zeige Link zum Bewerbungsformular an"
+#: blocks/list/build/index.js:1
+msgid "Sort direction"
+msgstr "Sortierrichtung"
 
-#: blocks/show/build/index.js:371 blocks/show/build/index.js:287
+#: blocks/list/build/index.js:1
+msgid "Link title"
+msgstr "Verlinke den Titel"
+
+#: blocks/list/build/index.js:1 blocks/show/build/index.js:1
+msgid "show excerpt"
+msgstr "zeige Stellendetails"
+
+#: blocks/list/build/index.js:1
+msgid "View content"
+msgstr "Zeige Inhalt an"
+
+#: blocks/list/build/index.js:1
+msgid "View application link"
+msgstr "Zeige Link zum Bewerbungsformular an"
+
+#: blocks/show/build/index.js:1
 msgid "Provides a Gutenberg Block to show a position provided by personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
 "Personio bereit."
+
+#: blocks/show/build/index.js:1
+msgid "show title"
+msgstr "zeige Titel an"
+
+#: blocks/show/build/index.js:1
+msgid "view content"
+msgstr "zeige Inhalt an"
+
+#: blocks/show/build/index.js:1
+msgid "view application link"
+msgstr "zeige Link zum Bewerbungsformular an"
 
 #: blocks/application-button/block.json
 msgctxt "block title"
@@ -1638,6 +1615,99 @@ msgid "Provides a Gutenberg Block to show a position managed by Personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
 
+#~ msgctxt "taxonomy general name"
+#~ msgid "recruiting categories"
+#~ msgstr "Kategorien"
+
+#~ msgctxt "taxonomy singular name"
+#~ msgid "recruiting category"
+#~ msgstr "Kategorie"
+
+#~ msgid "recruiting categories"
+#~ msgstr "Kategorien"
+
+#~ msgctxt "taxonomy general name"
+#~ msgid "occupation categories"
+#~ msgstr "Berufsarten"
+
+#~ msgctxt "taxonomy singular name"
+#~ msgid "occupation category"
+#~ msgstr "Berufsart"
+
+#~ msgid "Search occupation category"
+#~ msgstr "Suche nach Berufsart"
+
+#~ msgid "occupation categories"
+#~ msgstr "Berufsarten"
+
+#~ msgctxt "taxonomy general name"
+#~ msgid "offices"
+#~ msgstr "Standorte"
+
+#~ msgctxt "taxonomy singular name"
+#~ msgid "office"
+#~ msgstr "Standort"
+
+#~ msgid "Search office"
+#~ msgstr "Suchen Standort"
+
+#~ msgid "Edit office"
+#~ msgstr "Bearbeite Standort"
+
+#~ msgid "Update office"
+#~ msgstr "Aktualisiere Standort"
+
+#~ msgid "offices"
+#~ msgstr "Standorte"
+
+#~ msgctxt "taxonomy general name"
+#~ msgid "seniority"
+#~ msgstr "Dienstalter"
+
+#~ msgctxt "taxonomy singular name"
+#~ msgid "seniority"
+#~ msgstr "Dienstalter"
+
+#~ msgid "Search seniority"
+#~ msgstr "Suche nach Dienstalter"
+
+#~ msgid "Edit seniority"
+#~ msgstr "Bearbeite Dienstalter"
+
+#~ msgid "Update seniority"
+#~ msgstr "Aktualisiere Dienstalter"
+
+#~ msgctxt "taxonomy general name"
+#~ msgid "schedules"
+#~ msgstr "Arbeitszeiten"
+
+#~ msgctxt "taxonomy singular name"
+#~ msgid "schedule"
+#~ msgstr "Arbeitszeit"
+
+#~ msgid "Search schedule"
+#~ msgstr "Suche nach Arbeitszeit"
+
+#~ msgid "Edit schedule"
+#~ msgstr "Bearbeite Arbeitszeit"
+
+#~ msgid "Update schedule"
+#~ msgstr "Aktualisiere Arbeitszeit"
+
+#~ msgid "schedules"
+#~ msgstr "Arbeitszeiten"
+
+#~ msgctxt "taxonomy general name"
+#~ msgid "keywords"
+#~ msgstr "Stichwörter"
+
+#~ msgctxt "taxonomy singular name"
+#~ msgid "keyword"
+#~ msgstr "Stichwort"
+
+#~ msgid "keywords"
+#~ msgstr "Stichwörter"
+
 #~ msgid "Show excerpt"
 #~ msgstr "Zeige Eigenschaften"
 
@@ -1661,9 +1731,6 @@ msgstr ""
 
 #~ msgid "view application form"
 #~ msgstr "zeige Link zum Bewerbungsformular an"
-
-#~ msgid "Keywords"
-#~ msgstr "Stichwörter"
 
 #~ msgid "Color settings"
 #~ msgstr "Farben"

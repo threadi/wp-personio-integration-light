@@ -80,13 +80,13 @@ export default function Edit( object ) {
 								label={__('Choose details', 'wp-personio-integration')}
 								value={object.attributes.excerptTemplates}
 								options={[
-									{label: __('recruiting category', 'wp-personio-integration'), value: 'recruitingCategory'},
-									{label: __('schedule', 'wp-personio-integration'), value: 'schedule'},
-									{label: __('office', 'wp-personio-integration'), value: 'office'},
-									{label: __('department', 'wp-personio-integration'), value: 'department'},
-									{label: __('seniority', 'wp-personio-integration'), value: 'seniority'},
-									{label: __('experience', 'wp-personio-integration'), value: 'experience'},
-									{label: __('occupation', 'wp-personio-integration'), value: 'occupation'}
+									{label: __('Category', 'wp-personio-integration'), value: 'recruitingCategory'},
+									{label: __('Contract type', 'wp-personio-integration'), value: 'schedule'},
+									{label: __('Location', 'wp-personio-integration'), value: 'office'},
+									{label: __('Department', 'wp-personio-integration'), value: 'department'},
+									{label: __('Experience', 'wp-personio-integration'), value: 'seniority'},
+									{label: __('Years of experience', 'wp-personio-integration'), value: 'experience'},
+									{label: __('Job type', 'wp-personio-integration'), value: 'occupation'}
 								]}
 								multiple={true}
 								onChange={value => onChangeExcerptTemplates(value, object)}
