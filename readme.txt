@@ -2,7 +2,7 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment
 Requires at least: 5.9.3
-Tested up to: 6.3
+Tested up to: 6.3.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -266,6 +266,7 @@ Yes, it is without any further settings.
 * Added hint to review plugin every 90 days
 * Added option on hook for filetypes on list block
 * Extended the Dashboard widget where the newest imported positions are mentioned
+* Compatibility with WordPress 6.3.1
 * Optimized handling of tabs in settings-page
 * Renamed excerpt to detail for compatibility with Personio wording
 * Updated import handling if Personio-URL is not available
