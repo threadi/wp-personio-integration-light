@@ -3,6 +3,7 @@
 use personioIntegration\cli;
 use personioIntegration\helper;
 use personioIntegration\Import;
+use personioIntegration\Log;
 
 /**
  * Add tab in settings.
@@ -171,19 +172,20 @@ add_action( 'admin_action_personioPositionsCancelImport', 'personio_integration_
 function personio_integration_admin_action_delete_positions(): void {
     check_ajax_referer( 'wp-personio-integration-delete', 'nonce' );
 
-    // do not delete positions if import is running atm
+    // do not delete positions if import is running atm.
     if( get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) == 0 ) {
-        // delete positions
-        (new cli())->deletePositions();
+        // delete positions.
+        $user = wp_get_current_user();
+        (new cli())->deletePositions( array( 'Delete all positions button', ' by '.$user->display_name ) );
 
-        // add hint
+        // add hint.
         set_transient('personio_integration_delete_run', 1);
     }
     else {
         set_transient('personio_integration_could_not_delete', 1);
     }
 
-    // redirect user
+    // redirect user.
     wp_redirect($_SERVER['HTTP_REFERER']);
 }
 add_action( 'admin_action_personioPositionsDelete', 'personio_integration_admin_action_delete_positions');

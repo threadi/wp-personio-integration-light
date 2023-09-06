@@ -154,42 +154,40 @@ class Position {
                 ]
             ];
             $results = new WP_Query($query);
-            $posts = [];
+            $posts = array();
             foreach( $results->posts as $postId ) {
-                // optional filter the post-ID
+                // optional filter the post-ID.
                 if( apply_filters('personio_integration_import_single_position_filter_existing', $postId, $this->lang) ) {
                     $posts[] = $postId;
                 }
             }
             if( count($posts) == 1 ) {
-                // get the post-id to update its data
+                // get the post-id to update its data.
                 $this->data['ID'] = $results->posts[0];
-                // get the menu_order to obtain its value during update
+                // get the menu_order to obtain its value during update.
                 $this->data['menu_order'] = get_post_field('menu_order', $results->posts[0]);
             }
             elseif( count($posts) > 1 ) {
-                // something is wrong
-                // -> delete all entries with this personioId
-                // -> it will be saved as new entry after this
+                // something is wrong.
+                // -> delete all entries with this personioId.
+                // -> it will be saved as new entry after this.
                 foreach( $posts as $postId ) {
                     wp_delete_post($postId);
                 }
 
-                // set ID to 0
+                // set ID to 0.
                 $this->data['ID'] = 0;
 
-                // log this event
-                if( false !== $this->_debug ) {
-                    $this->_log->addLog('PersonioId '.$this->data['personioId'].' existed in database multiple times. Cleanup done.', 'error');
-                }
+                // log this event.
+                $this->_log->addLog('PersonioId '.$this->data['personioId'].' existed in database multiple times. Cleanup done.', 'error');
             }
             else {
-                // set ID to 0
+                // set ID to 0.
                 $this->data['ID'] = 0;
             }
         }
         else {
-            // set ID to 0
+            // set ID to 0.
             $this->data['ID'] = 0;
         }
 

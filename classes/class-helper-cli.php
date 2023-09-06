@@ -9,23 +9,14 @@ trait helper_cli {
      *
      * @return void
      */
-    private function deletePositionsFromDb() {
+    private function deletePositionsFromDb(): void {
         $positionsObject = Positions::get_instance();
         $positions = $positionsObject->getPositions();
         $positionCount = count($positions);
         $progress = helper::isCLI() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local positions', $positionCount ) : false;
         foreach( $positions as $position ) {
-            // get personioId for log
-            $personioId = $position->getPersonioId();
-
-            // delete it
+            // delete it.
             wp_delete_post($position->ID, true);
-
-            // log in debug-mode
-            if( get_option('personioIntegration_debug', 0) == 1 ) {
-                $log = new Log();
-                $log->addLog('Position '.$personioId.' has been deleted.', 'success');
-            }
 
             // show progress
             !$progress ?: $progress->tick();
@@ -52,7 +43,7 @@ trait helper_cli {
      * @return void
      * @noinspection SqlResolve
      */
-    private function deleteTaxonomies()
+    private function deleteTaxonomies(): void
     {
         global $wpdb;
 
