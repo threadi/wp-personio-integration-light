@@ -6,7 +6,7 @@ Tested up to: 6.3.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 
 == Description ==
 
@@ -274,3 +274,6 @@ Yes, it is without any further settings.
 * Updated Block Editor single template
 * Updated dependencies for Gutenberg-scripts
 * Fixed reading of employment type
+
+= 2.4.1 =
+* Run import even if the Personio timestamp has not been changed but no positions are in local database

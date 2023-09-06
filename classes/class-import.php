@@ -70,6 +70,10 @@ class Import {
         // marker if result should do nothing.
         $doNothing = false;
 
+        // get actual live positions.
+        $positions_obj = Positions::get_instance();
+        $positions_count = $positions_obj->getPositionsCount();
+
         // enable xml-error-handling.
         libxml_use_internal_errors(true);
 
@@ -105,13 +109,16 @@ class Import {
                 // check if response was with http-status 200, all others are errors.
                 if( 200 === $httpStatus ) {
 
-                    // check if last modified timestamp has been changed
+                    // check if last modified timestamp has been changed.
                     if( $lastModifiedTimestamp === absint(get_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key, 0)) && !$this->_debug ) {
-                        // timestamp did not change -> do nothing.
-                        update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
-                        $doNothing = true;
-                        !$progress ?: $progress->tick();
-                        continue;
+                        // timestamp did not change -> do nothing if we already have positions in the DB.
+                        if( $positions_count > 0 ) {
+                            update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
+                            $doNothing = true;
+                            $this->logSuccess(sprintf( 'No changes in positions for language %s according to the timestamp we get from Personio. No import run.', $key ) );
+                            !$progress ?: $progress->tick();
+                            continue;
+                        }
                     }
 
                     // define settings for second request to get the contents.
@@ -130,11 +137,14 @@ class Import {
 
                     // check if md5-hash has been changed.
                     if( $md5hash == get_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key, '') && !$this->_debug ) {
-                        // md5-hash did not change -> do nothing.
-                        update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
-                        $doNothing = true;
-                        !$progress ?: $progress->tick();
-                        continue;
+                        // md5-hash did not change -> do nothing if we already have positions in the DB.
+                        if( $positions_count > 0 ) {
+                            update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
+                            $doNothing = true;
+                            $this->logSuccess(sprintf('No changes in positions for language %s according to the content we get from Personio. No import run.', $key));
+                            !$progress ?: $progress->tick();
+                            continue;
+                        }
                     }
 
                     // load content via SimpleXML.
@@ -194,6 +204,9 @@ class Import {
                     $this->_errors[] = sprintf(__('Personio URL for language %1$s not available. Returned HTTP-Status %2$d. Please check the URL you configured and if it is available.', 'wp-personio-integration'), esc_html($key), absint($httpStatus));
                 }
 
+                // log ok.
+                $this->logSuccess(sprintf( "%d positions in language %s imported.", count($importedPositions), $key ) );
+
                 // show progress.
                 !$progress ?: $progress->tick();
             }
@@ -247,9 +260,6 @@ class Import {
                 // remove transient with no-import-hint
                 delete_transient('personio_integration_no_position_imported');
             }
-
-            // log ok.
-            $this->logSuccess($languageCount . " languages grabbed, " . count($importedPositions) . " positions imported.");
         }
         else {
             // output error-message.
