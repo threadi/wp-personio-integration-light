@@ -2,6 +2,7 @@
 
 use personioIntegration\helper;
 use personioIntegration\Import;
+use personioIntegration\Log;
 use personioIntegration\Position;
 use personioIntegration\Positions;
 use personioIntegration\updates;
@@ -627,3 +628,25 @@ function personio_integration_translate_taxonomy( $_term, $taxonomy ) {
     }
     return $_term;
 }
+
+/**
+ * Log every deletion of a position.
+ *
+ * @param $post_id
+ * @return void
+ */
+function personio_integration_action_to_delete_position( $post_id ): void {
+    // bail if this is not our own cpt.
+    if( WP_PERSONIO_INTEGRATION_CPT !== get_post_type($post_id) ) {
+        return;
+    }
+
+    // get position.
+    $positions_obj = Positions::get_instance();
+    $position_obj = $positions_obj->get_position( $post_id );
+
+    // log deletion.
+    $log = new Log();
+    $log->addLog('Position '.$position_obj->getPersonioId().' has been deleted.', 'success');
+}
+add_action( 'before_delete_post', 'personio_integration_action_to_delete_position', 10, 1 );

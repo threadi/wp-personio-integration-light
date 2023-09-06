@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for cli-commands of this plugin.
+ *
+ * @package personio-integration-light
+ */
 
 namespace personioIntegration;
 
@@ -29,6 +34,10 @@ class cli {
      */
     public function deleteAll(): void
     {
+        // log this event.
+        $logs = new Log();
+        $logs->addLog( 'WP CLI-command deleteAll has been used.', 'success' );
+
         // delete taxonomies
         $this->deleteTaxonomies();
 
@@ -42,8 +51,18 @@ class cli {
      * @since  1.0.0
      * @noinspection PhpUnused
      */
-    public function deletePositions(): void
+    public function deletePositions( array $args ): void
     {
+        // set arguments if empty.
+        if( empty($args) ) {
+            $args = array( 'WP CLI-command deletePositions', '' );
+        }
+
+        // log this event.
+        $logs = new Log();
+        $logs->addLog( sprintf( '%s has been used%s.', $args[0], $args[1] ), 'success' );
+
+        // delete them.
         $this->deletePositionsFromDb();
     }
 
@@ -54,7 +73,7 @@ class cli {
      * @return void
      * @since  1.0.0
      */
-    public function resetPlugin( $deleteData = [] ): void
+    public function resetPlugin( array $deleteData = array() ): void
     {
         (new installer)->removeAllData( $deleteData );
         (new installer)->initializePlugin();
