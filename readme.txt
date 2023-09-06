@@ -278,3 +278,4 @@ Yes, it is without any further settings.
 = 2.4.1 =
 * Run import even if the Personio timestamp has not been changed but no positions are in local database
 * Extended log for deletion of positions
+* Optimized log-styling

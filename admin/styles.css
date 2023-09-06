@@ -95,6 +95,10 @@
     vertical-align: middle;
 }
 
+.personioposition_page_personioPositions th#state {
+    width: 72px;
+}
+
 .personio-dialog-no-close .ui-dialog-titlebar-close {
     display: none;
 }
