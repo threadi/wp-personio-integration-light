@@ -276,6 +276,7 @@ Yes, it is without any further settings.
 * Fixed reading of employment type
 
 = 2.4.1 =
+* Added WPML settings to prevent translation of our own post types and taxonomies
 * Run import even if the Personio timestamp has not been changed but no positions are in local database
 * Extended log for deletion of positions
 * Optimized log-styling
