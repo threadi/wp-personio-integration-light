@@ -280,3 +280,5 @@ Yes, it is without any further settings.
 * Run import even if the Personio timestamp has not been changed but no positions are in local database
 * Extended log for deletion of positions
 * Optimized log-styling
+* Fixed missing files for Block Editor in WordPress-SVN
+* Fixed error in dashboard if pro-plugin is not active
