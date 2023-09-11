@@ -114,9 +114,9 @@ add_action( 'wp_dashboard_setup', 'personio_integration_add_dashboard_widgets', 
 function personio_integration_dashboard_widget_function( $post, $callback_args ): void
 {
     $positionsObj = Positions::get_instance();
-    remove_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
+    if( function_exists('personio_integration_set_ordering') ) { remove_filter( 'pre_get_posts', 'personio_integration_set_ordering' ); }
     $positionsList = $positionsObj->getPositions(3, array('sortby' => 'date', 'sort' => 'DESC'));
-    add_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
+    if( function_exists('personio_integration_set_ordering') ) { add_filter( 'pre_get_posts', 'personio_integration_set_ordering' ); }
     if( count($positionsList) == 0 ) {
         echo '<p>'.__('Actually there are no positions imported from Personio.', 'wp-personio-integration').'</p>';
     }
