@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for functions to run in wp-admin only.
+ *
+ * @package wp-personio-integration
+ */
 
 use personioIntegration\helper;
 use personioIntegration\Import;
@@ -13,14 +18,14 @@ use personioIntegration\Positions;
  */
 function personio_integration_add_styles_and_js_admin(): void
 {
-    // admin-specific styles
+    // admin-specific styles.
     wp_enqueue_style('personio_integration-admin-css',
         plugin_dir_url(WP_PERSONIO_INTEGRATION_PLUGIN) . '/admin/styles.css',
         [],
         filemtime(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN) . '/admin/styles.css'),
     );
 
-    // admin- and backend-styles for attribute-type-output
+    // admin- and backend-styles for attribute-type-output.
     wp_enqueue_style(
         'personio_integration-styles',
         plugin_dir_url(WP_PERSONIO_INTEGRATION_PLUGIN) . '/css/styles.css',
@@ -28,14 +33,14 @@ function personio_integration_add_styles_and_js_admin(): void
         filemtime(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN) . '/css/styles.css')
     );
 
-    // backend-JS
+    // backend-JS.
     wp_enqueue_script( 'personio_integration-admin-js',
         plugins_url( '/admin/js.js' , WP_PERSONIO_INTEGRATION_PLUGIN ),
         ['jquery'],
         filemtime(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN) . '/admin/js.js'),
     );
 
-    // add php-vars to our js-script
+    // add php-vars to our js-script.
     wp_localize_script( 'personio_integration-admin-js', 'customJsVars', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'pro_url' => helper::get_pro_url(),
@@ -66,8 +71,8 @@ function personio_integration_add_styles_and_js_admin(): void
         ]
     );
 
-    // embed necessary scripts for progressbar
-    if( !empty($_GET["post_type"]) && $_GET["post_type"] === WP_PERSONIO_INTEGRATION_CPT ) {
+    // embed necessary scripts for progressbar.
+    if( ( !empty($_GET["post_type"]) && $_GET["post_type"] === WP_PERSONIO_INTEGRATION_CPT ) || ( !empty($_GET['import']) && 'personio-integration-importer' === $_GET['import'] ) ) {
         $wp_scripts = wp_scripts();
         wp_enqueue_script('jquery-ui-progressbar');
         wp_enqueue_script('jquery-ui-dialog');
@@ -899,3 +904,17 @@ function personio_integration_admin_remove_easy_language_support( $list ): array
     return $list;
 }
 add_filter( 'easy_language_possible_post_types', 'personio_integration_admin_remove_easy_language_support' );
+
+/**
+ * Add custom importer for positions under Tools > Import.
+ *
+ * @return void
+ */
+function personio_integration_admin_add_importer(): void {
+    register_importer( 'personio-integration-importer',
+		__( 'Personio', 'wp-personio-integration' ),
+		__( 'Import positions from Personio', 'wp-personio-integration' ),
+		'personio_integration_admin_add_menu_content_importexport'
+	);
+}
+add_action( 'admin_init', 'personio_integration_admin_add_importer' );

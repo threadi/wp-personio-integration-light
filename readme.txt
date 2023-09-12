@@ -277,8 +277,10 @@ Yes, it is without any further settings.
 
 = 2.4.1 =
 * Added WPML settings to prevent translation of our own post types and taxonomies
+* Added our own importer under Tools > Importer
 * Run import even if the Personio timestamp has not been changed but no positions are in local database
 * Extended log for deletion of positions
 * Optimized log-styling
+* Updated translations
 * Fixed missing files for Block Editor in WordPress-SVN
 * Fixed error in dashboard if pro-plugin is not active
