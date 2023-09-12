@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2023-09-01T15:42:37+02:00\n"
-"PO-Revision-Date: 2023-09-01 15:43+0200\n"
+"POT-Creation-Date: 2023-09-12T10:25:58+02:00\n"
+"PO-Revision-Date: 2023-09-12 10:27+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -81,12 +81,12 @@ msgstr ""
 
 #. translators: %1$s is replaced with "string"
 #: classes/class-helper.php:91 classes/class-helper.php:148
-#: classes/class-helper.php:171 inc/admin.php:47 inc/settings/import.php:200
+#: classes/class-helper.php:171 inc/admin.php:52 inc/settings/import.php:202
 msgid "Run import"
 msgstr "Jetzt Import ausführen"
 
 #. translators: %1$s is replaced with "string", %2$s is replaced with "string"
-#: classes/class-helper.php:98 inc/admin.php:53
+#: classes/class-helper.php:98 inc/admin.php:58
 msgid ""
 "<strong>The import has been manually run.</strong> Please check the list of "
 "positions <a href=\"%1$s\">in backend</a> and <a href=\"%2$s\">frontend</a>."
@@ -617,7 +617,7 @@ msgid "Personio URL not configured."
 msgstr "Personio URL nicht konfiguriert."
 
 #. translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404)
-#: classes/class-import.php:194
+#: classes/class-import.php:204
 msgid ""
 "Personio URL for language %1$s not available. Returned HTTP-Status %2$d. "
 "Please check the URL you configured and if it is available."
@@ -626,18 +626,18 @@ msgstr ""
 "Status %2$d. Bitte überprüfen Sie die konfigurierte URL, ob diese erreichbar "
 "ist."
 
-#: classes/class-import.php:288
+#: classes/class-import.php:298
 msgid "Error during Personio Positions Import"
 msgstr "Fehler beim Personio Positions Import"
 
-#: classes/class-import.php:289
+#: classes/class-import.php:299
 msgid ""
 "The following error occurred when importing positions provided by Personio:"
 msgstr ""
 "Beim Importieren von Stellen, die von Personio bereitgestellt wurden, ist "
 "folgender Fehler aufgetreten:"
 
-#: classes/class-import.php:290
+#: classes/class-import.php:300
 msgid "Sent by the plugin Personio Integration"
 msgstr "Gesendet vom Plugin Personio Integration"
 
@@ -668,7 +668,7 @@ msgid "Provides a Widget to show a list of positions provided by Personio."
 msgstr ""
 "Stellt ein Widget zur Verfügung, um eine Liste der von Stellen anzuzeigen."
 
-#: classes/class-positionswidget.php:24 inc/init.php:303
+#: classes/class-positionswidget.php:24 inc/init.php:304
 #: blocks/list/build/index.js:1
 msgid "Personio Positions"
 msgstr "Personio Stellen"
@@ -693,7 +693,7 @@ msgstr "absteigend"
 msgid "Sort by"
 msgstr "Sortieren nach"
 
-#: classes/class-positionswidget.php:56 inc/init.php:364
+#: classes/class-positionswidget.php:56 inc/init.php:365
 #: blocks/list/build/index.js:1
 msgid "title"
 msgstr "Titel"
@@ -776,23 +776,23 @@ msgstr "Archiv Stellen"
 msgid "Displays your positions."
 msgstr "Gibt deine offenen Stellen aus."
 
-#: inc/admin.php:42
+#: inc/admin.php:47
 msgid "Get Personio Integration Pro"
 msgstr "Get Personio Integration Pro"
 
-#: inc/admin.php:46
+#: inc/admin.php:51
 msgid "Reset sorting"
 msgstr "Sortierung zurücksetzen"
 
-#: inc/admin.php:48
+#: inc/admin.php:53
 msgid "Import is running"
 msgstr "Import läuft"
 
-#: inc/admin.php:49
+#: inc/admin.php:54
 msgid "Please wait"
 msgstr "Bitte warten"
 
-#: inc/admin.php:50 inc/settings/import.php:201
+#: inc/admin.php:55 inc/settings/import.php:203
 msgid ""
 "Performing the import could take a few minutes. If a timeout occurs, a "
 "manual import is not possible this way. Then the automatic import should be "
@@ -802,56 +802,56 @@ msgstr ""
 "Zeitüberschreitung auftritt, ist ein manueller Import auf diese Weise nicht "
 "möglich. Dann sollte der automatische Import verwendet werden."
 
-#: inc/admin.php:65
+#: inc/admin.php:70
 msgid "OK"
 msgstr "OK"
 
-#: inc/admin.php:100
+#: inc/admin.php:105
 msgid "Positions imported from Personio"
 msgstr "Von Personio importierte Stellen"
 
-#: inc/admin.php:121
+#: inc/admin.php:126
 msgid "Actually there are no positions imported from Personio."
 msgstr "Derzeit gibt es keine aus Personio importierten Stellen."
 
 #. translators: %1$d will be replaced by the count of positions
-#: inc/admin.php:137
+#: inc/admin.php:142
 msgid "Show all %1$d positions"
 msgstr "Zeige alle %1$d Stellen"
 
-#: inc/admin.php:194
+#: inc/admin.php:199
 msgid "Dismiss this notice."
 msgstr "Hinweis ausblenden."
 
-#: inc/admin.php:224 inc/admin.php:810
+#: inc/admin.php:229 inc/admin.php:815
 msgid "PersonioID"
 msgstr "PersonioID"
 
-#: inc/admin.php:272 inc/settings/settings.php:81
+#: inc/admin.php:277 inc/settings/settings.php:81
 #: blocks/details/build/index.js:1 blocks/list/build/index.js:1
 #: blocks/show/build/index.js:1
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: inc/admin.php:359
+#: inc/admin.php:364
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: inc/admin.php:799
+#: inc/admin.php:804
 msgid "Show Personio position data"
 msgstr "Zeige Daten dieser Stelle"
 
-#: inc/admin.php:811
+#: inc/admin.php:816
 msgid "Title"
 msgstr "Titel"
 
-#: inc/admin.php:812 blocks/description/build/index.js:1
+#: inc/admin.php:817 blocks/description/build/index.js:1
 #: blocks/description/src/index.js:37
 msgid "Description"
 msgstr "Beschreibung"
 
 #. translators: %1$s will be replaced by the URL for Personio
-#: inc/admin.php:832
+#: inc/admin.php:837
 msgid ""
 "At this point we show you the imported data of your open position <i>%1$s</"
 "i>. Please edit the job details in your <a href=\"%2$s\" target=\"_blank"
@@ -861,9 +861,17 @@ msgstr ""
 "Stelle <i>%1$s</i>. Bitte bearbeite Sie die Stellen-Daten in Ihrem <a href="
 "\"%2$s\" target=\"_blank\">Personio-Konto (öffnet neues Fenster)</a>."
 
-#: inc/admin.php:883
+#: inc/admin.php:888
 msgid "No data"
 msgstr "Keine Daten"
+
+#: inc/admin.php:915
+msgid "Personio"
+msgstr "Personio"
+
+#: inc/admin.php:916
+msgid "Import positions from Personio"
+msgstr "Import von Stellen von Personio"
 
 #: inc/frontend.php:53
 msgid "Detail-view called without the PersonioId of a position."
@@ -873,103 +881,96 @@ msgstr "Detailansicht wurde ohne PersonioId einer Stelle aufgerufen."
 msgid "Given Id is not a valid position-Id."
 msgstr "Die gegebene Id ist keine gültige Stellen-Id."
 
-#: inc/init.php:32 inc/init.php:34
+#: inc/init.php:33 inc/init.php:35
 #: templates/archive-personioposition-shortcode.php:36
 msgid "Positions"
 msgstr "Stellen"
 
-#: inc/init.php:33 templates/single-personioposition-shortcode.php:17
+#: inc/init.php:34 templates/single-personioposition-shortcode.php:17
 msgid "Position"
 msgstr "Stelle"
 
-#: inc/init.php:35
+#: inc/init.php:36
 msgid "Parent Position"
 msgstr "Eltern Stelle"
 
-#: inc/init.php:36
+#: inc/init.php:37
 msgid "All Positions"
 msgstr "Alle offene Stellen"
 
-#: inc/init.php:37
+#: inc/init.php:38
 msgid "View Position in frontend"
 msgstr "Zeige Stelle im Frontend"
 
-#: inc/init.php:38
+#: inc/init.php:39
 msgid "View Positions"
 msgstr "Zeige Stellen an"
 
-#: inc/init.php:39
+#: inc/init.php:40
 msgid "View Position in backend"
 msgstr "Zeige Stelle im Backend"
 
-#: inc/init.php:40
+#: inc/init.php:41
 msgid "Search Position"
 msgstr "Suche nach Stellen"
 
-#: inc/init.php:41
+#: inc/init.php:42
 msgid "Not Found"
 msgstr "Nicht gefunden"
 
-#: inc/init.php:42
+#: inc/init.php:43
 msgid "Not found in Trash"
 msgstr "In Papierkorb nicht gefunden"
 
-#: inc/init.php:268
+#: inc/init.php:269
 msgid "every 5th Minute"
 msgstr "jede 5. Minute"
 
-#: inc/init.php:343 blocks/details/build/index.js:1
-#: blocks/show/build/index.js:1
+#: inc/init.php:344
 msgid "recruiting category"
 msgstr "Kategorie"
 
-#: inc/init.php:344 blocks/details/build/index.js:1
-#: blocks/show/build/index.js:1
+#: inc/init.php:345
 msgid "schedule"
 msgstr "Arbeitszeit"
 
-#: inc/init.php:345 blocks/details/build/index.js:1
-#: blocks/show/build/index.js:1
+#: inc/init.php:346
 msgid "office"
 msgstr "Standort"
 
-#: inc/init.php:346 blocks/details/build/index.js:1
-#: blocks/show/build/index.js:1
+#: inc/init.php:347
 msgid "department"
 msgstr "Abteilung"
 
-#: inc/init.php:347
+#: inc/init.php:348
 msgid "employment types"
 msgstr "Anstellungsarten"
 
-#: inc/init.php:348 blocks/details/build/index.js:1
-#: blocks/show/build/index.js:1
+#: inc/init.php:349
 msgid "seniority"
 msgstr "Dienstalter"
 
-#: inc/init.php:349 blocks/details/build/index.js:1
-#: blocks/show/build/index.js:1
+#: inc/init.php:350
 msgid "experience"
 msgstr "Berufserfahrung"
 
-#: inc/init.php:350 blocks/details/build/index.js:1
-#: blocks/show/build/index.js:1
+#: inc/init.php:351
 msgid "occupation"
 msgstr "Beschäftigung"
 
-#: inc/init.php:365
+#: inc/init.php:366
 msgid "details"
 msgstr "Stellendetails"
 
-#: inc/init.php:366
+#: inc/init.php:367
 msgid "content"
 msgstr "Inhalt"
 
-#: inc/init.php:367
+#: inc/init.php:368
 msgid "application link"
 msgstr "Link zum Bewerbungsformular"
 
-#: inc/init.php:556 templates/parts/term-filter-select.php:15
+#: inc/init.php:557 templates/parts/term-filter-select.php:15
 #: blocks/show/build/index.js:1
 msgid "Please choose"
 msgstr "Bitte wählen"
@@ -1121,27 +1122,27 @@ msgstr ""
 msgid "Please enter a valid URL."
 msgstr "Bitte eine gültige URL eintragen."
 
-#: inc/settings/import.php:21
+#: inc/settings/import.php:22
 msgid "Import"
 msgstr "Import"
 
-#: inc/settings/import.php:66
+#: inc/settings/import.php:67
 msgid "Import of positions from Personio"
 msgstr "Import von Stellen von Personio"
 
-#: inc/settings/import.php:74
+#: inc/settings/import.php:75
 msgid "Start import now"
 msgstr "Starte Import jetzt"
 
-#: inc/settings/import.php:87
+#: inc/settings/import.php:88
 msgid "Delete positions"
 msgstr "Stellen löschen"
 
-#: inc/settings/import.php:100
+#: inc/settings/import.php:101
 msgid "Enable automatic import"
 msgstr "Aktiviere automatischen Import"
 
-#: inc/settings/import.php:107
+#: inc/settings/import.php:108
 msgid ""
 "If enabled, new positions stored in Personio will be retrieved automatically "
 "daily.<br>If disabled, new positions are retrieved manually only."
@@ -1151,7 +1152,7 @@ msgstr ""
 "ist, werden neue Stellen nur manuell abgerufen."
 
 #. translators: %1$s is replaced with "string"
-#: inc/settings/import.php:110
+#: inc/settings/import.php:111
 msgid ""
 "Use more import options with the %s. Among other things, you get the "
 "possibility to change the time interval for imports and partial imports of "
@@ -1161,27 +1162,27 @@ msgstr ""
 "Möglichkeit das Intervall zum Import zu ändern sowie partielle Importe für "
 "sehr große Stellen-Listen durchzuführen."
 
-#: inc/settings/import.php:201 inc/settings/import.php:233
+#: inc/settings/import.php:203 inc/settings/import.php:235
 msgid "Hint"
 msgstr "Hinweis"
 
-#: inc/settings/import.php:206
+#: inc/settings/import.php:208
 msgid "The import is already running. Please wait some moments."
 msgstr "Ein Import läuft aktuell. Bitte warten Sie einen Moment."
 
-#: inc/settings/import.php:218
+#: inc/settings/import.php:220
 msgid "Cancel running import"
 msgstr "Laufenden Import abbrechen"
 
-#: inc/settings/import.php:232
+#: inc/settings/import.php:234
 msgid "Delete all positions"
 msgstr "Entferne alle Stellen"
 
-#: inc/settings/import.php:233
+#: inc/settings/import.php:235
 msgid "Removes all actual imported positions."
 msgstr "Entfernt alle aktuell importierten Stellen."
 
-#: inc/settings/import.php:237
+#: inc/settings/import.php:239
 msgid "There are currently no imported positions."
 msgstr "Es sind aktuell keine Stellen importiert."
 
@@ -1392,6 +1393,34 @@ msgid ""
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer einzelnen Stelle, verwaltet "
 "bei Personio, bereit."
+
+#: blocks/details/build/index.js:1 blocks/show/build/index.js:1
+msgid "Category"
+msgstr "Kategorie"
+
+#: blocks/details/build/index.js:1 blocks/show/build/index.js:1
+msgid "Contract type"
+msgstr "Vertragstyp"
+
+#: blocks/details/build/index.js:1 blocks/show/build/index.js:1
+msgid "Location"
+msgstr "Standort"
+
+#: blocks/details/build/index.js:1 blocks/show/build/index.js:1
+msgid "Department"
+msgstr "Abteilung"
+
+#: blocks/details/build/index.js:1 blocks/show/build/index.js:1
+msgid "Experience"
+msgstr "Erfahrung"
+
+#: blocks/details/build/index.js:1 blocks/show/build/index.js:1
+msgid "Years of experience"
+msgstr "Berufserfahrung in Jahren"
+
+#: blocks/details/build/index.js:1 blocks/show/build/index.js:1
+msgid "Job type"
+msgstr "Stellentyp"
 
 #: blocks/details/build/index.js:1
 msgid "With colon"
