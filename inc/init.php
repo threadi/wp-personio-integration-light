@@ -65,6 +65,7 @@ function personio_integration_add_position_posttype(): void
         'taxonomies' 	      => [
             WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY,
             WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY,
+            WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION,
             WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE,
             WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT,
             WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES,
@@ -134,19 +135,19 @@ function personio_integration_add_taxonomies(): void
         ]
     ];
 
-    // loop through our own taxonomies and configure them
+    // loop through our own taxonomies and configure them.
     foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
         // get properties
         $taxonomy_array = array_merge( $taxonomy_array_default, $taxonomy["attr"] );
         $taxonomy_array['labels'] = helper::get_taxonomy_label($taxonomy_name);
         $taxonomy_array['defaults'] = helper::get_taxonomy_defaults($taxonomy_name);
 
-        // remove slugs for not logged in users
+        // remove slugs for not logged in users.
         if( !is_user_logged_in() ) {
             $taxonomy_array['rewrite'] = false;
         }
 
-        // apply additional settings for taxonomy
+        // apply additional settings for taxonomy.
         $taxonomy_array = apply_filters('get_' . $taxonomy_name.'_translate_taxonomy', $taxonomy_array, $taxonomy_name);
 
         // do not show any taxonomy in menu if Personio URL is not available
@@ -154,9 +155,10 @@ function personio_integration_add_taxonomies(): void
             $taxonomy_array['show_in_menu'] = false;
         }
 
-        // register taxonomy
+        // register taxonomy.
         register_taxonomy($taxonomy_name, [WP_PERSONIO_INTEGRATION_CPT], $taxonomy_array);
 
+        // filter for translations of entries in this taxonomy.
         add_filter( 'get_'.$taxonomy_name, 'personio_integration_translate_taxonomy', 10, 2);
     }
 }
@@ -174,7 +176,7 @@ function personio_integration_add_taxonomy_defaults(): void
         return;
     }
 
-    // loop through our own taxonomies and configure them
+    // loop through our own taxonomies and configure them.
     foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
         // add default terms to taxonomy if they do not exist (only in admin or via CLI)
 	    $taxonomy_obj = get_taxonomy($taxonomy_name);
@@ -186,7 +188,7 @@ function personio_integration_add_taxonomy_defaults(): void
         }
     }
 
-    // Add or update the wp_option
+    // Add or update the wp_option.
     update_option( 'personioTaxonomyDefaults', 1 );
 }
 add_action( 'init', 'personio_integration_add_taxonomy_defaults', 20 );
@@ -619,7 +621,7 @@ add_filter( 'og_array', 'personio_integration_og_optimizer');
  * @noinspection PhpUnused
  */
 function personio_integration_translate_taxonomy( $_term, $taxonomy ) {
-    if( $taxonomy != WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES && $_term instanceof WP_Term ) {
+    if( $taxonomy !== WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES && $_term instanceof WP_Term ) {
         // read from defaults for the taxonomy.
         $array = helper::get_taxonomy_defaults($taxonomy);
         if( !empty($array[$_term->name]) ) {

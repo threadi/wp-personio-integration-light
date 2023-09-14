@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-12T10:25:58+02:00\n"
+"POT-Creation-Date: 2023-09-14T13:03:02+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -173,345 +173,1574 @@ msgstr ""
 msgid "Your use the WordPress-plugin Personio Integration since more than %d days. Do you like it? Feel free to <a href=\"https://wordpress.org/plugins/personio-integration-light/#reviews\" target=\"_blank\">leave us a review (opens new window)</a>."
 msgstr ""
 
-#: classes/class-helper.php:403
+#: classes/class-helper.php:406
 #: blocks/list/build/index.js:1
 msgid "select-box"
 msgstr ""
 
-#: classes/class-helper.php:404
+#: classes/class-helper.php:407
 #: blocks/list/build/index.js:1
 msgid "list of links"
 msgstr ""
 
-#: classes/class-helper.php:713
+#: classes/class-helper.php:716
 msgctxt "taxonomy general name"
 msgid "Categories"
 msgstr ""
 
-#: classes/class-helper.php:714
+#: classes/class-helper.php:717
 msgctxt "taxonomy singular name"
 msgid "Category"
 msgstr ""
 
-#: classes/class-helper.php:715
+#: classes/class-helper.php:718
 msgid "Search category"
 msgstr ""
 
-#: classes/class-helper.php:716
+#: classes/class-helper.php:719
 msgid "Edit category"
 msgstr ""
 
-#: classes/class-helper.php:717
+#: classes/class-helper.php:720
 msgid "Update category"
 msgstr ""
 
-#: classes/class-helper.php:718
+#: classes/class-helper.php:721
 msgid "Categories"
 msgstr ""
 
-#: classes/class-helper.php:721
+#: classes/class-helper.php:724
 msgctxt "taxonomy general name"
 msgid "Job types"
 msgstr ""
 
-#: classes/class-helper.php:722
+#: classes/class-helper.php:725
 msgctxt "taxonomy singular name"
 msgid "Job type"
 msgstr ""
 
-#: classes/class-helper.php:723
+#: classes/class-helper.php:726
 msgid "Search Job type"
 msgstr ""
 
-#: classes/class-helper.php:724
+#: classes/class-helper.php:727
 msgid "Edit Job type"
 msgstr ""
 
-#: classes/class-helper.php:725
+#: classes/class-helper.php:728
 msgid "Update Job type"
 msgstr ""
 
-#: classes/class-helper.php:726
+#: classes/class-helper.php:729
 msgid "Job types"
 msgstr ""
 
-#: classes/class-helper.php:729
+#: classes/class-helper.php:732
+msgctxt "taxonomy general name"
+msgid "Job type details"
+msgstr ""
+
+#: classes/class-helper.php:733
+msgctxt "taxonomy singular name"
+msgid "Job type detail"
+msgstr ""
+
+#: classes/class-helper.php:734
+msgid "Search Job type detail"
+msgstr ""
+
+#: classes/class-helper.php:735
+msgid "Edit Job type detail"
+msgstr ""
+
+#: classes/class-helper.php:736
+msgid "Update Job type detail"
+msgstr ""
+
+#: classes/class-helper.php:737
+msgid "Job type details"
+msgstr ""
+
+#: classes/class-helper.php:740
 msgctxt "taxonomy general name"
 msgid "Locations"
 msgstr ""
 
-#: classes/class-helper.php:730
+#: classes/class-helper.php:741
 msgctxt "taxonomy singular name"
 msgid "Location"
 msgstr ""
 
-#: classes/class-helper.php:731
+#: classes/class-helper.php:742
 msgid "Search location"
 msgstr ""
 
-#: classes/class-helper.php:732
+#: classes/class-helper.php:743
 msgid "Edit location"
 msgstr ""
 
-#: classes/class-helper.php:733
+#: classes/class-helper.php:744
 msgid "Update location"
 msgstr ""
 
-#: classes/class-helper.php:734
+#: classes/class-helper.php:745
 msgid "Locations"
 msgstr ""
 
-#: classes/class-helper.php:737
+#: classes/class-helper.php:748
 msgctxt "taxonomy general name"
 msgid "Departments"
 msgstr ""
 
-#: classes/class-helper.php:738
+#: classes/class-helper.php:749
 msgctxt "taxonomy singular name"
 msgid "Department"
 msgstr ""
 
-#: classes/class-helper.php:739
+#: classes/class-helper.php:750
 msgid "Search department"
 msgstr ""
 
-#: classes/class-helper.php:740
+#: classes/class-helper.php:751
 msgid "Edit department"
 msgstr ""
 
-#: classes/class-helper.php:741
+#: classes/class-helper.php:752
 msgid "Update department"
 msgstr ""
 
-#: classes/class-helper.php:742
+#: classes/class-helper.php:753
 msgid "Departments"
 msgstr ""
 
-#: classes/class-helper.php:745
+#: classes/class-helper.php:756
 msgctxt "taxonomy general name"
 msgid "Employment types"
 msgstr ""
 
-#: classes/class-helper.php:746
+#: classes/class-helper.php:757
 msgctxt "taxonomy singular name"
 msgid "Employment type"
 msgstr ""
 
-#: classes/class-helper.php:747
+#: classes/class-helper.php:758
 msgid "Search employment type"
 msgstr ""
 
-#: classes/class-helper.php:748
+#: classes/class-helper.php:759
 msgid "Edit employment type"
 msgstr ""
 
-#: classes/class-helper.php:749
+#: classes/class-helper.php:760
 msgid "Update employment type"
 msgstr ""
 
-#: classes/class-helper.php:750
+#: classes/class-helper.php:761
 msgid "Employment types"
 msgstr ""
 
-#: classes/class-helper.php:753
+#: classes/class-helper.php:764
 msgctxt "taxonomy general name"
 msgid "Experiences"
 msgstr ""
 
-#: classes/class-helper.php:754
+#: classes/class-helper.php:765
 msgctxt "taxonomy singular name"
 msgid "Experience"
 msgstr ""
 
-#: classes/class-helper.php:755
+#: classes/class-helper.php:766
 msgid "Search Experience"
 msgstr ""
 
-#: classes/class-helper.php:756
+#: classes/class-helper.php:767
 msgid "Edit Experience"
 msgstr ""
 
-#: classes/class-helper.php:757
+#: classes/class-helper.php:768
 msgid "Update Experience"
 msgstr ""
 
-#: classes/class-helper.php:758
+#: classes/class-helper.php:769
 msgid "Experiences"
 msgstr ""
 
-#: classes/class-helper.php:761
+#: classes/class-helper.php:772
 msgctxt "taxonomy general name"
 msgid "Contract types"
 msgstr ""
 
-#: classes/class-helper.php:762
+#: classes/class-helper.php:773
 msgctxt "taxonomy singular name"
 msgid "Contract type"
 msgstr ""
 
-#: classes/class-helper.php:763
+#: classes/class-helper.php:774
 msgid "Search Contract type"
 msgstr ""
 
-#: classes/class-helper.php:764
+#: classes/class-helper.php:775
 msgid "Edit Contract type"
 msgstr ""
 
-#: classes/class-helper.php:765
+#: classes/class-helper.php:776
 msgid "Update Contract type"
 msgstr ""
 
-#: classes/class-helper.php:766
+#: classes/class-helper.php:777
 msgid "Contract types"
 msgstr ""
 
-#: classes/class-helper.php:769
+#: classes/class-helper.php:780
 msgctxt "taxonomy general name"
 msgid "Years of experiences"
 msgstr ""
 
-#: classes/class-helper.php:770
+#: classes/class-helper.php:781
 msgctxt "taxonomy singular name"
 msgid "Years of experience"
 msgstr ""
 
-#: classes/class-helper.php:771
+#: classes/class-helper.php:782
 msgid "Search years of experience"
 msgstr ""
 
-#: classes/class-helper.php:772
+#: classes/class-helper.php:783
 msgid "Edit years of experience"
 msgstr ""
 
-#: classes/class-helper.php:773
+#: classes/class-helper.php:784
 msgid "Update years of experience"
 msgstr ""
 
-#: classes/class-helper.php:774
+#: classes/class-helper.php:785
 msgid "Years of experiences"
 msgstr ""
 
-#: classes/class-helper.php:777
+#: classes/class-helper.php:788
 msgctxt "taxonomy general name"
 msgid "Languages"
 msgstr ""
 
-#: classes/class-helper.php:778
+#: classes/class-helper.php:789
 msgctxt "taxonomy singular name"
 msgid "Language"
 msgstr ""
 
-#: classes/class-helper.php:779
+#: classes/class-helper.php:790
 msgid "Search language"
 msgstr ""
 
-#: classes/class-helper.php:780
+#: classes/class-helper.php:791
 msgid "Edit language"
 msgstr ""
 
-#: classes/class-helper.php:781
+#: classes/class-helper.php:792
 msgid "Update language"
 msgstr ""
 
-#: classes/class-helper.php:782
+#: classes/class-helper.php:793
 msgid "Languages"
 msgstr ""
 
-#: classes/class-helper.php:785
+#: classes/class-helper.php:796
 msgctxt "taxonomy general name"
 msgid "Keywords"
 msgstr ""
 
-#: classes/class-helper.php:786
+#: classes/class-helper.php:797
 msgctxt "taxonomy singular name"
 msgid "Keyword"
 msgstr ""
 
-#: classes/class-helper.php:787
+#: classes/class-helper.php:798
 msgid "Search Keywords"
 msgstr ""
 
-#: classes/class-helper.php:788
+#: classes/class-helper.php:799
 msgid "Edit Keyword"
 msgstr ""
 
-#: classes/class-helper.php:789
+#: classes/class-helper.php:800
 msgid "Update keyword"
 msgstr ""
 
-#: classes/class-helper.php:790
+#: classes/class-helper.php:801
 msgid "Keywords"
 msgstr ""
 
-#: classes/class-helper.php:818
-msgid "permanent"
-msgstr ""
-
-#: classes/class-helper.php:819
-msgid "intern"
-msgstr ""
-
-#: classes/class-helper.php:820
-msgid "trainee"
-msgstr ""
-
-#: classes/class-helper.php:821
-msgid "freelance"
-msgstr ""
-
-#: classes/class-helper.php:824
-msgid "entry-level"
-msgstr ""
-
-#: classes/class-helper.php:825
-msgid "experienced"
-msgstr ""
-
-#: classes/class-helper.php:826
-msgid "executive"
-msgstr ""
-
-#: classes/class-helper.php:827
-msgid "student"
+#: classes/class-helper.php:829
+msgid "Accounting/Finance"
 msgstr ""
 
 #: classes/class-helper.php:830
-msgid "full-time"
+msgid "Administrative/Clerical"
 msgstr ""
 
 #: classes/class-helper.php:831
-msgid "part-time"
+msgid "Banking/Real Estate/Mortgage Professionals"
 msgstr ""
 
 #: classes/class-helper.php:832
-msgid "full- or part-time"
+msgid "Building Construction/Skilled Trades"
+msgstr ""
+
+#: classes/class-helper.php:833
+msgid "Business/Strategic Management"
+msgstr ""
+
+#: classes/class-helper.php:834
+msgid "Creative/Design"
 msgstr ""
 
 #: classes/class-helper.php:835
-msgid "less than 1 year"
+msgid "Customer Support/Client Care"
 msgstr ""
 
 #: classes/class-helper.php:836
-msgid "1-2 years"
+msgid "Editorial/Writing"
 msgstr ""
 
 #: classes/class-helper.php:837
-msgid "2-5 years"
+msgid "Engineering"
 msgstr ""
 
 #: classes/class-helper.php:838
-msgid "5-7 years"
+msgid "Food Services/Hospitality"
 msgstr ""
 
 #: classes/class-helper.php:839
-msgid "7-10 years"
+msgid "Human Resources"
 msgstr ""
 
 #: classes/class-helper.php:840
-msgid "10-15 years"
+msgid "Installation/Maintenance/Repair"
 msgstr ""
 
 #: classes/class-helper.php:841
+msgid "IT/Software Development"
+msgstr ""
+
+#: classes/class-helper.php:842
+msgid "Legal"
+msgstr ""
+
+#: classes/class-helper.php:843
+msgid "Logistics/Transportation"
+msgstr ""
+
+#: classes/class-helper.php:844
+msgid "Marketing/Product"
+msgstr ""
+
+#: classes/class-helper.php:845
+msgid "Medical/Health"
+msgstr ""
+
+#: classes/class-helper.php:846
+#: classes/class-helper.php:1062
+msgid "Other"
+msgstr ""
+
+#: classes/class-helper.php:847
+msgid "Production/Operations"
+msgstr ""
+
+#: classes/class-helper.php:848
+msgid "Project/Program Management"
+msgstr ""
+
+#: classes/class-helper.php:849
+msgid "Quality Assurance/Safety"
+msgstr ""
+
+#: classes/class-helper.php:850
+msgid "R&D/Science"
+msgstr ""
+
+#: classes/class-helper.php:851
+msgid "Sales/Business Development"
+msgstr ""
+
+#: classes/class-helper.php:852
+msgid "Security/Protective Services"
+msgstr ""
+
+#: classes/class-helper.php:853
+msgid "Training/Instruction"
+msgstr ""
+
+#: classes/class-helper.php:856
+msgid "Actuarial Analysis"
+msgstr ""
+
+#: classes/class-helper.php:857
+msgid "Bookkeeping/General Ledger"
+msgstr ""
+
+#: classes/class-helper.php:858
+msgid "Financial Control"
+msgstr ""
+
+#: classes/class-helper.php:859
+msgid "Corporate Finance"
+msgstr ""
+
+#: classes/class-helper.php:860
+msgid "Accounts Payable/Receivable"
+msgstr ""
+
+#: classes/class-helper.php:861
+msgid "Financial Planning/Advising"
+msgstr ""
+
+#: classes/class-helper.php:862
+msgid "Financial Analysis/Research/Reporting"
+msgstr ""
+
+#: classes/class-helper.php:863
+msgid "Corporate Accounting"
+msgstr ""
+
+#: classes/class-helper.php:864
+msgid "Fund Accounting"
+msgstr ""
+
+#: classes/class-helper.php:865
+msgid "Claims Review and Adjusting"
+msgstr ""
+
+#: classes/class-helper.php:866
+msgid "Securities Analysis/Research"
+msgstr ""
+
+#: classes/class-helper.php:867
+msgid "Real Estate Appraisal"
+msgstr ""
+
+#: classes/class-helper.php:868
+msgid "Real Estate Leasing/Acquisition"
+msgstr ""
+
+#: classes/class-helper.php:869
+msgid "Collections"
+msgstr ""
+
+#: classes/class-helper.php:870
+msgid "Investment Management"
+msgstr ""
+
+#: classes/class-helper.php:871
+msgid "Credit Review/Analysis"
+msgstr ""
+
+#: classes/class-helper.php:872
+msgid "Risk Management/Compliance"
+msgstr ""
+
+#: classes/class-helper.php:873
+msgid "Tax Assessment and Collections"
+msgstr ""
+
+#: classes/class-helper.php:874
+msgid "Tax Accounting"
+msgstr ""
+
+#: classes/class-helper.php:875
+msgid "Policy Underwriting"
+msgstr ""
+
+#: classes/class-helper.php:876
+#: classes/class-helper.php:1112
+msgid "Financial Products Sales/Brokerage"
+msgstr ""
+
+#: classes/class-helper.php:877
+msgid "Audit"
+msgstr ""
+
+#: classes/class-helper.php:878
+msgid "General/Other: Accounting/Finance"
+msgstr ""
+
+#: classes/class-helper.php:879
+msgid "Filing/Records Management"
+msgstr ""
+
+#: classes/class-helper.php:880
+msgid "Executive Support"
+msgstr ""
+
+#: classes/class-helper.php:881
+msgid "Data Entry/Order Processing"
+msgstr ""
+
+#: classes/class-helper.php:882
+#: classes/class-helper.php:971
+msgid "Front Desk/Reception"
+msgstr ""
+
+#: classes/class-helper.php:883
+msgid "Property Management"
+msgstr ""
+
+#: classes/class-helper.php:884
+msgid "Office Management"
+msgstr ""
+
+#: classes/class-helper.php:885
+msgid "Administrative Support"
+msgstr ""
+
+#: classes/class-helper.php:886
+msgid "Claims Processing"
+msgstr ""
+
+#: classes/class-helper.php:887
+msgid "Transcription"
+msgstr ""
+
+#: classes/class-helper.php:888
+#: classes/class-helper.php:1010
+msgid "Paralegal & Legal Secretary"
+msgstr ""
+
+#: classes/class-helper.php:889
+msgid "General/Other: Administrative/Clerical"
+msgstr ""
+
+#: classes/class-helper.php:890
+msgid "Loan Officer/Originator"
+msgstr ""
+
+#: classes/class-helper.php:891
+msgid "Escrow Officer/Manager"
+msgstr ""
+
+#: classes/class-helper.php:892
+msgid "Store/Branch Management"
+msgstr ""
+
+#: classes/class-helper.php:893
+msgid "Mortgage Broker"
+msgstr ""
+
+#: classes/class-helper.php:894
+msgid "Real Estate Agent/Broker"
+msgstr ""
+
+#: classes/class-helper.php:895
+msgid "Real Estate Law"
+msgstr ""
+
+#: classes/class-helper.php:896
+msgid "Credit Manager"
+msgstr ""
+
+#: classes/class-helper.php:897
+msgid "Bank Teller"
+msgstr ""
+
+#: classes/class-helper.php:898
+msgid "Underwriter"
+msgstr ""
+
+#: classes/class-helper.php:899
+msgid "Title Officer/Closer"
+msgstr ""
+
+#: classes/class-helper.php:900
+msgid "Site Superintendent"
+msgstr ""
+
+#: classes/class-helper.php:901
+msgid "Concrete and Masonry"
+msgstr ""
+
+#: classes/class-helper.php:902
+msgid "Heavy Equipment Operation"
+msgstr ""
+
+#: classes/class-helper.php:903
+msgid "Roofing"
+msgstr ""
+
+#: classes/class-helper.php:904
+msgid "Electrician"
+msgstr ""
+
+#: classes/class-helper.php:905
+msgid "Flooring/Tiling/Painting/Wallpapering"
+msgstr ""
+
+#: classes/class-helper.php:906
+msgid "HVAC"
+msgstr ""
+
+#: classes/class-helper.php:907
+msgid "Plumbing/Pipefitting"
+msgstr ""
+
+#: classes/class-helper.php:908
+msgid "Ironwork/Metal Fabrication"
+msgstr ""
+
+#: classes/class-helper.php:909
+msgid "CAD/Drafting"
+msgstr ""
+
+#: classes/class-helper.php:910
+msgid "Surveying"
+msgstr ""
+
+#: classes/class-helper.php:911
+msgid "Sheetrock/Plastering"
+msgstr ""
+
+#: classes/class-helper.php:912
+msgid "Carpentry/Framing"
+msgstr ""
+
+#: classes/class-helper.php:913
+msgid "General/Other: Construction/Skilled Trades"
+msgstr ""
+
+#: classes/class-helper.php:914
+msgid "Business Analysis/Research"
+msgstr ""
+
+#: classes/class-helper.php:915
+msgid "Managerial Consulting"
+msgstr ""
+
+#: classes/class-helper.php:916
+msgid "Franchise-Business Ownership"
+msgstr ""
+
+#: classes/class-helper.php:917
+msgid "Business Unit Management"
+msgstr ""
+
+#: classes/class-helper.php:918
+msgid "President/Top Executive"
+msgstr ""
+
+#: classes/class-helper.php:919
+msgid "Public Health Administration"
+msgstr ""
+
+#: classes/class-helper.php:920
+msgid "Hotel/Lodging Management"
+msgstr ""
+
+#: classes/class-helper.php:921
+msgid "Hospital/Clinic Administration"
+msgstr ""
+
+#: classes/class-helper.php:922
+msgid "Mergers and Acquisitions"
+msgstr ""
+
+#: classes/class-helper.php:923
+msgid "Restaurant Management"
+msgstr ""
+
+#: classes/class-helper.php:924
+msgid "School/College Administration"
+msgstr ""
+
+#: classes/class-helper.php:925
+msgid "Town/City Planning"
+msgstr ""
+
+#: classes/class-helper.php:926
+msgid "Strategic Planning/Intelligence"
+msgstr ""
+
+#: classes/class-helper.php:927
+msgid "General/Other: Business/Strategic Management"
+msgstr ""
+
+#: classes/class-helper.php:928
+msgid "Architecture/Interior Design"
+msgstr ""
+
+#: classes/class-helper.php:929
+msgid "Computer Animation & Multimedia"
+msgstr ""
+
+#: classes/class-helper.php:930
+msgid "Creative Direction/Lead"
+msgstr ""
+
+#: classes/class-helper.php:931
+msgid "Graphic Arts/Illustration"
+msgstr ""
+
+#: classes/class-helper.php:932
+msgid "Industrial Design"
+msgstr ""
+
+#: classes/class-helper.php:933
+msgid "Fashion & Accessories Design"
+msgstr ""
+
+#: classes/class-helper.php:934
+msgid "Photography and Videography"
+msgstr ""
+
+#: classes/class-helper.php:935
+msgid "Web/UI/UX Design"
+msgstr ""
+
+#: classes/class-helper.php:936
+msgid "Advertising Writing (Creative)"
+msgstr ""
+
+#: classes/class-helper.php:937
+msgid "General/Other: Creative/Design"
+msgstr ""
+
+#: classes/class-helper.php:938
+msgid "Call Center"
+msgstr ""
+
+#: classes/class-helper.php:939
+msgid "Flight Attendant"
+msgstr ""
+
+#: classes/class-helper.php:940
+msgid "Hair Cutting/Styling"
+msgstr ""
+
+#: classes/class-helper.php:941
+msgid "Retail Customer Service"
+msgstr ""
+
+#: classes/class-helper.php:942
+msgid "Account Management (Non-Commissioned)"
+msgstr ""
+
+#: classes/class-helper.php:943
+msgid "Customer Training"
+msgstr ""
+
+#: classes/class-helper.php:944
+msgid "Reservations/Ticketing"
+msgstr ""
+
+#: classes/class-helper.php:945
+msgid "General/Other: Customer Support/Client Care"
+msgstr ""
+
+#: classes/class-helper.php:946
+msgid "Technical Customer Service"
+msgstr ""
+
+#: classes/class-helper.php:947
+msgid "Documentation/Technical Writing"
+msgstr ""
+
+#: classes/class-helper.php:948
+msgid "Journalism"
+msgstr ""
+
+#: classes/class-helper.php:949
+msgid "Digital Content Development"
+msgstr ""
+
+#: classes/class-helper.php:950
+msgid "Editing & Proofreading"
+msgstr ""
+
+#: classes/class-helper.php:951
+msgid "General/Other: Editorial/Writing"
+msgstr ""
+
+#: classes/class-helper.php:952
+msgid "Translation/Interpretation"
+msgstr ""
+
+#: classes/class-helper.php:953
+msgid "Civil & Structural Engineering"
+msgstr ""
+
+#: classes/class-helper.php:954
+msgid "Bio-Engineering"
+msgstr ""
+
+#: classes/class-helper.php:955
+msgid "Chemical Engineering"
+msgstr ""
+
+#: classes/class-helper.php:956
+msgid "Electrical/Electronics Engineering"
+msgstr ""
+
+#: classes/class-helper.php:957
+msgid "Energy/Nuclear Engineering"
+msgstr ""
+
+#: classes/class-helper.php:958
+msgid "RF/Wireless Engineering"
+msgstr ""
+
+#: classes/class-helper.php:959
+msgid "Aeronautic/Avionic Engineering"
+msgstr ""
+
+#: classes/class-helper.php:960
+msgid "Mechanical Engineering"
+msgstr ""
+
+#: classes/class-helper.php:961
+msgid "Systems/Process Engineering"
+msgstr ""
+
+#: classes/class-helper.php:962
+msgid "Industrial/Manufacturing Engineering"
+msgstr ""
+
+#: classes/class-helper.php:963
+msgid "Naval Architecture/Marine Engineering"
+msgstr ""
+
+#: classes/class-helper.php:964
+msgid "Environmental and Geological Engineering"
+msgstr ""
+
+#: classes/class-helper.php:965
+msgid "General/Other: Engineering"
+msgstr ""
+
+#: classes/class-helper.php:966
+msgid "Food & Beverage Serving"
+msgstr ""
+
+#: classes/class-helper.php:967
+msgid "Host/Hostess"
+msgstr ""
+
+#: classes/class-helper.php:968
+msgid "Guest Services/Concierge"
+msgstr ""
+
+#: classes/class-helper.php:969
+msgid "Food Preparation/Cooking"
+msgstr ""
+
+#: classes/class-helper.php:970
+msgid "Guide (Tour)"
+msgstr ""
+
+#: classes/class-helper.php:972
+msgid "Wine Steward (Sommelier)"
+msgstr ""
+
+#: classes/class-helper.php:973
+msgid "General/Other: Food Services"
+msgstr ""
+
+#: classes/class-helper.php:974
+#: classes/class-helper.php:1124
+msgid "Corporate Development and Training"
+msgstr ""
+
+#: classes/class-helper.php:975
+msgid "Compensation/Benefits Policy"
+msgstr ""
+
+#: classes/class-helper.php:976
+msgid "Diversity Management/EEO/Compliance"
+msgstr ""
+
+#: classes/class-helper.php:977
+msgid "Academic Admissions and Advising"
+msgstr ""
+
+#: classes/class-helper.php:978
+msgid "Payroll and Benefits Administration"
+msgstr ""
+
+#: classes/class-helper.php:979
+msgid "Recruiting/Sourcing"
+msgstr ""
+
+#: classes/class-helper.php:980
+msgid "HR Systems Administration"
+msgstr ""
+
+#: classes/class-helper.php:981
+msgid "General/Other: Human Resources"
+msgstr ""
+
+#: classes/class-helper.php:982
+msgid "Computer/Electronics/Telecomm Install/Maintain/Repair"
+msgstr ""
+
+#: classes/class-helper.php:983
+msgid "Oil Rig & Pipeline Install/Maintain/Repair"
+msgstr ""
+
+#: classes/class-helper.php:984
+msgid "Facilities Maintenance"
+msgstr ""
+
+#: classes/class-helper.php:985
+msgid "Janitorial & Cleaning"
+msgstr ""
+
+#: classes/class-helper.php:986
+msgid "Vehicle Repair and Maintenance"
+msgstr ""
+
+#: classes/class-helper.php:987
+msgid "Wire and Cable Install/Maintain/Repair"
+msgstr ""
+
+#: classes/class-helper.php:988
+msgid "Landscaping"
+msgstr ""
+
+#: classes/class-helper.php:989
+msgid "Equipment Install/Maintain/Repair"
+msgstr ""
+
+#: classes/class-helper.php:990
+msgid "Locksmith"
+msgstr ""
+
+#: classes/class-helper.php:991
+msgid "General/Other: Installation/Maintenance/Repair"
+msgstr ""
+
+#: classes/class-helper.php:992
+msgid "Usability/Information Architecture"
+msgstr ""
+
+#: classes/class-helper.php:993
+msgid "Desktop Service and Support"
+msgstr ""
+
+#: classes/class-helper.php:994
+msgid "Computer/Network Security"
+msgstr ""
+
+#: classes/class-helper.php:995
+msgid "Database Development/Administration"
+msgstr ""
+
+#: classes/class-helper.php:996
+msgid "Enterprise Software Implementation & Consulting"
+msgstr ""
+
+#: classes/class-helper.php:997
+#: classes/class-helper.php:1078
+msgid "IT Project Management"
+msgstr ""
+
+#: classes/class-helper.php:998
+msgid "Software/System Architecture"
+msgstr ""
+
+#: classes/class-helper.php:999
+msgid "Software/Web Development"
+msgstr ""
+
+#: classes/class-helper.php:1000
+msgid "Network and Server Administration"
+msgstr ""
+
+#: classes/class-helper.php:1001
+msgid "Systems Analysis - IT"
+msgstr ""
+
+#: classes/class-helper.php:1002
+msgid "Telecommunications Administration/Management"
+msgstr ""
+
+#: classes/class-helper.php:1003
+msgid "General/Other: IT/Software Development"
+msgstr ""
+
+#: classes/class-helper.php:1004
+msgid "Labor & Employment Law"
+msgstr ""
+
+#: classes/class-helper.php:1005
+msgid "Patent/IP Law"
+msgstr ""
+
+#: classes/class-helper.php:1006
+msgid "Regulatory/Compliance Law"
+msgstr ""
+
+#: classes/class-helper.php:1007
+msgid "Tax Law"
+msgstr ""
+
+#: classes/class-helper.php:1008
+msgid "Attorney"
+msgstr ""
+
+#: classes/class-helper.php:1009
+msgid "Contracts Administration"
+msgstr ""
+
+#: classes/class-helper.php:1011
+msgid "General/Other: Legal"
+msgstr ""
+
+#: classes/class-helper.php:1012
+msgid "Car, Van and Bus Driving"
+msgstr ""
+
+#: classes/class-helper.php:1013
+msgid "Train or Rail Operator"
+msgstr ""
+
+#: classes/class-helper.php:1014
+msgid "Purchasing Goods and Services"
+msgstr ""
+
+#: classes/class-helper.php:1015
+msgid "Piloting: Air and Marine"
+msgstr ""
+
+#: classes/class-helper.php:1016
+msgid "Cargo and Baggage Handling"
+msgstr ""
+
+#: classes/class-helper.php:1017
+msgid "Hazardous Materials Handling"
+msgstr ""
+
+#: classes/class-helper.php:1018
+msgid "Merchandise Planning and Buying"
+msgstr ""
+
+#: classes/class-helper.php:1019
+msgid "Import/Export Administration"
+msgstr ""
+
+#: classes/class-helper.php:1020
+msgid "Cost Estimating"
+msgstr ""
+
+#: classes/class-helper.php:1021
+msgid "Messenger/Courier"
+msgstr ""
+
+#: classes/class-helper.php:1022
+msgid "Truck Driving"
+msgstr ""
+
+#: classes/class-helper.php:1023
+msgid "Supplier Management/Vendor Management"
+msgstr ""
+
+#: classes/class-helper.php:1024
+msgid "Equipment/Forklift/Crane Operation"
+msgstr ""
+
+#: classes/class-helper.php:1025
+msgid "Inventory Planning and Management"
+msgstr ""
+
+#: classes/class-helper.php:1026
+msgid "Vehicle Dispatch, Routing and Scheduling"
+msgstr ""
+
+#: classes/class-helper.php:1027
+msgid "Shipping and Receiving/Warehousing"
+msgstr ""
+
+#: classes/class-helper.php:1028
+msgid "General/Other: Logistics/Transportation"
+msgstr ""
+
+#: classes/class-helper.php:1029
+msgid "Visual/Display Merchandising"
+msgstr ""
+
+#: classes/class-helper.php:1030
+msgid "Brand/Product Marketing"
+msgstr ""
+
+#: classes/class-helper.php:1031
+msgid "Direct Marketing (CRM)"
+msgstr ""
+
+#: classes/class-helper.php:1032
+msgid "Events/Promotional Marketing"
+msgstr ""
+
+#: classes/class-helper.php:1033
+msgid "Investor and Public/Media Relations"
+msgstr ""
+
+#: classes/class-helper.php:1034
+msgid "Marketing Communications"
+msgstr ""
+
+#: classes/class-helper.php:1035
+msgid "Market Research"
+msgstr ""
+
+#: classes/class-helper.php:1036
+msgid "Media Planning and Buying"
+msgstr ""
+
+#: classes/class-helper.php:1037
+msgid "Marketing Production/Traffic"
+msgstr ""
+
+#: classes/class-helper.php:1038
+msgid "Product Management"
+msgstr ""
+
+#: classes/class-helper.php:1039
+msgid "Telemarketing"
+msgstr ""
+
+#: classes/class-helper.php:1040
+msgid "Copy Writing/Editing"
+msgstr ""
+
+#: classes/class-helper.php:1041
+msgid "General/Other: Marketing/Product"
+msgstr ""
+
+#: classes/class-helper.php:1042
+msgid "Healthcare Aid"
+msgstr ""
+
+#: classes/class-helper.php:1043
+msgid "Pharmacy"
+msgstr ""
+
+#: classes/class-helper.php:1044
+msgid "Nutrition and Diet"
+msgstr ""
+
+#: classes/class-helper.php:1045
+msgid "Nursing"
+msgstr ""
+
+#: classes/class-helper.php:1046
+msgid "Laboratory/Pathology"
+msgstr ""
+
+#: classes/class-helper.php:1047
+msgid "Physician Assistant/Nurse Practitioner"
+msgstr ""
+
+#: classes/class-helper.php:1048
+msgid "Optical"
+msgstr ""
+
+#: classes/class-helper.php:1049
+msgid "Medical Therapy/Rehab Services"
+msgstr ""
+
+#: classes/class-helper.php:1050
+msgid "Medical Practitioner"
+msgstr ""
+
+#: classes/class-helper.php:1051
+msgid "Mental Health"
+msgstr ""
+
+#: classes/class-helper.php:1052
+msgid "Medical Imaging"
+msgstr ""
+
+#: classes/class-helper.php:1053
+msgid "EMT/Paramedic"
+msgstr ""
+
+#: classes/class-helper.php:1054
+msgid "Social Service"
+msgstr ""
+
+#: classes/class-helper.php:1055
+msgid "Sports Medicine"
+msgstr ""
+
+#: classes/class-helper.php:1056
+msgid "Veterinary/Animal Care"
+msgstr ""
+
+#: classes/class-helper.php:1057
+msgid "Dental Assistant/Hygienist"
+msgstr ""
+
+#: classes/class-helper.php:1058
+msgid "Dental Practitioner"
+msgstr ""
+
+#: classes/class-helper.php:1059
+msgid "General/Other: Medical/Health"
+msgstr ""
+
+#: classes/class-helper.php:1060
+msgid "Work at Home"
+msgstr ""
+
+#: classes/class-helper.php:1061
+msgid "Career Fair"
+msgstr ""
+
+#: classes/class-helper.php:1063
+msgid "Waste Pick-up and Removal"
+msgstr ""
+
+#: classes/class-helper.php:1064
+msgid "Operations/Plant Management"
+msgstr ""
+
+#: classes/class-helper.php:1065
+msgid "Equipment Operations"
+msgstr ""
+
+#: classes/class-helper.php:1066
+msgid "Scientific/Technical Production"
+msgstr ""
+
+#: classes/class-helper.php:1067
+msgid "Layout, Prepress, Printing, & Binding Operations"
+msgstr ""
+
+#: classes/class-helper.php:1068
+msgid "Assembly/Assembly Line"
+msgstr ""
+
+#: classes/class-helper.php:1069
+msgid "Moldmaking/Casting"
+msgstr ""
+
+#: classes/class-helper.php:1070
+msgid "Metal Fabrication and Welding"
+msgstr ""
+
+#: classes/class-helper.php:1071
+msgid "Audio/Video Broadcast & Postproduction"
+msgstr ""
+
+#: classes/class-helper.php:1072
+msgid "Sewing and Tailoring"
+msgstr ""
+
+#: classes/class-helper.php:1073
+msgid "Laundry and Dry-Cleaning Operations"
+msgstr ""
+
+#: classes/class-helper.php:1074
+msgid "Machining/CNC"
+msgstr ""
+
+#: classes/class-helper.php:1075
+msgid "General/Other: Production/Operations"
+msgstr ""
+
+#: classes/class-helper.php:1076
+msgid "Event Planning/Coordination"
+msgstr ""
+
+#: classes/class-helper.php:1077
+#: classes/class-helper.php:1079
+msgid "General/Other: Project/Program Management"
+msgstr ""
+
+#: classes/class-helper.php:1080
+msgid "Occupational Health and Safety"
+msgstr ""
+
+#: classes/class-helper.php:1081
+msgid "Building/Construction Inspection"
+msgstr ""
+
+#: classes/class-helper.php:1082
+msgid "Fraud Investigation"
+msgstr ""
+
+#: classes/class-helper.php:1083
+msgid "ISO Certification"
+msgstr ""
+
+#: classes/class-helper.php:1084
+msgid "Food Safety and Inspection"
+msgstr ""
+
+#: classes/class-helper.php:1085
+msgid "Production Quality Assurance"
+msgstr ""
+
+#: classes/class-helper.php:1086
+msgid "Six Sigma/Black Belt/TQM"
+msgstr ""
+
+#: classes/class-helper.php:1087
+msgid "Software Quality Assurance"
+msgstr ""
+
+#: classes/class-helper.php:1088
+msgid "Vehicle Inspection"
+msgstr ""
+
+#: classes/class-helper.php:1089
+msgid "Environmental Protection/Conservation"
+msgstr ""
+
+#: classes/class-helper.php:1090
+msgid "General/Other: Quality Assurance/Safety"
+msgstr ""
+
+#: classes/class-helper.php:1091
+msgid "Biological/Chemical Research"
+msgstr ""
+
+#: classes/class-helper.php:1092
+msgid "Materials/Physical Research"
+msgstr ""
+
+#: classes/class-helper.php:1093
+msgid "Mathematical/Statistical Research"
+msgstr ""
+
+#: classes/class-helper.php:1094
+msgid "Clinical Research"
+msgstr ""
+
+#: classes/class-helper.php:1095
+msgid "New Product R&D"
+msgstr ""
+
+#: classes/class-helper.php:1096
+msgid "Pharmaceutical Research"
+msgstr ""
+
+#: classes/class-helper.php:1097
+msgid "Environmental/Geological Testing & Analysis"
+msgstr ""
+
+#: classes/class-helper.php:1098
+msgid "General/Other: R&D/Science"
+msgstr ""
+
+#: classes/class-helper.php:1099
+msgid "Account Management (Commissioned)"
+msgstr ""
+
+#: classes/class-helper.php:1100
+msgid "Field Sales"
+msgstr ""
+
+#: classes/class-helper.php:1101
+msgid "Business Development/New Accounts"
+msgstr ""
+
+#: classes/class-helper.php:1102
+msgid "Retail/Counter Sales and Cashier"
+msgstr ""
+
+#: classes/class-helper.php:1103
+msgid "Wholesale/Reselling Sales"
+msgstr ""
+
+#: classes/class-helper.php:1104
+msgid "International Sales"
+msgstr ""
+
+#: classes/class-helper.php:1105
+msgid "Fundraising"
+msgstr ""
+
+#: classes/class-helper.php:1106
+msgid "Technical Presales Support & Technical Sales"
+msgstr ""
+
+#: classes/class-helper.php:1107
+msgid "Telesales"
+msgstr ""
+
+#: classes/class-helper.php:1108
+msgid "Travel Agent/Ticket Sales"
+msgstr ""
+
+#: classes/class-helper.php:1109
+msgid "Media and Advertising Sales"
+msgstr ""
+
+#: classes/class-helper.php:1110
+msgid "Insurance Agent/Broker"
+msgstr ""
+
+#: classes/class-helper.php:1111
+msgid "Sales Support/Assistance"
+msgstr ""
+
+#: classes/class-helper.php:1113
+msgid "General/Other: Sales/Business Development"
+msgstr ""
+
+#: classes/class-helper.php:1114
+msgid "Customs/Immigration"
+msgstr ""
+
+#: classes/class-helper.php:1115
+msgid "Firefighting and Rescue"
+msgstr ""
+
+#: classes/class-helper.php:1116
+msgid "Airport Security and Screening"
+msgstr ""
+
+#: classes/class-helper.php:1117
+msgid "Store Security/Loss Prevention"
+msgstr ""
+
+#: classes/class-helper.php:1118
+msgid "Security Intelligence & Analysis"
+msgstr ""
+
+#: classes/class-helper.php:1119
+msgid "Police-Law Enforcement"
+msgstr ""
+
+#: classes/class-helper.php:1120
+msgid "Security Guard"
+msgstr ""
+
+#: classes/class-helper.php:1121
+msgid "Correctional Officer"
+msgstr ""
+
+#: classes/class-helper.php:1122
+msgid "Military Combat"
+msgstr ""
+
+#: classes/class-helper.php:1123
+msgid "General/Other: Security/Protective Services"
+msgstr ""
+
+#: classes/class-helper.php:1125
+msgid "Continuing/Adult"
+msgstr ""
+
+#: classes/class-helper.php:1126
+msgid "Elementary School"
+msgstr ""
+
+#: classes/class-helper.php:1127
+msgid "Software/Web Training"
+msgstr ""
+
+#: classes/class-helper.php:1128
+msgid "Early Childhood Care & Development"
+msgstr ""
+
+#: classes/class-helper.php:1129
+msgid "University"
+msgstr ""
+
+#: classes/class-helper.php:1130
+msgid "Junior/High School"
+msgstr ""
+
+#: classes/class-helper.php:1131
+msgid "Classroom Teaching"
+msgstr ""
+
+#: classes/class-helper.php:1132
+msgid "Special Education"
+msgstr ""
+
+#: classes/class-helper.php:1133
+msgid "Fitness & Sports Training/Instruction"
+msgstr ""
+
+#: classes/class-helper.php:1134
+msgid "General/Other: Training/Instruction"
+msgstr ""
+
+#: classes/class-helper.php:1137
+msgid "Permanent employee"
+msgstr ""
+
+#: classes/class-helper.php:1138
+msgid "Intern"
+msgstr ""
+
+#: classes/class-helper.php:1139
+msgid "Trainee"
+msgstr ""
+
+#: classes/class-helper.php:1140
+msgid "Freelance"
+msgstr ""
+
+#: classes/class-helper.php:1141
+msgid "Temporary"
+msgstr ""
+
+#: classes/class-helper.php:1142
+msgid "Working Student"
+msgstr ""
+
+#: classes/class-helper.php:1145
+msgid "full-time"
+msgstr ""
+
+#: classes/class-helper.php:1146
+msgid "part-time"
+msgstr ""
+
+#: classes/class-helper.php:1147
+msgid "full- or part-time"
+msgstr ""
+
+#: classes/class-helper.php:1150
+msgid "entry-level"
+msgstr ""
+
+#: classes/class-helper.php:1151
+msgid "experienced"
+msgstr ""
+
+#: classes/class-helper.php:1152
+msgid "executive"
+msgstr ""
+
+#: classes/class-helper.php:1153
+msgid "student"
+msgstr ""
+
+#: classes/class-helper.php:1156
+msgid "less than 1 year"
+msgstr ""
+
+#: classes/class-helper.php:1157
+msgid "1-2 years"
+msgstr ""
+
+#: classes/class-helper.php:1158
+msgid "2-5 years"
+msgstr ""
+
+#: classes/class-helper.php:1159
+msgid "5-7 years"
+msgstr ""
+
+#: classes/class-helper.php:1160
+msgid "7-10 years"
+msgstr ""
+
+#: classes/class-helper.php:1161
+msgid "10-15 years"
+msgstr ""
+
+#: classes/class-helper.php:1162
 msgid "more than 15 years"
 msgstr ""
 
@@ -564,7 +1793,7 @@ msgid "Provides a Widget to show a list of positions provided by Personio."
 msgstr ""
 
 #: classes/class-positionswidget.php:24
-#: inc/init.php:304
+#: inc/init.php:305
 #: blocks/list/build/index.js:1
 msgid "Personio Positions"
 msgstr ""
@@ -594,7 +1823,7 @@ msgid "Sort by"
 msgstr ""
 
 #: classes/class-positionswidget.php:56
-#: inc/init.php:365
+#: inc/init.php:366
 #: blocks/list/build/index.js:1
 msgid "title"
 msgstr ""
@@ -837,55 +2066,55 @@ msgstr ""
 msgid "Not found in Trash"
 msgstr ""
 
-#: inc/init.php:269
+#: inc/init.php:270
 msgid "every 5th Minute"
 msgstr ""
 
-#: inc/init.php:344
+#: inc/init.php:345
 msgid "recruiting category"
 msgstr ""
 
-#: inc/init.php:345
+#: inc/init.php:346
 msgid "schedule"
 msgstr ""
 
-#: inc/init.php:346
+#: inc/init.php:347
 msgid "office"
 msgstr ""
 
-#: inc/init.php:347
+#: inc/init.php:348
 msgid "department"
 msgstr ""
 
-#: inc/init.php:348
+#: inc/init.php:349
 msgid "employment types"
 msgstr ""
 
-#: inc/init.php:349
+#: inc/init.php:350
 msgid "seniority"
 msgstr ""
 
-#: inc/init.php:350
+#: inc/init.php:351
 msgid "experience"
 msgstr ""
 
-#: inc/init.php:351
+#: inc/init.php:352
 msgid "occupation"
 msgstr ""
 
-#: inc/init.php:366
+#: inc/init.php:367
 msgid "details"
 msgstr ""
 
-#: inc/init.php:367
+#: inc/init.php:368
 msgid "content"
 msgstr ""
 
-#: inc/init.php:368
+#: inc/init.php:369
 msgid "application link"
 msgstr ""
 
-#: inc/init.php:557
+#: inc/init.php:558
 #: templates/parts/term-filter-select.php:15
 #: blocks/show/build/index.js:1
 msgid "Please choose"

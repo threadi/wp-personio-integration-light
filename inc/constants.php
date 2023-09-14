@@ -194,6 +194,13 @@ const WP_PERSONIO_INTEGRATION_TAXONOMIES = [
         'slug' => 'occupation',
         'useInFilter' => 1
     ],
+    WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION => [
+        'attr' => [ // taxonomy settings deviating from default
+            'rewrite' => ['slug' => 'occupation'],
+        ],
+        'slug' => 'occupation_detail',
+        'useInFilter' => 1
+    ],
     WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE => [
         'attr' => [ // taxonomy settings deviating from default
             'rewrite' => ['slug' => 'office'],

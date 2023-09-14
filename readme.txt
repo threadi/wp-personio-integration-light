@@ -6,7 +6,7 @@ Tested up to: 6.3.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 
 == Description ==
 
@@ -284,3 +284,7 @@ Yes, it is without any further settings.
 * Updated translations
 * Fixed missing files for Block Editor in WordPress-SVN
 * Fixed error in dashboard if pro-plugin is not active
+
+= 2.4.2 =
+* Added occupation detail as sub-entry for occupation-category
+* Updated all translations for values for position details set by Personio
