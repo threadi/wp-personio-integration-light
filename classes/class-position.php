@@ -224,6 +224,7 @@ class Position {
             // assign the position to its terms
             $this->updateTerm( 'recruitingCategory', 'personioRecruitingCategory', false );
             $this->updateTerm( 'occupationCategory', 'personioOccupationCategory', false );
+            $this->updateTerm( 'occupation', 'personioOccupation', false );
             $this->updateTerm( 'office', 'personioOffice', true );
             $this->updateTerm( 'department', 'personioDepartment', false );
             $this->updateTerm( 'lang', 'personioLanguages', true );
@@ -429,7 +430,7 @@ class Position {
 	}
 
     /**
-     * Get the term of the recruiting category.
+     * Get the term of the occupation category.
      *
      * @return string
      * @noinspection PhpUnused
@@ -437,6 +438,17 @@ class Position {
     public function getOccupationCategoryName(): string
     {
         return $this->_getTermName( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY, 'name' );
+    }
+
+    /**
+     * Get the term of the occupation category detail.
+     *
+     * @return string
+     * @noinspection PhpUnused
+     */
+    public function getOccupationName(): string
+    {
+        return $this->_getTermName( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION, 'name' );
     }
 
     /**
