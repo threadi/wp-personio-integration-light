@@ -137,7 +137,8 @@ export default function Edit( object ) {
 									{label: __('Department', 'wp-personio-integration'), value: 'department'},
 									{label: __('Experience', 'wp-personio-integration'), value: 'seniority'},
 									{label: __('Years of experience', 'wp-personio-integration'), value: 'experience'},
-									{label: __('Job type', 'wp-personio-integration'), value: 'occupation'}
+									{label: __('Job type', 'wp-personio-integration'), value: 'occupation'},
+									{label: __('Job type detail', 'wp-personio-integration'), value: 'occupation_detail'}
 								]}
 								multiple={true}
 								onChange={value => onChangeExcerptTemplates(value, object)}

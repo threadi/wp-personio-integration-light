@@ -287,4 +287,5 @@ Yes, it is without any further settings.
 
 = 2.4.2 =
 * Added occupation detail as sub-entry for occupation-category
+* Added occupation detail as possible filter in Block Editor
 * Updated all translations for values for position details set by Personio

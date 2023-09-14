@@ -340,6 +340,9 @@ class helper {
             case 'occupation':
                 $name = $position->getOccupationCategoryName();
                 break;
+            case 'occupation_detail':
+                $name = $position->getOccupationName();
+                break;
             case 'employmenttype':
                 $name = $position->getEmploymentTypeName();
                 break;
