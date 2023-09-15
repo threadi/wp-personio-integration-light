@@ -100,3 +100,11 @@ personio_positions_applications_privacy_url
 personio_integration_delete_single_position
 -------------------------------------------
 * manipulate the deletion of single positions during import
+
+personio_integration_settings_multiselect_attr
+----------------------------------------------
+* change multiselect-attributes for settings-view
+
+personio_integration_settings_multiselect_classes
+-------------------------------------------------
+* add custom classes to multiselect-fields in settings-view

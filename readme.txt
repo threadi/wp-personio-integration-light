@@ -46,6 +46,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 - application formulars incl. export of them via Personio API
 - manual sorting of open positions in list views via drag&drop
+- sorting of position details in frontend via drag&drop
 - supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese - compatible with translations via Polylang
 - additional import settings, e.g. import intervals and partial import for very large lists of open positions
 - RichSnippets for optimal findability via search engines like Google
@@ -288,4 +289,5 @@ Yes, it is without any further settings.
 = 2.4.2 =
 * Added occupation detail as sub-entry for occupation-category
 * Added occupation detail as possible filter in Block Editor
+* Added more hooks
 * Updated all translations for values for position details set by Personio
