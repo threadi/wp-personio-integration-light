@@ -360,15 +360,18 @@ function personio_integration_admin_select_field( $attr ) {
  *
  * @return void
  */
-function personio_integration_admin_multiselect_field( $attr ) {
+function personio_integration_admin_multiselect_field( $attr ): void {
     if( !empty($attr['fieldId']) && !empty($attr['values']) ) {
-        // get value from config
+        // change attributes via hook.
+        $attr = apply_filters( 'personio_integration_settings_multiselect_attr', $attr );
+
+        // get value from config.
         $actualValues = get_option($attr['fieldId'], []);
         if( empty($actualValues) ) {
-            $actualValues = [];
+            $actualValues = array();
         }
 
-        // or get them from request
+        // or get them from request.
         if( isset($_POST[$attr['fieldId']]) && is_array($_POST[$attr['fieldId']]) ) {
             $actualValues = [];
             $values = array_map( 'sanitize_text_field', $_POST[$attr['fieldId']] );
@@ -377,12 +380,12 @@ function personio_integration_admin_multiselect_field( $attr ) {
             }
         }
 
-        // if $actualValues is a string, convert it
+        // if $actualValues is a string, convert it.
         if( !is_array($actualValues) ) {
             $actualValues = explode(',', $actualValues);
         }
 
-        // use values as key if set
+        // use values as key if set.
         if(!empty($attr['useValuesAsKeys'])) {
             $newArray = [];
             foreach( $attr['values'] as $value ) {
@@ -391,21 +394,24 @@ function personio_integration_admin_multiselect_field( $attr ) {
             $attr['values'] = $newArray;
         }
 
-        // get title
+        // get title.
         $title = '';
         if( isset($attr['title']) ) {
             $title = $attr['title'];
         }
 
-        // set readonly attribute
+        // get additional classes.
+        $classes = apply_filters( 'personio_integration_settings_multiselect_classes', array(), $attr );
+
+        // set readonly attribute.
         $readonly = '';
         if( isset($attr['readonly']) && false !== $attr['readonly'] ) {
             $readonly = ' disabled="disabled"';
-            ?><input type="hidden" name="<?php echo esc_attr($attr['fieldId']); ?>_ro" value="<?php echo implode(",", $actualValues);?>" /><?php
+            ?><input type="hidden" name="<?php echo esc_attr($attr['fieldId']); ?>_ro" value="<?php echo implode(",", $actualValues); ?>" /><?php
         }
 
         ?>
-            <select id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>[]" multiple class="personio-field-width"<?php echo $readonly; ?> title="<?php echo esc_attr($title); ?>">
+            <select id="<?php echo esc_attr($attr['fieldId']); ?>" name="<?php echo esc_attr($attr['fieldId']); ?>[]" multiple class="personio-field-width <?php echo implode( " ", $classes); ?>"<?php echo $readonly; ?> title="<?php echo esc_attr($title); ?>">
                 <?php
                 foreach( $attr['values'] as $key => $value ) {
                     ?><option value="<?php echo esc_attr($key); ?>"<?php echo in_array($key, $actualValues) ? ' selected="selected"' : ''; ?>><?php echo esc_html($value); ?></option><?php
