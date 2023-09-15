@@ -32,7 +32,7 @@ add_action( 'personio_integration_settings_add_tab', 'personio_integration_setti
 function personio_integration_admin_add_menu_content_importexport(): void
 {
     // check user capabilities
-    if ( ! current_user_can( 'manage_options' ) || !helper::is_personioUrl_set() ) {
+    if ( ! current_user_can( 'manage_'.WP_PERSONIO_INTEGRATION_CPT ) || !helper::is_personioUrl_set() ) {
         return;
     }
 

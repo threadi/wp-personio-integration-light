@@ -29,7 +29,7 @@ add_action( 'init', 'personio_integration_init', -1 );
  */
 function personio_integration_add_position_posttype(): void
 {
-    $labels = [
+    $labels = array(
         'name'                => __( 'Positions', 'wp-personio-integration' ),
         'singular_name'       => __( 'Position', 'wp-personio-integration'),
         'menu_name'           => __( 'Positions', 'wp-personio-integration'),
@@ -41,14 +41,14 @@ function personio_integration_add_position_posttype(): void
         'search_items'        => __( 'Search Position', 'wp-personio-integration'),
         'not_found'           => __( 'Not Found', 'wp-personio-integration'),
         'not_found_in_trash'  => __( 'Not found in Trash', 'wp-personio-integration')
-    ];
+    );
 
-    // get the slugs
+    // get the slugs.
     $archiveSlug = apply_filters('personio_integration_archive_slug', helper::getArchiveSlug());
     $detailSlug = apply_filters('personio_integration_detail_slug', helper::getDetailSlug());
 
-    // set arguments for our own cpt
-    $args = [
+    // set arguments for our own cpt.
+    $args = array(
         'label'               => $labels['name'],
         'description'         => '',
         'labels'              => $labels,
@@ -79,18 +79,21 @@ function personio_integration_add_position_posttype(): void
         'show_in_rest'        => true,
         'capability_type'     => 'post',
         'capabilities' => array(
-            'create_posts'       => false,
-            'edit_post'          => 'manage_options',
-            'edit_others_posts'  => false,
-            'read_post'          => 'manage_options',
-            'publish_posts'      => false,
-            'read_private_posts' => false
+            'create_posts'       => 'do_not_allow',
+            'delete_posts'       => 'do_not_allow',
+            'edit_post'          => 'read_'.WP_PERSONIO_INTEGRATION_CPT,
+            'edit_posts'          => 'read_'.WP_PERSONIO_INTEGRATION_CPT,
+            'edit_others_posts'  => 'do_not_allow',
+            'read_post'          => 'do_not_allow',
+            'read_posts'          => 'do_not_allow',
+            'publish_posts'      => 'do_not_allow',
+            'read_private_posts' => 'do_not_allow'
         ),
         'menu_icon'           => plugin_dir_url( WP_PERSONIO_INTEGRATION_PLUGIN ).'/gfx/personio_icon.png',
-        'rewrite' => [
+        'rewrite' => array(
             'slug' => $detailSlug
-        ]
-    ];
+        )
+    );
     register_post_type( WP_PERSONIO_INTEGRATION_CPT, $args );
 
     // register personioId als postmeta to be published in rest-api,
@@ -101,6 +104,9 @@ function personio_integration_add_position_posttype(): void
             'show_in_rest' => true
         ]
     );
+
+    /*$manager = get_role( 'manage_personio_positions' );
+    var_dump($manager->capabilities);exit;*/
 }
 add_action( 'init', 'personio_integration_add_position_posttype', 10 );
 
@@ -115,7 +121,7 @@ function personio_integration_add_taxonomies(): void
 {
     // set default taxonomy-settings
     // -> could be overwritten by each taxonomy in taxonomies.php
-    $taxonomy_array_default = [
+    $taxonomy_array_default = array(
         'hierarchical' => true,
         'labels' => '',
         'public' => false,
@@ -127,16 +133,16 @@ function personio_integration_add_taxonomies(): void
         'show_in_quick_edit' => true,
         'show_in_rest' => true,
         'query_var' => true,
-        'capabilities' => [
-            'manage_terms' => 'manage_options',
-            'edit_terms' => 'manage_options',
-            'delete_terms' => 'god',
-            'assign_terms' => 'manage_options',
-        ]
-    ];
+        'capabilities' => array(
+            'manage_terms' => 'read_'.WP_PERSONIO_INTEGRATION_CPT,
+            'edit_terms' => 'read_'.WP_PERSONIO_INTEGRATION_CPT,
+            'delete_terms' => 'do_not_allow',
+            'assign_terms' => 'read_'.WP_PERSONIO_INTEGRATION_CPT,
+        )
+    );
 
     // loop through our own taxonomies and configure them.
-    foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
+    foreach( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
         // get properties
         $taxonomy_array = array_merge( $taxonomy_array_default, $taxonomy["attr"] );
         $taxonomy_array['labels'] = helper::get_taxonomy_label($taxonomy_name);
@@ -148,7 +154,7 @@ function personio_integration_add_taxonomies(): void
         }
 
         // apply additional settings for taxonomy.
-        $taxonomy_array = apply_filters('get_' . $taxonomy_name.'_translate_taxonomy', $taxonomy_array, $taxonomy_name);
+        $taxonomy_array = apply_filters( 'get_' . $taxonomy_name.'_translate_taxonomy', $taxonomy_array, $taxonomy_name );
 
         // do not show any taxonomy in menu if Personio URL is not available
         if( !personioIntegration\helper::is_personioUrl_set() ) {
@@ -500,6 +506,7 @@ function personio_integration_update(): void
                 updates::version211();
                 updates::version227();
                 updates::version240();
+                updates::version250();
                 break;
         }
 
@@ -532,7 +539,7 @@ function personio_integration_rest_api(): void
         'methods' => WP_REST_SERVER::READABLE,
         'callback' => 'personio_integration_rest_api_taxonomies',
         'permission_callback' => function () {
-            return current_user_can( 'edit_posts' );
+            return current_user_can( 'edit_posts' ); // use edit_posts as autors might not manage positions, but their output in frontend
         }
     ) );
 }

@@ -28,8 +28,8 @@ add_action( 'personio_integration_settings_add_tab', 'personio_integration_setti
  */
 function personio_integration_admin_add_menu_content_template(): void
 {
-    // check user capabilities
-    if ( ! current_user_can( 'manage_options' ) ) {
+    // check user capabilities.
+    if ( ! current_user_can( 'manage_'.WP_PERSONIO_INTEGRATION_CPT ) ) {
         return;
     }
 

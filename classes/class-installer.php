@@ -209,6 +209,21 @@ class installer
             }
         }
 
+        /**
+         * Remove our own role.
+         */
+        remove_role( 'manage_personio_positions' );
+
+        /**
+         * Remove our capabilities from other roles.
+         */
+        global $wp_roles;
+        foreach( $wp_roles->roles as $role_name => $settings ) {
+            $role = get_role( $role_name );
+            $role->remove_cap( 'manage_'.WP_PERSONIO_INTEGRATION_CPT );
+            $role->remove_cap( 'read_'.WP_PERSONIO_INTEGRATION_CPT );
+        }
+
         // delete our custom database-tables
         global $wpdb;
         $table_name = $wpdb->prefix . 'personio_import_logs';

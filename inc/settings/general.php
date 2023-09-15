@@ -11,7 +11,7 @@ use personioIntegration\helper;
 function personio_integration_admin_add_menu_content_settings()
 {
     // check user capabilities
-    if ( ! current_user_can( 'manage_options' ) ) {
+    if ( ! current_user_can( 'manage_'.WP_PERSONIO_INTEGRATION_CPT ) ) {
         return;
     }
 
@@ -19,7 +19,7 @@ function personio_integration_admin_add_menu_content_settings()
     settings_errors();
 
     ?>
-    <form method="POST" action="options.php">
+    <form method="POST" action="<?php echo get_admin_url(); ?>options.php">
         <?php
         settings_fields( 'personioIntegrationPositions' );
         do_settings_sections( 'personioIntegrationPositions' );
