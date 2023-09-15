@@ -293,3 +293,4 @@ Yes, it is without any further settings.
 * Optimized capability-checks for our own custom post type and all used taxonomies
 * Added more hooks
 * Updated all translations for values for position details set by Personio
+* Fixed visibility of import button above listing in WordPress 6.3 or newer
