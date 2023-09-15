@@ -258,15 +258,15 @@ function personio_integration_admin_text_field( $attr ) {
  * @param $attr
  * @return void
  */
-function personio_integration_admin_checkbox_field( $attr ) {
+function personio_integration_admin_checkbox_field( $attr ): void {
     if( !empty($attr['fieldId']) ) {
-        // get title
+        // get title.
         $title = '';
         if( isset($attr['title']) ) {
             $title = $attr['title'];
         }
 
-        // set readonly attribute
+        // set readonly attribute.
         $readonly = '';
         if( isset($attr['readonly']) && false !== $attr['readonly'] ) {
             $readonly = ' disabled="disabled"';
@@ -285,12 +285,12 @@ function personio_integration_admin_checkbox_field( $attr ) {
         >
         <?php
 
-        // show optional description for this checkbox
+        // show optional description for this checkbox.
         if( !empty($attr['description']) ) {
             echo "<p>".wp_kses_post($attr['description'])."</p>";
         }
 
-        // show optional hint for our Pro-version
+        // show optional hint for our Pro-version.
         if( !empty($attr['pro_hint']) ) {
             do_action('personio_integration_admin_show_pro_hint', $attr['pro_hint']);
         }
@@ -420,6 +420,11 @@ function personio_integration_admin_multiselect_field( $attr ): void {
         <?php
         if( !empty($attr['description']) ) {
             echo "<p>".wp_kses_post($attr['description'])."</p>";
+        }
+
+        // show optional hint for our Pro-version.
+        if( !empty($attr['pro_hint']) ) {
+            do_action('personio_integration_admin_show_pro_hint', $attr['pro_hint']);
         }
     }
 }

@@ -93,7 +93,9 @@ function personio_integration_admin_add_settings_template(): void
             'values' => apply_filters( 'personio_integration_settings_get_list', personio_integration_admin_categories_labels(), get_option( 'personioIntegrationTemplateFilter', array() ) ),
             'description' => __('Mark multiple default filter for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'wp-personio-integration'),
             'readonly' => !helper::is_personioUrl_set(),
-            'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array'
+            'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
+            /* translators: %1$s is replaced with "string" */
+            'pro_hint' => __('Sort this list with the %s.', 'wp-personio-integration')
         ]
     );
     register_setting('personioIntegrationPositionsTemplates', 'personioIntegrationTemplateFilter');
@@ -146,7 +148,9 @@ function personio_integration_admin_add_settings_template(): void
             'values' => apply_filters( 'personio_integration_settings_get_list', personio_integration_admin_categories_labels(), get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) ),
             'description' => __('Mark multiple default detail-parts for each frontend-output. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'wp-personio-integration'),
             'readonly' => !helper::is_personioUrl_set(),
-            'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array'
+            'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
+            /* translators: %1$s is replaced with "string" */
+            'pro_hint' => __('Sort this list with the %s.', 'wp-personio-integration')
         ]
     );
     register_setting('personioIntegrationPositionsTemplates', 'personioIntegrationTemplateExcerptDefaults' );
@@ -192,7 +196,9 @@ function personio_integration_admin_add_settings_template(): void
             'values' => apply_filters( 'personio_integration_settings_get_list', personio_integration_admin_categories_labels(), get_option( 'personioIntegrationTemplateExcerptDetail', array() ) ),
             'description' => __('Mark multiple details for single-view of positions. Only used if template "detail" is enabled for detail-view. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'wp-personio-integration'),
             'readonly' => !helper::is_personioUrl_set(),
-            'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array'
+            'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
+            /* translators: %1$s is replaced with "string" */
+            'pro_hint' => __('Sort this list with the %s.', 'wp-personio-integration')
         ]
     );
     register_setting('personioIntegrationPositionsTemplates', 'personioIntegrationTemplateExcerptDetail');
