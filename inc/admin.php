@@ -918,3 +918,35 @@ function personio_integration_admin_add_importer(): void {
 	);
 }
 add_action( 'admin_init', 'personio_integration_admin_add_importer' );
+
+/**
+ * Through a bug in WordPress we must remove the "create"-option manually.
+ *
+ * @return void
+ */
+function personio_integration_admin_disable_create_options(): void {
+    global $pagenow, $typenow;
+
+    if (is_admin() && !empty($typenow) && !empty($pagenow) && $pagenow === 'edit.php' && stripos($_SERVER['REQUEST_URI'], 'edit.php') && stripos($_SERVER['REQUEST_URI'], 'post_type=' . $typenow) && !stripos($_SERVER['REQUEST_URI'], 'page') ) {
+        $pagenow = 'edit-' . $typenow . '.php';
+    }
+}
+add_action( 'admin_menu', 'personio_integration_admin_disable_create_options' );
+
+/**
+ * Allow our own capability to save settings.
+ */
+function personio_integration_admin_allow_save_settings(): void {
+    $settings_pages = array(
+        'personioIntegrationPositions',
+        'personioIntegrationPositionsTemplates',
+        'personioIntegrationPositionsImportExport',
+        'personioIntegrationPositionsAdvanced'
+    );
+    foreach( apply_filters( 'personio_integration_admin_settings_pages', $settings_pages ) as $settings_page) {
+        add_filter('option_page_capability_' . $settings_page, function () {
+            return 'manage_' . WP_PERSONIO_INTEGRATION_CPT;
+        }, 10, 0);
+    }
+}
+add_action( 'admin_init', 'personio_integration_admin_allow_save_settings' );

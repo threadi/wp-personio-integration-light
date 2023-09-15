@@ -53,6 +53,7 @@ class updates {
         self::version211();
 		self::version227();
         self::version240();
+        self::version250();
 
         // reset import-flag
         delete_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING);
@@ -146,5 +147,26 @@ class updates {
         if (!get_option('personioIntegrationLightInstallDate')) {
             update_option('personioIntegrationLightInstallDate', time());
         }
+    }
+
+    /**
+     * To run on update to (exact) version 2.5.0
+     *
+     * @return void
+     */
+    public static function version250(): void {
+        // add user role to manage positions if it does not exist.
+        $personio_position_manager_role = get_role('manage_personio_positions');
+        if( null === $personio_position_manager_role ) {
+            $personio_position_manager_role = add_role('manage_personio_positions', __('Manage Personio-based Positions', 'wp-personio-integration'));
+        }
+        $personio_position_manager_role->add_cap( 'read' ); // to enter wp-admin
+        $personio_position_manager_role->add_cap( 'read_'.WP_PERSONIO_INTEGRATION_CPT );
+        $personio_position_manager_role->add_cap( 'manage_'.WP_PERSONIO_INTEGRATION_CPT );
+
+        // get admin-role.
+        $admin_role = get_role( 'administrator' );
+        $admin_role->add_cap( 'read_'.WP_PERSONIO_INTEGRATION_CPT );
+        $admin_role->add_cap( 'manage_'.WP_PERSONIO_INTEGRATION_CPT );
     }
 }

@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for settings of this plugin.
+ *
+ * @package wp-personio-integration
+ */
 
 use personioIntegration\Logs;
 
@@ -9,7 +14,7 @@ use personioIntegration\Logs;
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_add_settings() {
+function personio_integration_admin_add_settings(): void {
     do_action('personio_integration_settings_add_settings');
 
     // get settings-fields
@@ -74,12 +79,12 @@ function personio_integration_admin_sanitize_settings_field_array( $value, $opti
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_admin_add_settings_menu() {
+function personio_integration_admin_add_settings_menu(): void {
     add_submenu_page(
         'edit.php?post_type='.WP_PERSONIO_INTEGRATION_CPT,
         __( 'Personio Integration Settings', 'wp-personio-integration' ),
         __( 'Settings', 'wp-personio-integration' ),
-        'manage_options',
+        'manage_'.WP_PERSONIO_INTEGRATION_CPT,
         'personioPositions',
         'personio_integration_admin_add_settings_content',
         1
@@ -92,9 +97,9 @@ add_action( 'admin_menu', 'personio_integration_admin_add_settings_menu' );
  *
  * @return void
  */
-function personio_integration_admin_add_settings_content() {
+function personio_integration_admin_add_settings_content(): void {
     // check user capabilities
-    if ( ! current_user_can( 'manage_options' ) ) {
+    if ( ! current_user_can( 'manage_'.WP_PERSONIO_INTEGRATION_CPT ) ) {
         return;
     }
 
@@ -139,12 +144,14 @@ function personio_integration_admin_add_settings_content() {
  */
 function personio_integration_settings_add_logs_tab( $tab ): void
 {
-    // check active tab
-    $activeClass = '';
-    if( $tab === 'logs' ) $activeClass = ' nav-tab-active';
+    if( current_user_can( 'manage_options' ) ) {
+        // check active tab
+        $activeClass = '';
+        if ($tab === 'logs') $activeClass = ' nav-tab-active';
 
-    // output tab
-    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=logs" class="nav-tab'.esc_attr($activeClass).'">'.__('Logs', 'wp-personio-integration').'</a>';
+        // output tab
+        echo '<a href="?post_type=' . WP_PERSONIO_INTEGRATION_CPT . '&page=personioPositions&tab=logs" class="nav-tab' . esc_attr($activeClass) . '">' . __('Logs', 'wp-personio-integration') . '</a>';
+    }
 }
 add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_logs_tab', 60, 1 );
 
@@ -156,19 +163,21 @@ add_action( 'personio_integration_settings_add_tab', 'personio_integration_setti
  */
 function personio_integration_admin_add_menu_content_logs()
 {
-    // if WP_List_Table is not loaded automatically, we need to load it
-    if( ! class_exists( 'WP_List_Table' ) ) {
-        require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+    if( current_user_can( 'manage_options' ) ) {
+        // if WP_List_Table is not loaded automatically, we need to load it
+        if( ! class_exists( 'WP_List_Table' ) ) {
+            require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+        }
+        $log = new Logs();
+        $log->prepare_items();
+        ?>
+            <div class="wrap">
+                <div id="icon-users" class="icon32"></div>
+                <h2><?php _e('Logs', 'wp-personio-integration'); ?></h2>
+                <?php $log->display(); ?>
+            </div>
+        <?php
     }
-    $log = new Logs();
-    $log->prepare_items();
-    ?>
-        <div class="wrap">
-            <div id="icon-users" class="icon32"></div>
-            <h2><?php _e('Logs', 'wp-personio-integration'); ?></h2>
-            <?php $log->display(); ?>
-        </div>
-    <?php
 }
 add_action('personio_integration_settings_logs_page', 'personio_integration_admin_add_menu_content_logs' );
 

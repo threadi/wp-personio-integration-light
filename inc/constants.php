@@ -203,13 +203,7 @@ const WP_PERSONIO_INTEGRATION_TAXONOMIES = [
     ],
     WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE => [
         'attr' => [ // taxonomy settings deviating from default
-            'rewrite' => ['slug' => 'office'],
-            'capabilities' => [
-                'manage_terms' => 'manage_options',
-                'edit_terms' => 'manage_options',
-                'delete_terms' => 'god',
-                'assign_terms' => 'manage_options',
-            ]
+            'rewrite' => ['slug' => 'office']
         ],
         'slug' => 'office',
         'useInFilter' => 1

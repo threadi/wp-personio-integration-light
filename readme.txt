@@ -6,7 +6,7 @@ Tested up to: 6.3.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.4.2
+Stable tag: 2.5.0
 
 == Description ==
 
@@ -286,8 +286,10 @@ Yes, it is without any further settings.
 * Fixed missing files for Block Editor in WordPress-SVN
 * Fixed error in dashboard if pro-plugin is not active
 
-= 2.4.2 =
+= 2.5.0 =
 * Added occupation detail as sub-entry for occupation-category
 * Added occupation detail as possible filter in Block Editor
+* Added new user role "Manage Personio-based Positions" which will be able to manage all position stuff
+* Optimized capability-checks for our own custom post type and all used taxonomies
 * Added more hooks
 * Updated all translations for values for position details set by Personio
