@@ -1,4 +1,9 @@
 <?php
+/**
+ * File to add tab for SEO-functions.
+ *
+ * @package wp-personio-integration
+ */
 
 /**
  * Add readonly tab in settings.
