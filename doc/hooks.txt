@@ -108,3 +108,7 @@ personio_integration_settings_multiselect_attr
 personio_integration_settings_multiselect_classes
 -------------------------------------------------
 * add custom classes to multiselect-fields in settings-view
+
+personio_integration_pro_tracking_third_party_plugins
+-----------------------------------------------------
+* Add your own third party plugin-setting for tracking. Should return false if none is used. Otherwise the name of the used plugin as string.
