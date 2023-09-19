@@ -293,6 +293,7 @@ Yes, it is without any further settings.
 * Added occupation detail as possible filter in Block Editor
 * Added new user role "Manage Personio-based Positions" which will be able to manage all position stuff
 * Optimized capability-checks for our own custom post type and all used taxonomies
+* Optimized text in frontend if no positions are available.
 * Added more hooks
 * Updated all translations for values for position details set by Personio
 * Updated order of settings-tabs
