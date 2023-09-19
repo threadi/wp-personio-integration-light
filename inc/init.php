@@ -660,3 +660,76 @@ function personio_integration_action_to_delete_position( $post_id ): void {
     $log->addLog('Position '.$position_obj->getPersonioId().' has been deleted.', 'success');
 }
 add_action( 'before_delete_post', 'personio_integration_action_to_delete_position', 10, 1 );
+
+/**
+ * Add endpoint for requests to check cronjobs.
+ *
+ * @return void
+ * @noinspection PhpUnused
+ */
+function personio_integration_admin_rest_api(): void
+{
+    register_rest_route( 'personio/v1', '/checks/', array(
+        'methods' => WP_REST_SERVER::READABLE,
+        'callback' => 'personio_integration_rest_api_check',
+        'permission_callback' => function () {
+            return current_user_can( 'manage_options' );
+        }
+    ) );
+}
+add_action( 'rest_api_init', 'personio_integration_admin_rest_api');
+
+/**
+ * Return result after checking cronjob-states.
+ *
+ * @return array
+ * @noinspection PhpUnused
+ */
+function personio_integration_rest_api_check(): array {
+    // define default results.
+    $result = array(
+        'label' => __( 'Personio Integration Import Cron Check', 'wp-personio-integration' ),
+        'status' => 'good',
+        'badge'       => array(
+            'label' => __( 'Personio Integration', 'wp-personio-integration' ),
+            'color' => 'blue',
+        ),
+        'description' => __( 'Running cronjobs help to import new positions from Personio automatically.<br><strong>All ok with the cronjob!</strong>', 'wp-personio-integration' ),
+        'actions'     => '',
+        'test'        => 'personio_integration_rest_api_check',
+    );
+
+    // get scheduled event.
+    $scheduled_event = wp_get_scheduled_event( 'personio_integration_schudule_events' );
+
+    // event does not exist => show error.
+    if( false === $scheduled_event ) {
+        $url = add_query_arg(
+            array(
+                'action' => 'personioPositionsCreateSchedules',
+                'nonce' => wp_create_nonce( 'wp-personio-integration-create-schedules' )
+            ),
+            get_admin_url() . 'admin.php'
+        );
+        $result['status'] = 'critical';
+        $result['description'] = __( 'Cronjob to import new Positions from Personio does not exist!', 'wp-personio-integration' );
+        /* translators: %1$s will be replaced by the URL to recreate the schedule */
+        $result['actions'] = sprintf( '<p><a href="%1$s" class="button button-primary">Recreate the schedules</a></p>', $url );
+
+        // return this result.
+        return $result;
+    }
+
+    // if scheduled event exist, check if next run is in the past.
+    if( $scheduled_event->timestamp < time() ) {
+        $result['status'] = 'critical';
+        /* translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past) */
+        $result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'wp-personio-integration' ), helper::get_format_date_time( date( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ));
+
+        // return this result.
+        return $result;
+    }
+
+    // return result.
+    return $result;
+}

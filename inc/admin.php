@@ -950,3 +950,40 @@ function personio_integration_admin_allow_save_settings(): void {
     }
 }
 add_action( 'admin_init', 'personio_integration_admin_allow_save_settings' );
+
+/**
+ * Add custom status-check for running cronjobs of our own plugin.
+ * Only if personio-URL is set.
+ *
+ * @param array $statuses List of tests to run.
+ * @return array
+ */
+function personio_integration_admin_set_site_status_test( array $statuses ): array {
+    if( helper::is_personioUrl_set() ) {
+        $statuses['async'] = array(
+            'personio_integration_cron_check' => array(
+                'label' => __('Personio Integration Cron Check', 'wp-personio-integration'),
+                'test' => rest_url('personio/v1/checks'),
+                'has_rest' => true
+            )
+        );
+    }
+    return $statuses;
+}
+add_filter( 'site_status_tests', 'personio_integration_admin_set_site_status_test' );
+
+/**
+ * Create our own schedules via click.
+ *
+ * @return void
+ */
+function personio_integration_create_schedules(): void {
+    check_ajax_referer( 'wp-personio-integration-create-schedules', 'nonce' );
+
+    // check if import-schedule does already exist.
+    helper::set_import_schedule();
+
+    // redirect user.
+    wp_redirect($_SERVER['HTTP_REFERER']);
+}
+add_action( 'admin_action_personioPositionsCreateSchedules', 'personio_integration_create_schedules' );

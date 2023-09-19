@@ -66,22 +66,20 @@ class updates {
      */
     public static function version205(): void
     {
-        // take care that import schedule is installed and active
-        if (!wp_next_scheduled('personio_integration_schudule_events')) {
-            wp_schedule_event(time(), 'daily', 'personio_integration_schudule_events');
-        }
+        // take care that import schedule is installed and active.
+        helper::set_import_schedule();
 
-        // set initial value for debug to disabled if not set
+        // set initial value for debug to disabled if not set.
         if (!get_option('personioIntegration_debug')) {
             update_option('personioIntegration_debug', 0);
         }
 
-        // set initial value for debug to disabled if not set
+        // set initial value for debug to disabled if not set.
         if (!get_option('personioIntegrationTemplateBackToListUrl')) {
             update_option('personioIntegrationTemplateBackToListUrl', '');
         }
 
-        // set initial value for debug to disabled if not set
+        // set initial value for debug to disabled if not set.
         if (!get_option('personioIntegrationEnableFilter')) {
             update_option('personioIntegrationEnableFilter', 0);
         }
