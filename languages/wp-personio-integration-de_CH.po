@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
 "POT-Creation-Date: 2023-09-19T11:47:32+02:00\n"
-"PO-Revision-Date: 2023-09-19 12:17+0200\n"
+"PO-Revision-Date: 2023-09-19 12:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.1\n"
 "X-Domain: wp-personio-integration\n"
 
 #. Plugin Name of the plugin
@@ -55,17 +55,17 @@ msgid ""
 "The PHP extension simplexml is missing on the system. Please contact your "
 "hoster about this."
 msgstr ""
-"Die PHP-Erweiterung simplexml fehlt auf dem System. Bitte wende dich "
-"diesbezüglich an deinen Hoster."
+"Die PHP-Erweiterung simplexml fehlt auf dem System. Bitte wenden Sie sich "
+"diesbezüglich an Ihren Hoster."
 
 #: classes/class-helper.php:76
 msgid "The specification of your Personio URL is still pending."
-msgstr "Die Angabe deiner Personio-URL steht noch aus."
+msgstr "Die Angabe Ihrer Personio-URL steht noch aus."
 
 #. translators: %1$s is replaced with "string"
 #: classes/class-helper.php:78
 msgid "To do this, please go to the <a href=\"%s\">settings page</a>."
-msgstr "Gehe dazu bitte auf die <a href=\"%s\">Einstellungsseite</a>."
+msgstr "Gehen Sie dazu bitte auf die <a href=\"%s\">Einstellungsseite</a>."
 
 #: classes/class-helper.php:89
 msgid "You have not imported your open positions from Personio until now."
@@ -76,14 +76,14 @@ msgstr "Es wurden bisher noch keine offenen Stellen aus Personio importiert."
 msgid ""
 "Click on the following button to import your positions from Personio now:"
 msgstr ""
-"Klicke auf die folgende Schaltfläche, um die offenen Stellen jetzt aus "
+"Klicken Sie auf die folgende Schaltfläche, um Ihre offenen Stellen jetzt aus "
 "Personio zu importieren:"
 
 #. translators: %1$s is replaced with "string"
 #: classes/class-helper.php:91 classes/class-helper.php:148
 #: classes/class-helper.php:171 inc/admin.php:52 inc/settings/import.php:202
 msgid "Run import"
-msgstr "Führe Import jetzt aus"
+msgstr "Jetzt Import ausführen"
 
 #. translators: %1$s is replaced with "string", %2$s is replaced with "string"
 #: classes/class-helper.php:98 inc/admin.php:58
@@ -91,8 +91,8 @@ msgid ""
 "<strong>The import has been manually run.</strong> Please check the list of "
 "positions <a href=\"%1$s\">in backend</a> and <a href=\"%2$s\">frontend</a>."
 msgstr ""
-"<strong>Der Import wurde manuell ausgeführt.</strong> Bitte prüfe die Liste "
-"der Stellen <a href=\"%1$s\">im Backend</a> und <a href=\"%2$s\">im "
+"<strong>Der Import wurde manuell ausgeführt.</strong> Bitte prüfen Sie die "
+"Liste der Stellen <a href=\"%1$s\">im Backend</a> und <a href=\"%2$s\">im "
 "Frontend</a>."
 
 #. translators: %1$s is replaced with "string", %2$s is replaced with "string"
@@ -101,23 +101,24 @@ msgid ""
 "<strong>The import has been canceled.</strong> Please check the list of "
 "positions <a href=\"%1$s\">in backend</a> and <a href=\"%2$s\">frontend</a>."
 msgstr ""
-"<strong>Der Import wurde abgebrochen.</strong> Bitte prüfe die Liste der "
-"Stellen <a href=\"%1$s\">im Backend</a> und <a href=\"%2$s\">im Frontend</a>."
+"<strong>Der Import wurde abgebrochen.</strong> Bitte prüfen Sie die Liste "
+"der Stellen <a href=\"%1$s\">im Backend</a> und <a href=\"%2$s\">im "
+"Frontend</a>."
 
 #: classes/class-helper.php:132
 msgid ""
 "<strong>The positions has been deleted.</strong> You can run the import "
 "anytime again to import positions."
 msgstr ""
-"<strong>Die Stellen wurden entfernt.</strong> Du kannst den Import jederzeit "
-"ausführen um die Stellen erneut zu importieren."
+"<strong>Die Stellen wurden entfernt.</strong> Sie können den Import "
+"jederzeit ausführen um die Stellen erneut zu importieren."
 
 #: classes/class-helper.php:140
 msgid ""
 "<strong>The positions could not been deleted.</strong> An import is actual "
 "running."
 msgstr ""
-"<strong>Die Stellen könnten nicht entfernt werden.</strong> Ein Import läuft "
+"<strong>Die Stellen konnten nicht entfernt werden.</strong> Ein Import läuft "
 "aktuell."
 
 #: classes/class-helper.php:148
@@ -125,8 +126,8 @@ msgid ""
 "<strong>The specified Personio URL is reachable.</strong> Click on the "
 "following button to import your positions from Personio now:"
 msgstr ""
-"<strong>Die angegebene Personio-URL ist erreichbar.</strong> Klicke auf die "
-"folgende Schaltfläche, um die offenen Stellen jetzt aus Personio zu "
+"<strong>Die angegebene Personio-URL ist erreichbar</strong>. Klicken Sie auf "
+"die folgende Schaltfläche, um Ihre offenen Stellen jetzt aus Personio zu "
 "importieren:"
 
 #. translators: %1$s is replaced with the entered Personio-URL
@@ -137,9 +138,9 @@ msgid ""
 "Page > Activations. Please also check if the XML interface is enabled there."
 msgstr ""
 "Die angegebene Personio-URL %s ist für dieses Plugin nicht verwendbar. Bitte "
-"überprüfe die URL in deinem Personio-Account unter Einstellungen > "
-"Recruiting > Karriereseite > Aktivierungen. Bitte prüfe auch, ob die XML-"
-"Schnittstelle dort aktiviert ist."
+"überprüfen Sie die URL in Ihrem Personio-Account unter Einstellungen > "
+"Recruiting > Karriereseite > Aktivierungen. Bitte prüfen Sie auch, ob die "
+"XML-Schnittstelle dort aktiviert ist."
 
 #. translators: %1$s is replaced with "string"
 #: classes/class-helper.php:164
@@ -158,10 +159,10 @@ msgid ""
 "following button to start a new import. If it also takes to long please "
 "check your hosting logfiles for possible restrictions mentioned there."
 msgstr ""
-"<strong>Der laufende Import wurde abgebrochen.</strong> Klicke auf die "
+"<strong>Der laufende Import wurde abgebrochen.</strong> Klicken Sie auf die "
 "folgende Schaltfläche, um einen neuen Import zu starten. Sollte auch dieser "
-"zu lange dauern, überprüfe bitte die Logfiles deines Hostings auf mögliche "
-"Einschränkungen, die dort erwähnt werden."
+"zu lange dauern, überprüfen Sie bitte die Logfiles Ihres Hostings auf "
+"mögliche Einschränkungen, die dort erwähnt werden."
 
 #: classes/class-helper.php:176
 msgid ""
@@ -169,9 +170,10 @@ msgid ""
 "Integration Light template files.</strong> Please compare the following "
 "files in your child-theme with the one this plugin provides:"
 msgstr ""
-"<strong>Du verwendest ein Child-Theme, welches veraltete Personio "
-"Integration Light-Templates enthält.</strong> Bitte vergleiche die folgenden "
-"Dateien in deinem Child-Theme mit denen, die dieses Plugin bereitstellt:"
+"<strong>Sie verwenden ein Child-Theme, welches veraltete Personio "
+"Integration Light-Templates enthält.</strong> Bitte vergleichen Sie "
+"folgenden Dateien in Ihrem Child-Theme mit denen, die dieses Plugin "
+"bereitstellt:"
 
 #: classes/class-helper.php:178
 msgid "Hint: the version-number in the header of the files must match."
@@ -182,33 +184,33 @@ msgstr ""
 #. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
 #: classes/class-helper.php:184
 msgid ""
-"We realized that you are using Divi - very nice! <a href=\"%s\" "
-"target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
-"allows you to design the output of positions in Divi."
+"We realized that you are using Divi - very nice! <a href=\"%s\" target="
+"\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you "
+"to design the output of positions in Divi."
 msgstr ""
-"Wir haben erkannt, dass Du Divi verwendest - sehr schön! <a href=\"%s\" "
+"Wir haben erkannt, dass Sie Divi verwenden - sehr schön! <a href=\"%s\" "
 "target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</a> "
 "ermöglicht die Gestaltung der Ausgabe von Stellen in Divi."
 
 #. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
 #: classes/class-helper.php:190
 msgid ""
-"We realized that you are using Elementor - very nice! <a href=\"%s\" "
-"target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
-"allows you to design the output of positions in Elementor."
+"We realized that you are using Elementor - very nice! <a href=\"%s\" target="
+"\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you "
+"to design the output of positions in Elementor."
 msgstr ""
-"Wir haben erkannt, dass Du Elementor verwendest - sehr schön! <a href=\"%s\" "
+"Wir haben erkannt, dass Sie Elementor verwenden - sehr schön! <a href=\"%s\" "
 "target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</a> "
 "ermöglicht die Gestaltung der Ausgabe von Stellen in Elementor."
 
 #. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
 #: classes/class-helper.php:196
 msgid ""
-"We realized that you are using WPBakery - very nice! <a href=\"%s\" "
-"target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
-"allows you to design the output of positions in WPBakery."
+"We realized that you are using WPBakery - very nice! <a href=\"%s\" target="
+"\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you "
+"to design the output of positions in WPBakery."
 msgstr ""
-"Wir haben erkannt, dass Du WPBakery verwendest - sehr schön! <a href=\"%s\" "
+"Wir haben erkannt, dass Sie WPBakery verwenden - sehr schön! <a href=\"%s\" "
 "target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</a> "
 "ermöglicht die Gestaltung der Ausgabe von Stellen in WPBakery."
 
@@ -219,8 +221,8 @@ msgid ""
 "target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
 "allows you to design the output of positions in Beaver Builder."
 msgstr ""
-"Wir haben erkannt, dass Du Beaver Builder verwendest - sehr schön! <a "
-"href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues "
+"Wir haben erkannt, dass Sie Beaver Builder verwenden - sehr schön! <a href="
+"\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues "
 "Fenster)</a> ermöglicht die Gestaltung der Ausgabe von Stellen in Beaver "
 "Builder."
 
@@ -231,30 +233,29 @@ msgid ""
 "target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
 "allows you to design the output of positions in Site Origin."
 msgstr ""
-"Wir haben erkannt, dass Du Site Origin verwendest - sehr schön! <a "
-"href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues "
-"Fenster)</a> ermöglicht die Gestaltung der Ausgabe von Stellen in Site "
-"Origin."
+"Wir haben erkannt, dass Sie Site Origin verwenden - sehr schön! <a href=\"%s"
+"\" target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</"
+"a> ermöglicht die Gestaltung der Ausgabe von Stellen in Site Origin."
 
 #. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
 #: classes/class-helper.php:214
 msgid ""
-"We realized that you are using Themify - very nice! <a href=\"%s\" "
-"target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
-"allows you to design the output of positions in Themify."
+"We realized that you are using Themify - very nice! <a href=\"%s\" target="
+"\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you "
+"to design the output of positions in Themify."
 msgstr ""
-"Wir haben erkannt, dass Du Themify verwendest - sehr schön! <a href=\"%s\" "
+"Wir haben erkannt, dass Sie Themify verwenden - sehr schön! <a href=\"%s\" "
 "target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</a> "
 "ermöglicht die Gestaltung der Ausgabe von Stellen in Themify."
 
 #. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
 #: classes/class-helper.php:220
 msgid ""
-"We realized that you are using Avada - very nice! <a href=\"%s\" "
-"target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
-"allows you to design the output of positions in Avada."
+"We realized that you are using Avada - very nice! <a href=\"%s\" target="
+"\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you "
+"to design the output of positions in Avada."
 msgstr ""
-"Wir haben erkannt, dass Du Avada verwendest - sehr schön! <a href=\"%s\" "
+"Wir haben erkannt, dass Sie Avada verwenden - sehr schön! <a href=\"%s\" "
 "target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</a> "
 "ermöglicht die Gestaltung der Ausgabe von Stellen in Avada."
 
@@ -266,10 +267,10 @@ msgid ""
 "personio-integration-light/#reviews\" target=\"_blank\">leave us a review "
 "(opens new window)</a>."
 msgstr ""
-"Du verwendest das WordPress-Plugin Personio Integration seit mehr als %d "
-"Tagen. Gefällt es dir? Hinterlasse uns gerne <a href=\"https://wordpress.org/"
-"plugins/personio-integration-light/#reviews\" target=\"_blank\">eine "
-"Bewertung (öffnet neues Fenster)</a>."
+"Sie verwenden das WordPress-Plugin Personio Integration seit mehr als %d "
+"Tagen. Gefällt es Ihnen? Hinterlassen Sie uns gerne <a href=\"https://"
+"wordpress.org/plugins/personio-integration-light/#reviews\" target=\"_blank"
+"\">eine Bewertung (öffnet neues Fenster)</a>."
 
 #: classes/class-helper.php:409 blocks/list/build/index.js:208
 #: blocks/list/build/index.js:145
@@ -358,7 +359,7 @@ msgstr "Aktualisiere Stellentyp-Detail"
 #: classes/class-helper.php:740 inc/init.php:360
 #: blocks/details/build/index.js:257 blocks/details/build/index.js:167
 msgid "Job type details"
-msgstr "Stellentypen-Details"
+msgstr "Stellentyp-Details"
 
 #: classes/class-helper.php:743
 msgctxt "taxonomy general name"
@@ -514,7 +515,7 @@ msgstr "Aktualisiere Berufserfahrung in Jahren"
 
 #: classes/class-helper.php:788
 msgid "Years of experiences"
-msgstr "Suche nach Berufserfahrung in Jahren"
+msgstr "Berufserfahrung in Jahren"
 
 #: classes/class-helper.php:791
 msgctxt "taxonomy general name"
@@ -866,7 +867,7 @@ msgstr "Elektrik"
 
 #: classes/class-helper.php:908
 msgid "Flooring/Tiling/Painting/Wallpapering"
-msgstr "Fußbodenverlegung/Fliesenverlegung/Malen/Anstreichen/Tapezieren"
+msgstr "Fussbodenverlegung/Fliesenverlegung/Malen/Anstreichen/Tapezieren"
 
 #: classes/class-helper.php:909
 msgid "HVAC"
@@ -1508,15 +1509,15 @@ msgstr "Layout, Druckvorstufe, Druck- und Bindebetrieb"
 
 #: classes/class-helper.php:1071
 msgid "Assembly/Assembly Line"
-msgstr "Montage/Produktionsstraße"
+msgstr "Montage/Produktionsstrasse"
 
 #: classes/class-helper.php:1072
 msgid "Moldmaking/Casting"
-msgstr "Formenbau/Gießen"
+msgstr "Formenbau/Giessen"
 
 #: classes/class-helper.php:1073
 msgid "Metal Fabrication and Welding"
-msgstr "Metallherstellung und -schweißtechnik"
+msgstr "Metallherstellung und -schweisstechnik"
 
 #: classes/class-helper.php:1074
 msgid "Audio/Video Broadcast & Postproduction"
@@ -1628,7 +1629,7 @@ msgstr "Account Management (mit Provision)"
 
 #: classes/class-helper.php:1103
 msgid "Field Sales"
-msgstr "Außendienst"
+msgstr "Aussendienst"
 
 #: classes/class-helper.php:1104
 msgid "Business Development/New Accounts"
@@ -1640,7 +1641,7 @@ msgstr "Einzelhandels-/Schalterverkauf"
 
 #: classes/class-helper.php:1106
 msgid "Wholesale/Reselling Sales"
-msgstr "Großhandel/Weiterverkauf"
+msgstr "Grosshandel/Weiterverkauf"
 
 #: classes/class-helper.php:1107
 msgid "International Sales"
@@ -2023,7 +2024,7 @@ msgstr "Sortierung zurücksetzen"
 
 #: inc/admin.php:53
 msgid "Import is running"
-msgstr "Import läuft aktuell"
+msgstr "Import läuft"
 
 #: inc/admin.php:54
 msgid "Please wait"
@@ -2092,12 +2093,12 @@ msgstr "Beschreibung"
 #: inc/admin.php:837
 msgid ""
 "At this point we show you the imported data of your open position <i>%1$s</"
-"i>. Please edit the job details in your <a href=\"%2$s\" "
-"target=\"_blank\">Personio account (opens new window)</a>."
+"i>. Please edit the job details in your <a href=\"%2$s\" target=\"_blank"
+"\">Personio account (opens new window)</a>."
 msgstr ""
-"An dieser Stelle zeigen wir dir die importierten Daten deiner offenen Stelle "
-"<i>%1$s</i>. Bitte bearbeite die Stellen-Daten in deinem <a href=\"%2$s\" "
-"target=\"_blank\">Personio-Konto (öffnet neues Fenster)</a>."
+"An dieser Stelle zeigen wir Ihnen die importierten Daten dieser offenen "
+"Stelle <i>%1$s</i>. Bitte bearbeite Sie die Stellen-Daten in Ihrem <a href="
+"\"%2$s\" target=\"_blank\">Personio-Konto (öffnet neues Fenster)</a>."
 
 #: inc/admin.php:888
 msgid "No data"
@@ -2257,12 +2258,12 @@ msgid ""
 "With %s you get more advanced options, e.g. to change the URL of archives "
 "with positions."
 msgstr ""
-"Mit %s erhältst Du weitere Optionen, z.B. die Möglichkeit die URL von "
+"Mit %s erhalten Sie weitere Optionen, z.B. die Möglichkeit die URL von "
 "Stellen-Listen zu ändern."
 
 #: inc/settings/advanced.php:184
 msgid "A timeout must have a value greater than 0."
-msgstr "Ein Timeout muss einen Wert größer als 0 haben."
+msgstr "Ein Timeout muss einen Wert grösser als 0 haben."
 
 #: inc/settings/applications.php:12 inc/settings/forms.php:12
 #: inc/settings/permissions.php:17 inc/settings/seo.php:17
@@ -2294,11 +2295,11 @@ msgid ""
 "Activations.<br>If you have any questions about the URL provided by "
 "Personio, please contact the <a href=\"%2$s\">Personio support</a>."
 msgstr ""
-"Du findest diese URL in deinem <a href=\"%s\" target=\"_blank\">Personio-"
+"Sie finden diese URL in Ihrem <a href=\"%s\" target=\"_blank\">Personio-"
 "Konto (öffnet neues Fenster)</a> unter Einstellungen > Recruiting > "
-"Karriereseite > Aktivierungen.<br>Wenn du Fragen zu der von Personio "
-"bereitgestellten URL hast, wende dich bitte an den <a href=\"%2$s\">Personio-"
-"Support</a>."
+"Karriereseite > Aktivierungen.<br>Wenn Sie Fragen zu der von Personio "
+"bereitgestellten URL haben, wenden Sie sich bitte an den <a href=\"%2$s"
+"\">Personio-Support</a>."
 
 #: inc/settings/general.php:74
 msgid "Used languages"
@@ -2333,7 +2334,7 @@ msgstr "Englisch"
 
 #: inc/settings/general.php:217
 msgid "You must enable one language. English will be set."
-msgstr "Eine Sprache muss aktiviert sein. Es wird Englisch eingestellt."
+msgstr "Sie müssen eine Sprache aktivieren. Es wird Englisch eingestellt."
 
 #: inc/settings/general.php:250
 msgid ""
@@ -2353,8 +2354,8 @@ msgstr "Die Angabe der Personio-URL ist obligatorisch."
 
 #: inc/settings/general.php:297
 msgid ""
-"The Personio URL must end with \".jobs.personio.com\" or \".jobs.personio."
-"de\"!"
+"The Personio URL must end with \".jobs.personio.com\" or \".jobs.personio.de"
+"\"!"
 msgstr ""
 "Die Personio URL muss mit \".jobs.personio.com\" oder \".jobs.personio.de\" "
 "enden!"
@@ -2399,9 +2400,9 @@ msgid ""
 "possibility to change the time interval for imports and partial imports of "
 "very large position lists."
 msgstr ""
-"Verwende mehr Import-Optionen mit %s. Neben anderen Dingen erhältst Du die "
+"Verwende mehr Import-Optionen mit %s. Neben anderen Dingen erhalten Sie die "
 "Möglichkeit das Intervall zum Import zu ändern sowie partielle Importe für "
-"sehr große Stellen-Listen durchzuführen."
+"sehr grosse Stellen-Listen durchzuführen."
 
 #: inc/settings/import.php:203 inc/settings/import.php:235
 msgid "Hint"
@@ -2409,7 +2410,7 @@ msgstr "Hinweis"
 
 #: inc/settings/import.php:208
 msgid "The import is already running. Please wait some moments."
-msgstr "Der Import läuft aktuell. Bitte einen Moment warten."
+msgstr "Ein Import läuft aktuell. Bitte warten Sie einen Moment."
 
 #: inc/settings/import.php:220
 msgid "Cancel running import"
@@ -2469,9 +2470,9 @@ msgid ""
 "will be overridden by individual settings on the blocks or widgets of your "
 "shortcode or PageBuilder."
 msgstr ""
-"Markiere mehrere Standardfilter für jede Listenansicht von Stellen. Diese "
-"Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
-"Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
+"Markieren Sie mehrere Standardfilter für jede Listenansicht von Stellen. "
+"Diese Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
+"Widgets Ihrer Shortcodes oder PageBuilders ausser Kraft gesetzt."
 
 #. translators: %1$s is replaced with "string"
 #: inc/settings/templates.php:98 inc/settings/templates.php:153
@@ -2489,7 +2490,7 @@ msgid ""
 "widgets of your shortcode or PageBuilder."
 msgstr ""
 "Diese Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
-"Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
+"Widgets Ihres Shortcodes oder PageBuilders ausser Kraft gesetzt."
 
 #: inc/settings/templates.php:123
 msgid "Choose templates for positions in list-view"
@@ -2501,9 +2502,9 @@ msgid ""
 "setting will be overridden by individual settings on the blocks or widgets "
 "of your shortcode or PageBuilder."
 msgstr ""
-"Markiere mehrere Standardvorlagen für jede Listenansicht von Stellen. Diese "
-"Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
-"Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
+"Markieren Sie mehrere Standardvorlagen für jede Listenansicht von Stellen. "
+"Diese Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
+"Widgets Ihres Shortcodes oder PageBuilders ausser Kraft gesetzt."
 
 #: inc/settings/templates.php:141
 msgid "Choose details for positions in list-view"
@@ -2515,9 +2516,9 @@ msgid ""
 "will be overridden by individual settings on the blocks or widgets of your "
 "shortcode or PageBuilder."
 msgstr ""
-"Markiere mehrere Stellendetails für jede Frontend-Ausgabe. Diese Einstellung "
-"wird durch individuelle Einstellungen an den Blöcken oder Widgets deines "
-"Shortcodes oder PageBuilders außer Kraft gesetzt."
+"Markieren Sie mehrere Stellendetails für jede Frontend-Ausgabe. Diese "
+"Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
+"Widgets Ihres Shortcodes oder PageBuilders ausser Kraft gesetzt."
 
 #: inc/settings/templates.php:163
 msgid "Single View"
@@ -2533,9 +2534,9 @@ msgid ""
 "This setting will be overridden by individual settings on the blocks or "
 "widgets of your shortcode or PageBuilder."
 msgstr ""
-"Markiere mehrere Standardvorlagen für jede Detailansicht der einzelnen "
+"Markieren Sie mehrere Standardvorlagen für jede Detailansicht der einzelnen "
 "Stellen. Diese Einstellung wird durch individuelle Einstellungen an den "
-"Blöcken oder Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
+"Blöcken oder Widgets Ihres Shortcodes oder PageBuilders ausser Kraft gesetzt."
 
 #: inc/settings/templates.php:189 blocks/details/build/index.js:233
 #: blocks/list/build/index.js:311 blocks/show/build/index.js:273
@@ -2554,7 +2555,7 @@ msgstr ""
 "Mehrere Stellendetails für die Einzelansicht von Stellen markieren. Wird nur "
 "verwendet, wenn das Template \"Stellendetails\" für die Einzelansicht "
 "aktiviert ist. Diese Einstellung wird durch individuelle Einstellungen an "
-"den Blöcken oder Widgets deines Shortcodes oder PageBuilders überschrieben."
+"den Blöcken oder Widgets Ihres Shortcodes oder PageBuilders überschrieben."
 
 #: inc/settings/templates.php:209
 msgid "Enable link to single on list-view"
@@ -2562,7 +2563,7 @@ msgstr "Link zur Einzelansicht in der Listenansicht aktivieren"
 
 #: inc/settings/templates.php:224
 msgid "Enable back to list-link"
-msgstr "Aktiviere den Link \"zurück zur Liste\""
+msgstr "Aktiviere den zurück zur Liste-Link"
 
 #: inc/settings/templates.php:239
 msgid "URL for back to list-link"
@@ -2570,7 +2571,7 @@ msgstr "Gib die URL für den zurück zur Liste-Link an"
 
 #: inc/settings/templates.php:246
 msgid "If empty the link will be set to list-slug."
-msgstr "Wenn das Feld leer ist, wird der Listen-Slug als Linkziel verwendet."
+msgstr "Wenn leer wird der Listen-Slug als Linkziel verwendet."
 
 #: inc/settings/templates.php:257
 msgid "Other settings"
@@ -2633,7 +2634,7 @@ msgid ""
 "position."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Verfügung, um den Bewerbungslink für eine "
-"einzelne Stelle anzuzeigen."
+"einzelne Position anzuzeigen."
 
 #: blocks/description/build/index.js:251 blocks/description/src/index.js:38
 #: blocks/description/build/index.js:161
@@ -2699,7 +2700,7 @@ msgstr ""
 #: blocks/filter-list/build/index.js:160
 #: blocks/filter-select/build/index.js:159 blocks/list/build/index.js:184
 msgid "Choose filter"
-msgstr "Wähle Filter"
+msgstr "Wähle Filter-Typ"
 
 #: blocks/filter-list/build/index.js:236
 #: blocks/filter-select/build/index.js:236
@@ -2849,7 +2850,7 @@ msgstr "Stelle"
 #: blocks/description/block.json
 msgctxt "block title"
 msgid "Description"
-msgstr "Beschreibungstext"
+msgstr "Beschreibung"
 
 #: blocks/description/block.json
 msgctxt "block description"
@@ -3041,7 +3042,7 @@ msgstr ""
 #~ msgstr "Komponenten für Detailansichten einzelner Stellen"
 
 #~ msgid "Excerpt-parts for detail-view of positions"
-#~ msgstr "Stellen-Eigenschaften für Detailansicht"
+#~ msgstr "Stellen-Eigenschaften für Detail-Ansicht"
 
 #~ msgid "choose filter"
 #~ msgstr "Wähle Filter"
@@ -3076,7 +3077,7 @@ msgstr ""
 #~ "<strong>The import has been manually run.</strong> Please check the <a "
 #~ "href=\"%1$s\">list of positions</a> or <a href=\"%2$s\">the log</a>."
 #~ msgstr ""
-#~ "<strong>Der Import wurde manuell ausgeführt.</strong> Bitte prüfe <a "
+#~ "<strong>Der Import wurde manuell ausgeführt.</strong> Bitte prüfen Sie <a "
 #~ "href=\"%1$s\">die Liste der Stellen</a> oder <a href=\"%2$s\">das "
 #~ "Logfile</a>."
 
@@ -3084,8 +3085,8 @@ msgstr ""
 #~ "The specified Personio URL is reachable. Click on the following button to "
 #~ "import your positions from Personio now:"
 #~ msgstr ""
-#~ "Die angegebene Personio-URL ist erreichbar. Klicke auf die folgende "
-#~ "Schaltfläche, um die offenen Stellen jetzt aus Personio zu importieren:"
+#~ "Die angegebene Personio-URL ist erreichbar. Klicken Sie auf die folgende "
+#~ "Schaltfläche, um Ihre offenen Stellen jetzt aus Personio zu importieren:"
 
 #~ msgid "formular"
 #~ msgstr "Formular"
@@ -3102,15 +3103,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Die PHP-Erweiterung curl fehlt auf dem System. Bitte wenden Sie sich "
 #~ "diesbezüglich an Ihren Hoster."
-
-#~ msgid "Sent by the plugin WP Personio Integration"
-#~ msgstr "Gesendet vom Plugin Personio Integration"
-
-#~ msgid "Get WP Personio Integration Pro"
-#~ msgstr "Get Personio Integration Pro"
-
-#~ msgid "WP Personio Integration Settings"
-#~ msgstr "Personio Integration Einstellungen"
 
 #~ msgid "meta"
 #~ msgstr "Meta"
