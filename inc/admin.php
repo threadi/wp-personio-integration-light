@@ -960,12 +960,15 @@ add_action( 'admin_init', 'personio_integration_admin_allow_save_settings' );
  */
 function personio_integration_admin_set_site_status_test( array $statuses ): array {
     if( helper::is_personioUrl_set() ) {
-        $statuses['async'] = array(
-            'personio_integration_cron_check' => array(
-                'label' => __('Personio Integration Cron Check', 'wp-personio-integration'),
-                'test' => rest_url('personio/v1/checks'),
-                'has_rest' => true
-            )
+        $statuses['async']['personio_integration_import_cron_checks'] = array(
+            'label' => __('Personio Integration Import Cron Check', 'wp-personio-integration'),
+            'test' => rest_url('personio/v1/import_cron_checks'),
+            'has_rest' => true
+        );
+        $statuses['async']['personio_integration_url_availability_check'] = array(
+            'label' => __('Personio Integration URL availability check', 'wp-personio-integration'),
+            'test' => rest_url('personio/v1/url_availability_checks'),
+            'has_rest' => true
         );
     }
     return $statuses;

@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2023-09-19T14:17:12+02:00\n"
-"PO-Revision-Date: 2023-09-19 14:19+0200\n"
+"POT-Creation-Date: 2023-09-19T14:55:32+02:00\n"
+"PO-Revision-Date: 2023-09-19 14:58+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,6 +18,7 @@ msgstr ""
 "X-Domain: wp-personio-integration\n"
 
 #. Plugin Name of the plugin
+#: inc/init.php:701 inc/init.php:756
 msgid "Personio Integration Light"
 msgstr "Personio Integration Light"
 
@@ -42,7 +43,7 @@ msgstr "https://laolaweb.com"
 #: classes/class-helper.php:190 classes/class-helper.php:196
 #: classes/class-helper.php:202 classes/class-helper.php:208
 #: classes/class-helper.php:214 classes/class-helper.php:220
-#: classes/class-helper.php:226 classes/class-helper.php:232 inc/init.php:694
+#: classes/class-helper.php:226 classes/class-helper.php:232
 msgid "Personio Integration"
 msgstr "Personio Integration"
 
@@ -2113,9 +2114,13 @@ msgstr "Personio"
 msgid "Import positions from Personio"
 msgstr "Import von Stellen von Personio"
 
-#: inc/admin.php:965
-msgid "Personio Integration Cron Check"
-msgstr "Personio Integration Cron Prüfung"
+#: inc/admin.php:964 inc/init.php:698
+msgid "Personio Integration Import Cron Check"
+msgstr "Personio Integration Import Cron Prüfung"
+
+#: inc/admin.php:969
+msgid "Personio Integration URL availability check"
+msgstr "Personio Integration URL-Erreichbarkeitsprüfung"
 
 #: inc/frontend.php:53
 msgid "Detail-view called without the PersonioId of a position."
@@ -2221,11 +2226,7 @@ msgstr "Link zum Bewerbungsformular"
 msgid "Please choose"
 msgstr "Bitte wählen"
 
-#: inc/init.php:691
-msgid "Personio Integration Import Cron Check"
-msgstr "Personio Integration Import Cron Prüfung"
-
-#: inc/init.php:697
+#: inc/init.php:704
 msgid ""
 "Running cronjobs help to import new positions from Personio automatically."
 "<br><strong>All ok with the cronjob!</strong>"
@@ -2233,12 +2234,12 @@ msgstr ""
 "Die Ausführung von Cronjobs hilft, neue Stellen automatisch von Personio zu "
 "importieren.<br><strong>Alles OK mit dem Cronjob!</strong>"
 
-#: inc/init.php:715
+#: inc/init.php:722
 msgid "Cronjob to import new Positions from Personio does not exist!"
 msgstr "Cronjob zum Importieren neuer Stellen von Personio existiert nicht!"
 
 #. translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past)
-#: inc/init.php:727
+#: inc/init.php:734
 msgid ""
 "Cronjob to import new Positions from Personio should have been run at %1$s, "
 "but was not executed!<br><strong>Please check the cron-system of your "
@@ -2247,6 +2248,39 @@ msgstr ""
 "Der Cronjob zum Importieren neuer Stellen von Personio hätte um %1$s "
 "ausgeführt werden sollen, wurde aber nicht ausgeführt!<br><strong>Bitte "
 "überprüfen Sie das Cron-System Ihrer WordPress-Installation.</strong>"
+
+#: inc/init.php:753
+msgid "Personio Integration URL availability Check"
+msgstr "Personio Integration URL-Erreichbarkeitsprüfung"
+
+#. translators: %1$s and %2$s will be replaced by the Personio-URL
+#: inc/init.php:760
+msgid ""
+"The Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (opens new window)</"
+"a> is necessary to import new positions.<br><strong>All ok with the URL!</"
+"strong>"
+msgstr ""
+"Die Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (öffnet neues "
+"Fenster)</a> ist notwendig zum Import neuer Stellen.<br><strong>Alles in "
+"Ordnung mit der URL!</strong>"
+
+#. translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio
+#: inc/init.php:784
+msgid ""
+"The Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (opens new window)</"
+"a> is not available for the import of positions!<br><strong>Please check if "
+"you have entered the correct URL <a href=\"%3$s\">in the plugin-settings</a>."
+"<br>Also check if you have enabled the XML-API in your <a href=\"%4$s\" "
+"target=\"_blank\">Personio-account (opens new window)</a> under Settings > "
+"Recruiting > Career Page > Activations.</strong>"
+msgstr ""
+"Die Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (öffnet neues "
+"Fenster)</a> ist nicht erreichbar für den Import von Stellen!"
+"<br><strong>Bitte prüfen Sie, ob Sie die richtige URL <a href=\"%3$s\">in "
+"den Plugin-Einstellungen</a> angegeben haben.<br>Bitte prüfe auch, ob du die "
+"XML-API in deinem <a href=\"%4$s\" target=\"_blank\">Personio-Account "
+"(öffnet neues Fenster)</a> unter Einstellungen > Recruiting > Karriereseite "
+"> Aktivierungen aktiviert hast.</strong>"
 
 #: inc/settings/advanced.php:19
 msgid "Advanced"
@@ -2958,6 +2992,11 @@ msgctxt "block description"
 msgid "Provides a Gutenberg Block to show a position managed by Personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
+
+#, fuzzy
+#~| msgid "Personio Integration Cron Check"
+#~ msgid "Personio Integration URL Availability Check"
+#~ msgstr "Personio Integration Cron Prüfung"
 
 #~ msgid "No positions could be found."
 #~ msgstr "Es wurden keine Stellen gefunden."

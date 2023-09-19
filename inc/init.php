@@ -669,9 +669,16 @@ add_action( 'before_delete_post', 'personio_integration_action_to_delete_positio
  */
 function personio_integration_admin_rest_api(): void
 {
-    register_rest_route( 'personio/v1', '/checks/', array(
+    register_rest_route( 'personio/v1', '/import_cron_checks/', array(
         'methods' => WP_REST_SERVER::READABLE,
-        'callback' => 'personio_integration_rest_api_check',
+        'callback' => 'personio_integration_rest_api_import_cron_checks',
+        'permission_callback' => function () {
+            return current_user_can( 'manage_options' );
+        }
+    ) );
+    register_rest_route( 'personio/v1', '/url_availability_checks/', array(
+        'methods' => WP_REST_SERVER::READABLE,
+        'callback' => 'personio_integration_rest_api_url_availability_check',
         'permission_callback' => function () {
             return current_user_can( 'manage_options' );
         }
@@ -685,18 +692,18 @@ add_action( 'rest_api_init', 'personio_integration_admin_rest_api');
  * @return array
  * @noinspection PhpUnused
  */
-function personio_integration_rest_api_check(): array {
+function personio_integration_rest_api_import_cron_checks(): array {
     // define default results.
     $result = array(
         'label' => __( 'Personio Integration Import Cron Check', 'wp-personio-integration' ),
         'status' => 'good',
         'badge'       => array(
-            'label' => __( 'Personio Integration', 'wp-personio-integration' ),
-            'color' => 'blue',
+            'label' => __( 'Personio Integration Light', 'wp-personio-integration' ),
+            'color' => 'gray',
         ),
         'description' => __( 'Running cronjobs help to import new positions from Personio automatically.<br><strong>All ok with the cronjob!</strong>', 'wp-personio-integration' ),
         'actions'     => '',
-        'test'        => 'personio_integration_rest_api_check',
+        'test'        => 'personio_integration_rest_api_import_cron_checks',
     );
 
     // get scheduled event.
@@ -728,6 +735,53 @@ function personio_integration_rest_api_check(): array {
 
         // return this result.
         return $result;
+    }
+
+    // return result.
+    return $result;
+}
+
+/**
+ * Check the Personio-URL availability.
+ *
+ * @return array
+ * @noinspection PhpUnused
+ */
+function personio_integration_rest_api_url_availability_check(): array {
+    // define default results.
+    $result = array(
+        'label' => __( 'Personio Integration URL availability Check', 'wp-personio-integration' ),
+        'status' => 'good',
+        'badge'       => array(
+            'label' => __( 'Personio Integration Light', 'wp-personio-integration' ),
+            'color' => 'gray',
+        ),
+        /* translators: %1$s and %2$s will be replaced by the Personio-URL */
+        'description' => sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'wp-personio-integration' ), helper::get_personio_url(), helper::get_personio_url() ),
+        'actions'     => '',
+        'test'        => 'personio_integration_rest_api_url_availability_check',
+    );
+
+    // -> should return HTTP-Status 200.
+    $response = wp_remote_get(helper::get_personio_xml_url( helper::get_personio_url() ),
+        array(
+            'timeout' => 30,
+            'redirection' => 0
+        )
+    );
+    // get the body with the contents.
+    $body = wp_remote_retrieve_body($response);
+    if( ( is_array($response) && !empty($response["response"]["code"]) && $response["response"]["code"] != 200 ) || 0 === strpos($body, '<!doctype html>') ) {
+        $url_settings = add_query_arg(
+            array(
+                'post_type' => WP_PERSONIO_INTEGRATION_CPT,
+                'page' => 'personioPostions'
+            ),
+            'edit.php'
+        );
+        $result['status'] = 'critical';
+        /* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
+        $result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'wp-personio-integration' ), helper::get_personio_url(), helper::get_personio_url(), $url_settings, helper::get_personio_login_url() );
     }
 
     // return result.
