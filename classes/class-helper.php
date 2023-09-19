@@ -1405,4 +1405,13 @@ class helper {
             wp_schedule_event( time(), get_option('personioIntegrationPositionScheduleInterval'), 'personio_integration_schudule_events' );
         }
     }
+
+    /**
+     * Return the configured personio-URL.
+     *
+     * @return string
+     */
+    public static function get_personio_url(): string {
+        return get_option( 'personioIntegrationUrl', '' );
+    }
 }

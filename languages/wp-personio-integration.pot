@@ -9,12 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-19T14:17:12+02:00\n"
+"POT-Creation-Date: 2023-09-19T14:55:32+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
 
 #. Plugin Name of the plugin
+#: inc/init.php:701
+#: inc/init.php:756
 msgid "Personio Integration Light"
 msgstr ""
 
@@ -50,7 +52,6 @@ msgstr ""
 #: classes/class-helper.php:220
 #: classes/class-helper.php:226
 #: classes/class-helper.php:232
-#: inc/init.php:694
 msgid "Personio Integration"
 msgstr ""
 
@@ -2041,8 +2042,13 @@ msgstr ""
 msgid "Import positions from Personio"
 msgstr ""
 
-#: inc/admin.php:965
-msgid "Personio Integration Cron Check"
+#: inc/admin.php:964
+#: inc/init.php:698
+msgid "Personio Integration Import Cron Check"
+msgstr ""
+
+#: inc/admin.php:969
+msgid "Personio Integration URL availability check"
 msgstr ""
 
 #: inc/frontend.php:53
@@ -2155,21 +2161,31 @@ msgstr ""
 msgid "Please choose"
 msgstr ""
 
-#: inc/init.php:691
-msgid "Personio Integration Import Cron Check"
-msgstr ""
-
-#: inc/init.php:697
+#: inc/init.php:704
 msgid "Running cronjobs help to import new positions from Personio automatically.<br><strong>All ok with the cronjob!</strong>"
 msgstr ""
 
-#: inc/init.php:715
+#: inc/init.php:722
 msgid "Cronjob to import new Positions from Personio does not exist!"
 msgstr ""
 
 #. translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past)
-#: inc/init.php:727
+#: inc/init.php:734
 msgid "Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>"
+msgstr ""
+
+#: inc/init.php:753
+msgid "Personio Integration URL availability Check"
+msgstr ""
+
+#. translators: %1$s and %2$s will be replaced by the Personio-URL
+#: inc/init.php:760
+msgid "The Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>"
+msgstr ""
+
+#. translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio
+#: inc/init.php:784
+msgid "The Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href=\"%3$s\">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href=\"%4$s\" target=\"_blank\">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>"
 msgstr ""
 
 #: inc/settings/advanced.php:19

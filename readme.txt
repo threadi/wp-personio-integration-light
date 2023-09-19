@@ -293,6 +293,7 @@ Yes, it is without any further settings.
 * Added occupation detail as possible filter in Block Editor
 * Added new user role "Manage Personio-based Positions" which will be able to manage all position stuff
 * Added check if our own import cronjob has been run under tools > site health
+* Added check if configured Personio-URL is available under tools > site health
 * Plugin is now complete translated in austria and swiss language
 * Optimized capability-checks for our own custom post type and all used taxonomies
 * Optimized text in frontend if no positions are available.
