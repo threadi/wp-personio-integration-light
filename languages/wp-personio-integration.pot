@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-18T16:17:33+02:00\n"
+"POT-Creation-Date: 2023-09-19T11:03:41+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -2193,6 +2193,7 @@ msgstr ""
 
 #: inc/settings/applications.php:12
 #: inc/settings/forms.php:12
+#: inc/settings/permissions.php:17
 #: inc/settings/seo.php:17
 #: inc/settings/tracking.php:17
 msgid "Only in Pro."
@@ -2327,6 +2328,10 @@ msgstr ""
 
 #: inc/settings/import.php:239
 msgid "There are currently no imported positions."
+msgstr ""
+
+#: inc/settings/permissions.php:17
+msgid "Permissions"
 msgstr ""
 
 #: inc/settings/seo.php:17

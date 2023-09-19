@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2023-09-18T16:17:33+02:00\n"
-"PO-Revision-Date: 2023-09-18 16:22+0200\n"
+"POT-Creation-Date: 2023-09-19T11:03:41+02:00\n"
+"PO-Revision-Date: 2023-09-19 11:04+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2266,7 +2266,8 @@ msgid "A timeout must have a value greater than 0."
 msgstr "Ein Timeout muss einen Wert größer als 0 haben."
 
 #: inc/settings/applications.php:12 inc/settings/forms.php:12
-#: inc/settings/seo.php:17 inc/settings/tracking.php:17
+#: inc/settings/permissions.php:17 inc/settings/seo.php:17
+#: inc/settings/tracking.php:17
 msgid "Only in Pro."
 msgstr "Nur in Pro."
 
@@ -2426,6 +2427,10 @@ msgstr "Entfernt alle aktuell importierten Stellen."
 #: inc/settings/import.php:239
 msgid "There are currently no imported positions."
 msgstr "Es sind aktuell keine Stellen importiert."
+
+#: inc/settings/permissions.php:17
+msgid "Permissions"
+msgstr "Berechtigungen"
 
 #: inc/settings/seo.php:17
 msgid "SEO"

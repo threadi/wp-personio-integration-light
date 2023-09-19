@@ -18,7 +18,7 @@ function personio_integration_settings_add_advanced_tab( $tab ): void
     // output tab
     echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=advanced" class="nav-tab'.esc_attr($activeClass).'">'.__('Advanced', 'wp-personio-integration').'</a>';
 }
-add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_advanced_tab', 50, 1 );
+add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_advanced_tab', 60, 1 );
 
 /**
  * Show advanced-page.

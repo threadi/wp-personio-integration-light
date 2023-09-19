@@ -153,7 +153,7 @@ function personio_integration_settings_add_logs_tab( $tab ): void
         echo '<a href="?post_type=' . WP_PERSONIO_INTEGRATION_CPT . '&page=personioPositions&tab=logs" class="nav-tab' . esc_attr($activeClass) . '">' . __('Logs', 'wp-personio-integration') . '</a>';
     }
 }
-add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_logs_tab', 60, 1 );
+add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_logs_tab', 100, 1 );
 
 /**
  * Show log as list.
