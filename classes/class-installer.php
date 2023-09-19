@@ -25,14 +25,11 @@ class installer
         }
 
         if( false === $error ) {
-            // check if import-schedule does already exist
-            if (!wp_next_scheduled('personio_integration_schudule_events')) {
-                // set interval to daily if it is not set atm
-                if (!get_option('personioIntegrationPositionScheduleInterval')) {
-                    update_option('personioIntegrationPositionScheduleInterval', 'daily');
-                }
-                wp_schedule_event(time(), get_option('personioIntegrationPositionScheduleInterval'), 'personio_integration_schudule_events');
+            // set interval to daily if it is not set atm
+            if (!get_option('personioIntegrationPositionScheduleInterval')) {
+                update_option('personioIntegrationPositionScheduleInterval', 'daily');
             }
+            helper::set_import_schedule();
 
             // get the main frontend language depending on the language of this WP-installation
             // if it is not already set

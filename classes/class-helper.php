@@ -1,4 +1,9 @@
 <?php
+/**
+ * File with general helper tasks for the plugin.
+ *
+ * @package wp-personio-integration
+ */
 
 namespace personioIntegration;
 
@@ -6,6 +11,9 @@ use WP_Post;
 use WP_Post_Type;
 use WP_Rewrite;
 
+/**
+ * The helper class itself.
+ */
 class helper {
 
     /**
@@ -1386,4 +1394,15 @@ class helper {
 		}
 		return 'https://support.personio.de/hc/en-us/';
 	}
+
+    /**
+     * Set the import schedule.
+     *
+     * @return void
+     */
+    public static function set_import_schedule(): void {
+        if ( !wp_next_scheduled('personio_integration_schudule_events') ) {
+            wp_schedule_event( time(), get_option('personioIntegrationPositionScheduleInterval'), 'personio_integration_schudule_events' );
+        }
+    }
 }
