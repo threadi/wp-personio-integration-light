@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2023-09-19T11:03:41+02:00\n"
-"PO-Revision-Date: 2023-09-19 11:04+0200\n"
+"POT-Creation-Date: 2023-09-19T11:47:32+02:00\n"
+"PO-Revision-Date: 2023-09-19 11:48+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2586,8 +2586,8 @@ msgid "Tracking"
 msgstr "Tracking"
 
 #: templates/archive-personioposition-shortcode.php:47
-msgid "No positions could be found."
-msgstr "Es wurden keine Stellen gefunden."
+msgid "There are currently no positions available."
+msgstr "Aktuell sind keine Stellen ausgeschrieben."
 
 #: templates/parts/part-filter.php:19
 msgid "Filter for positions"
@@ -2926,6 +2926,9 @@ msgctxt "block description"
 msgid "Provides a Gutenberg Block to show a position managed by Personio."
 msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
+
+#~ msgid "No positions could be found."
+#~ msgstr "Es wurden keine Stellen gefunden."
 
 #~ msgid "occupation"
 #~ msgstr "Beschäftigung"

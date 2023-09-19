@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-19T11:03:41+02:00\n"
+"POT-Creation-Date: 2023-09-19T11:47:32+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: wp-personio-integration\n"
@@ -2457,7 +2457,7 @@ msgid "Tracking"
 msgstr ""
 
 #: templates/archive-personioposition-shortcode.php:47
-msgid "No positions could be found."
+msgid "There are currently no positions available."
 msgstr ""
 
 #: templates/parts/part-filter.php:19
