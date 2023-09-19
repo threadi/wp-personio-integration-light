@@ -718,7 +718,7 @@ function personio_integration_rest_api_import_cron_checks(): array {
             ),
             get_admin_url() . 'admin.php'
         );
-        $result['status'] = 'critical';
+        $result['status'] = 'recommended';
         $result['description'] = __( 'Cronjob to import new Positions from Personio does not exist!', 'wp-personio-integration' );
         /* translators: %1$s will be replaced by the URL to recreate the schedule */
         $result['actions'] = sprintf( '<p><a href="%1$s" class="button button-primary">Recreate the schedules</a></p>', $url );
@@ -729,7 +729,7 @@ function personio_integration_rest_api_import_cron_checks(): array {
 
     // if scheduled event exist, check if next run is in the past.
     if( $scheduled_event->timestamp < time() ) {
-        $result['status'] = 'critical';
+        $result['status'] = 'recommended';
         /* translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past) */
         $result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'wp-personio-integration' ), helper::get_format_date_time( date( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ));
 
@@ -775,11 +775,11 @@ function personio_integration_rest_api_url_availability_check(): array {
         $url_settings = add_query_arg(
             array(
                 'post_type' => WP_PERSONIO_INTEGRATION_CPT,
-                'page' => 'personioPostions'
+                'page' => 'personioPositions'
             ),
             'edit.php'
         );
-        $result['status'] = 'critical';
+        $result['status'] = 'recommended';
         /* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
         $result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'wp-personio-integration' ), helper::get_personio_url(), helper::get_personio_url(), $url_settings, helper::get_personio_login_url() );
     }
