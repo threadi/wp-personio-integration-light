@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2023-09-19T14:55:32+02:00\n"
-"PO-Revision-Date: 2023-09-19 14:58+0200\n"
+"POT-Creation-Date: 2023-09-20T09:17:19+02:00\n"
+"PO-Revision-Date: 2023-09-20 09:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2181,7 +2181,7 @@ msgstr "Kategorie"
 
 #: inc/init.php:353
 msgid "schedule"
-msgstr "Arbeitszeit"
+msgstr "Vertragstyp"
 
 #: inc/init.php:354
 msgid "office"
@@ -2197,7 +2197,7 @@ msgstr "Anstellungsarten"
 
 #: inc/init.php:357
 msgid "seniority"
-msgstr "Dienstalter"
+msgstr "Erfahrung"
 
 #: inc/init.php:358
 msgid "experience"
@@ -2219,7 +2219,7 @@ msgstr "Inhalt"
 
 #: inc/init.php:377
 msgid "application link"
-msgstr "Link zum Bewerbungsformular"
+msgstr "Bewerbungslink"
 
 #: inc/init.php:567 templates/parts/term-filter-select.php:15
 #: blocks/show/build/index.js:223 blocks/show/build/index.js:157
@@ -2635,15 +2635,18 @@ msgstr "Aktiviere den zurück zur Liste-Link"
 msgid "URL for back to list-link"
 msgstr "Gib die URL für den zurück zur Liste-Link an"
 
-#: inc/settings/templates.php:246
-msgid "If empty the link will be set to list-slug."
-msgstr "Wenn leer wird der Listen-Slug als Linkziel verwendet."
+#. translators: %1$s will be replaced by the list-slug
+#: inc/settings/templates.php:247
+msgid "If empty the link will be set to list-slug <a href=\"%1$s\">%1$s</a>."
+msgstr ""
+"Wenn leer wird der Listen-Slug <a href=\"%1$s\">%1$s</a> als Linkziel "
+"verwendet."
 
-#: inc/settings/templates.php:257
+#: inc/settings/templates.php:258
 msgid "Other settings"
 msgstr "Weitere Einstellungen"
 
-#: inc/settings/templates.php:265
+#: inc/settings/templates.php:266
 msgid "Separator for details-listing"
 msgstr "Trennzeichen für Liste der Stellendetails"
 
