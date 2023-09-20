@@ -392,7 +392,7 @@ function personio_integration_get_formular( $position, $attributes ): void
     }
 
     // reset back to list-link.
-    if( get_option('personioIntegrationTemplateBackToListButton', 0) == 0 || $textPosition == 'archive' || (isset($attributes['show_back_to_list']) && empty($attributes['show_back_to_list'])) ) {
+    if( 0 === absint(get_option('personioIntegrationTemplateBackToListButton', 0)) || $textPosition == 'archive' || (isset($attributes['show_back_to_list']) && empty($attributes['show_back_to_list'])) ) {
         $back_to_list_url = '';
     }
 

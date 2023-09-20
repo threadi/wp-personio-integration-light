@@ -243,7 +243,8 @@ function personio_integration_admin_add_settings_template(): void
         [
             'label_for' => 'personioIntegrationTemplateBackToListUrl',
             'fieldId' => 'personioIntegrationTemplateBackToListUrl',
-            'description' => __('If empty the link will be set to list-slug.' , 'wp-personio-integration'),
+            /* translators: %1$s will be replaced by the list-slug */
+            'description' => sprintf(__('If empty the link will be set to list-slug <a href="%1$s">%1$s</a>.' , 'wp-personio-integration'), trailingslashit(get_home_url()).helper::getArchiveSlug() ),
             'readonly' => !helper::is_personioUrl_set()
         ]
     );
