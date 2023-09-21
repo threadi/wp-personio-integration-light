@@ -219,7 +219,8 @@ class Positions {
      */
     public function setPositionQueryOrderByForGroup($orderby_statement): string
     {
-        return " wp_terms.name ASC, ".$orderby_statement;
+	    global $wpdb;
+        return " ".$wpdb->terms.".name ASC, ".$orderby_statement;
     }
 
     /**
