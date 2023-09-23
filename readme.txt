@@ -305,3 +305,7 @@ Yes, it is without any further settings.
 
 = 2.5.1 =
 * Fixed order by on grouping
+
+= 2.5.2 =
+* Compatibility with ActivityPub to optionally publish positions from Personio in the fediverse (e.g. Mastodon)
+* Removed unnecessary spaces around position description
