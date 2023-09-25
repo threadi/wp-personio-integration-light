@@ -112,3 +112,7 @@ personio_integration_settings_multiselect_classes
 personio_integration_pro_tracking_third_party_plugins
 -----------------------------------------------------
 * Add your own third party plugin-setting for tracking. Should return false if none is used. Otherwise the name of the used plugin as string.
+
+personio_integration_form_select_option_presets
+-----------------------------------------------
+* Customize the empty select option in select field of application formss
