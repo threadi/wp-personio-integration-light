@@ -2,11 +2,11 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment
 Requires at least: 5.9.3
-Tested up to: 6.3.1
+Tested up to: 6.3.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.5.0
+Stable tag: 2.5.2
 
 == Description ==
 
@@ -308,4 +308,5 @@ Yes, it is without any further settings.
 
 = 2.5.2 =
 * Compatibility with ActivityPub to optionally publish positions from Personio in the fediverse (e.g. Mastodon)
+* Compatibility with WordPres 6.3.2
 * Removed unnecessary spaces around position description
