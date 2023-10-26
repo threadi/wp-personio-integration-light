@@ -34,8 +34,8 @@ import {personioIcon} from "../../components";
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 registerBlockType( 'wp-personio-integration/filter-select', {
-	title: __( 'Personio Select Filter', 'wp-personio-integration' ),
-	description: __('Provides a Gutenberg block to show filter as dropdown-list for Personio Positions.', 'wp-personio-integration'),
+	title: __( 'Personio Select Filter', 'personio-integration-light' ),
+	description: __('Provides a Gutenberg block to show filter as dropdown-list for Personio Positions.', 'personio-integration-light'),
 	icon: personioIcon,
 
 	/**

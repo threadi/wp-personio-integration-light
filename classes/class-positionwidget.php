@@ -17,11 +17,11 @@ class PositionWidget extends WP_Widget {
     public function __construct() {
         $widget_options = array (
             'classname' => 'personioIntegration\PositionWidget',
-            'description' => __('Provides a Widget to show a single position provided by Personio.', 'wp-personio-integration')
+            'description' => __('Provides a Widget to show a single position provided by Personio.', 'personio-integration-light')
         );
         parent::__construct(
                 'PersonioPositionWidget',
-                __( 'Personio Position', 'wp-personio-integration' ),
+                __( 'Personio Position', 'personio-integration-light' ),
                 $widget_options
         );
     }
@@ -44,60 +44,60 @@ class PositionWidget extends WP_Widget {
         return [
             'postId'     => array(
                 'type'          => 'select',
-                'title'         => __( 'Select position', 'wp-personio-integration' ),
+                'title'         => __( 'Select position', 'personio-integration-light' ),
                 'std'           => '',
                 'values'       => $positions
             ),
             'showTitle'     => array(
                 'type'          => 'select',
-                'title'         => __( 'Show title', 'wp-personio-integration' ),
+                'title'         => __( 'Show title', 'personio-integration-light' ),
                 'std'           => 'yes',
                 'values'        => [
-                    'yes' => esc_html__( 'Show', 'wp-personio-integration' ),
-                    'no' => esc_html__( 'Hide', 'wp-personio-integration' )
+                    'yes' => esc_html__( 'Show', 'personio-integration-light' ),
+                    'no' => esc_html__( 'Hide', 'personio-integration-light' )
                 ]
             ),
             'linkTitle'     => array(
                 'type'          => 'select',
-                'title'         => __( 'link title', 'wp-personio-integration' ),
+                'title'         => __( 'link title', 'personio-integration-light' ),
                 'std'           => 'no',
                 'values'       => [
-                    'yes' => esc_html__( 'Show', 'wp-personio-integration' ),
-                    'no' => esc_html__( 'Hide', 'wp-personio-integration' )
+                    'yes' => esc_html__( 'Show', 'personio-integration-light' ),
+                    'no' => esc_html__( 'Hide', 'personio-integration-light' )
                 ]
             ),
             'showExcerpt'     => array(
                 'type'          => 'select',
-                'title'         => __( 'Show detail', 'wp-personio-integration' ),
+                'title'         => __( 'Show detail', 'personio-integration-light' ),
                 'std'           => 'no',
                 'values'       => [
-                    'yes' => esc_html__( 'Show', 'wp-personio-integration' ),
-                    'no' => esc_html__( 'Hide', 'wp-personio-integration' )
+                    'yes' => esc_html__( 'Show', 'personio-integration-light' ),
+                    'no' => esc_html__( 'Hide', 'personio-integration-light' )
                 ]
             ),
             'excerptTemplates'     => array(
                 'type'          => 'select',
-                'title'         => __( 'Choose detail components', 'wp-personio-integration' ),
+                'title'         => __( 'Choose detail components', 'personio-integration-light' ),
                 'multiple'      => true,
                 'std'           => ['recruitingCategory','schedule','office'],
                 'values'       => personio_integration_admin_categories_labels()
             ),
             'showContent'     => array(
                 'type'          => 'select',
-                'title'         => __( 'Show content', 'wp-personio-integration' ),
+                'title'         => __( 'Show content', 'personio-integration-light' ),
                 'std'       => 'yes',
                 'values'       => [
-                    'yes' => esc_html__( 'Show', 'wp-personio-integration' ),
-                    'no' => esc_html__( 'Hide', 'wp-personio-integration' )
+                    'yes' => esc_html__( 'Show', 'personio-integration-light' ),
+                    'no' => esc_html__( 'Hide', 'personio-integration-light' )
                 ]
             ),
             'showApplicationForm'     => array(
                 'type'          => 'select',
-                'title'         => __( 'Show application link', 'wp-personio-integration' ),
+                'title'         => __( 'Show application link', 'personio-integration-light' ),
                 'std'       => 'yes',
                 'values'       => [
-                    'yes' => esc_html__( 'Show', 'wp-personio-integration' ),
-                    'no' => esc_html__( 'Hide', 'wp-personio-integration' )
+                    'yes' => esc_html__( 'Show', 'personio-integration-light' ),
+                    'no' => esc_html__( 'Hide', 'personio-integration-light' )
                 ]
             )
         ];

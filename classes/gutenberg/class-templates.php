@@ -182,10 +182,11 @@ class templates {
         // get list of our own block templates
         $templates = $this->get_templates();
 
-        // get the settings for the requested template
-        $settings = $templates[$template_slug];
-
-        if( empty($settings) ) {
+        // get the settings for the requested template.
+        if( !empty($templates[$template_slug]) ) {
+            $settings = $templates[$template_slug];
+        }
+        else {
             return $template;
         }
 
@@ -217,13 +218,13 @@ class templates {
         // define the list
         $templates = [
             'single-'.WP_PERSONIO_INTEGRATION_CPT => [
-                'title' => __('Single Position', 'wp-personio-integration'),
-                'description' => __('Displays a single position.', 'wp-personio-integration'),
+                'title' => __('Single Position', 'personio-integration-light'),
+                'description' => __('Displays a single position.', 'personio-integration-light'),
                 'source' => 'plugin'
             ],
             'archive-'.WP_PERSONIO_INTEGRATION_CPT => [
-                'title' => __('Archive Positions', 'wp-personio-integration'),
-                'description' => __('Displays your positions.', 'wp-personio-integration'),
+                'title' => __('Archive Positions', 'personio-integration-light'),
+                'description' => __('Displays your positions.', 'personio-integration-light'),
                 'source' => 'plugin'
             ]
         ];

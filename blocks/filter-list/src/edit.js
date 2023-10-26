@@ -76,11 +76,11 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Filter', 'wp-personio-integration' ) }>
+				<PanelBody title={ __( 'Filter', 'personio-integration-light' ) }>
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
-								label={ __('Choose filter', 'wp-personio-integration') }
+								label={ __('Choose filter', 'personio-integration-light') }
 								value={ object.attributes.filter }
 								options={ personioTaxonomies }
 								multiple={ true }
@@ -89,12 +89,12 @@ export default function Edit( object ) {
 						}
 					</div>
 					<ToggleControl
-						label={__('Hide filter title', 'wp-personio-integration')}
+						label={__('Hide filter title', 'personio-integration-light')}
 						checked={ object.attributes.hideFilterTitle }
 						onChange={ value => onChangeHideFilterTitle( value, object ) }
 					/>
 					<ToggleControl
-						label={__('Hide reset link', 'wp-personio-integration')}
+						label={__('Hide reset link', 'personio-integration-light')}
 						checked={ object.attributes.hideResetLink }
 						onChange={ value => onChangeHideResetLink( value, object ) }
 					/>
@@ -103,7 +103,7 @@ export default function Edit( object ) {
 			<InspectorControls>
 				<div className="wp-personio-integration-range">
 					<RangeControl
-						label={__('Space between filters', 'wp-personio-integration')}
+						label={__('Space between filters', 'personio-integration-light')}
 						value={ object.attributes.space_between }
 						onChange={ value => onChangeSpaceBetween( value, object ) }
 						min={ 0 }

@@ -8,20 +8,6 @@ use personioIntegration\Positions;
 use personioIntegration\updates;
 
 /**
- * General initialization.
- *
- * Must priority of 0 to load before widgets_init, which run with priority 1 during init-run.
- *
- * @return void
- * @noinspection PhpUnused
- */
-function personio_integration_init(): void
-{
-    load_plugin_textdomain( 'wp-personio-integration', false, dirname( plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . '/languages' );
-}
-add_action( 'init', 'personio_integration_init', -1 );
-
-/**
  * Add position as custom posttype.
  *
  * @return void
@@ -30,17 +16,17 @@ add_action( 'init', 'personio_integration_init', -1 );
 function personio_integration_add_position_posttype(): void
 {
     $labels = array(
-        'name'                => __( 'Positions', 'wp-personio-integration' ),
-        'singular_name'       => __( 'Position', 'wp-personio-integration'),
-        'menu_name'           => __( 'Positions', 'wp-personio-integration'),
-        'parent_item_colon'   => __( 'Parent Position', 'wp-personio-integration'),
-        'all_items'           => __( 'All Positions', 'wp-personio-integration'),
-        'view_item'           => __( 'View Position in frontend', 'wp-personio-integration'),
-        'view_items'          => __( 'View Positions', 'wp-personio-integration'),
-        'edit_item'           => __( 'View Position in backend', 'wp-personio-integration' ),
-        'search_items'        => __( 'Search Position', 'wp-personio-integration'),
-        'not_found'           => __( 'Not Found', 'wp-personio-integration'),
-        'not_found_in_trash'  => __( 'Not found in Trash', 'wp-personio-integration')
+        'name'                => __( 'Positions', 'personio-integration-light' ),
+        'singular_name'       => __( 'Position', 'personio-integration-light'),
+        'menu_name'           => __( 'Positions', 'personio-integration-light'),
+        'parent_item_colon'   => __( 'Parent Position', 'personio-integration-light'),
+        'all_items'           => __( 'All Positions', 'personio-integration-light'),
+        'view_item'           => __( 'View Position in frontend', 'personio-integration-light'),
+        'view_items'          => __( 'View Positions', 'personio-integration-light'),
+        'edit_item'           => __( 'View Position in backend', 'personio-integration-light' ),
+        'search_items'        => __( 'Search Position', 'personio-integration-light'),
+        'not_found'           => __( 'Not Found', 'personio-integration-light'),
+        'not_found_in_trash'  => __( 'Not found in Trash', 'personio-integration-light')
     );
 
     // get the slugs.
@@ -104,9 +90,6 @@ function personio_integration_add_position_posttype(): void
             'show_in_rest' => true
         ]
     );
-
-    /*$manager = get_role( 'manage_personio_positions' );
-    var_dump($manager->capabilities);exit;*/
 }
 add_action( 'init', 'personio_integration_add_position_posttype', 10 );
 
@@ -274,7 +257,7 @@ function personio_integration_add_cron_intervals( $schedules ): array
 {
     $schedules['5minutely'] = [
         'interval'  => 5*60,
-        'display'   => __('every 5th Minute', 'wp-personio-integration')
+        'display'   => __('every 5th Minute', 'personio-integration-light')
     ];
     return $schedules;
 }
@@ -309,7 +292,7 @@ function personio_integration_add_custom_toolbar($admin_bar): void
         $admin_bar->add_menu([
             'id' => 'personio-position-list',
             'parent' => 'site-name',
-            'title' => __('Personio Positions', 'wp-personio-integration'),
+            'title' => __('Personio Positions', 'personio-integration-light'),
             'href' => get_post_type_archive_link(WP_PERSONIO_INTEGRATION_CPT)
         ]);
     }
@@ -349,15 +332,15 @@ add_filter('template_include', 'personio_integration_use_cpt_template');
 function personio_integration_admin_categories_labels(): array
 {
     return apply_filters('personio_integration_cat_labels', array(
-        'recruitingCategory' => esc_html__('recruiting category', 'wp-personio-integration'),
-        'schedule' => esc_html__('schedule', 'wp-personio-integration'),
-        'office' => esc_html__('office', 'wp-personio-integration'),
-        'department' => esc_html__('department', 'wp-personio-integration'),
-        'employmenttype' => esc_html__('employment types', 'wp-personio-integration'),
-        'seniority' => esc_html__('seniority', 'wp-personio-integration'),
-        'experience' => esc_html__('experience', 'wp-personio-integration'),
-        'occupation' => esc_html__('Job type', 'wp-personio-integration'),
-        'occupation_detail' => esc_html__('Job type details', 'wp-personio-integration'),
+        'recruitingCategory' => esc_html__('recruiting category', 'personio-integration-light'),
+        'schedule' => esc_html__('schedule', 'personio-integration-light'),
+        'office' => esc_html__('office', 'personio-integration-light'),
+        'department' => esc_html__('department', 'personio-integration-light'),
+        'employmenttype' => esc_html__('employment types', 'personio-integration-light'),
+        'seniority' => esc_html__('seniority', 'personio-integration-light'),
+        'experience' => esc_html__('experience', 'personio-integration-light'),
+        'occupation' => esc_html__('Job type', 'personio-integration-light'),
+        'occupation_detail' => esc_html__('Job type details', 'personio-integration-light'),
     ));
 }
 
@@ -371,10 +354,10 @@ function personio_integration_admin_categories_labels(): array
 function personio_integration_admin_template_labels(): array
 {
     return apply_filters('personio_integration_admin_template_labels', [
-        'title' => esc_html__('title', 'wp-personio-integration'),
-        'excerpt' => esc_html__('details', 'wp-personio-integration'),
-        'content' => esc_html__('content', 'wp-personio-integration'),
-        'formular' => esc_html__('application link', 'wp-personio-integration')
+        'title' => esc_html__('title', 'personio-integration-light'),
+        'excerpt' => esc_html__('details', 'personio-integration-light'),
+        'content' => esc_html__('content', 'personio-integration-light'),
+        'formular' => esc_html__('application link', 'personio-integration-light')
     ]);
 }
 
@@ -564,7 +547,7 @@ function personio_integration_rest_api_taxonomies(): array
             $terms = array(
                 array(
                     'id' => $termCount,
-                    'label' => __('Please choose', 'wp-personio-integration'),
+                    'label' => __('Please choose', 'personio-integration-light'),
                     'value' => 0
                 )
             );
@@ -695,13 +678,13 @@ add_action( 'rest_api_init', 'personio_integration_admin_rest_api');
 function personio_integration_rest_api_import_cron_checks(): array {
     // define default results.
     $result = array(
-        'label' => __( 'Personio Integration Import Cron Check', 'wp-personio-integration' ),
+        'label' => __( 'Personio Integration Import Cron Check', 'personio-integration-light' ),
         'status' => 'good',
         'badge'       => array(
-            'label' => __( 'Personio Integration Light', 'wp-personio-integration' ),
+            'label' => __( 'Personio Integration Light', 'personio-integration-light' ),
             'color' => 'gray',
         ),
-        'description' => __( 'Running cronjobs help to import new positions from Personio automatically.<br><strong>All ok with the cronjob!</strong>', 'wp-personio-integration' ),
+        'description' => __( 'Running cronjobs help to import new positions from Personio automatically.<br><strong>All ok with the cronjob!</strong>', 'personio-integration-light' ),
         'actions'     => '',
         'test'        => 'personio_integration_rest_api_import_cron_checks',
     );
@@ -719,7 +702,7 @@ function personio_integration_rest_api_import_cron_checks(): array {
             get_admin_url() . 'admin.php'
         );
         $result['status'] = 'recommended';
-        $result['description'] = __( 'Cronjob to import new Positions from Personio does not exist!', 'wp-personio-integration' );
+        $result['description'] = __( 'Cronjob to import new Positions from Personio does not exist!', 'personio-integration-light' );
         /* translators: %1$s will be replaced by the URL to recreate the schedule */
         $result['actions'] = sprintf( '<p><a href="%1$s" class="button button-primary">Recreate the schedules</a></p>', $url );
 
@@ -731,7 +714,7 @@ function personio_integration_rest_api_import_cron_checks(): array {
     if( $scheduled_event->timestamp < time() ) {
         $result['status'] = 'recommended';
         /* translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past) */
-        $result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'wp-personio-integration' ), helper::get_format_date_time( date( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ));
+        $result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), helper::get_format_date_time( date( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ));
 
         // return this result.
         return $result;
@@ -750,14 +733,14 @@ function personio_integration_rest_api_import_cron_checks(): array {
 function personio_integration_rest_api_url_availability_check(): array {
     // define default results.
     $result = array(
-        'label' => __( 'Personio Integration URL availability Check', 'wp-personio-integration' ),
+        'label' => __( 'Personio Integration URL availability Check', 'personio-integration-light' ),
         'status' => 'good',
         'badge'       => array(
-            'label' => __( 'Personio Integration Light', 'wp-personio-integration' ),
+            'label' => __( 'Personio Integration Light', 'personio-integration-light' ),
             'color' => 'gray',
         ),
         /* translators: %1$s and %2$s will be replaced by the Personio-URL */
-        'description' => sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'wp-personio-integration' ), helper::get_personio_url(), helper::get_personio_url() ),
+        'description' => sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), helper::get_personio_url(), helper::get_personio_url() ),
         'actions'     => '',
         'test'        => 'personio_integration_rest_api_url_availability_check',
     );
@@ -781,7 +764,7 @@ function personio_integration_rest_api_url_availability_check(): array {
         );
         $result['status'] = 'recommended';
         /* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
-        $result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'wp-personio-integration' ), helper::get_personio_url(), helper::get_personio_url(), $url_settings, helper::get_personio_login_url() );
+        $result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), helper::get_personio_url(), helper::get_personio_url(), $url_settings, helper::get_personio_login_url() );
     }
 
     // return result.

@@ -102,15 +102,15 @@ class updates {
         if( $result->post_count == 0 ) {
             $archive_template = '
             <!-- wp:template-part {"slug":"header"} /-->
-        
+
             <!-- wp:group {"tagName":"main","style":{"spacing":{"margin":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
             <main class="wp-block-group" style="margin-top:var(--wp--preset--spacing--70);margin-bottom:var(--wp--preset--spacing--70)"><!-- wp:query-title {"type":"archive","showPrefix":false,"align":"wide","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|50"}}}} /-->
-            
+
             <!-- wp:wp-personio-integration/filter-list {"filter":["recruitingCategory","office","schedule"],"blockId":"061798b9-b51f-4903-8c3e-8d6d0e617011"} /-->
-            
+
             <!-- wp:wp-personio-integration/list {"blockId":"ae57e576-b490-4ae6-b5cf-7cef4c9a8102"} /--></main>
             <!-- /wp:group -->
-            
+
             <!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
             $array = [
                 'post_type' => 'wp_template',
@@ -156,7 +156,7 @@ class updates {
         // add user role to manage positions if it does not exist.
         $personio_position_manager_role = get_role('manage_personio_positions');
         if( null === $personio_position_manager_role ) {
-            $personio_position_manager_role = add_role('manage_personio_positions', __('Manage Personio-based Positions', 'wp-personio-integration'));
+            $personio_position_manager_role = add_role('manage_personio_positions', __('Manage Personio-based Positions', 'personio-integration-light'));
         }
         $personio_position_manager_role->add_cap( 'read' ); // to enter wp-admin
         $personio_position_manager_role->add_cap( 'read_'.WP_PERSONIO_INTEGRATION_CPT );

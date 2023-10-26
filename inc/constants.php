@@ -163,7 +163,10 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
     ],
     'personio_integration_admin_show_review_hint' => [
         'type' => 'success'
-    ]
+    ],
+	'personio_integration_admin_show_text_domain_hint' => [
+		'type' => 'success'
+	]
 ];
 
 /**

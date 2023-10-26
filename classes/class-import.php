@@ -64,7 +64,7 @@ class Import {
 
         // check if PersonioUrl is set
         if( !helper::is_personioUrl_set() ) {
-            $this->_errors[] = __('Personio URL not configured.', 'wp-personio-integration');
+            $this->_errors[] = __('Personio URL not configured.', 'personio-integration-light');
         }
 
         // marker if result should do nothing.
@@ -201,7 +201,7 @@ class Import {
                     wp_defer_term_counting(false);
                 } else {
                     /* translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404) */
-                    $this->_errors[] = sprintf(__('Personio URL for language %1$s not available. Returned HTTP-Status %2$d. Please check the URL you configured and if it is available.', 'wp-personio-integration'), esc_html($key), absint($httpStatus));
+                    $this->_errors[] = sprintf(__('Personio URL for language %1$s not available. Returned HTTP-Status %2$d. Please check the URL you configured and if it is available.', 'personio-integration-light'), esc_html($key), absint($httpStatus));
                 }
 
                 // log ok.
@@ -295,9 +295,9 @@ class Import {
         // send info to admin about the problem.
         if( !empty($this->_errors) && !$this->_debug ) {
             $sendTo = get_bloginfo('admin_email');
-            $subject = get_bloginfo('name') . ": ".__('Error during Personio Positions Import', 'wp-personio-integration');
-            $msg = __('The following error occurred when importing positions provided by Personio:', 'wp-personio-integration').'\r\n' . $ausgabe;
-            $msg .= '\r\n\r\n'.__('Sent by the plugin Personio Integration', 'wp-personio-integration');
+            $subject = get_bloginfo('name') . ": ".__('Error during Personio Positions Import', 'personio-integration-light');
+            $msg = __('The following error occurred when importing positions provided by Personio:', 'personio-integration-light').'\r\n' . $ausgabe;
+            $msg .= '\r\n\r\n'.__('Sent by the plugin Personio Integration', 'personio-integration-light');
             wp_mail($sendTo, $subject, $msg);
         }
     }

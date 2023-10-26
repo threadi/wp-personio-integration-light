@@ -42,7 +42,7 @@ function personio_integration_admin_add_settings_general() {
      */
     add_settings_section(
         'settings_section_main',
-        __( 'General Settings', 'wp-personio-integration' ),
+        __( 'General Settings', 'personio-integration-light' ),
         '__return_true',
         'personioIntegrationPositions'
     );
@@ -50,7 +50,7 @@ function personio_integration_admin_add_settings_general() {
     // Personio URL
     add_settings_field(
         'personioIntegrationUrl',
-        __( 'Personio URL', 'wp-personio-integration' ),
+        __( 'Personio URL', 'personio-integration-light' ),
         'personio_integration_admin_text_field',
         'personioIntegrationPositions',
         'settings_section_main',
@@ -58,7 +58,7 @@ function personio_integration_admin_add_settings_general() {
             'label_for' => 'personioIntegrationUrl',
             'fieldId' => 'personioIntegrationUrl',
             /* translators: %1$s is replaced with the url to personio account, %2$s is replaced with the url to the personio support */
-            'description' => sprintf(__('You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s">Personio support</a>.', 'wp-personio-integration'), helper::get_personio_login_url(), helper::get_personio_support_url() ),
+            'description' => sprintf(__('You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s">Personio support</a>.', 'personio-integration-light'), helper::get_personio_login_url(), helper::get_personio_support_url() ),
             'placeholder' => helper::isGermanLanguage() ? 'https://yourcompany.jobs.personio.de' : 'https://yourcompany.jobs.personio.com',
             'highlight' => !helper::is_personioUrl_set()
         ]
@@ -71,7 +71,7 @@ function personio_integration_admin_add_settings_general() {
     // activate languages
     add_settings_field(
         'personioIntegrationLanguages',
-        __( 'Used languages', 'wp-personio-integration' ),
+        __( 'Used languages', 'personio-integration-light' ),
         'personio_integration_admin_languages_field',
         'personioIntegrationPositions',
         'settings_section_main',
@@ -86,7 +86,7 @@ function personio_integration_admin_add_settings_general() {
     // main language
     add_settings_field(
         WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE,
-        __( 'Main language', 'wp-personio-integration' ),
+        __( 'Main language', 'personio-integration-light' ),
         'personio_integration_admin_languages_radio_field',
         'personioIntegrationPositions',
         'settings_section_main',
@@ -117,7 +117,7 @@ function personio_integration_admin_languages_field( $attr ) {
 
             // get title
             /* translators: %1$s is replaced with "string" */
-            $title = sprintf(__('Mark to enable %1$s', 'wp-personio-integration'), $languageName);
+            $title = sprintf(__('Mark to enable %1$s', 'personio-integration-light'), $languageName);
 
             // readonly
             $readonly = '';
@@ -140,7 +140,7 @@ function personio_integration_admin_languages_field( $attr ) {
 
         // pro hint
         /* translators: %1$s is replaced with "string" */
-        do_action('personio_integration_admin_show_pro_hint', __('Use all languages supported by Personio with %s.', 'wp-personio-integration'));
+        do_action('personio_integration_admin_show_pro_hint', __('Use all languages supported by Personio with %s.', 'personio-integration-light'));
     }
 }
 
@@ -160,7 +160,7 @@ function personio_integration_admin_languages_radio_field( $attr ) {
 
             // get title
             /* translators: %1$s is replaced with "string" */
-            $title = sprintf(__('Mark to set %1$s as default language in the frontend.', 'wp-personio-integration'), $languageName);
+            $title = sprintf(__('Mark to set %1$s as default language in the frontend.', 'personio-integration-light'), $languageName);
 
             // readonly
             $readonly = '';
@@ -192,8 +192,8 @@ function personio_integration_admin_languages_radio_field( $attr ) {
 function personio_integration_admin_language_name( $lang ): string
 {
     $array = [
-        'de' => __('German', 'wp-personio-integration'),
-        'en' => __('English', 'wp-personio-integration'),
+        'de' => __('German', 'personio-integration-light'),
+        'en' => __('English', 'personio-integration-light'),
     ];
     $languages = apply_filters('personio_integration_languages_names', $array);
     return $languages[$lang];
@@ -214,7 +214,7 @@ function personio_integration_admin_validateLanguages( $values ) {
 
     // if empty set english
     if( empty($values) ) {
-        add_settings_error('personioIntegrationLanguages', 'personioIntegrationLanguages', __('You must enable one language. English will be set.', 'wp-personio-integration'), 'error');
+        add_settings_error('personioIntegrationLanguages', 'personioIntegrationLanguages', __('You must enable one language. English will be set.', 'personio-integration-light'), 'error');
         $values = [WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY => 1];
     }
 
@@ -247,12 +247,12 @@ function personio_integration_admin_validateLanguages( $values ) {
  */
 function personio_integration_admin_validateMainLanguage( $value ) {
     if( strlen($value) == 0 ) {
-        add_settings_error( 'personioIntegrationMainLanguage', 'personioIntegrationMainLanguage', __('No main language was specified. The specification of a main language is mandatory.', 'wp-personio-integration'), 'error' );
+        add_settings_error( 'personioIntegrationMainLanguage', 'personioIntegrationMainLanguage', __('No main language was specified. The specification of a main language is mandatory.', 'personio-integration-light'), 'error' );
         $value = get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE);
     }
     else {
         if( empty(WP_PERSONIO_INTEGRATION_LANGUAGES[$value]) ) {
-            add_settings_error( 'personioIntegrationMainLanguage', 'personioIntegrationMainLanguage', __('The selected main language is not activated as a language.', 'wp-personio-integration'), 'error' );
+            add_settings_error( 'personioIntegrationMainLanguage', 'personioIntegrationMainLanguage', __('The selected main language is not activated as a language.', 'personio-integration-light'), 'error' );
             $value = get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE);
         }
     }
@@ -279,7 +279,7 @@ function personio_integration_admin_validatePersonioURL( $value ) {
 
     $error = false;
     if( strlen($value) == 0 ) {
-        add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __('The specification of the Personio URL is mandatory.', 'wp-personio-integration'), 'error' );
+        add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __('The specification of the Personio URL is mandatory.', 'personio-integration-light'), 'error' );
         $error = true;
     }
     if( strlen($value) > 0 ) {
@@ -294,14 +294,14 @@ function personio_integration_admin_validatePersonioURL( $value ) {
                 || substr($value, -strlen(".jobs.personio.de")) === ".jobs.personio.de"
             )
         ) {
-            add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __('The Personio URL must end with ".jobs.personio.com" or ".jobs.personio.de"!', 'wp-personio-integration'), 'error' );
+            add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __('The Personio URL must end with ".jobs.personio.com" or ".jobs.personio.de"!', 'personio-integration-light'), 'error' );
             $error = true;
             $value = "";
         }
         else {
             // check if input is a valid URL
             if (!wp_http_validate_url($value)) {
-                add_settings_error('personioIntegrationUrl', 'personioIntegrationUrl', __('Please enter a valid URL.', 'wp-personio-integration'), 'error');
+                add_settings_error('personioIntegrationUrl', 'personioIntegrationUrl', __('Please enter a valid URL.', 'personio-integration-light'), 'error');
                 $error = true;
                 $value = "";
             } else {

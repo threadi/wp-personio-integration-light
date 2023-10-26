@@ -77,7 +77,7 @@ export default function Edit( object ) {
 
 	// add entry on first index of list of positions
 	positionOptions.unshift({
-		label: __( 'Please choose', 'wp-personio-integration' ),
+		label: __( 'Please choose', 'personio-integration-light' ),
 		value: 0
 	});
 
@@ -100,27 +100,27 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'wp-personio-integration' ) }>
+				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
 					<SelectControl
-						label={__('Select position', 'wp-personio-integration')}
+						label={__('Select position', 'personio-integration-light')}
 						options={ positionOptions }
 						value={object.attributes.id}
 						onChange={(value) => onChangeId( parseInt(value), object )}
 					/>
 					<ToggleControl
-						label={__('show title', 'wp-personio-integration')}
+						label={__('show title', 'personio-integration-light')}
 						checked={ object.attributes.showTitle }
 						onChange={ value => onChangeTitleVisibility( value, object ) }
 						disabled={ disabledFields }
 					/>
 					<ToggleControl
-						label={__('link title', 'wp-personio-integration')}
+						label={__('link title', 'personio-integration-light')}
 						checked={ object.attributes.linkTitle }
 						onChange={ value => onChangeLinkingTitle( value, object ) }
 						disabled={ disabledFields }
 					/>
 					<ToggleControl
-						label={__('show excerpt', 'wp-personio-integration')}
+						label={__('show excerpt', 'personio-integration-light')}
 						checked={ object.attributes.showExcerpt }
 						onChange={ value => onChangeExcerptVisibility( value, object ) }
 						disabled={ disabledFields }
@@ -128,17 +128,17 @@ export default function Edit( object ) {
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
-								label={__('Choose details', 'wp-personio-integration')}
+								label={__('Choose details', 'personio-integration-light')}
 								value={object.attributes.excerptTemplates}
 								options={[
-									{label: __('Category', 'wp-personio-integration'), value: 'recruitingCategory'},
-									{label: __('Contract type', 'wp-personio-integration'), value: 'schedule'},
-									{label: __('Location', 'wp-personio-integration'), value: 'office'},
-									{label: __('Department', 'wp-personio-integration'), value: 'department'},
-									{label: __('Experience', 'wp-personio-integration'), value: 'seniority'},
-									{label: __('Years of experience', 'wp-personio-integration'), value: 'experience'},
-									{label: __('Job type', 'wp-personio-integration'), value: 'occupation'},
-									{label: __('Job type detail', 'wp-personio-integration'), value: 'occupation_detail'}
+									{label: __('Category', 'personio-integration-light'), value: 'recruitingCategory'},
+									{label: __('Contract type', 'personio-integration-light'), value: 'schedule'},
+									{label: __('Location', 'personio-integration-light'), value: 'office'},
+									{label: __('Department', 'personio-integration-light'), value: 'department'},
+									{label: __('Experience', 'personio-integration-light'), value: 'seniority'},
+									{label: __('Years of experience', 'personio-integration-light'), value: 'experience'},
+									{label: __('Job type', 'personio-integration-light'), value: 'occupation'},
+									{label: __('Job type detail', 'personio-integration-light'), value: 'occupation_detail'}
 								]}
 								multiple={true}
 								onChange={value => onChangeExcerptTemplates(value, object)}
@@ -147,13 +147,13 @@ export default function Edit( object ) {
 						}
 					</div>
 					<ToggleControl
-						label={__('view content', 'wp-personio-integration')}
+						label={__('view content', 'personio-integration-light')}
 						checked={ object.attributes.showContent }
 						onChange={ value => onChangeContentVisibility( value, object )  }
 						disabled={ disabledFields }
 					/>
 					<ToggleControl
-						label={__('view application link', 'wp-personio-integration')}
+						label={__('view application link', 'personio-integration-light')}
 						checked={ object.attributes.showApplicationForm }
 						onChange={ value => onChangeApplicationFormVisibility( value, object )  }
 						disabled={ disabledFields }

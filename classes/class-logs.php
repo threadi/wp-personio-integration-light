@@ -39,9 +39,9 @@ class Logs extends WP_List_Table {
     public function get_columns(): array
     {
         return array(
-            'state' => __('state', 'wp-personio-integration'),
-            'date' => __('date', 'wp-personio-integration'),
-            'log' => __('log', 'wp-personio-integration')
+            'state' => __('state', 'personio-integration-light'),
+            'date' => __('date', 'personio-integration-light'),
+            'log' => __('log', 'personio-integration-light')
         );
     }
 
@@ -53,8 +53,8 @@ class Logs extends WP_List_Table {
     private function table_data(): array
     {
         $sql = '
-            SELECT `state`, `time` AS `date`, `log` 
-            FROM `'.$this->_tableName.'` 
+            SELECT `state`, `time` AS `date`, `log`
+            FROM `'.$this->_tableName.'`
             ORDER BY `time` DESC';
         return $this->_wpdb->get_results( $sql, ARRAY_A );
     }
