@@ -16,9 +16,9 @@ if( !empty($personio_attributes["filter"]) && false !== $personio_attributes["sh
     // generate random id
     $form_id = "pif".md5(serialize($personio_attributes["filter"]));
     ?>
-    <article id="<?php echo $form_id; ?>" class="site-main entry entry-content container inside-article container qodef-container-inner site-content site-content site-container content-bg content-area <?php echo esc_attr($personio_attributes['classes']); ?>" role="region" aria-label="<?php echo esc_html__('Filter for positions', 'wp-personio-integration' ); ?>">
+    <article id="<?php echo $form_id; ?>" class="site-main entry entry-content container inside-article container qodef-container-inner site-content site-content site-container content-bg content-area <?php echo esc_attr($personio_attributes['classes']); ?>" role="region" aria-label="<?php echo esc_html__('Filter for positions', 'personio-integration-light' ); ?>">
         <form action="<?php echo esc_url(helper::get_current_url()); ?>#<?php echo $form_id; ?>" class="entry-content personio-position-filter personio-position-filter-<?php echo $personio_attributes['filtertype']; ?> qodef-container-inner site-content site-container content-bg content-area">
-            <legend><?php echo __('Filter', 'wp-personio-integration'); ?></legend>
+            <legend><?php echo __('Filter', 'personio-integration-light'); ?></legend>
             <?php
 
             do_action('personio_integration_filter_pre', $personio_attributes);
@@ -30,14 +30,14 @@ if( !empty($personio_attributes["filter"]) && false !== $personio_attributes["sh
             do_action('personio_integration_filter_post', $personio_attributes);
 
             ?>
-            <button type="submit"><?php echo __('Search', 'wp-personio-integration'); ?></button>
+            <button type="submit"><?php echo __('Search', 'personio-integration-light'); ?></button>
             <?php
             $url = remove_query_arg( 'personiofilter' );
             if( !empty($form_id) ) {
                 $url .= '#'.$form_id;
             }
             ?>
-            <a href="<?php echo esc_url($url); ?>" class="personio-position-filter-reset"><?php echo __('Reset Filter', 'wp-personio-integration'); ?></a>
+            <a href="<?php echo esc_url($url); ?>" class="personio-position-filter-reset"><?php echo __('Reset Filter', 'personio-integration-light'); ?></a>
         </form>
     </article>
 <?php

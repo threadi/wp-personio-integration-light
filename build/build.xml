@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="personio-integration" basedir="." default="help">
+<project name="personio-integration-light" basedir="." default="help">
 
     <!-- Include config file containing  -->
     <loadproperties srcFile="build.properties" />
@@ -93,6 +93,12 @@
         <replace file="${src.dir}/languages/wp-personio-integration-de_DE_formal.po">
             <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
         </replace>
+
+        <delete file="${build.dir}/uninstall-release.php"/>
+        <copy file="${src.dir}/uninstall.php" tofile="${src.dir}/uninstall-release.php"/>
+        <replace file="${src.dir}/uninstall-release.php">
+            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
+        </replace>
     </target>
 
     <!-- init project -->
@@ -122,10 +128,10 @@
             <zipfileset dir="${src.dir}/css" prefix="${plugin.slug}/css" />
             <zipfileset dir="${src.dir}/gfx" prefix="${plugin.slug}/gfx" />
             <zipfileset dir="${src.dir}/inc" prefix="${plugin.slug}/inc" />
-            <zipfileset dir="${src.dir}/languages" prefix="${plugin.slug}/languages" />
             <zipfileset dir="${src.dir}/templates" prefix="${plugin.slug}/templates" />
             <zipfileset dir="${src.dir}" includes="wpml-config.xml" fullpath="${plugin.slug}/wpml-config.xml" />
-            <zipfileset dir="${src.dir}" includes="uninstall.php,readme.txt" prefix="${plugin.slug}" />
+            <zipfileset dir="${src.dir}" includes="readme.txt" prefix="${plugin.slug}" />
+            <zipfileset dir="${src.dir}" includes="uninstall-release.php" fullpath="${plugin.slug}/uninstall.php" />
             <zipfileset dir="${src.dir}" includes="${plugin.slug}-release.php" fullpath="${plugin.slug}/${plugin.slug}.php" />
         </zip>
         <delete file="${src.dir}/${plugin.slug}-release.php"/>

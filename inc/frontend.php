@@ -50,7 +50,7 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
     // do not output anything without ID
     if( $personio_attributes['personioid'] <= 0 ) {
         if( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-            return '<div><p>'.__('Detail-view called without the PersonioId of a position.', 'wp-personio-integration').'</p></div>';
+            return '<div><p>'.__('Detail-view called without the PersonioId of a position.', 'personio-integration-light').'</p></div>';
         }
         return '';
     }
@@ -62,7 +62,7 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
     // do not show this position if it is not valid or could not be loaded
     if( $position && !$position->isValid() || !$position ) {
         if( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-            return '<div><p>'.__('Given Id is not a valid position-Id.', 'wp-personio-integration').'</p></div>';
+            return '<div><p>'.__('Given Id is not a valid position-Id.', 'personio-integration-light').'</p></div>';
         }
         return "";
     }

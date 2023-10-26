@@ -34,8 +34,8 @@ import { personioIcon } from '../../components'
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 registerBlockType( 'wp-personio-integration/description', {
-	title: __( 'Description', 'wp-personio-integration' ),
-	description: __('Provides a Gutenberg Block for the description of a single position managed by Personio.', 'wp-personio-integration'),
+	title: __( 'Description', 'personio-integration-light' ),
+	description: __('Provides a Gutenberg Block for the description of a single position managed by Personio.', 'personio-integration-light'),
 	icon: personioIcon,
 
 	/**

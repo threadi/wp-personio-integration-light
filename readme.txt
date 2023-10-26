@@ -1,12 +1,12 @@
 === Personio Integration Light ===
 Contributors: laolaweb, threadi
-Tags: personio, jobs, recruitment
+Tags: personio, jobs, recruitment, employee
 Requires at least: 5.9.3
-Tested up to: 6.3.2
+Tested up to: 6.4
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.5.2
+Stable tag: 2.5.3
 
 == Description ==
 
@@ -310,3 +310,13 @@ Yes, it is without any further settings.
 * Compatibility with ActivityPub to optionally publish positions from Personio in the fediverse (e.g. Mastodon)
 * Compatibility with WordPres 6.3.2
 * Removed unnecessary spaces around position description
+
+= 2.5.3 =
+* Changed text domain for any texts to match WordPress-requirements:
+=> from wp-personio-integration to personio-integration-light
+* Added warning for users who have changed the texts of our plugin to use the new text domain
+* Compatibility with WordPres 6.4
+* Updated dependencies for Gutenberg-scripts
+* Remove local embedded translation-files
+* Fixed template-loading for Gutenberg
+* Fixed version setting during uninstalling

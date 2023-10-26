@@ -44,20 +44,20 @@ function personio_integration_add_styles_and_js_admin(): void
     wp_localize_script( 'personio_integration-admin-js', 'customJsVars', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'pro_url' => helper::get_pro_url(),
-            'label_go_pro' => __('Get Personio Integration Pro', 'wp-personio-integration'),
+            'label_go_pro' => __('Get Personio Integration Pro', 'personio-integration-light'),
             'dismiss_nonce' => wp_create_nonce( 'wp-dismiss-notice' ),
             'run_import_nonce' => wp_create_nonce( 'personio-run-import' ),
             'get_import_nonce' => wp_create_nonce( 'personio-get-import-info' ),
-            'label_reset_sort' => __('Reset sorting', 'wp-personio-integration'),
-            'label_run_import' => __('Run import', 'wp-personio-integration'),
-            'label_import_is_running' => __('Import is running', 'wp-personio-integration'),
-            'txt_please_wait' => __('Please wait', 'wp-personio-integration'),
-            'txt_import_hint' => __('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'wp-personio-integration'),
+            'label_reset_sort' => __('Reset sorting', 'personio-integration-light'),
+            'label_run_import' => __('Run import', 'personio-integration-light'),
+            'label_import_is_running' => __('Import is running', 'personio-integration-light'),
+            'txt_please_wait' => __('Please wait', 'personio-integration-light'),
+            'txt_import_hint' => __('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'personio-integration-light'),
             'txt_import_has_been_run' => sprintf(
                 /* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
                 __(
                     '<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.',
-                    'wp-personio-integration'
+                    'personio-integration-light'
                 ),
                 esc_url(add_query_arg(
                     [
@@ -67,7 +67,7 @@ function personio_integration_add_styles_and_js_admin(): void
                 )),
                 get_post_type_archive_link(WP_PERSONIO_INTEGRATION_CPT)
             ),
-            'label_ok' => __('OK', 'wp-personio-integration')
+            'label_ok' => __('OK', 'personio-integration-light')
         ]
     );
 
@@ -102,7 +102,7 @@ function personio_integration_add_dashboard_widgets(): void
     // add dashboard widget to show the newest imported positions.
     wp_add_dashboard_widget(
         'dashboard_personio_integration_positions',
-        __('Positions imported from Personio', 'wp-personio-integration'),
+        __('Positions imported from Personio', 'personio-integration-light'),
         'personio_integration_dashboard_widget_function',
         null, [],
         'side',
@@ -123,7 +123,7 @@ function personio_integration_dashboard_widget_function( $post, $callback_args )
     $positionsList = $positionsObj->getPositions(3, array('sortby' => 'date', 'sort' => 'DESC'));
     if( function_exists('personio_integration_set_ordering') ) { add_filter( 'pre_get_posts', 'personio_integration_set_ordering' ); }
     if( count($positionsList) == 0 ) {
-        echo '<p>'.__('Actually there are no positions imported from Personio.', 'wp-personio-integration').'</p>';
+        echo '<p>'.__('Actually there are no positions imported from Personio.', 'personio-integration-light').'</p>';
     }
     else {
         $link = add_query_arg(
@@ -139,7 +139,7 @@ function personio_integration_dashboard_widget_function( $post, $callback_args )
         }
         ?></ul><?php
         /* translators: %1$d will be replaced by the count of positions */
-        ?><p><a href="<?php echo esc_url($link); ?>"><?php echo sprintf(esc_html__('Show all %1$d positions', 'wp-personio-integration'), get_option( WP_PERSONIO_OPTION_COUNT, 0 ) ); ?></a></p><?php
+        ?><p><a href="<?php echo esc_url($link); ?>"><?php echo sprintf(esc_html__('Show all %1$d positions', 'personio-integration-light'), get_option( WP_PERSONIO_OPTION_COUNT, 0 ) ); ?></a></p><?php
     }
 }
 
@@ -196,7 +196,7 @@ function personio_integration_admin_notices(): void
                 ?>
                 <div class="wp-personio-integration-transient updated <?php echo esc_attr($settings['type']); ?>" data-dismissible="<?php echo esc_attr($transient); ?>-14">
                     <?php echo wp_kses_post($settings['content']); ?>
-                    <button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php echo esc_html__( 'Dismiss this notice.', 'wp-personio-integration' ); ?></span></button>
+                    <button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php echo esc_html__( 'Dismiss this notice.', 'personio-integration-light' ); ?></span></button>
                 </div>
                 <?php
 
@@ -226,7 +226,7 @@ function personio_integration_admin_position_add_column($columns): array
     $newColumns = [];
 
     // add column for PersonioId
-    $newColumns['id'] = __( 'PersonioID', 'wp-personio-integration' );
+    $newColumns['id'] = __( 'PersonioID', 'personio-integration-light' );
 
     // remove checkbox-column if pro is not active.
 	if( false === Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
@@ -274,7 +274,7 @@ function personio_integration_admin_add_setting_link( $links ): array
     );
 
     // create the link
-    $settings_link = "<a href='".esc_url($url)."'>" . __( 'Settings', 'wp-personio-integration' ) . '</a>';
+    $settings_link = "<a href='".esc_url($url)."'>" . __( 'Settings', 'personio-integration-light' ) . '</a>';
 
     // adds the link to the end of the array
     $links[] = $settings_link;
@@ -361,7 +361,7 @@ function personio_integration_admin_remove_actions( $actions, $post ): array {
         $actions = array(
             'view' => $actions['view']
         );
-        $actions['edit'] = '<a href="' . esc_url(get_edit_post_link( $post->ID )) . '">' . __('Edit', 'wp-personio-integration') . '</a>';
+        $actions['edit'] = '<a href="' . esc_url(get_edit_post_link( $post->ID )) . '">' . __('Edit', 'personio-integration-light') . '</a>';
         return $actions;
     }
     return $actions;
@@ -801,7 +801,7 @@ add_action( 'admin_init', 'personio_integration_light_admin_remove_cpt_supports'
  * @return void
  */
 function personio_integration_light_admin_add_meta_boxes_prioritized(): void {
-    add_meta_box( 'personio-edit-hints', __( 'Show Personio position data', 'wp-personio-integration' ), 'personio_integration_admin_light_personio_meta_box', WP_PERSONIO_INTEGRATION_CPT );
+    add_meta_box( 'personio-edit-hints', __( 'Show Personio position data', 'personio-integration-light' ), 'personio_integration_admin_light_personio_meta_box', WP_PERSONIO_INTEGRATION_CPT );
 }
 add_action( 'add_meta_boxes', 'personio_integration_light_admin_add_meta_boxes_prioritized', 10 );
 
@@ -812,9 +812,9 @@ add_action( 'add_meta_boxes', 'personio_integration_light_admin_add_meta_boxes_p
  * @return void
  */
 function personio_integration_light_admin_add_meta_boxes(): void {
-    add_meta_box( 'personio-position-personio-id', __( 'PersonioID', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_personio_id', WP_PERSONIO_INTEGRATION_CPT );
-    add_meta_box( 'personio-position-title', __( 'Title', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_title', WP_PERSONIO_INTEGRATION_CPT );
-    add_meta_box( 'personio-position-text', __( 'Description', 'wp-personio-integration' ), 'personio_integration_admin_personio_meta_box_description', WP_PERSONIO_INTEGRATION_CPT );
+    add_meta_box( 'personio-position-personio-id', __( 'PersonioID', 'personio-integration-light' ), 'personio_integration_admin_personio_meta_box_personio_id', WP_PERSONIO_INTEGRATION_CPT );
+    add_meta_box( 'personio-position-title', __( 'Title', 'personio-integration-light' ), 'personio_integration_admin_personio_meta_box_title', WP_PERSONIO_INTEGRATION_CPT );
+    add_meta_box( 'personio-position-text', __( 'Description', 'personio-integration-light' ), 'personio_integration_admin_personio_meta_box_description', WP_PERSONIO_INTEGRATION_CPT );
     foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $settings ) {
         $labels = helper::get_taxonomy_label($taxonomy_name);
         add_meta_box( 'personio-position-taxonomy-'.$taxonomy_name, $labels['name'], 'personio_integration_admin_personio_meta_box_taxonomy', WP_PERSONIO_INTEGRATION_CPT, 'side' );
@@ -834,7 +834,7 @@ function personio_integration_admin_light_personio_meta_box( $post ): void {
         if ($position->isValid()) {
             $url = helper::get_personio_login_url();
             /* translators: %1$s will be replaced by the URL for Personio */
-            echo sprintf(__('At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'wp-personio-integration'), $position->getTitle(), $url);
+            echo sprintf(__('At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'personio-integration-light'), $position->getTitle(), $url);
         }
     }
 }
@@ -885,7 +885,7 @@ function personio_integration_admin_personio_meta_box_taxonomy( $post, $attr ): 
     $taxonomy_obj = get_taxonomy( $taxonomy_name );
     $content = helper::get_taxonomy_name_of_position( $taxonomy_obj->rewrite['slug'], $position_obj );
     if( empty($content) ) {
-        echo '<i>'.__( 'No data', 'wp-personio-integration' ).'</i>';
+        echo '<i>'.__( 'No data', 'personio-integration-light' ).'</i>';
     }
     else {
         echo wp_kses_post($content);
@@ -912,8 +912,8 @@ add_filter( 'easy_language_possible_post_types', 'personio_integration_admin_rem
  */
 function personio_integration_admin_add_importer(): void {
     register_importer( 'personio-integration-importer',
-		__( 'Personio', 'wp-personio-integration' ),
-		__( 'Import positions from Personio', 'wp-personio-integration' ),
+		__( 'Personio', 'personio-integration-light' ),
+		__( 'Import positions from Personio', 'personio-integration-light' ),
 		'personio_integration_admin_add_menu_content_importexport'
 	);
 }
@@ -961,12 +961,12 @@ add_action( 'admin_init', 'personio_integration_admin_allow_save_settings' );
 function personio_integration_admin_set_site_status_test( array $statuses ): array {
     if( helper::is_personioUrl_set() ) {
         $statuses['async']['personio_integration_import_cron_checks'] = array(
-            'label' => __('Personio Integration Import Cron Check', 'wp-personio-integration'),
+            'label' => __('Personio Integration Import Cron Check', 'personio-integration-light'),
             'test' => rest_url('personio/v1/import_cron_checks'),
             'has_rest' => true
         );
         $statuses['async']['personio_integration_url_availability_check'] = array(
-            'label' => __('Personio Integration URL availability check', 'wp-personio-integration'),
+            'label' => __('Personio Integration URL availability check', 'personio-integration-light'),
             'test' => rest_url('personio/v1/url_availability_checks'),
             'has_rest' => true
         );
@@ -990,3 +990,18 @@ function personio_integration_create_schedules(): void {
     wp_redirect($_SERVER['HTTP_REFERER']);
 }
 add_action( 'admin_action_personioPositionsCreateSchedules', 'personio_integration_create_schedules' );
+
+/**
+ * Checks for old text domain and triggers warning if it is used.
+ *
+ * @return void
+ */
+function personio_integration_admin_check_for_old_text_domain(): void {
+    if( is_textdomain_loaded( 'wp-personio-integration') ) {
+        set_transient('personio_integration_admin_show_text_domain_hint', 1);
+    }
+    else {
+        delete_transient('personio_integration_admin_show_text_domain_hint' );
+    }
+}
+add_action( 'admin_init', 'personio_integration_admin_check_for_old_text_domain');

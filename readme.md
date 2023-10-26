@@ -2,7 +2,7 @@
 
 ## About
 
-This repository provides the features of the Light version of the WordPress plugin _Personio Integration_. The repository is used as a basis for deploying the plugin to the WordPress repository. It is not intended to run as a plugin as it is, even if that is possible for development. 
+This repository provides the features of the Light version of the WordPress plugin _Personio Integration_. The repository is used as a basis for deploying the plugin to the WordPress repository. It is not intended to run as a plugin as it is, even if that is possible for development.
 
 ## Usage
 
@@ -32,7 +32,7 @@ Run in main directory:
 ### update translation-file
 
 1. Open .po-file of the language in PoEdit.
-2. Go to "Translate > "Update from POT-file".
+2. Go to "Translate" > "Update from POT-file".
 3. After this the new entries are added to the language-file.
 
 ### export translation-file

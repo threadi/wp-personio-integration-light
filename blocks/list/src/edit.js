@@ -64,8 +64,8 @@ export default function Edit( object ) {
 
 	// get filter types
 	let filter_types = wp.hooks.applyFilters('personio_integration_filter_types', [
-		{ label: __('list of links', 'wp-personio-integration'), value: 'linklist' },
-		{ label: __('select-box', 'wp-personio-integration'), value: 'select' }
+		{ label: __('list of links', 'personio-integration-light'), value: 'linklist' },
+		{ label: __('select-box', 'personio-integration-light'), value: 'select' }
 	], object.attributes.preview);
 
 	// get taxonomies
@@ -95,16 +95,16 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Filter', 'wp-personio-integration' ) }>
+				<PanelBody title={ __( 'Filter', 'personio-integration-light' ) }>
 					<ToggleControl
-						label={ __('Show filter', 'wp-personio-integration') }
+						label={ __('Show filter', 'personio-integration-light') }
 						checked={ object.attributes.showFilter }
 						onChange={ value => onChangeShowFilter( value, object ) }
 					/>
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
-								label={ __('Choose filter', 'wp-personio-integration') }
+								label={ __('Choose filter', 'personio-integration-light') }
 								value={ object.attributes.filter }
 								options={ personioTaxonomies }
 								multiple={ true }
@@ -114,7 +114,7 @@ export default function Edit( object ) {
 						}
 					</div>
 					<SelectControl
-						label={ __('Type of filter', 'wp-personio-integration') }
+						label={ __('Type of filter', 'personio-integration-light') }
 						value={ object.attributes.filtertype }
 						options={ filter_types }
 						disabled={ !object.attributes.showFilter }
@@ -123,9 +123,9 @@ export default function Edit( object ) {
 				</PanelBody>
 			</InspectorControls>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'wp-personio-integration' ) }>
+				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
 					<NumberControl
-						label={__('amount', 'wp-personio-integration')}
+						label={__('amount', 'personio-integration-light')}
 						labelPosition='top'
 						isShiftStepEnabled={ true }
 						onChange={ value => onChangeLimit( value, object ) }
@@ -135,48 +135,48 @@ export default function Edit( object ) {
 						value={ object.attributes.limit }
 					/>
 					<SelectControl
-						label={__('Sort direction', 'wp-personio-integration')}
+						label={__('Sort direction', 'personio-integration-light')}
 						value={ object.attributes.sort }
 						options={ [
-							{ label: __('ascending', 'wp-personio-integration'), value: 'asc' },
-							{ label: __('descending', 'wp-personio-integration'), value: 'desc' }
+							{ label: __('ascending', 'personio-integration-light'), value: 'asc' },
+							{ label: __('descending', 'personio-integration-light'), value: 'desc' }
 						] }
 						onChange={ value => onChangeSort( value, object ) }
 					/>
 					<SelectControl
-						label={__('Sort by', 'wp-personio-integration')}
+						label={__('Sort by', 'personio-integration-light')}
 						value={ object.attributes.sortby }
 						options={ [
-							{ label: __('title', 'wp-personio-integration'), value: 'title' },
-							{ label: __('date', 'wp-personio-integration'), value: 'date' }
+							{ label: __('title', 'personio-integration-light'), value: 'title' },
+							{ label: __('date', 'personio-integration-light'), value: 'date' }
 						] }
 						onChange={ value => onChangeSortBy( value, object ) }
 					/>
 					<SelectControl
-						label={__('Group by', 'wp-personio-integration')}
+						label={__('Group by', 'personio-integration-light')}
 						value={ object.attributes.groupby }
 						options={ personioTaxonomies }
 						onChange={ value => onChangeGroupBy( value, object ) }
 					/>
 					<ToggleControl
-						label={__('Show title', 'wp-personio-integration')}
+						label={__('Show title', 'personio-integration-light')}
 						checked={ object.attributes.showTitle }
 						onChange={ value => onChangeTitleVisibility( value, object ) }
 					/>
 					<ToggleControl
-						label={__('Link title', 'wp-personio-integration')}
+						label={__('Link title', 'personio-integration-light')}
 						checked={ object.attributes.linkTitle }
 						onChange={ value => onChangeLinkingTitle( value, object ) }
 					/>
 					<ToggleControl
-						label={__('show excerpt', 'wp-personio-integration')}
+						label={__('show excerpt', 'personio-integration-light')}
 						checked={ object.attributes.showExcerpt }
 						onChange={ value => onChangeExcerptVisibility( value, object ) }
 					/>
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
-								label={__('Choose details', 'wp-personio-integration')}
+								label={__('Choose details', 'personio-integration-light')}
 								value={object.attributes.excerptTemplates}
 								options={ personioTaxonomies }
 								multiple={true}
@@ -186,12 +186,12 @@ export default function Edit( object ) {
 						}
 					</div>
 					<ToggleControl
-						label={__('View content', 'wp-personio-integration')}
+						label={__('View content', 'personio-integration-light')}
 						checked={ object.attributes.showContent }
 						onChange={ value => onChangeContentVisibility( value, object )  }
 					/>
 					<ToggleControl
-						label={__('View application link', 'wp-personio-integration')}
+						label={__('View application link', 'personio-integration-light')}
 						checked={ object.attributes.showApplicationForm }
 						onChange={ value => onChangeApplicationFormVisibility( value, object )  }
 					/>

@@ -16,7 +16,7 @@ function personio_integration_settings_add_advanced_tab( $tab ): void
     if( $tab === 'advanced' ) $activeClass = ' nav-tab-active';
 
     // output tab
-    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=advanced" class="nav-tab'.esc_attr($activeClass).'">'.__('Advanced', 'wp-personio-integration').'</a>';
+    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=advanced" class="nav-tab'.esc_attr($activeClass).'">'.__('Advanced', 'personio-integration-light').'</a>';
 }
 add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_advanced_tab', 60, 1 );
 
@@ -61,7 +61,7 @@ function personio_integration_admin_add_settings_advanced()
      */
     add_settings_section(
         'settings_section_advanced',
-        __( 'Advanced Settings', 'wp-personio-integration' ),
+        __( 'Advanced Settings', 'personio-integration-light' ),
         '__return_true',
         'personioIntegrationPositionsAdvanced'
     );
@@ -84,7 +84,7 @@ function personio_integration_admin_add_settings_advanced()
     // extend search.
     add_settings_field(
         'personioIntegrationExtendSearch',
-        __( 'Note the position-keywords in search in frontend', 'wp-personio-integration' ),
+        __( 'Note the position-keywords in search in frontend', 'personio-integration-light' ),
         'personio_integration_admin_checkbox_field',
         'personioIntegrationPositionsAdvanced',
         'settings_section_advanced',
@@ -99,7 +99,7 @@ function personio_integration_admin_add_settings_advanced()
     // max age for log-entries
     add_settings_field(
         'personioIntegrationMaxAgeLogEntries',
-        __( 'max. Age for log entries in days', 'wp-personio-integration' ),
+        __( 'max. Age for log entries in days', 'personio-integration-light' ),
         'personio_integration_admin_number_field',
         'personioIntegrationPositionsAdvanced',
         'settings_section_advanced',
@@ -114,7 +114,7 @@ function personio_integration_admin_add_settings_advanced()
     // Personio URL Timeout
     add_settings_field(
         'personioIntegrationUrlTimeout',
-        __( 'Timeout for URL-request in Seconds', 'wp-personio-integration' ),
+        __( 'Timeout for URL-request in Seconds', 'personio-integration-light' ),
         'personio_integration_admin_number_field',
         'personioIntegrationPositionsAdvanced',
         'settings_section_advanced',
@@ -129,7 +129,7 @@ function personio_integration_admin_add_settings_advanced()
     // delete all data on uninstall
     add_settings_field(
         'personioIntegrationDeleteOnUninstall',
-        __( 'Delete all imported data on uninstall', 'wp-personio-integration' ),
+        __( 'Delete all imported data on uninstall', 'personio-integration-light' ),
         'personio_integration_admin_checkbox_field',
         'personioIntegrationPositionsAdvanced',
         'settings_section_advanced',
@@ -144,14 +144,14 @@ function personio_integration_admin_add_settings_advanced()
     // enable debug-Mode
     add_settings_field(
         'personioIntegration_debug',
-        __( 'Debug-Mode', 'wp-personio-integration' ),
+        __( 'Debug-Mode', 'personio-integration-light' ),
         'personio_integration_admin_checkbox_field',
         'personioIntegrationPositionsAdvanced',
         'settings_section_advanced',
         [
             'label_for' => 'personioIntegration_debug',
             'fieldId' => 'personioIntegration_debug',
-            'description' => __('If activated, the import will be executed every time even if there are no changes.', 'wp-personio-integration'),
+            'description' => __('If activated, the import will be executed every time even if there are no changes.', 'personio-integration-light'),
             'readonly' => !helper::is_personioUrl_set()
         ]
     );
@@ -167,7 +167,7 @@ add_action( 'personio_integration_settings_add_settings', 'personio_integration_
 function personio_integration_admin_advanced_pro_hint() {
     // pro hint
     /* translators: %1$s is replaced with "string" */
-    do_action('personio_integration_admin_show_pro_hint', __('With %s you get more advanced options, e.g. to change the URL of archives with positions.', 'wp-personio-integration'));
+    do_action('personio_integration_admin_show_pro_hint', __('With %s you get more advanced options, e.g. to change the URL of archives with positions.', 'personio-integration-light'));
 }
 
 /**
@@ -181,7 +181,7 @@ function personio_integration_admin_validatePersonioURLTimeout( $value ): int
 {
     $value = absint($value);
     if( $value == 0 ) {
-        add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __('A timeout must have a value greater than 0.', 'wp-personio-integration'), 'error' );
+        add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __('A timeout must have a value greater than 0.', 'personio-integration-light'), 'error' );
     }
     return $value;
 }

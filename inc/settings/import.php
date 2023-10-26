@@ -19,7 +19,7 @@ function personio_integration_settings_add_importexport_tab( $tab ): void
     if( $tab === 'importexport' ) $activeClass = ' nav-tab-active';
 
     // output tab
-    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=importexport" class="nav-tab'.esc_attr($activeClass).'">'.__('Import', 'wp-personio-integration').'</a>';
+    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=importexport" class="nav-tab'.esc_attr($activeClass).'">'.__('Import', 'personio-integration-light').'</a>';
 }
 add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_importexport_tab', 20, 1 );
 
@@ -64,7 +64,7 @@ function personio_integration_admin_add_settings_importexport(): void
      */
     add_settings_section(
         'settings_section_import',
-        __('Import of positions from Personio', 'wp-personio-integration'),
+        __('Import of positions from Personio', 'personio-integration-light'),
         '__return_true',
         'personioIntegrationPositionsImportExport'
     );
@@ -72,7 +72,7 @@ function personio_integration_admin_add_settings_importexport(): void
     // import now button
     add_settings_field(
         'personioIntegrationImportNow',
-        __( 'Start import now', 'wp-personio-integration' ),
+        __( 'Start import now', 'personio-integration-light' ),
         'personio_integration_admin_start_import_now',
         'personioIntegrationPositionsImportExport',
         'settings_section_import',
@@ -85,7 +85,7 @@ function personio_integration_admin_add_settings_importexport(): void
     // delete all positions button
     add_settings_field(
         'personioIntegrationDeleteNow',
-        __( 'Delete positions', 'wp-personio-integration' ),
+        __( 'Delete positions', 'personio-integration-light' ),
         'personio_integration_admin_delete_positions_now',
         'personioIntegrationPositionsImportExport',
         'settings_section_import',
@@ -98,17 +98,17 @@ function personio_integration_admin_add_settings_importexport(): void
     // enable automatic import
     add_settings_field(
         'personioIntegrationEnablePositionSchedule',
-        __( 'Enable automatic import', 'wp-personio-integration' ),
+        __( 'Enable automatic import', 'personio-integration-light' ),
         'personio_integration_admin_checkbox_field',
         'personioIntegrationPositionsImportExport',
         'settings_section_import',
         [
             'label_for' => 'personioIntegrationEnablePositionSchedule',
             'fieldId' => 'personioIntegrationEnablePositionSchedule',
-            'description' => __('If enabled, new positions stored in Personio will be retrieved automatically daily.<br>If disabled, new positions are retrieved manually only.', 'wp-personio-integration'),
+            'description' => __('If enabled, new positions stored in Personio will be retrieved automatically daily.<br>If disabled, new positions are retrieved manually only.', 'personio-integration-light'),
             'readonly' => !helper::is_personioUrl_set(),
             /* translators: %1$s is replaced with "string" */
-            'pro_hint' => __('Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'wp-personio-integration')
+            'pro_hint' => __('Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light')
         ]
     );
     register_setting( 'personioIntegrationPositionsImportExport', 'personioIntegrationEnablePositionSchedule', ['sanitize_callback' => 'personio_integration_admin_validateCheckBox'] );
@@ -199,13 +199,13 @@ function personio_integration_admin_start_import_now(): void {
     $importRunning = absint(get_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0));
     if( $importRunning == 0 ) {
         ?>
-            <p><a href="<?php echo esc_url(helper::get_import_url()); ?>" class="button button-primary personio-integration-import-hint"><?php _e('Run import', 'wp-personio-integration'); ?></a></p>
-            <p><i><?php _e('Hint', 'wp-personio-integration'); ?>:</i> <?php _e('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'wp-personio-integration'); ?></p>
+            <p><a href="<?php echo esc_url(helper::get_import_url()); ?>" class="button button-primary personio-integration-import-hint"><?php _e('Run import', 'personio-integration-light'); ?></a></p>
+            <p><i><?php _e('Hint', 'personio-integration-light'); ?>:</i> <?php _e('Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'personio-integration-light'); ?></p>
         <?php
     }
     else {
         ?>
-            <p><?php _e('The import is already running. Please wait some moments.', 'wp-personio-integration'); ?></p>
+            <p><?php _e('The import is already running. Please wait some moments.', 'personio-integration-light'); ?></p>
         <?php
         // show import-break button if import is running min. 1 hour
         if( $importRunning > 1 ) {
@@ -217,7 +217,7 @@ function personio_integration_admin_start_import_now(): void {
                     ],
                     get_admin_url() . 'admin.php'
                 );
-                ?><p><a href="<?php echo esc_url($url); ?>" class="button button-primary"><?php _e('Cancel running import', 'wp-personio-integration'); ?></a></p><?php
+                ?><p><a href="<?php echo esc_url($url); ?>" class="button button-primary"><?php _e('Cancel running import', 'personio-integration-light'); ?></a></p><?php
         }
         }
     }
@@ -231,11 +231,11 @@ function personio_integration_admin_start_import_now(): void {
 function personio_integration_admin_delete_positions_now(): void {
     if( helper::is_personioUrl_set() && get_option( 'personioIntegrationPositionCount', 0 ) > 0 ) {
         ?>
-        <p><a href="<?php echo esc_url(helper::get_delete_url()); ?>" class="button button-primary"><?php _e('Delete all positions', 'wp-personio-integration'); ?></a></p>
-        <p><i><?php _e('Hint', 'wp-personio-integration'); ?>:</i> <?php _e('Removes all actual imported positions.', 'wp-personio-integration'); ?></p>
+        <p><a href="<?php echo esc_url(helper::get_delete_url()); ?>" class="button button-primary"><?php _e('Delete all positions', 'personio-integration-light'); ?></a></p>
+        <p><i><?php _e('Hint', 'personio-integration-light'); ?>:</i> <?php _e('Removes all actual imported positions.', 'personio-integration-light'); ?></p>
         <?php
     }
     else {
-        ?><p><?php _e('There are currently no imported positions.', 'wp-personio-integration'); ?></p><?php
+        ?><p><?php _e('There are currently no imported positions.', 'personio-integration-light'); ?></p><?php
     }
 }

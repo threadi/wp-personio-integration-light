@@ -73,21 +73,21 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'wp-personio-integration' ) }>
+				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
-								label={__('Choose details', 'wp-personio-integration')}
+								label={__('Choose details', 'personio-integration-light')}
 								value={object.attributes.excerptTemplates}
 								options={[
-									{label: __('Category', 'wp-personio-integration'), value: 'recruitingCategory'},
-									{label: __('Contract type', 'wp-personio-integration'), value: 'schedule'},
-									{label: __('Location', 'wp-personio-integration'), value: 'office'},
-									{label: __('Department', 'wp-personio-integration'), value: 'department'},
-									{label: __('Experience', 'wp-personio-integration'), value: 'seniority'},
-									{label: __('Years of experience', 'wp-personio-integration'), value: 'experience'},
-									{label: __('Job type', 'wp-personio-integration'), value: 'occupation'},
-									{label: __('Job type details', 'wp-personio-integration'), value: 'occupation_detail'}
+									{label: __('Category', 'personio-integration-light'), value: 'recruitingCategory'},
+									{label: __('Contract type', 'personio-integration-light'), value: 'schedule'},
+									{label: __('Location', 'personio-integration-light'), value: 'office'},
+									{label: __('Department', 'personio-integration-light'), value: 'department'},
+									{label: __('Experience', 'personio-integration-light'), value: 'seniority'},
+									{label: __('Years of experience', 'personio-integration-light'), value: 'experience'},
+									{label: __('Job type', 'personio-integration-light'), value: 'occupation'},
+									{label: __('Job type details', 'personio-integration-light'), value: 'occupation_detail'}
 								]}
 								multiple={true}
 								onChange={value => onChangeExcerptTemplates(value, object)}
@@ -95,12 +95,12 @@ export default function Edit( object ) {
 						}
 					</div>
 					<ToggleControl
-						label={__('With colon', 'wp-personio-integration')}
+						label={__('With colon', 'personio-integration-light')}
 						checked={ object.attributes.colon }
 						onChange={ value => onChangeColonVisibility( value, object )  }
 					/>
 					<ToggleControl
-						label={__('With line break', 'wp-personio-integration')}
+						label={__('With line break', 'personio-integration-light')}
 						checked={ object.attributes.wrap }
 						onChange={ value => onChangeWrapVisibility( value, object )  }
 					/>

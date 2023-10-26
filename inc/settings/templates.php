@@ -16,7 +16,7 @@ function personio_integration_settings_add_template_tab( $tab ): void
     if( $tab === 'template' ) $activeClass = ' nav-tab-active';
 
     // output tab
-    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=template" class="nav-tab'.esc_attr($activeClass).'">'.__('Templates', 'wp-personio-integration').'</a>';
+    echo '<a href="?post_type='.WP_PERSONIO_INTEGRATION_CPT.'&page=personioPositions&tab=template" class="nav-tab'.esc_attr($activeClass).'">'.__('Templates', 'personio-integration-light').'</a>';
 }
 add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_template_tab', 10, 1 );
 
@@ -60,7 +60,7 @@ function personio_integration_admin_add_settings_template(): void
      */
     add_settings_section(
         'settings_section_template_list',
-        __('List View', 'wp-personio-integration'),
+        __('List View', 'personio-integration-light'),
         '__return_true',
         'personioIntegrationPositionsTemplates'
     );
@@ -68,7 +68,7 @@ function personio_integration_admin_add_settings_template(): void
     // enable filter on list-view.
     add_settings_field(
         'personioIntegrationEnableFilter',
-        __('Enable filter on list-view', 'wp-personio-integration'),
+        __('Enable filter on list-view', 'personio-integration-light'),
         'personio_integration_admin_checkbox_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_list',
@@ -83,7 +83,7 @@ function personio_integration_admin_add_settings_template(): void
     // set default filter.
     add_settings_field(
         'personioIntegrationTemplateFilter',
-        __('Available filter for details', 'wp-personio-integration'),
+        __('Available filter for details', 'personio-integration-light'),
         'personio_integration_admin_multiselect_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_list',
@@ -91,11 +91,11 @@ function personio_integration_admin_add_settings_template(): void
             'label_for' => 'personioIntegrationTemplateFilter',
             'fieldId' => 'personioIntegrationTemplateFilter',
             'values' => apply_filters( 'personio_integration_settings_get_list', personio_integration_admin_categories_labels(), get_option( 'personioIntegrationTemplateFilter', array() ) ),
-            'description' => __('Mark multiple default filter for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'wp-personio-integration'),
+            'description' => __('Mark multiple default filter for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light'),
             'readonly' => !helper::is_personioUrl_set(),
             'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
             /* translators: %1$s is replaced with "string" */
-            'pro_hint' => __('Sort this list with the %s.', 'wp-personio-integration')
+            'pro_hint' => __('Sort this list with the %s.', 'personio-integration-light')
         ]
     );
     register_setting('personioIntegrationPositionsTemplates', 'personioIntegrationTemplateFilter');
@@ -103,7 +103,7 @@ function personio_integration_admin_add_settings_template(): void
     // set filter-type.
     add_settings_field(
         'personioIntegrationFilterType',
-        __('Choose filter-type', 'wp-personio-integration'),
+        __('Choose filter-type', 'personio-integration-light'),
         'personio_integration_admin_select_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_list',
@@ -111,7 +111,7 @@ function personio_integration_admin_add_settings_template(): void
             'label_for' => 'personioIntegrationFilterType',
             'fieldId' => 'personioIntegrationFilterType',
             'values' => helper::get_filter_types(),
-            'description' => __('This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'wp-personio-integration'),
+            'description' => __('This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light'),
             'readonly' => !helper::is_personioUrl_set()
         ]
     );
@@ -120,7 +120,7 @@ function personio_integration_admin_add_settings_template(): void
     // content templates for list-view.
     add_settings_field(
         'personioIntegrationTemplateContentList',
-        __('Choose templates for positions in list-view', 'wp-personio-integration'),
+        __('Choose templates for positions in list-view', 'personio-integration-light'),
         'personio_integration_admin_multiselect_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_list',
@@ -128,7 +128,7 @@ function personio_integration_admin_add_settings_template(): void
             'label_for' => 'personioIntegrationTemplateContentList',
             'fieldId' => 'personioIntegrationTemplateContentList',
             'values' => personio_integration_admin_template_labels(),
-            'description' => __('Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'wp-personio-integration'),
+            'description' => __('Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light'),
             'readonly' => !helper::is_personioUrl_set(),
             'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array'
         ]
@@ -138,7 +138,7 @@ function personio_integration_admin_add_settings_template(): void
     // Excerpt templates for list-view.
     add_settings_field(
         'personioIntegrationTemplateExcerptDefaults',
-        __('Choose details for positions in list-view', 'wp-personio-integration'),
+        __('Choose details for positions in list-view', 'personio-integration-light'),
         'personio_integration_admin_multiselect_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_list',
@@ -146,11 +146,11 @@ function personio_integration_admin_add_settings_template(): void
             'label_for' => 'personioIntegrationTemplateExcerptDefaults',
             'fieldId' => 'personioIntegrationTemplateExcerptDefaults',
             'values' => apply_filters( 'personio_integration_settings_get_list', personio_integration_admin_categories_labels(), get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) ),
-            'description' => __('Mark multiple default detail-parts for each frontend-output. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'wp-personio-integration'),
+            'description' => __('Mark multiple default detail-parts for each frontend-output. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light'),
             'readonly' => !helper::is_personioUrl_set(),
             'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
             /* translators: %1$s is replaced with "string" */
-            'pro_hint' => __('Sort this list with the %s.', 'wp-personio-integration')
+            'pro_hint' => __('Sort this list with the %s.', 'personio-integration-light')
         ]
     );
     register_setting('personioIntegrationPositionsTemplates', 'personioIntegrationTemplateExcerptDefaults' );
@@ -160,7 +160,7 @@ function personio_integration_admin_add_settings_template(): void
      */
     add_settings_section(
         'settings_section_template_detail',
-        __('Single View', 'wp-personio-integration'),
+        __('Single View', 'personio-integration-light'),
         '__return_true',
         'personioIntegrationPositionsTemplates'
     );
@@ -168,7 +168,7 @@ function personio_integration_admin_add_settings_template(): void
     // content templates for detail-view.
     add_settings_field(
         'personioIntegrationTemplateContentDefaults',
-        __('Choose templates', 'wp-personio-integration'),
+        __('Choose templates', 'personio-integration-light'),
         'personio_integration_admin_multiselect_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_detail',
@@ -176,7 +176,7 @@ function personio_integration_admin_add_settings_template(): void
             'label_for' => 'personioIntegrationTemplateContentDefaults',
             'fieldId' => 'personioIntegrationTemplateContentDefaults',
             'values' => personio_integration_admin_template_labels(),
-            'description' => __('Mark multiple default templates for each detail-view of single positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'wp-personio-integration'),
+            'description' => __('Mark multiple default templates for each detail-view of single positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light'),
             'readonly' => !helper::is_personioUrl_set(),
             'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array'
         ]
@@ -186,7 +186,7 @@ function personio_integration_admin_add_settings_template(): void
     // Excerpt templates for detail
     add_settings_field(
         'personioIntegrationTemplateExcerptDetail',
-        __('Choose details', 'wp-personio-integration'),
+        __('Choose details', 'personio-integration-light'),
         'personio_integration_admin_multiselect_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_detail',
@@ -194,11 +194,11 @@ function personio_integration_admin_add_settings_template(): void
             'label_for' => 'personioIntegrationTemplateExcerptDetail',
             'fieldId' => 'personioIntegrationTemplateExcerptDetail',
             'values' => apply_filters( 'personio_integration_settings_get_list', personio_integration_admin_categories_labels(), get_option( 'personioIntegrationTemplateExcerptDetail', array() ) ),
-            'description' => __('Mark multiple details for single-view of positions. Only used if template "detail" is enabled for detail-view. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'wp-personio-integration'),
+            'description' => __('Mark multiple details for single-view of positions. Only used if template "detail" is enabled for detail-view. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light'),
             'readonly' => !helper::is_personioUrl_set(),
             'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
             /* translators: %1$s is replaced with "string" */
-            'pro_hint' => __('Sort this list with the %s.', 'wp-personio-integration')
+            'pro_hint' => __('Sort this list with the %s.', 'personio-integration-light')
         ]
     );
     register_setting('personioIntegrationPositionsTemplates', 'personioIntegrationTemplateExcerptDetail');
@@ -206,7 +206,7 @@ function personio_integration_admin_add_settings_template(): void
     // enable link to detail on list-view
     add_settings_field(
         'personioIntegrationEnableLinkInList',
-        __('Enable link to single on list-view', 'wp-personio-integration'),
+        __('Enable link to single on list-view', 'personio-integration-light'),
         'personio_integration_admin_checkbox_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_list',
@@ -221,7 +221,7 @@ function personio_integration_admin_add_settings_template(): void
     // enable back-to-list-button in detail-view
     add_settings_field(
         'personioIntegrationTemplateBackToListButton',
-        __( 'Enable back to list-link', 'wp-personio-integration' ),
+        __( 'Enable back to list-link', 'personio-integration-light' ),
         'personio_integration_admin_checkbox_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_detail',
@@ -236,7 +236,7 @@ function personio_integration_admin_add_settings_template(): void
     // link-target for back-to-list-button in detail-view
     add_settings_field(
         'personioIntegrationTemplateBackToListUrl',
-        __( 'URL for back to list-link', 'wp-personio-integration' ),
+        __( 'URL for back to list-link', 'personio-integration-light' ),
         'personio_integration_admin_text_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_detail',
@@ -244,7 +244,7 @@ function personio_integration_admin_add_settings_template(): void
             'label_for' => 'personioIntegrationTemplateBackToListUrl',
             'fieldId' => 'personioIntegrationTemplateBackToListUrl',
             /* translators: %1$s will be replaced by the list-slug */
-            'description' => sprintf(__('If empty the link will be set to list-slug <a href="%1$s">%1$s</a>.' , 'wp-personio-integration'), trailingslashit(get_home_url()).helper::getArchiveSlug() ),
+            'description' => sprintf(__('If empty the link will be set to list-slug <a href="%1$s">%1$s</a>.' , 'personio-integration-light'), trailingslashit(get_home_url()).helper::getArchiveSlug() ),
             'readonly' => !helper::is_personioUrl_set()
         ]
     );
@@ -255,7 +255,7 @@ function personio_integration_admin_add_settings_template(): void
      */
     add_settings_section(
         'settings_section_template_other',
-        __('Other settings', 'wp-personio-integration'),
+        __('Other settings', 'personio-integration-light'),
         '__return_true',
         'personioIntegrationPositionsTemplates'
     );
@@ -263,7 +263,7 @@ function personio_integration_admin_add_settings_template(): void
     // separator for excerpt-listing
     add_settings_field(
         'personioIntegrationTemplateExcerptSeparator',
-        __('Separator for details-listing', 'wp-personio-integration'),
+        __('Separator for details-listing', 'personio-integration-light'),
         'personio_integration_admin_text_field',
         'personioIntegrationPositionsTemplates',
         'settings_section_template_other',

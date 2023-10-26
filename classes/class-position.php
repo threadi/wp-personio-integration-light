@@ -86,7 +86,7 @@ class Position {
     public function __get( $varName ){
         if (!array_key_exists($varName,$this->data)){
             /* translators: %1$s is replaced with "string" */
-            throw new Exception(printf(__('Unknown property %s.', 'wp-personio-integration'), $varName));
+            throw new Exception(printf(__('Unknown property %s.', 'personio-integration-light'), $varName));
         }
         elseif( $varName == "post_excerpt" ) {
             return apply_filters('the_excerpt', $this->data[$varName]);
@@ -127,7 +127,7 @@ class Position {
     {
         // do not save anything without personioId
         if( empty($this->data['personioId']) ) {
-            $this->_log->addLog(__('Position could not be saved as the PersonioId is missing.', 'wp-personio-integration'), 'error');
+            $this->_log->addLog(__('Position could not be saved as the PersonioId is missing.', 'personio-integration-light'), 'error');
             return;
         }
 
