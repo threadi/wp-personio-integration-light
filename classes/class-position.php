@@ -123,36 +123,35 @@ class Position {
      *
      * @return void
      */
-    public function save()
-    {
-        // do not save anything without personioId
+    public function save(): void {
+        // do not save anything without personioId.
         if( empty($this->data['personioId']) ) {
             $this->_log->addLog(__('Position could not be saved as the PersonioId is missing.', 'personio-integration-light'), 'error');
             return;
         }
 
-        // get the language to data-array
+        // get the language to data-array.
         $this->data['lang'] = $this->lang;
 
-        // set ordering if not set atm
+        // set ordering if not set atm.
         if( empty($this->data['menu_order']) ) {
             $this->data['menu_order'] = 0;
         }
 
-        // search for the personioID to get an existing post-object
+        // search for the personioID to get an existing post-object.
         if( empty($this->data['ID']) ) {
-            $query = [
+            $query = array(
                 'post_type' => WP_PERSONIO_INTEGRATION_CPT,
                 'fields' => 'ids',
                 'post_status' => 'publish',
-                'meta_query' => [
-                    [
+                'meta_query' => array(
+                    array(
                         'key' => WP_PERSONIO_INTEGRATION_CPT_PM_PID,
                         'value' => $this->data['personioId'],
                         'compare' => '='
-                    ]
-                ]
-            ];
+                    )
+                )
+            );
             $results = new WP_Query($query);
             $posts = array();
             foreach( $results->posts as $postId ) {
@@ -193,12 +192,12 @@ class Position {
 
         // prepare data to be saved
         // -> overwrite title and content only for the main language
-        $array = [
+        $array = array(
             'ID' => $this->data['ID'],
             'post_status' => 'publish',
             'post_type' => WP_PERSONIO_INTEGRATION_CPT,
             'menu_order' => absint($this->data['menu_order'])
-        ];
+        );
         if( $this->lang == get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY) ) {
             $array['post_title'] = $this->data['post_title'];
             $array['post_content'] = $this->data['post_content'];
@@ -254,16 +253,34 @@ class Position {
 		        }
 	        }
 
-            // add created at as post meta field
+            // add created at as post meta field.
             update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, $this->data['createdAt']);
 
-            // add all language-specific titles ..
+            // add all language-specific titles.
             update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE.'_'.$this->lang, $this->data['post_title']);
 
-            // add all language-specific texts ..
-            update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT.'_'.$this->lang, json_decode($this->data['post_content'], true));
+			// convert the job description from JSON to array.
+	        $job_description = json_decode( $this->data['post_content'], true );
 
-            // mark as changed
+            // add all language-specific texts.
+            update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT.'_'.$this->lang, $job_description );
+
+			// get count of split texts to delete the existing ones.
+	        for( $i=0;$i<absint(get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT.'_'.$this->lang.'_split', 0 ));$i++ ) {
+		        delete_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT.'_'.$this->lang.'_'.$i );
+	        }
+
+			// add the split language-specific texts.
+	        if( !empty($job_description['jobDescription']) ) {
+		        foreach ( $job_description['jobDescription'] as $index => $description_part ) {
+			        update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT.'_'.$this->lang.'_'.$index, $description_part );
+		        }
+	        }
+
+			// save the count of split texts.
+	        update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT.'_'.$this->lang.'_split', count( $job_description['jobDescription'] ) );
+
+            // mark as changed.
             update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_UPDATED, 1);
 
             // add log in debug-mode
