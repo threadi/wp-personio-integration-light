@@ -6,7 +6,7 @@ Tested up to: 6.4.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.5.4
+Stable tag: 2.5.5
 
 == Description ==
 
@@ -324,3 +324,6 @@ Yes, it is without any further settings.
 = 2.5.4 =
 * Compatibility with WordPres 6.4.1
 * Fixed language setting for taxonomies
+
+= 2.5.5 =
+* Optimized paths for plugin-files to prevent error in WP CLI

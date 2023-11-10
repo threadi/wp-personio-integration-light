@@ -21,15 +21,15 @@ const WP_PERSONIO_INTEGRATION_VERSION = '@@VersionNumber@@';
 const WP_PERSONIO_INTEGRATION_PLUGIN = __FILE__;
 
 // embed necessary files
-require_once 'inc/autoload.php';
-require_once 'inc/constants.php';
-require_once 'inc/init.php';
-require_once 'inc/frontend.php';
-require_once 'inc/pagebuilder/gutenberg.php';
+require_once __DIR__.'/inc/autoload.php';
+require_once __DIR__.'/inc/constants.php';
+require_once __DIR__.'/inc/init.php';
+require_once __DIR__.'/inc/frontend.php';
+require_once __DIR__.'/inc/pagebuilder/gutenberg.php';
 
 // only in admin
 if( is_admin() ) {
-    require_once 'inc/admin.php';
+    require_once __DIR__.'/inc/admin.php';
     // include all settings-files.
     foreach (glob(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)."inc/settings/*.php") as $filename)
     {
