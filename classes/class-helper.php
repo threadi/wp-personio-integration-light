@@ -725,7 +725,7 @@ class helper {
     {
         $locale = get_locale();
         if( !is_admin() ) {
-            switch_to_locale(self::get_plugin_locale());
+            switch_to_locale(self::get_current_lang());
         }
         $array = array(
             WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY => array(
@@ -838,7 +838,7 @@ class helper {
         // set language in frontend to read the texts depending on main-language
         $locale = get_locale();
         if( !is_admin() ) {
-            switch_to_locale(self::get_plugin_locale());
+            switch_to_locale(self::get_current_lang());
         }
         $array = array(
             WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY => array(
@@ -1187,37 +1187,6 @@ class helper {
             return [];
         }
         return $array[$taxonomy];
-    }
-
-    /**
-     * Get the plugin-local as 4 char string.
-     *
-     * @return string
-     */
-    private static function get_plugin_locale(): string
-    {
-        $newLocale = get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE);
-        switch( $newLocale ) {
-            case 'en':
-                $newLocale = $newLocale.'_US';
-                break;
-            case 'de':
-                $newLocale = $newLocale.'_DE';
-                break;
-            case 'it':
-                $newLocale = $newLocale.'_IT';
-                break;
-            case 'fr':
-                $newLocale = $newLocale.'_FR';
-                break;
-            case 'pt':
-                $newLocale = $newLocale.'_PT';
-                break;
-            case 'nl':
-                $newLocale = $newLocale.'_NL';
-                break;
-        }
-        return $newLocale;
     }
 
     /**
