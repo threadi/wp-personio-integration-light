@@ -2,11 +2,11 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
 Requires at least: 5.9.3
-Tested up to: 6.4
+Tested up to: 6.4.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.5.3
+Stable tag: 2.5.4
 
 == Description ==
 
@@ -320,3 +320,7 @@ Yes, it is without any further settings.
 * Remove local embedded translation-files
 * Fixed template-loading for Gutenberg
 * Fixed version setting during uninstalling
+
+= 2.5.4 =
+* Compatibility with WordPres 6.4.1
+* Fixed language setting for taxonomies
