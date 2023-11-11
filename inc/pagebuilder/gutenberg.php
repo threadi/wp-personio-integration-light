@@ -529,6 +529,10 @@ function personio_integration_add_blocks(): void
 
         // collect attributes for description block.
         $list_attributes = array(
+			'template' => array(
+				'type' => 'string',
+				'default' => 'default'
+			),
             'preview' => array(
                 'type' => 'boolean',
                 'default' => false
@@ -659,7 +663,7 @@ function personio_integration_get_details( $attributes ): string
 }
 
 /**
- * Gutenberg-Callback to get the list chosen details of single position.
+ * Gutenberg-Callback to get the job description of single position.
  *
  * @param $attributes
  * @return string
@@ -701,6 +705,7 @@ function personio_integration_get_description( $attributes ): string
 
     $attributes = array(
         'personioid' => absint($position->getPersonioId()),
+		'jobdescription_template' => empty($attributes['template']) ? get_option( 'personioIntegrationTemplateJobDescription', 'default' ) : $attributes['template'],
         'templates' => array( 'content' ),
         'styles' => implode(PHP_EOL, $stylesArray),
         'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)

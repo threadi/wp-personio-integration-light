@@ -455,6 +455,30 @@ class helper {
 	    return plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN).'templates/'.$template;
     }
 
+	/**
+	 * Check if given template exist.
+	 *
+	 * @param string $template The searched template as to plugins template directory relative path.
+	 * @return bool
+	 */
+	public static function has_template( string $template ): bool
+	{
+		// check if requested template exist in theme.
+		$themeTemplate = locate_template(trailingslashit(basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) )).$template);
+		if( $themeTemplate ) {
+			return true;
+		}
+
+		// check if requested template exist in plugin which uses our hook.
+		$pluginTemplate = plugin_dir_path(apply_filters('personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN)).'templates/'.$template;
+		if( file_exists( $pluginTemplate ) ) {
+			return true;
+		}
+
+		// return template from light-plugin.
+		return file_exists(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN).'templates/'.$template);
+	}
+
     /**
      * Return an array with supported languages resorted with the default language as first entry.
      *

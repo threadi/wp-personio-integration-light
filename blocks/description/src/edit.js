@@ -1,4 +1,11 @@
 /**
+ * Retrieves the translation of text.
+ *
+ * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
  *
@@ -10,9 +17,16 @@ import './editor.scss';
  * Add individual dependencies.
  */
 import {
+	PanelBody,
+	SelectControl,
+} from '@wordpress/components';
+import {
+	InspectorControls,
 	useBlockProps
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
+import { onChangeTemplate } from "../../components";
+const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
 
 /**
@@ -31,11 +45,44 @@ export default function Edit( object ) {
 		object.setAttributes({blockId: object.clientId});
 	});
 
+	// get possible templates.
+	let templates = [];
+	if( !object.attributes.preview ) {
+		useEffect(() => {
+			dispatch('core').addEntities([
+				{
+					name: 'jobdescription-templates',
+					kind: 'personio/v1',
+					baseURL: '/personio/v1/jobdescription-templates'
+				}
+			]);
+		}, []);
+		templates = useSelect((select) => {
+				return select('core').getEntityRecords('personio/v1', 'jobdescription-templates') || [];
+			}
+		);
+	}
+
 	/**
 	 * Collect return for the edit-function
 	 */
 	return (
 		<div { ...useBlockProps() }>
+			<InspectorControls>
+				<PanelBody title={ __( 'Template', 'personio-integration-light' ) }>
+					<div className="wp-personio-integration-selectcontrol">
+						{
+							<SelectControl
+								label={ __('Choose template', 'personio-integration-light') }
+								value={ object.attributes.template }
+								options={ templates }
+								multiple={ false }
+								onChange={ value => onChangeTemplate(value, object) }
+							/>
+						}
+					</div>
+				</PanelBody>
+			</InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/description"
 				attributes={ object.attributes }

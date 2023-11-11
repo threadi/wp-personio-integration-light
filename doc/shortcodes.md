@@ -43,7 +43,7 @@ The parameters in the shortcodes have the following tasks:
 * only available for list view
 * defines which filters are displayed
 * available values are specified comma separated:
-  * office 
+  * office
   * recruitingCategory
   * occupationCategory
   * department
@@ -83,6 +83,11 @@ The parameters in the shortcodes have the following tasks:
   * seniority
   * schedule
   * experience
+
+### jobdescription_template
+
+* defines the template for job-description
+* more info here: [description template](description-template.md)
 
 ### sort
 

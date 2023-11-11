@@ -24,7 +24,6 @@ import {
 } from '@wordpress/components';
 import {
 	InspectorControls,
-	PanelColorSettings,
 	useBlockProps
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';

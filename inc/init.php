@@ -306,18 +306,19 @@ add_action('admin_bar_menu', 'personio_integration_add_custom_toolbar', 100);
  * @return string
  * @noinspection PhpUnused
  */
-function personio_integration_use_cpt_template( $template ): string
-{
+function personio_integration_use_cpt_template( $template ): string {
     if ( get_post_type(get_the_ID()) == WP_PERSONIO_INTEGRATION_CPT ) {
         // if the theme is a fse-theme
         if( Helper::theme_is_fse_theme() ) {
             return ABSPATH . WPINC . '/template-canvas.php';
         }
 
-        // for classic themes
+        // single-view for classic themes.
         if( is_single() ) {
             return personio_integration_get_single_template($template);
         }
+
+		// archive-view for classic themes.
         return personio_integration_get_archive_template($template);
     }
     return $template;
@@ -484,12 +485,13 @@ function personio_integration_update(): void
                 // nothing to do as 1.2.3 is the first version with this update-check
                 break;
             default:
-                updates::version123();
-                updates::version205();
-                updates::version211();
-                updates::version227();
-                updates::version240();
-                updates::version250();
+                Updates::version123();
+				Updates::version205();
+				Updates::version211();
+				Updates::version227();
+				Updates::version240();
+				Updates::version250();
+				Updates::version255();
                 break;
         }
 
@@ -511,7 +513,7 @@ function personio_integration_import_single_position_filter_existing(): bool
 add_filter( 'personio_integration_import_single_position_filter_existing', 'personio_integration_import_single_position_filter_existing', 10);
 
 /**
- * Add endpoint for requests from our own Blocks.
+ * Add endpoints for requests from our own Blocks.
  *
  * @return void
  * @noinspection PhpUnused
@@ -522,9 +524,16 @@ function personio_integration_rest_api(): void
         'methods' => WP_REST_SERVER::READABLE,
         'callback' => 'personio_integration_rest_api_taxonomies',
         'permission_callback' => function () {
-            return current_user_can( 'edit_posts' ); // use edit_posts as autors might not manage positions, but their output in frontend
+            return current_user_can( 'edit_posts' );
         }
     ) );
+	register_rest_route( 'personio/v1', '/jobdescription-templates/', array(
+		'methods' => WP_REST_SERVER::READABLE,
+		'callback' => 'personio_integration_rest_api_jobdescription_templates',
+		'permission_callback' => function () {
+			return current_user_can( 'edit_posts' );
+		}
+	) );
 }
 add_action( 'rest_api_init', 'personio_integration_rest_api');
 
@@ -570,6 +579,40 @@ function personio_integration_rest_api_taxonomies(): array
         }
     }
     return $taxonomies;
+}
+
+/**
+ * Return list of possible templates for job description in REST API.
+ *
+ * @return array
+ * @noinspection PhpUnused
+ */
+function personio_integration_rest_api_jobdescription_templates(): array {
+	return apply_filters( 'personio_integration_rest_templates_jobdescription', array(
+		array(
+			'id' => 1,
+			'label' => __('Default', 'personio-integration-light' ),
+			'value' => 'default',
+		),
+		array(
+			'id' => 2,
+			'label' => __('As list', 'personio-integration-light' ),
+			'value' => 'list'
+		)
+	));
+}
+
+/**
+ * Return list of possible templates for job description.
+ *
+ * @return array
+ * @noinspection PhpUnused
+ */
+function personio_integration_jobdescription_templates(): array {
+	return apply_filters( 'personio_integration_templates_jobdescription', array(
+		'default' => __('Default', 'personio-integration-light' ),
+		'list' => __('As list', 'personio-integration-light' ),
+	));
 }
 
 /**

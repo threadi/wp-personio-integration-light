@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for handling single position.
+ *
+ * @package personio-integration-light
+ */
 
 namespace personioIntegration;
 
@@ -500,16 +505,27 @@ class Position {
         return [];
     }
 
-    /**
-     * Get the language-specific content of this position (aka jobDescriptions).
-     *
-     * @return string
-     */
-    public function getContent(): string
-    {
+	/**
+	 * Get the language-specific content of this position (aka jobDescriptions).
+	 *
+	 * @param string $template
+	 * @return string
+	 */
+    public function getContent( string $template = 'default' ): string {
+		// use old template if it exists.
+		$template_file = 'parts/properties-content.php';
+
+		// if old template does not exist, use the one we configured.
+		if( ! Helper::has_template( $template_file ) ) {
+			$template_file = 'parts/jobdescription/'.$template.'.php';
+		}
+
+		// get position.
         $position = $this;
+
+		// get template and return it.
         ob_start();
-        include helper::getTemplate('parts/properties-content.php');
+        include Helper::getTemplate( $template_file );
         return ob_get_clean();
     }
 
@@ -531,8 +547,7 @@ class Position {
      *
      * @return false|string
      */
-    public function getExcerpt()
-    {
+    public function getExcerpt() {
         ob_start();
         personio_integration_get_excerpt($this, get_option('personioIntegrationTemplateExcerptDefaults', []));
         return ob_get_clean();
@@ -567,8 +582,7 @@ class Position {
      * @param int $i
      * @return void
      */
-    public function setOrder(int $i)
-    {
+    public function setOrder(int $i): void {
         $this->data['menu_order'] = $i;
         wp_insert_post($this->data);
     }
@@ -583,5 +597,4 @@ class Position {
     {
         return get_post_meta($this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, true);
     }
-
 }

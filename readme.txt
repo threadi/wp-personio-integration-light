@@ -326,4 +326,6 @@ Yes, it is without any further settings.
 * Fixed language setting for taxonomies
 
 = 2.5.5 =
+* Added possibility to use templates for job description in frontend
+* Updates description block to use different template-driven layouts for it
 * Optimized paths for plugin-files to prevent error in WP CLI

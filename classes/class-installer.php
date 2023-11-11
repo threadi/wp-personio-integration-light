@@ -77,6 +77,11 @@ class installer
                 update_option('personioIntegrationTemplateExcerptDetail', ['recruitingCategory', 'schedule', 'office']);
             }
 
+			// set default jobdescription-template for detail-page
+			if (!get_option('personioIntegrationTemplateJobDescription')) {
+				update_option('personioIntegrationTemplateJobDescription', 'default');
+			}
+
             // set default templates for list-page
             if (!get_option('personioIntegrationTemplateContentList')) {
                 update_option('personioIntegrationTemplateContentList', ['title', 'excerpt']);
@@ -199,7 +204,8 @@ class installer
                 WP_PERSONIO_OPTION_MAX,
                 WP_PERSONIO_INTEGRATION_IMPORT_RUNNING,
 	            'personioIntegrationExtendSearch',
-                'personioIntegrationLightInstallDate'
+                'personioIntegrationLightInstallDate',
+				'personioIntegrationTemplateJobDescription'
             );
             foreach ($options as $option) {
                 delete_option($option);
@@ -227,5 +233,4 @@ class installer
         $sql = "DROP TABLE IF EXISTS ".$table_name;
         $wpdb->query($sql);
     }
-
 }

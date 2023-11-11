@@ -21,13 +21,13 @@ Die Pro-Version hat diese Beschränkung nicht.
 
 ## Parameter
 
-Die Parameter in den Shortcodes haben folgende Aufgaben:
+Es sind folgende Parameter hierfür verfügbar:
 
 ### lang
 
 * legt die Ausgabe-Sprache fest
 * muss eine vom Plugin unterstützte Sprache sein
-* wird als 2-Zeichen-Wert angegeben, z.B. "it" für italienisch
+* wird als 2-Zeichen-Wert angegeben, z.B. "it" für Italienisch
 * Beispiel:
   `[personioPositions lang="de"]`
 
@@ -84,6 +84,11 @@ Die Parameter in den Shortcodes haben folgende Aufgaben:
   * schedule
   * experience
 
+### jobdescription_template
+
+* legt das Template für die Job-Beschreibung fest
+* siehe [Beschreibungstemplate](description-template_de.md)
+
 ### sort
 
 * nur für Listen-Ansicht verfügbar
@@ -130,7 +135,7 @@ Die Parameter in den Shortcodes haben folgende Aufgaben:
 ### nur Stellen mit spezifischen Eigenschaften aufzulisten
 
 * nur für Listen-Ansicht verfügbar
-* Anwendungsfälle: 
+* Anwendungsfälle:
   * Stellen nur aus einer Abteilung anzuzeigen
   * nur Vollzeit-Stellen anzeigen
 * die Eigenschaft muss (englischsprachig) als Parameter angegeben werden, als Wert dazu die Datenbank-ID des gewünschten Wertes
