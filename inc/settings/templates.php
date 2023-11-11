@@ -183,7 +183,7 @@ function personio_integration_admin_add_settings_template(): void
     );
     register_setting('personioIntegrationPositionsTemplates', 'personioIntegrationTemplateContentDefaults');
 
-    // Excerpt templates for detail
+    // Excerpt templates in detail view.
     add_settings_field(
         'personioIntegrationTemplateExcerptDetail',
         __('Choose details', 'personio-integration-light'),
@@ -203,7 +203,24 @@ function personio_integration_admin_add_settings_template(): void
     );
     register_setting('personioIntegrationPositionsTemplates', 'personioIntegrationTemplateExcerptDetail');
 
-    // enable link to detail on list-view
+	// templates for job description in detail view.
+	add_settings_field(
+		'personioIntegrationTemplateJobDescription',
+		__('Choose job description template', 'personio-integration-light'),
+		'personio_integration_admin_select_field',
+		'personioIntegrationPositionsTemplates',
+		'settings_section_template_detail',
+		[
+			'label_for' => 'personioIntegrationTemplateJobDescription',
+			'fieldId' => 'personioIntegrationTemplateJobDescription',
+			'values' => personio_integration_jobdescription_templates(),
+			'description' => __('Choose template to output each job description in detail view. You could add your own template as described in GitHub.', 'personio-integration-light'),
+			'readonly' => !helper::is_personioUrl_set(),
+		]
+	);
+	register_setting('personioIntegrationPositionsTemplates', 'personioIntegrationTemplateJobDescription');
+
+    // enable link to detail on list-view.
     add_settings_field(
         'personioIntegrationEnableLinkInList',
         __('Enable link to single on list-view', 'personio-integration-light'),

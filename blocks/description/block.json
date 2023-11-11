@@ -28,6 +28,10 @@
 	"editorStyle": "file:build/index.css",
 	"style": "file:build/style-index.css",
 	"attributes": {
+		"template": {
+			"type": "string",
+			"default": "default"
+		},
 		"preview": {
 			"type": "boolean",
 			"default": false

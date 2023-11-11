@@ -2,7 +2,7 @@
 /**
  * File for handling of imports from Personio.
  *
- * @package wp-personio-integration-light
+ * @package personio-integration-light
  */
 
 namespace personioIntegration;

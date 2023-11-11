@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for handling all frontend tasks.
+ *
+ * @package personio-integration-light
+ */
 
 use personioIntegration\helper;
 use personioIntegration\Position;
@@ -19,7 +24,7 @@ add_action( 'init', 'personio_integration_frontend_init' );
 
 /**
  * Output of single positions via shortcode and any PageBuilder.
- * Example: [personioPosition lang="de" id="96" templates="title,content,formular" excerpt="recruitingCategory,schedule,office,department,seniority,experience,occupation"]
+ * Example: [personioPosition lang="de" personioid="96" templates="title,content,formular" excerpt="recruitingCategory,schedule,office,department,seniority,experience,occupation"]
  *
  * Parameter:
  * - personioid => PersonioId of the position (required)
@@ -27,6 +32,7 @@ add_action( 'init', 'personio_integration_frontend_init' );
  * - templates => comma-separated list of template to use, defaults to title and excerpt
  * - excerpt => comma-separated list of details to display, defaults to recruitingCategory, schedule, office
  * - donotlink => if position-title should be linked (0) or not (1), defaults to link (0)
+ * - jobdescription_template => define specific template for job description (defaults to setting under positions > settings > templates)
  *
  * Templates:
  * - title => show position title
@@ -38,8 +44,7 @@ add_action( 'init', 'personio_integration_frontend_init' );
  * @return string
  * @noinspection PhpMissingParamTypeInspection
  */
-function personio_integration_position_shortcode( $attributes = array() ): string
-{
+function personio_integration_position_shortcode( $attributes = array() ): string {
     if( !is_array($attributes) ) {
         $attributes = array();
     }
@@ -349,8 +354,6 @@ add_action( 'personio_integration_get_excerpt', 'personio_integration_get_excerp
  * @param $position
  * @param $attributes
  * @return void
- * @noinspection PhpUnused
- * @noinspection PhpUnusedParameterInspection
  */
 function personio_integration_get_content( $position, $attributes ): void
 {
@@ -358,7 +361,7 @@ function personio_integration_get_content( $position, $attributes ): void
         ?>
         <div class="entry-content">
             <?php
-                echo wp_kses_post($position->getContent());
+                echo wp_kses_post($position->getContent( $attributes['jobdescription_template'] ));
             ?>
         </div>
         <?php
@@ -413,7 +416,7 @@ add_action( 'personio_integration_get_formular', 'personio_integration_get_formu
  */
 function personio_integration_update_post_object( $post ): void
 {
-    if( $post->post_type == WP_PERSONIO_INTEGRATION_CPT ) {
+    if( WP_PERSONIO_INTEGRATION_CPT === $post->post_type ) {
         // get positions object
         $positions = positions::get_instance();
 
@@ -600,6 +603,7 @@ function personio_integration_get_single_shortcode_attributes_defaults(): array 
         'lang' => helper::get_current_lang(),
         'template' => '',
         'templates' => implode(',', get_option('personioIntegrationTemplateContentDefaults', array() )),
+		'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription', 'default' ),
         'excerpt' => implode(",", get_option('personioIntegrationTemplateExcerptDetail', array() )),
         'donotlink' => 1,
         'styles' => '',

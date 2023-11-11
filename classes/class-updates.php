@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for handling changes in data through plugin-updates.
+ *
+ * @package personio-integration-light
+ */
 
 namespace personioIntegration;
 
@@ -7,7 +12,7 @@ use WP_Query;
 /**
  * Object which holds all version-specific updates.
  */
-class updates {
+class Updates {
 
     /**
      * To run on update to (exact) version 1.2.3.
@@ -54,6 +59,7 @@ class updates {
 		self::version227();
         self::version240();
         self::version250();
+		self::version255();
 
         // reset import-flag
         delete_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING);
@@ -167,4 +173,16 @@ class updates {
         $admin_role->add_cap( 'read_'.WP_PERSONIO_INTEGRATION_CPT );
         $admin_role->add_cap( 'manage_'.WP_PERSONIO_INTEGRATION_CPT );
     }
+
+	/**
+	 * To run on update to (exact) version 2.5.5
+	 *
+	 * @return void
+	 */
+	public static function version255(): void {
+		// set default jobdescription-template for detail-page
+		if (!get_option('personioIntegrationTemplateJobDescription')) {
+			update_option('personioIntegrationTemplateJobDescription', 'default');
+		}
+	}
 }

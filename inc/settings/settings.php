@@ -2,7 +2,7 @@
 /**
  * File for settings of this plugin.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 use personioIntegration\Logs;
