@@ -2,7 +2,7 @@
 /**
  * File for functions to run in wp-admin only.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 use personioIntegration\helper;

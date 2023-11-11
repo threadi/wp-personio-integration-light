@@ -2,7 +2,7 @@
 /**
  * File with general helper tasks for the plugin.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 namespace personioIntegration;

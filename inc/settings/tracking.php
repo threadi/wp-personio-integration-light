@@ -2,7 +2,7 @@
 /**
  * File to add tab for tracking-functions.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 /**
