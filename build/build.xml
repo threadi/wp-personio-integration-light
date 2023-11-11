@@ -79,21 +79,6 @@
             <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
         </replace>
 
-        <copy file="${src.dir}/languages/wp-personio-integration.pot" tofile="${log.dir}/languages/wp-personio-integration.pot"/>
-        <replace file="${src.dir}/languages/wp-personio-integration.pot">
-            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
-        </replace>
-
-        <copy file="${src.dir}/languages/wp-personio-integration-de_DE.po" tofile="${log.dir}/languages/wp-personio-integration-de_DE.po"/>
-        <replace file="${src.dir}/languages/wp-personio-integration-de_DE.po">
-            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
-        </replace>
-
-        <copy file="${src.dir}/languages/wp-personio-integration-de_DE_formal.po" tofile="${log.dir}/languages/wp-personio-integration-de_DE_formal.po"/>
-        <replace file="${src.dir}/languages/wp-personio-integration-de_DE_formal.po">
-            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
-        </replace>
-
         <delete file="${build.dir}/uninstall-release.php"/>
         <copy file="${src.dir}/uninstall.php" tofile="${src.dir}/uninstall-release.php"/>
         <replace file="${src.dir}/uninstall-release.php">
@@ -135,9 +120,6 @@
             <zipfileset dir="${src.dir}" includes="${plugin.slug}-release.php" fullpath="${plugin.slug}/${plugin.slug}.php" />
         </zip>
         <delete file="${src.dir}/${plugin.slug}-release.php"/>
-        <copy file="${log.dir}/languages/wp-personio-integration.pot" tofile="${src.dir}/languages/wp-personio-integration.pot" overwrite="true" />
-        <copy file="${log.dir}/languages/wp-personio-integration-de_DE.po" tofile="${src.dir}/languages/wp-personio-integration-de_DE.po" overwrite="true" />
-        <copy file="${log.dir}/languages/wp-personio-integration-de_DE_formal.po" tofile="${src.dir}/languages/wp-personio-integration-de_DE_formal.po" overwrite="true" />
     </target>
 
     <target name="help">
