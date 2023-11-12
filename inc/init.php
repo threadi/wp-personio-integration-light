@@ -222,7 +222,7 @@ add_filter('rest_prepare_'.WP_PERSONIO_INTEGRATION_CPT, 'personio_integration_re
  */
 function personio_integration_register_widget(): void
 {
-    if( !wp_use_widgets_block_editor() ) {
+    if( function_exists('wp_use_widgets_block_editor') && !wp_use_widgets_block_editor() ) {
         register_widget('personioIntegration\PositionWidget');
         register_widget('personioIntegration\PositionsWidget');
     }
@@ -237,7 +237,7 @@ add_action( 'widgets_init', 'personio_integration_register_widget', 10 );
  */
 function personio_integration_unregister_widget(): void
 {
-    if( !wp_use_widgets_block_editor() ) {
+    if( function_exists('wp_use_widgets_block_editor') && !wp_use_widgets_block_editor() ) {
         unregister_widget('personioIntegration\PositionWidget');
         unregister_widget('personioIntegration\PositionsWidget');
         delete_option('widget_personiopositionwidget');
