@@ -26,7 +26,7 @@
 		},
 		"__experimentalBorder": true
 	},
-	"textdomain": "wp-personio-integration",
+	"textdomain": "personio-integration-light",
 	"editorScript": "file:build/index.js",
 	"editorStyle": "file:build/index.css",
 	"style": "file:build/style-index.css",

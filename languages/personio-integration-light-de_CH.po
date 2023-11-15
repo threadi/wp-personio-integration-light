@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2023-11-11T13:47:52+01:00\n"
-"PO-Revision-Date: 2023-11-11 13:50+0100\n"
+"POT-Creation-Date: 2023-11-15T15:03:46+01:00\n"
+"PO-Revision-Date: 2023-11-15 15:06+0100\n"
 "Last-Translator: Thomas Zwirner <info@thomaszwirner.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
-"X-Domain: wp-personio-integration\n"
+"X-Domain: personio-integration-light\n"
 
 #. Plugin Name of the plugin
 #: inc/init.php:727 inc/init.php:782
@@ -2921,98 +2921,123 @@ msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
 "Personio bereit."
 
-#~ msgctxt "block title"
-#~ msgid "Personio Position Application Button"
-#~ msgstr "Personio Position Bewerbungsbutton"
+#: blocks/application-button/block.json
+msgctxt "block title"
+msgid "Personio Position Application Button"
+msgstr "Personio Position Bewerbungsbutton"
 
-#~ msgctxt "block description"
-#~ msgid ""
-#~ "Provides a Gutenberg Block to show the application button for single "
-#~ "position."
-#~ msgstr ""
-#~ "Stellt einen Gutenberg-Block zur Verfügung, um den Bewerbungslink für "
-#~ "eine einzelne Position anzuzeigen."
+#: blocks/application-button/block.json
+msgctxt "block description"
+msgid ""
+"Provides a Gutenberg Block to show the application button for single "
+"position."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Verfügung, um den Bewerbungslink für eine "
+"einzelne Position anzuzeigen."
 
-#~ msgctxt "block keyword"
-#~ msgid "Personio"
-#~ msgstr "Personio"
+#: blocks/application-button/block.json blocks/description/block.json
+#: blocks/details/block.json blocks/filter-list/block.json
+#: blocks/filter-select/block.json blocks/list/block.json
+#: blocks/show/block.json
+msgctxt "block keyword"
+msgid "Personio"
+msgstr "Personio"
 
-#~ msgctxt "block keyword"
-#~ msgid "Positions"
-#~ msgstr "Stellen"
+#: blocks/application-button/block.json blocks/description/block.json
+#: blocks/details/block.json blocks/filter-list/block.json
+#: blocks/filter-select/block.json blocks/list/block.json
+#: blocks/show/block.json
+msgctxt "block keyword"
+msgid "Positions"
+msgstr "Stellen"
 
-#~ msgctxt "block keyword"
-#~ msgid "Position"
-#~ msgstr "Stelle"
+#: blocks/application-button/block.json blocks/description/block.json
+#: blocks/details/block.json blocks/filter-list/block.json
+#: blocks/filter-select/block.json blocks/list/block.json
+#: blocks/show/block.json
+msgctxt "block keyword"
+msgid "Position"
+msgstr "Stelle"
 
-#~ msgctxt "block title"
-#~ msgid "Description"
-#~ msgstr "Beschreibung"
+#: blocks/description/block.json
+msgctxt "block title"
+msgid "Description"
+msgstr "Beschreibung"
 
-#~ msgctxt "block description"
-#~ msgid ""
-#~ "Provides a Gutenberg Block for the description of a single position "
-#~ "managed by Personio."
-#~ msgstr ""
-#~ "Stellt einen Gutenberg-Block zur Ausgabe der Beschreibung einer Stelle, "
-#~ "verwaltet bei Personio, bereit."
+#: blocks/description/block.json
+msgctxt "block description"
+msgid ""
+"Provides a Gutenberg Block for the description of a single position managed "
+"by Personio."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Ausgabe der Beschreibung einer Stelle, "
+"verwaltet bei Personio, bereit."
 
-#~ msgctxt "block title"
-#~ msgid "Details"
-#~ msgstr "Stellendetails"
+#: blocks/details/block.json
+msgctxt "block title"
+msgid "Details"
+msgstr "Stellendetails"
 
-#~ msgctxt "block description"
-#~ msgid ""
-#~ "Provides a Gutenberg Block for details of a single position managed by "
-#~ "Personio."
-#~ msgstr ""
-#~ "Stellt einen Gutenberg-Block zur Ausgabe von Details einer Stelle, "
-#~ "verwaltet bei Personio, bereit."
+#: blocks/details/block.json
+msgctxt "block description"
+msgid ""
+"Provides a Gutenberg Block for details of a single position managed by "
+"Personio."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Ausgabe von Details einer Stelle, verwaltet "
+"bei Personio, bereit."
 
-#~ msgctxt "block title"
-#~ msgid "Personio List Filter"
-#~ msgstr "Personio Listenfilter"
+#: blocks/filter-list/block.json
+msgctxt "block title"
+msgid "Personio List Filter"
+msgstr "Personio Listenfilter"
 
-#~ msgctxt "block description"
-#~ msgid ""
-#~ "Provides a Gutenberg block to show filter as link-based dropdown-list for "
-#~ "Personio Positions."
-#~ msgstr ""
-#~ "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Links zu Filtern "
-#~ "von Stellen von Personio bereit."
+#: blocks/filter-list/block.json
+msgctxt "block description"
+msgid ""
+"Provides a Gutenberg block to show filter as link-based dropdown-list for "
+"Personio Positions."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Links zu Filtern "
+"von Stellen von Personio bereit."
 
-#~ msgctxt "block title"
-#~ msgid "Personio Select Filter"
-#~ msgstr "Personio Select-Filter"
+#: blocks/filter-select/block.json
+msgctxt "block title"
+msgid "Personio Select Filter"
+msgstr "Personio Select-Filter"
 
-#~ msgctxt "block description"
-#~ msgid ""
-#~ "Provides a Gutenberg block to show filter as dropdown-list for Personio "
-#~ "Positions."
-#~ msgstr ""
-#~ "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Select-Boxen zu "
-#~ "Filtern von Stellen von Personio bereit."
+#: blocks/filter-select/block.json
+msgctxt "block description"
+msgid ""
+"Provides a Gutenberg block to show filter as dropdown-list for Personio "
+"Positions."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Select-Boxen zu "
+"Filtern von Stellen von Personio bereit."
 
-#~ msgctxt "block title"
-#~ msgid "Personio Positions"
-#~ msgstr "Personio Stellen"
+#: blocks/list/block.json
+msgctxt "block title"
+msgid "Personio Positions"
+msgstr "Personio Stellen"
 
-#~ msgctxt "block description"
-#~ msgid ""
-#~ "Provides a Gutenberg block to show a list of positions provided by "
-#~ "Personio."
-#~ msgstr ""
-#~ "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
-#~ "Personio bereit."
+#: blocks/list/block.json
+msgctxt "block description"
+msgid ""
+"Provides a Gutenberg block to show a list of positions provided by Personio."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Stellen von "
+"Personio bereit."
 
-#~ msgctxt "block title"
-#~ msgid "Personio Position"
-#~ msgstr "Personio Stelle"
+#: blocks/show/block.json
+msgctxt "block title"
+msgid "Personio Position"
+msgstr "Personio Stelle"
 
-#~ msgctxt "block description"
-#~ msgid "Provides a Gutenberg Block to show a position managed by Personio."
-#~ msgstr ""
-#~ "Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
+#: blocks/show/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg Block to show a position managed by Personio."
+msgstr ""
+"Stellt einen Gutenberg-Block zur Ausgabe einer Stelle von Personio bereit."
 
 #~ msgid "No positions could be found."
 #~ msgstr "Es wurden keine Stellen gefunden."
