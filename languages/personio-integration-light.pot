@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-11T13:47:52+01:00\n"
+"POT-Creation-Date: 2023-11-15T15:17:43+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: personio-integration-light\n"
@@ -2025,7 +2025,6 @@ msgstr ""
 
 #: inc/admin.php:817
 #: blocks/description/build/index.js:299
-#: blocks/description/src/index.js:37
 #: blocks/description/build/index.js:213
 msgid "Description"
 msgstr ""
@@ -2569,19 +2568,16 @@ msgid "Provides a Gutenberg Block to show the application button for single posi
 msgstr ""
 
 #: blocks/description/build/index.js:230
-#: blocks/description/src/edit.js:72
 #: blocks/description/build/index.js:154
 msgid "Template"
 msgstr ""
 
 #: blocks/description/build/index.js:234
-#: blocks/description/src/edit.js:76
 #: blocks/description/build/index.js:158
 msgid "Choose template"
 msgstr ""
 
 #: blocks/description/build/index.js:300
-#: blocks/description/src/index.js:38
 #: blocks/description/build/index.js:214
 msgid "Provides a Gutenberg Block for the description of a single position managed by Personio."
 msgstr ""
@@ -2766,4 +2762,107 @@ msgstr ""
 #: blocks/show/build/index.js:380
 #: blocks/show/build/index.js:291
 msgid "Provides a Gutenberg Block to show a position provided by personio."
+msgstr ""
+
+#: blocks/application-button/block.json
+msgctxt "block title"
+msgid "Personio Position Application Button"
+msgstr ""
+
+#: blocks/application-button/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg Block to show the application button for single position."
+msgstr ""
+
+#: blocks/application-button/block.json
+#: blocks/description/block.json
+#: blocks/details/block.json
+#: blocks/filter-list/block.json
+#: blocks/filter-select/block.json
+#: blocks/list/block.json
+#: blocks/show/block.json
+msgctxt "block keyword"
+msgid "Personio"
+msgstr ""
+
+#: blocks/application-button/block.json
+#: blocks/description/block.json
+#: blocks/details/block.json
+#: blocks/filter-list/block.json
+#: blocks/filter-select/block.json
+#: blocks/list/block.json
+#: blocks/show/block.json
+msgctxt "block keyword"
+msgid "Positions"
+msgstr ""
+
+#: blocks/application-button/block.json
+#: blocks/description/block.json
+#: blocks/details/block.json
+#: blocks/filter-list/block.json
+#: blocks/filter-select/block.json
+#: blocks/list/block.json
+#: blocks/show/block.json
+msgctxt "block keyword"
+msgid "Position"
+msgstr ""
+
+#: blocks/description/block.json
+msgctxt "block title"
+msgid "Description"
+msgstr ""
+
+#: blocks/description/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg Block for the description of a single position managed by Personio."
+msgstr ""
+
+#: blocks/details/block.json
+msgctxt "block title"
+msgid "Details"
+msgstr ""
+
+#: blocks/details/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg Block for details of a single position managed by Personio."
+msgstr ""
+
+#: blocks/filter-list/block.json
+msgctxt "block title"
+msgid "Personio List Filter"
+msgstr ""
+
+#: blocks/filter-list/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg block to show filter as link-based dropdown-list for Personio Positions."
+msgstr ""
+
+#: blocks/filter-select/block.json
+msgctxt "block title"
+msgid "Personio Select Filter"
+msgstr ""
+
+#: blocks/filter-select/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg block to show filter as dropdown-list for Personio Positions."
+msgstr ""
+
+#: blocks/list/block.json
+msgctxt "block title"
+msgid "Personio Positions"
+msgstr ""
+
+#: blocks/list/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg block to show a list of positions provided by Personio."
+msgstr ""
+
+#: blocks/show/block.json
+msgctxt "block title"
+msgid "Personio Position"
+msgstr ""
+
+#: blocks/show/block.json
+msgctxt "block description"
+msgid "Provides a Gutenberg Block to show a position managed by Personio."
 msgstr ""

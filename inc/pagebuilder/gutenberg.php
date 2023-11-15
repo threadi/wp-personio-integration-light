@@ -556,8 +556,8 @@ function personio_integration_add_blocks(): void
         wp_set_script_translations('wp-personio-integration-filter-list-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-filter-select-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
         wp_set_script_translations('wp-personio-integration-application-button-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
-        wp_set_script_translations('wp-personio-integration-details-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
-        wp_set_script_translations('wp-personio-integration-description-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+        wp_set_script_translations('wp-personio-integration-details-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+        wp_set_script_translations('wp-personio-integration-description-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
     }
 }
 add_action( 'init', 'personio_integration_add_blocks', 10 );
