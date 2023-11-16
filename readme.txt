@@ -50,7 +50,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese - compatible with translations via Polylang
 - support for tracking of events with Google Analytics 4
 - text search in frontend for applicants
-- additional import settings, e.g. import intervals and partial import for very large lists of open positions
+- additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from job descriptions
 - RichSnippets for optimal findability via search engines like Google
 - Customization of slugs (URLs) for list and detailed views of positions
 - Shortcode generator for individual views of lists and details
