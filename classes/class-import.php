@@ -85,7 +85,7 @@ class Import {
             $progress = helper::isCLI() ? \WP_CLI\Utils\make_progress_bar('Get positions from Personio by language', $languageCount) : false;
             foreach( $languages as $key => $enabled ) {
                 // define the url.
-                $url = helper::get_personio_xml_url(get_option('personioIntegrationUrl', '')).'?language=' . esc_attr($key);
+                $url = helper::get_personio_xml_url(get_option('personioIntegrationUrl', '')).'ss?language=' . esc_attr($key);
 
                 // define settings for first request to get the last-modified-date.
                 $args = array(
@@ -98,12 +98,26 @@ class Import {
                 // check the response and get its http-status and last-modified-date as timestamp.
                 $lastModifiedTimestamp = 0;
                 $httpStatus = 404;
-                if( !is_wp_error($response) && !empty($response) ) {
+
+				if( is_wp_error($response) ) {
+					// log possible error.
+					$this->_log->addLog( 'Error on request to get Personio timestamp: '.$response->get_error_message(), 'error' );
+				}
+				elseif( empty($response) ) {
+					// log im result is empty.
+					$this->_log->addLog( 'Get empty response for Personio timestamp.', 'error' );
+				}
+                else {
                     // get the http-status to check if call results in acceptable results.
                     $httpStatus = $response["http_response"]->get_status();
 
                     // get the last modified-timestamp from http-response.
                     $lastModifiedTimestamp = strtotime($response["http_response"]->get_headers()->offsetGet('last-modified'));
+
+					// log timestamp if debug is enabled.
+					if( $this->_debug ) {
+						$this->_log->addLog( 'Last modified timestamp from Personio: ' . Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $lastModifiedTimestamp ) ), 'success' );
+					}
                 }
 
                 // check if response was with http-status 200, all others are errors.
@@ -115,7 +129,7 @@ class Import {
                         if( $positions_count > 0 ) {
                             update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
                             $doNothing = true;
-                            $this->logSuccess(sprintf( 'No changes in positions for language %s according to the timestamp we get from Personio. No import run.', $key ) );
+	                        $this->_log->addLog( sprintf( 'No changes in positions for language %s according to the timestamp we get from Personio. No import run.', $key ), 'success' );
                             !$progress ?: $progress->tick();
                             continue;
                         }
@@ -151,7 +165,8 @@ class Import {
                     try {
                         $positions = simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA);
                     } catch (Exception $e) {
-                        $this->_errors[] = __("XML file from Personio for language " . esc_html($key) . " contains incorrect code and therefore cannot be read in. Technical Error: ") . $e->getMessage();
+						/* translators: %1$s will be replaced by the language-name, %2$s by the error-message */
+                        $this->_errors[] = sprintf( __("XML file from Personio for language %1$s contains incorrect code and therefore cannot be read in. Technical Error: %2$s", 'personio-integration-light'), esc_html($key), esc_html($e->getMessage() ) );
                         // show progress.
                         update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
                         !$progress ?: $progress->tick();
@@ -161,7 +176,8 @@ class Import {
                     // get xml-errors.
                     $xmlErrors = libxml_get_errors();
                     if( !empty($xmlErrors) ) {
-                        $this->_errors[] = __("XML file from Personio for language " . esc_html($key) . " contains incorrect code and therefore cannot be read in.");
+	                    /* translators: %1$s will be replaced by the language-name */
+                        $this->_errors[] = sprintf( __("XML file from Personio for language %1$s contains incorrect code and therefore cannot be read in.", 'personio-integration-light' ), esc_html($key) );
                         continue;
                     }
 
@@ -170,6 +186,9 @@ class Import {
 
                     // loop through the results and import each position.
                     if( !empty($positions) ) {
+						// log event.
+	                    $this->_log->addLog( 'Import of positions starting', 'success' );
+
                         // update max-counter
                         // -> only once per import
                         if( !$doNotUpdateMaxCounter ) {
@@ -195,6 +214,9 @@ class Import {
 
                         // save the last-modified-timestamp.
                         update_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key, $lastModifiedTimestamp);
+
+						// log event.
+	                    $this->_log->addLog( 'Import of positions ended', 'success' );
                     }
 
                     // re-enable taxonomy-counting.

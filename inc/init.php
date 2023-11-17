@@ -757,7 +757,7 @@ function personio_integration_rest_api_import_cron_checks(): array {
     if( $scheduled_event->timestamp < time() ) {
         $result['status'] = 'recommended';
         /* translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past) */
-        $result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), helper::get_format_date_time( date( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ));
+        $result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ));
 
         // return this result.
         return $result;
