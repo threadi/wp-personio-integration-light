@@ -68,8 +68,7 @@ function personio_integration_get_details_array( $attributes ): string {
  * @return string
  * @noinspection PhpUnused
  */
-function personio_integration_get_list( $attributes ): string
-{
+function personio_integration_get_list( $attributes ): string {
     // collect the configured templates.
     $templates = personio_integration_get_gutenberg_templates($attributes);
 
@@ -97,7 +96,7 @@ function personio_integration_get_list( $attributes ): string
     }
 
     // collect all settings for this block
-    $attribute_defaults = [
+    $attribute_defaults = array(
         'templates' => $templates,
         'excerpt' => personio_integration_get_details_array( $attributes ),
         'donotlink' => !$attributes["linkTitle"],
@@ -110,8 +109,9 @@ function personio_integration_get_list( $attributes ): string
         'showfilter' => $attributes['showFilter'],
         'show_back_to_list' => '',
         'styles' => implode(PHP_EOL, $stylesArray),
-        'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
-    ];
+        'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes),
+	    'listing_template' => $attributes['template']
+    );
 
     // get the output
     return personio_integration_positions_shortcode( apply_filters( 'personio_integration_get_gutenberg_list_attributes', $attribute_defaults, $attributes ) );
@@ -357,6 +357,10 @@ function personio_integration_add_blocks(): void
             'limit' => [
                 'type' => 'integer',
                 'default' => 0
+            ],
+            'template' => [
+	            'type' => 'string',
+	            'default' => 'default'
             ],
             'sort' => [
                 'type' => 'string',

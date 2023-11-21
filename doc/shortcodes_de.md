@@ -31,6 +31,10 @@ Es sind folgende Parameter hierfür verfügbar:
 * Beispiel:
   `[personioPositions lang="de"]`
 
+### listing_template
+
+* legt ein Listing-Template fest, welches genutzt werden soll
+
 ### showfilter
 
 * nur für Listen-Ansicht verfügbar

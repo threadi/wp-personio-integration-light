@@ -1,6 +1,6 @@
 <?php
 /**
- * File for handling all frontend tasks.
+ * File for handling frontend tasks only.
  *
  * @package personio-integration-light
  */
@@ -15,8 +15,7 @@ use personioIntegration\Positions;
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_frontend_init(): void
-{
+function personio_integration_frontend_init(): void {
     add_shortcode('personioPosition', 'personio_integration_position_shortcode');
     add_shortcode('personioPositions', 'personio_integration_positions_shortcode');
 }
@@ -52,7 +51,7 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
     // convert single shortcode attributes.
     $personio_attributes = personio_integration_get_single_shortcode_attributes( $attributes );
 
-    // do not output anything without ID
+    // do not output anything without ID.
     if( $personio_attributes['personioid'] <= 0 ) {
         if( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
             return '<div><p>'.__('Detail-view called without the PersonioId of a position.', 'personio-integration-light').'</p></div>';
@@ -60,11 +59,11 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
         return '';
     }
 
-    // get the position by its PersonioId
+    // get the position by its PersonioId.
     $positions = Positions::get_instance();
     $position = $positions->getPositionByPersonioId( $personio_attributes['personioid'] );
 
-    // do not show this position if it is not valid or could not be loaded
+    // do not show this position if it is not valid or could not be loaded.
     if( $position && !$position->isValid() || !$position ) {
         if( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
             return '<div><p>'.__('Given Id is not a valid position-Id.', 'personio-integration-light').'</p></div>';
@@ -72,16 +71,16 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
         return "";
     }
 
-    // set language
+    // set language.
     $position->lang = $personio_attributes['lang'];
 
-    // change settings for output
+    // change settings for output.
     $personio_attributes = apply_filters('personio_integration_get_template', $personio_attributes, personio_integration_get_single_shortcode_attributes_defaults() );
 
-    // generate styling
+    // generate styling.
     $styles = !empty($personio_attributes['styles']) ? $personio_attributes['styles'] : '';
 
-    // collect the output
+    // collect the output.
     ob_start();
     include helper::getTemplate('single-'.WP_PERSONIO_INTEGRATION_CPT.'-shortcode'.$personio_attributes['template'].'.php');
     return ob_get_clean();
@@ -96,6 +95,7 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
  * - showfilter => enables the filter for this list-view, default: disabled
  * - filter => comma-separated list of filter which will be visible above the list, default: empty
  * - filtertype => sets the type of filter to use (select or linklist), default: select
+ * - template => set the main template to use for listing
  * - templates => comma-separated list of template to use, defaults to title and excerpt
  * - excerpt => comma-separated list of details to display, defaults to recruitingCategory, schedule, office
  * - ids => comma-separated list of PositionIDs to display, default: empty
@@ -125,17 +125,18 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
  */
 function personio_integration_positions_shortcode( $attributes = [] ): string {
     if( !is_array($attributes) ) {
-        $attributes = [];
+        $attributes = array();
     }
 
     // define the default values for each attribute
-    $attribute_defaults = [
+    $attribute_defaults = array(
         'lang' => helper::get_current_lang(),
         'showfilter' => (get_option('personioIntegrationEnableFilter', 0) == 1),
         'filter' => implode(',', get_option('personioIntegrationTemplateFilter', '')),
         'filtertype' => get_option('personioIntegrationFilterType', 'select'),
         'template' => '',
         'templates' => implode(',', get_option('personioIntegrationTemplateContentList', '')),
+		'listing_template' => 'default',
         'excerpt' => implode(",", get_option('personioIntegrationTemplateExcerptDefaults', '')),
         'ids' => '',
         'donotlink' => (get_option('personioIntegrationEnableLinkInList', 0) == 0),
@@ -146,14 +147,16 @@ function personio_integration_positions_shortcode( $attributes = [] ): string {
         'groupby' => '',
         'styles' => '',
         'classes' => ''
-    ];
+	);
 
     // define the settings for each attribute (array or string)
-    $attribute_settings = [
+    $attribute_settings = array(
         'id' => 'string',
         'lang' => 'string',
         'showfilter' => 'bool',
         'filter' => 'array',
+		'template' => 'string',
+		'listing_template' => 'string',
         'templates' => 'array',
         'excerpt' => 'array',
         'ids' => 'array',
@@ -166,7 +169,7 @@ function personio_integration_positions_shortcode( $attributes = [] ): string {
         'groupby' => 'string',
         'styles' => 'string',
         'classes' => 'string'
-    ];
+	);
 
     // add taxonomies which are available as filter
     foreach( apply_filters('personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES) as $taxonomy_name => $taxonomy ) {
@@ -218,7 +221,10 @@ function personio_integration_positions_shortcode( $attributes = [] ): string {
     // generate styling
     $styles = !empty($personio_attributes['styles']) ? $personio_attributes['styles'] : '';
 
-    // collect the output
+	// set the group-title.
+	$groupTitle = '';
+
+	// collect the output
     ob_start();
     include helper::getTemplate('archive-'.WP_PERSONIO_INTEGRATION_CPT.'-shortcode'.$personio_attributes['template'].'.php');
     return ob_get_clean();

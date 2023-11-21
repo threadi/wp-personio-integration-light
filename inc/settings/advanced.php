@@ -37,7 +37,7 @@ function personio_integration_admin_add_menu_content_advanced()
     settings_errors();
 
     ?>
-    <form method="POST" action="options.php">
+    <form method="POST" action="<?php echo get_admin_url(); ?>options.php">
         <?php
         settings_fields( 'personioIntegrationPositionsAdvanced' );
         do_settings_sections( 'personioIntegrationPositionsAdvanced' );
