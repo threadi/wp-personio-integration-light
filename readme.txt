@@ -6,7 +6,7 @@ Tested up to: 6.4.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.5.5
+Stable tag: 2.6.0
 
 == Description ==
 
@@ -332,3 +332,8 @@ Yes, it is without any further settings.
 * Updated dependencies for Gutenberg-scripts
 * Fixed missed text-domain usages
 * Fixed missing block translations
+
+= 2.6.0 =
+* Added possibility to use different templates for archive listings
+* Added option on Blocks to choose the archive listing template
+* Advanced logging during import of positions

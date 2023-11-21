@@ -14,8 +14,7 @@ class installer
      *
      * @return void
      */
-    public static function initializePlugin(): void
-    {
+    public static function initializePlugin(): void {
         $error = false;
 
         // check if simplexml is available on this system
@@ -205,7 +204,8 @@ class installer
                 WP_PERSONIO_INTEGRATION_IMPORT_RUNNING,
 	            'personioIntegrationExtendSearch',
                 'personioIntegrationLightInstallDate',
-				'personioIntegrationTemplateJobDescription'
+				'personioIntegrationTemplateJobDescription',
+	            'personioIntegrationTemplateContentListingTemplate'
             );
             foreach ($options as $option) {
                 delete_option($option);

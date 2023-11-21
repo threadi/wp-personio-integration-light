@@ -60,6 +60,7 @@ class Updates {
         self::version240();
         self::version250();
 		self::version255();
+		self::version260();
 
         // reset import-flag
         delete_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING);
@@ -130,7 +131,7 @@ class Updates {
     }
 
 	/**
-	 * To run on update to (exact) version 2.2.7
+	 * To run on update to (exact) version 2.2.7.
 	 *
 	 * @return void
 	 */
@@ -142,7 +143,7 @@ class Updates {
 	}
 
     /**
-     * To run on update to (exact) version 2.4.0
+     * To run on update to (exact) version 2.4.0.
      *
      * @return void
      */
@@ -154,7 +155,7 @@ class Updates {
     }
 
     /**
-     * To run on update to (exact) version 2.5.0
+     * To run on update to (exact) version 2.5.0.
      *
      * @return void
      */
@@ -175,14 +176,26 @@ class Updates {
     }
 
 	/**
-	 * To run on update to (exact) version 2.5.5
+	 * To run on update to (exact) version 2.5.5.
 	 *
 	 * @return void
 	 */
 	public static function version255(): void {
-		// set default jobdescription-template for detail-page
+		// set default jobdescription-template for detail-page.
 		if (!get_option('personioIntegrationTemplateJobDescription')) {
 			update_option('personioIntegrationTemplateJobDescription', 'default');
+		}
+	}
+
+	/**
+	 * To run on update to (exact) version 2.6.0.
+	 *
+	 * @return void
+	 */
+	public static function version260(): void {
+		// set default archive-template.
+		if (!get_option('personioIntegrationTemplateContentListingTemplate')) {
+			update_option('personioIntegrationTemplateContentListingTemplate', 'default');
 		}
 	}
 }

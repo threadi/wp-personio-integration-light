@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: WP Personio Integration Light @@VersionNumber@@\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
-"POT-Creation-Date: 2023-11-15T15:17:43+01:00\n"
-"PO-Revision-Date: 2023-11-15 15:19+0100\n"
+"POT-Creation-Date: 2023-11-21T16:06:57+01:00\n"
+"PO-Revision-Date: 2023-11-21 16:08+0100\n"
 "Last-Translator: Thomas Zwirner <info@thomaszwirner.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -14,11 +14,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-Domain: personio-integration-light\n"
 
 #. Plugin Name of the plugin
-#: inc/init.php:727 inc/init.php:782
+#: inc/init.php:775 inc/init.php:830
 msgid "Personio Integration Light"
 msgstr "Personio Integration Light"
 
@@ -184,9 +184,9 @@ msgstr ""
 #. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
 #: classes/class-helper.php:192
 msgid ""
-"We realized that you are using Divi - very nice! <a href=\"%s\" target="
-"\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you "
-"to design the output of positions in Divi."
+"We realized that you are using Divi - very nice! <a href=\"%s\" "
+"target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
+"allows you to design the output of positions in Divi."
 msgstr ""
 "Wir haben erkannt, dass Du Divi verwendest - sehr schön! <a href=\"%s\" "
 "target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</a> "
@@ -195,9 +195,9 @@ msgstr ""
 #. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
 #: classes/class-helper.php:198
 msgid ""
-"We realized that you are using Elementor - very nice! <a href=\"%s\" target="
-"\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you "
-"to design the output of positions in Elementor."
+"We realized that you are using Elementor - very nice! <a href=\"%s\" "
+"target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
+"allows you to design the output of positions in Elementor."
 msgstr ""
 "Wir haben erkannt, dass Du Elementor verwendest - sehr schön! <a href=\"%s\" "
 "target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</a> "
@@ -206,9 +206,9 @@ msgstr ""
 #. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
 #: classes/class-helper.php:204
 msgid ""
-"We realized that you are using WPBakery - very nice! <a href=\"%s\" target="
-"\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you "
-"to design the output of positions in WPBakery."
+"We realized that you are using WPBakery - very nice! <a href=\"%s\" "
+"target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
+"allows you to design the output of positions in WPBakery."
 msgstr ""
 "Wir haben erkannt, dass Du WPBakery verwendest - sehr schön! <a href=\"%s\" "
 "target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</a> "
@@ -221,8 +221,8 @@ msgid ""
 "target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
 "allows you to design the output of positions in Beaver Builder."
 msgstr ""
-"Wir haben erkannt, dass Du Beaver Builder verwendest - sehr schön! <a href="
-"\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues "
+"Wir haben erkannt, dass Du Beaver Builder verwendest - sehr schön! <a "
+"href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues "
 "Fenster)</a> ermöglicht die Gestaltung der Ausgabe von Stellen in Beaver "
 "Builder."
 
@@ -233,16 +233,17 @@ msgid ""
 "target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
 "allows you to design the output of positions in Site Origin."
 msgstr ""
-"Wir haben erkannt, dass Du Site Origin verwendest - sehr schön! <a href=\"%s"
-"\" target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</"
-"a> ermöglicht die Gestaltung der Ausgabe von Stellen in Site Origin."
+"Wir haben erkannt, dass Du Site Origin verwendest - sehr schön! <a "
+"href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues "
+"Fenster)</a> ermöglicht die Gestaltung der Ausgabe von Stellen in Site "
+"Origin."
 
 #. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
 #: classes/class-helper.php:222
 msgid ""
-"We realized that you are using Themify - very nice! <a href=\"%s\" target="
-"\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you "
-"to design the output of positions in Themify."
+"We realized that you are using Themify - very nice! <a href=\"%s\" "
+"target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
+"allows you to design the output of positions in Themify."
 msgstr ""
 "Wir haben erkannt, dass Du Themify verwendest - sehr schön! <a href=\"%s\" "
 "target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</a> "
@@ -251,9 +252,9 @@ msgstr ""
 #. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
 #: classes/class-helper.php:228
 msgid ""
-"We realized that you are using Avada - very nice! <a href=\"%s\" target="
-"\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you "
-"to design the output of positions in Avada."
+"We realized that you are using Avada - very nice! <a href=\"%s\" "
+"target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> "
+"allows you to design the output of positions in Avada."
 msgstr ""
 "Wir haben erkannt, dass Du Avada verwendest - sehr schön! <a href=\"%s\" "
 "target=\"_blank\"><i>Personio Integration Pro</i> (öffnet neues Fenster)</a> "
@@ -284,13 +285,13 @@ msgstr ""
 "Sie müssen Ihre Anpassungen in dieser neu eingeben. Wir entschuldigen uns "
 "für die Unannehmlichkeiten - es wird eine einmalige Sache sein."
 
-#: classes/class-helper.php:422 blocks/list/build/index.js:214
-#: blocks/list/build/index.js:149
+#: classes/class-helper.php:422 blocks/list/build/index.js:229
+#: blocks/list/build/index.js:168
 msgid "select-box"
 msgstr "Auswahl-Box"
 
-#: classes/class-helper.php:423 blocks/list/build/index.js:211
-#: blocks/list/build/index.js:148
+#: classes/class-helper.php:423 blocks/list/build/index.js:226
+#: blocks/list/build/index.js:167
 msgid "list of links"
 msgstr "Linkliste"
 
@@ -368,7 +369,7 @@ msgstr "Bearbeite Stellentyp-Detail"
 msgid "Update Job type detail"
 msgstr "Aktualisiere Stellentyp-Detail"
 
-#: classes/class-helper.php:777 inc/init.php:344
+#: classes/class-helper.php:777 inc/init.php:347
 #: blocks/details/build/index.js:263 blocks/details/build/index.js:172
 msgid "Job type details"
 msgstr "Stellentypen-Details"
@@ -1856,7 +1857,7 @@ msgid "Personio URL not configured."
 msgstr "Personio URL nicht konfiguriert."
 
 #. translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404)
-#: classes/class-import.php:204
+#: classes/class-import.php:226
 msgid ""
 "Personio URL for language %1$s not available. Returned HTTP-Status %2$d. "
 "Please check the URL you configured and if it is available."
@@ -1865,18 +1866,18 @@ msgstr ""
 "Status %2$d. Bitte überprüfe die von dir konfigurierte URL, ob diese "
 "erreichbar ist."
 
-#: classes/class-import.php:298
+#: classes/class-import.php:320
 msgid "Error during Personio Positions Import"
 msgstr "Fehler beim Personio Positions Import"
 
-#: classes/class-import.php:299
+#: classes/class-import.php:321
 msgid ""
 "The following error occurred when importing positions provided by Personio:"
 msgstr ""
 "Beim Importieren von Stellen, die von Personio bereitgestellt wurden, ist "
 "folgender Fehler aufgetreten:"
 
-#: classes/class-import.php:300
+#: classes/class-import.php:322
 msgid "Sent by the plugin Personio Integration"
 msgstr "Gesendet vom Plugin Personio Integration"
 
@@ -1884,8 +1885,8 @@ msgstr "Gesendet vom Plugin Personio Integration"
 msgid "state"
 msgstr "Status"
 
-#: classes/class-logs.php:43 classes/class-positionswidget.php:57
-#: blocks/list/build/index.js:293 blocks/list/build/index.js:232
+#: classes/class-logs.php:43 classes/class-positionswidget.php:63
+#: blocks/list/build/index.js:316 blocks/list/build/index.js:262
 msgid "date"
 msgstr "Datum"
 
@@ -1907,88 +1908,94 @@ msgid "Provides a Widget to show a list of positions provided by Personio."
 msgstr ""
 "Stellt ein Widget zur Verfügung, um eine Liste der von Stellen anzuzeigen."
 
-#: classes/class-positionswidget.php:24 inc/init.php:295
-#: blocks/list/build/index.js:391 blocks/list/build/index.js:326
+#: classes/class-positionswidget.php:24 inc/init.php:298
+#: blocks/list/build/index.js:414 blocks/list/build/index.js:356
 msgid "Personio Positions"
 msgstr "Personio Stellen"
 
-#: classes/class-positionswidget.php:39 blocks/list/build/index.js:267
-#: blocks/list/build/index.js:209
+#: classes/class-positionswidget.php:39 blocks/description/build/index.js:234
+#: blocks/list/build/index.js:284 blocks/description/build/index.js:158
+#: blocks/list/build/index.js:230
+msgid "Choose template"
+msgstr "Wähle Template"
+
+#: classes/class-positionswidget.php:45 blocks/list/build/index.js:290
+#: blocks/list/build/index.js:239
 msgid "amount"
 msgstr "Anzahl"
 
-#: classes/class-positionswidget.php:44
+#: classes/class-positionswidget.php:50
 msgid "Sort Direction"
 msgstr "Sortierrichtung"
 
-#: classes/class-positionswidget.php:47 blocks/list/build/index.js:279
-#: blocks/list/build/index.js:222
+#: classes/class-positionswidget.php:53 blocks/list/build/index.js:302
+#: blocks/list/build/index.js:252
 msgid "ascending"
 msgstr "aufsteigend"
 
-#: classes/class-positionswidget.php:48 blocks/list/build/index.js:282
-#: blocks/list/build/index.js:223
+#: classes/class-positionswidget.php:54 blocks/list/build/index.js:305
+#: blocks/list/build/index.js:253
 msgid "descending"
 msgstr "absteigend"
 
-#: classes/class-positionswidget.php:53 blocks/list/build/index.js:287
-#: blocks/list/build/index.js:228
+#: classes/class-positionswidget.php:59 blocks/list/build/index.js:310
+#: blocks/list/build/index.js:258
 msgid "Sort by"
 msgstr "Sortieren nach"
 
-#: classes/class-positionswidget.php:56 inc/init.php:358
-#: blocks/list/build/index.js:290 blocks/list/build/index.js:231
+#: classes/class-positionswidget.php:62 inc/init.php:361
+#: blocks/list/build/index.js:313 blocks/list/build/index.js:261
 msgid "title"
 msgstr "Titel"
 
-#: classes/class-positionswidget.php:62 blocks/list/build/index.js:298
-#: blocks/list/build/index.js:237
+#: classes/class-positionswidget.php:68 blocks/list/build/index.js:321
+#: blocks/list/build/index.js:267
 msgid "Group by"
 msgstr "Gruppieren nach"
 
-#: classes/class-positionswidget.php:64
+#: classes/class-positionswidget.php:70
 msgid "ungrouped"
 msgstr "nicht gruppiert"
 
-#: classes/class-positionswidget.php:68 classes/class-positionwidget.php:53
-#: blocks/list/build/index.js:303 blocks/list/build/index.js:243
+#: classes/class-positionswidget.php:74 classes/class-positionwidget.php:53
+#: blocks/list/build/index.js:326 blocks/list/build/index.js:273
 msgid "Show title"
 msgstr "Zeige Titel an"
 
-#: classes/class-positionswidget.php:71 classes/class-positionswidget.php:80
-#: classes/class-positionswidget.php:89 classes/class-positionswidget.php:105
-#: classes/class-positionswidget.php:114 classes/class-positionwidget.php:56
+#: classes/class-positionswidget.php:77 classes/class-positionswidget.php:86
+#: classes/class-positionswidget.php:95 classes/class-positionswidget.php:111
+#: classes/class-positionswidget.php:120 classes/class-positionwidget.php:56
 #: classes/class-positionwidget.php:65 classes/class-positionwidget.php:74
 #: classes/class-positionwidget.php:90 classes/class-positionwidget.php:99
 msgid "Show"
 msgstr "Zeigen"
 
-#: classes/class-positionswidget.php:72 classes/class-positionswidget.php:81
-#: classes/class-positionswidget.php:90 classes/class-positionswidget.php:106
-#: classes/class-positionswidget.php:115 classes/class-positionwidget.php:57
+#: classes/class-positionswidget.php:78 classes/class-positionswidget.php:87
+#: classes/class-positionswidget.php:96 classes/class-positionswidget.php:112
+#: classes/class-positionswidget.php:121 classes/class-positionwidget.php:57
 #: classes/class-positionwidget.php:66 classes/class-positionwidget.php:75
 #: classes/class-positionwidget.php:91 classes/class-positionwidget.php:100
 msgid "Hide"
 msgstr "Verstecken"
 
-#: classes/class-positionswidget.php:77 classes/class-positionwidget.php:62
+#: classes/class-positionswidget.php:83 classes/class-positionwidget.php:62
 #: blocks/show/build/index.js:267 blocks/show/build/index.js:199
 msgid "link title"
 msgstr "verlinke den Titel"
 
-#: classes/class-positionswidget.php:86 classes/class-positionwidget.php:71
+#: classes/class-positionswidget.php:92 classes/class-positionwidget.php:71
 msgid "Show detail"
 msgstr "Zeige Details an"
 
-#: classes/class-positionswidget.php:95 classes/class-positionwidget.php:80
+#: classes/class-positionswidget.php:101 classes/class-positionwidget.php:80
 msgid "Choose detail components"
 msgstr "Wähle Stellendetails"
 
-#: classes/class-positionswidget.php:102 classes/class-positionwidget.php:87
+#: classes/class-positionswidget.php:108 classes/class-positionwidget.php:87
 msgid "Show content"
 msgstr "Zeige Inhalt an"
 
-#: classes/class-positionswidget.php:111 classes/class-positionwidget.php:96
+#: classes/class-positionswidget.php:117 classes/class-positionwidget.php:96
 msgid "Show application link"
 msgstr "Zeige Link zum Bewerbungsformular an"
 
@@ -2078,9 +2085,9 @@ msgid "PersonioID"
 msgstr "PersonioID"
 
 #: inc/admin.php:277 inc/settings/settings.php:86
-#: blocks/details/build/index.js:235 blocks/list/build/index.js:265
+#: blocks/details/build/index.js:235 blocks/list/build/index.js:280
 #: blocks/show/build/index.js:255 blocks/details/build/index.js:158
-#: blocks/list/build/index.js:207 blocks/show/build/index.js:185
+#: blocks/list/build/index.js:226 blocks/show/build/index.js:185
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -2105,8 +2112,8 @@ msgstr "Beschreibung"
 #: inc/admin.php:837
 msgid ""
 "At this point we show you the imported data of your open position <i>%1$s</"
-"i>. Please edit the job details in your <a href=\"%2$s\" target=\"_blank"
-"\">Personio account (opens new window)</a>."
+"i>. Please edit the job details in your <a href=\"%2$s\" "
+"target=\"_blank\">Personio account (opens new window)</a>."
 msgstr ""
 "An dieser Stelle zeigen wir dir die importierten Daten deiner offenen Stelle "
 "<i>%1$s</i>. Bitte bearbeite die Stellen-Daten in deinem <a href=\"%2$s\" "
@@ -2124,7 +2131,7 @@ msgstr "Personio"
 msgid "Import positions from Personio"
 msgstr "Import von Stellen von Personio"
 
-#: inc/admin.php:964 inc/init.php:724
+#: inc/admin.php:964 inc/init.php:772
 msgid "Personio Integration Import Cron Check"
 msgstr "Personio Integration Import Cron Prüfung"
 
@@ -2132,119 +2139,127 @@ msgstr "Personio Integration Import Cron Prüfung"
 msgid "Personio Integration URL availability check"
 msgstr "Personio Integration URL-Erreichbarkeitsprüfung"
 
-#: inc/frontend.php:58
+#: inc/frontend.php:57
 msgid "Detail-view called without the PersonioId of a position."
 msgstr "Detailansicht wurde ohne PersonioId einer Stelle aufgerufen."
 
-#: inc/frontend.php:70
+#: inc/frontend.php:69
 msgid "Given Id is not a valid position-Id."
 msgstr "Die gegebene Id ist keine gültige Stellen-Id."
 
-#: inc/init.php:19 inc/init.php:21
-#: templates/archive-personioposition-shortcode.php:36
+#: inc/init.php:23 inc/init.php:25 templates/parts/archive/default.php:20
+#: templates/parts/archive/listing.php:22
 msgid "Positions"
 msgstr "Stellen"
 
-#: inc/init.php:20 templates/single-personioposition-shortcode.php:17
+#: inc/init.php:24 templates/single-personioposition-shortcode.php:17
 msgid "Position"
 msgstr "Stelle"
 
-#: inc/init.php:22
+#: inc/init.php:26
 msgid "Parent Position"
 msgstr "Eltern Stelle"
 
-#: inc/init.php:23
+#: inc/init.php:27
 msgid "All Positions"
 msgstr "Alle offene Stellen"
 
-#: inc/init.php:24
+#: inc/init.php:28
 msgid "View Position in frontend"
 msgstr "Zeige Stelle im Frontend"
 
-#: inc/init.php:25
+#: inc/init.php:29
 msgid "View Positions"
 msgstr "Zeige Stellen an"
 
-#: inc/init.php:26
+#: inc/init.php:30
 msgid "View Position in backend"
 msgstr "Zeige Stelle im Backend"
 
-#: inc/init.php:27
+#: inc/init.php:31
 msgid "Search Position"
 msgstr "Suche nach Stellen"
 
-#: inc/init.php:28
+#: inc/init.php:32
 msgid "Not Found"
 msgstr "Nicht gefunden"
 
-#: inc/init.php:29
+#: inc/init.php:33
 msgid "Not found in Trash"
 msgstr "In Papierkorb nicht gefunden"
 
-#: inc/init.php:260
+#: inc/init.php:263
 msgid "every 5th Minute"
 msgstr "jede 5. Minute"
 
-#: inc/init.php:336
+#: inc/init.php:339
 msgid "recruiting category"
 msgstr "Kategorie"
 
-#: inc/init.php:337
+#: inc/init.php:340
 msgid "schedule"
 msgstr "Vertragstyp"
 
-#: inc/init.php:338
+#: inc/init.php:341
 msgid "office"
 msgstr "Standort"
 
-#: inc/init.php:339
+#: inc/init.php:342
 msgid "department"
 msgstr "Abteilung"
 
-#: inc/init.php:340
+#: inc/init.php:343
 msgid "employment types"
 msgstr "Anstellungsarten"
 
-#: inc/init.php:341
+#: inc/init.php:344
 msgid "seniority"
 msgstr "Erfahrung"
 
-#: inc/init.php:342
+#: inc/init.php:345
 msgid "experience"
 msgstr "Berufserfahrung"
 
-#: inc/init.php:343 blocks/details/build/index.js:260
+#: inc/init.php:346 blocks/details/build/index.js:260
 #: blocks/show/build/index.js:300 blocks/details/build/index.js:171
 #: blocks/show/build/index.js:222
 msgid "Job type"
 msgstr "Stellentyp"
 
-#: inc/init.php:359
+#: inc/init.php:362
 msgid "details"
 msgstr "Stellendetails"
 
-#: inc/init.php:360
+#: inc/init.php:363
 msgid "content"
 msgstr "Inhalt"
 
-#: inc/init.php:361
+#: inc/init.php:364
 msgid "application link"
 msgstr "Link zum Bewerbungsformular"
 
-#: inc/init.php:559 templates/parts/term-filter-select.php:15
+#: inc/init.php:573 templates/parts/term-filter-select.php:15
 #: blocks/show/build/index.js:229 blocks/show/build/index.js:162
 msgid "Please choose"
 msgstr "Bitte wählen"
 
-#: inc/init.php:594 inc/init.php:613
+#: inc/init.php:608 inc/init.php:629 inc/init.php:648 inc/init.php:661
 msgid "Default"
 msgstr "Standard"
 
-#: inc/init.php:599 inc/init.php:614
+#: inc/init.php:613 inc/init.php:649
 msgid "As list"
 msgstr "Als Liste"
 
-#: inc/init.php:730
+#: inc/init.php:634
+msgid "Listing"
+msgstr "Liste"
+
+#: inc/init.php:662
+msgid "Listings"
+msgstr "Listen"
+
+#: inc/init.php:778
 msgid ""
 "Running cronjobs help to import new positions from Personio automatically."
 "<br><strong>All ok with the cronjob!</strong>"
@@ -2252,12 +2267,12 @@ msgstr ""
 "Die Ausführung von Cronjobs hilft, neue Stellen automatisch von Personio zu "
 "importieren.<br><strong>Alles OK mit dem Cronjob!</strong>"
 
-#: inc/init.php:748
+#: inc/init.php:796
 msgid "Cronjob to import new Positions from Personio does not exist!"
 msgstr "Cronjob zum Importieren neuer Stellen von Personio existiert nicht!"
 
 #. translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past)
-#: inc/init.php:760
+#: inc/init.php:808
 msgid ""
 "Cronjob to import new Positions from Personio should have been run at %1$s, "
 "but was not executed!<br><strong>Please check the cron-system of your "
@@ -2267,12 +2282,12 @@ msgstr ""
 "ausgeführt werden sollen, wurde aber nicht ausgeführt!<br><strong>Bitte "
 "überprüfe das Cron-System deiner WordPress-Installation.</strong>"
 
-#: inc/init.php:779
+#: inc/init.php:827
 msgid "Personio Integration URL availability Check"
 msgstr "Personio Integration URL-Erreichbarkeitsprüfung"
 
 #. translators: %1$s and %2$s will be replaced by the Personio-URL
-#: inc/init.php:786
+#: inc/init.php:834
 msgid ""
 "The Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (opens new window)</"
 "a> is necessary to import new positions.<br><strong>All ok with the URL!</"
@@ -2283,7 +2298,7 @@ msgstr ""
 "Ordnung mit der URL!</strong>"
 
 #. translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio
-#: inc/init.php:810
+#: inc/init.php:858
 msgid ""
 "The Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (opens new window)</"
 "a> is not available for the import of positions!<br><strong>Please check if "
@@ -2438,8 +2453,8 @@ msgstr "Die Angabe der Personio-URL ist obligatorisch."
 
 #: inc/settings/general.php:297
 msgid ""
-"The Personio URL must end with \".jobs.personio.com\" or \".jobs.personio.de"
-"\"!"
+"The Personio URL must end with \".jobs.personio.com\" or \".jobs.personio."
+"de\"!"
 msgstr ""
 "Die Personio URL muss mit \".jobs.personio.com\" oder \".jobs.personio.de\" "
 "enden!"
@@ -2532,23 +2547,23 @@ msgstr "Personio URL eingeben für weitere Optionen"
 msgid "Logs"
 msgstr "Logs"
 
-#: inc/settings/templates.php:19
+#: inc/settings/templates.php:24
 msgid "Templates"
 msgstr "Templates"
 
-#: inc/settings/templates.php:63
+#: inc/settings/templates.php:66
 msgid "List View"
 msgstr "Listenansicht"
 
-#: inc/settings/templates.php:71
+#: inc/settings/templates.php:74
 msgid "Enable filter on list-view"
 msgstr "Filter in der Listenansicht einschalten"
 
-#: inc/settings/templates.php:86
+#: inc/settings/templates.php:89
 msgid "Available filter for details"
 msgstr "Verfügbarer Filter für Stellendetails"
 
-#: inc/settings/templates.php:94
+#: inc/settings/templates.php:97
 msgid ""
 "Mark multiple default filter for each list-view of positions. This setting "
 "will be overridden by individual settings on the blocks or widgets of your "
@@ -2559,16 +2574,16 @@ msgstr ""
 "Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
 
 #. translators: %1$s is replaced with "string"
-#: inc/settings/templates.php:98 inc/settings/templates.php:153
-#: inc/settings/templates.php:201
-msgid "Sort this list with the %s."
-msgstr "Sortiere diese Liste mit der %s."
+#: inc/settings/templates.php:101 inc/settings/templates.php:174
+#: inc/settings/templates.php:222
+msgid "Sort this list with %s."
+msgstr "Sortiere diese Liste mit %s."
 
-#: inc/settings/templates.php:106
+#: inc/settings/templates.php:109
 msgid "Choose filter-type"
 msgstr "Filter-Typ wählen"
 
-#: inc/settings/templates.php:114
+#: inc/settings/templates.php:117
 msgid ""
 "This setting will be overridden by individual settings on the blocks or "
 "widgets of your shortcode or PageBuilder."
@@ -2576,11 +2591,11 @@ msgstr ""
 "Diese Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
 "Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
 
-#: inc/settings/templates.php:123
-msgid "Choose templates for positions in list-view"
-msgstr "Wähle Template für Stellen in der Listen-Ansicht"
+#: inc/settings/templates.php:126
+msgid "Choose template for listing"
+msgstr "Wähle Template für Listen-Ansicht"
 
-#: inc/settings/templates.php:131
+#: inc/settings/templates.php:134 inc/settings/templates.php:152
 msgid ""
 "Mark multiple default templates for each list-view of positions. This "
 "setting will be overridden by individual settings on the blocks or widgets "
@@ -2590,11 +2605,15 @@ msgstr ""
 "Einstellung wird durch individuelle Einstellungen an den Blöcken oder "
 "Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
 
-#: inc/settings/templates.php:141
+#: inc/settings/templates.php:144
+msgid "Choose templates for positions in list-view"
+msgstr "Wähle Template für Stellen in der Listen-Ansicht"
+
+#: inc/settings/templates.php:162
 msgid "Choose details for positions in list-view"
 msgstr "Wähle Details für Stellen in der Listenansicht"
 
-#: inc/settings/templates.php:149
+#: inc/settings/templates.php:170
 msgid ""
 "Mark multiple default detail-parts for each frontend-output. This setting "
 "will be overridden by individual settings on the blocks or widgets of your "
@@ -2604,15 +2623,15 @@ msgstr ""
 "wird durch individuelle Einstellungen an den Blöcken oder Widgets deines "
 "Shortcodes oder PageBuilders außer Kraft gesetzt."
 
-#: inc/settings/templates.php:163
+#: inc/settings/templates.php:184
 msgid "Single View"
 msgstr "Einzelansicht"
 
-#: inc/settings/templates.php:171
+#: inc/settings/templates.php:192
 msgid "Choose templates"
 msgstr "Wähle Templates"
 
-#: inc/settings/templates.php:179
+#: inc/settings/templates.php:200
 msgid ""
 "Mark multiple default templates for each detail-view of single positions. "
 "This setting will be overridden by individual settings on the blocks or "
@@ -2622,14 +2641,14 @@ msgstr ""
 "Stellen. Diese Einstellung wird durch individuelle Einstellungen an den "
 "Blöcken oder Widgets deines Shortcodes oder PageBuilders außer Kraft gesetzt."
 
-#: inc/settings/templates.php:189 blocks/details/build/index.js:239
-#: blocks/list/build/index.js:317 blocks/show/build/index.js:279
-#: blocks/details/build/index.js:162 blocks/list/build/index.js:260
+#: inc/settings/templates.php:210 blocks/details/build/index.js:239
+#: blocks/list/build/index.js:340 blocks/show/build/index.js:279
+#: blocks/details/build/index.js:162 blocks/list/build/index.js:290
 #: blocks/show/build/index.js:213
 msgid "Choose details"
 msgstr "Wähle Stellendetails"
 
-#: inc/settings/templates.php:197
+#: inc/settings/templates.php:218
 msgid ""
 "Mark multiple details for single-view of positions. Only used if template "
 "\"detail\" is enabled for detail-view. This setting will be overridden by "
@@ -2641,11 +2660,11 @@ msgstr ""
 "aktiviert ist. Diese Einstellung wird durch individuelle Einstellungen an "
 "den Blöcken oder Widgets deines Shortcodes oder PageBuilders überschrieben."
 
-#: inc/settings/templates.php:209
+#: inc/settings/templates.php:230
 msgid "Choose job description template"
 msgstr "Vorlage für Stellenbeschreibung auswählen"
 
-#: inc/settings/templates.php:217
+#: inc/settings/templates.php:238
 msgid ""
 "Choose template to output each job description in detail view. You could add "
 "your own template as described in GitHub."
@@ -2654,30 +2673,30 @@ msgstr ""
 "auszugeben. Sie können Ihre eigenes Template hinzufügen, wie in GitHub "
 "beschrieben."
 
-#: inc/settings/templates.php:226
+#: inc/settings/templates.php:247
 msgid "Enable link to single on list-view"
 msgstr "Link zur Einzelansicht in der Listenansicht aktivieren"
 
-#: inc/settings/templates.php:241
+#: inc/settings/templates.php:262
 msgid "Enable back to list-link"
 msgstr "Aktiviere den Link \"zurück zur Liste\""
 
-#: inc/settings/templates.php:256
+#: inc/settings/templates.php:277
 msgid "URL for back to list-link"
 msgstr "Gib die URL für den zurück zur Liste-Link an"
 
 #. translators: %1$s will be replaced by the list-slug
-#: inc/settings/templates.php:264
+#: inc/settings/templates.php:285
 msgid "If empty the link will be set to list-slug <a href=\"%1$s\">%1$s</a>."
 msgstr ""
 "Wenn leer wird der Listen-Slug <a href=\"%1$s\">%1$s</a> als Linkziel "
 "verwendet."
 
-#: inc/settings/templates.php:275
+#: inc/settings/templates.php:296
 msgid "Other settings"
 msgstr "Weitere Einstellungen"
 
-#: inc/settings/templates.php:283
+#: inc/settings/templates.php:304
 msgid "Separator for details-listing"
 msgstr "Trennzeichen für Liste der Stellendetails"
 
@@ -2685,7 +2704,7 @@ msgstr "Trennzeichen für Liste der Stellendetails"
 msgid "Tracking"
 msgstr "Tracking"
 
-#: templates/archive-personioposition-shortcode.php:47
+#: templates/archive-personioposition-shortcode.php:26
 msgid "There are currently no positions available."
 msgstr "Aktuell sind keine Stellen ausgeschrieben."
 
@@ -2694,9 +2713,9 @@ msgid "Filter for positions"
 msgstr "Filter für Stellen"
 
 #: templates/parts/part-filter.php:21 blocks/filter-list/build/index.js:232
-#: blocks/filter-select/build/index.js:232 blocks/list/build/index.js:244
+#: blocks/filter-select/build/index.js:232 blocks/list/build/index.js:259
 #: blocks/filter-list/build/index.js:161
-#: blocks/filter-select/build/index.js:160 blocks/list/build/index.js:179
+#: blocks/filter-select/build/index.js:160 blocks/list/build/index.js:198
 msgid "Filter"
 msgstr "Filter"
 
@@ -2739,10 +2758,6 @@ msgstr ""
 #: blocks/description/build/index.js:230 blocks/description/build/index.js:154
 msgid "Template"
 msgstr "Template"
-
-#: blocks/description/build/index.js:234 blocks/description/build/index.js:158
-msgid "Choose template"
-msgstr "Wähle Templates"
 
 #: blocks/description/build/index.js:300 blocks/description/build/index.js:214
 msgid ""
@@ -2803,9 +2818,9 @@ msgstr ""
 "bei Personio, bereit."
 
 #: blocks/filter-list/build/index.js:236
-#: blocks/filter-select/build/index.js:236 blocks/list/build/index.js:252
+#: blocks/filter-select/build/index.js:236 blocks/list/build/index.js:267
 #: blocks/filter-list/build/index.js:165
-#: blocks/filter-select/build/index.js:164 blocks/list/build/index.js:188
+#: blocks/filter-select/build/index.js:164 blocks/list/build/index.js:207
 msgid "Choose filter"
 msgstr "Wähle Filter"
 
@@ -2858,36 +2873,36 @@ msgstr ""
 "Stellt einen Gutenberg-Block zur Ausgabe einer Liste von Select-Boxen zu "
 "Filtern von Stellen von Personio bereit."
 
-#: blocks/list/build/index.js:246 blocks/list/build/index.js:181
+#: blocks/list/build/index.js:261 blocks/list/build/index.js:200
 msgid "Show filter"
 msgstr "Zeige Filter an"
 
-#: blocks/list/build/index.js:259 blocks/list/build/index.js:198
+#: blocks/list/build/index.js:274 blocks/list/build/index.js:217
 msgid "Type of filter"
 msgstr "Filter-Typ"
 
-#: blocks/list/build/index.js:276 blocks/list/build/index.js:219
+#: blocks/list/build/index.js:299 blocks/list/build/index.js:249
 msgid "Sort direction"
 msgstr "Sortierrichtung"
 
-#: blocks/list/build/index.js:307 blocks/list/build/index.js:248
+#: blocks/list/build/index.js:330 blocks/list/build/index.js:278
 msgid "Link title"
 msgstr "Verlinke den Titel"
 
-#: blocks/list/build/index.js:311 blocks/show/build/index.js:272
-#: blocks/list/build/index.js:253 blocks/show/build/index.js:205
+#: blocks/list/build/index.js:334 blocks/show/build/index.js:272
+#: blocks/list/build/index.js:283 blocks/show/build/index.js:205
 msgid "show excerpt"
 msgstr "zeige Stellendetails"
 
-#: blocks/list/build/index.js:324 blocks/list/build/index.js:270
+#: blocks/list/build/index.js:347 blocks/list/build/index.js:300
 msgid "View content"
 msgstr "Zeige Inhalt an"
 
-#: blocks/list/build/index.js:328 blocks/list/build/index.js:275
+#: blocks/list/build/index.js:351 blocks/list/build/index.js:305
 msgid "View application link"
 msgstr "Zeige Link zum Bewerbungsformular an"
 
-#: blocks/list/build/index.js:392 blocks/list/build/index.js:327
+#: blocks/list/build/index.js:415 blocks/list/build/index.js:357
 msgid ""
 "Provides a Gutenberg Block to show a list of positions provided by Personio."
 msgstr ""
@@ -3184,8 +3199,9 @@ msgstr ""
 #~ "<strong>The import has been manually run.</strong> Please check the <a "
 #~ "href=\"%1$s\">list of positions</a> or <a href=\"%2$s\">the log</a>."
 #~ msgstr ""
-#~ "<strong>Der Import wurde manuell ausgeführt.</strong> Bitte prüfe <a href="
-#~ "\"%1$s\">die Liste der Stellen</a> oder <a href=\"%2$s\">das Logfile</a>."
+#~ "<strong>Der Import wurde manuell ausgeführt.</strong> Bitte prüfe <a "
+#~ "href=\"%1$s\">die Liste der Stellen</a> oder <a href=\"%2$s\">das "
+#~ "Logfile</a>."
 
 #~ msgid ""
 #~ "The specified Personio URL is reachable. Click on the following button to "

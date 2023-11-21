@@ -1,4 +1,9 @@
 <?php
+/**
+ * Main file for initialization of this plugin in frontend and backend.
+ *
+ * @package personio-integration-light
+ */
 
 use personioIntegration\helper;
 use personioIntegration\Import;
@@ -13,8 +18,7 @@ use personioIntegration\updates;
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_add_position_posttype(): void
-{
+function personio_integration_add_position_posttype(): void {
     $labels = array(
         'name'                => __( 'Positions', 'personio-integration-light' ),
         'singular_name'       => __( 'Position', 'personio-integration-light'),
@@ -91,7 +95,7 @@ function personio_integration_add_position_posttype(): void
         ]
     );
 }
-add_action( 'init', 'personio_integration_add_position_posttype', 10 );
+add_action( 'init', 'personio_integration_add_position_posttype' );
 
 /**
  * Add taxonomies used with the personio posttype.
@@ -100,8 +104,7 @@ add_action( 'init', 'personio_integration_add_position_posttype', 10 );
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_add_taxonomies(): void
-{
+function personio_integration_add_taxonomies(): void {
     // set default taxonomy-settings
     // -> could be overwritten by each taxonomy in taxonomies.php
     $taxonomy_array_default = array(
@@ -518,8 +521,8 @@ add_filter( 'personio_integration_import_single_position_filter_existing', 'pers
  * @return void
  * @noinspection PhpUnused
  */
-function personio_integration_rest_api(): void
-{
+function personio_integration_rest_api(): void {
+	// return possible taxonomies.
     register_rest_route( 'personio/v1', '/taxonomies/', array(
         'methods' => WP_REST_SERVER::READABLE,
         'callback' => 'personio_integration_rest_api_taxonomies',
@@ -527,9 +530,20 @@ function personio_integration_rest_api(): void
             return current_user_can( 'edit_posts' );
         }
     ) );
+
+	// return possible jobdescription templates.
 	register_rest_route( 'personio/v1', '/jobdescription-templates/', array(
 		'methods' => WP_REST_SERVER::READABLE,
 		'callback' => 'personio_integration_rest_api_jobdescription_templates',
+		'permission_callback' => function () {
+			return current_user_can( 'edit_posts' );
+		}
+	) );
+
+	// return possible archive-listing templates.
+	register_rest_route( 'personio/v1', '/archive-templates/', array(
+		'methods' => WP_REST_SERVER::READABLE,
+		'callback' => 'personio_integration_rest_api_archive_templates',
 		'permission_callback' => function () {
 			return current_user_can( 'edit_posts' );
 		}
@@ -603,6 +617,27 @@ function personio_integration_rest_api_jobdescription_templates(): array {
 }
 
 /**
+ * Return list of possible templates for archive templates in REST API.
+ *
+ * @return array
+ * @noinspection PhpUnused
+ */
+function personio_integration_rest_api_archive_templates(): array {
+	return apply_filters( 'personio_integration_rest_templates_archive', array(
+		array(
+			'id' => 1,
+			'label' => __('Default', 'personio-integration-light' ),
+			'value' => 'default',
+		),
+		array(
+			'id' => 2,
+			'label' => __('Listing', 'personio-integration-light' ),
+			'value' => 'listing'
+		)
+	));
+}
+
+/**
  * Return list of possible templates for job description.
  *
  * @return array
@@ -612,6 +647,19 @@ function personio_integration_jobdescription_templates(): array {
 	return apply_filters( 'personio_integration_templates_jobdescription', array(
 		'default' => __('Default', 'personio-integration-light' ),
 		'list' => __('As list', 'personio-integration-light' ),
+	));
+}
+
+/**
+ * Return list of possible templates for archive listings.
+ *
+ * @return array
+ * @noinspection PhpUnused
+ */
+function personio_integration_archive_templates(): array {
+	return apply_filters( 'personio_integration_templates_archive', array(
+		'default' => __('Default', 'personio-integration-light' ),
+		'listing' => __('Listings', 'personio-integration-light' ),
 	));
 }
 
@@ -757,7 +805,7 @@ function personio_integration_rest_api_import_cron_checks(): array {
     if( $scheduled_event->timestamp < time() ) {
         $result['status'] = 'recommended';
         /* translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past) */
-        $result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), helper::get_format_date_time( date( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ));
+        $result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ));
 
         // return this result.
         return $result;

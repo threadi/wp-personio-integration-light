@@ -40,7 +40,8 @@ import {
 	onChangeFilterType,
 	onChangeShowFilter,
 	onChangeSortBy,
-	onChangeGroupBy
+	onChangeGroupBy,
+	onChangeTemplate
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -56,18 +57,36 @@ const { useEffect } = wp.element;
  */
 export default function Edit( object ) {
 
-	// secure id of this block
+	// secure id of this block.
 	useEffect(() => {
 		object.setAttributes({blockId: object.clientId});
 	});
 
-	// get filter types
+	// get possible templates.
+	let archive_templates = [];
+	if( !object.attributes.preview ) {
+		useEffect(() => {
+			dispatch('core').addEntities([
+				{
+					name: 'archive-templates',
+					kind: 'personio/v1',
+					baseURL: '/personio/v1/archive-templates'
+				}
+			]);
+		}, []);
+		archive_templates = useSelect((select) => {
+				return select('core').getEntityRecords('personio/v1', 'archive-templates') || [];
+			}
+		);
+	}
+
+	// get filter types.
 	let filter_types = wp.hooks.applyFilters('personio_integration_filter_types', [
 		{ label: __('list of links', 'personio-integration-light'), value: 'linklist' },
 		{ label: __('select-box', 'personio-integration-light'), value: 'select' }
 	], object.attributes.preview);
 
-	// get taxonomies
+	// get taxonomies.
 	let personioTaxonomies = [];
 	if( !object.attributes.preview ) {
 		useEffect(() => {
@@ -85,7 +104,7 @@ export default function Edit( object ) {
 		);
 	}
 
-	// set max amount for listings
+	// set max amount for listings.
 	let max_amount = wp.hooks.applyFilters('personio.list.amount', 10);
 
 	/**
@@ -123,6 +142,17 @@ export default function Edit( object ) {
 			</InspectorControls>
 			<InspectorControls>
 				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
+					<div className="wp-personio-integration-selectcontrol">
+						{
+							<SelectControl
+								label={ __('Choose template', 'personio-integration-light') }
+								value={ object.attributes.template }
+								options={ archive_templates }
+								multiple={ false }
+								onChange={ value => onChangeTemplate(value, object) }
+							/>
+						}
+					</div>
 					<NumberControl
 						label={__('amount', 'personio-integration-light')}
 						labelPosition='top'

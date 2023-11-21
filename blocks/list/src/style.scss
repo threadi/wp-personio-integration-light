@@ -1,17 +1,17 @@
 .personio-position-filter-linklist, .personio-position-filter-select {
-  display: flex;
-  flex-direction: row;
-}
+	display: flex;
+	flex-direction: row;
 
-.personio-position-filter-linklist legend, .personio-position-filter-select legend {
-  display: inline-block;
-  font-weight: bold;
-  margin-right: 1.4em;
-  padding: 0;
-  width: auto;
-}
+	legend {
+		display: inline-block;
+		font-weight: bold;
+		margin-right: 1.4em;
+		padding: 0;
+		width: auto;
+	}
 
-.personio-position-filter-linklist button { display: none; }
+	button { display: none; }
+}
 
 .personio-position-filter-linklist > div, .personio-position-filter-select > div, .personio-position-filter-linklist > a {
   cursor: pointer;
@@ -46,4 +46,12 @@
 
 .personio-position-filter-select label {
   display: block;
+}
+
+.personio-integration-archive-listing {
+	padding: 0;
+
+	li {
+		list-style: none
+	}
 }

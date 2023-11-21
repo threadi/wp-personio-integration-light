@@ -22,3 +22,6 @@ span[itemprop="jobLocation"], span[itemprop="hiringOrganization"] { display: non
 .wpforms-container .wpforms-field.personioId { display: none }
 
 .personio-integration-back-button { margin-left: 1em }
+
+.personio-integration-archive-listing { padding: 0; }
+.personio-integration-archive-listing li { list-style: none }

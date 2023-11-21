@@ -33,7 +33,13 @@ class PositionsWidget extends WP_Widget {
      */
     private function getFields(): array
     {
-        return [
+        return array(
+	        'template'     => array(
+		        'type'          => 'select',
+		        'title'         => __( 'Choose template', 'personio-integration-light' ),
+		        'std'       => 'title',
+		        'values'       => personio_integration_archive_templates()
+	        ),
             'limit'     => array(
                 'type'          => 'number',
                 'title'         => __( 'amount', 'personio-integration-light' ),
@@ -115,7 +121,7 @@ class PositionsWidget extends WP_Widget {
                     'no' => esc_html__( 'Hide', 'personio-integration-light' )
                 ]
             )
-        ];
+        );
     }
 
     /**

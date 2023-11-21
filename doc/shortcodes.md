@@ -31,6 +31,10 @@ The parameters in the shortcodes have the following tasks:
 * example:
   `[personioPositions lang="en"]`
 
+### listing_template
+
+* set the listing-template to use
+
 ### showfilter
 
 * only available for list view
