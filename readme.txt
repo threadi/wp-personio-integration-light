@@ -334,6 +334,7 @@ Yes, it is without any further settings.
 * Fixed missing block translations
 
 = 2.6.0 =
-* Added possibility to use different templates for archive listings
+* Added chance to use different templates for archive listings
 * Added option on Blocks to choose the archive listing template
 * Advanced logging during import of positions
+* Fixed possible bug on archive page if job description is enabled there

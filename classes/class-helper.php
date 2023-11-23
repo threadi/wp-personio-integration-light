@@ -461,8 +461,7 @@ class helper {
 	 * @param string $template The searched template as to plugins template directory relative path.
 	 * @return bool
 	 */
-	public static function has_template( string $template ): bool
-	{
+	public static function has_template( string $template ): bool {
 		// check if requested template exist in theme.
 		$themeTemplate = locate_template(trailingslashit(basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) )).$template);
 		if( $themeTemplate ) {
@@ -484,9 +483,8 @@ class helper {
      *
      * @return array
      */
-    public static function getActiveLanguagesWithDefaultFirst(): array
-    {
-        $newArray = [];
+    public static function getActiveLanguagesWithDefaultFirst(): array {
+        $newArray = array();
         $langKey = get_option(WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY);
         $newArray[$langKey] = WP_PERSONIO_INTEGRATION_LANGUAGES[$langKey];
         return array_merge($newArray, WP_PERSONIO_INTEGRATION_LANGUAGES);
@@ -531,23 +529,23 @@ class helper {
      */
     public static function get_shortcode_attributes( array $attribute_defaults, array $attribute_settings, array $attributes ): array
     {
-        // pre-filter the given attributes
+        // pre-filter the given attributes.
         $filtered = apply_filters('personio_integration_get_shortcode_attributes', array( 'defaults' => $attribute_defaults, 'settings' => $attribute_settings, 'attributes' => $attributes ) );
 
-        // get pre-filtered array
+        // get pre-filtered array.
         $attribute_defaults = $filtered['defaults'];
         $attribute_settings = $filtered['settings'];
         $attributes = $filtered['attributes'];
 
-        // concat the lists
+        // concat the lists.
         $attributes = shortcode_atts($attribute_defaults, $attributes);
 
-        // check if language-setting is valid
+        // check if language-setting is valid.
         if( empty(WP_PERSONIO_INTEGRATION_LANGUAGES[$attributes['lang']]) ) {
             $attributes['lang'] = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
         }
 
-        // check each attribute depending on its setting
+        // check each attribute depending on its setting.
         foreach( $attributes as $name => $attribute ) {
             if( !empty($attribute_settings[$name]) ) {
                 if ($attribute_settings[$name] == "array") {
@@ -580,6 +578,12 @@ class helper {
                         $attributes[$name] = absint($_GET['personiofilter'][$name]);
                     }
                 }
+	            if ($attribute_settings[$name] == "listing_template") {
+		            $attributes[$name] = $attribute;
+		            if( false === Helper::has_template( 'parts/archive/'.$attribute.'.php' ) ) {
+						$attributes[$name] = 'default';
+		            }
+	            }
             }
         }
 

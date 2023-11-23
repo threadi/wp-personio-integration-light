@@ -102,6 +102,7 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
  * - sort => direction for sorting the resulting list (asc or desc), default: asc
  * - sortby => Field to be sorted by (title or date), default: title
  * - limit => limit the items in the list (-1 for unlimited, 0 for pagination-setting), default: 0
+ * - listing_template => template to use for archive, default: default
  *
  * Filter:
  * - office
@@ -113,7 +114,7 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
  * - schedule
  * - experience
  *
- * Templates:
+ * Templates for each position:
  * - title => show position title
  * - excerpt => show details configured by excerpt-parameter
  * - content => show language-specific content
@@ -123,7 +124,7 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
  * @return string
  * @noinspection PhpMissingParamTypeInspection
  */
-function personio_integration_positions_shortcode( $attributes = [] ): string {
+function personio_integration_positions_shortcode( $attributes = array() ): string {
     if( !is_array($attributes) ) {
         $attributes = array();
     }
@@ -136,7 +137,7 @@ function personio_integration_positions_shortcode( $attributes = [] ): string {
         'filtertype' => get_option('personioIntegrationFilterType', 'select'),
         'template' => '',
         'templates' => implode(',', get_option('personioIntegrationTemplateContentList', '')),
-		'listing_template' => 'default',
+		'listing_template' => get_option( 'personioIntegrationTemplateContentListingTemplate', 'default' ),
         'excerpt' => implode(",", get_option('personioIntegrationTemplateExcerptDefaults', '')),
         'ids' => '',
         'donotlink' => (get_option('personioIntegrationEnableLinkInList', 0) == 0),
@@ -156,7 +157,7 @@ function personio_integration_positions_shortcode( $attributes = [] ): string {
         'showfilter' => 'bool',
         'filter' => 'array',
 		'template' => 'string',
-		'listing_template' => 'string',
+		'listing_template' => 'listing_template',
         'templates' => 'array',
         'excerpt' => 'array',
         'ids' => 'array',
@@ -367,7 +368,7 @@ function personio_integration_get_content( $position, $attributes ): void
         ?>
         <div class="entry-content">
             <?php
-                echo wp_kses_post($position->getContent( $attributes['jobdescription_template'] ));
+                echo wp_kses_post($position->getContent( ( isset($attributes['jobdescription_template']) ? $attributes['jobdescription_template'] : '' ) ));
             ?>
         </div>
         <?php
