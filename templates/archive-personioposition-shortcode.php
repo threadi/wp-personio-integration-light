@@ -18,9 +18,9 @@ include helper::getTemplate("parts/part-filter.php");
 
 if( !empty($personio_attributes["listing_template"]) && !empty($personio_attributes["templates"]) ) {
 
-    // loop through the list
+    // loop through the list by using set listing template.
     if( $GLOBALS['personio_query_results']->have_posts() ) :
-        require_once 'parts/archive/'.$personio_attributes['listing_template'].'.php';
+		include helper::getTemplate('parts/archive/'.$personio_attributes['listing_template'].'.php');
         include helper::getTemplate("parts/part-pagination.php");
     else:
         ?><article class="site-main entry inside-article container qodef-container-inner site-content site-container content-bg content-area ht-container ht-container"><div class="entry-content"><p><?php _e('There are currently no positions available.', 'personio-integration-light'); ?></p></div></article><?php
