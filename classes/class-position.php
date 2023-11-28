@@ -212,13 +212,25 @@ class Position {
             $array['post_content'] = get_post_field('post_content', $this->data['ID']);
         }
 
-        // filter the prepared position-data
+        // filter the prepared position-data.
         $array = apply_filters('personio_integration_import_single_position_filter_before_saving', $array, $this);
 
-        // save the position
-        $this->data['ID'] = wp_insert_post($array);
+        // save the position.
+        $result = wp_insert_post($array);
 
-        if( $this->data['ID'] > 0 ) {
+		// if error occurred log it.
+		if( is_wp_error($result) ) {
+			// log this event.
+			$this->_log->addLog('Position with personioId '.$this->data['personioId'].' could not be saved! Error: '.$result->get_error_message(), 'error');
+		}
+	    elseif( 0 === absint($result) ) {
+		    // log this event.
+		    $this->_log->addLog('Position with personioId '.$this->data['personioId'].' could not be saved! Got no error from WordPress.', 'error');
+	    }
+		elseif( absint($result) > 0 ) {
+			// save the post-ID.
+			$this->data['ID'] = absint($result);
+
             // run hook on save of position
             do_action('personio_integration_import_single_position_save', $this);
 
@@ -292,9 +304,6 @@ class Position {
             if( false !== $this->_debug ) {
                 $this->_log->addLog('Position '.$this->data['personioId'].' successfully imported or updated in '.$this->data['lang'].'.', 'success');
             }
-        }
-        elseif( false !== $this->_debug ) {
-            $this->_log->addLog('Error during import of Position '.$this->data['personioId'], 'error');
         }
     }
 
