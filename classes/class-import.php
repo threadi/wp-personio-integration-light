@@ -115,7 +115,7 @@ class Import {
                     $lastModifiedTimestamp = strtotime($response["http_response"]->get_headers()->offsetGet('last-modified'));
 
 					// log timestamp if debug is enabled.
-					if( $this->_debug ) {
+					if( false !== $this->_debug ) {
 						$this->_log->addLog( 'Last modified timestamp from Personio: ' . Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $lastModifiedTimestamp ) ), 'success' );
 					}
                 }
@@ -143,84 +143,101 @@ class Import {
                     );
                     $response = wp_remote_get($url, $args);
 
-                    // get the body with the contents.
-                    $body = wp_remote_retrieve_body($response);
+					if( is_wp_error($response) ) {
+						// log possible error.
+						$this->_log->addLog( 'Error on request to get Personio positions: '.$response->get_error_message(), 'error' );
+					}
+					elseif( empty($response) ) {
+						// log im result is empty.
+						$this->_log->addLog( 'Get empty response for Personio positions.', 'error' );
+					}
+					else {
+						// get the body with the contents.
+						$body = wp_remote_retrieve_body( $response );
 
-                    // get the md5-hash of the response.
-                    $md5hash = md5($body);
+						// get the md5-hash of the response.
+						$md5hash = md5( $body );
 
-                    // check if md5-hash has been changed.
-                    if( $md5hash == get_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key, '') && !$this->_debug ) {
-                        // md5-hash did not change -> do nothing if we already have positions in the DB.
-                        if( $positions_count > 0 ) {
-                            update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
-                            $doNothing = true;
-                            $this->logSuccess(sprintf('No changes in positions for language %s according to the content we get from Personio. No import run.', $key));
-                            !$progress ?: $progress->tick();
-                            continue;
-                        }
-                    }
+						// check if md5-hash of body content has not been changed.
+						if ( $md5hash === get_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key, '' ) && ! $this->_debug ) {
+							// md5-hash did not change -> do nothing if we already have positions in the DB.
+							if ( $positions_count > 0 ) {
+								update_option( WP_PERSONIO_OPTION_COUNT, ++$count );
+								$doNothing = true;
+								$this->logSuccess( sprintf( 'No changes in positions for language %s according to the content we get from Personio. No import run.', $key ) );
+								! $progress ?: $progress->tick();
+								continue;
+							}
+						}
 
-                    // load content via SimpleXML.
-                    try {
-                        $positions = simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA);
-                    } catch (Exception $e) {
-						/* translators: %1$s will be replaced by the language-name, %2$s by the error-message */
-                        $this->_errors[] = sprintf( __("XML file from Personio for language %1$s contains incorrect code and therefore cannot be read in. Technical Error: %2$s", 'personio-integration-light'), esc_html($key), esc_html($e->getMessage() ) );
-                        // show progress.
-                        update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
-                        !$progress ?: $progress->tick();
-                        continue;
-                    }
+						// load content via SimpleXML.
+						try {
+							$positions = simplexml_load_string( $body, 'SimpleXMLElement', LIBXML_NOCDATA );
+						} catch ( Exception $e ) {
+							/* translators: %1$s will be replaced by the language-name, %2$s by the error-message */
+							$this->_errors[] = sprintf( __( "XML file from Personio for language %1$s contains incorrect code and therefore cannot be read in. Technical Error: %2$s", 'personio-integration-light' ), esc_html( $key ), esc_html( $e->getMessage() ) );
+							// show progress.
+							update_option( WP_PERSONIO_OPTION_COUNT, ++ $count );
+							! $progress ?: $progress->tick();
+							continue;
+						}
 
-                    // get xml-errors.
-                    $xmlErrors = libxml_get_errors();
-                    if( !empty($xmlErrors) ) {
-	                    /* translators: %1$s will be replaced by the language-name */
-                        $this->_errors[] = sprintf( __("XML file from Personio for language %1$s contains incorrect code and therefore cannot be read in.", 'personio-integration-light' ), esc_html($key) );
-                        continue;
-                    }
+						// get xml-errors.
+						$xmlErrors = libxml_get_errors();
+						if ( ! empty( $xmlErrors ) ) {
+							/* translators: %1$s will be replaced by the language-name */
+							$this->_errors[] = sprintf( __( "XML file from Personio for language %1$s contains incorrect code and therefore cannot be read in.", 'personio-integration-light' ), esc_html( $key ) );
+							continue;
+						}
 
-                    // disable taxonomy-counting.
-                    wp_defer_term_counting(true);
+						// disable taxonomy-counting.
+						wp_defer_term_counting( true );
 
-                    // loop through the results and import each position.
-                    if( !empty($positions) ) {
-						// log event.
-	                    $this->_log->addLog( 'Import of positions starting', 'success' );
+						// loop through the results and import each position.
+						if ( ! empty( $positions ) ) {
+							// log event.
+							$this->_log->addLog( sprintf( 'Import of positions for language %1$s starting', esc_html($key) ), 'success' );
 
-                        // update max-counter
-                        // -> only once per import
-                        if( !$doNotUpdateMaxCounter ) {
-                            update_option(WP_PERSONIO_OPTION_MAX, $languageCount * count($positions));
-                            $doNotUpdateMaxCounter = true;
-                        }
+							// update max-counter only once per import.
+							if ( ! $doNotUpdateMaxCounter ) {
+								update_option( WP_PERSONIO_OPTION_MAX, $languageCount * count( $positions ) );
+								$doNotUpdateMaxCounter = true;
+							}
 
-                        foreach( $positions as $position ) {
-                            // add to list for counting.
-                            $importedPositions[(int)$position->id] = $position;
+							// loop through the positions and import them.
+							foreach ( $positions as $position ) {
+								// add to list for counting.
+								$importedPositions[ (int) $position->id ] = $position;
 
-                            if( false !== apply_filters('personio_integration_import_single_position', true, $position, $key) ) {
-                                // import the position.
-                                $this->importPosition($position, $key);
-                            }
+								// run import of position if it is allowed.
+								if ( false !== apply_filters( 'personio_integration_import_single_position', true, $position, $key ) ) {
+									// import the position.
+									$this->importPosition( $position, $key );
+								}
+								elseif( false !== $this->_debug ) {
+									$this->_log->addLog( sprintf( 'Position %1$s has not been imported.', esc_html($position->id) ), 'success' );
+								}
 
-                            // update counter
-                            update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
-                        }
+								// update counter.
+								update_option( WP_PERSONIO_OPTION_COUNT, ++ $count );
+							}
 
-                        // save the md5-hash of this import-file to prevent reimport.
-                        update_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key, $md5hash);
+							// save the md5-hash of this import-file to prevent reimport.
+							update_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key, $md5hash );
 
-                        // save the last-modified-timestamp.
-                        update_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key, $lastModifiedTimestamp);
+							// save the last-modified-timestamp.
+							update_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key, $lastModifiedTimestamp );
 
-						// log event.
-	                    $this->_log->addLog( 'Import of positions ended', 'success' );
-                    }
+							// wait 1 second for consistent log-view on fast runs.
+							sleep(1);
 
-                    // re-enable taxonomy-counting.
-                    wp_defer_term_counting(false);
+							// log event.
+							$this->_log->addLog( sprintf( 'Import of positions for language %1$s ended', esc_html( $key ) ), 'success' );
+						}
+
+						// re-enable taxonomy-counting.
+						wp_defer_term_counting( false );
+					}
                 } else {
                     /* translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404) */
                     $this->_errors[] = sprintf(__('Personio URL for language %1$s not available. Returned HTTP-Status %2$d. Please check the URL you configured and if it is available.', 'personio-integration-light'), esc_html($key), absint($httpStatus));
@@ -254,19 +271,28 @@ class Import {
                         // get personio id.
                         $personioId = $position->getPersonioId();
                         if( 1 === absint(get_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED, true)) ) {
-                            delete_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED);
+                            if( false === delete_post_meta($positionPostId, WP_PERSONIO_INTEGRATION_UPDATED) ) {
+	                            // log event.
+	                            $this->_log->addLog( sprintf( 'Removing updated flag for %1$s failed.', esc_html( $personioId ) ), 'error' );
+                            }
                         } else {
                             // delete this position from database.
-                            wp_delete_post($positionPostId, true);
+                            $result = wp_delete_post($positionPostId, true);
 
-                            // log this event.
-                            $this->_log->addLog('Position ' . $personioId . ' has been deleted as it does not return from Personio.', 'success');
+							if( $result instanceof \WP_Post ) {
+								// log this event.
+								$this->_log->addLog( 'Position ' . $personioId . ' has been deleted as it was not updated during the last import run.', 'success' );
+							}
+							else {
+								// log event.
+								$this->_log->addLog( sprintf( 'Removing of not updated positions %1$s failed.', esc_html( $personioId ) ), 'error' );
+							}
                         }
                     }
                 }
             }
 
-            // run actions after import has been done.
+            // run custom actions after import has been done.
             do_action('personio_integration_import_ended');
 
             // output success-message.
@@ -277,7 +303,7 @@ class Import {
             $countPositions = $positionsObject->getPositionsCount();
             update_option('personioIntegrationPositionCount', $countPositions);
 
-            // set position count if > 0.
+            // remove no-import-hin if positions are available in local db.
             if( $countPositions > 0 ) {
                 // remove transient with no-import-hint
                 delete_transient('personio_integration_no_position_imported');
