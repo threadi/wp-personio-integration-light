@@ -997,7 +997,7 @@ add_action( 'admin_action_personioPositionsCreateSchedules', 'personio_integrati
  * @return void
  */
 function personio_integration_admin_check_for_old_text_domain(): void {
-    if( is_textdomain_loaded( 'wp-personio-integration') ) {
+    if( is_textdomain_loaded( 'wp-personio-integration') && false === Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
         set_transient('personio_integration_admin_show_text_domain_hint', 1);
     }
     else {
