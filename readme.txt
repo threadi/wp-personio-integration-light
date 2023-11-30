@@ -338,3 +338,4 @@ Yes, it is without any further settings.
 * Added option on Blocks to choose the archive listing template
 * Advanced logging during import of positions
 * Fixed possible bug on archive page if job description is enabled there
+* Fixed visibility of text domain hint if Pro plugin is used
