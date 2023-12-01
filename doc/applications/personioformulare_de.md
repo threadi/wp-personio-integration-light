@@ -1,6 +1,6 @@
 # Personio Formulare
 
-Dieser Formulargenerator wird durch das Pro-Plugin mitgeliefert. Er ermöglicht es die von Personio unterstützten Felder für Bewerbungsformulare zu verwenden. Dazu zählen sowohl die Pflichtfelder als auch zusätzliche Felder, die in einem Formular dem Interessenten angezeigt werden können.
+Dieser Formulargenerator wird durch das [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/)-Plugin mitgeliefert. Er ermöglicht es die von Personio unterstützten Felder für Bewerbungsformulare zu verwenden. Dazu zählen sowohl die Pflichtfelder als auch zusätzliche Felder, die in einem Formular dem Interessenten angezeigt werden können.
 
 Die Formulare werden in Form von Formular-Templates verwaltet. In diesen wird definiert, welche Felder im Frontend zu sehen sein sollen.
 
@@ -17,7 +17,7 @@ Eine E-Mail-Adresse ist pro Stelle nur 1 Mal zulässig. D.h. ein Bewerber kann s
 ## Einstellungen
 
 * Formular-Template wählen
-  * Die Liste der Formular-Templates ist unter "Bewerbungsformulartemplates" (im Menü) zu finden. Dort können sie auch konfiguriert werden. 
+  * Die Liste der Formular-Templates ist unter "Bewerbungsformulartemplates" (im Menü) zu finden. Dort können sie auch konfiguriert werden.
 * Dateitypen für Upload-Feld auswählen
   * Die Angabe hier gilt für alle Upload-Felder.
 * Aktiviere Datenschutz-Häkchen

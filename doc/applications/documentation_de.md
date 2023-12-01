@@ -21,7 +21,7 @@ Für den schnellen Einstieg bitte [Quickstart](quickstart_de.md) beachten. Im Do
    * Dieses Verhalten ist konfigurierbar.
    * Mit dem Löschen der Daten werden auch dazu hochgeladene Dokumente im Wordpress-Hosting gelöscht.
 6. Alles weitere zur Bewerbung wird innerhalb von Personio geregelt.
-    
+
 ## Hinweise
 
 In der Standard-Einstellung werden Bewerbungsdaten nur so lange in Wordpress gespeichert wie unbedingt notwendig. Sobald eine Bewerbung erfolgreich übermittelt wurde, werden ihre Daten aus der lokalen Datenbank entfernt. Das betrifft ebenfalls hochgeladene Dokumente.
@@ -63,7 +63,7 @@ Im Wordpress-Backend unter Stellen > Einstellungen > Bewerbungen gibt es folgend
   * ist nur relevant bei Verwendung der Links zu Personio, nicht bei Verwendung des Bewerbungsformulars
 * _Wähle einen Formular-Generator_
   * Auswahl des für das Bewerbungsformular zu verwendenden Formular-Generators.
-  * Stand Januar 2023 liefert das Plugin lediglich seinen eigenen Generator mit (siehe [hier](personioformulare_de.md)), weshalb das Feld ausgegraut ist.
+  * Stand Dezember 2023 liefert das Plugin lediglich seinen eigenen Generator mit (siehe [hier](personioformulare_de.md)), weshalb das Feld ausgegraut ist.
 
 ## Export von Bewerbungen an Personio
 

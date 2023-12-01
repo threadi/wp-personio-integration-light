@@ -1,6 +1,6 @@
 # Personio Forms
 
-This form generator is provided by the plugin. It allows you to use the fields supported by Personio for application forms. This includes the mandatory fields as well as additional fields that can be displayed in a form to the prospect.
+This form generator is provided by the [Personio Integration Pro](https://laolaweb.com/en/plugins/personio-wordpress-plugin/) plugin. It allows you to use the fields supported by Personio for application forms. This includes the mandatory fields as well as additional fields that can be displayed in a form to the prospect.
 
 The forms are managed in the form of form templates. These define which fields should be visible in the frontend.
 
