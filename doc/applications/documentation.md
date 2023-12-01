@@ -19,7 +19,7 @@ For a quick start please refer to [Quickstart](quickstart.md). In the document h
 4. the plugin transmits the newly received application to Personio at a configured interval.
 5. as soon as the Personio API gives feedback that the application has been successfully saved there, the plugin deletes the application data the local WordPress database.
     * This behavior is configurable.
-    * With the deletion of the data, uploaded documents in the WordPress hosting are also deleted. 
+    * With the deletion of the data, uploaded documents in the WordPress hosting are also deleted.
 6. everything else about the application is handled within Personio.
 
 ## Notes
@@ -63,7 +63,7 @@ In the WordPress backend under Positions > Settings > Applications there are the
     * is only relevant when using the links to Personio, not when using the application form.
 * _Select a form generator_
     * Selection of the form generator to be used for the application form.
-    * As of January 2023, the plugin only provides its own generator (see [here](personioformulare.md)), which is why the field is grayed out.
+    * As of December 2023, the plugin only provides its own generator (see [here](personioformulare.md)), which is why the field is grayed out.
 
 ## Export of applications to Personio
 
