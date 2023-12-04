@@ -26,14 +26,17 @@ function personio_integration_get_single( $attributes ): string
     $class = personio_integration_get_block_class( $attributes );
 
     // get block-classes
-    $block_html_attributes = get_block_wrapper_attributes();
+	$stylesArray = array();
+	$block_html_attributes = '';
+	if( function_exists( 'get_block_wrapper_attributes' ) ) {
+		$block_html_attributes = get_block_wrapper_attributes();
 
-    // get styles
-    $stylesArray = array();
-    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
-    if( !empty($styles) ) {
-        $stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
-    }
+		// get styles
+		$styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+		if (!empty($styles)) {
+			$stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
+		}
+	}
 
     $attribute_defaults = array(
         'templates' => personio_integration_get_gutenberg_templates( $attributes ),
@@ -76,24 +79,27 @@ function personio_integration_get_list( $attributes ): string {
     $class = personio_integration_get_block_class( $attributes );
 
     // get block-classes.
-    $block_html_attributes = get_block_wrapper_attributes();
+	$stylesArray = array();
+	$block_html_attributes = '';
+	if( function_exists( 'get_block_wrapper_attributes' ) ) {
+		$block_html_attributes = get_block_wrapper_attributes();
 
-    // get styles.
-    $stylesArray = array();
-    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
-    if( !empty($styles) ) {
-        $stylesArray[] = '.' . $class . ' { ' . $styles . ' }';
-    }
-    if (!empty($attributes['style']) && !empty($attributes['style']['spacing']) && !empty($attributes['style']['spacing']['blockGap'])) {
-        $value = $attributes['style']['spacing']['blockGap'];
-        // convert var-setting to var-style-entity
-        if( false !== strpos($attributes['style']['spacing']['blockGap'], 'var:') ) {
-            $value = str_replace('|', '--', $value);
-            $value = str_replace('var:', '', $value);
-            $value = 'var(--wp--' . $value . ')';
-        }
-        $stylesArray[] = 'body .' . $class . ' { margin-bottom: ' . $value . '; }';
-    }
+		// get styles.
+		$styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+		if (!empty($styles)) {
+			$stylesArray[] = '.' . $class . ' { ' . $styles . ' }';
+		}
+		if (!empty($attributes['style']) && !empty($attributes['style']['spacing']) && !empty($attributes['style']['spacing']['blockGap'])) {
+			$value = $attributes['style']['spacing']['blockGap'];
+			// convert var-setting to var-style-entity
+			if (false !== strpos($attributes['style']['spacing']['blockGap'], 'var:')) {
+				$value = str_replace('|', '--', $value);
+				$value = str_replace('var:', '', $value);
+				$value = 'var(--wp--' . $value . ')';
+			}
+			$stylesArray[] = 'body .' . $class . ' { margin-bottom: ' . $value . '; }';
+		}
+	}
 
     // collect all settings for this block
     $attribute_defaults = array(
@@ -130,27 +136,29 @@ function personio_integration_get_filter_list( $attributes ): string
     $class = personio_integration_get_block_class( $attributes );
 
     // get block-classes
-    $block_html_attributes = get_block_wrapper_attributes();
+	$stylesArray = array();
+	$block_html_attributes = '';
+	if( function_exists( 'get_block_wrapper_attributes' ) ) {
+		$block_html_attributes = get_block_wrapper_attributes();
 
-    // get styles
-    $stylesArray = [];
-    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
-    if( !empty($styles) ) {
-        $stylesArray[] = '.' . $class . ' { ' . $styles . ' }';
-    }
+		// get styles
+		$styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+		if (!empty($styles)) {
+			$stylesArray[] = '.' . $class . ' { ' . $styles . ' }';
+		}
 
-    $stylesArray = [];
-    if( !empty($class) ) {
-        if (!empty($attributes['hideResetLink'])) {
-            $stylesArray[] = '.entry.' . $class . ' .personio-position-filter-reset { display: none }';
-        }
-        if (!empty($attributes['hideFilterTitle'])) {
-            $stylesArray[] = '.entry.' . $class . ' legend { display: none }';
-        }
-        if (!empty($attributes['space_between'])) {
-            $stylesArray[] = '.entry.' . $class . ' .personio-position-filter-linklist > div { margin-right: ' . $attributes['space_between'] . 'px }';
-        }
-    }
+		if (!empty($class)) {
+			if (!empty($attributes['hideResetLink'])) {
+				$stylesArray[] = '.entry.' . $class . ' .personio-position-filter-reset { display: none }';
+			}
+			if (!empty($attributes['hideFilterTitle'])) {
+				$stylesArray[] = '.entry.' . $class . ' legend { display: none }';
+			}
+			if (!empty($attributes['space_between'])) {
+				$stylesArray[] = '.entry.' . $class . ' .personio-position-filter-linklist > div { margin-right: ' . $attributes['space_between'] . 'px }';
+			}
+		}
+	}
 
     // collect all settings for this block
     $attributes = [
@@ -179,37 +187,39 @@ function personio_integration_get_filter_select( $attributes ): string
     $class = personio_integration_get_block_class( $attributes );
 
     // get block-classes
-    $block_html_attributes = get_block_wrapper_attributes();
+	$stylesArray = array();
+	$block_html_attributes = '';
+	if( function_exists( 'get_block_wrapper_attributes' ) ) {
+		$block_html_attributes = get_block_wrapper_attributes();
 
-    // get styles
-    $stylesArray = [];
-    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
-    if( !empty($styles) ) {
-        $stylesArray[] = '.' . $class . ' { ' . $styles . ' }';
-    }
+		// get styles
+		$styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+		if (!empty($styles)) {
+			$stylesArray[] = '.' . $class . ' { ' . $styles . ' }';
+		}
 
-    $stylesArray = [];
-    if( !empty($class) ) {
-        if (!empty($attributes['hideResetLink'])) {
-            $stylesArray[] = '.entry.' . $class . ' .personio-position-filter-reset { display: none }';
-        }
-        if (!empty($attributes['hideSubmitButton'])) {
-            $stylesArray[] = '.entry.' . $class . ' button { display: none }';
-        }
-        if (!empty($attributes['hideFilterTitle'])) {
-            $stylesArray[] = '.entry.' . $class . ' legend { display: none }';
-        }
-    }
+		if (!empty($class)) {
+			if (!empty($attributes['hideResetLink'])) {
+				$stylesArray[] = '.entry.' . $class . ' .personio-position-filter-reset { display: none }';
+			}
+			if (!empty($attributes['hideSubmitButton'])) {
+				$stylesArray[] = '.entry.' . $class . ' button { display: none }';
+			}
+			if (!empty($attributes['hideFilterTitle'])) {
+				$stylesArray[] = '.entry.' . $class . ' legend { display: none }';
+			}
+		}
+	}
 
     // collect all settings for this block
-    $attributes = [
+    $attributes = array(
         'templates' => '',
         'filter' => implode(",", $attributes['filter']),
         'filtertype' => 'select',
         'showfilter' => true,
         'styles' => implode(PHP_EOL, $stylesArray),
         'classes' => $class.' '.helper::get_attribute_value_from_html('class', $block_html_attributes)
-    ];
+	);
 
     // get the output
     return personio_integration_positions_shortcode( apply_filters( 'personio_integration_get_gutenberg_filter_select_attributes', $attributes) );
@@ -262,14 +272,17 @@ function personio_integration_get_application_button( $attributes ): string
     }
 
     // get block-classes.
-    $block_html_attributes = get_block_wrapper_attributes();
+	$stylesArray = array();
+	$block_html_attributes = '';
+	if( function_exists( 'get_block_wrapper_attributes' ) ) {
+		$block_html_attributes = get_block_wrapper_attributes();
 
-    // get styles.
-    $stylesArray = array();
-    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
-    if( !empty($styles) ) {
-        $stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
-    }
+		// get styles.
+		$styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+		if (!empty($styles)) {
+			$stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
+		}
+	}
 
     $attributes = array(
         'personioid' => absint($position->getPersonioId()),
@@ -555,13 +568,15 @@ function personio_integration_add_blocks(): void
         ]);
 
         // register translations.
-        wp_set_script_translations('wp-personio-integration-show-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
-        wp_set_script_translations('wp-personio-integration-list-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
-        wp_set_script_translations('wp-personio-integration-filter-list-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
-        wp_set_script_translations('wp-personio-integration-filter-select-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
-        wp_set_script_translations('wp-personio-integration-application-button-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
-        wp_set_script_translations('wp-personio-integration-details-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
-        wp_set_script_translations('wp-personio-integration-description-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+		if( function_exists( 'wp_set_script_translations' ) ) {
+			wp_set_script_translations('wp-personio-integration-show-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+			wp_set_script_translations('wp-personio-integration-list-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+			wp_set_script_translations('wp-personio-integration-filter-list-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+			wp_set_script_translations('wp-personio-integration-filter-select-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+			wp_set_script_translations('wp-personio-integration-application-button-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+			wp_set_script_translations('wp-personio-integration-details-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+			wp_set_script_translations('wp-personio-integration-description-editor-script', 'personio-integration-light', trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'languages/');
+		}
     }
 }
 add_action( 'init', 'personio_integration_add_blocks', 10 );
@@ -698,14 +713,17 @@ function personio_integration_get_description( $attributes ): string
     }
 
     // get block-classes.
-    $block_html_attributes = get_block_wrapper_attributes();
+	$stylesArray = array();
+	$block_html_attributes = '';
+	if( function_exists( 'get_block_wrapper_attributes' ) ) {
+		$block_html_attributes = get_block_wrapper_attributes();
 
-    // get styles.
-    $stylesArray = array();
-    $styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
-    if( !empty($styles) ) {
-        $stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
-    }
+		// get styles.
+		$styles = helper::get_attribute_value_from_html('style', $block_html_attributes);
+		if (!empty($styles)) {
+			$stylesArray[] = '.entry.' . $class . ' { ' . $styles . ' }';
+		}
+	}
 
     $attributes = array(
         'personioid' => absint($position->getPersonioId()),
