@@ -115,4 +115,8 @@ personio_integration_pro_tracking_third_party_plugins
 
 personio_integration_form_select_option_presets
 -----------------------------------------------
-* Customize the empty select option in select field of application formss
+* Customize the empty select option in select field of application forms
+
+personio_integration_import_url
+-----------------------------------------------
+* Customize the URL which will be used as import-source
