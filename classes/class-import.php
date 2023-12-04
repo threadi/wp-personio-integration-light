@@ -85,7 +85,7 @@ class Import {
             $progress = helper::isCLI() ? \WP_CLI\Utils\make_progress_bar('Get positions from Personio by language', $languageCount) : false;
             foreach( $languages as $key => $enabled ) {
                 // define the url.
-                $url = helper::get_personio_xml_url(get_option('personioIntegrationUrl', '')).'?language=' . esc_attr($key);
+                $url = apply_filters( 'personio_integration_import_url', helper::get_personio_xml_url(get_option('personioIntegrationUrl', '')).'?language=' . esc_attr($key) );
 
                 // define settings for first request to get the last-modified-date.
                 $args = array(
