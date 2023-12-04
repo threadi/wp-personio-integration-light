@@ -339,3 +339,7 @@ Yes, it is without any further settings.
 * Advanced logging during import of positions
 * Fixed possible bug on archive page if job description is enabled there
 * Fixed visibility of text domain hint if Pro plugin is used
+
+= 2.6.1 =
+* Better check for third party functions
+* Fixed missing styles with some blocks in Block Editor
