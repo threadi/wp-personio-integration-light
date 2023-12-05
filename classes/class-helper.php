@@ -7,6 +7,7 @@
 
 namespace personioIntegration;
 
+use Exception;
 use WP_Post;
 use WP_Post_Type;
 use WP_Rewrite;
@@ -650,13 +651,14 @@ class helper {
         return false;
     }
 
-    /**
-     * Return the active Wordpress-language depending on our own support.
-     * If language is unknown for our plugin, use english.
-     *
-     * @return string
-     * @noinspection PhpUnused
-     */
+	/**
+	 * Return the active Wordpress-language depending on our own support.
+	 * If language is unknown for our plugin, use english.
+	 *
+	 * @return string
+	 * @noinspection PhpUnused
+	 * @throws Exception
+	 */
     public static function get_wp_lang(): string
     {
         $wpLang = substr(get_bloginfo('language'), 0, 2);
@@ -674,6 +676,16 @@ class helper {
         if( self::is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
             $wpLang = apply_filters('wpml_default_language', NULL );
         }
+
+		/**
+		 * Get main language set in weglot for the web page.
+		 */
+		if( self::is_plugin_active( 'weglot/weglot.php' ) && function_exists( 'weglot_get_service' ) ) {
+			$language_object = weglot_get_service('Language_Service_Weglot')->get_original_language();
+			if( $language_object ) {
+				$wpLang = $language_object->getInternalCode();
+			}
+		}
 
         // if language not set, use default language.
         if( empty($wpLang) ) {
@@ -712,6 +724,13 @@ class helper {
         if( self::is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
             $wpLang = apply_filters('wpml_current_language', NULL );
         }
+
+		/**
+		 * Get current language set in weglot for the web page.
+		 */
+		if( self::is_plugin_active( 'weglot/weglot.php' ) && function_exists( 'weglot_get_current_language' ) ) {
+			$wpLang = weglot_get_current_language();
+		}
 
         // if language not set, use default language.
         if( empty($wpLang) ) {
