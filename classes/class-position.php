@@ -526,6 +526,9 @@ class Position {
 
 		// if old template does not exist, use the one we configured.
 		if( ! Helper::has_template( $template_file ) ) {
+			if( empty($template) ) {
+				$template = 'default';
+			}
 			$template_file = 'parts/jobdescription/'.$template.'.php';
 		}
 
