@@ -121,10 +121,10 @@ class Import {
                 }
 
                 // check if response was with http-status 200, all others are errors.
-                if( 200 === $httpStatus ) {
+                if( 200 === apply_filters( 'personio_integration_import_header_status', $httpStatus ) ) {
 
                     // check if last modified timestamp has been changed.
-                    if( $lastModifiedTimestamp === absint(get_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key, 0)) && !$this->_debug ) {
+                    if( false !== $lastModifiedTimestamp && $lastModifiedTimestamp === absint(get_option(WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key, 0)) && !$this->_debug ) {
                         // timestamp did not change -> do nothing if we already have positions in the DB.
                         if( $positions_count > 0 ) {
                             update_option(WP_PERSONIO_OPTION_COUNT, ++$count);
