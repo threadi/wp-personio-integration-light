@@ -343,5 +343,7 @@ Yes, it is without any further settings.
 = 2.6.1 =
 * Added support for multilingual-plugin Weglot to detect the active language
 * Added new hooks
+* Changed import-format for createAt to UNIX-timestamp
+* Sort by date now sort the positions by its createAt-value from Personio
 * Better check for third party functions
 * Fixed missing styles with some blocks in Block Editor
