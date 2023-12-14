@@ -90,9 +90,15 @@ class Positions {
         if( !empty($parameterToAdd['sort']) ) {
             $query['order'] = $parameterToAdd['sort'];
         }
-        if( !empty($parameterToAdd['sortby']) && in_array($parameterToAdd['sortby'], ['title','date']) ) {
+        if( !empty($parameterToAdd['sortby']) && 'title' === $parameterToAdd['sortby'] ) {
             $query['orderby'] = $parameterToAdd['sortby'];
+			$query['personio_explicit_sort'] = 1;
         }
+	    if( !empty($parameterToAdd['sortby']) && 'date' === $parameterToAdd['sortby'] ) {
+		    $query['meta_key'] = WP_PERSONIO_INTEGRATION_CPT_CREATEDAT;
+		    $query['orderby'] = 'meta_value';
+		    $query['personio_explicit_sort'] = 1;
+	    }
         if( !empty($parameterToAdd['personioid']) ) {
             $query['meta_query'] = [
                 [

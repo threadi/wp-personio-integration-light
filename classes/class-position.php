@@ -271,7 +271,7 @@ class Position {
 	        }
 
             // add created at as post meta field.
-            update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, $this->data['createdAt']);
+            update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, strtotime($this->data['createdAt']));
 
             // add all language-specific titles.
             update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE.'_'.$this->lang, $this->data['post_title']);
