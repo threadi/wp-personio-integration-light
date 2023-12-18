@@ -2,7 +2,7 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
 Requires at least: 5.9.3
-Tested up to: 6.4.1
+Tested up to: 6.4.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -346,4 +346,5 @@ Yes, it is without any further settings.
 * Changed import-format for createAt to UNIX-timestamp
 * Sort by date now sort the positions by its createAt-value from Personio
 * Better check for third party functions
+* Compatibility with WordPress 6.4.2
 * Fixed missing styles with some blocks in Block Editor
