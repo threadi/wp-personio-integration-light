@@ -14,8 +14,8 @@ if( !empty($personio_attributes['groupby']) ) {
     $newGroupTitle = helper::get_taxonomy_name_of_position($personio_attributes['groupby'], $position);
 
     // output title if it has been changed during the loop
-    if (strcmp($newGroupTitle, $groupTitle)) {
-        $groupTitle = $newGroupTitle;
+    if (strcmp($newGroupTitle, $group_title)) {
+	    $group_title = $newGroupTitle;
         echo '<h2>' . $newGroupTitle . '</h2>';
     }
 }

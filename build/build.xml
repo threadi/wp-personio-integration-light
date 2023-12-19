@@ -120,6 +120,7 @@
             <zipfileset dir="${src.dir}" includes="${plugin.slug}-release.php" fullpath="${plugin.slug}/${plugin.slug}.php" />
         </zip>
         <delete file="${src.dir}/${plugin.slug}-release.php"/>
+		<delete file="${src.dir}/uninstall-release.php"/>
     </target>
 
     <target name="help">

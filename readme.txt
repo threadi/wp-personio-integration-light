@@ -1,12 +1,12 @@
 === Personio Integration Light ===
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
-Requires at least: 5.9.3
+Requires at least: 6.0
 Tested up to: 6.4.2
-Requires PHP: 7.4
+Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.6.1
+Stable tag: 3.0.0
 
 == Description ==
 
@@ -348,3 +348,9 @@ Yes, it is without any further settings.
 * Better check for third party functions
 * Compatibility with WordPress 6.4.2
 * Fixed missing styles with some blocks in Block Editor
+
+= 3.0.0 =
+* Compatible with WordPress Coding Standards 3.0
+* Now only compatible with PHP 8.0 or newer
+* And only compatible with WordPress 6.0 or newer
+* Removed 5 minutes cronjob as it is discouraged by WordPress (Migrate!!!)
