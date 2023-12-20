@@ -56,7 +56,7 @@ function personio_integration_position_shortcode( array $attributes = array() ):
 
 	// get the position by its PersonioId.
 	$positions = Positions::get_instance();
-	$position  = $positions->getPositionByPersonioId( $personio_attributes['personioid'] );
+	$position  = $positions->get_position_by_personio_id( $personio_attributes['personioid'] );
 
 	// do not show this position if it is not valid or could not be loaded.
 	if ( $position && ! $position->isValid() || ! $position ) {
@@ -77,7 +77,7 @@ function personio_integration_position_shortcode( array $attributes = array() ):
 
 	// collect the output.
 	ob_start();
-	include helper::getTemplate( 'single-' . WP_PERSONIO_INTEGRATION_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
+	include helper::get_template( 'single-' . WP_PERSONIO_INTEGRATION_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
 	return ob_get_clean();
 }
 
@@ -190,7 +190,7 @@ function personio_integration_positions_shortcode( array $attributes = array() )
 		// convert id-list from PersonioId in post_id.
 		$resulting_list = array();
 		foreach ( $personio_attributes['ids'] as $personio_id ) {
-			$position = $positions_obj->getPositionByPersonioId( $personio_id );
+			$position = $positions_obj->get_position_by_personio_id( $personio_id );
 			if ( $position instanceof Position ) {
 				$resulting_list[] = $position->ID;
 			}
@@ -203,8 +203,8 @@ function personio_integration_positions_shortcode( array $attributes = array() )
 	$personio_attributes['limit'] = apply_filters( 'personio_integration_limit', $limit_by_wp, $personio_attributes['limit'] );
 
 	// get the positions.
-	$positions                         = $positions_obj->getPositions( $personio_attributes['limit'], $personio_attributes );
-	$GLOBALS['personio_query_results'] = $positions_obj->getResult();
+	$positions                         = $positions_obj->get_positions( $personio_attributes['limit'], $personio_attributes );
+	$GLOBALS['personio_query_results'] = $positions_obj->get_results();
 
 	// change settings for output.
 	$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $attribute_defaults );
@@ -218,7 +218,7 @@ function personio_integration_positions_shortcode( array $attributes = array() )
 
 	// collect the output.
 	ob_start();
-	include helper::getTemplate( 'archive-' . WP_PERSONIO_INTEGRATION_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
+	include helper::get_template( 'archive-' . WP_PERSONIO_INTEGRATION_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
 	return ob_get_clean();
 }
 
@@ -355,7 +355,7 @@ function personio_integration_get_content( Position $position, array $attributes
 		?>
 		<div class="entry-content">
 			<?php
-				echo wp_kses_post( $position->getContent( ( isset( $attributes['jobdescription_template'] ) ? $attributes['jobdescription_template'] : '' ) ) );
+				echo wp_kses_post( $position->get_content( ( isset( $attributes['jobdescription_template'] ) ? $attributes['jobdescription_template'] : '' ) ) );
 			?>
 		</div>
 		<?php
@@ -395,7 +395,7 @@ function personio_integration_get_formular( Position $position, array $attribute
 	$styles = ! empty( $attributes['styles'] ) ? $attributes['styles'] : '';
 
 	// get template.
-	include helper::getTemplate( 'parts/properties-application-button.php' );
+	include helper::get_template( 'parts/properties-application-button.php' );
 }
 add_action( 'personio_integration_get_formular', 'personio_integration_get_formular', 10, 2 );
 
@@ -421,10 +421,10 @@ function personio_integration_update_post_object( WP_Post $post ): void {
 		$post->post_title = $position->getTitle();
 
 		// override the post_content.
-		$post->post_content = $position->getContent();
+		$post->post_content = $position->get_content();
 
 		// override the post_excerpt.
-		$post->post_excerpt = $position->getExcerpt();
+		$post->post_excerpt = $position->get_excerpt();
 	}
 }
 add_action( 'the_post', 'personio_integration_update_post_object' );
@@ -438,7 +438,7 @@ add_action( 'the_post', 'personio_integration_update_post_object' );
  */
 function personio_integration_get_single_template( string $single_template ): string {
 	if ( WP_PERSONIO_INTEGRATION_CPT === get_post_type( get_the_ID() ) ) {
-		$path = helper::getTemplate( 'single-personioposition.php' );
+		$path = helper::get_template( 'single-personioposition.php' );
 		if ( file_exists( $path ) ) {
 			$single_template = $path;
 		}
@@ -456,7 +456,7 @@ add_filter( 'single_template', 'personio_integration_get_single_template' );
  */
 function personio_integration_get_archive_template( string $archive_template ): string {
 	if ( is_post_type_archive( WP_PERSONIO_INTEGRATION_CPT ) ) {
-		$path = helper::getTemplate( 'archive-personioposition.php' );
+		$path = helper::get_template( 'archive-personioposition.php' );
 		if ( file_exists( $path ) ) {
 			$archive_template = $path;
 		}
@@ -523,7 +523,7 @@ function personio_integration_get_filter( string $filter, array $attributes ): v
 			$page_url = helper::get_current_url();
 
 			// output of filter.
-			include helper::getTemplate( 'parts/term-filter-' . $attributes['filtertype'] . '.php' );
+			include helper::get_template( 'parts/term-filter-' . $attributes['filtertype'] . '.php' );
 		}
 	}
 }

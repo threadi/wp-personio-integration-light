@@ -253,7 +253,7 @@ function personio_integration_get_application_button( array $attributes ): strin
 	// -> is no id is available choose a random one (e.g. for preview in Gutenberg).
 	$post_id = get_the_ID();
 	if ( empty( $post_id ) ) {
-		$position_array = $positions->getPositions( 1 );
+		$position_array = $positions->get_positions( 1 );
 		$position       = $position_array[0];
 	} else {
 		$position = $positions->get_position( $post_id );
@@ -302,7 +302,7 @@ function personio_integration_get_application_button( array $attributes ): strin
  */
 function personio_integration_add_blocks(): void {
 	// include Blocks only if Gutenberg exists and the PersonioURL is set.
-	if ( function_exists( 'register_block_type' ) && helper::is_personioUrl_set() ) {
+	if ( function_exists( 'register_block_type' ) && helper::is_personio_url_set() ) {
 		// collect attributes for single block.
 		$single_attributes = array(
 			'id'                  => array(
@@ -647,7 +647,7 @@ function personio_integration_get_details( array $attributes ): string {
 	// -> is no id is available choose a random one (e.g. for preview in Gutenberg).
 	$post_id = get_the_ID();
 	if ( empty( $post_id ) ) {
-		$position_array = $positions->getPositions( 1 );
+		$position_array = $positions->get_positions( 1 );
 		$position       = $position_array[0];
 	} else {
 		$position = $positions->get_position( $post_id );
@@ -709,7 +709,7 @@ function personio_integration_get_description( array $attributes ): string {
 	// -> is no id is available choose a random one (e.g. for preview in Gutenberg).
 	$post_id = get_the_ID();
 	if ( empty( $post_id ) ) {
-		$position_array = $positions->getPositions( 1 );
+		$position_array = $positions->get_positions( 1 );
 		$position       = $position_array[0];
 	} else {
 		$position = $positions->get_position( $post_id );

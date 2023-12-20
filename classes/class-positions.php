@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for handling positions.
+ *
+ * @package personio-integration-light
+ */
 
 namespace personioIntegration;
 
@@ -11,22 +16,24 @@ class Positions {
 
 	/**
 	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Positions
 	 */
-	protected static $instance;
+	protected static ?Positions $instance = null;
 
 	/**
 	 * Variable to hold the results of a query.
 	 *
 	 * @var WP_Query
 	 */
-	private WP_Query $_results;
+	private WP_Query $results;
 
 	/**
 	 * Variable to hold the list of initialized Positions.
 	 *
 	 * @var array
 	 */
-	private array $_positions = array();
+	private array $positions = array();
 
 	/**
 	 * Constructor, not used as this a Singleton object.
@@ -43,7 +50,7 @@ class Positions {
 	/**
 	 * Return the instance of this Singleton object.
 	 */
-	public static function get_instance() {
+	public static function get_instance(): Positions {
 		if ( ! static::$instance instanceof static ) {
 			static::$instance = new static();
 		}
@@ -53,67 +60,67 @@ class Positions {
 	/**
 	 * Return Position object of given id.
 	 *
-	 * @param $post_id
+	 * @param int $post_id The ID of the post object.
 	 * @return Position
 	 */
-	public function get_position( $post_id ): Position {
-		if ( empty( $this->_positions[ $post_id ] ) ) {
-			$this->_positions[ $post_id ] = new Position( $post_id );
+	public function get_position( int $post_id ): Position {
+		if ( empty( $this->positions[ $post_id ] ) ) {
+			$this->positions[ $post_id ] = new Position( $post_id );
 		}
-		return $this->_positions[ $post_id ];
+		return $this->positions[ $post_id ];
 	}
 
 	/**
 	 * Get positions from database as Position-objects.
 	 * Optionally limited by a number.
 	 *
-	 * @param int   $limit
-	 * @param array $parameterToAdd
+	 * @param int   $limit The limit, defaults to -1 for default-limiting.
+	 * @param array $parameter_to_add The parameter to add.
 	 * @return array
 	 */
-	public function getPositions( int $limit = -1, array $parameterToAdd = array() ): array {
+	public function get_positions( int $limit = -1, array $parameter_to_add = array() ): array {
 		$query = array(
 			'post_type'      => WP_PERSONIO_INTEGRATION_CPT,
 			'post_status'    => 'publish',
 			'posts_per_page' => $limit,
-			'no_found_rows'  => empty( $parameterToAdd['nopagination'] ) ? false : $parameterToAdd['nopagination'],
+			'no_found_rows'  => empty( $parameter_to_add['nopagination'] ) ? false : $parameter_to_add['nopagination'],
 			'order'          => 'asc',
 			'orderby'        => 'title',
 			'paged'          => ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1,
 		);
-		if ( ! empty( $parameterToAdd['ids'] ) ) {
-			$query['post__in'] = $parameterToAdd['ids'];
+		if ( ! empty( $parameter_to_add['ids'] ) ) {
+			$query['post__in'] = $parameter_to_add['ids'];
 		}
-		if ( ! empty( $parameterToAdd['sort'] ) ) {
-			$query['order'] = $parameterToAdd['sort'];
+		if ( ! empty( $parameter_to_add['sort'] ) ) {
+			$query['order'] = $parameter_to_add['sort'];
 		}
-		if ( ! empty( $parameterToAdd['sortby'] ) && 'title' === $parameterToAdd['sortby'] ) {
-			$query['orderby']                = $parameterToAdd['sortby'];
+		if ( ! empty( $parameter_to_add['sortby'] ) && 'title' === $parameter_to_add['sortby'] ) {
+			$query['orderby']                = $parameter_to_add['sortby'];
 			$query['personio_explicit_sort'] = 1;
 		}
-		if ( ! empty( $parameterToAdd['sortby'] ) && 'date' === $parameterToAdd['sortby'] ) {
+		if ( ! empty( $parameter_to_add['sortby'] ) && 'date' === $parameter_to_add['sortby'] ) {
 			$query['meta_key']               = WP_PERSONIO_INTEGRATION_CPT_CREATEDAT;
 			$query['orderby']                = 'meta_value';
 			$query['personio_explicit_sort'] = 1;
 		}
-		if ( ! empty( $parameterToAdd['personioid'] ) ) {
+		if ( ! empty( $parameter_to_add['personioid'] ) ) {
 			$query['meta_query'] = array(
 				array(
 					'key'     => WP_PERSONIO_INTEGRATION_CPT_PM_PID,
-					'value'   => $parameterToAdd['personioid'],
+					'value'   => $parameter_to_add['personioid'],
 					'compare' => '=',
 				),
 			);
 		}
 
-		// add taxonomies as filter
+		// add taxonomies as filter.
 		$tax_query = array();
 		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
-			if ( ! empty( $parameterToAdd[ $taxonomy['slug'] ] ) ) {
+			if ( ! empty( $parameter_to_add[ $taxonomy['slug'] ] ) ) {
 				$tax_query[] = array(
 					'taxonomy' => $taxonomy_name,
 					'field'    => 'term_id',
-					'terms'    => $parameterToAdd[ $taxonomy['slug'] ],
+					'terms'    => $parameter_to_add[ $taxonomy['slug'] ],
 				);
 			}
 		}
@@ -126,13 +133,13 @@ class Positions {
 			} else {
 				$query['tax_query'] = $tax_query;
 			}
-		} elseif ( ! empty( $parameterToAdd['groupby'] ) ) {
-			$taxonomy = helper::get_taxonomy_name_by_simple_name( $parameterToAdd['groupby'] );
+		} elseif ( ! empty( $parameter_to_add['groupby'] ) ) {
+			$taxonomy = helper::get_taxonomy_name_by_simple_name( $parameter_to_add['groupby'] );
 			if ( ! empty( $taxonomy ) ) {
 				$terms              = get_terms(
 					array(
 						'taxonomy'   => $taxonomy,
-						'fields'     => 'ids',   // get the IDs only
+						'fields'     => 'ids',
 						'hide_empty' => true,
 					)
 				);
@@ -143,35 +150,35 @@ class Positions {
 						'terms'    => $terms,
 					),
 				);
-				add_filter( 'posts_join', array( $this, 'addTaxonomyTableToPositionQuery' ) );
-				add_filter( 'posts_orderby', array( $this, 'setPositionQueryOrderByForGroup' ) );
+				add_filter( 'posts_join', array( $this, 'add_taxonomy_table_to_position_query' ) );
+				add_filter( 'posts_orderby', array( $this, 'set_position_query_order_by_for_group' ) );
 			}
 		}
-		// get the results
-		$this->_results = new WP_Query( $query );
+		// get the results.
+		$this->results = new WP_Query( $query );
 
-		// remove filter
-		remove_filter( 'posts_join', array( $this, 'addTaxonomyTableToPositionQuery' ) );
-		remove_filter( 'posts_orderby', array( $this, 'setPositionQueryOrderByForGroup' ) );
+		// remove filter.
+		remove_filter( 'posts_join', array( $this, 'add_taxonomy_table_to_position_query' ) );
+		remove_filter( 'posts_orderby', array( $this, 'set_position_query_order_by_for_group' ) );
 
 		// get the positions as object in array
-		// -> optionally grouped by a given taxonomy
+		// -> optionally grouped by a given taxonomy.
 		$array = array();
-		foreach ( $this->_results->posts as $post ) {
-			// get the position object
-			$positionObject = $this->get_position( $post->ID );
+		foreach ( $this->results->posts as $post ) {
+			// get the position object.
+			$position_object = $this->get_position( $post->ID );
 
-			// set used language on position-object
-			if ( ! empty( $parameterToAdd['lang'] ) ) {
-				$positionObject->lang = $parameterToAdd['lang'];
+			// set used language on position-object.
+			if ( ! empty( $parameter_to_add['lang'] ) ) {
+				$position_object->lang = $parameter_to_add['lang'];
 			}
 
-			// consider grouping of entries in list
-			if ( ! empty( $parameterToAdd['groupby'] ) ) {
-				$array[ helper::get_taxonomy_name_of_position( $parameterToAdd['groupby'], $positionObject ) ] = $positionObject;
+			// consider grouping of entries in list.
+			if ( ! empty( $parameter_to_add['groupby'] ) ) {
+				$array[ helper::get_taxonomy_name_of_position( $parameter_to_add['groupby'], $position_object ) ] = $position_object;
 			} else {
-				// ungrouped simply add the position to the list
-				$array[] = $positionObject;
+				// ungrouped simply add the position to the list.
+				$array[] = $position_object;
 			}
 		}
 		ksort( $array );
@@ -183,18 +190,18 @@ class Positions {
 	 *
 	 * @return WP_Query
 	 */
-	public function getResult(): WP_Query {
-		return $this->_results;
+	public function get_results(): WP_Query {
+		return $this->results;
 	}
 
 	/**
-	 * Get a single position by its personioId.
+	 * Get a single position by its PersonioID.
 	 *
-	 * @param $personioid
+	 * @param string $personioid The PersonioID.
 	 * @return Position|null
 	 */
-	public function getPositionByPersonioId( $personioid ): ?Position {
-		$array = $this->getPositions( 1, array( 'personioid' => $personioid ) );
+	public function get_position_by_personio_id( string $personioid ): ?Position {
+		$array = $this->get_positions( 1, array( 'personioid' => $personioid ) );
 		if ( ! empty( $array ) ) {
 			return $array[0];
 		}
@@ -202,21 +209,12 @@ class Positions {
 	}
 
 	/**
-	 * Return the request-query.
-	 *
-	 * @return array
-	 */
-	public function getQuery(): array {
-		return $this->_results->query;
-	}
-
-	/**
 	 * Helper for order the results by taxonomy name via 'posts_orderby'-filter.
 	 *
-	 * @param $orderby_statement
+	 * @param string $orderby_statement The order by statement.
 	 * @return string
 	 */
-	public function setPositionQueryOrderByForGroup( $orderby_statement ): string {
+	public function set_position_query_order_by_for_group( string $orderby_statement ): string {
 		global $wpdb;
 		return ' ' . $wpdb->terms . '.name ASC, ' . $orderby_statement;
 	}
@@ -225,10 +223,10 @@ class Positions {
 	 * Helper to add the term-table in the sql-statement to order the results by a given taxonomy name
 	 * via 'posts_join'-filter.
 	 *
-	 * @param $join
+	 * @param string $join The join statement.
 	 * @return string
 	 */
-	public function addTaxonomyTableToPositionQuery( $join ): string {
+	public function add_taxonomy_table_to_position_query( string $join ): string {
 		global $wpdb;
 		return $join . " LEFT JOIN $wpdb->terms ON $wpdb->terms.term_id = $wpdb->term_relationships.term_taxonomy_id";
 	}
@@ -236,10 +234,12 @@ class Positions {
 	/**
 	 * Return count of positions in db.
 	 *
+	 * TODO remove this.
+	 *
 	 * @return int
 	 * @noinspection PhpUnused
 	 */
-	public function getPositionsCount(): int {
-		return count( $this->getPositions() );
+	public function get_positions_count(): int {
+		return count( $this->get_positions() );
 	}
 }

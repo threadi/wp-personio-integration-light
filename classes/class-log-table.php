@@ -1,4 +1,11 @@
 <?php
+/**
+ * File for handling table of logs in this plugin.
+ *
+ * TODO mit easy-language abgleichen wg. Sortierung.
+ *
+ * @package personio-integration-light
+ */
 
 namespace personioIntegration;
 
@@ -7,30 +14,7 @@ use WP_List_Table;
 /**
  * Handler for log-output in backend.
  */
-class Logs extends WP_List_Table {
-
-	// database-object
-	private $_wpdb;
-
-	// name for own database-table.
-	private string $_tableName;
-
-	/**
-	 * Constructor for Logging-Handler.
-	 */
-	public function __construct() {
-		global $wpdb;
-
-		// get the db-connection
-		$this->_wpdb = $wpdb;
-
-		// set the table-name
-		$this->_tableName = $this->_wpdb->prefix . 'personio_import_logs';
-
-		// call parent constructor
-		parent::__construct();
-	}
-
+class Log_Table extends WP_List_Table {
 	/**
 	 * Override the parent columns method. Defines the columns to use in your listing table
 	 *
@@ -50,11 +34,12 @@ class Logs extends WP_List_Table {
 	 * @return array
 	 */
 	private function table_data(): array {
+		global $wpdb;
 		$sql = '
             SELECT `state`, `time` AS `date`, `log`
-            FROM `' . $this->_tableName . '`
+            FROM `' . $wpdb->prefix . 'personio_import_logs`
             ORDER BY `time` DESC';
-		return $this->_wpdb->get_results( $sql, ARRAY_A );
+		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 
 	/**
@@ -92,26 +77,17 @@ class Logs extends WP_List_Table {
 	/**
 	 * Define what data to show on each column of the table
 	 *
-	 * @param  array  $item        Data
-	 * @param  String $column_name - Current column name
+	 * @param  array  $item        Data.
+	 * @param  String $column_name - Current column name.
 	 *
-	 * @return mixed
-	 * @noinspection PhpMissingReturnTypeInspection
-	 * @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection
+	 * @return string
 	 */
-	public function column_default( $item, $column_name ) {
-		switch ( $column_name ) {
-			case 'date':
-				return Helper::get_format_date_time( $item[ $column_name ] );
-
-			case 'state':
-				return $item[ $column_name ];
-
-			case 'log':
-				return nl2br( $item[ $column_name ] );
-
-			default:
-				return print_r( $item, true );
-		}
+	public function column_default( $item, $column_name ): string {
+		return match ( $column_name ) {
+			'date' => Helper::get_format_date_time( $item[ $column_name ] ),
+			'state' => $item[ $column_name ],
+			'log' => nl2br( $item[ $column_name ] ),
+			default => '',
+		};
 	}
 }

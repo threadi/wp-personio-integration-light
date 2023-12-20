@@ -132,7 +132,7 @@ class PositionsWidget extends WP_Widget {
 	 * @noinspection PhpMissingReturnTypeInspection
 	 */
 	function form( $instance ) {
-		$this->createWidgetFieldOutput( $this->getFields(), $instance );
+		$this->create_widget_field_output( $this->getFields(), $instance );
 	}
 
 	/**
@@ -143,7 +143,7 @@ class PositionsWidget extends WP_Widget {
 	 * @return array
 	 */
 	function update( $new_instance, $old_instance ): array {
-		return $this->secureWidgetFields( $this->getFields(), $new_instance, $old_instance );
+		return $this->secure_widget_fields( $this->getFields(), $new_instance, $old_instance );
 	}
 
 	/**

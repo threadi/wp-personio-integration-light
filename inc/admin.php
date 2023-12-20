@@ -101,7 +101,7 @@ add_action( 'admin_enqueue_scripts', 'personio_integration_add_styles_and_js_adm
  */
 function personio_integration_add_dashboard_widgets(): void {
 	// only if Personio URL is available.
-	if ( ! helper::is_personioUrl_set() ) {
+	if ( ! helper::is_personio_url_set() ) {
 		return;
 	}
 
@@ -131,7 +131,7 @@ function personio_integration_dashboard_widget_function( string $post, array $ca
 	if ( function_exists( 'personio_integration_set_ordering' ) ) {
 		remove_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
 	}
-	$positions_list = $positions_obj->getPositions(
+	$positions_list = $positions_obj->get_positions(
 		3,
 		array(
 			'sortby' => 'date',
@@ -312,7 +312,7 @@ add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PL
  * @noinspection PhpUnused
  */
 function personio_integration_admin_check_config(): void {
-	if ( ! helper::is_personioUrl_set() ) {
+	if ( ! helper::is_personio_url_set() ) {
 		set_transient( 'personio_integration_no_url_set', 1, 60 );
 	} elseif ( get_option( 'personioIntegrationPositionCount', 0 ) > 0 ) {
 		set_transient( 'personio_integration_limit_hint', 0 );
@@ -349,7 +349,7 @@ add_action( 'admin_init', 'personio_integration_admin_show_review_hint' );
  * @noinspection PhpUnused
  */
 function personio_integration_admin_check_position_count(): void {
-	if ( helper::is_personioUrl_set() && 0 === absint( get_option( 'personioIntegrationPositionCount', 0 ) ) ) {
+	if ( helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationPositionCount', 0 ) ) ) {
 		set_transient( 'personio_integration_no_position_imported', 1, 60 );
 	}
 }
@@ -579,7 +579,7 @@ add_action( 'personio_integration_admin_show_pro_hint', 'personio_integration_ad
  */
 function personio_integration_admin_add_body_class_free( string $classes ): string {
 	$classes .= ' personio-integration-free';
-	if ( ! helper::is_personioUrl_set() ) {
+	if ( ! helper::is_personio_url_set() ) {
 		$classes .= ' personio-integration-url-missing';
 	}
 	return $classes;
@@ -885,7 +885,7 @@ function personio_integration_admin_personio_meta_box_title( WP_Post $post ): vo
  */
 function personio_integration_admin_personio_meta_box_description( WP_Post $post ): void {
 	$position_obj = Positions::get_instance()->get_position( $post->ID );
-	echo wp_kses_post( $position_obj->getContent() );
+	echo wp_kses_post( $position_obj->get_content() );
 }
 
 /**
@@ -982,7 +982,7 @@ add_action( 'admin_init', 'personio_integration_admin_allow_save_settings' );
  * @return array
  */
 function personio_integration_admin_set_site_status_test( array $statuses ): array {
-	if ( helper::is_personioUrl_set() ) {
+	if ( helper::is_personio_url_set() ) {
 		$statuses['async']['personio_integration_import_cron_checks']     = array(
 			'label'    => __( 'Personio Integration Import Cron Check', 'personio-integration-light' ),
 			'test'     => rest_url( 'personio/v1/import_cron_checks' ),

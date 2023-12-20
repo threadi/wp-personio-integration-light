@@ -13,14 +13,62 @@ use WP_Block_Template;
  * Object to represent a single gutenberg template for our own plugin.
  */
 class Template {
-	private string $_type;
-	private string $_slug;
-	private string $_source;
-	private string $_title;
-	private string $_description;
-	private string $_template;
-	private string $_content;
-	private int $_post_id;
+
+	/**
+	 * The template type.
+	 *
+	 * @var string
+	 */
+	private string $type;
+
+	/**
+	 * The template slug.
+	 *
+	 * @var string
+	 */
+	private string $slug;
+
+	/**
+	 * The template source.
+	 *
+	 * @var string
+	 */
+	private string $source;
+
+	/**
+	 * The template title.
+	 *
+	 * @var string
+	 */
+	private string $title;
+
+	/**
+	 * The template description.
+	 *
+	 * @var string
+	 */
+	private string $description;
+
+	/**
+	 * The template itself.
+	 *
+	 * @var string
+	 */
+	private string $template;
+
+	/**
+	 * The template content.
+	 *
+	 * @var string
+	 */
+	private string $content;
+
+	/**
+	 * The template ID.
+	 *
+	 * @var int
+	 */
+	private int $post_id;
 
 	/**
 	 * Constructor, not used as this a Singleton object.
@@ -42,17 +90,17 @@ class Template {
 	 * @return string
 	 */
 	public function get_type(): string {
-		return $this->_type;
+		return $this->type;
 	}
 
 	/**
 	 * Set template type.
 	 *
-	 * @param $type
+	 * @param string $type The type.
 	 * @return void
 	 */
-	public function set_type( $type ): void {
-		$this->_type = $type;
+	public function set_type( string $type ): void {
+		$this->type = $type;
 	}
 
 	/**
@@ -61,17 +109,17 @@ class Template {
 	 * @return string
 	 */
 	public function get_slug(): string {
-		return $this->_slug;
+		return $this->slug;
 	}
 
 	/**
 	 * Set template slug.
 	 *
-	 * @param $slug
+	 * @param string $slug The slug.
 	 * @return void
 	 */
-	public function set_slug( $slug ): void {
-		$this->_slug = $slug;
+	public function set_slug( string $slug ): void {
+		$this->slug = $slug;
 	}
 
 	/**
@@ -80,17 +128,17 @@ class Template {
 	 * @return string
 	 */
 	public function get_source(): string {
-		return $this->_source;
+		return $this->source;
 	}
 
 	/**
 	 * Set template source.
 	 *
-	 * @param $source
+	 * @param string $source The source.
 	 * @return void
 	 */
-	public function set_source( $source ): void {
-		$this->_source = $source;
+	public function set_source( string $source ): void {
+		$this->source = $source;
 	}
 
 	/**
@@ -99,17 +147,17 @@ class Template {
 	 * @return string
 	 */
 	public function get_title(): string {
-		return $this->_title;
+		return $this->title;
 	}
 
 	/**
 	 * Set template source.
 	 *
-	 * @param $title
+	 * @param string $title The title.
 	 * @return void
 	 */
-	public function set_title( $title ): void {
-		$this->_title = $title;
+	public function set_title( string $title ): void {
+		$this->title = $title;
 	}
 
 	/**
@@ -118,17 +166,17 @@ class Template {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return $this->_description;
+		return $this->description;
 	}
 
 	/**
 	 * Set template source.
 	 *
-	 * @param $description
+	 * @param string $description The description.
 	 * @return void
 	 */
-	public function set_description( $description ): void {
-		$this->_description = $description;
+	public function set_description( string $description ): void {
+		$this->description = $description;
 	}
 
 	/**
@@ -158,18 +206,18 @@ class Template {
 	 * @return WP_Block_Template
 	 */
 	public function get_block_template(): WP_Block_Template {
-		// check the source of this template (plugin or theme)
+		// check the source of this template (plugin or theme).
 		$template_is_from_theme = 'theme' === $this->get_source();
 
-		// get the theme name
+		// get the theme name.
 		$theme_name = wp_get_theme()->get( 'TextDomain' );
 
-		// create Block Template  object
-		$template                 = new \WP_Block_Template();
+		// create Block Template  object.
+		$template                 = new WP_Block_Template();
 		$template->id             = $template_is_from_theme ? $theme_name . '//' . $this->get_slug() : WP_PERSONIO_GUTENBERG_PARENT_ID . '//' . $this->get_slug();
 		$template->theme          = $template_is_from_theme ? $theme_name : WP_PERSONIO_GUTENBERG_PARENT_ID;
 		$template->content        = $this->inject_theme_attribute_in_content( $this->get_content() );
-		$template->source         = $this->get_source() ? $this->get_source() : 'plugin';
+		$template->source         = $this->get_source() ? $this->get_source() : 'plugin'; // TODO check this.
 		$template->slug           = $this->get_slug();
 		$template->type           = $this->get_type();
 		$template->title          = $this->get_title();
@@ -181,7 +229,7 @@ class Template {
 		$template->post_types     = array();
 		$template->area           = 'uncategorized';
 
-		// return result
+		// return result.
 		return $template;
 	}
 
@@ -189,10 +237,10 @@ class Template {
 	 * Parse block template content to inject theme-specific attributes in it (e.g. for header and footer).
 	 *
 	 * @source WooCommerce BlockTemplateUtils.php
-	 * @param $template_content
+	 * @param string $template_content The content with block data.
 	 * @return string Updated wp_template content.
 	 */
-	private function inject_theme_attribute_in_content( $template_content ): string {
+	private function inject_theme_attribute_in_content( string $template_content ): string {
 		$theme               = wp_get_theme()->get_stylesheet();
 		$has_updated_content = false;
 		$new_content         = '';
@@ -210,7 +258,7 @@ class Template {
 		}
 
 		if ( $has_updated_content ) {
-			foreach ( $template_blocks as &$block ) {
+			foreach ( $template_blocks as &$block ) { // TODO check this.
 				$new_content .= serialize_block( $block );
 			}
 
@@ -224,10 +272,13 @@ class Template {
 	 * Parse block template content to inject theme-specific attributes in it (e.g. for header and footer).
 	 *
 	 * @source WooCommerce BlockTemplateUtils.php
-	 * @param $template_content
+	 *
+	 * @param string $template_content The content with blocks.
+	 *
 	 * @return string Updated wp_template content.
+	 * @noinspection PhpUnused
 	 */
-	public function update_theme_attribute_in_content( $template_content ): string {
+	public function update_theme_attribute_in_content( string $template_content ): string {
 		$theme               = wp_get_theme()->get_stylesheet();
 		$has_updated_content = false;
 		$new_content         = '';
@@ -257,10 +308,10 @@ class Template {
 	 * the passed blocks and their inner blocks.
 	 *
 	 * @source WooCommerce BlockTemplateUtils.php
-	 * @param $blocks
+	 * @param array $blocks List of blocks.
 	 * @return array block references to the passed blocks and their inner blocks.
 	 */
-	private function flatten_blocks( &$blocks ): array {
+	private function flatten_blocks( array &$blocks ): array {
 		$all_blocks = array();
 		$queue      = array();
 		foreach ( $blocks as &$block ) {
@@ -291,17 +342,17 @@ class Template {
 	 * @return string
 	 */
 	public function get_template(): string {
-		return $this->_template;
+		return $this->template;
 	}
 
 	/**
 	 * Set template-name for this template (e.g. "archive-xy").
 	 *
-	 * @param $template
+	 * @param string $template The template.
 	 * @return void
 	 */
-	public function set_template( $template ): void {
-		$this->_template = $template;
+	public function set_template( string $template ): void {
+		$this->template = $template;
 	}
 
 	/**
@@ -320,19 +371,24 @@ class Template {
 	 */
 	public function get_content(): string {
 		if ( empty( $this->_content ) ) {
-			$this->_content = file_get_contents( $this->get_file() );
+			// get WP Filesystem-handler.
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			\WP_Filesystem();
+			global $wp_filesystem;
+
+			$this->_content = $wp_filesystem->get_contents( $this->get_file() );
 		}
-		return $this->_content;
+		return $this->content;
 	}
 
 	/**
 	 * Set the content.
 	 *
-	 * @param $content
+	 * @param string $content The content.
 	 * @return void
 	 */
-	public function set_content( $content ): void {
-		$this->_content = $content;
+	public function set_content( string $content ): void {
+		$this->content = $content;
 	}
 
 	/**
@@ -341,16 +397,16 @@ class Template {
 	 * @return int
 	 */
 	public function get_post_id(): int {
-		return $this->_post_id;
+		return $this->post_id;
 	}
 
 	/**
 	 * Set post_id if template resists in DB.
 	 *
-	 * @param $post_id
+	 * @param int $post_id The post id.
 	 * @return void
 	 */
-	public function set_post_id( $post_id ): void {
-		$this->_post_id = $post_id;
+	public function set_post_id( int $post_id ): void {
+		$this->post_id = $post_id;
 	}
 }

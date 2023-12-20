@@ -34,7 +34,7 @@ class PositionWidget extends WP_Widget {
 	private function getFields(): array {
 		// get the actual positions
 		$positionsObj  = Positions::get_instance();
-		$positionsList = $positionsObj->getPositions( 0 );
+		$positionsList = $positionsObj->get_positions( 0 );
 		$positions     = array();
 		foreach ( $positionsList as $position ) {
 			$positions[ $position->ID ] = $position->getTitle();
@@ -110,7 +110,7 @@ class PositionWidget extends WP_Widget {
 	 * @return void
 	 * @noinspection PhpMissingReturnTypeInspection*/
 	function form( $instance ) {
-		$this->createWidgetFieldOutput( $this->getFields(), $instance );
+		$this->create_widget_field_output( $this->getFields(), $instance );
 	}
 
 	/**
@@ -121,7 +121,7 @@ class PositionWidget extends WP_Widget {
 	 * @return array
 	 */
 	function update( $new_instance, $old_instance ): array {
-		return $this->secureWidgetFields( $this->getFields(), $new_instance, $old_instance );
+		return $this->secure_widget_fields( $this->getFields(), $new_instance, $old_instance );
 	}
 
 	/**

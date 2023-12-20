@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
  */
 
 // embed block-specific styling
-include helper::getTemplate("parts/styling.php");
+include helper::get_template("parts/styling.php");
 
 ?>
 <div class="entry-content">

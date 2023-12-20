@@ -15,20 +15,20 @@ use WP_Rewrite;
 /**
  * The helper class itself.
  */
-class helper {
+class Helper {
 
 	/**
 	 * Add terms from an array to a taxonomy.
 	 *
-	 * @param $array
-	 * @param $taxonomy
+	 * @param array  $list_or_terms List of terms to add.
+	 * @param string $taxonomy The taxonomy.
 	 * @return void
 	 */
-	public static function addTerms( $array, $taxonomy ): void {
-		foreach ( $array as $key => $termTitle ) {
-			if ( ! term_exists( $key, $taxonomy ) ) {
+	public static function add_terms( array $list_or_terms, string $taxonomy ): void {
+		foreach ( $list_or_terms as $term => $term_title ) {
+			if ( ! term_exists( $term, $taxonomy ) ) {
 				wp_insert_term(
-					$key,   // the term
+					$term,
 					$taxonomy
 				);
 			}
@@ -40,14 +40,15 @@ class helper {
 	 *
 	 * @return bool
 	 */
-	public static function isGermanLanguage(): bool {
-		$germanLanguages = array(
+	public static function is_german_language(): bool {
+		// TODO find better way for languages.
+		$german_languages = array(
 			'de_DE',
 			'de_DE_formal',
 			'de_CH',
 			'de_AT',
 		);
-		return in_array( get_bloginfo( 'language' ), $germanLanguages );
+		return in_array( get_bloginfo( 'language' ), $german_languages, true );
 	}
 
 	/**
@@ -55,32 +56,34 @@ class helper {
 	 *
 	 * @return string
 	 */
-	private static function getLogoImg(): string {
-		return '<img src="' . self::getPluginPath() . 'gfx/personio_icon.png" alt="">';
+	private static function get_logo_img(): string {
+		return '<img src="' . self::get_plugin_path() . 'gfx/personio_icon.png" alt="">';
 	}
 
 	/**
 	 * Return the translated transient-string of given transient.
 	 *
-	 * @param $transient
+	 * TODO use transients-object instead of this.
+	 *
+	 * @param string $transient The transient.
 	 * @return string
 	 */
-	public static function get_admin_transient_content( $transient ): string {
+	public static function get_admin_transient_content( string $transient ): string {
 		$transient_value = get_transient( $transient );
 
 		$array = array(
 			'personio_integration_no_simplexml'           => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p><u>%s</u> %s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p><u>%s</u> %s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				__( 'Plugin was not activated!', 'personio-integration-light' ),
 				__( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' )
 			),
 			'personio_integration_no_url_set'             => sprintf(
-				'<h3><img src="' . self::getPluginPath() . 'gfx/personio_icon.png" alt="">%s</h3><p><u>%s</u> %s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p><u>%s</u> %s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				__( 'The specification of your Personio URL is still pending.', 'personio-integration-light' ),
-				/* translators: %1$s is replaced with "string" */
 				sprintf(
+					/* translators: %1$s is replaced with "string" */
 					__( 'To do this, please go to the <a href="%s">settings page</a>.', 'personio-integration-light' ),
 					esc_url(
 						add_query_arg(
@@ -94,14 +97,14 @@ class helper {
 				)
 			),
 			'personio_integration_no_position_imported'   => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p><u>%s</u> %s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p><u>%s</u> %s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				__( 'You have not imported your open positions from Personio until now.', 'personio-integration-light' ),
 				/* translators: %1$s is replaced with "string" */
 				__( 'Click on the following button to import your positions from Personio now:', 'personio-integration-light' ) . ' <br><br><a href="' . self::get_import_url() . '" class="button button-primary">' . __( 'Run import', 'personio-integration-light' ) . '</a>'
 			),
 			'personio_integration_import_run'             => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				sprintf(
 					/* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
@@ -121,7 +124,7 @@ class helper {
 				)
 			),
 			'personio_integration_import_cancel'          => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				sprintf(
 				/* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
@@ -141,7 +144,7 @@ class helper {
 				)
 			),
 			'personio_integration_delete_run'             => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				__(
 					'<strong>The positions has been deleted.</strong> You can run the import anytime again to import positions.',
@@ -149,7 +152,7 @@ class helper {
 				)
 			),
 			'personio_integration_could_not_delete'       => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				__(
 					'<strong>The positions could not been deleted.</strong> An import is actual running.',
@@ -157,12 +160,12 @@ class helper {
 				)
 			),
 			'personio_integration_import_now'             => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				__( '<strong>The specified Personio URL is reachable.</strong> Click on the following button to import your positions from Personio now:', 'personio-integration-light' ) . ' <br><br><a href="' . self::get_import_url() . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>'
 			),
 			'personio_integration_url_not_usable'         => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				sprintf(
 					/* translators: %1$s is replaced with the entered Personio-URL */
@@ -171,7 +174,7 @@ class helper {
 				)
 			),
 			'personio_integration_limit_hint'             => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				sprintf(
 				/* translators: %1$s is replaced with "string" */
@@ -180,61 +183,61 @@ class helper {
 				)
 			),
 			'personio_integration_import_canceled'        => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				__( '<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes to long please check your hosting logfiles for possible restrictions mentioned there.', 'personio-integration-light' ) . ' <br><br><a href="' . self::get_import_url() . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>'
 			),
 			'personio_integration_old_templates'          => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>%s<p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>%s<p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				__( '<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'personio-integration-light' ),
 				$transient_value,
 				__( 'Hint: the version-number in the header of the files must match.', 'personio-integration-light' )
 			),
 			'personio_integration_divi'                   => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 				sprintf( __( 'We realized that you are using Divi - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Divi.', 'personio-integration-light' ), self::get_pro_url() ),
 			),
 			'personio_integration_elementor'              => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 				sprintf( __( 'We realized that you are using Elementor - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Elementor.', 'personio-integration-light' ), self::get_pro_url() ),
 			),
 			'personio_integration_wpbakery'               => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 				sprintf( __( 'We realized that you are using WPBakery - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in WPBakery.', 'personio-integration-light' ), self::get_pro_url() ),
 			),
 			'personio_integration_beaver'                 => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 				sprintf( __( 'We realized that you are using Beaver Builder - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Beaver Builder.', 'personio-integration-light' ), self::get_pro_url() ),
 			),
 			'personio_integration_siteorigin'             => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 				sprintf( __( 'We realized that you are using Site Origin - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Site Origin.', 'personio-integration-light' ), self::get_pro_url() ),
 			),
 			'personio_integration_themify'                => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 				sprintf( __( 'We realized that you are using Themify - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Themify.', 'personio-integration-light' ), self::get_pro_url() ),
 			),
 			'personio_integration_avada'                  => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 				sprintf( __( 'We realized that you are using Avada - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Avada.', 'personio-integration-light' ), self::get_pro_url() ),
 			),
 			'personio_integration_admin_show_review_hint' => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				sprintf(
 				/* translators: %1$s is replaced with "string" */
@@ -243,7 +246,7 @@ class helper {
 				)
 			),
 			'personio_integration_admin_show_text_domain_hint' => sprintf(
-				'<h3>' . self::getLogoImg() . '%s</h3><p>%s</p>',
+				'<h3>' . self::get_logo_img() . '%s</h3><p>%s</p>',
 				__( 'Personio Integration', 'personio-integration-light' ),
 				__( 'You are using our old text domain to adapt textes of Personio Integration Light. Please note that we have a new text domain. You need to re-enter your customizations in this one. Sorry for the inconvenience - it will be a one-time thing.', 'personio-integration-light' ),
 			),
@@ -261,9 +264,9 @@ class helper {
 	 *
 	 * @return string
 	 */
-	public static function getArchiveSlug(): string {
+	public static function get_archive_slug(): string {
 		$slug = 'positions';
-		if ( self::get_wp_lang() == 'de' ) {
+		if ( 'de' === self::get_wp_lang() ) {
 			$slug = 'stellen';
 		}
 		return $slug;
@@ -274,9 +277,9 @@ class helper {
 	 *
 	 * @return string
 	 */
-	public static function getDetailSlug(): string {
+	public static function get_detail_slug(): string {
 		$slug = 'position';
-		if ( self::get_wp_lang() == 'de' ) {
+		if ( 'de' === self::get_wp_lang() ) {
 			$slug = 'stelle';
 		}
 		return $slug;
@@ -326,11 +329,11 @@ class helper {
 	/**
 	 * Get the name of a taxonomy on a position.
 	 *
-	 * @param $taxonomy
-	 * @param $position
+	 * @param string   $taxonomy The taxonomy.
+	 * @param Position $position The requested positon.
 	 * @return string
 	 */
-	public static function get_taxonomy_name_of_position( $taxonomy, $position ): string {
+	public static function get_taxonomy_name_of_position( string $taxonomy, Position $position ): string {
 		$name = '';
 		switch ( $taxonomy ) {
 			case 'recruitingCategory':
@@ -371,12 +374,14 @@ class helper {
 	 * Get the taxonomy name by its simple name.
 	 * E.g. from "recruitingCategory" to "personioRecruitingCategory".
 	 *
-	 * @param $simpleName
+	 * TODO necessary?
+	 *
+	 * @param string $simple_name The simple name of the requested taxonomy.
 	 * @return string
 	 */
-	public static function get_taxonomy_name_by_simple_name( $simpleName ): string {
+	public static function get_taxonomy_name_by_simple_name( string $simple_name ): string {
 		$taxonomy = '';
-		switch ( $simpleName ) {
+		switch ( $simple_name ) {
 			case 'recruitingCategory':
 				$taxonomy = WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY;
 				break;
@@ -429,24 +434,24 @@ class helper {
 	 *
 	 * Also load the requested file if it is located in the /wp-content/themes/xy/personio-integration-light/ directory.
 	 *
-	 * @param $template
+	 * @param string $template The template to use.
 	 * @return string
 	 */
-	public static function getTemplate( $template ): string {
+	public static function get_template( string $template ): string {
 		if ( is_embed() ) {
 			return $template;
 		}
 
 		// check if requested template exist in theme.
-		$themeTemplate = locate_template( trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
-		if ( $themeTemplate ) {
-			return $themeTemplate;
+		$theme_template = locate_template( trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
+		if ( $theme_template ) {
+			return $theme_template;
 		}
 
 		// check if requested template exist in plugin which uses our hook.
-		$pluginTemplate = plugin_dir_path( apply_filters( 'personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'templates/' . $template;
-		if ( file_exists( $pluginTemplate ) ) {
-			return $pluginTemplate;
+		$plugin_template = plugin_dir_path( apply_filters( 'personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'templates/' . $template;
+		if ( file_exists( $plugin_template ) ) {
+			return $plugin_template;
 		}
 
 		// return template from light-plugin.
@@ -461,14 +466,14 @@ class helper {
 	 */
 	public static function has_template( string $template ): bool {
 		// check if requested template exist in theme.
-		$themeTemplate = locate_template( trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
-		if ( $themeTemplate ) {
+		$theme_template = locate_template( trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
+		if ( $theme_template ) {
 			return true;
 		}
 
 		// check if requested template exist in plugin which uses our hook.
-		$pluginTemplate = plugin_dir_path( apply_filters( 'personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'templates/' . $template;
-		if ( file_exists( $pluginTemplate ) ) {
+		$plugin_template = plugin_dir_path( apply_filters( 'personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'templates/' . $template;
+		if ( file_exists( $plugin_template ) ) {
 			return true;
 		}
 
@@ -479,13 +484,15 @@ class helper {
 	/**
 	 * Return an array with supported languages resorted with the default language as first entry.
 	 *
+	 * TODO find better way.
+	 *
 	 * @return array
 	 */
-	public static function getActiveLanguagesWithDefaultFirst(): array {
-		$newArray             = array();
-		$langKey              = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
-		$newArray[ $langKey ] = WP_PERSONIO_INTEGRATION_LANGUAGES[ $langKey ];
-		return array_merge( $newArray, WP_PERSONIO_INTEGRATION_LANGUAGES );
+	public static function get_active_languages_with_default_first(): array {
+		$new_array              = array();
+		$lang_key               = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
+		$new_array[ $lang_key ] = WP_PERSONIO_INTEGRATION_LANGUAGES[ $lang_key ];
+		return array_merge( $new_array, WP_PERSONIO_INTEGRATION_LANGUAGES );
 	}
 
 	/**
@@ -502,30 +509,30 @@ class helper {
 	 * @author matzeeable
 	 */
 	public static function is_admin_api_request(): bool {
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST // (#1)
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST // Case #1.
 			|| isset( $_GET['rest_route'] ) // (#2)
-			&& strpos( $_GET['rest_route'], '/', 0 ) === 0 ) {
+				&& str_starts_with( sanitize_text_field( wp_unslash( $_GET['rest_route'] ) ), '/' ) ) {
 			return true;
 		}
 
-		// (#3)
+		// Case #3.
 		global $wp_rewrite;
-		if ( $wp_rewrite === null ) {
+		if ( is_null( $wp_rewrite ) ) {
 			$wp_rewrite = new WP_Rewrite();
 		}
 
-		// (#4)
+		// Case #4.
 		$rest_url    = wp_parse_url( trailingslashit( rest_url() ) );
 		$current_url = wp_parse_url( add_query_arg( array() ) );
-		return strpos( $current_url['path'], $rest_url['path'], 0 ) === 0;
+		return str_starts_with( $current_url['path'], $rest_url['path'] );
 	}
 
 	/**
 	 * Check and secure the allowed shortcode-attributes.
 	 *
-	 * @param array $attribute_defaults
-	 * @param array $attribute_settings
-	 * @param array $attributes
+	 * @param array $attribute_defaults List of attribute defaults.
+	 * @param array $attribute_settings List of attribute settings.
+	 * @param array $attributes List of actual attribute values.
 	 * @return array
 	 */
 	public static function get_shortcode_attributes( array $attribute_defaults, array $attribute_settings, array $attributes ): array {
@@ -555,7 +562,7 @@ class helper {
 		// check each attribute depending on its setting.
 		foreach ( $attributes as $name => $attribute ) {
 			if ( ! empty( $attribute_settings[ $name ] ) ) {
-				if ( $attribute_settings[ $name ] == 'array' ) {
+				if ( 'array' === $attribute_settings[ $name ] ) {
 					if ( ! empty( $attribute ) ) {
 						if ( ! is_array( $attribute ) ) {
 							$attributes[ $name ] = array_map( 'trim', explode( ',', $attribute ) );
@@ -566,43 +573,43 @@ class helper {
 						$attributes[ $name ] = array();
 					}
 				}
-				if ( $attribute_settings[ $name ] == 'int' ) {
+				if ( 'int' === $attribute_settings[ $name ] ) {
 					$attributes[ $name ] = absint( $attribute );
 				}
-				if ( $attribute_settings[ $name ] == 'unsignedint' ) {
+				if ( 'unsignedint' === $attribute_settings[ $name ] ) {
 					$attributes[ $name ] = (int) $attribute;
 				}
-				if ( $attribute_settings[ $name ] == 'bool' ) {
+				if ( 'bool' === $attribute_settings[ $name ] ) {
 					$attributes[ $name ] = boolval( $attribute );
 				}
-				if ( $attribute_settings[ $name ] == 'filter' ) {
-					// if filter is set in config
+				if ( 'filter' === $attribute_settings[ $name ] ) {
+					// if filter is set in config.
 					$attributes[ $name ] = absint( $attribute );
-					// if filter is set via request
+					// if filter is set via request.
 					if ( ! empty( $_GET['personiofilter'][ $name ] ) ) {
-						$attributes[ $name ] = absint( $_GET['personiofilter'][ $name ] );
+						$attributes[ $name ] = absint( wp_unslash( $_GET['personiofilter'][ $name ] ) );
 					}
 				}
-				if ( $attribute_settings[ $name ] == 'listing_template' ) {
+				if ( 'listing_template' === $attribute_settings[ $name ] ) {
 					$attributes[ $name ] = $attribute;
-					if ( false === Helper::has_template( 'parts/archive/' . $attribute . '.php' ) ) {
+					if ( false === self::has_template( 'parts/archive/' . $attribute . '.php' ) ) {
 						$attributes[ $name ] = 'default';
 					}
 				}
 			}
 		}
 
-		// return the resulting array with checked and secured attributes
+		// return the resulting array with checked and secured attributes.
 		return $attributes;
 	}
 
 	/**
 	 * Format a given datetime with WP-settings and functions.
 	 *
-	 * @param $date
+	 * @param string $date The date as YYYY-MM-DD.
 	 * @return string
 	 */
-	public static function get_format_date_time( $date ): string {
+	public static function get_format_date_time( string $date ): string {
 		$dt = get_date_from_gmt( $date );
 		return date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $dt ) );
 	}
@@ -612,11 +619,11 @@ class helper {
 	 *
 	 * Used because WP's own function is_plugin_active() is not accessible everywhere.
 	 *
-	 * @param $plugin
+	 * @param string $plugin Path to the requested plugin relative to plugin-directory.
 	 * @return bool
 	 */
-	public static function is_plugin_active( $plugin ): bool {
-		return in_array( $plugin, (array) get_option( 'active_plugins', array() ) );
+	public static function is_plugin_active( string $plugin ): bool {
+		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true );
 	}
 
 	/**
@@ -624,7 +631,7 @@ class helper {
 	 *
 	 * @return string
 	 */
-	public static function getPluginPath(): string {
+	public static function get_plugin_path(): string {
 		return trailingslashit( plugin_dir_url( WP_PERSONIO_INTEGRATION_PLUGIN ) );
 	}
 
@@ -633,7 +640,7 @@ class helper {
 	 *
 	 * @return bool
 	 */
-	public static function is_personioUrl_set(): bool {
+	public static function is_personio_url_set(): bool {
 		$url = get_option( 'personioIntegrationUrl', '' );
 		return ! empty( $url );
 	}
@@ -656,46 +663,49 @@ class helper {
 	 *
 	 * @return string
 	 * @noinspection PhpUnused
-	 * @throws Exception
 	 */
 	public static function get_wp_lang(): string {
-		$wpLang = substr( get_bloginfo( 'language' ), 0, 2 );
+		$wp_lang = substr( get_bloginfo( 'language' ), 0, 2 );
 
 		/**
 		 * Consider the main language set in Polylang for the web page.
 		 */
 		if ( self::is_plugin_active( 'polylang/polylang.php' ) && function_exists( 'pll_default_language' ) ) {
-			$wpLang = pll_default_language();
+			$wp_lang = pll_default_language();
 		}
 
 		/**
 		 * Consider the main language set in WPML for the web page.
 		 */
 		if ( self::is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-			$wpLang = apply_filters( 'wpml_default_language', null );
+			$wp_lang = apply_filters( 'wpml_default_language', null );
 		}
 
 		/**
 		 * Get main language set in weglot for the web page.
 		 */
 		if ( self::is_plugin_active( 'weglot/weglot.php' ) && function_exists( 'weglot_get_service' ) ) {
-			$language_object = weglot_get_service( 'Language_Service_Weglot' )->get_original_language();
-			if ( $language_object ) {
-				$wpLang = $language_object->getInternalCode();
+			try {
+				$language_object = weglot_get_service( 'Language_Service_Weglot' )->get_original_language();
+				if ( $language_object ) {
+					$wp_lang = $language_object->getInternalCode();
+				}
+			} catch ( Exception $e ) {
+				// TODO log errors.
 			}
 		}
 
 		// if language not set, use default language.
-		if ( empty( $wpLang ) ) {
-			$wpLang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
+		if ( empty( $wp_lang ) ) {
+			$wp_lang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
 		}
 
 		// if language is not known, use default language.
 		$languages = self::get_supported_languages();
-		if ( empty( $languages[ $wpLang ] ) ) {
-			$wpLang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
+		if ( empty( $languages[ $wp_lang ] ) ) {
+			$wp_lang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
 		}
-		return $wpLang;
+		return $wp_lang;
 	}
 
 	/**
@@ -706,52 +716,56 @@ class helper {
 	 * @noinspection PhpUnused
 	 */
 	public static function get_current_lang(): string {
-		$wpLang = substr( get_bloginfo( 'language' ), 0, 2 );
+		$wp_lang = substr( get_bloginfo( 'language' ), 0, 2 );
 
 		/**
 		 * Consider the main language set in Polylang for the web page
 		 */
 		if ( self::is_plugin_active( 'polylang/polylang.php' ) && function_exists( 'pll_current_language' ) ) {
-			$wpLang = pll_current_language();
+			$wp_lang = pll_current_language();
 		}
 
 		/**
 		 * Consider the main language set in WPML for the web page
 		 */
 		if ( self::is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-			$wpLang = apply_filters( 'wpml_current_language', null );
+			$wp_lang = apply_filters( 'wpml_current_language', null );
 		}
 
 		/**
 		 * Get current language set in weglot for the web page.
 		 */
 		if ( self::is_plugin_active( 'weglot/weglot.php' ) && function_exists( 'weglot_get_current_language' ) ) {
-			$wpLang = weglot_get_current_language();
+			try {
+				$wp_lang = weglot_get_current_language();
+			} catch ( Exception $e ) {
+				// TODO log errors.
+			}
 		}
 
 		// if language not set, use default language.
-		if ( empty( $wpLang ) ) {
-			$wpLang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
+		if ( empty( $wp_lang ) ) {
+			$wp_lang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
 		}
 
 		// if language is not known, use default language.
 		$languages = self::get_supported_languages();
-		if ( empty( $languages[ $wpLang ] ) ) {
-			$wpLang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
+		if ( empty( $languages[ $wp_lang ] ) ) {
+			$wp_lang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
 		}
-		return $wpLang;
+		return $wp_lang;
 	}
 
 	/**
 	 * Check if Settings-Errors-entry already exists in array.
 	 *
-	 * @param $entry
-	 * @param $array
+	 * @param string $entry The entry.
+	 * @param array  $errors The list of errors.
 	 * @return false
 	 */
-	public static function checkIfSettingErrorEntryExistsInArray( $entry, $array ): bool {
-		foreach ( $array as $item ) {
-			if ( $item['setting'] == $entry ) {
+	public static function check_if_setting_error_entry_exists_in_array( string $entry, array $errors ): bool {
+		foreach ( $errors as $error ) {
+			if ( $error['setting'] === $entry ) {
 				return true;
 			}
 		}
@@ -761,10 +775,12 @@ class helper {
 	/**
 	 * Get taxonomy-labels.
 	 *
-	 * @param $taxonomy
+	 * TODO check language switching.
+	 *
+	 * @param string $taxonomy The requested taxonomy.
 	 * @return array
 	 */
-	public static function get_taxonomy_label( $taxonomy ): array {
+	public static function get_taxonomy_label( string $taxonomy ): array {
 		$locale = get_locale();
 		if ( ! is_admin() ) {
 			switch_to_locale( self::get_current_lang() );
@@ -872,11 +888,13 @@ class helper {
 	/**
 	 * Get language-specific defaults for a taxonomy.
 	 *
-	 * @param $taxonomy
+	 * TODO check the language switching.
+	 *
+	 * @param string $taxonomy The requested taxonomy.
 	 * @return array
 	 */
-	public static function get_taxonomy_defaults( $taxonomy ): array {
-		// set language in frontend to read the texts depending on main-language
+	public static function get_taxonomy_defaults( string $taxonomy ): array {
+		// set language in frontend to read the texts depending on main-language.
 		$locale = get_locale();
 		if ( ! is_admin() ) {
 			switch_to_locale( self::get_current_lang() );
@@ -1220,7 +1238,7 @@ class helper {
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES  => self::get_supported_languages(),
 		);
-		// revert the locale-setting
+		// revert the locale-setting.
 		if ( ! is_admin() ) {
 			switch_to_locale( $locale );
 		}
@@ -1233,11 +1251,14 @@ class helper {
 	/**
 	 * Check if this message has been dismissed.
 	 *
-	 * @param $transient
+	 * TODO replace with transients-object.
+	 *
+	 * @param string $transient The transient.
+	 *
 	 * @return bool
 	 * @noinspection PhpUnused
 	 */
-	public static function is_transient_not_dismissed( $transient ): bool {
+	public static function is_transient_not_dismissed( string $transient ): bool {
 		$db_record = self::get_admin_transient_cache( $transient );
 
 		if ( 'forever' === $db_record ) {
@@ -1252,16 +1273,18 @@ class helper {
 	/**
 	 * Get the transient dismissed time.
 	 *
-	 * @param $transient
-	 * @return false|int|mixed
+	 * TODO replace with transients-object.
+	 *
+	 * @param string $transient The transient.
+	 * @return false|int
 	 */
-	private static function get_admin_transient_cache( $transient ) {
+	private static function get_admin_transient_cache( string $transient ): false|int {
 		if ( ! $transient ) {
 			return false;
 		}
 		$cache_key = 'pi-dismissed-' . md5( $transient );
 		$timeout   = get_option( $cache_key );
-		$timeout   = 'forever' === $timeout ? time() + 60 : $timeout;
+		$timeout   = 'forever' === $timeout ? time() + 60 : absint( $timeout );
 
 		if ( empty( $timeout ) || time() > $timeout ) {
 			return false;
@@ -1286,18 +1309,20 @@ class helper {
 	 *
 	 * @return bool
 	 */
-	public static function isCLI(): bool {
+	public static function is_cli(): bool {
 		return defined( 'WP_CLI' ) && WP_CLI;
 	}
 
 	/**
 	 * Get generated Personio-application-URL.
 	 *
-	 * @param $position
-	 * @param bool     $without_application
+	 * TODO find better way.
+	 *
+	 * @param Position $position The Position-object.
+	 * @param bool     $without_application Whether the link should be generated with form-#hashtag.
 	 * @return string
 	 */
-	public static function get_personio_application_url( $position, $without_application = false ): string {
+	public static function get_personio_application_url( $position, bool $without_application = false ): string {
 		if ( $without_application ) {
 			return get_option( 'personioIntegrationUrl', '' ) . '/job/' . absint( $position->getPersonioId() ) . '?display=' . get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
 		}
@@ -1322,16 +1347,20 @@ class helper {
 			$page_url = get_permalink( $object->ID );
 		}
 
-		// return result
+		// return result.
 		return $page_url;
 	}
 
 	/**
 	 * Regex to get html tag attribute value
+	 *
+	 * @param string $attrib The attribute.
+	 * @param string $tag The tag.
+	 * @return string
 	 */
-	public static function get_attribute_value_from_html( $attrib, $tag ): string {
-		// get attribute from html tag
-		$re = '/' . preg_quote( $attrib ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
+	public static function get_attribute_value_from_html( string $attrib, string $tag ): string {
+		// get attribute from html tag.
+		$re = '/' . preg_quote( $attrib, null ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
 		if ( preg_match( $re, $tag, $match ) ) {
 			return urldecode( $match[2] );
 		}
@@ -1341,35 +1370,38 @@ class helper {
 	/**
 	 * Get all files of directory recursively.
 	 *
-	 * @param $path
-	 * @param $list
+	 * TODO replace with WP_Filesystem?
+	 *
+	 * @param string $path The path.
+	 * @param array  $file_list The list of files.
 	 * @return array
-	 * @noinspection PhpMissingParamTypeInspection
 	 */
-	public static function get_file_from_directory( $path = '.', $list = array() ): array {
+	public static function get_file_from_directory( string $path = '.', array $file_list = array() ): array {
 		$ignore = array( '.', '..' );
-		$dh     = @opendir( $path );
+		$dh     = opendir( $path );
 		while ( false !== ( $file = readdir( $dh ) ) ) {
-			if ( ! in_array( $file, $ignore ) ) {
+			if ( ! in_array( $file, $ignore, true ) ) {
 				$filepath = $path . '/' . $file;
 				if ( is_dir( $filepath ) ) {
-					$list = self::get_file_from_directory( $filepath, $list );
+					$file_list = self::get_file_from_directory( $filepath, $file_list );
 				} else {
-					$list[ $file ] = $filepath;
+					$file_list[ $file ] = $filepath;
 				}
 			}
 		}
 		closedir( $dh );
-		return $list;
+		return $file_list;
 	}
 
 	/**
 	 * Return the Personio-XML-URL without any parameter.
 	 *
-	 * @param $domain
+	 * TODO find better way.
+	 *
+	 * @param string $domain The domain.
 	 * @return string
 	 */
-	public static function get_personio_xml_url( $domain ): string {
+	public static function get_personio_xml_url( string $domain ): string {
 		if ( empty( $domain ) ) {
 			return '';
 		}
@@ -1378,6 +1410,8 @@ class helper {
 
 	/**
 	 * Get language-specific personio account login url.
+	 *
+	 * TODO find better way.
 	 *
 	 * @return string
 	 */

@@ -46,7 +46,7 @@ add_action( 'personio_integration_settings_add_tab', 'personio_integration_setti
  */
 function personio_integration_admin_add_menu_content_import(): void {
 	// check user capabilities.
-	if ( ! current_user_can( 'manage_' . WP_PERSONIO_INTEGRATION_CPT ) || ! helper::is_personioUrl_set() ) {
+	if ( ! current_user_can( 'manage_' . WP_PERSONIO_INTEGRATION_CPT ) || ! helper::is_personio_url_set() ) {
 		return;
 	}
 
@@ -119,7 +119,7 @@ function personio_integration_admin_add_settings_import(): void {
 			'label_for'   => 'personioIntegrationEnablePositionSchedule',
 			'fieldId'     => 'personioIntegrationEnablePositionSchedule',
 			'description' => __( 'If enabled, new positions stored in Personio will be retrieved automatically daily.<br>If disabled, new positions are retrieved manually only.', 'personio-integration-light' ),
-			'readonly'    => ! helper::is_personioUrl_set(),
+			'readonly'    => ! helper::is_personio_url_set(),
 			/* translators: %1$s is replaced with "string" */
 			'pro_hint'    => __( 'Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' ),
 		)
@@ -189,7 +189,7 @@ function personio_integration_admin_action_delete_positions(): void {
 	if ( 0 === absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) ) {
 		// delete positions.
 		$user = wp_get_current_user();
-		( new cli() )->deletePositions( array( 'Delete all positions button', ' by ' . $user->display_name ) );
+		( new cli() )->delete_positions( array( 'Delete all positions button', ' by ' . $user->display_name ) );
 
 		// add hint..
 		set_transient( 'personio_integration_delete_run', 1 );
@@ -242,7 +242,7 @@ function personio_integration_admin_start_import_now(): void {
  * @return void
  */
 function personio_integration_admin_delete_positions_now(): void {
-	if ( helper::is_personioUrl_set() && get_option( 'personioIntegrationPositionCount', 0 ) > 0 ) {
+	if ( helper::is_personio_url_set() && get_option( 'personioIntegrationPositionCount', 0 ) > 0 ) {
 		?>
 		<p><a href="<?php echo esc_url( helper::get_delete_url() ); ?>" class="button button-primary"><?php echo esc_html__( 'Delete all positions', 'personio-integration-light' ); ?></a></p>
 		<p><i><?php echo esc_html__( 'Hint', 'personio-integration-light' ); ?>:</i> <?php echo esc_html__( 'Removes all actual imported positions.', 'personio-integration-light' ); ?></p>

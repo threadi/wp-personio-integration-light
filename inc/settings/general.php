@@ -63,8 +63,8 @@ function personio_integration_admin_add_settings_general(): void {
 			'fieldId'     => 'personioIntegrationUrl',
 			/* translators: %1$s is replaced with the url to personio account, %2$s is replaced with the url to the personio support */
 			'description' => sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s">Personio support</a>.', 'personio-integration-light' ), helper::get_personio_login_url(), helper::get_personio_support_url() ),
-			'placeholder' => helper::isGermanLanguage() ? 'https://yourcompany.jobs.personio.de' : 'https://yourcompany.jobs.personio.com',
-			'highlight'   => ! helper::is_personioUrl_set(),
+			'placeholder' => helper::is_german_language() ? 'https://yourcompany.jobs.personio.de' : 'https://yourcompany.jobs.personio.com',
+			'highlight'   => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting(
@@ -89,7 +89,7 @@ function personio_integration_admin_add_settings_general(): void {
 		array(
 			'label_for' => 'personioIntegrationLanguages',
 			'fieldId'   => 'personioIntegrationLanguages',
-			'readonly'  => ! helper::is_personioUrl_set(),
+			'readonly'  => ! helper::is_personio_url_set(),
 		)
 	);
 	if ( ! empty( get_option( 'personioIntegrationUrl', '' ) ) ) {
@@ -113,7 +113,7 @@ function personio_integration_admin_add_settings_general(): void {
 		array(
 			'label_for' => WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE,
 			'fieldId'   => WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE,
-			'readonly'  => ! helper::is_personioUrl_set(),
+			'readonly'  => ! helper::is_personio_url_set(),
 		)
 	);
 	if ( ! empty( get_option( 'personioIntegrationUrl', '' ) ) ) {
@@ -305,7 +305,7 @@ function personio_integration_admin_validate_personio_url( string $value ): stri
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/21989
 	 */
-	if ( helper::checkIfSettingErrorEntryExistsInArray( 'personioIntegrationUrl', $errors ) ) {
+	if ( helper::check_if_setting_error_entry_exists_in_array( 'personioIntegrationUrl', $errors ) ) {
 		return $value;
 	}
 
@@ -353,7 +353,7 @@ function personio_integration_admin_validate_personio_url( string $value ): stri
 				// -> show hint and option to import the positions now.
 				set_transient( 'personio_integration_import_now', 1 );
 				// reset options for the import.
-				foreach ( helper::getActiveLanguagesWithDefaultFirst() as $key => $lang ) {
+				foreach ( helper::get_active_languages_with_default_first() as $key => $lang ) {
 					delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key );
 					delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key );
 				}

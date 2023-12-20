@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-use personioIntegration\Logs;
+use personioIntegration\Log_Table;
 
 /**
  * Add settings for admin-page via custom hook.
@@ -181,7 +181,7 @@ function personio_integration_admin_add_menu_content_logs(): void {
 		if ( ! class_exists( 'WP_List_Table' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 		}
-		$log = new Logs();
+		$log = new Log_Table();
 		$log->prepare_items();
 		?>
 			<div class="wrap">

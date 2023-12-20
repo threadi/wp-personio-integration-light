@@ -27,4 +27,4 @@ const WP_PERSONIO_INTEGRATION_PLUGIN = __FILE__;
 require 'inc/autoload.php';
 require 'inc/constants.php';
 
-( new Installer() )->removeAllData( array( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ) );
+( new Installer() )->remove_all_data( array( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ) );

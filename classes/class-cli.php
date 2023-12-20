@@ -20,7 +20,7 @@ class Cli {
 	 * @since  1.0.0
 	 * @noinspection PhpUnused
 	 */
-	public function getPositions(): void {
+	public function get_positions(): void {
 		new Import();
 	}
 
@@ -31,25 +31,26 @@ class Cli {
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function deleteAll(): void {
+	public function delete_all(): void {
 		// log this event.
 		$logs = new Log();
-		$logs->addLog( 'WP CLI-command deleteAll has been used.', 'success' );
+		$logs->add_log( 'WP CLI-command deleteAll has been used.', 'success' );
 
-		// delete taxonomies
-		$this->deleteTaxonomies();
+		// delete taxonomies.
+		$this->delete_taxonomies();
 
-		// delete position
-		$this->deletePositionsFromDb();
+		// delete position.
+		$this->delete_positions_from_db();
 	}
 
 	/**
 	 * Remove all position from local database.
 	 *
+	 * @param array $args Argument to delete positions.
 	 * @since  1.0.0
 	 * @noinspection PhpUnused
 	 */
-	public function deletePositions( array $args ): void {
+	public function delete_positions( array $args ): void {
 		// set arguments if empty.
 		if ( empty( $args ) ) {
 			$args = array( 'WP CLI-command deletePositions', '' );
@@ -57,21 +58,21 @@ class Cli {
 
 		// log this event.
 		$logs = new Log();
-		$logs->addLog( sprintf( '%s has been used%s.', $args[0], $args[1] ), 'success' );
+		$logs->add_log( sprintf( '%s has been used%s.', $args[0], $args[1] ), 'success' );
 
 		// delete them.
-		$this->deletePositionsFromDb();
+		$this->delete_positions_from_db();
 	}
 
 	/**
 	 * Resets all settings of this plugin.
 	 *
-	 * @param array $deleteData
+	 * @param array $delete_data Marker to delete all data or not.
 	 * @return void
 	 * @since  1.0.0
 	 */
-	public function resetPlugin( array $deleteData = array() ): void {
-		( new installer() )->removeAllData( $deleteData );
-		( new installer() )->initializePlugin();
+	public function reset_plugin( array $delete_data = array() ): void {
+		( new installer() )->remove_all_data( $delete_data );
+		( new installer() )->activation();
 	}
 }

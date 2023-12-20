@@ -89,7 +89,7 @@ function personio_integration_admin_add_settings_template(): void {
 		array(
 			'label_for' => 'personioIntegrationEnableFilter',
 			'fieldId'   => 'personioIntegrationEnableFilter',
-			'readonly'  => ! helper::is_personioUrl_set(),
+			'readonly'  => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationEnableFilter', array( 'type' => 'integer' ) );
@@ -106,7 +106,7 @@ function personio_integration_admin_add_settings_template(): void {
 			'fieldId'          => 'personioIntegrationTemplateFilter',
 			'values'           => apply_filters( 'personio_integration_settings_get_list', personio_integration_admin_categories_labels(), get_option( 'personioIntegrationTemplateFilter', array() ) ),
 			'description'      => __( 'Mark multiple default filter for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
-			'readonly'         => ! helper::is_personioUrl_set(),
+			'readonly'         => ! helper::is_personio_url_set(),
 			'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
 			/* translators: %1$s is replaced with "string" */
 			'pro_hint'         => __( 'Sort this list with %s.', 'personio-integration-light' ),
@@ -126,7 +126,7 @@ function personio_integration_admin_add_settings_template(): void {
 			'fieldId'     => 'personioIntegrationFilterType',
 			'values'      => helper::get_filter_types(),
 			'description' => __( 'This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
-			'readonly'    => ! helper::is_personioUrl_set(),
+			'readonly'    => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationFilterType' );
@@ -143,7 +143,7 @@ function personio_integration_admin_add_settings_template(): void {
 			'fieldId'          => 'personioIntegrationTemplateContentListingTemplate',
 			'values'           => personio_integration_archive_templates(),
 			'description'      => __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
-			'readonly'         => ! helper::is_personioUrl_set(),
+			'readonly'         => ! helper::is_personio_url_set(),
 			'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
 		)
 	);
@@ -161,7 +161,7 @@ function personio_integration_admin_add_settings_template(): void {
 			'fieldId'          => 'personioIntegrationTemplateContentList',
 			'values'           => personio_integration_admin_template_labels(),
 			'description'      => __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
-			'readonly'         => ! helper::is_personioUrl_set(),
+			'readonly'         => ! helper::is_personio_url_set(),
 			'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
 		)
 	);
@@ -179,7 +179,7 @@ function personio_integration_admin_add_settings_template(): void {
 			'fieldId'          => 'personioIntegrationTemplateExcerptDefaults',
 			'values'           => apply_filters( 'personio_integration_settings_get_list', personio_integration_admin_categories_labels(), get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) ),
 			'description'      => __( 'Mark multiple default detail-parts for each frontend-output. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
-			'readonly'         => ! helper::is_personioUrl_set(),
+			'readonly'         => ! helper::is_personio_url_set(),
 			'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
 			/* translators: %1$s is replaced with "string" */
 			'pro_hint'         => __( 'Sort this list with %s.', 'personio-integration-light' ),
@@ -209,7 +209,7 @@ function personio_integration_admin_add_settings_template(): void {
 			'fieldId'          => 'personioIntegrationTemplateContentDefaults',
 			'values'           => personio_integration_admin_template_labels(),
 			'description'      => __( 'Mark multiple default templates for each detail-view of single positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
-			'readonly'         => ! helper::is_personioUrl_set(),
+			'readonly'         => ! helper::is_personio_url_set(),
 			'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
 		)
 	);
@@ -227,7 +227,7 @@ function personio_integration_admin_add_settings_template(): void {
 			'fieldId'          => 'personioIntegrationTemplateExcerptDetail',
 			'values'           => apply_filters( 'personio_integration_settings_get_list', personio_integration_admin_categories_labels(), get_option( 'personioIntegrationTemplateExcerptDetail', array() ) ),
 			'description'      => __( 'Mark multiple details for single-view of positions. Only used if template "detail" is enabled for detail-view. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
-			'readonly'         => ! helper::is_personioUrl_set(),
+			'readonly'         => ! helper::is_personio_url_set(),
 			'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array',
 			/* translators: %1$s is replaced with "string" */
 			'pro_hint'         => __( 'Sort this list with %s.', 'personio-integration-light' ),
@@ -247,7 +247,7 @@ function personio_integration_admin_add_settings_template(): void {
 			'fieldId'     => 'personioIntegrationTemplateJobDescription',
 			'values'      => personio_integration_jobdescription_templates(),
 			'description' => __( 'Choose template to output each job description in detail view. You could add your own template as described in GitHub.', 'personio-integration-light' ),
-			'readonly'    => ! helper::is_personioUrl_set(),
+			'readonly'    => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationTemplateJobDescription' );
@@ -262,7 +262,7 @@ function personio_integration_admin_add_settings_template(): void {
 		array(
 			'label_for' => 'personioIntegrationEnableLinkInList',
 			'fieldId'   => 'personioIntegrationEnableLinkInList',
-			'readonly'  => ! helper::is_personioUrl_set(),
+			'readonly'  => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationEnableLinkInList', array( 'type' => 'integer' ) );
@@ -277,7 +277,7 @@ function personio_integration_admin_add_settings_template(): void {
 		array(
 			'label_for' => 'personioIntegrationTemplateBackToListButton',
 			'fieldId'   => 'personioIntegrationTemplateBackToListButton',
-			'readonly'  => ! helper::is_personioUrl_set(),
+			'readonly'  => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationTemplateBackToListButton' );
@@ -293,8 +293,8 @@ function personio_integration_admin_add_settings_template(): void {
 			'label_for'   => 'personioIntegrationTemplateBackToListUrl',
 			'fieldId'     => 'personioIntegrationTemplateBackToListUrl',
 			/* translators: %1$s will be replaced by the list-slug */
-			'description' => sprintf( __( 'If empty the link will be set to list-slug <a href="%1$s">%1$s</a>.', 'personio-integration-light' ), trailingslashit( get_home_url() ) . helper::getArchiveSlug() ),
-			'readonly'    => ! helper::is_personioUrl_set(),
+			'description' => sprintf( __( 'If empty the link will be set to list-slug <a href="%1$s">%1$s</a>.', 'personio-integration-light' ), trailingslashit( get_home_url() ) . helper::get_archive_slug() ),
+			'readonly'    => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationTemplateBackToListUrl' );
@@ -319,7 +319,7 @@ function personio_integration_admin_add_settings_template(): void {
 		array(
 			'label_for' => 'personioIntegrationTemplateExcerptSeparator',
 			'fieldId'   => 'personioIntegrationTemplateExcerptSeparator',
-			'readonly'  => ! helper::is_personioUrl_set(),
+			'readonly'  => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsTemplates', 'personioIntegrationTemplateExcerptSeparator' );

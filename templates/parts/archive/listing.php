@@ -15,7 +15,7 @@ while ( $GLOBALS['personio_query_results']->have_posts() ) : $GLOBALS['personio_
 	$position->lang = $personio_attributes['lang'];
 
 	// get group title
-	include helper::getTemplate('parts/part-grouptitle.php');
+	include helper::get_template('parts/part-grouptitle.php');
 
 	?>
 	<li>

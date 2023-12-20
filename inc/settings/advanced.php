@@ -105,7 +105,7 @@ function personio_integration_admin_add_settings_advanced(): void {
 		array(
 			'label_for' => 'personioIntegrationExtendSearch',
 			'fieldId'   => 'personioIntegrationExtendSearch',
-			'readonly'  => ! helper::is_personioUrl_set(),
+			'readonly'  => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsAdvanced', 'personioIntegrationExtendSearch', array( 'type' => 'integer' ) );
@@ -120,7 +120,7 @@ function personio_integration_admin_add_settings_advanced(): void {
 		array(
 			'label_for' => 'personioIntegrationMaxAgeLogEntries',
 			'fieldId'   => 'personioIntegrationMaxAgeLogEntries',
-			'readonly'  => ! helper::is_personioUrl_set(),
+			'readonly'  => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsAdvanced', 'personioIntegrationMaxAgeLogEntries' );
@@ -135,7 +135,7 @@ function personio_integration_admin_add_settings_advanced(): void {
 		array(
 			'label_for' => 'personioIntegrationUrlTimeout',
 			'fieldId'   => 'personioIntegrationUrlTimeout',
-			'readonly'  => ! helper::is_personioUrl_set(),
+			'readonly'  => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting(
@@ -157,7 +157,7 @@ function personio_integration_admin_add_settings_advanced(): void {
 		array(
 			'label_for' => 'personioIntegrationDeleteOnUninstall',
 			'fieldId'   => 'personioIntegrationDeleteOnUninstall',
-			'readonly'  => ! helper::is_personioUrl_set(),
+			'readonly'  => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsAdvanced', 'personioIntegrationDeleteOnUninstall', array( 'type' => 'integer' ) );
@@ -173,7 +173,7 @@ function personio_integration_admin_add_settings_advanced(): void {
 			'label_for'   => 'personioIntegration_debug',
 			'fieldId'     => 'personioIntegration_debug',
 			'description' => __( 'If activated, the import will be executed every time even if there are no changes.', 'personio-integration-light' ),
-			'readonly'    => ! helper::is_personioUrl_set(),
+			'readonly'    => ! helper::is_personio_url_set(),
 		)
 	);
 	register_setting( 'personioIntegrationPositionsAdvanced', 'personioIntegration_debug', array( 'type' => 'integer' ) );

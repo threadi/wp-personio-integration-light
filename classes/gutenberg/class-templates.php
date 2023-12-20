@@ -13,6 +13,11 @@ use WP_Block_Template;
  * Object to handle all Gutenberg-templates of this plugin.
  */
 class Templates {
+	/**
+	 * The instance of this object.
+	 *
+	 * @var Templates|null
+	 */
 	private static ?Templates $instance = null;
 
 	/**
@@ -53,26 +58,26 @@ class Templates {
 	 *
 	 * @source BlockTemplatesController.php from WooCommerce
 	 *
-	 * @param $result
-	 * @param $query
-	 * @param $template_type
+	 * @param array  $result Resulting list of block templates.
+	 * @param array  $query The query.
+	 * @param string $template_type The template type.
 	 * @return array
 	 * @noinspection PhpIssetCanBeReplacedWithCoalesceInspection
 	 */
-	public function add_block_templates( $result, $query, $template_type ): array {
+	public function add_block_templates( array $result, array $query, string $template_type ): array {
 		if ( ! $this->theme_support_block_templates() ) {
 			return $result;
 		}
 
-		// get post type
+		// get post type.
 		$post_type = isset( $query['post_type'] ) ? $query['post_type'] : '';
 		$slugs     = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
 
-		// get our templates from filesystem
+		// get our templates from filesystem.
 		$templates = $this->get_block_templates( $slugs, $template_type );
 		foreach ( $templates as $template ) {
 			$block_template = $template->get_object();
-			// hide template if post-types doesnt match
+			// hide template if post-types doesnt match.
 			if ( $post_type &&
 				isset( $block_template->post_types ) &&
 				! in_array( $post_type, $block_template->post_types, true )
@@ -83,7 +88,7 @@ class Templates {
 			$result[] = $template->get_block_template();
 		}
 
-		// return resulting list of templates
+		// return resulting list of templates.
 		return $result;
 	}
 
@@ -124,22 +129,23 @@ class Templates {
 	/**
 	 * Get the supported block templates.
 	 *
-	 * @param $slugs
-	 * @param $template_type
+	 * @param array  $slugs List of slugs.
+	 * @param string $template_type The template.
+	 *
 	 * @return array
 	 */
-	private function get_block_templates( $slugs, $template_type ): array {
-		// initialize return array
+	private function get_block_templates( array $slugs, string $template_type ): array {
+		// initialize return array.
 		$templates = array();
 
-		// loop through the block templates and add them as template-objects to the array
+		// loop through the block templates and add them as template-objects to the array.
 		foreach ( $this->get_templates() as $template_slug => $settings ) {
-			// ignore template if it does not match a requested slug (if given)
-			if ( ! empty( $slugs ) && ! in_array( $template_slug, $slugs ) ) {
+			// ignore template if it does not match a requested slug (if given).
+			if ( ! empty( $slugs ) && ! in_array( $template_slug, $slugs, true ) ) {
 				continue;
 			}
 
-			// create template-object
+			// create template-object.
 			$template_obj = new template();
 			$template_obj->set_type( $template_type );
 			$template_obj->set_slug( $template_slug );
@@ -157,13 +163,12 @@ class Templates {
 	/**
 	 * Get block template as object for save-request.
 	 *
-	 * @param $template
-	 * @param $id
-	 * @param $template_type
-	 * @return null|WP_Block_Template
-	 * @noinspection PhpMissingReturnTypeInspection
+	 * @param null|WP_Block_Template $template The template.
+	 * @param string                 $id The id of the template.
+	 * @param string                 $template_type The template type.
+	 * @return array|null
 	 */
-	public function get_block_file_template( $template, $id, $template_type ) {
+	public function get_block_file_template( null|WP_Block_Template $template, string $id, string $template_type ): null|WP_Block_Template {
 		$template_name_parts = explode( '//', $id );
 
 		if ( count( $template_name_parts ) < 2 ) {
@@ -172,12 +177,12 @@ class Templates {
 
 		list( $template_id, $template_slug ) = $template_name_parts;
 
-		// if it is not our own template
-		if ( $template_id !== WP_PERSONIO_GUTENBERG_PARENT_ID ) {
+		// if it is not our own template.
+		if ( WP_PERSONIO_GUTENBERG_PARENT_ID !== $template_id ) {
 			return $template;
 		}
 
-		// get list of our own block templates
+		// get list of our own block templates.
 		$templates = $this->get_templates();
 
 		// get the settings for the requested template.
@@ -187,7 +192,7 @@ class Templates {
 			return $template;
 		}
 
-		// create the template-object
+		// create the template-object.
 		$template_obj = new template();
 		$template_obj->set_template( $template_slug );
 		$template_obj->set_type( $template_type );
@@ -196,12 +201,12 @@ class Templates {
 		$template_obj->set_title( $settings['title'] );
 		$template_obj->set_description( $settings['description'] );
 
-		// return the resulting object if it is valid
+		// return the resulting object if it is valid.
 		if ( $template_obj->is_valid() ) {
 			return $template_obj->get_block_template();
 		}
 
-		// otherwise return the initial value
+		// otherwise return the initial value.
 		return $template;
 	}
 
@@ -211,7 +216,7 @@ class Templates {
 	 * @return array
 	 */
 	private function get_templates(): array {
-		// define the list
+		// define the list.
 		$templates = array(
 			'single-' . WP_PERSONIO_INTEGRATION_CPT  => array(
 				'title'       => __( 'Single Position', 'personio-integration-light' ),
@@ -225,18 +230,18 @@ class Templates {
 			),
 		);
 
-		// return the list
+		// return the list.
 		return apply_filters( 'personio_integration_block_templates', $templates );
 	}
 
 	/**
 	 * Get templates from DB to override the template from files.
 	 *
-	 * @param $slugs
-	 * @param $template_type
+	 * @param array  $slugs The slugs.
+	 * @param string $template_type The template type.
 	 * @return array
 	 */
-	public function get_templates_from_db( $slugs, $template_type ): array {
+	public function get_templates_from_db( array $slugs, string $template_type ): array {
 		$query = array(
 			'post_type'      => $template_type,
 			'posts_per_page' => -1,
@@ -250,7 +255,7 @@ class Templates {
 			),
 		);
 
-		if ( is_array( $slugs ) && count( $slugs ) > 0 ) {
+		if ( count( $slugs ) > 0 ) {
 			$query['post_name__in'] = $slugs;
 		}
 
@@ -271,7 +276,7 @@ class Templates {
 			$templates[ $post->post_name ] = $template_obj;
 		}
 
-		// return list of templates
+		// return list of templates.
 		return $templates;
 	}
 
@@ -285,7 +290,7 @@ class Templates {
 			return;
 		}
 
-		// loop through the templates an update their template-parts in content to the new theme
+		// loop through the templates an update their template-parts in content to the new theme.
 		foreach ( $this->get_templates_from_db( array(), 'wp_template' ) as $template ) {
 			$updated_content = $template->update_theme_attribute_in_content( $template->get_content() );
 			$query           = array(

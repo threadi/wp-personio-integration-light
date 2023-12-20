@@ -1,41 +1,49 @@
 <?php
+/**
+ * File with widget-helper tasks for the plugin.
+ *
+ * @package personio-integration-light
+ */
 
 namespace personioIntegration;
 
-trait helper_widget {
+/**
+ * Trait with helper-functions.
+ */
+trait Helper_Widget {
 	/**
 	 * Prüfe, ob der Import per CLI aufgerufen wird.
 	 * Z.B. um einen Fortschrittsbalken anzuzeigen.
 	 *
 	 * @return bool
 	 */
-	public static function isCLI(): bool {
+	public static function is_cli(): bool {
 		return defined( 'WP_CLI' ) && WP_CLI;
 	}
 
 	/**
 	 * Create output for Widget-fields.
 	 *
-	 * @param $fields
-	 * @param $instance
+	 * @param array $fields List of fields in this widget.
+	 * @param array $instance Current settings.
 	 * @return void
 	 */
-	protected function createWidgetFieldOutput( $fields, $instance ) {
+	protected function create_widget_field_output( array $fields, array $instance ): void {
 		foreach ( $fields as $name => $field ) {
 			switch ( $field['type'] ) {
 				case 'select':
-					// get actual value
-					$selectedValue = array( ! empty( $instance[ $name ] ) ? $instance[ $name ] : $field['std'] );
+					// get actual value.
+					$selected_value = array( ! empty( $instance[ $name ] ) ? $instance[ $name ] : $field['std'] );
 
-					// multiselect
+					// multiselect.
 					$multiple = '';
 					if ( isset( $field['multiple'] ) && false !== $field['multiple'] ) {
 						$multiple = ' multiple="multiple"';
 						if ( ! empty( $instance[ $name ] ) && is_array( $instance[ $name ] ) ) {
-							$selectedValue = array();
+							$selected_value = array();
 							foreach ( $field['values'] as $n => $v ) {
-								if ( false !== in_array( $n, $instance[ $name ] ) ) {
-									$selectedValue[] = $n;
+								if ( false !== in_array( $n, $instance[ $name ], true ) ) {
+									$selected_value[] = $n;
 								}
 							}
 						}
@@ -52,7 +60,7 @@ trait helper_widget {
 							<?php
 							foreach ( $field['values'] as $value => $title ) {
 								?>
-								<option value="<?php echo esc_attr( $value ); ?>"<?php echo ( in_array( $value, $selectedValue ) ? ' selected="selected"' : '' ); ?>><?php echo esc_html( $title ); ?></option>
+								<option value="<?php echo esc_attr( $value ); ?>"<?php echo ( in_array( $value, $selected_value, true ) ? ' selected="selected"' : '' ); ?>><?php echo esc_html( $title ); ?></option>
 															<?php
 							}
 							?>
@@ -76,12 +84,12 @@ trait helper_widget {
 	/**
 	 * Secure the widget-fields.
 	 *
-	 * @param $fields
-	 * @param $new_instance
-	 * @param $instance
-	 * @return mixed
+	 * @param array $fields List of fields.
+	 * @param array $new_instance The new instance.
+	 * @param array $instance The old instance.
+	 * @return array
 	 */
-	protected function secureWidgetFields( $fields, $new_instance, $instance ) {
+	protected function secure_widget_fields( array $fields, array $new_instance, array $instance ): array {
 		foreach ( $fields as $name => $field ) {
 			switch ( $field['type'] ) {
 				case 'select':

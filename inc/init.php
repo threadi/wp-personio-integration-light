@@ -35,8 +35,8 @@ function personio_integration_add_position_posttype(): void {
 	);
 
 	// get the slugs.
-	$archive_slug = apply_filters( 'personio_integration_archive_slug', helper::getArchiveSlug() );
-	$detail_slug  = apply_filters( 'personio_integration_detail_slug', helper::getDetailSlug() );
+	$archive_slug = apply_filters( 'personio_integration_archive_slug', helper::get_archive_slug() );
+	$detail_slug  = apply_filters( 'personio_integration_detail_slug', helper::get_detail_slug() );
 
 	// set arguments for our own cpt.
 	$args = array(
@@ -147,7 +147,7 @@ function personio_integration_add_taxonomies(): void {
 		$taxonomy_array = apply_filters( 'get_' . $taxonomy_name . '_translate_taxonomy', $taxonomy_array, $taxonomy_name );
 
 		// do not show any taxonomy in menu if Personio URL is not available.
-		if ( ! personioIntegration\helper::is_personioUrl_set() ) {
+		if ( ! personioIntegration\helper::is_personio_url_set() ) {
 			$taxonomy_array['show_in_menu'] = false;
 		}
 
@@ -175,10 +175,10 @@ function personio_integration_add_taxonomy_defaults(): void {
 	foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
 		// add default terms to taxonomy if they do not exist (only in admin or via CLI).
 		$taxonomy_obj = get_taxonomy( $taxonomy_name );
-		if ( ! empty( $taxonomy_obj->defaults ) && ( is_admin() || helper::isCli() ) ) {
+		if ( ! empty( $taxonomy_obj->defaults ) && ( is_admin() || helper::is_cli() ) ) {
 			$has_terms = get_terms( array( 'taxonomy' => $taxonomy_name ) );
 			if ( empty( $has_terms ) ) {
-				personioIntegration\helper::addTerms( $taxonomy_obj->defaults, $taxonomy_name );
+				personioIntegration\helper::add_terms( $taxonomy_obj->defaults, $taxonomy_name );
 			}
 		}
 	}
@@ -204,10 +204,10 @@ function personio_integration_rest_changes( WP_REST_Response $data, WP_Post $pos
 	$position = $positions->get_position( $post->ID );
 
 	// generate content.
-	$content = $position->getContent();
+	$content = $position->get_content();
 
 	// generate except.
-	$excerpt = $position->getExcerpt();
+	$excerpt = $position->get_excerpt();
 
 	// add result to response.
 	$data->data['excerpt'] = array(
@@ -430,7 +430,7 @@ add_filter( 'redirection_post_types', 'personio_integration_redirection_post_typ
 function personio_integration_yoast_description( string $meta_og_description, Indexable_Presentation $presentation ): string {
 	if ( WP_PERSONIO_INTEGRATION_CPT === $presentation->model->object_sub_type ) {
 		$position = new Position( $presentation->model->object_id );
-		return preg_replace( '/\s+/', ' ', $position->getContent() );
+		return preg_replace( '/\s+/', ' ', $position->get_content() );
 	}
 	return $meta_og_description;
 }
@@ -448,7 +448,7 @@ function personio_integration_rankmath_description( string $description ): strin
 		$object = get_queried_object();
 		if ( $object instanceof WP_Post && WP_PERSONIO_INTEGRATION_CPT === $object->post_type ) {
 			$position = new Position( $object->ID );
-			return preg_replace( '/\s+/', ' ', $position->getContent() );
+			return preg_replace( '/\s+/', ' ', $position->get_content() );
 		}
 	}
 	return $description;
@@ -691,7 +691,7 @@ function personio_integration_og_optimizer( array $og_array ): array {
 		$position->lang = helper::get_wp_lang(); // TODO check.
 
 		// get description.
-		$description = wp_strip_all_tags( $position->getContent() );
+		$description = wp_strip_all_tags( $position->get_content() );
 		$description = preg_replace( '/\s+/', ' ', $description );
 
 		// update settings.
@@ -746,7 +746,7 @@ function personio_integration_action_to_delete_position( int $post_id ): void {
 
 	// log deletion.
 	$log = new Log();
-	$log->addLog( 'Position ' . $position_obj->getPersonioId() . ' has been deleted.', 'success' );
+	$log->add_log( 'Position ' . $position_obj->getPersonioId() . ' has been deleted.', 'success' );
 }
 add_action( 'before_delete_post', 'personio_integration_action_to_delete_position' );
 

@@ -42,7 +42,7 @@ if ( is_admin() ) {
  * On plugin activation.
  */
 function personio_integration_on_activation(): void {
-	Installer::initializePlugin();
+	Installer::activation();
 }
 register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, 'personio_integration_on_activation' );
 

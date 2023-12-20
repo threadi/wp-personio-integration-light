@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for handling logging in this plugin.
+ *
+ * @package personio-integration-light
+ */
 
 namespace personioIntegration;
 
@@ -6,35 +11,22 @@ namespace personioIntegration;
  * Handler for logging in this plugin.
  */
 class Log {
-	// database-object
-	private $_wpdb;
-
-	// name for own database-table.
-	private string $_tableName;
-
 	/**
 	 * Constructor for Logging-Handler.
 	 */
-	public function __construct() {
-		global $wpdb;
-
-		// get the db-connection
-		$this->_wpdb = $wpdb;
-
-		// set the table-name
-		$this->_tableName = $this->_wpdb->prefix . 'personio_import_logs';
-	}
+	public function __construct() {}
 
 	/**
 	 * Create the logging-table in the database.
 	 *
 	 * @return void
 	 */
-	public function createTable(): void {
-		$charset_collate = $this->_wpdb->get_charset_collate();
+	public function create_table(): void {
+		global $wpdb;
+		$charset_collate = $wpdb->get_charset_collate();
 
-		// table for import-log
-		$sql = "CREATE TABLE $this->_tableName (
+		// table for import-log.
+		$sql = "CREATE TABLE ' . $wpdb->prefix . 'personio_import_logs (
             `id` mediumint(9) NOT NULL AUTO_INCREMENT,
             `time` datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
             `log` text DEFAULT '' NOT NULL,
@@ -49,20 +41,22 @@ class Log {
 	/**
 	 * Add a single log-entry.
 	 *
-	 * @param $log
-	 * @param $state
+	 * @param string $log The text to log.
+	 * @param string $state The state to log.
+	 *
 	 * @return void
 	 */
-	public function addLog( $log, $state ): void {
-		$this->_wpdb->insert(
-			$this->_tableName,
+	public function add_log( string $log, string $state ): void {
+		global $wpdb;
+		$wpdb->insert(
+			$wpdb->prefix . 'personio_import_logs',
 			array(
-				'time'  => date( 'Y-m-d H:i:s' ),
+				'time'  => gmdate( 'Y-m-d H:i:s' ),
 				'log'   => $log,
 				'state' => $state,
 			)
 		);
-		$this->cleanLog();
+		$this->clean_log();
 	}
 
 	/**
@@ -70,8 +64,8 @@ class Log {
 	 *
 	 * @return void
 	 */
-	public function cleanLog(): void {
-		$sql = sprintf( 'DELETE FROM `' . $this->_tableName . '` WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY)', get_option( 'personioIntegrationMaxAgeLogEntries', 50 ) );
-		$this->_wpdb->query( $sql );
+	public function clean_log(): void {
+		global $wpdb;
+		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY)', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries', 50 ) ) ) );
 	}
 }
