@@ -1,13 +1,21 @@
 <?php
+/**
+ * File to handle multiple taxonomies.
+ *
+ * @package personio-integration-light
+ */
 
 namespace personioIntegration;
 
+/**
+ * The object which handles multiple taxonomies.
+ */
 class Taxonomies {
 
 	/**
 	 * Instance of this object.
 	 *
-	 * @var ?Init
+	 * @var ?Taxonomies
 	 */
 	private static ?Taxonomies $instance = null;
 
