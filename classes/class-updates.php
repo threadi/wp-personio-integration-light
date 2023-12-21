@@ -20,12 +20,12 @@ class Updates {
 	 * @return void
 	 */
 	public static function version123(): void {
-		// set max age for log entries in days
+		// set max age for log entries in days.
 		if ( ! get_option( 'personioIntegrationTemplateBackToListButton' ) ) {
 			update_option( 'personioIntegrationTemplateBackToListButton', 0 );
 		}
 
-		// update db-version
+		// update db-version.
 		update_option( 'personioIntegrationVersion', WP_PERSONIO_INTEGRATION_VERSION );
 	}
 
@@ -35,7 +35,7 @@ class Updates {
 	 * @return void
 	 */
 	public static function version203(): void {
-		// set max age for log entries in days
+		// set max age for log entries in days.
 		if ( ! get_option( 'personioIntegrationUrl' ) ) {
 			update_option( 'personioIntegrationUrl', '', true );
 		}
@@ -48,7 +48,7 @@ class Updates {
 	 *
 	 * @return void
 	 */
-	public static function runAllUpdates(): void {
+	public static function run_all_updates(): void {
 		self::version123();
 		self::version203();
 		self::version205();
@@ -59,7 +59,7 @@ class Updates {
 		self::version255();
 		self::version260();
 
-		// reset import-flag
+		// reset import-flag.
 		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
 	}
 
@@ -101,7 +101,7 @@ class Updates {
 			'fields'      => 'ids',
 		);
 		$result = new WP_Query( $query );
-		if ( $result->post_count == 0 ) {
+		if ( 0 === $result->post_count ) {
 			$archive_template = '
             <!-- wp:template-part {"slug":"header"} /-->
 
@@ -160,7 +160,7 @@ class Updates {
 		if ( null === $personio_position_manager_role ) {
 			$personio_position_manager_role = add_role( 'manage_personio_positions', __( 'Manage Personio-based Positions', 'personio-integration-light' ) );
 		}
-		$personio_position_manager_role->add_cap( 'read' ); // to enter wp-admin
+		$personio_position_manager_role->add_cap( 'read' ); // to enter wp-admin.
 		$personio_position_manager_role->add_cap( 'read_' . WP_PERSONIO_INTEGRATION_CPT );
 		$personio_position_manager_role->add_cap( 'manage_' . WP_PERSONIO_INTEGRATION_CPT );
 

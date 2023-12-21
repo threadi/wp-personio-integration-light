@@ -1,5 +1,12 @@
 {
-  "name": "threadi/easy-language",
+  "name": "threadi/personio-integration-light",
+  "description": "This is a plugin which supports the embedding of Personio in WordPress",
+   "authors": [
+        {
+            "name": "Thomas Zwirner",
+            "email": "tz@laolaweb.com"
+        }
+   ],
   "require-dev": {
     "wp-coding-standards/wpcs": "^3.0.0"
   },
@@ -15,6 +22,12 @@
   "config": {
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "vendor-dir": "lib"
+  },
+  "autoload": {
+    "psr-4": {
+        "personioIntegration\\": "classes/"
     }
   },
   "require": {

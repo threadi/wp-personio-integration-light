@@ -12,6 +12,9 @@
 /**
  * Name of the custom posttype for positions.
  */
+
+use personioIntegration\Helper;
+
 const WP_PERSONIO_INTEGRATION_CPT = 'personioposition';
 
 /**
@@ -272,7 +275,7 @@ const WP_PERSONIO_OPTION_MAX   = 'piImportMax';
 /**
  * Path to the gutenberg-templates.
  */
-define( 'WP_PERSONIO_GUTENBERG_TEMPLATES', trailingslashit( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'templates/gutenberg/' );
+define( 'WP_PERSONIO_GUTENBERG_TEMPLATES', Helper::get_plugin_path() . 'templates/gutenberg/' );
 
 /**
  * Define the Gutenberg-template-parent-ID which should reflect the plugin-directory.

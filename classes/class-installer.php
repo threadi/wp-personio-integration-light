@@ -122,7 +122,7 @@ class Installer {
 			}
 
 			// run all updates.
-			updates::runAllUpdates();
+			updates::run_all_updates();
 
 			// save the current DB-version of this plugin.
 			update_option( 'personioIntegrationVersion', WP_PERSONIO_INTEGRATION_VERSION );

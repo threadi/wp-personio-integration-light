@@ -58,20 +58,20 @@ function personio_integration_admin_sanitize_settings_field( string $value, stri
 /**
  * Sanitize array-field regarding its readonly-state.
  *
- * @param string $value  The value of the field.
+ * @param array $values  The values of the field.
  * @param string $option The name of the field.
  *
  * @return array
  * @noinspection PhpUnused
  */
-function personio_integration_admin_sanitize_settings_field_array( string $value, string $option ): array {
-	if ( empty( $value ) && ! empty( $_REQUEST[ $option . '_ro' ] ) ) {
-		$value = explode( ',', sanitize_text_field( wp_unslash( $_REQUEST[ $option . '_ro' ] ) ) );
+function personio_integration_admin_sanitize_settings_field_array( array $values, string $option ): array {
+	if ( empty( $values ) && ! empty( $_REQUEST[ $option . '_ro' ] ) ) {
+		$values = explode( ',', sanitize_text_field( wp_unslash( $_REQUEST[ $option . '_ro' ] ) ) );
 	}
-	if ( is_null( $value ) ) {
+	if ( is_null( $values ) ) {
 		return array();
 	}
-	return $value;
+	return $values;
 }
 
 /**
@@ -250,7 +250,7 @@ function personio_integration_admin_text_field( array $attr ): void {
 		// set readonly attribute.
 		$readonly = '';
 		if ( isset( $attr['readonly'] ) && false !== $attr['readonly'] ) {
-			$readonly = 'disabled';
+			$readonly = ' disabled';
 			?>
 			<input type="hidden" name="<?php echo esc_attr( $attr['fieldId'] ); ?>_ro" value="<?php echo esc_attr( $value ); ?>">
 													<?php
@@ -269,7 +269,7 @@ function personio_integration_admin_text_field( array $attr ): void {
 											<?php
 											echo ! empty( $attr['placeholder'] ) ? ' placeholder="' . esc_attr( $attr['placeholder'] ) . '"' : '';
 											?>
-		disabled="<?php echo esc_attr( $readonly ); ?>" class="widefat" title="<?php echo esc_attr( $title ); ?>">
+		<?php echo esc_attr( $readonly ); ?> class="widefat" title="<?php echo esc_attr( $title ); ?>">
 		<?php
 		if ( ! empty( $attr['description'] ) ) {
 			echo '<p>' . wp_kses_post( $attr['description'] ) . '</p>';
@@ -301,7 +301,7 @@ function personio_integration_admin_checkbox_field( array $attr ): void {
 		// set readonly attribute.
 		$readonly = '';
 		if ( isset( $attr['readonly'] ) && false !== $attr['readonly'] ) {
-			$readonly = 'disabled';
+			$readonly = ' disabled';
 			?>
 			<input type="hidden" name="<?php echo esc_attr( $attr['fieldId'] ); ?>_ro" value="<?php echo ( 1 === absint( get_option( $attr['fieldId'], 0 ) ) || ( isset( $_POST[ $attr['fieldId'] ] ) && 1 === absint( $_POST[ $attr['fieldId'] ] ) ) ) ? '1' : '0'; ?>">
 													<?php
@@ -314,7 +314,7 @@ function personio_integration_admin_checkbox_field( array $attr ): void {
 				<?php
 					echo ( 1 === absint( get_option( $attr['fieldId'], 0 ) ) || ( isset( $_POST[ $attr['fieldId'] ] ) && 1 === absint( $_POST[ $attr['fieldId'] ] ) ) ) ? ' checked="checked"' : '';
 				?>
-				disabled="<?php echo esc_attr( $readonly ); ?>"
+				<?php echo esc_attr( $readonly ); ?>
 				class="personio-field-width"
 				title="<?php echo esc_attr( $title ); ?>"
 		>

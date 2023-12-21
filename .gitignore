@@ -13,4 +13,4 @@
 /inc/constants2.php
 *.zip
 languages/*.json
-/vendor/
+/lib/

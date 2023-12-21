@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for a classic widget for single position.
+ *
+ * @package personio-integration-light
+ */
 
 namespace personioIntegration;
 
@@ -9,7 +14,7 @@ use WP_Widget;
  */
 class PositionWidget extends WP_Widget {
 
-	use helper_widget;
+	use Helper_Widget;
 
 	/**
 	 * Initialize this widget.
@@ -32,11 +37,10 @@ class PositionWidget extends WP_Widget {
 	 * @return array[]
 	 */
 	private function getFields(): array {
-		// get the actual positions
-		$positionsObj  = Positions::get_instance();
-		$positionsList = $positionsObj->get_positions( 0 );
+		// get the actual positions.
+		$positions_obj = Positions::get_instance();
 		$positions     = array();
-		foreach ( $positionsList as $position ) {
+		foreach ( $positions_obj->get_positions( 0 ) as $position ) {
 			$positions[ $position->ID ] = $position->getTitle();
 		}
 
@@ -105,78 +109,78 @@ class PositionWidget extends WP_Widget {
 	/**
 	 * Add entry-formular with settings for the widget.
 	 *
-	 * @param $instance
+	 * @param array $instance The instance of the widget.
 	 *
 	 * @return void
 	 * @noinspection PhpMissingReturnTypeInspection*/
-	function form( $instance ) {
+	public function form( $instance ) {
 		$this->create_widget_field_output( $this->getFields(), $instance );
 	}
 
 	/**
 	 * Save updated settings from the formular.
 	 *
-	 * @param $new_instance
-	 * @param $old_instance
+	 * @param array $new_instance The new instance.
+	 * @param array $old_instance The old instance.
 	 * @return array
 	 */
-	function update( $new_instance, $old_instance ): array {
+	public function update( $new_instance, $old_instance ): array {
 		return $this->secure_widget_fields( $this->getFields(), $new_instance, $old_instance );
 	}
 
 	/**
 	 * Output of the widget in frontend.
 	 *
-	 * @param $args
-	 * @param $settings
+	 * @param array $args List of arguments.
+	 * @param array $settings List of settings.
 	 *
 	 * @return void
 	 * @noinspection PhpParameterNameChangedDuringInheritanceInspection
 	 * @noinspection DuplicatedCode
 	 * @noinspection PhpMissingReturnTypeInspection
 	 */
-	function widget( $args, $settings ) {
-		// collect the configured templates
+	public function widget( $args, $settings ) {
+		// collect the configured templates.
 		$templates = '';
-		if ( $settings['showTitle'] == 'yes' ) {
+		if ( 'yes' === $settings['showTitle'] ) {
 			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'title';
 		}
-		if ( $settings['showExcerpt'] == 'yes' ) {
+		if ( 'yes' === $settings['showExcerpt'] ) {
 			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'excerpt';
 		}
-		if ( $settings['showContent'] == 'yes' ) {
+		if ( 'yes' === $settings['showContent'] ) {
 			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'content';
 		}
-		if ( $settings['showApplicationForm'] == 'yes' ) {
+		if ( 'yes' === $settings['showApplicationForm'] ) {
 			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'formular';
 		}
 
-		// get the excerpt-templates
-		$excerptTemplates = '';
+		// get the excerpt-templates.
+		$excerpt_templates = '';
 		if ( ! empty( $settings['excerptTemplates'] ) ) {
-			$excerptTemplates = implode( ',', $settings['excerptTemplates'] );
+			$excerpt_templates = implode( ',', $settings['excerptTemplates'] );
 		}
 
-		// link title?
-		$doNotLink = true;
-		if ( $settings['linkTitle'] == 'yes' ) {
-			$doNotLink = false;
+		// link title.
+		$do_not_link = true;
+		if ( 'yes' === $settings['linkTitle'] ) {
+			$do_not_link = false;
 		}
 
 		$attribute_defaults = array(
 			'id'        => $settings['postId'],
 			'templates' => $templates,
-			'excerpt'   => $excerptTemplates,
-			'donotlink' => $doNotLink,
+			'excerpt'   => $excerpt_templates,
+			'donotlink' => $do_not_link,
 		);
 
-		// add wrapper from template around widget-content
+		// add wrapper from template around widget-content.
 		echo $args['before_widget'];
 
-		// get the output
+		// get the output.
 		echo personio_integration_position_shortcode( $attribute_defaults );
 
-		// add wrapper from template around widget-content
+		// add wrapper from template around widget-content.
 		echo $args['after_widget'];
 	}
 }

@@ -370,13 +370,13 @@ class Template {
 	 * @return string
 	 */
 	public function get_content(): string {
-		if ( empty( $this->_content ) ) {
+		if ( empty( $this->content ) ) {
 			// get WP Filesystem-handler.
 			require_once ABSPATH . '/wp-admin/includes/file.php';
 			\WP_Filesystem();
 			global $wp_filesystem;
 
-			$this->_content = $wp_filesystem->get_contents( $this->get_file() );
+			$this->content = $wp_filesystem->get_contents( $this->get_file() );
 		}
 		return $this->content;
 	}

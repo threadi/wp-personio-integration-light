@@ -43,10 +43,10 @@ class Helper {
 	public static function is_german_language(): bool {
 		// TODO find better way for languages.
 		$german_languages = array(
-			'de_DE',
-			'de_DE_formal',
-			'de_CH',
-			'de_AT',
+			'de-DE',
+			'de-DE_formal',
+			'de-CH',
+			'de-AT',
 		);
 		return in_array( get_bloginfo( 'language' ), $german_languages, true );
 	}

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Show select-filter for a chosen taxonomy.
+ *
+ * @version: 1.0.0
+ * @package personio-integration-light
+ */
 
 defined( 'ABSPATH' ) || exit;
 
@@ -8,20 +14,23 @@ defined( 'ABSPATH' ) || exit;
  * @version: 1.0.1
  */
 ?>
-    <div<?php echo !empty($_GET['personiofilter'][$filter]) ? ' class="personio-filter-selected"' : ''; ?>>
-        <label><?php echo esc_html($filtername); ?></label>
-        <ul>
-            <?php
-            for( $t=0;$t<count($terms);$t++ ) {
-                if( !empty($terms[$t]) ) {
-                    $url = add_query_arg('personiofilter['.$filter.']', $terms[$t]->term_id);
-                    if( !empty($form_id) ) {
-                        $url .= '#'.$form_id;
-                    }
-                    ?><li><a href="<?php echo esc_url($url); ?>"<?php echo ($terms[$t]->term_id == $value ? ' class="personio-filter-selected"' : ''); ?>><?php echo esc_html($terms[$t]->name); ?></a></li><?php
-                }
-            }
-            ?>
-        </ul>
-    </div>
+	<div<?php echo ! empty( $_GET['personiofilter'][ $filter ] ) ? ' class="personio-filter-selected"' : ''; ?>>
+		<label><?php echo esc_html( $filtername ); ?></label>
+		<ul>
+			<?php
+			$term_count = count( $terms );
+			for ( $t = 0;$t < $term_count;$t++ ) {
+				if ( ! empty( $terms[ $t ] ) ) {
+					$url = add_query_arg( 'personiofilter[' . $filter . ']', $terms[ $t ]->term_id );
+					if ( ! empty( $form_id ) ) {
+						$url .= '#' . $form_id;
+					}
+					?>
+					<li><a href="<?php echo esc_url( $url ); ?>"<?php echo ( $terms[ $t ]->term_id === $value ? ' class="personio-filter-selected"' : '' ); ?>><?php echo esc_html( $terms[ $t ]->name ); ?></a></li>
+											<?php
+				}
+			}
+			?>
+		</ul>
+	</div>
 <?php

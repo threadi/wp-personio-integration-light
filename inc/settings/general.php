@@ -63,7 +63,7 @@ function personio_integration_admin_add_settings_general(): void {
 			'fieldId'     => 'personioIntegrationUrl',
 			/* translators: %1$s is replaced with the url to personio account, %2$s is replaced with the url to the personio support */
 			'description' => sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s">Personio support</a>.', 'personio-integration-light' ), helper::get_personio_login_url(), helper::get_personio_support_url() ),
-			'placeholder' => helper::is_german_language() ? 'https://yourcompany.jobs.personio.de' : 'https://yourcompany.jobs.personio.com',
+			'placeholder' => helper::is_german_language() ? 'https://dein-unternehmen.jobs.personio.de' : 'https://yourcompany.jobs.personio.com',
 			'highlight'   => ! helper::is_personio_url_set(),
 		)
 	);
@@ -90,6 +90,7 @@ function personio_integration_admin_add_settings_general(): void {
 			'label_for' => 'personioIntegrationLanguages',
 			'fieldId'   => 'personioIntegrationLanguages',
 			'readonly'  => ! helper::is_personio_url_set(),
+			'sanitizeFunction' => 'personio_integration_admin_sanitize_settings_field_array'
 		)
 	);
 	if ( ! empty( get_option( 'personioIntegrationUrl', '' ) ) ) {
