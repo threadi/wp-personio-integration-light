@@ -6,14 +6,10 @@
  */
 
 /**
- * Define text-domain.
- */
-
-/**
  * Name of the custom posttype for positions.
  */
 
-use personioIntegration\Helper;
+use App\PersonioIntegration\Helper;
 
 const WP_PERSONIO_INTEGRATION_CPT = 'personioposition';
 

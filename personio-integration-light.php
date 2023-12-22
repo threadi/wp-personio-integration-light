@@ -14,7 +14,7 @@
  * @package personio-integration-light
  */
 
-namespace personioIntegration;
+namespace App\PersonioIntegration;
 
 // set version number.
 define( 'WP_PERSONIO_INTEGRATION_VERSION', '@@VersionNumber@@');
@@ -26,6 +26,7 @@ if ( file_exists( __DIR__ . '/lib/autoload.php' ) ) {
 	require_once __DIR__ . '/lib/autoload.php';
 }
 
+// get constants.
 require_once __DIR__ . '/inc/constants.php';
 
 add_action( 'plugins_loaded', function() {

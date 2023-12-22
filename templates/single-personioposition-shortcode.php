@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use personioIntegration\helper;
+use App\PersonioIntegration\helper;
 
 // embed block-specific styling.
 require helper::get_template( 'parts/styling.php' );

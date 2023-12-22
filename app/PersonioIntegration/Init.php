@@ -3,10 +3,10 @@
  * File with main initializer for this plugin.
  */
 
-namespace personioIntegration;
+namespace App\PersonioIntegration;
 
-use Automattic\WooCommerce\Admin\Features\OnboardingTasks\Tasks\Tax;
-use personioIntegration\PostTypes\PersonioPosition;
+use App\PersonioIntegration\PostTypes\PersonioPosition;
+use personioIntegration\Installer;
 
 /**
  * Initialize this plugin.
@@ -51,7 +51,10 @@ class Init {
 		PersonioPosition::get_instance()->init();
 
 		// register our taxonomies.
-		Taxonomies::get_instance()->register_taxonomies();
+		Taxonomies::get_instance()->init();
+
+		// init third-party-support
+		Third_Party_Plugins::get_instance()->init();
 
 		// on activation.
 		register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( $this, 'activation' ) );

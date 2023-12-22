@@ -5,9 +5,10 @@
  * @package personio-integration-light
  */
 
-namespace personioIntegration;
+namespace app\PersonioIntegration;
 
 use Exception;
+use personioIntegration\Position;
 use WP_Post;
 use WP_Post_Type;
 use WP_Rewrite;
@@ -652,7 +653,7 @@ class Helper {
 	 */
 	public static function theme_is_fse_theme(): bool {
 		if ( function_exists( 'wp_is_block_theme' ) ) {
-			return (bool) wp_is_block_theme();
+			return wp_is_block_theme();
 		}
 		return false;
 	}

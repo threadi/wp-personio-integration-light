@@ -6,7 +6,7 @@
  * @package personio-integration-light
  */
 
-use personioIntegration\helper;
+use App\PersonioIntegration\helper;
 
 defined( 'ABSPATH' ) || exit;
 

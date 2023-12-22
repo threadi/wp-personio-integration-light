@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-use personioIntegration\helper;
+use App\PersonioIntegration\helper;
 use personioIntegration\Import;
 use personioIntegration\Log;
 use personioIntegration\Position;
@@ -147,7 +147,7 @@ function personio_integration_add_taxonomies(): void {
 		$taxonomy_array = apply_filters( 'get_' . $taxonomy_name . '_translate_taxonomy', $taxonomy_array, $taxonomy_name );
 
 		// do not show any taxonomy in menu if Personio URL is not available.
-		if ( ! personioIntegration\helper::is_personio_url_set() ) {
+		if ( ! \App\PersonioIntegration\helper::is_personio_url_set() ) {
 			$taxonomy_array['show_in_menu'] = false;
 		}
 
@@ -178,7 +178,7 @@ function personio_integration_add_taxonomy_defaults(): void {
 		if ( ! empty( $taxonomy_obj->defaults ) && ( is_admin() || helper::is_cli() ) ) {
 			$has_terms = get_terms( array( 'taxonomy' => $taxonomy_name ) );
 			if ( empty( $has_terms ) ) {
-				personioIntegration\helper::add_terms( $taxonomy_obj->defaults, $taxonomy_name );
+				\App\PersonioIntegration\helper::add_terms( $taxonomy_obj->defaults, $taxonomy_name );
 			}
 		}
 	}

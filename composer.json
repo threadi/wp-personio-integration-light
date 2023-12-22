@@ -1,36 +1,38 @@
 {
-  "name": "threadi/personio-integration-light",
-  "description": "This is a plugin which supports the embedding of Personio in WordPress",
-   "authors": [
+    "name": "threadi/personio-integration-light",
+    "description": "This is a plugin which supports the embedding of Personio in WordPress",
+    "authors": [
         {
             "name": "Thomas Zwirner",
             "email": "tz@laolaweb.com"
         }
-   ],
-  "require-dev": {
-    "wp-coding-standards/wpcs": "^3.0.0"
-  },
-  "minimum-stability": "stable",
-  "scripts": {
-    "post-install-cmd": [
-      "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra"
     ],
-    "post-update-cmd": [
-      "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra"
-    ]
-  },
-  "config": {
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
+    "type": "wordpress-plugin",
+    "homepage": "https://laolaweb.com",
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0.0"
     },
-    "vendor-dir": "lib"
-  },
-  "autoload": {
-    "psr-4": {
-        "personioIntegration\\": "classes/"
+    "minimum-stability": "stable",
+    "scripts": {
+        "post-install-cmd": [
+            "\"lib/bin/phpcs\" --config-set installed_paths lib/wp-coding-standards/wpcs,lib/phpcsstandards/phpcsutils,lib/phpcsstandards/phpcsextra"
+        ],
+        "post-update-cmd": [
+            "\"lib/bin/phpcs\" --config-set installed_paths lib/wp-coding-standards/wpcs,lib/phpcsstandards/phpcsutils,lib/phpcsstandards/phpcsextra"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "vendor-dir": "lib"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\PersonioIntegration\\": "app/"
+        }
+    },
+    "require": {
+        "threadi/wp-easy-dialog": "dev-master"
     }
-  },
-  "require": {
-    "threadi/wp-easy-dialog": "dev-master"
-  }
 }

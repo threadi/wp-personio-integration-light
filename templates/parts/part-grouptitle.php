@@ -6,7 +6,7 @@
  * @package personio-integration-light
  */
 
-use personioIntegration\helper;
+use App\PersonioIntegration\helper;
 
 // only if group by is set.
 if ( ! empty( $personio_attributes['groupby'] ) ) {

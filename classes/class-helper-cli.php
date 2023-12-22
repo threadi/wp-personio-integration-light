@@ -7,6 +7,8 @@
 
 namespace personioIntegration;
 
+use App\PersonioIntegration\Helper;
+
 /**
  * Trait with helper-functions.
  */

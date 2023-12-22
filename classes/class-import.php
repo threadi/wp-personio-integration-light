@@ -7,6 +7,7 @@
 
 namespace personioIntegration;
 
+use App\PersonioIntegration\Helper;
 use Exception;
 use SimpleXMLElement;
 use WP_Post;

@@ -57,8 +57,13 @@ OR use ant in build/-directory: `ant json-translations`
 
 ### Run
 
-`vendor/bin/phpcs --standard=WordPress file`
+`lib/bin/phpcs --standard=ruleset.xml file`
 
 ### Repair
 
-`vendor/bin/phpcbf --standard=WordPress file`
+`lib/bin/phpcbf --standard=ruleset.xml file`
+
+### Notes for Build
+TODO
+composer install --no-dev
+composer dump-autoload -o --no-dev

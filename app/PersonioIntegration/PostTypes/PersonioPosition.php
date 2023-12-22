@@ -5,11 +5,25 @@
  * @package personio-integration-light
  */
 
-namespace personioIntegration\PostTypes;
+namespace App\PersonioIntegration\PostTypes;
 
-use personioIntegration\Helper;
+use App\PersonioIntegration\Helper;
+use personioIntegration\Positions;
+use Post_Type;
+use WP_Post;
+use WP_REST_Response;
 
-class PersonioPosition {
+/**
+ * Object of this cpt.
+ */
+class PersonioPosition extends Post_Type {
+	/**
+	 * Set name of this cpt.
+	 *
+	 * @var string
+	 */
+	protected string $name = WP_PERSONIO_INTEGRATION_CPT;
+
 	/**
 	 * Instance of this object.
 	 *
@@ -45,7 +59,11 @@ class PersonioPosition {
 	 * @return void
 	 */
 	public function init(): void {
+		// register this taxonomy.
 		add_action( 'init', array( $this, 'register') );
+
+		// change rest api.
+		add_filter( 'rest_prepare_' . $this->get_name(), array( $this, 'rest_prepare' ), 12, 2 );
 	}
 
 	/**
@@ -133,4 +151,38 @@ class PersonioPosition {
 			)
 		);
 	}
+
+	/**
+	 * Change the REST API-response for own cpt.
+	 *
+	 * @param WP_REST_Response $data The response object.
+	 * @param WP_Post          $post The requested object.
+	 * @return WP_REST_Response
+	 * @noinspection PhpUnused
+	 */
+	public function rest_prepare( WP_REST_Response $data, WP_Post $post ): WP_REST_Response {
+		// get positions-object.
+		$positions = Positions::get_instance();
+
+		// get the position as object.
+		$position = $positions->get_position( $post->ID );
+
+		// generate content.
+		$content = $position->get_content();
+
+		// generate except.
+		$excerpt = $position->get_excerpt();
+
+		// add result to response.
+		$data->data['excerpt'] = array(
+			'rendered'  => $excerpt,
+			'raw'       => '',
+			'protected' => false,
+		);
+		$data->data['content'] = $content;
+
+		// set response.
+		return $data;
+	}
+
 }

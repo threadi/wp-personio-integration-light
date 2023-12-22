@@ -5,8 +5,8 @@
  * @package personio-integration-light
  */
 
+use App\PersonioIntegration\helper;
 use personioIntegration\gutenberg\templates;
-use personioIntegration\helper;
 use personioIntegration\Positions;
 
 /**

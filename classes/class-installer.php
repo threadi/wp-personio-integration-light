@@ -7,6 +7,8 @@
 
 namespace personioIntegration;
 
+use App\PersonioIntegration\Helper;
+
 /**
  * Helper-function for plugin-activation and -deactivation.
  */

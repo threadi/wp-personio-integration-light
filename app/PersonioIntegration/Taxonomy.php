@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-namespace personioIntegration;
+namespace App\PersonioIntegration;
 
 /**
  * The object which handles a single taxonomy.

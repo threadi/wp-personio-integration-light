@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-use personioIntegration\helper;
+use App\PersonioIntegration\helper;
 use personioIntegration\Import;
 use personioIntegration\Position;
 use personioIntegration\Positions;

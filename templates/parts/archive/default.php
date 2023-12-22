@@ -6,7 +6,7 @@
  * @package personio-integration-light
  */
 
-use personioIntegration\helper;
+use App\PersonioIntegration\helper;
 
 while ( $GLOBALS['personio_query_results']->have_posts() ) :
 	$GLOBALS['personio_query_results']->the_post();

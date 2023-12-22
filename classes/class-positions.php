@@ -7,6 +7,7 @@
 
 namespace personioIntegration;
 
+use App\PersonioIntegration\Helper;
 use WP_Query;
 
 /**
