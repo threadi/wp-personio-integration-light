@@ -7,9 +7,11 @@
  * @package personio-integration-light
  */
 
-namespace personioIntegration;
+namespace App\PersonioIntegration;
 
 use App\Helper;
+use App\Log;
+use App\Plugin\Templates;
 use Exception;
 use SimpleXMLElement;
 use WP_Query;
@@ -528,7 +530,7 @@ class Position {
 
 		// get template and return it.
 		ob_start();
-		include Helper::get_template( $template_file );
+		include Templates::get_instance()->get_template( $template_file );
 		return ob_get_clean();
 	}
 

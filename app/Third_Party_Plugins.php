@@ -5,12 +5,15 @@
  * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration;
+namespace App;
 
 use personioIntegration\Position;
 use WP_Post;
 use Yoast\WP\SEO\Presentations\Indexable_Presentation;
 
+/**
+ * Handler for third-party-plugins.
+ */
 class Third_Party_Plugins {
 	/**
 	 * Instance of this object.

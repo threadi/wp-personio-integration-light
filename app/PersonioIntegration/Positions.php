@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-namespace personioIntegration;
+namespace App\PersonioIntegration;
 
 use App\Helper;
 use WP_Query;
@@ -135,7 +135,7 @@ class Positions {
 				$query['tax_query'] = $tax_query;
 			}
 		} elseif ( ! empty( $parameter_to_add['groupby'] ) ) {
-			$taxonomy = helper::get_taxonomy_name_by_simple_name( $parameter_to_add['groupby'] );
+			$taxonomy = Helper::get_taxonomy_name_by_simple_name( $parameter_to_add['groupby'] );
 			if ( ! empty( $taxonomy ) ) {
 				$terms              = get_terms(
 					array(

@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-use App\PersonioIntegration\helper;
+use App\helper;
 use personioIntegration\gutenberg\templates;
 use personioIntegration\Positions;
 
@@ -94,7 +94,7 @@ function personio_integration_get_list( array $attributes ): string {
 		if ( ! empty( $attributes['style'] ) && ! empty( $attributes['style']['spacing'] ) && ! empty( $attributes['style']['spacing']['blockGap'] ) ) {
 			$value = $attributes['style']['spacing']['blockGap'];
 			// convert var-setting to var-style-entity.
-			if ( false !== strpos( $attributes['style']['spacing']['blockGap'], 'var:' ) ) {
+			if ( str_contains( $attributes['style']['spacing']['blockGap'], 'var:' ) ) {
 				$value = str_replace( '|', '--', $value );
 				$value = str_replace( 'var:', '', $value );
 				$value = 'var(--wp--' . $value . ')';

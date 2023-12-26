@@ -354,3 +354,4 @@ Yes, it is without any further settings.
 * Now only compatible with PHP 8.0 or newer
 * And only compatible with WordPress 6.0 or newer
 * Removed 5 minutes cronjob as it is discouraged by WordPress (Migrate!!!)
+* Fixed usage of classic widgets

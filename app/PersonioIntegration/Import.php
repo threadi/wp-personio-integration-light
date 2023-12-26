@@ -5,10 +5,11 @@
  * @package personio-integration-light
  */
 
-namespace personioIntegration;
+namespace App\PersonioIntegration;
 
 use App\Helper;
 use Exception;
+use personioIntegration\Log;
 use SimpleXMLElement;
 use WP_Post;
 
@@ -36,7 +37,7 @@ class Import {
 	 *
 	 * @var Log
 	 */
-	private LOG $log;
+	private Log $log;
 
 	/**
 	 * Constructor which starts the import directly.

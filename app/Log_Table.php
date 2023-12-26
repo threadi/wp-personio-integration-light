@@ -7,9 +7,8 @@
  * @package personio-integration-light
  */
 
-namespace personioIntegration;
+namespace App;
 
-use App\Helper;
 use WP_List_Table;
 
 /**

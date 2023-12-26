@@ -1,11 +1,14 @@
 <?php
 /**
- * File to handle multiple taxonomies.
+ * File to handle multiple taxonomies of this plugin.
  *
  * @package personio-integration-light
  */
 
 namespace App\PersonioIntegration;
+
+use App\Helper;
+use WP_Term;
 
 /**
  * The object which handles multiple taxonomies.
@@ -48,7 +51,7 @@ class Taxonomies {
 	 */
 	public function init(): void {
 		// register taxonomies.
-		add_action( 'init', array( $this, 'register') );
+		add_action( 'init', array( $this, 'register' ) );
 
 		// create defaults.
 		add_action( 'init', array( $this, 'create_defaults' ) );
@@ -82,36 +85,14 @@ class Taxonomies {
 	}
 
 	/**
-	 * Register our own taxonomies.
+	 * Register our own taxonomies on each page load.
 	 *
 	 * @return void
 	 */
 	public function register(): void {
-		// set default taxonomy-settings
-		// -> could be overwritten by each taxonomy in taxonomies.php.
-		$taxonomy_array_default = array(
-			'hierarchical'       => true,
-			'labels'             => '',
-			'public'             => false,
-			'show_ui'            => true,
-			'show_in_menu'       => false,
-			'show_in_nav_menus'  => false,
-			'show_admin_column'  => true,
-			'show_tagcloud'      => true,
-			'show_in_quick_edit' => true,
-			'show_in_rest'       => true,
-			'query_var'          => true,
-			'capabilities'       => array(
-				'manage_terms' => 'read_' . WP_PERSONIO_INTEGRATION_CPT,
-				'edit_terms'   => 'read_' . WP_PERSONIO_INTEGRATION_CPT,
-				'delete_terms' => 'do_not_allow',
-				'assign_terms' => 'read_' . WP_PERSONIO_INTEGRATION_CPT,
-			),
-		);
-
-		foreach( $this->get_taxonomies() as $taxonomy_name => $settings ) {
+		foreach ( $this->get_taxonomies() as $taxonomy_name => $settings ) {
 			// get properties.
-			$taxonomy_array             = array_merge( $taxonomy_array_default, $settings['attr'] );
+			$taxonomy_array             = array_merge( $this->get_default_settings(), $settings['attr'] );
 			$taxonomy_array['labels']   = helper::get_taxonomy_label( $taxonomy_name );
 			$taxonomy_array['defaults'] = helper::get_taxonomy_defaults( $taxonomy_name );
 
@@ -132,7 +113,7 @@ class Taxonomies {
 			register_taxonomy( $taxonomy_name, array( WP_PERSONIO_INTEGRATION_CPT ), $taxonomy_array );
 
 			// filter for translations of entries in this taxonomy.
-			add_filter( 'get_' . $taxonomy_name, 'personio_integration_translate_taxonomy', 10, 2 );
+			add_filter( 'get_' . $taxonomy_name, array( $this, 'translate' ), 10, 2 );
 		}
 	}
 
@@ -146,82 +127,150 @@ class Taxonomies {
 			'personio_integration_taxonomies',
 			array(
 				WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY => array(
-					'attr'        => array( // taxonomy settings deviating from default
+					'attr'        => array( // taxonomy settings deviating from default.
 						'rewrite' => array( 'slug' => 'recruitingCategory' ),
 					),
 					'slug'        => 'recruitingCategory',
 					'useInFilter' => 1,
 				),
 				WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY => array(
-					'attr'        => array( // taxonomy settings deviating from default
+					'attr'        => array( // taxonomy settings deviating from default.
 						'rewrite' => array( 'slug' => 'occupationCategory' ),
 					),
 					'slug'        => 'occupation',
 					'useInFilter' => 1,
 				),
-				WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION          => array(
-					'attr'        => array( // taxonomy settings deviating from default
+				WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION => array(
+					'attr'        => array( // taxonomy settings deviating from default.
 						'rewrite' => array( 'slug' => 'occupation' ),
 					),
 					'slug'        => 'occupation_detail',
 					'useInFilter' => 1,
 				),
-				WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE              => array(
-					'attr'        => array( // taxonomy settings deviating from default
+				WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE    => array(
+					'attr'        => array( // taxonomy settings deviating from default.
 						'rewrite' => array( 'slug' => 'office' ),
 					),
 					'slug'        => 'office',
 					'useInFilter' => 1,
 				),
-				WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT          => array(
-					'attr'        => array( // taxonomy settings deviating from default
+				WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT => array(
+					'attr'        => array( // taxonomy settings deviating from default.
 						'rewrite' => array( 'slug' => 'department' ),
 					),
 					'slug'        => 'department',
 					'useInFilter' => 1,
 				),
-				WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE     => array(
-					'attr'        => array( // taxonomy settings deviating from default
+				WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE => array(
+					'attr'        => array( // taxonomy settings deviating from default.
 						'rewrite' => array( 'slug' => 'employmenttype' ),
 					),
 					'slug'        => 'employmenttype',
 					'useInFilter' => 1,
 				),
-				WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY           => array(
-					'attr'        => array( // taxonomy settings deviating from default
+				WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY => array(
+					'attr'        => array( // taxonomy settings deviating from default.
 						'rewrite' => array( 'slug' => 'seniority' ),
 					),
 					'slug'        => 'seniority',
 					'useInFilter' => 1,
 				),
-				WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE            => array(
-					'attr'        => array( // taxonomy settings deviating from default
+				WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE  => array(
+					'attr'        => array( // taxonomy settings deviating from default.
 						'rewrite' => array( 'slug' => 'schedule' ),
 					),
 					'slug'        => 'schedule',
 					'useInFilter' => 1,
 				),
-				WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE          => array(
-					'attr'        => array( // taxonomy settings deviating from default
+				WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE => array(
+					'attr'        => array( // taxonomy settings deviating from default.
 						'rewrite' => array( 'slug' => 'experience' ),
 					),
 					'slug'        => 'experience',
 					'useInFilter' => 1,
 				),
-				WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES           => array(
-					'attr'        => array( // taxonomy settings deviating from default
+				WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES => array(
+					'attr'        => array( // taxonomy settings deviating from default.
 						'show_ui' => false,
 					),
 					'slug'        => 'language',
 					'useInFilter' => 0,
 				),
-				WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS            => array(
-					'attr'        => array( // taxonomy settings deviating from default
+				WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS  => array(
+					'attr'        => array( // taxonomy settings deviating from default.
 						'rewrite' => array( 'slug' => 'keyword' ),
 					),
 					'slug'        => 'keyword',
 					'useInFilter' => 1,
-				)
+				),
+			)
+		);
+	}
+
+	/**
+	 * Translate a term of a given taxonomy.
+	 *
+	 * @param WP_Term $_term The term.
+	 * @param string  $taxonomy The taxonomy.
+	 *
+	 * @return WP_Term
+	 */
+	public function translate( WP_Term $_term, string $taxonomy ): WP_Term {
+		if ( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES !== $taxonomy ) {
+			// read from defaults for the taxonomy.
+			$array = helper::get_taxonomy_defaults( $taxonomy );
+			if ( ! empty( $array[ $_term->name ] ) ) {
+				$_term->name = $array[ $_term->name ];
+			}
+		}
+		return $_term;
+	}
+
+	/**
+	 * Get default settings for each taxonomy.
+	 *
+	 * @return array
+	 */
+	private function get_default_settings(): array {
+		return array(
+			'hierarchical'       => true,
+			'labels'             => '',
+			'public'             => false,
+			'show_ui'            => true,
+			'show_in_menu'       => false,
+			'show_in_nav_menus'  => false,
+			'show_admin_column'  => true,
+			'show_tagcloud'      => true,
+			'show_in_quick_edit' => true,
+			'show_in_rest'       => true,
+			'query_var'          => true,
+			'capabilities'       => array(
+				'manage_terms' => 'read_' . WP_PERSONIO_INTEGRATION_CPT,
+				'edit_terms'   => 'read_' . WP_PERSONIO_INTEGRATION_CPT,
+				'delete_terms' => 'do_not_allow',
+				'assign_terms' => 'read_' . WP_PERSONIO_INTEGRATION_CPT,
+			),
+		);
+	}
+
+	/**
+	 * Get category labels.
+	 *
+	 * @return array
+	 */
+	public function get_cat_labels(): array {
+		return apply_filters(
+			'personio_integration_cat_labels',
+			array(
+				'recruitingCategory' => esc_html__( 'recruiting category', 'personio-integration-light' ),
+				'schedule'           => esc_html__( 'schedule', 'personio-integration-light' ),
+				'office'             => esc_html__( 'office', 'personio-integration-light' ),
+				'department'         => esc_html__( 'department', 'personio-integration-light' ),
+				'employmenttype'     => esc_html__( 'employment types', 'personio-integration-light' ),
+				'seniority'          => esc_html__( 'seniority', 'personio-integration-light' ),
+				'experience'         => esc_html__( 'experience', 'personio-integration-light' ),
+				'occupation'         => esc_html__( 'Job type', 'personio-integration-light' ),
+				'occupation_detail'  => esc_html__( 'Job type details', 'personio-integration-light' ),
 			)
 		);
 	}

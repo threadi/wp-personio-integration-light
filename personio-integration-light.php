@@ -14,7 +14,9 @@
  * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration;
+namespace App;
+
+use App\Plugin\Init;
 
 // set version number.
 define( 'WP_PERSONIO_INTEGRATION_VERSION', '@@VersionNumber@@');

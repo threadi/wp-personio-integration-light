@@ -112,6 +112,9 @@
             <zipfileset dir="${src.dir}/blocks/" includes="index.php,components.js,index.js" prefix="${plugin.slug}/blocks/" />
             <zipfileset dir="${src.dir}/css" prefix="${plugin.slug}/css" />
             <zipfileset dir="${src.dir}/gfx" prefix="${plugin.slug}/gfx" />
+            <zipfileset dir="${src.dir}/lib" includes="autoload.php" fullpath="${plugin.slug}/lib/autoload.php" />
+            <zipfileset dir="${src.dir}/lib/composer" prefix="${plugin.slug}/lib/composer" />
+            <zipfileset dir="${src.dir}/lib/threadi" prefix="${plugin.slug}/lib/threadi" />
             <zipfileset dir="${src.dir}/inc" prefix="${plugin.slug}/inc" />
             <zipfileset dir="${src.dir}/templates" prefix="${plugin.slug}/templates" />
             <zipfileset dir="${src.dir}" includes="wpml-config.xml" fullpath="${plugin.slug}/wpml-config.xml" />

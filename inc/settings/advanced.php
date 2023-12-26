@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-use App\PersonioIntegration\helper;
+use App\helper;
 
 /**
  * Add tab in settings.

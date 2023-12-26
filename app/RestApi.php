@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration;
+namespace App;
 
 /**
  * Object to handle REST-API-rules for this plugin.

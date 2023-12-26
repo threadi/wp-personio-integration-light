@@ -5,14 +5,15 @@
  * @package personio-integration-light
  */
 
-namespace personioIntegration;
+namespace App\Plugin\Cli;
 
-use App\Helper;
+use personioIntegration\Log;
+use personioIntegration\Positions;
 
 /**
  * Trait with helper-functions.
  */
-trait Helper_Cli {
+trait Helper {
 
 	/**
 	 * Delete all imported positions.
@@ -23,7 +24,7 @@ trait Helper_Cli {
 		$positions_obj  = Positions::get_instance();
 		$positions      = $positions_obj->get_positions();
 		$position_count = count( $positions );
-		$progress       = helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local positions', $position_count ) : false;
+		$progress       = \App\Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local positions', $position_count ) : false;
 		foreach ( $positions as $position ) {
 			// delete it.
 			wp_delete_post( $position->ID, true );
@@ -44,7 +45,7 @@ trait Helper_Cli {
 		}
 
 		// output success-message.
-		Helper::is_cli() ? \WP_CLI::success( $position_count . ' positions deleted.' ) : false;
+		\App\Helper::is_cli() ? \WP_CLI::success( $position_count . ' positions deleted.' ) : false;
 	}
 
 	/**
@@ -61,7 +62,7 @@ trait Helper_Cli {
 		// delete the content of all taxonomies.
 		// -> hint: some will be newly insert after next wp-init.
 		$taxonomies = apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES );
-		$progress   = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
+		$progress   = \App\Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy => $settings ) {
 			// delete all terms of this taxonomy.
 			$sql    = '
@@ -98,6 +99,6 @@ trait Helper_Cli {
 		$progress ? $progress->finish() : false;
 
 		// output success-message.
-		Helper::is_cli() ? \WP_CLI::success( count( $taxonomies ) . ' taxonomies where cleaned.' ) : false;
+		\App\Helper::is_cli() ? \WP_CLI::success( count( $taxonomies ) . ' taxonomies where cleaned.' ) : false;
 	}
 }

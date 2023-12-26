@@ -6,7 +6,8 @@
  * @package personio-integration-light
  */
 
-use App\PersonioIntegration\Helper;
+use App\Helper;
+use App\Plugin\Templates;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
  */
 
 // embed block-specific styling.
-require Helper::get_template( 'parts/styling.php' );
+require Templates::get_instance()->get_template( 'parts/styling.php' );
 
 ?>
 <div class="entry-content">

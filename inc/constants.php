@@ -9,7 +9,7 @@
  * Name of the custom posttype for positions.
  */
 
-use App\PersonioIntegration\Helper;
+use App\Helper;
 
 const WP_PERSONIO_INTEGRATION_CPT = 'personioposition';
 

@@ -9,9 +9,6 @@
     ],
     "type": "wordpress-plugin",
     "homepage": "https://laolaweb.com",
-    "require-dev": {
-        "wp-coding-standards/wpcs": "^3.0.0"
-    },
     "minimum-stability": "stable",
     "scripts": {
         "post-install-cmd": [
@@ -25,14 +22,21 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         },
-        "vendor-dir": "lib"
+        "vendor-dir": "lib",
+        "optimize-autoloader": true,
+        "classmap-authoritative": true,
+        "apcu-autoloader": true
     },
     "autoload": {
         "psr-4": {
-            "App\\PersonioIntegration\\": "app/"
+            "App\\": "app/"
         }
     },
     "require": {
+        "php": "^8.0",
         "threadi/wp-easy-dialog": "dev-master"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0.0"
     }
 }

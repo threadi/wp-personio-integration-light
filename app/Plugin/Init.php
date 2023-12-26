@@ -1,12 +1,16 @@
 <?php
 /**
  * File with main initializer for this plugin.
+ *
+ * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration;
+namespace App\Plugin;
 
 use App\PersonioIntegration\PostTypes\PersonioPosition;
-use personioIntegration\Installer;
+use App\PersonioIntegration\Taxonomies;
+use App\Third_Party_Plugins;
+use App\Widgets\Widgets;
 
 /**
  * Initialize this plugin.
@@ -47,13 +51,13 @@ class Init {
 	 * @return void
 	 */
 	public function init(): void {
-		// register our post-types.
+		// register our post-types and taxonomies.
 		PersonioPosition::get_instance()->init();
 
-		// register our taxonomies.
-		Taxonomies::get_instance()->init();
+		// init classic widget support.
+		Widgets::get_instance()->init();
 
-		// init third-party-support
+		// init third-party-support.
 		Third_Party_Plugins::get_instance()->init();
 
 		// on activation.

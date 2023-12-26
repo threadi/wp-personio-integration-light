@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-use App\PersonioIntegration\helper;
+use App\helper;
 use personioIntegration\cli;
 use personioIntegration\Import;
 

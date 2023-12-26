@@ -1,0 +1,6 @@
+Ordner:
+* direkt im Ordner = allgemeine Hilfsfunktionen
+* Plugin = plugin-spezifische Funktionen
+* PersonioIntegration = bezieht sich auf Personio-Daten selbst (CPT + Taxonomien)
+* Gutenberg = Gutenberg-spezifische Funktionen
+*

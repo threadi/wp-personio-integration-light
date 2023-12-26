@@ -5,7 +5,9 @@
  * @package personio-integration-light
  */
 
-use personioIntegration\installer;
+namespace App;
+
+use App\Plugin\Uninstaller;
 
 // if uninstall.php is not called by WordPress, die.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
@@ -18,13 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // set version number.
-const WP_PERSONIO_INTEGRATION_VERSION = '@@VersionNumber@@';
+define( 'WP_PERSONIO_INTEGRATION_VERSION', '@@VersionNumber@@' );
 
 // save plugin-path.
-const WP_PERSONIO_INTEGRATION_PLUGIN = __FILE__;
+define( 'WP_PERSONIO_INTEGRATION_PLUGIN', __FILE__ );
 
 // include necessary files.
 require 'inc/autoload.php';
 require 'inc/constants.php';
 
-( new Installer() )->remove_all_data( array( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ) );
+( new Uninstaller() )->run( array( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ) );

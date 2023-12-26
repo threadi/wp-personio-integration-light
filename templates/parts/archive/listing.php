@@ -6,7 +6,7 @@
  * @package personio-integration-light
  */
 
-use App\PersonioIntegration\helper;
+use App\Plugin\Templates;
 
 ?><ul class="personio-integration-archive-listing">
 <?php
@@ -17,7 +17,7 @@ while ( $GLOBALS['personio_query_results']->have_posts() ) :
 	$position->lang = $personio_attributes['lang'];
 
 	// get group title.
-	include Helper::get_template( 'parts/part-grouptitle.php' );
+	include Templates::get_instance()->get_template( 'parts/part-grouptitle.php' );
 
 	?>
 	<li>
