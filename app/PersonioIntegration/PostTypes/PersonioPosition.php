@@ -8,13 +8,16 @@
 namespace App\PersonioIntegration\PostTypes;
 
 use App\Helper;
+use App\Log;
 use App\PersonioIntegration\Position;
 use App\PersonioIntegration\Positions;
 use App\PersonioIntegration\Post_Type;
 use App\PersonioIntegration\Taxonomies;
 use App\Plugin\Templates;
 use WP_Post;
+use WP_Query;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * Object of this cpt.
@@ -68,11 +71,30 @@ class PersonioPosition extends Post_Type {
 		// register this cpt.
 		add_action( 'init', array( $this, 'register' ) );
 
-		// change rest api.
+		// REST-API-hooks.
 		add_filter( 'rest_prepare_' . $this->get_name(), array( $this, 'rest_prepare' ), 12, 2 );
+		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
 
 		// define our 2 shortcodes.
 		add_action( 'init', array( $this, 'shortcodes' ) );
+
+		// log deletion of position.
+		add_action( 'before_delete_post', array( $this, 'delete' ) );
+
+		// manage backend columns.
+		add_filter( 'manage_' . $this->get_name() . '_posts_columns', array( $this, 'add_column' ) );
+		add_action( 'manage_' . $this->get_name() . '_posts_custom_column', array( $this, 'add_column_content' ), 10, 2 );
+		add_filter( 'bulk_actions-edit-' . $this->get_name(), array( $this, 'remove_bulk_actions' ), 10, 0 );
+		add_filter( 'post_row_actions', array( $this, 'remove_actions' ), 10, 2 );
+		add_action( 'restrict_manage_posts', array( $this, 'add_filter' ) );
+		add_filter( 'parse_query', array( $this, 'use_filter' ) );
+		add_filter( 'views_edit-' . $this->get_name(), array( $this, 'hide_cpt_filter' ), 10, 0 );
+		add_filter( 'pre_get_posts', array( $this, 'ignore_author' ) );
+
+		// edit positions.
+		add_action( 'admin_init', array( $this, 'remove_cpt_supports' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
 	}
 
 	/**
@@ -404,4 +426,491 @@ class PersonioPosition extends Post_Type {
 		include Templates::get_instance()->get_template( 'archive-' . WP_PERSONIO_INTEGRATION_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
 		return ob_get_clean();
 	}
+
+	/**
+	 * Initialize additional REST API endpoints.
+	 *
+	 * @return void
+	 */
+	public function rest_api_init(): void {
+		// return possible taxonomies.
+		register_rest_route(
+			'personio/v1',
+			'/taxonomies/',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_taxonomies_via_rest_api' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
+
+		// return possible jobdescription templates.
+		register_rest_route(
+			'personio/v1',
+			'/jobdescription-templates/',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_jobdescription_templates_via_rest_api' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
+
+		// return possible archive-listing templates.
+		register_rest_route(
+			'personio/v1',
+			'/archive-templates/',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_archive_templates_via_rest_api' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
+	}
+
+	/**
+	 * Return list of available taxonomies for REST-API.
+	 *
+	 * @return array
+	 * @noinspection PhpUnused
+	 */
+	public function get_taxonomies_via_rest_api(): array {
+		$taxonomies_labels_array = Taxonomies::get_instance()->get_cat_labels();
+		$taxonomies              = array();
+		$count                   = 0;
+		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
+			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
+				++$count;
+				$terms_as_objects = get_terms( array( 'taxonomy' => $taxonomy_name ) );
+				$term_count       = 0;
+				$terms            = array(
+					array(
+						'id'    => $term_count,
+						'label' => __( 'Please choose', 'personio-integration-light' ),
+						'value' => 0,
+					),
+				);
+				foreach ( $terms_as_objects as $term ) {
+					++$term_count;
+					$terms[] = array(
+						'id'    => $term_count,
+						'label' => $term->name,
+						'value' => $term->term_id,
+					);
+				}
+				if ( ! empty( $taxonomies_labels_array[ $taxonomy['slug'] ] ) ) {
+					$taxonomies[] = array(
+						'id'      => $count,
+						'label'   => $taxonomies_labels_array[ $taxonomy['slug'] ],
+						'value'   => $taxonomy['slug'],
+						'entries' => $terms,
+					);
+				}
+			}
+		}
+
+		// return resulting list of taxonomies.
+		return $taxonomies;
+	}
+
+	/**
+	 * Return list of possible templates for job description in REST API.
+	 *
+	 * @return array
+	 * @noinspection PhpUnused
+	 */
+	public function get_jobdescription_templates_via_rest_api(): array {
+		return apply_filters(
+			'personio_integration_rest_templates_jobdescription',
+			array(
+				array(
+					'id'    => 1,
+					'label' => __( 'Default', 'personio-integration-light' ),
+					'value' => 'default',
+				),
+				array(
+					'id'    => 2,
+					'label' => __( 'As list', 'personio-integration-light' ),
+					'value' => 'list',
+				),
+			)
+		);
+	}
+
+	/**
+	 * Return list of possible templates for archives in REST API.
+	 *
+	 * @return array
+	 * @noinspection PhpUnused
+	 */
+	public function get_archive_templates_via_rest_api(): array {
+		return apply_filters(
+			'personio_integration_rest_templates_archive',
+			array(
+				array(
+					'id'    => 1,
+					'label' => __( 'Default', 'personio-integration-light' ),
+					'value' => 'default',
+				),
+				array(
+					'id'    => 2,
+					'label' => __( 'Listing', 'personio-integration-light' ),
+					'value' => 'listing',
+				),
+			)
+		);
+	}
+
+	/**
+	 * Log every deletion of a position.
+	 *
+	 * @param int $post_id The ID of the post which will be deleted.
+	 * @return void
+	 */
+	public function delete( int $post_id ): void {
+		// bail if this is not our own cpt.
+		if ( WP_PERSONIO_INTEGRATION_CPT !== get_post_type( $post_id ) ) {
+			return;
+		}
+
+		// get position.
+		$positions_obj = Positions::get_instance();
+		$position_obj  = $positions_obj->get_position( $post_id );
+
+		// log deletion.
+		$log = new Log();
+		$log->add_log( 'Position ' . $position_obj->getPersonioId() . ' has been deleted.', 'success' );
+	}
+
+	/**
+	 * Add columns to position-table in backend.
+	 *
+	 * @param array $columns List of columns.
+	 * @return array
+	 * @noinspection PhpUnused
+	 */
+	public function add_column( array $columns ): array {
+		// create new column-array.
+		$new_columns = array();
+
+		// add column for PersonioId.
+		$new_columns['id'] = __( 'PersonioID', 'personio-integration-light' );
+
+		// remove checkbox-column if pro is not active.
+		if ( false === Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
+			unset( $columns['cb'] );
+		}
+
+		// return results.
+		return array_merge( $new_columns, $columns );
+	}
+
+	/**
+	 * Add content to the column in the position-table in backend.
+	 *
+	 * @param string $column Name of the column.
+	 * @param int    $post_id The ID of the WP_Post-object.
+	 * @return void
+	 */
+	public function add_column_content( string $column, int $post_id ): void {
+		if ( 'id' === $column ) {
+			$position = new Position( $post_id );
+			echo absint( $position->getPersonioId() );
+		}
+	}
+
+	/**
+	 * Remove any bulk actions for our own cpt.
+	 *
+	 * @return array
+	 */
+	public function remove_bulk_actions(): array {
+		return array();
+	}
+
+	/**
+	 * Remove all actions except "view" and "edit" for our own cpt.
+	 *
+	 * @param array   $actions List of actions.
+	 * @param WP_Post $post Object of the post.
+	 * @return array
+	 * @noinspection PhpUnused
+	 */
+	public function remove_actions( array $actions, WP_Post $post ): array {
+		if ( WP_PERSONIO_INTEGRATION_CPT === get_post_type() ) {
+			$actions         = array(
+				'view' => $actions['view'],
+			);
+			$actions['edit'] = '<a href="' . esc_url( get_edit_post_link( $post->ID ) ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
+			return $actions;
+		}
+		return $actions;
+	}
+
+	/**
+	 * Add filter for our own cpt on lists in admin.
+	 *
+	 * @return void
+	 */
+	public function add_filter(): void {
+		$post_type = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : 'post';
+
+		if ( WP_PERSONIO_INTEGRATION_CPT === $post_type ) {
+			// add filter for each taxonomy.
+			foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
+				// show only taxonomies which are visible in filter.
+				if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
+					// get the taxonomy as object.
+					$taxonomy = get_taxonomy( $taxonomy_name );
+
+					// get its terms.
+					$terms = get_terms(
+						array(
+							'taxonomy'   => $taxonomy_name,
+							'hide_empty' => false,
+						)
+					);
+
+					// list terms only if they are available.
+					if ( ! empty( $terms ) ) {
+						?>
+						<!--suppress HtmlFormInputWithoutLabel -->
+						<select name="admin_filter_<?php echo esc_attr( $taxonomy_name ); ?>">
+							<option value="0"><?php echo esc_html( $taxonomy->label ); ?></option>
+							<?php
+							foreach ( $terms as $term ) {
+								?>
+								<option value="<?php echo esc_attr( $term->term_id ); ?>"<?php echo ( isset( $_GET[ 'admin_filter_' . $taxonomy_name ] ) && absint( $_GET[ 'admin_filter_' . $taxonomy_name ] ) === $term->term_id ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( $term->name ); ?></option>
+								<?php
+							}
+							?>
+						</select>
+						<?php
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Use filter in admin on edit-page for filtering the cpt-items.
+	 *
+	 * @param WP_Query $query The WP_Query-object.
+	 * @return void
+	 */
+	public function use_filter( WP_Query $query ): void {
+		global $pagenow;
+		$post_type = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : 'post';
+
+		if ( WP_PERSONIO_INTEGRATION_CPT === $post_type && 'edit.php' === $pagenow ) {
+			// add filter for each taxonomy.
+			$tax_query = array();
+			foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
+				if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
+					if ( isset( $_GET[ 'admin_filter_' . $taxonomy_name ] ) && absint( wp_unslash( $_GET[ 'admin_filter_' . $taxonomy_name ] ) ) > 0 ) {
+						$tax_query[] = array(
+							'taxonomy' => $taxonomy_name,
+							'field'    => 'term_id',
+							'terms'    => absint( wp_unslash( $_GET[ 'admin_filter_' . $taxonomy_name ] ) ),
+						);
+					}
+				}
+			}
+			if ( ! empty( $tax_query ) ) {
+				if ( count( $tax_query ) > 1 ) {
+					$query->set(
+						'tax_query',
+						array(
+							'relation' => 'AND',
+							$tax_query,
+						)
+					);
+				} else {
+					$query->set( 'tax_query', $tax_query );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Hide cpt filter-view.
+	 *
+	 * @return array
+	 */
+	public function hide_cpt_filter(): array {
+		return array();
+	}
+
+	/**
+	 * Force list-view of our own cpt to ignore author as filter.
+	 *
+	 * @param WP_Query $query The WP_Query-object.
+	 * @return WP_Query
+	 */
+	public function ignore_author( WP_Query $query ): WP_Query {
+		if ( is_admin() && ! empty( $query->query_vars['post_type'] ) && WP_PERSONIO_INTEGRATION_CPT === $query->query_vars['post_type'] ) {
+			$query->set( 'author', 0 );
+		}
+		return $query;
+	}
+
+	/**
+	 * Remove supports from our own cpt and change our taxonomies.
+	 * Goal: edit-page without any generic settings.
+	 *
+	 * @return void
+	 */
+	public function remove_cpt_supports(): void {
+		// remove title, editor and custom fields.
+		remove_post_type_support( WP_PERSONIO_INTEGRATION_CPT, 'title' );
+		remove_post_type_support( WP_PERSONIO_INTEGRATION_CPT, 'editor' );
+		remove_post_type_support( WP_PERSONIO_INTEGRATION_CPT, 'custom-fields' );
+
+		// remove meta box for slug.
+		remove_meta_box( 'slugdiv', WP_PERSONIO_INTEGRATION_CPT, 'normal' );
+
+		// remove taxonomy-meta-boxes.
+		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $settings ) {
+			$taxonomy              = get_taxonomy( $taxonomy_name );
+			$taxonomy->meta_box_cb = false;
+			register_taxonomy( $taxonomy_name, WP_PERSONIO_INTEGRATION_CPT, $taxonomy );
+		}
+	}
+
+	/**
+	 * Add Box with hints for editing.
+	 * Add Open Graph Meta-box für edit-page of positions.
+	 *
+	 * @return void
+	 */
+	public function add_meta_box(): void {
+		// TODO für Pro ausblendbar machen
+		add_meta_box(
+			'personio-edit-hints',
+			__( 'Show Personio position data', 'personio-integration-light' ),
+			array( $this, 'get_meta_box_data_hint' ),
+			WP_PERSONIO_INTEGRATION_CPT
+		);
+
+		add_meta_box(
+			'personio-position-personio-id',
+			__( 'PersonioID', 'personio-integration-light' ),
+			array( $this, 'get_meta_box_for_personio_id' ),
+			WP_PERSONIO_INTEGRATION_CPT
+		);
+
+		add_meta_box(
+			'personio-position-title',
+			__( 'Title', 'personio-integration-light' ),
+			array( $this, 'get_meta_box_for_title' ),
+			WP_PERSONIO_INTEGRATION_CPT
+		);
+
+		add_meta_box(
+			'personio-position-text',
+			__( 'Description', 'personio-integration-light' ),
+			array( $this, 'add_meta_box_for_description' ),
+			WP_PERSONIO_INTEGRATION_CPT
+		);
+
+		// add meta box for each supported taxonomy.
+		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $settings ) {
+			$labels = helper::get_taxonomy_label( $taxonomy_name );
+			add_meta_box(
+				'personio-position-taxonomy-' . $taxonomy_name,
+				$labels['name'],
+				array( $this, 'get_meta_box_for_taxonomy' ),
+				WP_PERSONIO_INTEGRATION_CPT,
+				'side'
+			);
+		}
+	}
+
+	/**
+	 * Box with hints why editing of Position-data is not allowed.
+	 *
+	 * @param WP_Post $post Object of the post.
+	 * @return void
+	 */
+	public function get_meta_box_data_hint( WP_Post $post ): void {
+		if ( $post->ID > 0 ) {
+			$position = new Position( $post->ID );
+			if ( $position->isValid() ) {
+				$url = helper::get_personio_login_url();
+				/* translators: %1$s will be replaced by the URL for Personio */
+				printf( esc_html__( 'At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'personio-integration-light' ), esc_html( $position->getTitle() ), esc_url( $url ) );
+			}
+		}
+	}
+
+	/**
+	 * Show personioId in meta box.
+	 *
+	 * @param WP_Post $post Object of the post.
+	 * @return void
+	 */
+	public function get_meta_box_for_personio_id( WP_Post $post ): void {
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+		echo wp_kses_post( $position_obj->getPersonioId() );
+	}
+
+	/**
+	 * Show title of position in meta box.
+	 *
+	 * @param WP_Post $post Object of the post.
+	 * @return void
+	 */
+	public function get_meta_box_for_title( WP_Post $post ): void {
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+		echo wp_kses_post( $position_obj->getTitle() );
+	}
+
+	/**
+	 * Show content of position in meta box.
+	 *
+	 * @param WP_Post $post Object of the post.
+	 * @return void
+	 */
+	public function get_meta_box_for_description( WP_Post $post ): void {
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+		echo wp_kses_post( $position_obj->get_content() );
+	}
+
+	/**
+	 * Show any taxonomy of position in meta box.
+	 *
+	 * @param WP_Post $post Object of the post.
+	 * @param array   $attr The attributes.
+	 * @return void
+	 */
+	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
+		$position_obj  = Positions::get_instance()->get_position( $post->ID );
+		$taxonomy_name = str_replace( 'personio-position-taxonomy-', '', $attr['id'] );
+		$taxonomy_obj  = get_taxonomy( $taxonomy_name );
+		$content       = helper::get_taxonomy_name_of_position( $taxonomy_obj->rewrite['slug'], $position_obj );
+		if ( empty( $content ) ) {
+			echo '<i>' . esc_html__( 'No data', 'personio-integration-light' ) . '</i>';
+		} else {
+			echo wp_kses_post( $content );
+		}
+	}
+
+	/**
+	 * Through a bug in WordPress we must remove the "create"-option manually.
+	 *
+	 * @return void
+	 */
+	public function disable_create_options(): void {
+		global $pagenow, $typenow;
+
+		if ( is_admin() && ! empty( $typenow ) && ! empty( $pagenow ) && 'edit.php' === $pagenow && ! empty( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) && stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'edit.php' ) && stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'post_type=' . $typenow ) && ! stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'page' ) ) {
+			$pagenow = 'edit-' . $typenow . '.php'; // TODO find better solution.
+		}
+	}
+
 }

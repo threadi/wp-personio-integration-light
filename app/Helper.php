@@ -7,6 +7,7 @@
 
 namespace App;
 
+use App\Plugin\Languages;
 use App\Plugin\Templates;
 use Exception;
 use personioIntegration\Position;
@@ -652,7 +653,7 @@ class Helper {
 		}
 
 		// if language is not known, use default language.
-		$languages = self::get_supported_languages();
+		$languages = Languages::get_instance()->get_languages();
 		if ( empty( $languages[ $wp_lang ] ) ) {
 			$wp_lang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
 		}
@@ -700,7 +701,7 @@ class Helper {
 		}
 
 		// if language is not known, use default language.
-		$languages = self::get_supported_languages();
+		$languages = Languages::get_instance()->get_languages();
 		if ( empty( $languages[ $wp_lang ] ) ) {
 			$wp_lang = WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY;
 		}
@@ -1187,7 +1188,7 @@ class Helper {
 				'10-15' => __( '10-15 years', 'personio-integration-light' ),
 				'ht15'  => __( 'more than 15 years', 'personio-integration-light' ),
 			),
-			WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES  => self::get_supported_languages(),
+			WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES  => Languages::get_instance()->get_languages(),
 		);
 		// revert the locale-setting.
 		if ( ! is_admin() ) {
@@ -1242,16 +1243,6 @@ class Helper {
 		}
 
 		return $timeout;
-	}
-
-	/**
-	 * Return an array of the supported languages.
-	 *
-	 * @return mixed|void
-	 * @noinspection PhpUnused
-	 */
-	public static function get_supported_languages() {
-		return apply_filters( 'personio_integration_supported_languages', WP_PERSONIO_INTEGRATION_LANGUAGES_COMPLETE );
 	}
 
 	/**

@@ -58,6 +58,12 @@ class Third_Party_Plugins {
 
 		// Plugin Rank Math.
 		add_filter( 'rank_math/frontend/description', array( $this, 'rank_math' ) );
+
+		// Plugin OG.
+		add_filter( 'og_array', array( $this, 'og_optimizer' ) );
+
+		// Plugin Easy Language.
+		add_filter( 'easy_language_possible_post_types', array( $this, 'remove_easy_language_support' ) );
 	}
 
 	/**
@@ -110,5 +116,50 @@ class Third_Party_Plugins {
 			}
 		}
 		return $description;
+	}
+
+	/**
+	 * Optimize output of plugin OG.
+	 *
+	 * @source https://de.wordpress.org/plugins/og/
+	 * @param array $og_array List of OpenGraph-settings from OG-plugin.
+	 * @return array
+	 */
+	public function og_optimizer( array $og_array ): array {
+		if ( is_singular( WP_PERSONIO_INTEGRATION_CPT ) ) {
+			// get position as object.
+			$post_id        = get_queried_object_id();
+			$position       = new Position( $post_id );
+			$position->lang = helper::get_wp_lang(); // TODO check.
+
+			// get description.
+			$description = wp_strip_all_tags( $position->get_content() );
+			$description = preg_replace( '/\s+/', ' ', $description );
+
+			// update settings.
+			$og_array['og']['title']            = $position->getTitle();
+			$og_array['og']['description']      = $description;
+			$og_array['twitter']['title']       = $position->getTitle();
+			$og_array['twitter']['description'] = $description;
+			$og_array['schema']['title']        = $position->getTitle();
+			$og_array['schema']['description']  = $description;
+		}
+
+		// return resulting list.
+		return $og_array;
+	}
+
+	/**
+	 * Remove our CPTs from list of possible post-types in easy-language-plugin.
+	 *
+	 * @param array $post_types List of post-types.
+	 *
+	 * @return array
+	 */
+	public function remove_easy_language_support( array $post_types ): array {
+		if ( ! empty( $post_types[ WP_PERSONIO_INTEGRATION_CPT ] ) ) {
+			unset( $post_types[ WP_PERSONIO_INTEGRATION_CPT ] );
+		}
+		return $post_types;
 	}
 }

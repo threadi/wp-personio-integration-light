@@ -8,62 +8,6 @@
 use App\helper;
 
 /**
- * Add tab in settings.
- *
- * @param string $tab The name of the active tab.
- * @return void
- * @noinspection PhpUnused
- */
-function personio_integration_settings_add_advanced_tab( string $tab ): void {
-	// check active tab.
-	$active_class = '';
-	if ( 'advanced' === $tab ) {
-		$active_class = ' nav-tab-active';
-	}
-
-	// define URL for advanced-settings.
-	$url = add_query_arg(
-		array(
-			'post_type' => WP_PERSONIO_INTEGRATION_CPT,
-			'page'      => 'personioPositions',
-			'tab'       => 'advanced',
-		),
-		''
-	);
-
-	// output tab.
-	echo '<a href="' . esc_url( $url ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html__( 'Advanced', 'personio-integration-light' ) . '</a>';
-}
-add_action( 'personio_integration_settings_add_tab', 'personio_integration_settings_add_advanced_tab', 60 );
-
-/**
- * Show advanced-page.
- *
- * @return void
- * @noinspection PhpUnused
- */
-function personio_integration_admin_add_menu_content_advanced(): void {
-	// check user capabilities.
-	if ( ! current_user_can( 'manage_' . WP_PERSONIO_INTEGRATION_CPT ) ) {
-		return;
-	}
-
-	// show errors.
-	settings_errors();
-
-	?>
-	<form method="POST" action="<?php echo esc_url( get_admin_url() ); ?>options.php">
-		<?php
-		settings_fields( 'personioIntegrationPositionsAdvanced' );
-		do_settings_sections( 'personioIntegrationPositionsAdvanced' );
-		submit_button();
-		?>
-	</form>
-	<?php
-}
-add_action( 'personio_integration_settings_advanced_page', 'personio_integration_admin_add_menu_content_advanced' );
-
-/**
  * Get advanced options.
  *
  * @return void

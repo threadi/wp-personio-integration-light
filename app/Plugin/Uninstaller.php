@@ -39,7 +39,7 @@ class Uninstaller {
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
 			// remove options.
-			foreach ( Helper::get_supported_languages() as $key => $lang ) {
+			foreach ( Languages::get_instance()->get_languages() as $key => $lang ) {
 				delete_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $key );
 				delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key );
 				delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key );

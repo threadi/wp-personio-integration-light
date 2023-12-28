@@ -75,70 +75,6 @@ function personio_integration_admin_sanitize_settings_field_array( array $values
 }
 
 /**
- * Add settings-page for the plugin.
- *
- * @return void
- * @noinspection PhpUnused
- */
-function personio_integration_admin_add_settings_menu(): void {
-	add_submenu_page(
-		'edit.php?post_type=' . WP_PERSONIO_INTEGRATION_CPT,
-		__( 'Personio Integration Settings', 'personio-integration-light' ),
-		__( 'Settings', 'personio-integration-light' ),
-		'manage_' . WP_PERSONIO_INTEGRATION_CPT,
-		'personioPositions',
-		'personio_integration_admin_add_settings_content',
-		1
-	);
-}
-add_action( 'admin_menu', 'personio_integration_admin_add_settings_menu' );
-
-/**
- * Create the admin-page with tab-navigation.
- *
- * @return void
- */
-function personio_integration_admin_add_settings_content(): void {
-	// check user capabilities.
-	if ( ! current_user_can( 'manage_' . WP_PERSONIO_INTEGRATION_CPT ) ) {
-		return;
-	}
-
-	// get the active tab from the $_GET param.
-	$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
-
-	?>
-	<div class="wrap">
-		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-		<nav class="nav-tab-wrapper">
-			<a href="?post_type=personioposition&page=personioPositions" class="nav-tab
-			<?php
-			if ( empty( $tab ) ) :
-				?>
-				nav-tab-active<?php endif; ?>"><?php echo esc_html__( 'General Settings', 'personio-integration-light' ); ?></a>
-			<?php
-			// only show all options if Personio URL is available.
-			if ( get_option( 'personioIntegrationUrl', false ) ) {
-					do_action( 'personio_integration_settings_add_tab', $tab );
-			} else {
-				?>
-					<span class="nav-tab"><?php echo esc_html__( 'Enter Personio URL to get more options', 'personio-integration-light' ); ?></span>
-				<?php
-			}
-			?>
-		</nav>
-
-		<div class="tab-content">
-			<?php
-				// get the content of the actual tab.
-				do_action( 'personio_integration_settings_' . ( empty( $tab ) ? 'general' : $tab ) . '_page' );
-			?>
-		</div>
-	</div>
-	<?php
-}
-
-/**
  * Add tab in settings for logs.
  *
  * @param string $tab The name of the active tab.
@@ -221,65 +157,6 @@ function personio_integration_admin_number_field( array $attr ): void {
 		<?php
 		if ( ! empty( $attr['description'] ) ) {
 			echo '<p>' . wp_kses_post( $attr['description'] ) . '</p>';
-		}
-	}
-}
-
-/**
- * Define an input-text-field.
- *
- * @param array $attr List of attributes for this field.
- * @return void
- */
-function personio_integration_admin_text_field( array $attr ): void {
-	if ( ! empty( $attr['fieldId'] ) ) {
-		// get value from config.
-		$value = get_option( $attr['fieldId'], '' );
-
-		// get value from request.
-		if ( isset( $_POST[ $attr['fieldId'] ] ) ) {
-			$value = sanitize_text_field( wp_unslash( $_POST[ $attr['fieldId'] ] ) );
-		}
-
-		// get title.
-		$title = '';
-		if ( isset( $attr['title'] ) ) {
-			$title = $attr['title'];
-		}
-
-		// set readonly attribute.
-		$readonly = '';
-		if ( isset( $attr['readonly'] ) && false !== $attr['readonly'] ) {
-			$readonly = ' disabled';
-			?>
-			<input type="hidden" name="<?php echo esc_attr( $attr['fieldId'] ); ?>_ro" value="<?php echo esc_attr( $value ); ?>">
-													<?php
-		}
-
-		// mark as highlighted if set.
-		if ( isset( $attr['highlight'] ) && false !== $attr['highlight'] ) {
-			?>
-			<div class="highlight">
-			<?php
-		}
-
-		// output.
-		?>
-		<input type="text" id="<?php echo esc_attr( $attr['fieldId'] ); ?>" name="<?php echo esc_attr( $attr['fieldId'] ); ?>" value="<?php echo esc_attr( $value ); ?>"
-											<?php
-											echo ! empty( $attr['placeholder'] ) ? ' placeholder="' . esc_attr( $attr['placeholder'] ) . '"' : '';
-											?>
-		<?php echo esc_attr( $readonly ); ?> class="widefat" title="<?php echo esc_attr( $title ); ?>">
-		<?php
-		if ( ! empty( $attr['description'] ) ) {
-			echo '<p>' . wp_kses_post( $attr['description'] ) . '</p>';
-		}
-
-		// end mark as highlighted if set.
-		if ( isset( $attr['highlight'] ) && false !== $attr['highlight'] ) {
-			?>
-			</div>
-			<?php
 		}
 	}
 }

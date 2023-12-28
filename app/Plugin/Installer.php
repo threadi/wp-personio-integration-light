@@ -50,7 +50,7 @@ class Installer {
 			// initially enable only the main-language of this page.
 			if ( ! get_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION, false ) ) {
 				$lang_key  = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
-				$languages = helper::get_supported_languages();
+				$languages = Languages::get_instance()->get_languages();
 				update_option(
 					WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION,
 					array(

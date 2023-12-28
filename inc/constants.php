@@ -74,9 +74,19 @@ const WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY = 'en';
 const WP_PERSONIO_INTEGRATION_TAXONOMY_LANG_TITLE = 'langs';
 
 /**
- * Include the taxonomy-settings.
+ * Define each taxonomy
  */
-require_once 'taxonomies.php';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY = 'personioRecruitingCategory';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY = 'personioOccupationCategory';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION          = 'personioOccupation';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE              = 'personioOffice';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT          = 'personioDepartment';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE     = 'personioEmploymentType';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY           = 'personioSeniority';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE            = 'personioSchedule';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE          = 'personioExperience';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES           = 'personioLanguages';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS            = 'personioKeywords';
 
 /**
  * Set transient-based hints for the backend.
@@ -277,3 +287,4 @@ define( 'WP_PERSONIO_GUTENBERG_TEMPLATES', Helper::get_plugin_path() . 'template
  * Define the Gutenberg-template-parent-ID which should reflect the plugin-directory.
  */
 const WP_PERSONIO_GUTENBERG_PARENT_ID = 'personio-integration-light/personio-integration-light';
+
