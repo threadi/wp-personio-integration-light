@@ -36,9 +36,10 @@ class Languages {
 			}
 
 			// then set the activated languages.
-			update_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION, $values );
 			foreach ( $values as $key => $active ) {
-				update_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $key, 1 );
+				if ( 1 === absint( $active ) ) {
+					update_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $key, 1 );
+				}
 			}
 		}
 		return $values;

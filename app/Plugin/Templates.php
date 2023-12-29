@@ -11,11 +11,14 @@ namespace App\Plugin;
 
 use App\Helper;
 
+/**
+ * Handler for templates.
+ */
 class Templates {
 	/**
 	 * Instance of this object.
 	 *
-	 * @var ?Init
+	 * @var ?Templates
 	 */
 	private static ?Templates $instance = null;
 
@@ -54,6 +57,10 @@ class Templates {
 
 		// check for changed templates.
 		add_action( 'admin_init', array( $this, 'check_child_theme_templates' ) );
+
+		// support templates.
+		add_filter( 'single_template', array( $this, 'get_single_template' ) );
+		add_filter( 'archive_template', array( $this, 'get_archive_template' ) );
 	}
 
 	/**
@@ -128,7 +135,6 @@ class Templates {
 	 *
 	 * @param string $template The requested template.
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
 	public function get_cpt_template( string $template ): string {
 		if ( WP_PERSONIO_INTEGRATION_CPT === get_post_type( get_the_ID() ) ) {
@@ -139,11 +145,11 @@ class Templates {
 
 			// single-view for classic themes.
 			if ( is_single() ) {
-				return personio_integration_get_single_template( $template );
+				return $this->get_single_template( $template );
 			}
 
 			// archive-view for classic themes.
-			return personio_integration_get_archive_template( $template );
+			return $this->get_archive_template( $template );
 		}
 		return $template;
 	}
@@ -172,9 +178,8 @@ class Templates {
 	 *
 	 * @param array $values List of shortcode attributes.
 	 * @return array
-	 * @noinspection PhpUnused
 	 */
-	function get_lowercase_attributes( array $values ): array {
+	public function get_lowercase_attributes( array $values ): array {
 		// TODO better solution?
 		$array = array();
 		foreach ( $values['attributes'] as $name => $attribute ) {
@@ -193,7 +198,7 @@ class Templates {
 	 * @return array
 	 * @noinspection PhpUnused
 	 */
-	function get_jobdescription_templates(): array {
+	public function get_jobdescription_templates(): array {
 		return apply_filters(
 			'personio_integration_templates_jobdescription',
 			array(
@@ -225,14 +230,14 @@ class Templates {
 		}
 
 		// get all files from child-theme-templates-directory.
-		$files = helper::get_file_from_directory( $path );
+		$files = Helper::get_file_from_directory( $path );
 		if ( empty( $files ) ) {
 			delete_transient( 'personio_integration_old_templates' );
 			return;
 		}
 
 		// get list of all templates of this plugin.
-		$plugin_files = helper::get_file_from_directory( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) . '/templates' );
+		$plugin_files = Helper::get_file_from_directory( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) . '/templates' );
 
 		// collect warnings.
 		$warnings = array();
@@ -253,8 +258,7 @@ class Templates {
 					// if version is not set, show warning.
 					if ( empty( $file_data['version'] ) ) {
 						$warnings[] = $file;
-					}
-					elseif ( ! empty( $plugin_files[ basename( $file ) ] ) ) {
+					} elseif ( ! empty( $plugin_files[ basename( $file ) ] ) ) {
 						// compare files.
 						$plugin_file_data = get_file_data( $plugin_files[ basename( $file ) ], $headers );
 						if ( isset( $plugin_file_data['version'] ) ) {
@@ -282,4 +286,35 @@ class Templates {
 		}
 	}
 
+	/**
+	 * Get single template.
+	 *
+	 * @param string $single_template The template.
+	 * @return string
+	 */
+	public function get_single_template( string $single_template ): string {
+		if ( WP_PERSONIO_INTEGRATION_CPT === get_post_type( get_the_ID() ) ) {
+			$path = $this->get_template( 'single-personioposition.php' );
+			if ( file_exists( $path ) ) {
+				$single_template = $path;
+			}
+		}
+		return $single_template;
+	}
+
+	/**
+	 * Get archive template.
+	 *
+	 * @param string $archive_template The template.
+	 * @return string
+	 */
+	public function get_archive_template( string $archive_template ): string {
+		if ( is_post_type_archive( WP_PERSONIO_INTEGRATION_CPT ) ) {
+			$path = $this->get_template( 'archive-personioposition.php' );
+			if ( file_exists( $path ) ) {
+				$archive_template = $path;
+			}
+		}
+		return $archive_template;
+	}
 }

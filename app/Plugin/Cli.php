@@ -19,10 +19,9 @@ class Cli {
 	use Helper;
 
 	/**
-	 * Get actual open positions via PersonioAPI.
+	 * Get actual open positions from Personio.
 	 *
 	 * @since  1.0.0
-	 * @noinspection PhpUnused
 	 * @return void
 	 */
 	public function get_positions(): void {
@@ -34,7 +33,6 @@ class Cli {
 	 *
 	 * @since  1.0.0
 	 * @return void
-	 * @noinspection PhpUnused
 	 */
 	public function delete_all(): void {
 		// log this event.
@@ -53,7 +51,6 @@ class Cli {
 	 *
 	 * @param array $args Argument to delete positions.
 	 * @since  1.0.0
-	 * @noinspection PhpUnused
 	 * @return void
 	 */
 	public function delete_positions( array $args ): void {
@@ -75,11 +72,10 @@ class Cli {
 	 *
 	 * @param array $delete_data Marker to delete all data or not.
 	 * @since        1.0.0
-	 * @noinspection PhpUnused
 	 * @return void
 	 */
 	public function reset_plugin( array $delete_data = array() ): void {
-		( new Uninstaller() )->run( $delete_data );
-		( new Installer() )->activation();
+		Uninstaller::get_instance()->run( $delete_data );
+		Installer::get_instance()->activation();
 	}
 }

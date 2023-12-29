@@ -72,7 +72,7 @@ class Taxonomies {
 		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
 			// add default terms to taxonomy if they do not exist (only in admin or via CLI).
 			$taxonomy_obj = get_taxonomy( $taxonomy_name );
-			if ( ! empty( $taxonomy_obj->defaults ) && ( is_admin() || helper::is_cli() ) ) {
+			if ( ! empty( $taxonomy_obj->defaults ) && ( is_admin() || Helper::is_cli() ) ) {
 				$has_terms = get_terms( array( 'taxonomy' => $taxonomy_name ) );
 				if ( empty( $has_terms ) ) {
 					Helper::add_terms( $taxonomy_obj->defaults, $taxonomy_name );
@@ -93,8 +93,8 @@ class Taxonomies {
 		foreach ( $this->get_taxonomies() as $taxonomy_name => $settings ) {
 			// get properties.
 			$taxonomy_array             = array_merge( $this->get_default_settings(), $settings['attr'] );
-			$taxonomy_array['labels']   = helper::get_taxonomy_label( $taxonomy_name );
-			$taxonomy_array['defaults'] = helper::get_taxonomy_defaults( $taxonomy_name );
+			$taxonomy_array['labels']   = Helper::get_taxonomy_label( $taxonomy_name );
+			$taxonomy_array['defaults'] = Helper::get_taxonomy_defaults( $taxonomy_name );
 
 			// remove slugs for not logged in users.
 			if ( ! is_user_logged_in() ) {
@@ -218,7 +218,7 @@ class Taxonomies {
 	public function translate( WP_Term $_term, string $taxonomy ): WP_Term {
 		if ( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES !== $taxonomy ) {
 			// read from defaults for the taxonomy.
-			$array = helper::get_taxonomy_defaults( $taxonomy );
+			$array = Helper::get_taxonomy_defaults( $taxonomy );
 			if ( ! empty( $array[ $_term->name ] ) ) {
 				$_term->name = $array[ $_term->name ];
 			}

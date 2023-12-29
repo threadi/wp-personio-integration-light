@@ -176,7 +176,7 @@ class Positions {
 
 			// consider grouping of entries in list.
 			if ( ! empty( $parameter_to_add['groupby'] ) ) {
-				$array[ helper::get_taxonomy_name_of_position( $parameter_to_add['groupby'], $position_object ) ] = $position_object;
+				$array[ Helper::get_taxonomy_name_of_position( $parameter_to_add['groupby'], $position_object ) ] = $position_object;
 			} else {
 				// ungrouped simply add the position to the list.
 				$array[] = $position_object;

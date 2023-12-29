@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * @version: 1.0.0
  */
 
-$content_array = $position->getContentAsArray();
+$content_array = $position->get_content_as_array();
 if ( ! empty( $content_array ) ) {
 	?><ul>
 	<?php

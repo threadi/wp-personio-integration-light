@@ -217,42 +217,6 @@ function personio_integration_update_post_object( WP_Post $post ): void {
 add_action( 'the_post', 'personio_integration_update_post_object' );
 
 /**
- * Get single template.
- *
- * @param string $single_template The template.
- * @return string
- * @noinspection PhpUnused
- */
-function personio_integration_get_single_template( string $single_template ): string {
-	if ( WP_PERSONIO_INTEGRATION_CPT === get_post_type( get_the_ID() ) ) {
-		$path = helper::get_template( 'single-personioposition.php' );
-		if ( file_exists( $path ) ) {
-			$single_template = $path;
-		}
-	}
-	return $single_template;
-}
-add_filter( 'single_template', 'personio_integration_get_single_template' );
-
-/**
- * Get archive template.
- *
- * @param string $archive_template The template.
- * @return string
- * @noinspection PhpUnused
- */
-function personio_integration_get_archive_template( string $archive_template ): string {
-	if ( is_post_type_archive( WP_PERSONIO_INTEGRATION_CPT ) ) {
-		$path = helper::get_template( 'archive-personioposition.php' );
-		if ( file_exists( $path ) ) {
-			$archive_template = $path;
-		}
-	}
-	return $archive_template;
-}
-add_filter( 'archive_template', 'personio_integration_get_archive_template' );
-
-/**
  * Show a filter in frontend restricted to positions which are visible in list.
  *
  * @param string $filter Name of the filter (taxonomy-slug).
@@ -366,48 +330,6 @@ function personio_integration_check_taxonomies( array $settings ): array {
 	);
 }
 add_filter( 'personio_integration_get_shortcode_attributes', 'personio_integration_check_taxonomies' );
-
-/**
- * Return attribute defaults for shortcode in single-view.
- *
- * @return array
- */
-function personio_integration_get_single_shortcode_attributes_defaults(): array {
-	return array(
-		'personioid'              => 0,
-		'lang'                    => helper::get_current_lang(),
-		'template'                => '',
-		'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults', array() ) ),
-		'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription', 'default' ),
-		'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDetail', array() ) ),
-		'donotlink'               => 1,
-		'styles'                  => '',
-		'classes'                 => '',
-	);
-}
-
-/**
- * Convert attributes for shortcodes.
- *
- * @param array $attributes List of attributes.
- * @return array
- */
-function personio_integration_get_single_shortcode_attributes( array $attributes ): array {
-	// define the default values for each attribute.
-	$attribute_defaults = personio_integration_get_single_shortcode_attributes_defaults();
-
-	// define the settings for each attribute (array or string).
-	$attribute_settings = array(
-		'personioid' => 'int',
-		'lang'       => 'string',
-		'templates'  => 'array',
-		'excerpt'    => 'array',
-		'donotlink'  => 'bool',
-		'styles'     => 'string',
-		'classes'    => 'string',
-	);
-	return helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
-}
 
 /**
  * Extend the WP-own search.

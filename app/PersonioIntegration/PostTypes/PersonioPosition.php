@@ -155,8 +155,8 @@ class PersonioPosition extends Post_Type {
 			'capabilities'        => array(
 				'create_posts'       => 'do_not_allow',
 				'delete_posts'       => 'do_not_allow',
-				'edit_post'          => 'read_' . WP_PERSONIO_INTEGRATION_CPT,
-				'edit_posts'         => 'read_' . WP_PERSONIO_INTEGRATION_CPT,
+				'edit_post'          => 'read_' . $this->get_name(),
+				'edit_posts'         => 'read_' . $this->get_name(),
 				'edit_others_posts'  => 'do_not_allow',
 				'read_post'          => 'do_not_allow',
 				'read_posts'         => 'do_not_allow',
@@ -168,7 +168,7 @@ class PersonioPosition extends Post_Type {
 				'slug' => $detail_slug,
 			),
 		);
-		register_post_type( WP_PERSONIO_INTEGRATION_CPT, $args );
+		register_post_type( $this->get_name(), $args );
 
 		// register personioId als postmeta to be published in rest-api,
 		// which is necessary for our Blocks.
@@ -189,7 +189,6 @@ class PersonioPosition extends Post_Type {
 	 * @param WP_REST_Response $data The response object.
 	 * @param WP_Post          $post The requested object.
 	 * @return WP_REST_Response
-	 * @noinspection PhpUnused
 	 */
 	public function rest_prepare( WP_REST_Response $data, WP_Post $post ): WP_REST_Response {
 		// get positions-object.
@@ -249,7 +248,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function shortcode_position( array $attributes = array() ): string {
 		// convert single shortcode attributes.
-		$personio_attributes = personio_integration_get_single_shortcode_attributes( $attributes );
+		$personio_attributes = $this->get_single_shortcode_attributes( $attributes );
 
 		// do not output anything without ID.
 		if ( $personio_attributes['personioid'] <= 0 ) {
@@ -264,7 +263,7 @@ class PersonioPosition extends Post_Type {
 		$position  = $positions->get_position_by_personio_id( $personio_attributes['personioid'] );
 
 		// do not show this position if it is not valid or could not be loaded.
-		if ( $position && ! $position->isValid() || ! $position ) {
+		if ( $position && ! $position->is_valid() || ! $position ) {
 			if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 				return '<div><p>' . __( 'Given Id is not a valid position-Id.', 'personio-integration-light' ) . '</p></div>';
 			}
@@ -275,7 +274,7 @@ class PersonioPosition extends Post_Type {
 		$position->lang = $personio_attributes['lang'];
 
 		// change settings for output.
-		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, personio_integration_get_single_shortcode_attributes_defaults() );
+		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $this->get_single_shortcode_attributes_defaults() );
 
 		// generate styling.
 		$styles = ! empty( $personio_attributes['styles'] ) ? $personio_attributes['styles'] : '';
@@ -323,10 +322,10 @@ class PersonioPosition extends Post_Type {
 	 * @param array $attributes The shortcode attributes.
 	 * @return string
 	 */
-	function shortcode_positions( array $attributes = array() ): string {
+	public function shortcode_positions( array $attributes = array() ): string {
 		// define the default values for each attribute.
 		$attribute_defaults = array(
-			'lang'             => helper::get_current_lang(),
+			'lang'             => Helper::get_current_lang(),
 			'showfilter'       => ( 1 === absint( get_option( 'personioIntegrationEnableFilter', 0 ) ) ),
 			'filter'           => implode( ',', get_option( 'personioIntegrationTemplateFilter', '' ) ),
 			'filtertype'       => get_option( 'personioIntegrationFilterType', 'select' ),
@@ -382,7 +381,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// get the attributes to filter.
-		$personio_attributes = helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
+		$personio_attributes = Helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
 
 		// get positions-object for search.
 		$positions_obj = Positions::get_instance();
@@ -584,7 +583,7 @@ class PersonioPosition extends Post_Type {
 
 		// log deletion.
 		$log = new Log();
-		$log->add_log( 'Position ' . $position_obj->getPersonioId() . ' has been deleted.', 'success' );
+		$log->add_log( 'Position ' . $position_obj->get_personio_id() . ' has been deleted.', 'success' );
 	}
 
 	/**
@@ -620,7 +619,7 @@ class PersonioPosition extends Post_Type {
 	public function add_column_content( string $column, int $post_id ): void {
 		if ( 'id' === $column ) {
 			$position = new Position( $post_id );
-			echo absint( $position->getPersonioId() );
+			echo absint( $position->get_personio_id() );
 		}
 	}
 
@@ -814,13 +813,13 @@ class PersonioPosition extends Post_Type {
 		add_meta_box(
 			'personio-position-text',
 			__( 'Description', 'personio-integration-light' ),
-			array( $this, 'add_meta_box_for_description' ),
+			array( $this, 'get_meta_box_for_description' ),
 			WP_PERSONIO_INTEGRATION_CPT
 		);
 
 		// add meta box for each supported taxonomy.
 		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $settings ) {
-			$labels = helper::get_taxonomy_label( $taxonomy_name );
+			$labels = Helper::get_taxonomy_label( $taxonomy_name );
 			add_meta_box(
 				'personio-position-taxonomy-' . $taxonomy_name,
 				$labels['name'],
@@ -840,10 +839,10 @@ class PersonioPosition extends Post_Type {
 	public function get_meta_box_data_hint( WP_Post $post ): void {
 		if ( $post->ID > 0 ) {
 			$position = new Position( $post->ID );
-			if ( $position->isValid() ) {
-				$url = helper::get_personio_login_url();
+			if ( $position->is_valid() ) {
+				$url = Helper::get_personio_login_url();
 				/* translators: %1$s will be replaced by the URL for Personio */
-				printf( esc_html__( 'At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'personio-integration-light' ), esc_html( $position->getTitle() ), esc_url( $url ) );
+				printf( wp_kses_post( __( 'At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'personio-integration-light' ) ), esc_html( $position->get_title() ), esc_url( $url ) );
 			}
 		}
 	}
@@ -856,7 +855,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function get_meta_box_for_personio_id( WP_Post $post ): void {
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
-		echo wp_kses_post( $position_obj->getPersonioId() );
+		echo wp_kses_post( $position_obj->get_personio_id() );
 	}
 
 	/**
@@ -867,7 +866,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function get_meta_box_for_title( WP_Post $post ): void {
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
-		echo wp_kses_post( $position_obj->getTitle() );
+		echo wp_kses_post( $position_obj->get_title() );
 	}
 
 	/**
@@ -892,7 +891,7 @@ class PersonioPosition extends Post_Type {
 		$position_obj  = Positions::get_instance()->get_position( $post->ID );
 		$taxonomy_name = str_replace( 'personio-position-taxonomy-', '', $attr['id'] );
 		$taxonomy_obj  = get_taxonomy( $taxonomy_name );
-		$content       = helper::get_taxonomy_name_of_position( $taxonomy_obj->rewrite['slug'], $position_obj );
+		$content       = Helper::get_taxonomy_name_of_position( $taxonomy_obj->rewrite['slug'], $position_obj );
 		if ( empty( $content ) ) {
 			echo '<i>' . esc_html__( 'No data', 'personio-integration-light' ) . '</i>';
 		} else {
@@ -913,4 +912,45 @@ class PersonioPosition extends Post_Type {
 		}
 	}
 
+	/**
+	 * Convert attributes for shortcodes.
+	 *
+	 * @param array $attributes List of attributes.
+	 * @return array
+	 */
+	private function get_single_shortcode_attributes( array $attributes ): array {
+		// define the default values for each attribute.
+		$attribute_defaults = $this->get_single_shortcode_attributes_defaults();
+
+		// define the settings for each attribute (array or string).
+		$attribute_settings = array(
+			'personioid' => 'int',
+			'lang'       => 'string',
+			'templates'  => 'array',
+			'excerpt'    => 'array',
+			'donotlink'  => 'bool',
+			'styles'     => 'string',
+			'classes'    => 'string',
+		);
+		return Helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
+	}
+
+	/**
+	 * Return attribute defaults for shortcode in single-view.
+	 *
+	 * @return array
+	 */
+	private function get_single_shortcode_attributes_defaults(): array {
+		return array(
+			'personioid'              => 0,
+			'lang'                    => helper::get_current_lang(),
+			'template'                => '',
+			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults', array() ) ),
+			'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription', 'default' ),
+			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDetail', array() ) ),
+			'donotlink'               => 1,
+			'styles'                  => '',
+			'classes'                 => '',
+		);
+	}
 }

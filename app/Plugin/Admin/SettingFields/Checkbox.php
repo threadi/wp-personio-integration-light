@@ -12,6 +12,13 @@ namespace App\Plugin\Admin\SettingFields;
  */
 class Checkbox {
 
+	/**
+	 * Get the output.
+	 *
+	 * @param array $attributes The settings for this field.
+	 *
+	 * @return void
+	 */
 	public static function get( array $attributes ): void {
 		if ( ! empty( $attributes['fieldId'] ) ) {
 			// get title.
@@ -31,20 +38,20 @@ class Checkbox {
 
 			?>
 			<input type="checkbox" id="<?php echo esc_attr( $attributes['fieldId'] ); ?>"
-			       name="<?php echo esc_attr( $attributes['fieldId'] ); ?>"
-			       value="1"
+					name="<?php echo esc_attr( $attributes['fieldId'] ); ?>"
+					value="1"
 				<?php
 				echo ( 1 === absint( get_option( $attributes['fieldId'], 0 ) ) || ( isset( $_POST[ $attributes['fieldId'] ] ) && 1 === absint( $_POST[ $attributes['fieldId'] ] ) ) ) ? ' checked="checked"' : '';
 				?>
 				<?php echo esc_attr( $readonly ); ?>
-				   class="personio-field-width"
-				   title="<?php echo esc_attr( $title ); ?>"
+					class="personio-field-width"
+					title="<?php echo esc_attr( $title ); ?>"
 			>
 			<?php
 
 			// show optional description for this checkbox.
 			if ( ! empty( $attributes['description'] ) ) {
-				echo '<p>' . wp_kses_post( $attr['description'] ) . '</p>';
+				echo '<p>' . wp_kses_post( $attributes['description'] ) . '</p>';
 			}
 
 			// show optional hint for our Pro-version.

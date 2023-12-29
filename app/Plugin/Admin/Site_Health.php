@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace App\Plugin\Admin;
 
 use App\Helper;
 use WP_REST_Server;
@@ -134,7 +134,7 @@ class Site_Health {
 		if ( $scheduled_event->timestamp < time() ) {
 			$result['status'] = 'recommended';
 			/* translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past) */
-			$result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ) );
+			$result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ) );
 
 			// return this result.
 			return $result;
@@ -160,14 +160,14 @@ class Site_Health {
 				'color' => 'gray',
 			),
 			/* translators: %1$s and %2$s will be replaced by the Personio-URL */
-			'description' => sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), helper::get_personio_url(), helper::get_personio_url() ),
+			'description' => sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ), esc_url( Helper::get_personio_url() ) ),
 			'actions'     => '',
 			'test'        => 'personio_integration_rest_api_url_availability_check',
 		);
 
 		// -> should return HTTP-Status 200.
 		$response = wp_remote_get(
-			helper::get_personio_xml_url( helper::get_personio_url() ),
+			Helper::get_personio_xml_url( Helper::get_personio_url() ),
 			array(
 				'timeout'     => 30,
 				'redirection' => 0,
@@ -185,7 +185,7 @@ class Site_Health {
 			);
 			$result['status'] = 'recommended';
 			/* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
-			$result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), helper::get_personio_url(), helper::get_personio_url(), $url_settings, helper::get_personio_login_url() );
+			$result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ), esc_url( Helper::get_personio_url() ), $url_settings, esc_url( helper::get_personio_login_url() ) );
 		}
 
 		// return result.
@@ -200,7 +200,7 @@ class Site_Health {
 	 * @return array
 	 */
 	public function add_checks( array $statuses ): array {
-		if ( helper::is_personio_url_set() ) {
+		if ( Helper::is_personio_url_set() ) {
 			$statuses['async']['personio_integration_import_cron_checks']     = array(
 				'label'    => __( 'Personio Integration Import Cron Check', 'personio-integration-light' ),
 				'test'     => rest_url( 'personio/v1/import_cron_checks' ),

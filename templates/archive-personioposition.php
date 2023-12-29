@@ -6,6 +6,8 @@
  * @package personio-integration-light
  */
 
+use App\PersonioIntegration\PostTypes\PersonioPosition;
+
 defined( 'ABSPATH' ) || exit;
 
 get_header();
@@ -22,6 +24,6 @@ $description = get_the_archive_description();
 <?php
 
 // use shortcode-functions to display the list.
-echo personio_integration_positions_shortcode();
+echo PersonioPosition::get_instance()->shortcode_positions();
 
 get_footer();

@@ -43,7 +43,7 @@ class Position extends WP_Widget {
 		$positions_obj = \App\PersonioIntegration\Positions::get_instance();
 		$positions     = array();
 		foreach ( $positions_obj->get_positions( 0 ) as $position ) {
-			$positions[ $position->ID ] = $position->getTitle();
+			$positions[ $position->ID ] = $position->get_title();
 		}
 
 		return array(

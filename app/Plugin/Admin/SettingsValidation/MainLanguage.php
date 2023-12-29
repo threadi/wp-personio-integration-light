@@ -8,9 +8,9 @@
 namespace App\Plugin\Admin\SettingsValidation;
 
 /**
- * Object which validates the given URL.
+ * Object which validates the main language.
  */
-class MainLanguages {
+class MainLanguage {
 	/**
 	 * Validate the setting for the main language.
 	 *

@@ -7,6 +7,9 @@
 
 namespace App\Widgets;
 
+/**
+ * Handler for Widgets.
+ */
 class Widgets {
 	/**
 	 * Instance of this object.

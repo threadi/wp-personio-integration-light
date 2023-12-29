@@ -8,8 +8,7 @@
 namespace App\Plugin;
 
 use App\Helper;
-use personioIntegration\Log;
-use personioIntegration\updates;
+use App\Log;
 
 /**
  * Helper-function for plugin-activation and -deactivation.
@@ -17,15 +16,70 @@ use personioIntegration\updates;
 class Installer {
 
 	/**
-	 * Activate the plugin.
+	 * Instance of this object.
 	 *
-	 * TODO add multisite-support?
+	 * @var ?Installer
+	 */
+	private static ?Installer $instance = null;
+
+	/**
+	 * Constructor for Init-Handler.
+	 */
+	private function __construct() {}
+
+	/**
+	 * Prevent cloning of this object.
+	 *
+	 * @return void
+	 */
+	private function __clone() {}
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Installer {
+		if ( ! static::$instance instanceof static ) {
+			static::$instance = new static();
+		}
+
+		return static::$instance;
+	}
+
+	/**
+	 * Activate the plugin.
 	 *
 	 * Either via activation-hook or via cli-plugin-reset.
 	 *
 	 * @return void
 	 */
-	public static function activation(): void {
+	public function activation(): void {
+		if ( is_multisite() ) {
+			// get original blog id.
+			$original_blog_id = get_current_blog_id();
+
+			// loop through the blogs.
+			foreach ( Helper::get_blogs() as $blog_id ) {
+				// switch to the blog.
+				switch_to_blog( $blog_id->blog_id );
+
+				// run tasks for activation in this single blog.
+				$this->activation_tasks();
+			}
+
+			// switch back to original blog.
+			switch_to_blog( $original_blog_id );
+		} else {
+			// simply run the tasks on single-site-install.
+			$this->activation_tasks();
+		}
+	}
+
+	/**
+	 * Define the tasks to run during activation.
+	 *
+	 * @return void
+	 */
+	private function activation_tasks(): void {
 		$error = false;
 
 		// check if simplexml is available on this system.
@@ -39,94 +93,22 @@ class Installer {
 			if ( ! get_option( 'personioIntegrationPositionScheduleInterval' ) ) {
 				update_option( 'personioIntegrationPositionScheduleInterval', 'daily' );
 			}
-			helper::set_import_schedule();
+			Helper::set_import_schedule();
 
-			// get the main frontend language depending on the language of this WP-installation.
-			// if it is not already set.
-			if ( ! get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE ) ) {
-				update_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, Helper::get_wp_lang() );
+			// set default settings.
+			foreach ( Settings::get_instance()->get_settings() as $section_settings ) {
+				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
+					if ( ! empty( $field_settings['default'] ) && ! get_option( $field_name ) ) {
+						update_option( $field_name, $field_settings['default'], true );
+					}
+				}
 			}
 
-			// initially enable only the main-language of this page.
-			if ( ! get_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION, false ) ) {
-				$lang_key  = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
-				$languages = Languages::get_instance()->get_languages();
-				update_option(
-					WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION,
-					array(
-						$lang_key => $languages[ $lang_key ],
-					)
-				);
-				update_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $lang_key, 1 );
-			}
-
-			// set automatic import.
-			if ( ! get_option( 'personioIntegrationEnablePositionSchedule' ) ) {
-				update_option( 'personioIntegrationEnablePositionSchedule', 1 );
-			}
-
-			// set default timeout if not already set.
-			if ( ! get_option( 'personioIntegrationUrlTimeout' ) ) {
-				update_option( 'personioIntegrationUrlTimeout', 30 );
-			}
-
-			// set marker to delete all imported data on uninstall.
-			if ( ! get_option( 'personioIntegrationDeleteOnUninstall' ) ) {
-				update_option( 'personioIntegrationDeleteOnUninstall', 1 );
-			}
-
-			// set default excerpt-parts for list-page.
-			if ( ! get_option( 'personioIntegrationTemplateExcerptDefaults' ) ) {
-				update_option( 'personioIntegrationTemplateExcerptDefaults', array( 'recruitingCategory', 'schedule', 'office' ) );
-			}
-
-			// set default templates for default-page.
-			if ( ! get_option( 'personioIntegrationTemplateContentDefaults' ) ) {
-				update_option( 'personioIntegrationTemplateContentDefaults', array( 'title', 'content', 'formular' ) );
-			}
-
-			// set default excerpt-templates for detail-page.
-			if ( ! get_option( 'personioIntegrationTemplateExcerptDetail' ) ) {
-				update_option( 'personioIntegrationTemplateExcerptDetail', array( 'recruitingCategory', 'schedule', 'office' ) );
-			}
-
-			// set default jobdescription-template for detail-page.
-			if ( ! get_option( 'personioIntegrationTemplateJobDescription' ) ) {
-				update_option( 'personioIntegrationTemplateJobDescription', 'default' );
-			}
-
-			// set default templates for list-page.
-			if ( ! get_option( 'personioIntegrationTemplateContentList' ) ) {
-				update_option( 'personioIntegrationTemplateContentList', array( 'title', 'excerpt' ) );
-			}
-
-			// set default filter.
-			if ( ! get_option( 'personioIntegrationTemplateFilter' ) ) {
-				update_option( 'personioIntegrationTemplateFilter', array( 'recruitingCategory', 'schedule', 'office' ) );
-			}
-
-			// set default filter-type.
-			if ( ! get_option( 'personioIntegrationFilterType' ) ) {
-				update_option( 'personioIntegrationFilterType', 'linklist' );
-			}
-
-			// enable link to detail in list-view.
-			if ( ! get_option( 'personioIntegrationEnableLinkInList' ) ) {
-				update_option( 'personioIntegrationEnableLinkInList', 1 );
-			}
-
-			// set excerpt-separator.
-			if ( ! get_option( 'personioIntegrationTemplateExcerptSeparator' ) ) {
-				update_option( 'personioIntegrationTemplateExcerptSeparator', ', ' );
-			}
-
-			// set max age for log entries in days.
-			if ( ! get_option( 'personioIntegrationMaxAgeLogEntries' ) ) {
-				update_option( 'personioIntegrationMaxAgeLogEntries', 50 );
-			}
+			// install the roles we use.
+			Roles::get_instance()->install();
 
 			// run all updates.
-			updates::run_all_updates();
+			Update::run_all_updates();
 
 			// save the current DB-version of this plugin.
 			update_option( 'personioIntegrationVersion', WP_PERSONIO_INTEGRATION_VERSION );
@@ -134,21 +116,11 @@ class Installer {
 			// refresh permalinks.
 			set_transient( 'personio_integration_update_slugs', 1 );
 
-			// initialize database.
-			self::initialize_db();
-		}
-	}
+			// initialize Log-database-table.
+			$log = new Log();
+			$log->create_table();
 
-	/**
-	 * All db-specific handlings for activation.
-	 *
-	 * TODO collect on other way.
-	 *
-	 * @return void
-	 */
-	private static function initialize_db(): void {
-		// initialize Log-database-table.
-		$log = new Log();
-		$log->create_table();
+			\App\Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin.' ) : false;
+		}
 	}
 }

@@ -70,9 +70,6 @@ class Init {
 		// init third-party-support.
 		Third_Party_Plugins::get_instance()->init();
 
-		// init site health.
-		Site_Health::get_instance()->init();
-
 		// on activation.
 		register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( $this, 'activation' ) );
 
@@ -98,7 +95,7 @@ class Init {
 	 * @return void
 	 */
 	public function activation(): void {
-		Installer::activation();
+		Installer::get_instance()->activation();
 	}
 
 	/**
@@ -116,7 +113,7 @@ class Init {
 	 * @return void
 	 */
 	public function cli(): void {
-		\WP_CLI::add_command( 'personio', 'personioIntegration\Cli' );
+		\WP_CLI::add_command( 'personio', 'App\Plugin\Cli' );
 	}
 
 	/**
@@ -125,7 +122,6 @@ class Init {
 	 *
 	 * @param WP_Admin_Bar $admin_bar The object of the Admin-Bar.
 	 * @return void
-	 * @noinspection PhpUnused
 	 */
 	public function add_custom_toolbar( WP_Admin_Bar $admin_bar ): void {
 		if ( get_option( 'personioIntegrationUrl', false ) && 0 === absint( get_option( 'personioIntegrationDisableListSlug', 0 ) ) ) {

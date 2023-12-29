@@ -10,7 +10,6 @@ namespace App\Plugin;
 use App\Helper;
 use App\PersonioIntegration\PostTypes\PersonioPosition;
 use App\PersonioIntegration\Taxonomies;
-use function Sodium\add;
 
 /**
  * Initialize this plugin.
@@ -87,55 +86,88 @@ class Settings {
 	public function set_settings(): void {
 		// set tabs.
 		$this->tabs = array(
-			'general' => array(
+			'general'           => array(
 				'label' => __( 'General Settings', 'personio-integration-light' ),
-				'key' => '',
-				'page' => 'personioIntegrationPositions'
+				'key'   => '',
+				'page'  => 'personioIntegrationPositions',
 			),
-			'templates' => array(
+			'templates'         => array(
 				'label' => __( 'Templates', 'personio-integration-light' ),
-				'key' => 'templates',
-				'page' => 'personioIntegrationPositionsTemplates'
+				'key'   => 'templates',
+				'page'  => 'personioIntegrationPositionsTemplates',
 			),
-			'applications' => array(
-				'label' => __( 'Applications', 'personio-integration-light' ),
-				'only_pro' => true
+			'import'            => array(
+				'label' => __( 'Import', 'personio-integration-light' ),
+				'key'   => 'import',
+				'page'  => 'personioIntegrationPositionsImport',
+			),
+			'applications'      => array(
+				'label'    => __( 'Applications', 'personio-integration-light' ),
+				'only_pro' => true,
 			),
 			'application_forms' => array(
-				'label' => __( 'Application Forms', 'personio-integration-light' ),
-				'only_pro' => true
+				'label'    => __( 'Application Forms', 'personio-integration-light' ),
+				'only_pro' => true,
 			),
-			'seo' => array(
-				'label' => __( 'SEO', 'personio-integration-light' ),
-				'only_pro' => true
+			'seo'               => array(
+				'label'    => __( 'SEO', 'personio-integration-light' ),
+				'only_pro' => true,
 			),
-			'tracking' => array(
-				'label' => __( 'Tracking', 'personio-integration-light' ),
-				'only_pro' => true
+			'tracking'          => array(
+				'label'    => __( 'Tracking', 'personio-integration-light' ),
+				'only_pro' => true,
 			),
-			'permissions' => array(
-				'label' => __( 'Permissions', 'personio-integration-light' ),
-				'only_pro' => true
+			'permissions'       => array(
+				'label'    => __( 'Permissions', 'personio-integration-light' ),
+				'only_pro' => true,
 			),
-			'advanced' => array(
+			'advanced'          => array(
 				'label' => __( 'Advanced', 'personio-integration-light' ),
-				'key' => 'advanced',
-				'page' => 'personioIntegrationPositionsAdvanced'
-			)
+				'key'   => 'advanced',
+				'page'  => 'personioIntegrationPositionsAdvanced',
+			),
+			'logs'              => array(
+				'label'    => __( 'Logs', 'personio-integration-light' ),
+				'key'      => 'advanced',
+				'callback' => array( 'App\Plugin\Admin\Logs', 'show' ),
+			),
 		);
 
-		// set settings for this plugin.
+		// reset tabs if Personio URL is not set.
+		if ( ! Helper::is_personio_url_set() ) {
+			$this->tabs = array(
+				'general' => array(
+					'label' => __( 'General Settings', 'personio-integration-light' ),
+					'key'   => '',
+					'page'  => 'personioIntegrationPositions',
+				),
+				'go_pro'  => array(
+					'label'       => __( 'Enter Personio URL to get more options', 'personio-integration-light' ),
+					'do_not_link' => true,
+				),
+			);
+		}
+
+		// get languages.
+		// TODO überarbeiten
+		$lang_key = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
+		if ( empty( $lang_key ) ) {
+			$lang_key = Helper::get_wp_lang();
+		}
+		$languages = Languages::get_instance()->get_languages();
+
+		// define settings for this plugin.
 		$this->settings = array(
-			'settings_section_main' => array(
+			'settings_section_main'            => array(
 				'label'    => __( 'General Settings', 'personio-integration-light' ),
 				'page'     => 'personioIntegrationPositions',
 				'callback' => '__return_true',
 				'fields'   => array(
-					'personioIntegrationUrl'       => array(
+					'personioIntegrationUrl'              => array(
 						'label'               => __( 'Personio URL', 'personio-integration-light' ),
 						'callback'            => array( 'App\Plugin\Admin\SettingFields\Text', 'get' ),
 						/* translators: %1$s is replaced with the url to personio account, %2$s is replaced with the url to the personio support */
-						'description'         => sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s">Personio support</a>.', 'personio-integration-light' ), esc_url( helper::get_personio_login_url() ), esc_url( helper::get_personio_support_url() ) ),
+						'description'         => sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s">Personio support</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ), esc_url( Helper::get_personio_support_url() ) ),
 						'placeholder'         => Helper::is_german_language() ? 'https://dein-unternehmen.jobs.personio.de' : 'https://yourcompany.jobs.personio.com',
 						'highlight'           => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
@@ -143,9 +175,9 @@ class Settings {
 							'show_in_rest'      => true,
 							'sanitize_callback' => array( 'App\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ),
 							'type'              => 'string',
-						)
+						),
 					),
-					'personioIntegrationLanguages' => array(
+					WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION => array(
 						'label'               => __( 'Used languages', 'personio-integration-light' ),
 						'callback'            => array( 'App\Plugin\Admin\SettingFields\Multiple_Checkboxes', 'get' ),
 						'options'             => Languages::get_instance()->get_languages(),
@@ -153,7 +185,8 @@ class Settings {
 						'register_attributes' => array(
 							'sanitize_callback' => array( 'App\Plugin\Admin\SettingsValidation\Languages', 'validate' ),
 							'type'              => 'array',
-						)
+						),
+						'default'             => array( $lang_key => $languages[ $lang_key ] ),
 					),
 					WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
 						'label'               => __( 'Main language', 'personio-integration-light' ),
@@ -161,107 +194,218 @@ class Settings {
 						'options'             => Languages::get_instance()->get_languages(),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
-							'sanitize_callback' => array( 'App\Plugin\Admin\SettingsValidation\MainLanguages', 'validate' ),
+							'sanitize_callback' => array( 'App\Plugin\Admin\SettingsValidation\MainLanguage', 'validate' ),
 							'type'              => 'string',
-						)
-					)
-				)
+						),
+						'default'             => Helper::get_wp_lang(),
+					),
+				),
 			),
-			'settings_section_template_list' => array(
+			'settings_section_template_list'   => array(
 				'label'    => __( 'List View', 'personio-integration-light' ),
 				'page'     => 'personioIntegrationPositionsTemplates',
 				'callback' => '__return_true',
-				'fields' => array(
-					'personioIntegrationEnableFilter' => array(
+				'fields'   => array(
+					'personioIntegrationEnableFilter'     => array(
 						'label'               => __( 'Enable filter on list-view', 'personio-integration-light' ),
 						'callback'            => array( 'App\Plugin\Admin\SettingFields\Checkbox', 'get' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
-							'type'              => 'integer',
-						)
+							'type' => 'integer',
+						),
 					),
-					'personioIntegrationFilterType' => array(
-						'label'               => __( 'Choose filter-type', 'personio-integration-light' ),
-						'callback'            => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
-						'options'             => Helper::get_filter_types(),
-						'description' => __( 'This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
+					'personioIntegrationTemplateFilter'   => array(
+						'label'               => __( 'Available filter for details', 'personio-integration-light' ),
+						'callback'            => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
+						'options'             => apply_filters( 'personio_integration_settings_get_list', Taxonomies::get_instance()->get_cat_labels(), get_option( 'personioIntegrationTemplateFilter', array() ) ),
+						'description'         => __( 'Mark multiple default filter for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
+						/* translators: %1$s is replaced with "string" */
+						'pro_hint'            => __( 'Sort this list with %s.', 'personio-integration-light' ),
+						'register_attributes' => array(
+							'type' => 'integer',
+						),
+						'default'             => array( 'recruitingCategory', 'schedule', 'office' ),
+					),
+					'personioIntegrationFilterType'       => array(
+						'label'       => __( 'Choose filter-type', 'personio-integration-light' ),
+						'callback'    => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
+						'options'     => Helper::get_filter_types(),
+						'description' => __( 'This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
+						'readonly'    => ! Helper::is_personio_url_set(),
+						'default'     => 'linklist',
 					),
 					'personioIntegrationTemplateContentListingTemplate' => array(
-						'label'               => __( 'Choose template for listing', 'personio-integration-light' ),
-						'callback'            => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
-						'options'             => Templates::get_instance()->get_archive_templates(),
-						'readonly'            => ! Helper::is_personio_url_set(),
+						'label'    => __( 'Choose template for listing', 'personio-integration-light' ),
+						'callback' => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
+						'options'  => Templates::get_instance()->get_archive_templates(),
+						'readonly' => ! Helper::is_personio_url_set(),
+						'default'  => 'default',
 					),
 					'personioIntegrationTemplateContentList' => array(
-						'label'               => __( 'Choose templates for positions in list-view', 'personio-integration-light' ),
-						'callback'            => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
-						'options'             => Templates::get_instance()->get_template_labels(),
-						'description'      => __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
-						'readonly'            => ! Helper::is_personio_url_set(),
+						'label'       => __( 'Choose templates for positions in list-view', 'personio-integration-light' ),
+						'callback'    => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
+						'options'     => Templates::get_instance()->get_template_labels(),
+						'description' => __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
+						'readonly'    => ! Helper::is_personio_url_set(),
+						'default'     => array( 'title', 'excerpt' ),
 					),
 					'personioIntegrationTemplateExcerptDefaults' => array(
-						'label'               => __( 'Choose details for positions in list-view', 'personio-integration-light' ),
-						'callback'            => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
-						'options'             => apply_filters( 'personio_integration_settings_get_list', Taxonomies::get_instance()->get_cat_labels(), get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) ),
-						'description'      => __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
-						'readonly'            => ! Helper::is_personio_url_set(),
+						'label'       => __( 'Choose details for positions in list-view', 'personio-integration-light' ),
+						'callback'    => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
+						'options'     => apply_filters( 'personio_integration_settings_get_list', Taxonomies::get_instance()->get_cat_labels(), get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) ),
+						'description' => __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
+						'readonly'    => ! Helper::is_personio_url_set(),
+						'default'     => array( 'recruitingCategory', 'schedule', 'office' ),
 					),
 					'personioIntegrationEnableLinkInList' => array(
 						'label'               => __( 'Enable link to single on list-view', 'personio-integration-light' ),
 						'callback'            => array( 'App\Plugin\Admin\SettingFields\Checkbox', 'get' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
-							'type'              => 'integer',
-						)
+							'type' => 'integer',
+						),
+						'default'             => 1,
 					),
-				)
+				),
 			),
 			'settings_section_template_detail' => array(
 				'label'    => __( 'Single View', 'personio-integration-light' ),
 				'page'     => 'personioIntegrationPositionsTemplates',
 				'callback' => '__return_true',
-				'fields' => array(
+				'fields'   => array(
 					'personioIntegrationTemplateContentDefaults' => array(
-						'label'               => __( 'Choose templates', 'personio-integration-light' ),
-						'callback'            => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
-						'options'             => Templates::get_instance()->get_template_labels(),
-						'description'      => __( 'Mark multiple default templates for each detail-view of single positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
-						'readonly'            => ! Helper::is_personio_url_set(),
+						'label'       => __( 'Choose templates', 'personio-integration-light' ),
+						'callback'    => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
+						'options'     => Templates::get_instance()->get_template_labels(),
+						'description' => __( 'Mark multiple default templates for each detail-view of single positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
+						'readonly'    => ! Helper::is_personio_url_set(),
+						'default'     => array( 'title', 'content', 'formular' ),
+					),
+					'personioIntegrationTemplateExcerptDetail' => array(
+						'label'       => __( 'Choose details', 'personio-integration-light' ),
+						'callback'    => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
+						'options'     => apply_filters( 'personio_integration_settings_get_list', Taxonomies::get_instance()->get_cat_labels(), get_option( 'personioIntegrationTemplateExcerptDetail', array() ) ),
+						'description' => __( 'Mark multiple details for single-view of positions. Only used if template "detail" is enabled for detail-view. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
+						'readonly'    => ! Helper::is_personio_url_set(),
+						/* translators: %1$s is replaced with "string" */
+						'pro_hint'    => __( 'Sort this list with %s.', 'personio-integration-light' ),
+						'default'     => array( 'recruitingCategory', 'schedule', 'office' ),
 					),
 					'personioIntegrationTemplateJobDescription' => array(
-						'label'               => __( 'Choose job description template', 'personio-integration-light' ),
-						'callback'            => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
-						'options'             => Templates::get_instance()->get_jobdescription_templates(),
+						'label'       => __( 'Choose job description template', 'personio-integration-light' ),
+						'callback'    => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
+						'options'     => Templates::get_instance()->get_jobdescription_templates(),
 						'description' => __( 'Choose template to output each job description in detail view. You could add your own template as described in GitHub.', 'personio-integration-light' ),
-						'readonly'            => ! Helper::is_personio_url_set(),
+						'readonly'    => ! Helper::is_personio_url_set(),
+						'default'     => 'default',
 					),
 					'personioIntegrationTemplateBackToListButton' => array(
-						'label'               => __( 'Enable back to list-link', 'personio-integration-light' ),
-						'callback'            => array( 'App\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-						'readonly'            => ! Helper::is_personio_url_set(),
+						'label'    => __( 'Enable back to list-link', 'personio-integration-light' ),
+						'callback' => array( 'App\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'readonly' => ! Helper::is_personio_url_set(),
 					),
 					'personioIntegrationTemplateBackToListUrl' => array(
-						'label'               => __( 'URL for back to list-link', 'personio-integration-light' ),
-						'callback'            => array( 'App\Plugin\Admin\SettingFields\Text', 'get' ),
+						'label'       => __( 'URL for back to list-link', 'personio-integration-light' ),
+						'callback'    => array( 'App\Plugin\Admin\SettingFields\Text', 'get' ),
 						/* translators: %1$s will be replaced by the list-slug */
-						'description' => sprintf( __( 'If empty the link will be set to list-slug <a href="%1$s">%1$s</a>.', 'personio-integration-light' ), esc_url( trailingslashit( get_home_url() ) . helper::get_archive_slug() ) ),
-						'readonly'            => ! Helper::is_personio_url_set(),
+						'description' => sprintf( __( 'If empty the link will be set to list-slug <a href="%1$s">%1$s</a>.', 'personio-integration-light' ), esc_url( trailingslashit( get_home_url() ) . Helper::get_archive_slug() ) ),
+						'readonly'    => ! Helper::is_personio_url_set(),
 					),
-				)
+				),
 			),
-			'settings_section_template_other' => array(
+			'settings_section_template_other'  => array(
 				'label'    => __( 'Other settings', 'personio-integration-light' ),
 				'page'     => 'personioIntegrationPositionsTemplates',
 				'callback' => '__return_true',
-				'fields' => array(
+				'fields'   => array(
 					'personioIntegrationTemplateExcerptSeparator' => array( // TODO darauf verzichten wegen Template-Nutzung?
-						'label'               => __( 'Separator for details-listing', 'personio-integration-light' ),
-						'callback'            => array( 'App\Plugin\Admin\SettingFields\Text', 'get' ),
-						'readonly'            => ! Helper::is_personio_url_set(),
+						'label'    => __( 'Separator for details-listing', 'personio-integration-light' ),
+						'callback' => array( 'App\Plugin\Admin\SettingFields\Text', 'get' ),
+						'readonly' => ! Helper::is_personio_url_set(),
+						'default'  => ', ',
 					),
-				)
-			)
+				),
+			),
+			'settings_section_advanced'        => array(
+				'label'    => __( 'Advanced settings', 'personio-integration-light' ),
+				'page'     => 'personioIntegrationPositionsAdvanced',
+				'callback' => '__return_true',
+				'fields'   => array(
+					'personioIntegration_advanced_pro_hint' => array(
+						'label'    => '',
+						'callback' => array( 'App\Plugin\Admin\SettingFields\ProHint', 'get' ),
+					),
+					'personioIntegrationExtendSearch'      => array(
+						'label'               => __( 'Note the position-keywords in search in frontend', 'personio-integration-light' ),
+						'callback'            => array( 'App\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type' => 'integer',
+						),
+						'default'             => 1,
+					),
+					'personioIntegrationMaxAgeLogEntries'  => array(
+						'label'    => __( 'max. Age for log entries in days', 'personio-integration-light' ),
+						'callback' => array( 'App\Plugin\Admin\SettingFields\Number', 'get' ),
+						'readonly' => ! Helper::is_personio_url_set(),
+						'default'  => 50,
+					),
+					'personioIntegrationUrlTimeout'        => array(
+						'label'               => __( 'Timeout for URL-request in Seconds', 'personio-integration-light' ),
+						'callback'            => array( 'App\Plugin\Admin\SettingFields\Number', 'get' ),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'sanitize_callback' => array( 'App\Plugin\Admin\SettingsValidation\UrlTimeout', 'validate' ),
+							'type'              => 'integer',
+						),
+						'default'             => 30,
+					),
+					'personioIntegrationDeleteOnUninstall' => array(
+						'label'               => __( 'Delete all imported data on uninstall', 'personio-integration-light' ),
+						'callback'            => array( 'App\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type' => 'integer',
+						),
+						'default'             => 1,
+					),
+					'personioIntegration_debug'            => array(
+						'label'               => __( 'Debug-Mode', 'personio-integration-light' ),
+						'callback'            => array( 'App\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type' => 'integer',
+						),
+					),
+				),
+			),
+			'settings_section_import'          => array(
+				'label'    => __( 'Import of positions from Personio', 'personio-integration-light' ),
+				'page'     => 'personioIntegrationPositionsImport',
+				'callback' => '__return_true',
+				'fields'   => array(
+					'personioIntegrationImportNow' => array(
+						'label'    => __( 'Start import now', 'personio-integration-light' ),
+						'callback' => array( 'App\Plugin\Admin\SettingFields\ImportPositions', 'get' ),
+					),
+					'personioIntegrationDeleteNow' => array(
+						'label'    => __( 'Delete positions', 'personio-integration-light' ),
+						'callback' => array( 'App\Plugin\Admin\SettingFields\DeletePositions', 'get' ),
+					),
+					'personioIntegrationEnablePositionSchedule' => array(
+						'label'               => __( 'Enable automatic import', 'personio-integration-light' ),
+						'callback'            => array( 'App\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						/* translators: %1$s is replaced with "string" */
+						'pro_hint'            => __( 'Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' ),
+						'register_attributes' => array(
+							'type' => 'integer',
+						),
+						'default'             => 1,
+					),
+				),
+			),
 		);
 	}
 
@@ -271,12 +415,12 @@ class Settings {
 	 * @return void
 	 */
 	public function register_settings(): void {
-		foreach( $this->settings as $section_settings ) {
-			foreach( $section_settings['fields'] as $field_name => $field_settings ) {
+		foreach ( $this->settings as $section_settings ) {
+			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 				register_setting(
 					$section_settings['page'],
 					$field_name,
-					!empty( $field_settings['register_attributes'] ) ? $field_settings['register_attributes'] : array()
+					! empty( $field_settings['register_attributes'] ) ? $field_settings['register_attributes'] : array()
 				);
 			}
 		}
@@ -288,8 +432,8 @@ class Settings {
 	 * @return void
 	 */
 	public function register_fields(): void {
-		foreach( $this->settings as $section_name => $section_settings ) {
-			if( !empty($section_settings) ) {
+		foreach ( $this->settings as $section_name => $section_settings ) {
+			if ( ! empty( $section_settings ) ) {
 				// add section.
 				add_settings_section(
 					$section_name,
@@ -299,8 +443,8 @@ class Settings {
 				);
 
 				// add fields in this section.
-				if( !empty($section_settings['fields']) ) {
-					foreach( $section_settings['fields'] as $field_name => $field_settings ) {
+				if ( ! empty( $section_settings['fields'] ) ) {
+					foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 						add_settings_field(
 							$field_name,
 							$field_settings['label'],
@@ -310,11 +454,12 @@ class Settings {
 							array(
 								'label_for'   => $field_name,
 								'fieldId'     => $field_name,
-								'options' => !empty( $field_settings['options'] ) ? $field_settings['options'] : array(),
-								'description' => !empty( $field_settings['description'] ) ? $field_settings['description'] : '',
-								'placeholder' => !empty( $field_settings['placeholder'] ) ? $field_settings['placeholder'] : '',
-								'highlight'   => !empty( $field_settings['highlight'] ) ? $field_settings['highlight'] : false,
-								'readonly'    => !empty( $field_settings['readonly'] ) ? $field_settings['readonly'] : false
+								'options'     => ! empty( $field_settings['options'] ) ? $field_settings['options'] : array(),
+								'description' => ! empty( $field_settings['description'] ) ? $field_settings['description'] : '',
+								'placeholder' => ! empty( $field_settings['placeholder'] ) ? $field_settings['placeholder'] : '',
+								'pro_hint'    => ! empty( $field_settings['pro_hint'] ) ? $field_settings['pro_hint'] : '',
+								'highlight'   => ! empty( $field_settings['highlight'] ) ? $field_settings['highlight'] : false,
+								'readonly'    => ! empty( $field_settings['readonly'] ) ? $field_settings['readonly'] : false,
 							)
 						);
 					}
@@ -357,41 +502,53 @@ class Settings {
 		// set page to show.
 		$page = 'personioIntegrationPositions';
 
+		// set callback to use.
+		$callback = '';
+
 		// output wrapper.
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<nav class="nav-tab-wrapper">
 				<?php
-				foreach( $this->tabs as $tab_name => $tab_settings ) {
+				foreach ( $this->tabs as $tab_name => $tab_settings ) {
 					// Set url.
 					$url = add_query_arg(
 						array(
 							'post_type' => 'personioposition',
-							'page' => 'personioPositions',
-							'tab' => $tab_name
+							'page'      => 'personioPositions',
+							'tab'       => $tab_name,
 						),
 						'edit.php'
 					);
 
 					// Set class for tab and page for form-view.
 					$class = '';
-					if( $tab === $tab_name ) {
+					if ( $tab === $tab_name ) {
 						$class = ' nav-tab-active';
-						$page = $tab_settings['page'];
+						if ( ! empty( $tab_settings['page'] ) ) {
+							$page = $tab_settings['page'];
+						}
+						if ( ! empty( $tab_settings['callback'] ) ) {
+							$callback = $tab_settings['callback'];
+							$page     = '';
+						}
 					}
 
+					// decide which tab-type we want to output.
 					$title = '';
-					if( isset($tab_settings['only_pro']) && false !== $tab_settings['only_pro'] ) {
-						$title = esc_attr__( 'Only in Pro.', 'personio-integration-light' );
-
-						// Output tab.
-						?><span class="nav-tab" title="<?php echo esc_html( $title ); ?>"><?php echo esc_html( $tab_settings['label'] ); ?> <span class="pro-marker">Pro</span></span><?php
-					}
-					else {
-
-						// Output tab.
-						?><a href="<?php echo esc_url( $url ); ?>" class="nav-tab<?php echo esc_attr( $class ); ?>" title="<?php echo esc_html( $title ); ?>"><?php echo esc_html( $tab_settings['label'] ); ?></a><?php
+					if ( isset( $tab_settings['only_pro'] ) && false !== $tab_settings['only_pro'] ) {
+						?>
+						<span class="nav-tab" title="<?php echo esc_attr__( 'Only in Pro.', 'personio-integration-light' ); ?>"><?php echo esc_html( $tab_settings['label'] ); ?> <span class="pro-marker">Pro</span></span>
+						<?php
+					} elseif ( isset( $tab_settings['do_not_link'] ) && false !== $tab_settings['do_not_link'] ) {
+						?>
+						<span class="nav-tab"><?php echo esc_html( $tab_settings['label'] ); ?></span>
+						<?php
+					} else {
+						?>
+						<a href="<?php echo esc_url( $url ); ?>" class="nav-tab<?php echo esc_attr( $class ); ?>" title="<?php echo esc_html( $title ); ?>"><?php echo esc_html( $tab_settings['label'] ); ?></a>
+						<?php
 					}
 				}
 				?>
@@ -399,20 +556,36 @@ class Settings {
 
 			<div class="tab-content">
 			<?php
+			if ( ! empty( $page ) ) {
 				// show errors.
 				settings_errors();
 
 				?>
-				<form method="POST" action="<?php echo esc_url( get_admin_url() ); ?>options.php">
+					<form method="POST" action="<?php echo esc_url( get_admin_url() ); ?>options.php">
 					<?php
 					settings_fields( $page );
 					do_settings_sections( $page );
 					submit_button();
 					?>
-				</form>
+					</form>
+					<?php
+			}
+
+			if ( ! empty( $callback ) ) {
+				call_user_func( $callback );
+			}
+			?>
 			</div>
 		</div>
 		<?php
 	}
 
+	/**
+	 * Return the settings.
+	 *
+	 * @return array
+	 */
+	public function get_settings(): array {
+		return $this->settings;
+	}
 }

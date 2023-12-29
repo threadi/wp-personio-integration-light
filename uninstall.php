@@ -25,8 +25,11 @@ define( 'WP_PERSONIO_INTEGRATION_VERSION', '@@VersionNumber@@' );
 // save plugin-path.
 define( 'WP_PERSONIO_INTEGRATION_PLUGIN', __FILE__ );
 
+if ( file_exists( __DIR__ . '/lib/autoload.php' ) ) {
+	require_once __DIR__ . '/lib/autoload.php';
+}
+
 // include necessary files.
-require 'inc/autoload.php';
 require 'inc/constants.php';
 
-( new Uninstaller() )->run( array( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ) );
+Uninstaller::get_instance()->run( array( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ) );

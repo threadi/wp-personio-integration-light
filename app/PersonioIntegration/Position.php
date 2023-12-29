@@ -2,21 +2,17 @@
 /**
  * File for handling single position as object.
  *
- * TODO do not use getter/setter.
- *
  * @package personio-integration-light
  */
 
 namespace App\PersonioIntegration;
 
-use App\Helper;
 use App\Log;
 use App\Plugin\Templates;
-use Exception;
 use SimpleXMLElement;
+use WP_Post;
 use WP_Query;
 use WP_Term;
-use function apply_filters;
 
 /**
  * Represents a single position.
@@ -59,6 +55,13 @@ class Position {
 	private bool $debug;
 
 	/**
+	 * The object from WordPress for this position.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
+
+	/**
 	 * Constructor for this position.
 	 *
 	 * @param int $post_id The post_id of this position.
@@ -71,67 +74,25 @@ class Position {
 		$this->debug = 1 === absint( get_option( 'personioIntegration_debug', 0 ) );
 
 		if ( $post_id > 0 ) {
-			// set the main language.
-			$this->lang = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
-			// get the post-data.
+			// get the post as array to save it in this object.
 			$post_array = get_post( $post_id, ARRAY_A );
 			if ( ! is_array( $post_array ) ) {
 				$post_array = array();
-				// get post-object.
-				$this->post = get_post( $post_id );
+
+				// get the post as object.
+				$post = get_post( $post_id );
+				if ( $post instanceof WP_Post ) {
+					$this->set_post( $post );
+				}
 			}
 			if ( ! empty( $post_array['post_type'] ) && WP_PERSONIO_INTEGRATION_CPT !== $post_array['post_type'] ) {
 				$post_array = array();
 			}
 			$this->data = $post_array;
-		}
-	}
 
-	/**
-	 * Magic getter for any properties.
-	 *
-	 * TODO replace it?
-	 *
-	 * @param string $variable_name The requested variable name.
-	 * @return mixed
-	 * @throws Exception If variable_name is unknown.
-	 */
-	public function __get( string $variable_name ) {
-		if ( ! array_key_exists( $variable_name, $this->data ) ) {
-			/* translators: %1$s is replaced with "string" */
-			throw new Exception( esc_html( printf( __( 'Unknown property %s.', 'personio-integration-light' ), esc_html( $variable_name ) ) ) );
-		} elseif ( 'post_excerpt' === $variable_name ) {
-			return apply_filters( 'the_excerpt', $this->data[ $variable_name ] );
-		} else {
-			return $this->data[ $variable_name ];
+			// set the main language for this position.
+			$this->set_lang( get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY ) );
 		}
-	}
-
-	/**
-	 * Magic setter for any properties.
-	 *
-	 * TODO replace it?
-	 *
-	 * @param string                  $variable_name The variable name.
-	 * @param SimpleXMLElement|string $value The value to set.
-	 *
-	 * @return void
-	 */
-	public function __set( string $variable_name, SimpleXMLElement|string $value ) {
-		if ( $value instanceof SimpleXMLElement ) {
-			if ( 'post_content' === $variable_name ) {
-				foreach ( $value as $v ) {
-					if ( 0 === $v->count() ) {
-						$value = array( 'jobDescription' => array() );
-					}
-					if ( 1 === $v->count() ) {
-						$value = array( 'jobDescription' => array( $v->jobDescription ) );
-					}
-				}
-			}
-			$value = wp_json_encode( $value );
-		}
-		$this->data[ $variable_name ] = $value;
 	}
 
 	/**
@@ -146,11 +107,14 @@ class Position {
 			return;
 		}
 
-		// get the language to data-array.
-		$this->data['lang'] = $this->lang;
+		// do not save anything without language setting.
+		if ( empty( $this->data['lang'] ) ) {
+			$this->log->add_log( __( 'Position could not be saved as the PersonioId does not have a language set.', 'personio-integration-light' ), 'error' );
+			return;
+		}
 
 		// set ordering if not set atm.
-		if ( empty( $this->data['menu_order'] ) ) {
+		if ( empty( $this->data['menu_order'] ) ) { // TODO nur pro?
 			$this->data['menu_order'] = 0;
 		}
 
@@ -172,7 +136,7 @@ class Position {
 			$posts   = array();
 			foreach ( $results->posts as $post_id ) {
 				// optional filter the post-ID.
-				if ( apply_filters( 'personio_integration_import_single_position_filter_existing', $post_id, $this->lang ) ) {
+				if ( apply_filters( 'personio_integration_import_single_position_filter_existing', $post_id, $this->get_lang() ) ) {
 					$posts[] = $post_id;
 				}
 			}
@@ -211,7 +175,7 @@ class Position {
 			'post_type'   => WP_PERSONIO_INTEGRATION_CPT,
 			'menu_order'  => absint( $this->data['menu_order'] ),
 		);
-		if ( get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY ) === $this->lang ) {
+		if ( get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY ) === $this->get_lang() ) {
 			$array['post_title']   = $this->data['post_title'];
 			$array['post_content'] = $this->data['post_content'];
 		} else {
@@ -240,7 +204,7 @@ class Position {
 			do_action( 'personio_integration_import_single_position_save', $this );
 
 			// add personioId.
-			update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_PM_PID, $this->data['personioId'] );
+			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_CPT_PM_PID, $this->data['personioId'] );
 
 			// assign the position to its terms.
 			$this->update_term( 'recruitingCategory', 'personioRecruitingCategory', false );
@@ -255,8 +219,8 @@ class Position {
 			$this->update_term( 'yearsOfExperience', 'personioExperience', false );
 
 			// import keywords as single terms if set.
-			if ( strlen( $this->keywords ) > 0 ) {
-				$keywords = explode( ',', $this->keywords );
+			if ( ! empty( $this->data['keywords'] ) ) {
+				$keywords = explode( ',', $this->data['keywords'] );
 				foreach ( $keywords as $keyword ) {
 					// get the term-object.
 					$term = get_term_by( 'name', $keyword, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS );
@@ -270,45 +234,45 @@ class Position {
 						}
 					}
 					if ( $term instanceof WP_Term ) {
-						wp_set_post_terms( $this->data['ID'], $term->term_id, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS, true );
+						wp_set_post_terms( $this->get_id(), $term->term_id, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS, true );
 					}
 				}
 			}
 
 			// add created at as post meta field.
-			update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, strtotime( $this->data['createdAt'] ) );
+			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, strtotime( $this->data['createdAt'] ) );
 
 			// add all language-specific titles.
-			update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->lang, $this->data['post_title'] );
+			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), $this->data['post_title'] );
 
 			// convert the job description from JSON to array.
 			$job_description = json_decode( $this->data['post_content'], true );
 
 			// add all language-specific texts.
-			update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->lang, $job_description );
+			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), $job_description );
 
 			// get count of split texts to delete the existing ones.
-			$max = absint( get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->lang . '_split', 0 ) );
+			$max = absint( get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', 0 ) );
 			for ( $i = 0;$i < $max;$i++ ) {
-				delete_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->lang . '_' . $i );
+				delete_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_' . $i );
 			}
 
 			// add the split language-specific texts.
 			if ( ! empty( $job_description['jobDescription'] ) ) {
 				foreach ( $job_description['jobDescription'] as $index => $description_part ) {
-					update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->lang . '_' . $index, $description_part );
+					update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_' . $index, $description_part );
 				}
 			}
 
 			// save the count of split texts.
-			update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->lang . '_split', count( $job_description['jobDescription'] ) );
+			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', count( $job_description['jobDescription'] ) );
 
 			// mark as changed.
-			update_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_UPDATED, 1 );
+			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, 1 );
 
 			// add log in debug-mode.
 			if ( false !== $this->debug ) {
-				$this->log->add_log( 'Position ' . $this->data['personioId'] . ' successfully imported or updated in ' . $this->data['lang'] . '.', 'success' );
+				$this->log->add_log( 'Position ' . $this->get_personio_id() . ' successfully imported or updated in ' . $this->get_lang() . '.', 'success' );
 			}
 		}
 	}
@@ -369,9 +333,8 @@ class Position {
 	 * Get the term of the employment type.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
-	public function getEmploymentTypeName(): string {
+	public function get_employment_type_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE, 'name' );
 	}
 
@@ -379,9 +342,8 @@ class Position {
 	 * Get the term of the recruiting category.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
-	public function getRecruitingCategoryName(): string {
+	public function get_recruiting_category_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY, 'name' );
 	}
 
@@ -389,9 +351,8 @@ class Position {
 	 * Get the term of the schedule.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
-	public function getScheduleName(): string {
+	public function get_schedule_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE, 'name' );
 	}
 
@@ -399,9 +360,8 @@ class Position {
 	 * Get the term of the office category.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
-	public function getOfficeName(): string {
+	public function get_office_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE, 'name' );
 	}
 
@@ -411,7 +371,7 @@ class Position {
 	 * @return int
 	 * @noinspection PhpUnused
 	 */
-	public function getOfficeTermId(): int {
+	public function get_office_term_id(): int {
 		return absint( $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE, 'term_id' ) );
 	}
 
@@ -419,9 +379,8 @@ class Position {
 	 * Get the term of the department category.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
-	public function getDepartmentName(): string {
+	public function get_department_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT, 'name' );
 	}
 
@@ -431,7 +390,7 @@ class Position {
 	 * @return string
 	 * @noinspection PhpUnused
 	 */
-	public function getSeniorityName(): string {
+	public function get_seniority_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY, 'name' );
 	}
 
@@ -441,7 +400,7 @@ class Position {
 	 * @return string
 	 * @noinspection PhpUnused
 	 */
-	public function getExperienceName(): string {
+	public function get_experience_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE, 'name' );
 	}
 
@@ -449,9 +408,8 @@ class Position {
 	 * Get the term of the keyword category.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
-	public function getKeywordsTypeName(): string {
+	public function get_keywords_type_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS, 'name' );
 	}
 
@@ -459,9 +417,8 @@ class Position {
 	 * Get the term of the occupation category.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
-	public function getOccupationCategoryName(): string {
+	public function get_occupation_category_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY, 'name' );
 	}
 
@@ -471,21 +428,29 @@ class Position {
 	 * @return string
 	 * @noinspection PhpUnused
 	 */
-	public function getOccupationName(): string {
+	public function get_occupation_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION, 'name' );
 	}
 
 	/**
-	 * Get the language-specific content of this position (aka jobDescriptions).
+	 * Get the language-specific title of this position.
 	 *
 	 * @return string
 	 * @noinspection PhpUnused
 	 */
-	public function getTitle(): string {
-		if ( 0 === strlen( $this->lang ) ) {
-			$this->lang = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
-		}
-		return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->lang, true );
+	public function get_title(): string {
+		return get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), true );
+	}
+
+	/**
+	 * Set title for this position.
+	 *
+	 * @param string $title The title.
+	 *
+	 * @return void
+	 */
+	public function set_title( string $title ): void {
+		$this->data['post_title'] = $title;
 	}
 
 	/**
@@ -494,11 +459,8 @@ class Position {
 	 * @return array
 	 * @noinspection PhpUnused
 	 */
-	public function getContentAsArray(): array {
-		if ( 0 === strlen( $this->lang ) ) {
-			$this->lang = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
-		}
-		$content = get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->lang, true );
+	public function get_content_as_array(): array {
+		$content = get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
 		if ( ! empty( $content['jobDescription'] ) ) {
 			return $content['jobDescription'];
 		}
@@ -518,7 +480,7 @@ class Position {
 		$template_file = 'parts/properties-content.php';
 
 		// if old template does not exist, use the one we configured.
-		if ( ! Helper::has_template( $template_file ) ) {
+		if ( ! Templates::get_instance()->has_template( $template_file ) ) {
 			if ( empty( $template ) ) {
 				$template = 'default';
 			}
@@ -535,16 +497,15 @@ class Position {
 	}
 
 	/**
-	 * Get the personioId of this position.
+	 * Get the PersonioId of this position.
 	 *
-	 * @return mixed
-	 * @noinspection PhpUnused
+	 * @return string
 	 */
-	public function getPersonioId() {
+	public function get_personio_id(): string {
 		if ( ! empty( $this->data['ID'] ) ) {
 			return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_PM_PID, true );
 		}
-		return 0;
+		return '0';
 	}
 
 	/**
@@ -563,8 +524,17 @@ class Position {
 	 *
 	 * @return bool
 	 */
-	public function isValid(): bool {
+	public function is_valid(): bool {
 		return ! empty( $this->data );
+	}
+
+	/**
+	 * Get the WP_Post-ID of this object.
+	 *
+	 * @return int
+	 */
+	public function get_id(): int {
+		return $this->data['ID'];
 	}
 
 	/**
@@ -602,5 +572,198 @@ class Position {
 	 */
 	public function get_created_at(): string {
 		return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, true );
+	}
+
+	/**
+	 * Get the WP_Post-object of this position.
+	 * *
+	 *
+	 * @return WP_Post
+	 */
+	private function get_post(): WP_Post {
+		return $this->post;
+	}
+
+	/**
+	 * Set the WP_Post-object of this position.
+	 *
+	 * @param WP_Post $post The object.
+	 *
+	 * @return void
+	 */
+	private function set_post( WP_Post $post ): void {
+		$this->post = $post;
+	}
+
+	/**
+	 * Get the language of this object.
+	 *
+	 * @return string
+	 */
+	private function get_lang(): string {
+		return $this->data['lang'];
+	}
+
+	/**
+	 * Set the language.
+	 *
+	 * @param string $lang The language.
+	 *
+	 * @return void
+	 */
+	public function set_lang( string $lang ): void {
+		$this->data['lang'] = $lang;
+	}
+
+	/**
+	 * Set the content.
+	 *
+	 * @param SimpleXMLElement $job_descriptions The description as XML.
+	 *
+	 * @return void
+	 */
+	public function set_content( SimpleXMLElement $job_descriptions ): void {
+		$value = $job_descriptions;
+		foreach ( $job_descriptions as $v ) {
+			if ( 0 === $v->count() ) {
+				$value = array( 'jobDescription' => array() );
+			}
+			if ( 1 === $v->count() ) {
+				$value = array( 'jobDescription' => array( $v->jobDescription ) );
+			}
+		}
+		$this->data['post_content'] = wp_json_encode( $value );
+	}
+
+	/**
+	 * Set department.
+	 *
+	 * @param string $department The department.
+	 *
+	 * @return void
+	 */
+	public function set_department( string $department ): void {
+		$this->data['department'] = $department;
+	}
+
+	/**
+	 * Set keywords.
+	 *
+	 * @param string $keywords List of keywords, separated by ','.
+	 *
+	 * @return void
+	 */
+	public function set_keywords( string $keywords ): void {
+		$this->data['keywords'] = $keywords;
+	}
+
+	/**
+	 * Set office.
+	 *
+	 * @param string $office The office.
+	 *
+	 * @return void
+	 */
+	public function set_office( string $office ): void {
+		$this->data['office'] = $office;
+	}
+
+	/**
+	 * Set Personio ID.
+	 *
+	 * @param int $personio_id The Personio Id.
+	 *
+	 * @return void
+	 */
+	public function set_personio_id( int $personio_id ): void {
+		$this->data['personioId'] = $personio_id;
+	}
+
+	/**
+	 * Set recruiting category.
+	 *
+	 * @param string $recruiting_category The recruitment category.
+	 *
+	 * @return void
+	 */
+	public function set_recruiting_category( string $recruiting_category ): void {
+		$this->data['recruitingCategory'] = $recruiting_category;
+	}
+
+	/**
+	 * Set employment type.
+	 *
+	 * @param string $employment_type The employment type.
+	 *
+	 * @return void
+	 */
+	public function set_employment_type( string $employment_type ): void {
+		$this->data['employmentType'] = $employment_type;
+	}
+
+	/**
+	 * Set seniority.
+	 *
+	 * @param string $seniority The seniority.
+	 *
+	 * @return void
+	 */
+	public function set_seniority( string $seniority ): void {
+		$this->data['seniority'] = $seniority;
+	}
+
+	/**
+	 * Set schedule.
+	 *
+	 * @param string $schedule The schedule.
+	 *
+	 * @return void
+	 */
+	public function set_schedule( string $schedule ): void {
+		$this->data['schedule'] = $schedule;
+	}
+
+	/**
+	 * Set the years of experience.
+	 *
+	 * @param string $years_of_experience The years of experience.
+	 *
+	 * @return void
+	 */
+	public function set_years_of_experience( string $years_of_experience ): void {
+		$this->data['yearsOfExperience'] = $years_of_experience;
+	}
+
+	/**
+	 * Set occupation.
+	 *
+	 * @param string $occupation The occupation.
+	 *
+	 * @return void
+	 */
+	public function set_occupation( string $occupation ): void {
+		$this->data['occupation'] = $occupation;
+	}
+
+	/**
+	 * Set the occupation category.
+	 *
+	 * @param string $occupation_category The occupation category.
+	 *
+	 * @return void
+	 */
+	public function set_occupation_category( string $occupation_category ): void {
+		$this->data['occupationCategory'] = $occupation_category;
+	}
+
+	/**
+	 * Set created at.
+	 *
+	 * @param string $created_at The created at-value.
+	 *
+	 * @return void
+	 */
+	public function set_created_at( string $created_at ): void {
+		$this->data['createdAt'] = $created_at;
 	}
 }

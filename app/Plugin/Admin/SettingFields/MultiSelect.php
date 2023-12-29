@@ -12,6 +12,13 @@ namespace App\Plugin\Admin\SettingFields;
  */
 class MultiSelect {
 
+	/**
+	 * Get the output.
+	 *
+	 * @param array $attributes The settings for this field.
+	 *
+	 * @return void
+	 */
 	public static function get( array $attributes ): void {
 		if ( ! empty( $attributes['fieldId'] ) && ! empty( $attributes['options'] ) ) {
 			// change attributes via hook.

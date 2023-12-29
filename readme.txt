@@ -350,8 +350,10 @@ Yes, it is without any further settings.
 * Fixed missing styles with some blocks in Block Editor
 
 = 3.0.0 =
-* Compatible with WordPress Coding Standards 3.0
+* Completely revised plugin
 * Now only compatible with PHP 8.0 or newer
 * And only compatible with WordPress 6.0 or newer
-* Removed 5 minutes cronjob as it is discouraged by WordPress (Migrate!!!)
+* Added support for Multisite-installations
+* Compatible with WordPress Coding Standards 3.0
+* Removed 5 minutes cronjob as it is discouraged by WordPress (TODO Migrate)
 * Fixed usage of classic widgets

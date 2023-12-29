@@ -276,7 +276,6 @@ class Template {
 	 * @param string $template_content The content with blocks.
 	 *
 	 * @return string Updated wp_template content.
-	 * @noinspection PhpUnused
 	 */
 	public function update_theme_attribute_in_content( string $template_content ): string {
 		$theme               = wp_get_theme()->get_stylesheet();

@@ -16,7 +16,7 @@ class PersonioIntegrationUrl {
 	/**
 	 * Validate the Personio-URL.
 	 *
-	 * @param string $value
+	 * @param string $value The value from the field.
 	 *
 	 * @return string
 	 */
@@ -27,7 +27,7 @@ class PersonioIntegrationUrl {
 		 *
 		 * @see https://core.trac.wordpress.org/ticket/21989
 		 */
-		if ( helper::check_if_setting_error_entry_exists_in_array( 'personioIntegrationUrl', $errors ) ) {
+		if ( Helper::check_if_setting_error_entry_exists_in_array( 'personioIntegrationUrl', $errors ) ) {
 			return $value;
 		}
 
@@ -57,7 +57,7 @@ class PersonioIntegrationUrl {
 			} elseif ( get_option( 'personioIntegrationUrl', '' ) !== $value ) {
 				// -> should return HTTP-Status 200
 				$response = wp_remote_get(
-					helper::get_personio_xml_url( $value ),
+					Helper::get_personio_xml_url( $value ),
 					array(
 						'timeout'     => 30,
 						'redirection' => 0,
@@ -75,7 +75,7 @@ class PersonioIntegrationUrl {
 					// -> show hint and option to import the positions now.
 					set_transient( 'personio_integration_import_now', 1 );
 					// reset options for the import.
-					foreach ( helper::get_active_languages_with_default_first() as $key => $lang ) {
+					foreach ( Helper::get_active_languages_with_default_first() as $key => $lang ) {
 						delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key );
 						delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key );
 					}

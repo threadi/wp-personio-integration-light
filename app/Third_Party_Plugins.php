@@ -7,7 +7,7 @@
 
 namespace App;
 
-use personioIntegration\Position;
+use App\PersonioIntegration\Position;
 use WP_Post;
 use Yoast\WP\SEO\Presentations\Indexable_Presentation;
 
@@ -130,18 +130,18 @@ class Third_Party_Plugins {
 			// get position as object.
 			$post_id        = get_queried_object_id();
 			$position       = new Position( $post_id );
-			$position->lang = helper::get_wp_lang(); // TODO check.
+			$position->lang = Helper::get_wp_lang(); // TODO check.
 
 			// get description.
 			$description = wp_strip_all_tags( $position->get_content() );
 			$description = preg_replace( '/\s+/', ' ', $description );
 
 			// update settings.
-			$og_array['og']['title']            = $position->getTitle();
+			$og_array['og']['title']            = $position->get_title();
 			$og_array['og']['description']      = $description;
-			$og_array['twitter']['title']       = $position->getTitle();
+			$og_array['twitter']['title']       = $position->get_title();
 			$og_array['twitter']['description'] = $description;
-			$og_array['schema']['title']        = $position->getTitle();
+			$og_array['schema']['title']        = $position->get_title();
 			$og_array['schema']['description']  = $description;
 		}
 

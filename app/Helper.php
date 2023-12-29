@@ -7,14 +7,13 @@
 
 namespace App;
 
+use App\PersonioIntegration\Position;
 use App\Plugin\Languages;
 use App\Plugin\Templates;
 use Exception;
-use personioIntegration\Position;
 use WP_Post;
 use WP_Post_Type;
 use WP_Rewrite;
-use const \WP_CLI;
 
 /**
  * The helper class itself.
@@ -341,34 +340,34 @@ class Helper {
 		$name = '';
 		switch ( $taxonomy ) {
 			case 'recruitingCategory':
-				$name = $position->getRecruitingCategoryName();
+				$name = $position->get_recruiting_category_name();
 				break;
 			case 'schedule':
-				$name = $position->getScheduleName();
+				$name = $position->get_schedule_name();
 				break;
 			case 'office':
-				$name = $position->getOfficeName();
+				$name = $position->get_office_name();
 				break;
 			case 'department':
-				$name = $position->getDepartmentName();
+				$name = $position->get_department_name();
 				break;
 			case 'seniority':
-				$name = $position->getSeniorityName();
+				$name = $position->get_seniority_name();
 				break;
 			case 'experience':
-				$name = $position->getExperienceName();
+				$name = $position->get_experience_name();
 				break;
 			case 'occupation':
-				$name = $position->getOccupationCategoryName();
+				$name = $position->get_occupation_category_name();
 				break;
 			case 'occupation_detail':
-				$name = $position->getOccupationName();
+				$name = $position->get_occupation_name();
 				break;
 			case 'employmenttype':
-				$name = $position->getEmploymentTypeName();
+				$name = $position->get_employment_type_name();
 				break;
 			case 'keyword':
-				$name = $position->getKeywordsTypeName();
+				$name = $position->get_keywords_type_name();
 				break;
 		}
 		return apply_filters( 'personio_integration_get_taxonomy_from_position', $name, $taxonomy, $position );
@@ -610,11 +609,10 @@ class Helper {
 	}
 
 	/**
-	 * Return the active Wordpress-language depending on our own support.
+	 * Return the default Wordpress-language depending on our own support.
 	 * If language is unknown for our plugin, use english.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
 	public static function get_wp_lang(): string {
 		$wp_lang = substr( get_bloginfo( 'language' ), 0, 2 );
@@ -665,7 +663,6 @@ class Helper {
 	 * If language is unknown for our plugin, use english.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
 	public static function get_current_lang(): string {
 		$wp_lang = substr( get_bloginfo( 'language' ), 0, 2 );
@@ -1208,7 +1205,6 @@ class Helper {
 	 * @param string $transient The transient.
 	 *
 	 * @return bool
-	 * @noinspection PhpUnused
 	 */
 	public static function is_transient_not_dismissed( string $transient ): bool {
 		$db_record = self::get_admin_transient_cache( $transient );
@@ -1266,9 +1262,9 @@ class Helper {
 	 */
 	public static function get_personio_application_url( $position, bool $without_application = false ): string {
 		if ( $without_application ) {
-			return get_option( 'personioIntegrationUrl', '' ) . '/job/' . absint( $position->getPersonioId() ) . '?display=' . get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
+			return get_option( 'personioIntegrationUrl', '' ) . '/job/' . absint( $position->get_personio_id() ) . '?display=' . get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
 		}
-		return get_option( 'personioIntegrationUrl', '' ) . '/job/' . absint( $position->getPersonioId() ) . '?display=' . get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY ) . '#apply';
+		return get_option( 'personioIntegrationUrl', '' ) . '/job/' . absint( $position->get_personio_id() ) . '?display=' . get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY ) . '#apply';
 	}
 
 	/**
@@ -1394,5 +1390,31 @@ class Helper {
 	 */
 	public static function get_personio_url(): string {
 		return get_option( 'personioIntegrationUrl', '' );
+	}
+
+	/**
+	 * Get list of blogs in a multisite-installation.
+	 *
+	 * @return array
+	 */
+	public static function get_blogs(): array {
+		if ( false === is_multisite() ) {
+			return array();
+		}
+
+		// Get DB-connection.
+		global $wpdb;
+
+		// get blogs in this site-network.
+		return $wpdb->get_results(
+			"
+            SELECT blog_id
+            FROM {$wpdb->blogs}
+            WHERE site_id = '{$wpdb->siteid}'
+            AND spam = '0'
+            AND deleted = '0'
+            AND archived = '0'
+        "
+		);
 	}
 }

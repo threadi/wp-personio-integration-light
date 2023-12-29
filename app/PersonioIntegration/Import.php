@@ -1,6 +1,6 @@
 <?php
 /**
- * File for handling of imports from Personio.
+ * File for handling of imports from single Personio-account.
  *
  * @package personio-integration-light
  */
@@ -8,8 +8,8 @@
 namespace App\PersonioIntegration;
 
 use App\Helper;
+use App\Log;
 use Exception;
-use personioIntegration\Log;
 use SimpleXMLElement;
 use WP_Post;
 
@@ -60,28 +60,33 @@ class Import {
 		$this->debug = 1 === absint( get_option( 'personioIntegration_debug', 0 ) );
 
 		// get the languages.
+		// TODO überarbeiten
 		$languages = Helper::get_active_languages_with_default_first();
 
-		// get the language-count.
-		$language_count = count( $languages );
+		$language_count = 0;
 
 		// set counter for progressbar in backend.
-		update_option( WP_PERSONIO_OPTION_MAX, $language_count );
+		update_option( WP_PERSONIO_OPTION_MAX, count( $languages ) );
 		update_option( WP_PERSONIO_OPTION_COUNT, 0 );
 		$do_not_update_max_counter = false;
 
 		// create array for positions.
 		$imported_positions = array();
 
-		// check if PersonioUrl is set.
+		// check if Personio URL is set.
 		if ( ! Helper::is_personio_url_set() ) {
 			$this->errors[] = __( 'Personio URL not configured.', 'personio-integration-light' );
+		}
+
+		// check if simpleXML exists.
+		if ( ! function_exists( 'simplexml_load_string' ) ) {
+			$this->errors[] = __( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' );
 		}
 
 		// marker if result should do nothing.
 		$do_nothing = false;
 
-		// get actual live positions.
+		// get actual local positions.
 		$positions_obj   = Positions::get_instance();
 		$positions_count = $positions_obj->get_positions_count();
 
@@ -93,10 +98,21 @@ class Import {
 			$count = 0;
 
 			// CLI-Output.
-			$progress = helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Get positions from Personio by language', $language_count ) : false;
+			$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Get positions from Personio by language', $language_count ) : false;
 			foreach ( $languages as $key => $enabled ) {
+				if ( 0 === absint( $enabled ) ) {
+					// show progress.
+					$progress ? $progress->tick() : false;
+
+					// get next language.
+					continue;
+				}
+
+				// update language-count.
+				++$language_count;
+
 				// define the url.
-				$url = apply_filters( 'personio_integration_import_url', helper::get_personio_xml_url( get_option( 'personioIntegrationUrl', '' ) ) . '?language=' . esc_attr( $key ), $key );
+				$url = apply_filters( 'personio_integration_import_url', Helper::get_personio_xml_url( Helper::get_personio_url() ) . '?language=' . esc_attr( $key ), $key );
 
 				// define settings for first request to get the last-modified-date.
 				$args     = array(
@@ -271,19 +287,16 @@ class Import {
 			if ( ! $do_nothing ) {
 				foreach ( $positions_object->get_positions() as $position ) {
 					if ( false !== apply_filters( 'personio_integration_delete_single_position', true, $position ) ) {
-						// get post id.
-						$position_post_id = $position->ID;
-
 						// get personio id.
-						$personio_id = $position->getPersonioId();
-						if ( 1 === absint( get_post_meta( $position_post_id, WP_PERSONIO_INTEGRATION_UPDATED, true ) ) ) {
-							if ( false === delete_post_meta( $position_post_id, WP_PERSONIO_INTEGRATION_UPDATED ) ) {
+						$personio_id = $position->get_personio_id();
+						if ( 1 === absint( get_post_meta( $position->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, true ) ) ) {
+							if ( false === delete_post_meta( $position->get_id(), WP_PERSONIO_INTEGRATION_UPDATED ) ) {
 								// log event.
 								$this->log->add_log( sprintf( 'Removing updated flag for %1$s failed.', esc_html( $personio_id ) ), 'error' );
 							}
 						} else {
 							// delete this position from database.
-							$result = wp_delete_post( $position_post_id, true );
+							$result = wp_delete_post( $position->get_id(), true );
 
 							if ( $result instanceof WP_Post ) {
 								// log this event.
@@ -301,7 +314,7 @@ class Import {
 			do_action( 'personio_integration_import_ended' );
 
 			// output success-message.
-			helper::is_cli() ? \WP_CLI::success( $language_count . ' languages grabbed, ' . count( $imported_positions ) . ' positions imported.' ) : false;
+			Helper::is_cli() ? \WP_CLI::success( $language_count . ' languages grabbed, ' . count( $imported_positions ) . ' positions imported.' ) : false;
 
 			// save position count.
 			$count_positions = $positions_object->get_positions_count();
@@ -329,25 +342,29 @@ class Import {
 	 * @return void
 	 */
 	private function show_errors(): void {
-		$ausgabe = '';
-		foreach ( $this->errors as $e ) {
-			$ausgabe .= $e . '\n';
-		}
-		$ausgabe .= "\n";
+		if ( ! empty( $this->errors ) ) {
+			$ausgabe = '';
+			foreach ( $this->errors as $e ) {
+				$ausgabe .= $e . '\n';
+			}
+			$ausgabe .= "\n";
 
-		// save results in database.
-		$this->log->add_log( $ausgabe, ! empty( $this->errors ) ? 'error' : 'success' );
+			// save results in database.
+			$this->log->add_log( $ausgabe, 'error' );
 
-		// output results in WP-CLI.
-		echo ( helper::is_cli() ? esc_html( $ausgabe ) : '' );
+			// output results in WP-CLI.
+			if ( Helper::is_cli() ) {
+				echo esc_html( $ausgabe );
+			}
 
-		// send info to admin about the problem.
-		if ( ! empty( $this->errors ) && ! $this->debug ) {
-			$send_to = get_bloginfo( 'admin_email' );
-			$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Personio Positions Import', 'personio-integration-light' );
-			$msg     = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '\r\n' . $ausgabe;
-			$msg    .= '\r\n\r\n' . __( 'Sent by the plugin Personio Integration', 'personio-integration-light' );
-			wp_mail( $send_to, $subject, $msg );
+			// send info to admin about the problem if debug is not enabled.
+			if ( ! $this->debug ) {
+				$send_to = get_bloginfo( 'admin_email' );
+				$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of Personio Positions', 'personio-integration-light' );
+				$msg     = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '\r\n' . $ausgabe;
+				$msg    .= '\r\n\r\n' . __( 'Sent by the plugin Personio Integration', 'personio-integration-light' );
+				wp_mail( $send_to, $subject, $msg );
+			}
 		}
 	}
 
@@ -357,33 +374,30 @@ class Import {
 	 * @param SimpleXMLElement|null $position The XML-object of a single position.
 	 * @param string                $language_name The language-name.
 	 * @return void
-	 * @noinspection PhpUndefinedFieldInspection
 	 */
 	private function import_position( ?SimpleXMLElement $position, string $language_name ): void {
 		// create position object to handle all values and save them to database.
-		$position_object               = new Position( 0 );
-		$position_object->lang         = $language_name;
-		$position_object->post_title   = (string) $position->name;
-		$position_object->post_content = $position->jobDescriptions;
-		$position_object->department   = '';
+		$position_object = new Position( 0 );
+		$position_object->set_lang( $language_name );
+		$position_object->set_title( (string) $position->name );
+		$position_object->set_content( $position->jobDescriptions );
 		if ( ! empty( $position->department ) ) {
-			$position_object->department = (string) $position->department;
+			$position_object->set_department( (string) $position->department );
 		}
-		$position_object->keywords = '';
 		if ( ! empty( $position->keywords ) ) {
-			$position_object->keywords = (string) $position->keywords;
+			$position_object->set_keywords( (string) $position->keywords );
 		}
-		$position_object->office             = (string) $position->office;
-		$position_object->personioId         = (int) $position->id;
-		$position_object->recruitingCategory = (string) $position->recruitingCategory;
-		$position_object->employmentType     = (string) $position->employmentType;
-		$position_object->seniority          = (string) $position->seniority;
-		$position_object->schedule           = (string) $position->schedule;
-		$position_object->yearsOfExperience  = (string) $position->yearsOfExperience;
-		$position_object->occupation         = (string) $position->occupation;
-		$position_object->occupationCategory = (string) $position->occupationCategory;
-		$position_object->createdAt          = (string) $position->createdAt;
-		$position_object                     = apply_filters( 'personio_integration_import_single_position_xml', $position_object, $position );
+		$position_object->set_office( (string) $position->office );
+		$position_object->set_personio_id( (int) $position->id );
+		$position_object->set_recruiting_category( (string) $position->recruitingCategory );
+		$position_object->set_employment_type( (string) $position->employmentType );
+		$position_object->set_seniority( (string) $position->seniority );
+		$position_object->set_schedule( (string) $position->schedule );
+		$position_object->set_years_of_experience( (string) $position->yearsOfExperience );
+		$position_object->set_occupation( (string) $position->occupation );
+		$position_object->set_occupation_category( (string) $position->occupationCategory );
+		$position_object->set_created_at( (string) $position->createdAt );
+		$position_object = apply_filters( 'personio_integration_import_single_position_xml', $position_object, $position );
 		$position_object->save();
 	}
 

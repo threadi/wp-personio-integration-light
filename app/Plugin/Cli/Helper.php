@@ -7,8 +7,8 @@
 
 namespace App\Plugin\Cli;
 
-use personioIntegration\Log;
-use personioIntegration\Positions;
+use App\Log;
+use App\PersonioIntegration\Positions;
 
 /**
  * Trait with helper-functions.
@@ -27,7 +27,7 @@ trait Helper {
 		$progress       = \App\Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local positions', $position_count ) : false;
 		foreach ( $positions as $position ) {
 			// delete it.
-			wp_delete_post( $position->ID, true );
+			wp_delete_post( $position->get_id(), true );
 
 			// show progress.
 			$progress ? $progress->tick() : false;
@@ -45,13 +45,11 @@ trait Helper {
 		}
 
 		// output success-message.
-		\App\Helper::is_cli() ? \WP_CLI::success( $position_count . ' positions deleted.' ) : false;
+		\App\Helper::is_cli() ? \WP_CLI::success( $position_count . ' positions from local database deleted.' ) : false;
 	}
 
 	/**
 	 * Delete all taxonomies which depends on our own custom post type.
-	 *
-	 * TODO testen.
 	 *
 	 * @return void
 	 * @noinspection SqlResolve
@@ -99,6 +97,6 @@ trait Helper {
 		$progress ? $progress->finish() : false;
 
 		// output success-message.
-		\App\Helper::is_cli() ? \WP_CLI::success( count( $taxonomies ) . ' taxonomies where cleaned.' ) : false;
+		\App\Helper::is_cli() ? \WP_CLI::success( count( $taxonomies ) . ' taxonomies from local database has been cleaned.' ) : false;
 	}
 }

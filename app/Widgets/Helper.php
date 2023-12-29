@@ -53,7 +53,7 @@ trait Helper {
 
 					// define field-name.
 					$name = $this->get_field_name( $name );
-					if( isset( $field['multiple']) && false !== $field['multiple'] ) {
+					if ( isset( $field['multiple'] ) && false !== $field['multiple'] ) {
 						$name .= '[]';
 					}
 
@@ -61,7 +61,7 @@ trait Helper {
 					?>
 					<p>
 						<label for="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>"><?php echo esc_html( $field['title'] ); ?></label>
-						<select class="widefat" id="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" name="<?php echo esc_attr($name) ?>"<?php echo esc_attr( $multiple ); ?>>
+						<select class="widefat" id="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" name="<?php echo esc_attr( $name ); ?>"<?php echo esc_attr( $multiple ); ?>>
 							<?php
 							foreach ( $field['values'] as $value => $title ) {
 								?>

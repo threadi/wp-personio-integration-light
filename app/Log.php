@@ -26,7 +26,7 @@ class Log {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		// table for import-log.
-		$sql = "CREATE TABLE ' . $wpdb->prefix . 'personio_import_logs (
+		$sql = 'CREATE TABLE ' . $wpdb->prefix . "personio_import_logs (
             `id` mediumint(9) NOT NULL AUTO_INCREMENT,
             `time` datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
             `log` text DEFAULT '' NOT NULL,

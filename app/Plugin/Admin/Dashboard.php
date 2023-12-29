@@ -60,7 +60,7 @@ class Dashboard {
 	 *
 	 * @return void
 	 */
-	public function add_dashboard_widget(  ): void {
+	public function add_dashboard_widget(): void {
 		// only if Personio URL is available.
 		if ( ! Helper::is_personio_url_set() ) {
 			return;
@@ -114,7 +114,7 @@ class Dashboard {
 			<?php
 			foreach ( $positions_list as $position ) {
 				?>
-				<li><a href="<?php echo esc_url( get_permalink( $position->ID ) ); ?>"><?php echo esc_html( $position->getTitle() ); ?></a></li>
+				<li><a href="<?php echo esc_url( get_permalink( $position->ID ) ); ?>"><?php echo esc_html( $position->get_title() ); ?></a></li>
 				<?php
 			}
 			?>
@@ -128,5 +128,4 @@ class Dashboard {
 			<?php
 		}
 	}
-
 }

@@ -14,6 +14,13 @@ use App\Plugin\Languages;
  */
 class Multiple_Radios {
 
+	/**
+	 * Get the output.
+	 *
+	 * @param array $attributes The settings for this field.
+	 *
+	 * @return void
+	 */
 	public static function get( array $attributes ): void {
 		if ( ! empty( $attributes['fieldId'] ) ) {
 			foreach ( $attributes['options'] as $key => $enabled ) {
@@ -25,15 +32,17 @@ class Multiple_Radios {
 
 				// get title.
 				/* translators: %1$s is replaced with "string" */
-				$title = sprintf( __( 'Mark to set %1$s as default language in the frontend.', 'personio-integration-light' ), esc_html($language_name) );
+				$title = sprintf( __( 'Mark to set %1$s as default language in the frontend.', 'personio-integration-light' ), esc_html( $language_name ) );
 
 				// readonly.
 				$readonly = '';
 				if ( isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ) {
 					$readonly = ' disabled="disabled"';
-					?>
-					<input type="hidden" id="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" value="<?php echo esc_html( ! empty( $checked ) ? '1' : '0' ); ?>">
-					<?php
+					if ( ! empty( $checked ) ) {
+						?>
+						<input type="hidden" id="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" value="<?php echo esc_attr( $key ); ?>">
+						<?php
+					}
 				}
 				if ( 0 === absint( $enabled ) ) {
 					$readonly = ' disabled="disabled"';

@@ -14,6 +14,13 @@ use App\Plugin\Languages;
  */
 class Multiple_Checkboxes {
 
+	/**
+	 * Get the output.
+	 *
+	 * @param array $attributes The settings for this field.
+	 *
+	 * @return void
+	 */
 	public static function get( array $attributes ): void {
 		if ( ! empty( $attributes['fieldId'] ) ) {
 			foreach ( $attributes['options'] as $key => $enabled ) {

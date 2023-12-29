@@ -6,6 +6,8 @@
  * @package personio-integration-light
  */
 
+use App\PersonioIntegration\PostTypes\PersonioPosition;
+
 defined( 'ABSPATH' ) || exit;
 
 get_header();
@@ -16,6 +18,6 @@ get_header();
 $arguments = array(
 	'personioid' => get_post_meta( get_the_ID(), WP_PERSONIO_INTEGRATION_CPT_PM_PID, true ),
 );
-echo personio_integration_position_shortcode( $arguments );
+echo PersonioPosition::get_instance()->shortcode_position( $arguments );
 
 get_footer();
