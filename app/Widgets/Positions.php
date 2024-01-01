@@ -74,7 +74,7 @@ class Positions extends WP_Widget {
 				'type'   => 'select',
 				'title'  => __( 'Group by', 'personio-integration-light' ),
 				'std'    => 'title',
-				'values' => array_merge( array( '' => __( 'ungrouped', 'personio-integration-light' ) ), Taxonomies::get_instance()->get_cat_labels() ),
+				'values' => array_merge( array( '' => __( 'ungrouped', 'personio-integration-light' ) ), Taxonomies::get_instance()->get_taxonomy_labels_for_settings() ),
 			),
 			'showTitle'           => array(
 				'type'   => 'select',
@@ -108,7 +108,7 @@ class Positions extends WP_Widget {
 				'title'    => __( 'Choose detail components', 'personio-integration-light' ),
 				'multiple' => true,
 				'std'      => array( 'recruitingCategory', 'schedule', 'office' ),
-				'values'   => Taxonomies::get_instance()->get_cat_labels(),
+				'values'   => Taxonomies::get_instance()->get_taxonomy_labels_for_settings(),
 			),
 			'showContent'         => array(
 				'type'   => 'select',

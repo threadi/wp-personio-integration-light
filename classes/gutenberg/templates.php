@@ -218,12 +218,12 @@ class Templates {
 	private function get_templates(): array {
 		// define the list.
 		$templates = array(
-			'single-' . WP_PERSONIO_INTEGRATION_CPT  => array(
+			'single-' . WP_PERSONIO_INTEGRATION_MAIN_CPT  => array(
 				'title'       => __( 'Single Position', 'personio-integration-light' ),
 				'description' => __( 'Displays a single position.', 'personio-integration-light' ),
 				'source'      => 'plugin',
 			),
-			'archive-' . WP_PERSONIO_INTEGRATION_CPT => array(
+			'archive-' . WP_PERSONIO_INTEGRATION_MAIN_CPT => array(
 				'title'       => __( 'Archive Positions', 'personio-integration-light' ),
 				'description' => __( 'Displays your positions.', 'personio-integration-light' ),
 				'source'      => 'plugin',

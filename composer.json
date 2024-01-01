@@ -25,7 +25,8 @@
         "vendor-dir": "lib",
         "optimize-autoloader": true,
         "classmap-authoritative": true,
-        "apcu-autoloader": true
+        "apcu-autoloader": true,
+        "prepend-autoloader": false
     },
     "autoload": {
         "psr-4": {
@@ -37,6 +38,7 @@
         "threadi/wp-easy-dialog": "dev-master"
     },
     "require-dev": {
-        "wp-coding-standards/wpcs": "^3.0.0"
+        "wp-coding-standards/wpcs": "^3.0.0",
+        "pronamic/wp-documentor": "^1.3"
     }
 }

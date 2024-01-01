@@ -81,17 +81,23 @@ class Uninstaller {
 	 * @return void
 	 */
 	private function deactivation_tasks( array $delete_data ): void {
-		// remove schedule.
-		wp_clear_scheduled_hook( 'personio_integration_schudule_events' ); // TODO migrate wrong written name.
+		// remove schedules.
+		Schedules::get_instance()->delete_all();
 
 		// remove widgets.
+		// TODO testen.
 		do_action( 'widgets_init' );
 
 		// remove transients.
-		// TODO use transients-object.
-		foreach ( WP_PERSONIO_INTEGRATION_TRANSIENTS as $transient => $setting ) {
-			delete_transient( $transient );
-			delete_transient( 'pi-dismissed-' . md5( $transient ) );
+		foreach( Transients::get_instance()->get_transients() as $transient_obj ) {
+			$transient_obj->delete();
+		}
+
+		/**
+		 * Delete manuel transients.
+		 */
+		foreach ( WP_PERSONIO_INTEGRATION_TRANSIENTS as $transient_name => $settings ) {
+			delete_transient( $transient_name );
 		}
 
 		// delete all plugin-data.
@@ -108,7 +114,7 @@ class Uninstaller {
 
 			// remove options from settings.
 			foreach ( Settings::get_instance()->get_settings() as $section ) {
-				foreach ( $section['fields'] as $field_name => $field_setting ) {
+				foreach ( $section['fields'] as $field_name => $field_settings ) {
 					delete_option( $field_name );
 				}
 			}

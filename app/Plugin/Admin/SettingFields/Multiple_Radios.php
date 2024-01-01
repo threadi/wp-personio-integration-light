@@ -28,7 +28,8 @@ class Multiple_Radios {
 				$checked = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, '' ) === $key ? ' checked="checked"' : '';
 
 				// get the language name.
-				$language_name = Languages::get_instance()->get_label( $key );
+				$languages = Languages::get_instance()->get_languages();
+				$language_name = $languages[$key];
 
 				// get title.
 				/* translators: %1$s is replaced with "string" */
@@ -44,10 +45,6 @@ class Multiple_Radios {
 						<?php
 					}
 				}
-				if ( 0 === absint( $enabled ) ) {
-					$readonly = ' disabled="disabled"';
-					$title    = '';
-				}
 
 				// output.
 				?>
@@ -56,6 +53,19 @@ class Multiple_Radios {
 					<label for="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>"><?php echo esc_html( $language_name ); ?></label>
 				</div>
 				<?php
+
+				// show optional hint for our Pro-version.
+				if ( ! empty( $attributes['pro_hint'] ) ) {
+					$message = $attributes['pro_hint'];
+					/**
+					 * Show hint for Pro-plugin with individual text.
+					 *
+					 * @since 1.0.0 Available since first release.
+					 *
+					 * @param string $message The individual text.
+					 */
+					do_action( 'personio_integration_admin_show_pro_hint', $message );
+				}
 			}
 		}
 	}

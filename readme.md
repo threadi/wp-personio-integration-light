@@ -4,6 +4,15 @@
 
 This repository provides the features of the Light version of the WordPress plugin _Personio Integration_. The repository is used as a basis for deploying the plugin to the WordPress repository. It is not intended to run as a plugin as it is, even if that is possible for development.
 
+## Preparations
+
+Add this in your wp-config.php for development:
+
+```
+define( 'WP_ENVIRONMENT_TYPE', 'local' );
+define( 'WP_DEVELOPMENT_MODE', 'plugin' );
+```
+
 ## Usage
 
 After checkout go through the following steps:
@@ -66,4 +75,8 @@ OR use ant in build/-directory: `ant json-translations`
 ### Notes for Build
 TODO
 composer install --no-dev
-composer dump-autoload -o --no-dev
+composer dump-autoload -oa --no-dev
+
+### Generate documentation
+
+`lib/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration`

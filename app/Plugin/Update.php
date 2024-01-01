@@ -8,6 +8,7 @@
 namespace App\Plugin;
 
 use App\Helper;
+use App\Plugin\Schedules\Import;
 use WP_Query;
 
 /**
@@ -78,9 +79,15 @@ class Update {
 		$db_plugin_version = get_option( 'personioIntegrationVersion', '1.0.0' );
 
 		// compare version if we are not in development-mode.
-		// TODO better solution for env-mode.
-		if ( '@@VersionNumber@@' !== $installed_plugin_version && version_compare( $installed_plugin_version, $db_plugin_version, '>' ) ) {
-			// TODO cleanup.
+		if (
+			(
+				(
+					function_exists( 'wp_is_development_mode' ) && false === wp_is_development_mode( 'plugin' )
+				)
+				|| !function_exists( 'wp_is_development_mode' )
+			)
+			&& version_compare( $installed_plugin_version, $db_plugin_version, '>' )
+		) {
 			switch ( $db_plugin_version ) {
 				case '1.2.3':
 					// nothing to do as 1.2.3 is the first version with this update-check.
@@ -100,6 +107,12 @@ class Update {
 	 *
 	 * @return void
 	 */
-	private function version300() {
+	private function version300(): void {
+		// delete old wrong names interval.
+		wp_clear_scheduled_hook( 'personio_integration_schudule_events' );
+
+		// install new one.
+		$schedule_obj = new Import();
+		$schedule_obj->install();
 	}
 }

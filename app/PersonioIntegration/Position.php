@@ -8,6 +8,7 @@
 namespace App\PersonioIntegration;
 
 use App\Log;
+use App\Plugin\Languages;
 use App\Plugin\Templates;
 use SimpleXMLElement;
 use WP_Post;
@@ -85,13 +86,13 @@ class Position {
 					$this->set_post( $post );
 				}
 			}
-			if ( ! empty( $post_array['post_type'] ) && WP_PERSONIO_INTEGRATION_CPT !== $post_array['post_type'] ) {
+			if ( ! empty( $post_array['post_type'] ) && WP_PERSONIO_INTEGRATION_MAIN_CPT !== $post_array['post_type'] ) {
 				$post_array = array();
 			}
 			$this->data = $post_array;
 
 			// set the main language for this position.
-			$this->set_lang( get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY ) );
+			$this->set_lang( Languages::get_instance()->get_main_language() );
 		}
 	}
 
@@ -121,12 +122,12 @@ class Position {
 		// search for the personioID to get an existing post-object.
 		if ( empty( $this->data['ID'] ) ) {
 			$query   = array(
-				'post_type'   => WP_PERSONIO_INTEGRATION_CPT,
+				'post_type'   => WP_PERSONIO_INTEGRATION_MAIN_CPT,
 				'fields'      => 'ids',
 				'post_status' => 'publish',
 				'meta_query'  => array(
 					array(
-						'key'     => WP_PERSONIO_INTEGRATION_CPT_PM_PID,
+						'key'     => WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID,
 						'value'   => $this->data['personioId'],
 						'compare' => '=',
 					),
@@ -135,8 +136,19 @@ class Position {
 			$results = new WP_Query( $query );
 			$posts   = array();
 			foreach ( $results->posts as $post_id ) {
-				// optional filter the post-ID.
-				if ( apply_filters( 'personio_integration_import_single_position_filter_existing', $post_id, $this->get_lang() ) ) {
+				$lang = $this->get_lang();
+
+				/**
+				 * Filter the post_id.
+				 *
+				 * Could return false to force a non-existing position.
+				 *
+				 * @since 1.0.0 Available since first release.
+				 *
+				 * @param int $post_id The post_id to check.
+				 * @param string $lang The used language.
+				 */
+				if ( apply_filters( 'personio_integration_import_single_position_filter_existing', $post_id, $lang ) ) {
 					$posts[] = $post_id;
 				}
 			}
@@ -172,10 +184,10 @@ class Position {
 		$array = array(
 			'ID'          => $this->data['ID'],
 			'post_status' => 'publish',
-			'post_type'   => WP_PERSONIO_INTEGRATION_CPT,
+			'post_type'   => WP_PERSONIO_INTEGRATION_MAIN_CPT,
 			'menu_order'  => absint( $this->data['menu_order'] ),
 		);
-		if ( get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY ) === $this->get_lang() ) {
+		if ( Languages::get_instance()->get_main_language() === $this->get_lang() ) {
 			$array['post_title']   = $this->data['post_title'];
 			$array['post_content'] = $this->data['post_content'];
 		} else {
@@ -183,7 +195,14 @@ class Position {
 			$array['post_content'] = get_post_field( 'post_content', $this->data['ID'] );
 		}
 
-		// filter the prepared position-data.
+		/**
+		 * Filter the prepared position-data just before its saved.
+		 *
+		 * @since 1.0.0 Available since first release.
+		 *
+		 * @param array $array The position data as array.
+		 * @param Position $this The object we are in.
+		 */
 		$array = apply_filters( 'personio_integration_import_single_position_filter_before_saving', $array, $this );
 
 		// save the position.
@@ -200,11 +219,17 @@ class Position {
 			// save the post-ID.
 			$this->data['ID'] = absint( $result );
 
-			// run hook on save of position.
+			/**
+			 * Run hook for individual settings after Position has been saved (inserted or updated).
+			 *
+			 * @since 2.0.0 Available since 2.0.0.
+			 *
+			 * @param Position $this The object of this position.
+			 */
 			do_action( 'personio_integration_import_single_position_save', $this );
 
 			// add personioId.
-			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_CPT_PM_PID, $this->data['personioId'] );
+			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, $this->data['personioId'] );
 
 			// assign the position to its terms.
 			$this->update_term( 'recruitingCategory', 'personioRecruitingCategory', false );
@@ -240,7 +265,7 @@ class Position {
 			}
 
 			// add created at as post meta field.
-			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, strtotime( $this->data['createdAt'] ) );
+			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT, strtotime( $this->data['createdAt'] ) );
 
 			// add all language-specific titles.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), $this->data['post_title'] );
@@ -312,7 +337,7 @@ class Position {
 	 * @param string $field The field.
 	 * @return string
 	 */
-	protected function get_term_name( string $taxonomy, string $field ): string {
+	public function get_term_name( string $taxonomy, string $field ): string {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$this->taxonomy_terms[ $taxonomy ] = get_the_terms( $this->data['ID'], $taxonomy );
 		}
@@ -460,40 +485,11 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_content_as_array(): array {
-		$content = get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
+		$content = get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
 		if ( ! empty( $content['jobDescription'] ) ) {
 			return $content['jobDescription'];
 		}
 		return array();
-	}
-
-	/**
-	 * Get the language-specific content of this position (aka jobDescriptions).
-	 *
-	 * TODO find better way outside of this object.
-	 *
-	 * @param string $template The used template.
-	 * @return string
-	 */
-	public function get_content( string $template = 'default' ): string {
-		// use old template if it exists.
-		$template_file = 'parts/properties-content.php';
-
-		// if old template does not exist, use the one we configured.
-		if ( ! Templates::get_instance()->has_template( $template_file ) ) {
-			if ( empty( $template ) ) {
-				$template = 'default';
-			}
-			$template_file = 'parts/jobdescription/' . $template . '.php';
-		}
-
-		// get position.
-		$position = $this;
-
-		// get template and return it.
-		ob_start();
-		include Templates::get_instance()->get_template( $template_file );
-		return ob_get_clean();
 	}
 
 	/**
@@ -503,7 +499,7 @@ class Position {
 	 */
 	public function get_personio_id(): string {
 		if ( ! empty( $this->data['ID'] ) ) {
-			return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_PM_PID, true );
+			return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, true );
 		}
 		return '0';
 	}
@@ -515,7 +511,7 @@ class Position {
 	 */
 	public function get_excerpt(): false|string {
 		ob_start();
-		personio_integration_get_excerpt( $this, get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) );
+		Templates::get_instance()->get_excerpt_template( $this, get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) );
 		return ob_get_clean();
 	}
 
@@ -571,7 +567,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_created_at(): string {
-		return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_CPT_CREATEDAT, true );
+		return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT, true );
 	}
 
 	/**
@@ -616,7 +612,16 @@ class Position {
 	}
 
 	/**
-	 * Set the content.
+	 * Return the language-specific post_content.
+	 *
+	 * @return array
+	 */
+	public function get_content(): array {
+		return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
+	}
+
+	/**
+	 * Set the content (only from import as XML).
 	 *
 	 * @param SimpleXMLElement $job_descriptions The description as XML.
 	 *

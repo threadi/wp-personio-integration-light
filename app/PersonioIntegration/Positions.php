@@ -32,7 +32,7 @@ class Positions {
 	/**
 	 * Variable to hold the list of initialized Positions.
 	 *
-	 * @var array
+	 * @var array[Position]
 	 */
 	private array $positions = array();
 
@@ -81,7 +81,7 @@ class Positions {
 	 */
 	public function get_positions( int $limit = -1, array $parameter_to_add = array() ): array {
 		$query = array(
-			'post_type'      => WP_PERSONIO_INTEGRATION_CPT,
+			'post_type'      => WP_PERSONIO_INTEGRATION_MAIN_CPT,
 			'post_status'    => 'publish',
 			'posts_per_page' => $limit,
 			'no_found_rows'  => empty( $parameter_to_add['nopagination'] ) ? false : $parameter_to_add['nopagination'],
@@ -100,14 +100,14 @@ class Positions {
 			$query['personio_explicit_sort'] = 1;
 		}
 		if ( ! empty( $parameter_to_add['sortby'] ) && 'date' === $parameter_to_add['sortby'] ) {
-			$query['meta_key']               = WP_PERSONIO_INTEGRATION_CPT_CREATEDAT;
+			$query['meta_key']               = WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT;
 			$query['orderby']                = 'meta_value';
 			$query['personio_explicit_sort'] = 1;
 		}
 		if ( ! empty( $parameter_to_add['personioid'] ) ) {
 			$query['meta_query'] = array(
 				array(
-					'key'     => WP_PERSONIO_INTEGRATION_CPT_PM_PID,
+					'key'     => WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID,
 					'value'   => $parameter_to_add['personioid'],
 					'compare' => '=',
 				),
@@ -116,7 +116,7 @@ class Positions {
 
 		// add taxonomies as filter.
 		$tax_query = array();
-		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			if ( ! empty( $parameter_to_add[ $taxonomy['slug'] ] ) ) {
 				$tax_query[] = array(
 					'taxonomy' => $taxonomy_name,
@@ -135,7 +135,7 @@ class Positions {
 				$query['tax_query'] = $tax_query;
 			}
 		} elseif ( ! empty( $parameter_to_add['groupby'] ) ) {
-			$taxonomy = Helper::get_taxonomy_name_by_simple_name( $parameter_to_add['groupby'] );
+			$taxonomy = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
 			if ( ! empty( $taxonomy ) ) {
 				$terms              = get_terms(
 					array(
@@ -176,7 +176,7 @@ class Positions {
 
 			// consider grouping of entries in list.
 			if ( ! empty( $parameter_to_add['groupby'] ) ) {
-				$array[ Helper::get_taxonomy_name_of_position( $parameter_to_add['groupby'], $position_object ) ] = $position_object;
+				$array[ $position_object->get_term_name( $parameter_to_add['groupby'], 'name' ) ] = $position_object;
 			} else {
 				// ungrouped simply add the position to the list.
 				$array[] = $position_object;
@@ -234,8 +234,6 @@ class Positions {
 
 	/**
 	 * Return count of positions in db.
-	 *
-	 * TODO remove this.
 	 *
 	 * @return int
 	 * @noinspection PhpUnused

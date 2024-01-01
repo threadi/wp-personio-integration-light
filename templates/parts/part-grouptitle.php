@@ -11,7 +11,7 @@ use App\helper;
 // only if group by is set.
 if ( ! empty( $personio_attributes['groupby'] ) ) {
 	// get the title of the given grouped taxonomy of this position.
-	$new_group_title = helper::get_taxonomy_name_of_position( $personio_attributes['groupby'], $position );
+	$new_group_title = $position->get_term_name( $personio_attributes['groupby'], 'name' );
 
 	// output title if it has been changed during the loop.
 	if ( strcmp( $new_group_title, $group_title ) ) {

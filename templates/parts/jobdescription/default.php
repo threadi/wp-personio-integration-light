@@ -13,8 +13,8 @@ defined( 'ABSPATH' ) || exit;
  * @version: 1.0.1
  */
 
-$content_array = $position->get_content_as_array();
-foreach ( $content_array as $content ) {
-	?><h3><?php echo esc_html( $content['name'] ); ?></h3><p><?php echo wp_kses_post( trim( $content['value'] ) ); ?></p>
-				<?php
+?><div class="entry-content"><?php
+foreach ( $position->get_content_as_array() as $content ) {
+	?><h3><?php echo esc_html( $content['name'] ); ?></h3><p><?php echo wp_kses_post( trim( $content['value'] ) ); ?></p><?php
 }
+?></div>

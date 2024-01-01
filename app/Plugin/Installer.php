@@ -9,6 +9,7 @@ namespace App\Plugin;
 
 use App\Helper;
 use App\Log;
+use App\Plugin\Schedules\Import;
 
 /**
  * Helper-function for plugin-activation and -deactivation.
@@ -84,7 +85,12 @@ class Installer {
 
 		// check if simplexml is available on this system.
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
-			set_transient( 'personio_integration_no_simplexml', 1 );
+			$transient_obj = Transients::get_instance()->add();
+			$transient_obj->set_dismissible_days( 0 );
+			$transient_obj->set_name( 'personio_integration_no_simplexml' );
+			$transient_obj->set_message( '<strong>'.__( 'Plugin was not activated!', 'personio-integration-light' ).'</strong><br>'.__( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' ) );
+			$transient_obj->set_type( 'error' );
+			$transient_obj->save();
 			$error = true;
 		}
 
@@ -93,7 +99,10 @@ class Installer {
 			if ( ! get_option( 'personioIntegrationPositionScheduleInterval' ) ) {
 				update_option( 'personioIntegrationPositionScheduleInterval', 'daily' );
 			}
-			Helper::set_import_schedule();
+
+			// install import schedule.
+			$import_obj = new Import();
+			$import_obj->install();
 
 			// set default settings.
 			foreach ( Settings::get_instance()->get_settings() as $section_settings ) {

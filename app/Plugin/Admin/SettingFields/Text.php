@@ -69,6 +69,19 @@ class Text {
 				</div>
 				<?php
 			}
+
+			// show optional hint for our Pro-version.
+			if ( ! empty( $attributes['pro_hint'] ) ) {
+				$message = $attributes['pro_hint'];
+				/**
+				 * Show hint for Pro-plugin with individual text.
+				 *
+				 * @since 1.0.0 Available since first release.
+				 *
+				 * @param string $message The individual text.
+				 */
+				do_action( 'personio_integration_admin_show_pro_hint', $message );
+			}
 		}
 	}
 }

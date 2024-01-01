@@ -2,14 +2,17 @@
 /**
  * File to handle template-tasks of this plugin.
  *
- * TODO Verwalten von Liste möglicher Templates (showTitle, showExcert etc.), so dass diese sich dynamisch ändern könnten
- *
  * @package personio-integration-light
  */
 
 namespace App\Plugin;
 
 use App\Helper;
+use App\PersonioIntegration\Position;
+use App\PersonioIntegration\Positions;
+use App\PersonioIntegration\PostTypes\PersonioPosition;
+use App\PersonioIntegration\Taxonomies;
+use WP_Post;
 
 /**
  * Handler for templates.
@@ -58,9 +61,22 @@ class Templates {
 		// check for changed templates.
 		add_action( 'admin_init', array( $this, 'check_child_theme_templates' ) );
 
-		// support templates.
+		// support templates hooks.
 		add_filter( 'single_template', array( $this, 'get_single_template' ) );
 		add_filter( 'archive_template', array( $this, 'get_archive_template' ) );
+
+		// support content hooks.
+		add_filter( 'the_content', array( $this, 'prepare_content_template' ), 10, 1 );
+		add_filter( 'the_excerpt', array( $this, 'prepare_excerpt_template' ), 10, 1 );
+		add_filter( 'get_the_excerpt', array( $this, 'prepare_excerpt_template' ), 10, 1 );
+		add_action( 'the_post', array( $this, 'update_post_object' ) );
+
+		// our own hooks.
+		add_action( 'personio_integration_get_title', array( $this, 'get_title_template' ), 10, 2 );
+		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt_template' ), 10, 2 );
+		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 );
+		add_action( 'personio_integration_get_formular', array( $this, 'get_formular_template' ), 10, 2 );
+		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
 	}
 
 	/**
@@ -69,13 +85,19 @@ class Templates {
 	 * @return array
 	 */
 	public function get_archive_templates(): array {
-		return apply_filters(
-			'personio_integration_templates_archive',
-			array(
-				'default' => __( 'Default', 'personio-integration-light' ),
-				'listing' => __( 'Listings', 'personio-integration-light' ),
-			)
+		$templates = array(
+			'default' => __( 'Default', 'personio-integration-light' ),
+			'listing' => __( 'Listings', 'personio-integration-light' ),
 		);
+
+		/**
+		 * Filter the list of available templates for archive listings.
+		 *
+		 * @since 2.6.0 Available since 2.6.0
+		 *
+		 * @param array $templates List of templates (filename => label).
+		 */
+		return apply_filters( 'personio_integration_templates_archive',	$templates );
 	}
 
 	/**
@@ -97,8 +119,19 @@ class Templates {
 			return $theme_template;
 		}
 
-		// check if requested template exist in plugin which uses our hook.
-		$plugin_template = plugin_dir_path( apply_filters( 'personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'templates/' . $template;
+		// set the directory for template to use.
+		$directory = WP_PERSONIO_INTEGRATION_PLUGIN;
+
+		/**
+		 * Set template directory.
+		 *
+		 * Defaults to our own plugin-directory.
+		 *
+		 * @since 1.0.0 Available since first release.
+		 *
+		 * @param string $directory The directory to use.
+		 */
+		$plugin_template = plugin_dir_path( apply_filters( 'personio_integration_set_template_directory', $directory ) ) . 'templates/' . $template;
 		if ( file_exists( $plugin_template ) ) {
 			return $plugin_template;
 		}
@@ -120,8 +153,19 @@ class Templates {
 			return true;
 		}
 
-		// check if requested template exist in plugin which uses our hook.
-		$plugin_template = plugin_dir_path( apply_filters( 'personio_integration_set_template_directory', WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'templates/' . $template;
+		// set the directory for template to use.
+		$directory = WP_PERSONIO_INTEGRATION_PLUGIN;
+
+		/**
+		 * Set template directory.
+		 *
+		 * Defaults to our own plugin-directory.
+		 *
+		 * @since 1.0.0 Available since first release.
+		 *
+		 * @param string $directory The directory to use.
+		 */
+		$plugin_template = plugin_dir_path( apply_filters( 'personio_integration_set_template_directory', $directory ) ) . 'templates/' . $template;
 		if ( file_exists( $plugin_template ) ) {
 			return true;
 		}
@@ -137,7 +181,7 @@ class Templates {
 	 * @return string
 	 */
 	public function get_cpt_template( string $template ): string {
-		if ( WP_PERSONIO_INTEGRATION_CPT === get_post_type( get_the_ID() ) ) {
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( get_the_ID() ) ) {
 			// if the theme is a fse-theme.
 			if ( Helper::theme_is_fse_theme() ) {
 				return ABSPATH . WPINC . '/template-canvas.php';
@@ -162,15 +206,21 @@ class Templates {
 	 * @return array
 	 */
 	public function get_template_labels(): array {
-		return apply_filters(
-			'personio_integration_admin_template_labels',
-			array(
-				'title'    => esc_html__( 'title', 'personio-integration-light' ),
-				'excerpt'  => esc_html__( 'details', 'personio-integration-light' ),
-				'content'  => esc_html__( 'content', 'personio-integration-light' ),
-				'formular' => esc_html__( 'application link', 'personio-integration-light' ),
-			)
+		$templates = array(
+			'title'    => esc_html__( 'title', 'personio-integration-light' ),
+			'excerpt'  => esc_html__( 'details', 'personio-integration-light' ),
+			'content'  => esc_html__( 'content', 'personio-integration-light' ),
+			'formular' => esc_html__( 'application link', 'personio-integration-light' ),
 		);
+
+		/**
+		 * Filter the list of available templates for content.
+		 *
+		 * @since 2.6.0 Available since 2.6.0
+		 *
+		 * @param array $templates List of templates (filename => label).
+		 */
+		return apply_filters( 'personio_integration_admin_template_labels', $templates );
 	}
 
 	/**
@@ -199,13 +249,19 @@ class Templates {
 	 * @noinspection PhpUnused
 	 */
 	public function get_jobdescription_templates(): array {
-		return apply_filters(
-			'personio_integration_templates_jobdescription',
-			array(
-				'default' => __( 'Default', 'personio-integration-light' ),
-				'list'    => __( 'As list', 'personio-integration-light' ),
-			)
+		$templates = array(
+			'default' => __( 'Default', 'personio-integration-light' ),
+			'list'    => __( 'As list', 'personio-integration-light' ),
 		);
+
+		/**
+		 * Filter the list of available templates for job description.
+		 *
+		 * @since 2.6.0 Available since 2.6.0
+		 *
+		 * @param array $templates List of templates (filename => label).
+		 */
+		return apply_filters( 'personio_integration_templates_jobdescription', $templates );
 	}
 
 	/**
@@ -218,21 +274,21 @@ class Templates {
 	public function check_child_theme_templates(): void {
 		// bail if it is not a child-theme.
 		if ( ! is_child_theme() ) {
-			delete_transient( 'personio_integration_old_templates' );
+			Transients::get_instance()->get_transient_by_name( 'personio_integration_old_templates' )->delete();
 			return;
 		}
 
 		// get path for child-theme-templates-directory and check its existence.
 		$path = trailingslashit( get_stylesheet_directory() ) . 'personio-integration-light';
 		if ( ! file_exists( $path ) ) {
-			delete_transient( 'personio_integration_old_templates' );
+			Transients::get_instance()->get_transient_by_name( 'personio_integration_old_templates' )->delete();
 			return;
 		}
 
 		// get all files from child-theme-templates-directory.
 		$files = Helper::get_file_from_directory( $path );
 		if ( empty( $files ) ) {
-			delete_transient( 'personio_integration_old_templates' );
+			Transients::get_instance()->get_transient_by_name( 'personio_integration_old_templates' )->delete();
 			return;
 		}
 
@@ -280,9 +336,14 @@ class Templates {
 			$html_list .= '</ul>';
 
 			// show a transient.
-			set_transient( 'personio_integration_old_templates', $html_list );
+			$transient_obj = Transients::get_instance()->add();
+			$transient_obj->set_dismissible_days( 0 );
+			$transient_obj->set_name( 'personio_integration_no_simplexml' );
+			$transient_obj->set_message( __( '<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'personio-integration-light' ) . $html_list . __( 'Hint: the version-number in the header of the files must match.', 'personio-integration-light' ) );
+			$transient_obj->set_type( 'error' );
+			$transient_obj->save();
 		} else {
-			delete_transient( 'personio_integration_old_templates' );
+			Transients::get_instance()->get_transient_by_name( 'personio_integration_old_templates' )->delete();
 		}
 	}
 
@@ -293,7 +354,7 @@ class Templates {
 	 * @return string
 	 */
 	public function get_single_template( string $single_template ): string {
-		if ( WP_PERSONIO_INTEGRATION_CPT === get_post_type( get_the_ID() ) ) {
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( get_the_ID() ) ) {
 			$path = $this->get_template( 'single-personioposition.php' );
 			if ( file_exists( $path ) ) {
 				$single_template = $path;
@@ -309,12 +370,303 @@ class Templates {
 	 * @return string
 	 */
 	public function get_archive_template( string $archive_template ): string {
-		if ( is_post_type_archive( WP_PERSONIO_INTEGRATION_CPT ) ) {
+		if ( is_post_type_archive( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
 			$path = $this->get_template( 'archive-personioposition.php' );
 			if ( file_exists( $path ) ) {
 				$archive_template = $path;
 			}
 		}
 		return $archive_template;
+	}
+
+	/**
+	 * Change output of post_content for the custom post type of this plugin.
+	 *
+	 * @param string $content The content.
+	 *
+	 * @return string
+	 */
+	public function prepare_content_template( string $content ): string {
+		// bail if this is not our own cpt.
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT !== get_post_type( get_the_ID() ) ) {
+			return $content;
+		}
+
+		// get position as object.
+		$position_obj = Positions::get_instance()->get_position( get_the_ID() );
+
+		// return the content-template.
+		return $this->get_content_template( $position_obj, array() );
+	}
+
+	/**
+	 * Change output of post_content for the custom post type of this plugin.
+	 *
+	 * @param string $content The content.
+	 *
+	 * @return string
+	 */
+	public function prepare_excerpt_template( string $content ): string {
+		// bail if this is not our own cpt.
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT !== get_post_type( get_the_ID() ) ) {
+			return $content;
+		}
+
+		// get position as object.
+		$position_obj = Positions::get_instance()->get_position( get_the_ID() );
+
+		// return the excerpt-template.
+		return $this->get_excerpt_template( $position_obj, array() );
+	}
+
+	/**
+	 * Get position title for list.
+	 *
+	 * TODO template ergänzen hierfür.
+	 *
+	 * @param Position $position The position as object.
+	 * @param array    $attributes The attributes.
+	 * @return void
+	 */
+	public function get_title_template( Position $position, array $attributes ): void {
+		// set the header-size (h1 for single, h2 for list).
+		$heading_size = '2';
+		if ( ! did_action( 'elementor/loaded' ) && is_single() ) {
+			$heading_size = '1';
+		}
+		// and h3 if list is grouped.
+		if ( ! empty( $attributes['groupby'] ) ) {
+			$heading_size = '3';
+		}
+
+		if ( false !== $attributes['donotlink'] ) {
+			?>
+			<header class="entry-content default-max-width">
+				<h<?php echo absint( $heading_size ); ?> class="entry-title"><?php echo esc_html( $position->get_title() ); ?></h<?php echo absint( $heading_size ); ?>>
+			</header>
+			<?php
+		} else {
+			?>
+			<header class="entry-content default-max-width">
+				<h<?php echo absint( $heading_size ); ?> class="entry-title"><a href="<?php echo esc_url( $position->get_link() ); ?>"><?php echo esc_html( $position->get_title() ); ?></a></h<?php echo absint( $heading_size ); ?>>
+			</header>
+			<?php
+		}
+	}
+
+	/**
+	 * Get the position details as excerpt via template.
+	 *
+	 * TODO template ergänzen hierfür.
+	 *
+	 * @param Position $position   The position as object.
+	 * @param array    $attributes The attributes.
+	 * @param bool     $use_return True if this function should return and not echo for output.
+	 *
+	 * @return string
+	 */
+	public function get_excerpt_template( Position $position, array $attributes, bool $use_return = false ): string {
+		$excerpt   = '';
+		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator', ', ' ) . ' ';
+		if ( empty( $attributes['excerpt'] ) ) {
+			$attributes['excerpt'] = $attributes;
+		}
+		if ( ! empty( $attributes['excerpt'] ) ) {
+			foreach ( $attributes['excerpt'] as $taxonomy_slug ) {
+				$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $taxonomy_slug );
+				$string_to_add = $position->get_term_name( $taxonomy_name, 'name' );
+				if ( strlen( $excerpt ) > 0 && strlen( $string_to_add ) > 0 ) {
+					$excerpt .= $separator;
+				}
+				$excerpt .= $string_to_add;
+			}
+		}
+		if ( ! empty( $excerpt ) ) {
+			ob_start();
+			?>
+			<div class="entry-content">
+				<p><?php echo esc_html( $excerpt ); ?></p>
+			</div>
+			<?php
+			$content = ob_get_clean();
+
+			// return depending on setting.
+			if( $use_return ) {
+				return $content;
+			}
+			echo $content;
+		}
+		return '';
+	}
+
+	/**
+	 * Get position application-link-button for list.
+	 *
+	 * @param Position $position The position as object.
+	 * @param array    $attributes The attributes.
+	 *
+	 * @return void
+	 * @noinspection PhpUnusedParameterInspection
+	 */
+	public function get_formular_template( Position $position, array $attributes ): void {
+		// convert attributes.
+		$attributes = PersonioPosition::get_instance()->get_single_shortcode_attributes( $attributes );
+
+		$text_position = 'archive';
+		if ( is_single() ) {
+			$text_position = 'single';
+		}
+
+		// set back to list-link.
+		$back_to_list_url = get_option( 'personioIntegrationTemplateBackToListUrl', '' );
+		if ( empty( $back_to_list_url ) ) {
+			$back_to_list_url = get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT );
+		}
+
+		// reset back to list-link.
+		if ( 0 === absint( get_option( 'personioIntegrationTemplateBackToListButton', 0 ) ) || 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) ) {
+			$back_to_list_url = '';
+		}
+
+		// generate styling.
+		$styles = ! empty( $attributes['styles'] ) ? $attributes['styles'] : '';
+
+		// get template.
+		include $this->get_template( 'parts/properties-application-button.php' );
+	}
+
+	/**
+	 * Update each post-object with the language-specific texts of a position.
+	 *
+	 * @param WP_Post $post The post as object.
+	 * @return void
+	 * @noinspection PhpUnused
+	 */
+	public function update_post_object( WP_Post $post ): void {
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $post->post_type ) {
+			// get positions object.
+			$positions_object = Positions::get_instance();
+
+			// get the position as object.
+			$position_object = $positions_object->get_position( get_the_ID() );
+
+			// set language to output language-specific content of the position.
+			$position_object->set_lang( Languages::get_instance()->get_main_language() );
+		}
+	}
+
+	/**
+	 * Show a filter in frontend restricted to positions which are visible in list.
+	 *
+	 * @param string $filter Name of the filter (taxonomy-slug).
+	 * @param array  $attributes List of attributes for the filter.
+	 * @return void
+	 * @noinspection PhpUnused
+	 */
+	public function personio_integration_get_filter( string $filter, array $attributes ): void {
+		$taxonomy_to_use = '';
+		$term_ids        = array();
+
+		// list of taxonomies.
+		$taxonomies = Taxonomies::get_instance()->get_taxonomies();
+
+		/**
+		 * Get all taxonomies as array.
+		 *
+		 * @since 1.0.0 Available since first release.
+		 *
+		 * @param array $taxonomies The list of taxonomies.
+		 */
+		foreach ( apply_filters( 'personio_integration_taxonomies', $taxonomies ) as $taxonomy_name => $taxonomy ) {
+			if ( $filter === $taxonomy['slug'] && 1 === absint( $taxonomy['useInFilter'] ) ) {
+				$taxonomy_to_use = $taxonomy_name;
+				$terms           = get_terms( array( 'taxonomy' => $taxonomy_name ) );
+				if ( ! empty( $terms ) ) {
+					foreach ( $terms as $term ) {
+						if ( $term->count > 0 ) {
+							$term_ids[] = $term->term_id;
+						}
+					}
+				}
+			}
+		}
+
+		// show term as filter only if its name is known.
+		if ( strlen( $taxonomy_to_use ) > 0 ) {
+			// get the terms of this taxonomy.
+			$terms = get_terms(
+				array(
+					'taxonomy' => $taxonomy_to_use,
+					'include'  => $term_ids,
+				)
+			);
+
+			if ( ! empty( $terms ) ) {
+
+				// get the value.
+				$value = 0;
+				// -> if filter is set by editor.
+				if ( ! empty( $attributes['office'] ) ) {
+					$value = $attributes['office'];
+				}
+				// -> if filter is set by user in frontend.
+				if ( ! empty( $_GET['personiofilter'] ) && ! empty( $_GET['personiofilter'][ $filter ] ) ) {
+					$value = sanitize_text_field( wp_unslash( $_GET['personiofilter'][ $filter ] ) );
+				}
+
+				// set name.
+				$taxonomy   = get_taxonomy( $taxonomy_to_use );
+				$filtername = $taxonomy->labels->singular_name;
+
+				// get url.
+				$page_url = helper::get_current_url();
+
+				// output of filter.
+				include $this->get_template( 'parts/term-filter-' . $attributes['filtertype'] . '.php' );
+			}
+		}
+	}
+
+	/**
+	 * Return the content with configured template.
+	 *
+	 * @param Position $position   The position as object.
+	 * @param array    $attributes The attributes used for output the template.
+	 * @param bool     $use_return True if this function should return and not echo for output.
+	 *
+	 * @return string
+	 * @noinspection PhpUnusedParameterInspection
+	 */
+	public function get_content_template( Position $position, array $attributes, bool $use_return = false ): string {
+		// use old template if it exists.
+		$template_file = 'parts/properties-content.php';
+
+		// if old template does not exist, use the one we configured.
+		if( ! $this->has_template( $template_file ) ) {
+			// get configured template of none has been set for this output.
+			if( empty($attributes['jobdescription_template']) ) {
+				$template = Settings::get_instance()->get_setting('personioIntegrationTemplateJobDescription');
+				if( ! $this->has_template( $template_file ) ) {
+					// set default template if none has been configured (should never happen).
+					$template = 'default';
+				}
+			}
+			else {
+				$template = $attributes['jobdescription_template'];
+			}
+			$template_file = 'parts/jobdescription/'.$template.'.php';
+		}
+
+		// get template and return it.
+		ob_start();
+		include $this->get_template( $template_file );
+		$content = ob_get_clean();
+
+		// return content depending on setting.
+		if( $use_return ) {
+			return $content;
+		}
+		echo $content;
+		return '';
 	}
 }

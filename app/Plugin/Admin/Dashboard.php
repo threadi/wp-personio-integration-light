@@ -105,7 +105,7 @@ class Dashboard {
 		} else {
 			$link = add_query_arg(
 				array(
-					'post_type' => WP_PERSONIO_INTEGRATION_CPT,
+					'post_type' => WP_PERSONIO_INTEGRATION_MAIN_CPT,
 				),
 				get_admin_url() . 'edit.php'
 			);

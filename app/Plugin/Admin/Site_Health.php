@@ -8,6 +8,7 @@
 namespace App\Plugin\Admin;
 
 use App\Helper;
+use App\Plugin\Schedules\Import;
 use WP_REST_Server;
 
 /**
@@ -81,7 +82,7 @@ class Site_Health {
 			'/url_availability_checks/',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'url_availability_check' ),
+				'callback'            => array( $this, 'url_availability_checks' ),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -110,7 +111,8 @@ class Site_Health {
 		);
 
 		// get scheduled event.
-		$scheduled_event = wp_get_scheduled_event( 'personio_integration_schudule_events' );
+		$schedule_obj = new Import();
+		$scheduled_event = $schedule_obj->get_event();
 
 		// event does not exist => show error.
 		if ( false === $scheduled_event ) {
@@ -150,7 +152,7 @@ class Site_Health {
 	 * @return array
 	 * @noinspection PhpUnused
 	 */
-	public function url_availability_check(): array {
+	public function url_availability_checks(): array {
 		// define default results.
 		$result = array(
 			'label'       => __( 'Personio Integration URL availability Check', 'personio-integration-light' ),
@@ -165,27 +167,28 @@ class Site_Health {
 			'test'        => 'personio_integration_rest_api_url_availability_check',
 		);
 
-		// -> should return HTTP-Status 200.
-		$response = wp_remote_get(
-			Helper::get_personio_xml_url( Helper::get_personio_url() ),
-			array(
-				'timeout'     => 30,
-				'redirection' => 0,
-			)
-		);
-		// get the body with the contents.
-		$body = wp_remote_retrieve_body( $response );
-		if ( ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) || str_starts_with( $body, '<!doctype html>' ) ) {
-			$url_settings     = add_query_arg(
-				array(
-					'post_type' => WP_PERSONIO_INTEGRATION_CPT,
-					'page'      => 'personioPositions',
-				),
-				'edit.php'
-			);
+		// -> return error if URL is not set.
+		if( ! Helper::is_personio_url_set() ) {
 			$result['status'] = 'recommended';
-			/* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
-			$result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ), esc_url( Helper::get_personio_url() ), $url_settings, esc_url( helper::get_personio_login_url() ) );
+			/* translators: %1$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
+			$result['description'] = sprintf( __( 'No Personio-URL set!<br><strong>Please enter the URL <a href="%1$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%2$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ), esc_url( helper::get_personio_login_url() ) );
+		}
+		else {
+			// -> should return HTTP-Status 200.
+			$response = wp_remote_get(
+				Helper::get_personio_xml_url( Helper::get_personio_url() ),
+				array(
+					'timeout'     => 30,
+					'redirection' => 0,
+				)
+			);
+			// get the body with the contents.
+			$body = wp_remote_retrieve_body( $response );
+			if ( ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) || str_starts_with( $body, '<!doctype html>' ) ) {
+				$result['status'] = 'recommended';
+				/* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
+				$result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ), esc_url( Helper::get_personio_url() ), esc_url( Helper::get_settings_url() ), esc_url( helper::get_personio_login_url() ) );
+			}
 		}
 
 		// return result.
@@ -201,17 +204,17 @@ class Site_Health {
 	 */
 	public function add_checks( array $statuses ): array {
 		if ( Helper::is_personio_url_set() ) {
-			$statuses['async']['personio_integration_import_cron_checks']     = array(
+			$statuses['async']['personio_integration_import_cron_checks'] = array(
 				'label'    => __( 'Personio Integration Import Cron Check', 'personio-integration-light' ),
 				'test'     => rest_url( 'personio/v1/import_cron_checks' ),
 				'has_rest' => true,
 			);
-			$statuses['async']['personio_integration_url_availability_check'] = array(
-				'label'    => __( 'Personio Integration URL availability check', 'personio-integration-light' ),
-				'test'     => rest_url( 'personio/v1/url_availability_checks' ),
-				'has_rest' => true,
-			);
 		}
+		$statuses['async']['personio_integration_url_availability_check'] = array(
+			'label'    => __( 'Personio Integration URL availability check', 'personio-integration-light' ),
+			'test'     => rest_url( 'personio/v1/url_availability_checks' ),
+			'has_rest' => true,
+		);
 		return $statuses;
 	}
 }

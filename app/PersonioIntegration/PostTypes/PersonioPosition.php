@@ -13,6 +13,7 @@ use App\PersonioIntegration\Position;
 use App\PersonioIntegration\Positions;
 use App\PersonioIntegration\Post_Type;
 use App\PersonioIntegration\Taxonomies;
+use App\Plugin\Languages;
 use App\Plugin\Templates;
 use WP_Post;
 use WP_Query;
@@ -28,7 +29,7 @@ class PersonioPosition extends Post_Type {
 	 *
 	 * @var string
 	 */
-	protected string $name = WP_PERSONIO_INTEGRATION_CPT;
+	protected string $name = WP_PERSONIO_INTEGRATION_MAIN_CPT;
 
 	/**
 	 * Instance of this object.
@@ -95,6 +96,12 @@ class PersonioPosition extends Post_Type {
 		add_action( 'admin_init', array( $this, 'remove_cpt_supports' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
+
+		// our own hooks.
+		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_filter_type' ) );
+
+		// search hooks.
+		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
 	}
 
 	/**
@@ -117,9 +124,9 @@ class PersonioPosition extends Post_Type {
 			'not_found_in_trash' => __( 'Not found in Trash', 'personio-integration-light' ),
 		);
 
-		// get the slugs.
-		$archive_slug = apply_filters( 'personio_integration_archive_slug', Helper::get_archive_slug() );
-		$detail_slug  = apply_filters( 'personio_integration_detail_slug', Helper::get_detail_slug() );
+		// get slugs.
+		$archive_slug = Helper::get_archive_slug();
+		$single_slug = Helper::get_detail_slug();
 
 		// set arguments for our own cpt.
 		$args = array(
@@ -149,7 +156,7 @@ class PersonioPosition extends Post_Type {
 				WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE,
 				WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS,
 			),
-			'publicly_queryable'  => (bool) $detail_slug,
+			'publicly_queryable'  => (bool) $single_slug,
 			'show_in_rest'        => true,
 			'capability_type'     => 'post',
 			'capabilities'        => array(
@@ -163,9 +170,9 @@ class PersonioPosition extends Post_Type {
 				'publish_posts'      => 'do_not_allow',
 				'read_private_posts' => 'do_not_allow',
 			),
-			'menu_icon'           => trailingslashit( plugin_dir_url( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'gfx/personio_icon.png',
+			'menu_icon'           => Helper::get_plugin_url() . 'gfx/personio_icon.png',
 			'rewrite'             => array(
-				'slug' => $detail_slug,
+				'slug' => $single_slug,
 			),
 		);
 		register_post_type( $this->get_name(), $args );
@@ -173,8 +180,8 @@ class PersonioPosition extends Post_Type {
 		// register personioId als postmeta to be published in rest-api,
 		// which is necessary for our Blocks.
 		register_post_meta(
-			WP_PERSONIO_INTEGRATION_CPT,
-			WP_PERSONIO_INTEGRATION_CPT_PM_PID,
+			WP_PERSONIO_INTEGRATION_MAIN_CPT,
+			WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID,
 			array(
 				'type'         => 'integer',
 				'single'       => true,
@@ -273,15 +280,25 @@ class PersonioPosition extends Post_Type {
 		// set language.
 		$position->lang = $personio_attributes['lang'];
 
-		// change settings for output.
-		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $this->get_single_shortcode_attributes_defaults() );
+		// get the attributes defaults.
+		$default_attributes = $this->get_single_shortcode_attributes_defaults();
+
+		/**
+		 * Change settings for output.
+		 *
+		 * @since 2.0.0 Available since first release.
+		 *
+		 * @param array $personio_attributes The attributes used for this output.
+		 * @param array $default_attributes The default attributes.
+		 */
+		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $default_attributes );
 
 		// generate styling.
 		$styles = ! empty( $personio_attributes['styles'] ) ? $personio_attributes['styles'] : '';
 
 		// collect the output.
 		ob_start();
-		include Templates::get_instance()->get_template( 'single-' . WP_PERSONIO_INTEGRATION_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
+		include Templates::get_instance()->get_template( 'single-' . WP_PERSONIO_INTEGRATION_MAIN_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
 		return ob_get_clean();
 	}
 
@@ -323,9 +340,21 @@ class PersonioPosition extends Post_Type {
 	 * @return string
 	 */
 	public function shortcode_positions( array $attributes = array() ): string {
+		// set pagination settings.
+		$pagination = true;
+
+		/**
+		 * Set pagination settings.
+		 *
+		 * @since 1.2.0 Available since 1.2.0.
+		 *
+		 * @param bool $pagination The pagination setting (true to disable it).
+		 */
+		$pagination = apply_filters( 'personio_integration_pagination', $pagination );
+
 		// define the default values for each attribute.
 		$attribute_defaults = array(
-			'lang'             => Helper::get_current_lang(),
+			'lang'             => Languages::get_instance()->get_current_lang(),
 			'showfilter'       => ( 1 === absint( get_option( 'personioIntegrationEnableFilter', 0 ) ) ),
 			'filter'           => implode( ',', get_option( 'personioIntegrationTemplateFilter', '' ) ),
 			'filtertype'       => get_option( 'personioIntegrationFilterType', 'select' ),
@@ -338,7 +367,7 @@ class PersonioPosition extends Post_Type {
 			'sort'             => 'asc',
 			'sortby'           => 'title',
 			'limit'            => 0,
-			'nopagination'     => apply_filters( 'personio_integration_pagination', true ),
+			'nopagination'     => $pagination,
 			'groupby'          => '',
 			'styles'           => '',
 			'classes'          => '',
@@ -367,7 +396,7 @@ class PersonioPosition extends Post_Type {
 		);
 
 		// add taxonomies which are available as filter.
-		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			if ( ! empty( $taxonomy['slug'] ) && 1 === absint( $taxonomy['useInFilter'] ) ) {
 				if ( ! empty( $_GET['personiofilter'] ) && ! empty( $_GET['personiofilter'][ $taxonomy['slug'] ] ) ) {
 					$attribute_defaults[ $taxonomy['slug'] ] = 0;
@@ -410,7 +439,14 @@ class PersonioPosition extends Post_Type {
 		$positions                         = $positions_obj->get_positions( $personio_attributes['limit'], $personio_attributes );
 		$GLOBALS['personio_query_results'] = $positions_obj->get_results();
 
-		// change settings for output.
+		/**
+		 * Change settings for output.
+		 *
+		 * @since 2.0.0 Available since first release.
+		 *
+		 * @param array $personio_attributes The attributes used for this output.
+		 * @param array $attribute_defaults The default attributes.
+		 */
 		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $attribute_defaults );
 
 		// generate styling.
@@ -422,7 +458,7 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-		include Templates::get_instance()->get_template( 'archive-' . WP_PERSONIO_INTEGRATION_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
+		include Templates::get_instance()->get_template( 'archive-' . WP_PERSONIO_INTEGRATION_MAIN_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
 		return ob_get_clean();
 	}
 
@@ -479,10 +515,10 @@ class PersonioPosition extends Post_Type {
 	 * @noinspection PhpUnused
 	 */
 	public function get_taxonomies_via_rest_api(): array {
-		$taxonomies_labels_array = Taxonomies::get_instance()->get_cat_labels();
+		$taxonomies_labels_array = Taxonomies::get_instance()->get_taxonomy_labels_for_settings();
 		$taxonomies              = array();
 		$count                   = 0;
-		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
 				++$count;
 				$terms_as_objects = get_terms( array( 'taxonomy' => $taxonomy_name ) );
@@ -524,21 +560,27 @@ class PersonioPosition extends Post_Type {
 	 * @noinspection PhpUnused
 	 */
 	public function get_jobdescription_templates_via_rest_api(): array {
-		return apply_filters(
-			'personio_integration_rest_templates_jobdescription',
+		$templates = array(
 			array(
-				array(
-					'id'    => 1,
-					'label' => __( 'Default', 'personio-integration-light' ),
-					'value' => 'default',
-				),
-				array(
-					'id'    => 2,
-					'label' => __( 'As list', 'personio-integration-light' ),
-					'value' => 'list',
-				),
-			)
+				'id'    => 1,
+				'label' => __( 'Default', 'personio-integration-light' ),
+				'value' => 'default',
+			),
+			array(
+				'id'    => 2,
+				'label' => __( 'As list', 'personio-integration-light' ),
+				'value' => 'list',
+			),
 		);
+
+		/**
+		 * Filter the available jobdescription-templates for REST API.
+		 *
+		 * @since 2.6.0 Available since 2.6.0.
+		 *
+		 * @param array $templates The templates.
+		 */
+		return apply_filters( 'personio_integration_rest_templates_jobdescription', $templates );
 	}
 
 	/**
@@ -548,21 +590,27 @@ class PersonioPosition extends Post_Type {
 	 * @noinspection PhpUnused
 	 */
 	public function get_archive_templates_via_rest_api(): array {
-		return apply_filters(
-			'personio_integration_rest_templates_archive',
+		$templates = array(
 			array(
-				array(
-					'id'    => 1,
-					'label' => __( 'Default', 'personio-integration-light' ),
-					'value' => 'default',
-				),
-				array(
-					'id'    => 2,
-					'label' => __( 'Listing', 'personio-integration-light' ),
-					'value' => 'listing',
-				),
-			)
+				'id'    => 1,
+				'label' => __( 'Default', 'personio-integration-light' ),
+				'value' => 'default',
+			),
+			array(
+				'id'    => 2,
+				'label' => __( 'Listing', 'personio-integration-light' ),
+				'value' => 'listing',
+			),
 		);
+
+		/**
+		 * Filter the available archive-templates for REST API.
+		 *
+		 * @since 2.6.0 Available since 2.6.0.
+		 *
+		 * @param array $templates The templates.
+		 */
+		return apply_filters( 'personio_integration_rest_templates_archive', $templates );
 	}
 
 	/**
@@ -573,7 +621,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function delete( int $post_id ): void {
 		// bail if this is not our own cpt.
-		if ( WP_PERSONIO_INTEGRATION_CPT !== get_post_type( $post_id ) ) {
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT !== get_post_type( $post_id ) ) {
 			return;
 		}
 
@@ -641,7 +689,7 @@ class PersonioPosition extends Post_Type {
 	 * @noinspection PhpUnused
 	 */
 	public function remove_actions( array $actions, WP_Post $post ): array {
-		if ( WP_PERSONIO_INTEGRATION_CPT === get_post_type() ) {
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type() ) {
 			$actions         = array(
 				'view' => $actions['view'],
 			);
@@ -659,9 +707,9 @@ class PersonioPosition extends Post_Type {
 	public function add_filter(): void {
 		$post_type = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : 'post';
 
-		if ( WP_PERSONIO_INTEGRATION_CPT === $post_type ) {
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $post_type ) {
 			// add filter for each taxonomy.
-			foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
+			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 				// show only taxonomies which are visible in filter.
 				if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
 					// get the taxonomy as object.
@@ -706,10 +754,10 @@ class PersonioPosition extends Post_Type {
 		global $pagenow;
 		$post_type = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : 'post';
 
-		if ( WP_PERSONIO_INTEGRATION_CPT === $post_type && 'edit.php' === $pagenow ) {
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $post_type && 'edit.php' === $pagenow ) {
 			// add filter for each taxonomy.
 			$tax_query = array();
-			foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
+			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 				if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
 					if ( isset( $_GET[ 'admin_filter_' . $taxonomy_name ] ) && absint( wp_unslash( $_GET[ 'admin_filter_' . $taxonomy_name ] ) ) > 0 ) {
 						$tax_query[] = array(
@@ -752,7 +800,7 @@ class PersonioPosition extends Post_Type {
 	 * @return WP_Query
 	 */
 	public function ignore_author( WP_Query $query ): WP_Query {
-		if ( is_admin() && ! empty( $query->query_vars['post_type'] ) && WP_PERSONIO_INTEGRATION_CPT === $query->query_vars['post_type'] ) {
+		if ( is_admin() && ! empty( $query->query_vars['post_type'] ) && WP_PERSONIO_INTEGRATION_MAIN_CPT === $query->query_vars['post_type'] ) {
 			$query->set( 'author', 0 );
 		}
 		return $query;
@@ -766,18 +814,18 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function remove_cpt_supports(): void {
 		// remove title, editor and custom fields.
-		remove_post_type_support( WP_PERSONIO_INTEGRATION_CPT, 'title' );
-		remove_post_type_support( WP_PERSONIO_INTEGRATION_CPT, 'editor' );
-		remove_post_type_support( WP_PERSONIO_INTEGRATION_CPT, 'custom-fields' );
+		remove_post_type_support( WP_PERSONIO_INTEGRATION_MAIN_CPT, 'title' );
+		remove_post_type_support( WP_PERSONIO_INTEGRATION_MAIN_CPT, 'editor' );
+		remove_post_type_support( WP_PERSONIO_INTEGRATION_MAIN_CPT, 'custom-fields' );
 
 		// remove meta box for slug.
-		remove_meta_box( 'slugdiv', WP_PERSONIO_INTEGRATION_CPT, 'normal' );
+		remove_meta_box( 'slugdiv', WP_PERSONIO_INTEGRATION_MAIN_CPT, 'normal' );
 
 		// remove taxonomy-meta-boxes.
-		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $settings ) {
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $settings ) {
 			$taxonomy              = get_taxonomy( $taxonomy_name );
 			$taxonomy->meta_box_cb = false;
-			register_taxonomy( $taxonomy_name, WP_PERSONIO_INTEGRATION_CPT, $taxonomy );
+			register_taxonomy( $taxonomy_name, WP_PERSONIO_INTEGRATION_MAIN_CPT, $taxonomy );
 		}
 	}
 
@@ -793,38 +841,41 @@ class PersonioPosition extends Post_Type {
 			'personio-edit-hints',
 			__( 'Show Personio position data', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_data_hint' ),
-			WP_PERSONIO_INTEGRATION_CPT
+			WP_PERSONIO_INTEGRATION_MAIN_CPT
 		);
 
 		add_meta_box(
 			'personio-position-personio-id',
 			__( 'PersonioID', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_personio_id' ),
-			WP_PERSONIO_INTEGRATION_CPT
+			WP_PERSONIO_INTEGRATION_MAIN_CPT
 		);
 
 		add_meta_box(
 			'personio-position-title',
 			__( 'Title', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_title' ),
-			WP_PERSONIO_INTEGRATION_CPT
+			WP_PERSONIO_INTEGRATION_MAIN_CPT
 		);
 
 		add_meta_box(
 			'personio-position-text',
 			__( 'Description', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_description' ),
-			WP_PERSONIO_INTEGRATION_CPT
+			WP_PERSONIO_INTEGRATION_MAIN_CPT
 		);
 
+		// get taxonomies as object.
+		$taxonomies_obj = Taxonomies::get_instance();
+
 		// add meta box for each supported taxonomy.
-		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $settings ) {
-			$labels = Helper::get_taxonomy_label( $taxonomy_name );
+		foreach ( $taxonomies_obj->get_taxonomies() as $taxonomy_name => $settings ) {
+			$labels = $taxonomies_obj->get_taxonomy_label( $taxonomy_name );
 			add_meta_box(
 				'personio-position-taxonomy-' . $taxonomy_name,
 				$labels['name'],
 				array( $this, 'get_meta_box_for_taxonomy' ),
-				WP_PERSONIO_INTEGRATION_CPT,
+				WP_PERSONIO_INTEGRATION_MAIN_CPT,
 				'side'
 			);
 		}
@@ -876,12 +927,11 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function get_meta_box_for_description( WP_Post $post ): void {
-		$position_obj = Positions::get_instance()->get_position( $post->ID );
-		echo wp_kses_post( $position_obj->get_content() );
+		the_content();
 	}
 
 	/**
-	 * Show any taxonomy of position in meta box.
+	 * Show any taxonomy of position in their own meta box.
 	 *
 	 * @param WP_Post $post Object of the post.
 	 * @param array   $attr The attributes.
@@ -890,8 +940,7 @@ class PersonioPosition extends Post_Type {
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
 		$position_obj  = Positions::get_instance()->get_position( $post->ID );
 		$taxonomy_name = str_replace( 'personio-position-taxonomy-', '', $attr['id'] );
-		$taxonomy_obj  = get_taxonomy( $taxonomy_name );
-		$content       = Helper::get_taxonomy_name_of_position( $taxonomy_obj->rewrite['slug'], $position_obj );
+		$content = $position_obj->get_term_name( $taxonomy_name, 'name' );
 		if ( empty( $content ) ) {
 			echo '<i>' . esc_html__( 'No data', 'personio-integration-light' ) . '</i>';
 		} else {
@@ -916,9 +965,10 @@ class PersonioPosition extends Post_Type {
 	 * Convert attributes for shortcodes.
 	 *
 	 * @param array $attributes List of attributes.
+	 *
 	 * @return array
 	 */
-	private function get_single_shortcode_attributes( array $attributes ): array {
+	public function get_single_shortcode_attributes( array $attributes ): array {
 		// define the default values for each attribute.
 		$attribute_defaults = $this->get_single_shortcode_attributes_defaults();
 
@@ -943,7 +993,7 @@ class PersonioPosition extends Post_Type {
 	private function get_single_shortcode_attributes_defaults(): array {
 		return array(
 			'personioid'              => 0,
-			'lang'                    => helper::get_current_lang(),
+			'lang'                    => Languages::get_instance()->get_current_lang(),
 			'template'                => '',
 			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults', array() ) ),
 			'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription', 'default' ),
@@ -952,5 +1002,76 @@ class PersonioPosition extends Post_Type {
 			'styles'                  => '',
 			'classes'                 => '',
 		);
+	}
+
+	/**
+	 * Convert term-name to term-id if it is set in shortcode-attributes and configure shortcode-attribute.
+	 *
+	 * @param array $settings List of settings for a shortcode with 3 parts: defaults, settings & attributes.
+	 * @return array
+	 */
+	public function check_filter_type( array $settings ): array {
+		if ( ! empty( $settings['attributes']['filtertype'] ) ) {
+			if ( ! in_array( $settings['attributes']['filtertype'], array( 'linklist', 'select' ), true ) ) {
+				$settings['attributes']['filtertype'] = 'linklist';
+			}
+		}
+
+		// return resulting arrays.
+		return array(
+			'defaults'   => $settings['defaults'],
+			'settings'   => $settings['settings'],
+			'attributes' => $settings['attributes'],
+		);
+	}
+
+	/**
+	 * Extend the WP-own search.
+	 *
+	 * @param string   $search The search-string.
+	 * @param WP_Query $wp_query The query-object.
+	 *
+	 * @return string
+	 */
+	public function extend_search( string $search, WP_Query $wp_query ): string {
+		global $wpdb;
+
+		// bail on search in backend.
+		if ( is_admin() ) {
+			return $search;
+		}
+
+		// bail if extension of search is not enabled.
+		if ( 0 === absint( get_option( 'personioIntegrationExtendSearch', 0 ) ) ) {
+			return $search;
+		}
+
+		// bail of search string is empty.
+		if ( empty( $search ) ) {
+			return $search;
+		}
+
+		// get search request.
+		$term = $wp_query->query_vars['s'];
+
+		// create and return changed statement.
+		return ' AND (
+        (
+            1 = 1 ' . $search . '
+        )
+        OR (
+            ' . $wpdb->posts . ".post_type = '" . WP_PERSONIO_INTEGRATION_MAIN_CPT . "'
+            AND EXISTS(
+                SELECT * FROM " . $wpdb->terms . '
+                INNER JOIN ' . $wpdb->term_taxonomy . '
+                    ON ' . $wpdb->term_taxonomy . '.term_id = ' . $wpdb->terms . '.term_id
+                INNER JOIN ' . $wpdb->term_relationships . '
+                    ON ' . $wpdb->term_relationships . '.term_taxonomy_id = ' . $wpdb->term_taxonomy . ".term_taxonomy_id
+                WHERE taxonomy = 'personioKeywords'
+                    AND object_id = " . $wpdb->posts . '.ID
+                    AND ' . $wpdb->terms . ".name LIKE '%" . $term . "%'
+            )
+        )
+    )";
 	}
 }

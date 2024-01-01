@@ -676,7 +676,7 @@ function personio_integration_get_details( array $attributes ): string {
 		foreach ( apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES ) as $taxonomy_name => $taxonomy ) {
 			if ( $detail === $taxonomy['slug'] ) {
 				// get value.
-				$value = Helper::get_taxonomy_name_of_position( $detail, $position );
+				$value = $position->get_term_name( $detail, 'name' );
 
 				// bail if no value is available.
 				if ( empty( $value ) ) {

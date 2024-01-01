@@ -41,6 +41,15 @@ class Roles {
 	}
 
 	/**
+	 * Initialize this object.
+	 *
+	 * @return void
+	 */
+	public function init(): void {
+		add_action( 'admin_init', array( $this, 'allow_save_settings' ) );
+	}
+
+	/**
 	 * Install the roles we use.
 	 *
 	 * @return void
@@ -53,15 +62,15 @@ class Roles {
 		}
 		if ( ! is_null( $personio_position_manager_role ) ) {
 			$personio_position_manager_role->add_cap( 'read' ); // to enter wp-admin.
-			$personio_position_manager_role->add_cap( 'read_' . WP_PERSONIO_INTEGRATION_CPT );
-			$personio_position_manager_role->add_cap( 'manage_' . WP_PERSONIO_INTEGRATION_CPT );
+			$personio_position_manager_role->add_cap( 'read_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
+			$personio_position_manager_role->add_cap( 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
 		}
 
 		// get admin-role.
 		$admin_role = get_role( 'administrator' );
 		if ( ! is_null( $admin_role ) ) {
-			$admin_role->add_cap( 'read_' . WP_PERSONIO_INTEGRATION_CPT );
-			$admin_role->add_cap( 'manage_' . WP_PERSONIO_INTEGRATION_CPT );
+			$admin_role->add_cap( 'read_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
+			$admin_role->add_cap( 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
 		}
 	}
 
@@ -82,8 +91,30 @@ class Roles {
 		global $wp_roles;
 		foreach ( $wp_roles->roles as $role_name => $settings ) {
 			$role = get_role( $role_name );
-			$role->remove_cap( 'manage_' . WP_PERSONIO_INTEGRATION_CPT );
-			$role->remove_cap( 'read_' . WP_PERSONIO_INTEGRATION_CPT );
+			$role->remove_cap( 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
+			$role->remove_cap( 'read_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
+		}
+	}
+
+	/**
+	 * Allow our own capability to save settings.
+	 */
+	public function allow_save_settings(): void {
+		$settings_pages = array(
+			'personioIntegrationPositions',
+			'personioIntegrationPositionsTemplates',
+			'personioIntegrationPositionsImportExport',
+			'personioIntegrationPositionsAdvanced',
+		);
+		foreach ( apply_filters( 'personio_integration_admin_settings_pages', $settings_pages ) as $settings_page ) {
+			add_filter(
+				'option_page_capability_' . $settings_page,
+				function () {
+					return 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT;
+				},
+				10,
+				0
+			);
 		}
 	}
 }

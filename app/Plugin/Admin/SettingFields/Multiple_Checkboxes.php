@@ -26,7 +26,8 @@ class Multiple_Checkboxes {
 			foreach ( $attributes['options'] as $key => $enabled ) {
 
 				// get language name.
-				$language_name = Languages::get_instance()->get_label( $key );
+				$languages = Languages::get_instance()->get_languages();
+				$language_name = $languages[$key];
 
 				// get checked-marker.
 				$checked = 1 === absint( get_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $key, 0 ) ) ? ' checked="checked"' : '';
@@ -43,10 +44,6 @@ class Multiple_Checkboxes {
 					<input type="hidden" id="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_html( ! empty( $checked ) ? '1' : '0' ); ?>">
 					<?php
 				}
-				if ( 0 === absint( $enabled ) ) {
-					$readonly = ' disabled="disabled"';
-					$title    = '';
-				}
 
 				// output.
 				?>
@@ -57,9 +54,18 @@ class Multiple_Checkboxes {
 				<?php
 			}
 
-			// pro hint.
-			/* translators: %1$s is replaced with "string" */
-			do_action( 'personio_integration_admin_show_pro_hint', __( 'Use all languages supported by Personio with %s.', 'personio-integration-light' ) );
+			// show optional hint for our Pro-version.
+			if ( ! empty( $attributes['pro_hint'] ) ) {
+				$message = $attributes['pro_hint'];
+				/**
+				 * Show hint for Pro-plugin with individual text.
+				 *
+				 * @since 1.0.0 Available since first release.
+				 *
+				 * @param string $message The individual text.
+				 */
+				do_action( 'personio_integration_admin_show_pro_hint', $message );
+			}
 		}
 	}
 }

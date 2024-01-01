@@ -354,6 +354,10 @@ Yes, it is without any further settings.
 * Now only compatible with PHP 8.0 or newer
 * And only compatible with WordPress 6.0 or newer
 * Added support for Multisite-installations
-* Compatible with WordPress Coding Standards 3.0
+* Added some additional classes in templates for better custom styling-possibilites
+* Optimized all templates for better handling and optimized output
+* Compatible with WordPress Coding Standards 3.0 (WCS3.0)
+* New WCS3.0 compatible WP CLI commands (old ones does not exist anymore)
+* New check for configured Personio-URL in Site Health
 * Removed 5 minutes cronjob as it is discouraged by WordPress (TODO Migrate)
 * Fixed usage of classic widgets

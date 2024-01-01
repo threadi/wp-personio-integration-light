@@ -7,6 +7,7 @@
 
 namespace App\Plugin;
 
+use App\Helper;
 use App\PersonioIntegration\PostTypes\PersonioPosition;
 use App\Plugin\Admin\Admin;
 use App\Third_Party_Plugins;
@@ -67,8 +68,14 @@ class Init {
 		// init wp-admin-support.
 		Admin::get_instance()->init();
 
+		// init roles.
+		Roles::get_instance()->init();
+
 		// init third-party-support.
 		Third_Party_Plugins::get_instance()->init();
+
+		// init schedules.
+		Schedules::get_instance()->init();
 
 		// on activation.
 		register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( $this, 'activation' ) );
@@ -87,6 +94,9 @@ class Init {
 
 		// add action links on plugin-list.
 		add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_setting_link' ) );
+
+		// reset permalinks on request.
+		add_action( 'wp', array( $this, 'update_slugs' ) );
 	}
 
 	/**
@@ -104,7 +114,7 @@ class Init {
 	 * @return void
 	 */
 	public function deactivation(): void {
-		wp_clear_scheduled_hook( 'personio_integration_schudule_events' );
+		Schedules::get_instance()->delete_all();
 	}
 
 	/**
@@ -130,7 +140,7 @@ class Init {
 					'id'     => 'personio-position-list',
 					'parent' => 'site-name',
 					'title'  => __( 'Personio Positions', 'personio-integration-light' ),
-					'href'   => get_post_type_archive_link( WP_PERSONIO_INTEGRATION_CPT ),
+					'href'   => get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT ),
 				)
 			);
 		}
@@ -145,7 +155,7 @@ class Init {
 	public function add_styles_frontend(): void {
 		wp_enqueue_style(
 			'personio-integration-styles',
-			trailingslashit( plugin_dir_url( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'css/styles.css',
+			Helper::get_plugin_url() . 'css/styles.css',
 			array(),
 			filemtime( trailingslashit( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'css/styles.css' )
 		);
@@ -162,7 +172,7 @@ class Init {
 		$url = add_query_arg(
 			array(
 				'page'      => 'personioPositions',
-				'post_type' => WP_PERSONIO_INTEGRATION_CPT,
+				'post_type' => WP_PERSONIO_INTEGRATION_MAIN_CPT,
 			),
 			get_admin_url() . 'edit.php'
 		);
@@ -174,5 +184,18 @@ class Init {
 		$links[] = $settings_link;
 
 		return $links;
+	}
+
+	/**
+	 * Update slugs on request.
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
+	 */
+	public function update_slugs(): void {
+		if ( false !== get_transient( 'personio_integration_update_slugs' ) ) {
+			flush_rewrite_rules();
+			delete_transient( 'personio_integration_update_slugs' );
+		}
 	}
 }

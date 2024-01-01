@@ -9,6 +9,8 @@ namespace App\Plugin\Cli;
 
 use App\Log;
 use App\PersonioIntegration\Positions;
+use App\PersonioIntegration\Taxonomies;
+use App\Plugin\Languages;
 
 /**
  * Trait with helper-functions.
@@ -39,9 +41,9 @@ trait Helper {
 		delete_option( 'personioIntegrationPositionCount' );
 
 		// delete options regarding the import.
-		foreach ( WP_PERSONIO_INTEGRATION_LANGUAGES as $key => $lang ) {
-			delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key );
-			delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key );
+		foreach ( Languages::get_instance()->get_languages() as $language_name => $lang ) {
+			delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $language_name );
+			delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $language_name );
 		}
 
 		// output success-message.
@@ -59,7 +61,16 @@ trait Helper {
 
 		// delete the content of all taxonomies.
 		// -> hint: some will be newly insert after next wp-init.
-		$taxonomies = apply_filters( 'personio_integration_taxonomies', WP_PERSONIO_INTEGRATION_TAXONOMIES );
+		$taxonomies = Taxonomies::get_instance()->get_taxonomies();
+
+		/**
+		 * Get all taxonomies as array.
+		 *
+		 * @since 1.0.0 Available since first release.
+		 *
+		 * @param array $taxonomies The list of taxonomies.
+		 */
+		$taxonomies = apply_filters( 'personio_integration_taxonomies', $taxonomies );
 		$progress   = \App\Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy => $settings ) {
 			// delete all terms of this taxonomy.

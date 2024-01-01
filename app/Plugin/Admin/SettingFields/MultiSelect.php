@@ -21,7 +21,13 @@ class MultiSelect {
 	 */
 	public static function get( array $attributes ): void {
 		if ( ! empty( $attributes['fieldId'] ) && ! empty( $attributes['options'] ) ) {
-			// change attributes via hook.
+			/**
+			 * Change MultiSelect-field-attributes.
+			 *
+			 * @since 2.0.0 Available since 2.0.0.
+			 *
+			 * @param array $attributes List of attributes of this MultiSelect-field.
+			 */
 			$attributes = apply_filters( 'personio_integration_settings_multiselect_attr', $attributes );
 
 			// get value from config.
@@ -59,8 +65,17 @@ class MultiSelect {
 				$title = $attributes['title'];
 			}
 
-			// get additional classes.
-			$classes = apply_filters( 'personio_integration_settings_multiselect_classes', array(), $attributes );
+			$css_classes = array();
+
+			/**
+			 * Get additional CSS-classes for multiselect-field.
+			 *
+			 * @since 2.0.0 Available since 2.0.0.
+			 *
+			 * @param array $css_classes List of additional CSS-classes.
+			 * @param array $attributes List of attributes.
+			 */
+			$classes = apply_filters( 'personio_integration_settings_multiselect_classes', $css_classes, $attributes );
 
 			// set readonly attribute.
 			if ( isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ) {
@@ -86,7 +101,15 @@ class MultiSelect {
 
 			// show optional hint for our Pro-version.
 			if ( ! empty( $attributes['pro_hint'] ) ) {
-				do_action( 'personio_integration_admin_show_pro_hint', $attributes['pro_hint'] );
+				$message = $attributes['pro_hint'];
+				/**
+				 * Show hint for Pro-plugin with individual text.
+				 *
+				 * @since 1.0.0 Available since first release.
+				 *
+				 * @param string $message The individual text.
+				 */
+				do_action( 'personio_integration_admin_show_pro_hint', $message );
 			}
 		}
 	}

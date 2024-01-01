@@ -16,7 +16,7 @@ get_header();
  * Set arguments to load content of this position via shortcode-function
  */
 $arguments = array(
-	'personioid' => get_post_meta( get_the_ID(), WP_PERSONIO_INTEGRATION_CPT_PM_PID, true ),
+	'personioid' => get_post_meta( get_the_ID(), WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, true ),
 );
 echo PersonioPosition::get_instance()->shortcode_position( $arguments );
 

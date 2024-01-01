@@ -7,6 +7,11 @@
 
 namespace App\Plugin;
 
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use App\Helper;
 use App\PersonioIntegration\PostTypes\PersonioPosition;
 use App\PersonioIntegration\Taxonomies;
@@ -149,12 +154,22 @@ class Settings {
 		}
 
 		// get languages.
-		// TODO überarbeiten
-		$lang_key = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY );
-		if ( empty( $lang_key ) ) {
-			$lang_key = Helper::get_wp_lang();
-		}
-		$languages = Languages::get_instance()->get_languages();
+		$languages_obj = Languages::get_instance();
+		$language_name = $languages_obj->get_main_language();
+
+		// get taxonomies.
+		$labels = Taxonomies::get_instance()->get_taxonomy_labels_for_settings();
+		$default_filter = get_option( 'personioIntegrationTemplateFilter', array() );
+
+		/**
+		 * Show hint for Pro-plugin with individual text.
+		 *
+		 * @since 2.3.0 Available since 2.3.0.
+		 *
+		 * @param array $labels List of labels.
+		 * @param array $default_filter List of default filters.
+		 */
+		$filter = apply_filters( 'personio_integration_settings_get_list', $labels, $default_filter );
 
 		// define settings for this plugin.
 		$this->settings = array(
@@ -168,7 +183,7 @@ class Settings {
 						'callback'            => array( 'App\Plugin\Admin\SettingFields\Text', 'get' ),
 						/* translators: %1$s is replaced with the url to personio account, %2$s is replaced with the url to the personio support */
 						'description'         => sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s">Personio support</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ), esc_url( Helper::get_personio_support_url() ) ),
-						'placeholder'         => Helper::is_german_language() ? 'https://dein-unternehmen.jobs.personio.de' : 'https://yourcompany.jobs.personio.com',
+						'placeholder'         => Languages::get_instance()->is_german_language() ? 'https://dein-unternehmen.jobs.personio.de' : 'https://yourcompany.jobs.personio.com',
 						'highlight'           => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
 							'default'           => '',
@@ -186,7 +201,9 @@ class Settings {
 							'sanitize_callback' => array( 'App\Plugin\Admin\SettingsValidation\Languages', 'validate' ),
 							'type'              => 'array',
 						),
-						'default'             => array( $lang_key => $languages[ $lang_key ] ),
+						/* translators: %1$s is replaced with the name of the Pro-plugin */
+						'pro_hint' => __( 'Use all languages supported by Personio with %s.', 'personio-integration-light' ),
+						'default'             => array( $language_name => 1 ),
 					),
 					WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
 						'label'               => __( 'Main language', 'personio-integration-light' ),
@@ -197,7 +214,7 @@ class Settings {
 							'sanitize_callback' => array( 'App\Plugin\Admin\SettingsValidation\MainLanguage', 'validate' ),
 							'type'              => 'string',
 						),
-						'default'             => Helper::get_wp_lang(),
+						'default'             => Languages::get_instance()->get_wp_lang(),
 					),
 				),
 			),
@@ -217,7 +234,7 @@ class Settings {
 					'personioIntegrationTemplateFilter'   => array(
 						'label'               => __( 'Available filter for details', 'personio-integration-light' ),
 						'callback'            => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
-						'options'             => apply_filters( 'personio_integration_settings_get_list', Taxonomies::get_instance()->get_cat_labels(), get_option( 'personioIntegrationTemplateFilter', array() ) ),
+						'options'             => $filter,
 						'description'         => __( 'Mark multiple default filter for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						/* translators: %1$s is replaced with "string" */
@@ -253,7 +270,7 @@ class Settings {
 					'personioIntegrationTemplateExcerptDefaults' => array(
 						'label'       => __( 'Choose details for positions in list-view', 'personio-integration-light' ),
 						'callback'    => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
-						'options'     => apply_filters( 'personio_integration_settings_get_list', Taxonomies::get_instance()->get_cat_labels(), get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) ),
+						'options'     => $filter,
 						'description' => __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'    => ! Helper::is_personio_url_set(),
 						'default'     => array( 'recruitingCategory', 'schedule', 'office' ),
@@ -285,7 +302,7 @@ class Settings {
 					'personioIntegrationTemplateExcerptDetail' => array(
 						'label'       => __( 'Choose details', 'personio-integration-light' ),
 						'callback'    => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
-						'options'     => apply_filters( 'personio_integration_settings_get_list', Taxonomies::get_instance()->get_cat_labels(), get_option( 'personioIntegrationTemplateExcerptDetail', array() ) ),
+						'options'     => $filter,
 						'description' => __( 'Mark multiple details for single-view of positions. Only used if template "detail" is enabled for detail-view. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'    => ! Helper::is_personio_url_set(),
 						/* translators: %1$s is replaced with "string" */
@@ -335,6 +352,7 @@ class Settings {
 					'personioIntegration_advanced_pro_hint' => array(
 						'label'    => '',
 						'callback' => array( 'App\Plugin\Admin\SettingFields\ProHint', 'get' ),
+						'pro_hint' => __( 'With %s you get more advanced options, e.g. to change the URL of archives with positions.', 'personio-integration-light' )
 					),
 					'personioIntegrationExtendSearch'      => array(
 						'label'               => __( 'Note the position-keywords in search in frontend', 'personio-integration-light' ),
@@ -587,5 +605,16 @@ class Settings {
 	 */
 	public function get_settings(): array {
 		return $this->settings;
+	}
+
+	/**
+	 * Return a single actual setting.
+	 *
+	 * @param string $setting
+	 *
+	 * @return string
+	 */
+	public function get_setting( string $setting ): string {
+		return get_option( $setting );
 	}
 }
