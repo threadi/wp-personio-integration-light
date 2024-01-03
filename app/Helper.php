@@ -240,6 +240,12 @@ class Helper {
 						$attributes[ $name ] = 'default';
 					}
 				}
+				if ( 'jobdescription_template' === $attribute_settings[ $name ] ) {
+					$attributes[ $name ] = $attribute;
+					if ( false === Templates::get_instance()->has_template( 'parts/jobdescription/' . $attribute . '.php' ) ) {
+						$attributes[ $name ] = 'default';
+					}
+				}
 			}
 		}
 
@@ -277,6 +283,15 @@ class Helper {
 	 */
 	public static function get_plugin_url(): string {
 		return trailingslashit( plugin_dir_url( WP_PERSONIO_INTEGRATION_PLUGIN ) );
+	}
+
+	/**
+	 * Return the absolute local filesystem-path to the plugin.
+	 *
+	 * @return string
+	 */
+	public static function get_plugin_path(): string {
+		return trailingslashit( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) );
 	}
 
 	/**
@@ -344,11 +359,15 @@ class Helper {
 	}
 
 	/**
-	 * Get current url for frontend.
+	 * Get current URL in frontend and backend.
 	 *
 	 * @return string
 	 */
 	public static function get_current_url(): string {
+		if( is_admin() ) {
+			return admin_url( basename( $_SERVER['REQUEST_URI'] ) );
+		}
+
 		// set return value for page url.
 		$page_url = '';
 
@@ -506,5 +525,14 @@ class Helper {
 	public static function get_plugin_name(): string {
 		$plugin_data = get_plugin_data( WP_PERSONIO_INTEGRATION_PLUGIN );
 		return $plugin_data['Name'];
+	}
+
+	/**
+	 * Return language-depending Personio URL example.
+	 *
+	 * @return string
+	 */
+	public static function get_personio_url_example(): string {
+		return Languages::get_instance()->is_german_language() ? 'https://dein-unternehmen.jobs.personio.de' : 'https://yourcompany.jobs.personio.com';
 	}
 }

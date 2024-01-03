@@ -44,15 +44,24 @@
 
 .personio-field-width { width: 280px }
 
-.wp-personio-integration-transient {
+.personio-integration-transient {
     position: relative;
     z-index: 1;
 }
 
-.wp-personio-integration-transient h3 img {
+.personio-integration-transient h3 img {
     vertical-align: middle;
     display: inline-block;
     margin-right: 8px;
+}
+
+.personio-integration-transient .notice-dismiss:before {
+	display: inline-block;
+	float: right;
+}
+
+.personio-integration-transient .notice-dismiss:hover {
+	color: #d63638;
 }
 
 .column-dragdrop { width: 20px }
@@ -120,4 +129,35 @@ body.post-type-personioposition #personio-edit-hints .postbox-header { border: 0
 
 body.post-type-personioposition #personio-edit-hints .handle-actions { display: none }
 
-.wp-personio-integration-transient .dashicons-star-filled { color: #ffb900 }
+.personio-integration-transient .dashicons-star-filled { color: #ffb900 }
+
+.wp-pointer-content p img {
+	margin-right: 8px;
+	vertical-align: middle;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .components-modal__frame.wp-easy-dialog {
+	min-width: 400px;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .components-modal__frame.wp-easy-dialog:after {
+	background-image: url(/wp-content/plugins/personio-integration-light/gfx/personio_logo_big.png);
+	width: 130px;
+	height: 41px;
+	float: right;
+	content: "";
+	background-size: contain;
+	background-repeat: no-repeat;
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	z-index: 100;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .hide-header .wp-easy-dialog-text {
+	padding-right: 162px;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .components-modal__header .components-modal__header-heading {
+	padding-right: 162px;
+}

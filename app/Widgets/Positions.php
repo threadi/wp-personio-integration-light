@@ -119,6 +119,12 @@ class Positions extends WP_Widget {
 					'no'  => esc_html__( 'Hide', 'personio-integration-light' ),
 				),
 			),
+			'content_template' => array(
+				'type'   => 'select',
+				'title'  => __( 'Choose content template', 'personio-integration-light' ),
+				'std'    => 'default',
+				'values' => Templates::get_instance()->get_jobdescription_templates(),
+			),
 			'showApplicationForm' => array(
 				'type'   => 'select',
 				'title'  => __( 'Show application link', 'personio-integration-light' ),
@@ -207,6 +213,7 @@ class Positions extends WP_Widget {
 			'sortby'    => $settings['sortby'],
 			'groupby'   => $settings['groupby'],
 			'limit'     => $limit,
+			'jobdescription_template' => $settings['content_template']
 		);
 
 		// add wrapper from template around widget-content.

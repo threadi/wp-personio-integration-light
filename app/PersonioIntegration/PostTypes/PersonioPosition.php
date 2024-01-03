@@ -313,6 +313,7 @@ class PersonioPosition extends Post_Type {
 	 * - filtertype => sets the type of filter to use (select or linklist), default: select
 	 * - template => set the main template to use for listing
 	 * - templates => comma-separated list of template to use, defaults to title and excerpt
+	 *  - jobdescription_template => define specific template for job description (defaults to setting under positions > settings > templates)
 	 * - excerpt => comma-separated list of details to display, defaults to recruitingCategory, schedule, office
 	 * - ids => comma-separated list of PositionIDs to display, default: empty
 	 * - sort => direction for sorting the resulting list (asc or desc), default: asc
@@ -337,6 +338,7 @@ class PersonioPosition extends Post_Type {
 	 * - formular => show application-button
 	 *
 	 * @param array $attributes The shortcode attributes.
+	 *
 	 * @return string
 	 */
 	public function shortcode_positions( array $attributes = array() ): string {
@@ -349,6 +351,8 @@ class PersonioPosition extends Post_Type {
 		 * @since 1.2.0 Available since 1.2.0.
 		 *
 		 * @param bool $pagination The pagination setting (true to disable it).
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		$pagination = apply_filters( 'personio_integration_pagination', $pagination );
 
@@ -361,6 +365,7 @@ class PersonioPosition extends Post_Type {
 			'template'         => '',
 			'templates'        => implode( ',', get_option( 'personioIntegrationTemplateContentList', '' ) ),
 			'listing_template' => get_option( 'personioIntegrationTemplateContentListingTemplate', 'default' ),
+			'jobdescription_template' => get_option( 'personioIntegrationTemplateListingContentTemplate', 'default' ),
 			'excerpt'          => implode( ',', get_option( 'personioIntegrationTemplateExcerptDefaults', '' ) ),
 			'ids'              => '',
 			'donotlink'        => ( 0 === absint( get_option( 'personioIntegrationEnableLinkInList', 0 ) ) ),
@@ -381,6 +386,7 @@ class PersonioPosition extends Post_Type {
 			'filter'           => 'array',
 			'template'         => 'string',
 			'listing_template' => 'listing_template',
+			'jobdescription_template' => 'jobdescription_template',
 			'templates'        => 'array',
 			'excerpt'          => 'array',
 			'ids'              => 'array',
@@ -453,7 +459,6 @@ class PersonioPosition extends Post_Type {
 		$styles = ! empty( $personio_attributes['styles'] ) ? $personio_attributes['styles'] : '';
 
 		// set the group-title.
-		// TODO check compatibility.
 		$group_title = '';
 
 		// collect the output.
@@ -981,6 +986,7 @@ class PersonioPosition extends Post_Type {
 			'donotlink'  => 'bool',
 			'styles'     => 'string',
 			'classes'    => 'string',
+			'jobdescription_template' => 'jobdescription_template'
 		);
 		return Helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
 	}
@@ -1073,5 +1079,21 @@ class PersonioPosition extends Post_Type {
             )
         )
     )";
+	}
+
+	/**
+	 * Return the link to manage items of this cpt in backend.
+	 *
+	 * @param bool $without_admin_url True if the URL should contain get_admin_url().
+	 *
+	 * @return string
+	 */
+	public function get_link( bool $without_admin_url = false ): string {
+		return add_query_arg(
+			array(
+				'post_type' => PersonioPosition::get_instance()->get_name(),
+			),
+			( $without_admin_url ? '' : get_admin_url() ) . 'edit.php'
+		);
 	}
 }

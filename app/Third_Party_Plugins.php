@@ -65,12 +65,21 @@ class Third_Party_Plugins {
 
 		// Plugin Easy Language.
 		add_filter( 'easy_language_possible_post_types', array( $this, 'remove_easy_language_support' ) );
+
+		// Plugin Open Graph.
+		add_filter( 'fb_og_desc', array( $this, 'open_graph_optimizer' ) );
+
+		// Plugin SEOFramework.
+		add_filter( 'the_seo_framework_meta_render_data', array( $this, 'seoframework' ) );
+		add_filter( 'the_seo_framework_schema_graph_data', array( $this, 'seoframework_schema' ) );
+
+		// Plugin SEOPress.
+		add_filter( 'seopress_social_og_desc', array( $this, 'seopress_og_description' ) );
+		add_filter( 'seopress_titles_desc', array( $this, 'seopress_titles' ) );
 	}
 
 	/**
 	 * Plugin Redirection.
-	 *
-	 * TODO test!
 	 *
 	 * @param array $post_types List of post-types the Redirection-plugin supports.
 	 *
@@ -87,16 +96,14 @@ class Third_Party_Plugins {
 	 * Optimize Yoast-generated og:description-text.
 	 * Without this Yoast uses the page content with formular or button-texts.
 	 *
-	 * TODO test!
-	 *
 	 * @param string                 $meta_og_description The actual description for OpenGraph.
 	 * @param Indexable_Presentation $presentation The WPSEO Presentation object.
 	 * @return string
 	 */
 	public function yoast( string $meta_og_description, Indexable_Presentation $presentation ): string {
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $presentation->model->object_sub_type ) {
-			$position = new Position( $presentation->model->object_id );
-			return preg_replace( '/\s+/', ' ', $position->get_content() );
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $presentation->model->object_sub_type && absint($presentation->model->object_id) > 0 ) {
+			// return resulting text without line breaks.
+			return $this->replace_linebreaks( $this->get_content( $presentation->model->object_id ) );
 		}
 		return $meta_og_description;
 	}
@@ -112,8 +119,8 @@ class Third_Party_Plugins {
 		if ( is_single() ) {
 			$object = get_queried_object();
 			if ( $object instanceof WP_Post && WP_PERSONIO_INTEGRATION_MAIN_CPT === $object->post_type ) {
-				$position = new Position( $object->ID );
-				return preg_replace( '/\s+/', ' ', $position->get_content() ); // TODO
+				// return resulting text without line breaks.
+				return $this->replace_linebreaks( $this->get_content($object->ID) );
 			}
 		}
 		return $description;
@@ -128,16 +135,12 @@ class Third_Party_Plugins {
 	 */
 	public function og_optimizer( array $og_array ): array {
 		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
-			// get position as object.
-			$post_id        = get_queried_object_id();
-			$position       = new Position( $post_id );
-			$position->lang = Languages::get_instance()->get_wp_lang();
-
 			// get description.
-			$description = wp_strip_all_tags( $position->get_content() ); // TODO
+			$description = wp_strip_all_tags( $this->get_content( get_queried_object_id() ) );
 			$description = preg_replace( '/\s+/', ' ', $description );
 
 			// update settings.
+			$position = new Position( get_queried_object_id() );
 			$og_array['og']['title']            = $position->get_title();
 			$og_array['og']['description']      = $description;
 			$og_array['twitter']['title']       = $position->get_title();
@@ -162,5 +165,127 @@ class Third_Party_Plugins {
 			unset( $post_types[ WP_PERSONIO_INTEGRATION_MAIN_CPT ] );
 		}
 		return $post_types;
+	}
+
+	/**
+	 * Get position content as string.
+	 *
+	 * @param int $post_id The ID of the requested position.
+	 *
+	 * @return string
+	 */
+	private function get_content( int $post_id ): string {
+		$position = new Position( $post_id );
+		$position->set_lang( Languages::get_instance()->get_wp_lang() );
+		$description = $position->get_content();
+		if( !empty($description) ) {
+			$text = '';
+			foreach ( $description['jobDescription'] as $content ) {
+				$text .= $content['name'] . ' ' . $content['value'];
+			}
+
+			// return resulting text.
+			return $text;
+		}
+
+		// return nothing.
+		return '';
+	}
+
+	/**
+	 * Replace all linebreaks in given string.
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	private function replace_linebreaks( string $string ): string {
+		return preg_replace( '/\s+/', ' ', $string );
+	}
+
+	/**
+	 * Optimize output for plugin Open Graph and Twitter Card Tags.
+	 *
+	 * @param string $description The string the plugin would use as description.
+	 *
+	 * @return string
+	 */
+	public function open_graph_optimizer( string $description ): string {
+		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+			// get description.
+			return $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
+		}
+
+		// return resulting text.
+		return $description;
+	}
+
+	/**
+	 * Optimize output for description with plugin SEOFramework.
+	 *
+	 * @param array $fields The SEO-fields the framework has collected.
+	 *
+	 * @return array
+	 */
+	public function seoframework( array $fields ): array {
+		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+			$description = $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
+			$fields['description']['attributes']['content'] = $description;
+			$fields['og:description']['attributes']['content'] = $description;
+			$fields['twitter:description']['attributes']['content'] = $description;
+		}
+		return $fields;
+	}
+
+	/**
+	 * Optimize output for schema with plugin SEOFramework.
+	 *
+	 * @param array $graph A list of fields for SEO-output.
+	 *
+	 * @return array
+	 */
+	public function seoframework_schema( array $graph ): array {
+		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+			foreach( $graph as $index => $entry ) {
+				if( !empty($entry['description']) && 'WebPage' === $entry['@type'] ) {
+					$graph[$index]['description'] = $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
+				}
+			}
+		}
+		return $graph;
+	}
+
+	/**
+	 * Optimize the output for SEO-og:description with plugin SEOPress.
+	 *
+	 * @param string $meta_og_description The meta-tag the plugin would use as description.
+	 *
+	 * @return string
+	 */
+	public function seopress_og_description( string $meta_og_description ): string {
+		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+			// get og:description.
+			return '<meta property="og:description" content="'.wp_kses_post($this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) ) ).'" />';
+		}
+
+		// return resulting text.
+		return $meta_og_description;
+	}
+
+	/**
+	 * Optimize the output for SEO-description with plugin SEOPress.
+	 *
+	 * @param string $description
+	 *
+	 * @return string
+	 */
+	public function seopress_titles( string $description ): string {
+		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+			// get description.
+			return $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
+		}
+
+		// return resulting text.
+		return $description;
 	}
 }

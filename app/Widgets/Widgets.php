@@ -51,7 +51,7 @@ class Widgets {
 	}
 
 	/**
-	 * Enable our own widgets.
+	 * Enable our own widgets if Block widgets are disabled.
 	 *
 	 * @return void
 	 */
@@ -63,16 +63,26 @@ class Widgets {
 	}
 
 	/**
-	 * Disable our own widgets.
+	 * Disable our own widgets if Block widgets are enabled OR uninstallation is running.
 	 *
 	 * @return void
 	 */
 	public function deactivate(): void {
-		if ( function_exists( 'wp_use_widgets_block_editor' ) && wp_use_widgets_block_editor() ) {
-			unregister_widget( 'App\Widgets\Position' );
-			unregister_widget( 'App\Widgets\Positions' );
-			delete_option( 'widget_personiopositionwidget' );
-			delete_option( 'widget_personiopositionswidget' );
+		if ( ( function_exists( 'wp_use_widgets_block_editor' ) && wp_use_widgets_block_editor() )  ) {
+			$this->uninstall();
 		}
 	}
+
+	/**
+	 * Run this on every uninstallation of this plugin.
+	 *
+	 * @return void
+	 */
+	public function uninstall(): void {
+		unregister_widget( 'App\Widgets\Position' );
+		unregister_widget( 'App\Widgets\Positions' );
+		delete_option( 'widget_personiopositionwidget' );
+		delete_option( 'widget_personiopositionswidget' );
+	}
+
 }

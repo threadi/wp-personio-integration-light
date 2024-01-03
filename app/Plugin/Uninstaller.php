@@ -8,6 +8,7 @@
 namespace App\Plugin;
 
 use App\Helper;
+use App\Widgets\Widgets;
 
 /**
  * Helper-function for plugin-activation and -deactivation.
@@ -85,8 +86,7 @@ class Uninstaller {
 		Schedules::get_instance()->delete_all();
 
 		// remove widgets.
-		// TODO testen.
-		do_action( 'widgets_init' );
+		Widgets::get_instance()->uninstall();
 
 		// remove transients.
 		foreach( Transients::get_instance()->get_transients() as $transient_obj ) {
@@ -118,6 +118,11 @@ class Uninstaller {
 					delete_option( $field_name );
 				}
 			}
+
+			// remove manuel options.
+			foreach( $this->get_options() as $option ) {
+				delete_option( $option );
+			}
 		}
 
 		// remove roles from our plugin.
@@ -126,5 +131,20 @@ class Uninstaller {
 		// delete our custom database-tables.
 		global $wpdb;
 		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) );
+	}
+
+	/**
+	 * Return list of options this plugin is using which are not configured via @file Settins.php.
+	 *
+	 * @return array
+	 */
+	private function get_options(): array {
+		return array(
+			WP_PERSONIO_INTEGRATION_IMPORT_RUNNING,
+			WP_PERSONIO_INTEGRATION_IMPORT_ERRORS,
+			WP_PERSONIO_INTEGRATION_OPTION_COUNT,
+			WP_PERSONIO_INTEGRATION_OPTION_MAX,
+			'personioIntegrationUrlPointer'
+		);
 	}
 }

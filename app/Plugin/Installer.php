@@ -86,7 +86,6 @@ class Installer {
 		// check if simplexml is available on this system.
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
 			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 0 );
 			$transient_obj->set_name( 'personio_integration_no_simplexml' );
 			$transient_obj->set_message( '<strong>'.__( 'Plugin was not activated!', 'personio-integration-light' ).'</strong><br>'.__( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' ) );
 			$transient_obj->set_type( 'error' );

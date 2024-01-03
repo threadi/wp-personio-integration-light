@@ -9,6 +9,7 @@ namespace App\Plugin\Admin;
 
 use App\Helper;
 use App\PersonioIntegration\Import;
+use App\PersonioIntegration\PostTypes\PersonioPosition;
 use App\Plugin\Cli;
 use App\Plugin\Transients;
 
@@ -56,6 +57,7 @@ class Admin {
 	public function init(): void {
 		// enqueue scripts and styles.
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_styles_and_js' ), PHP_INT_MAX );
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_dialog' ), PHP_INT_MAX );
 
 		// initialize the Dashboard-support.
 		Dashboard::get_instance()->init();
@@ -70,7 +72,7 @@ class Admin {
 		add_action( 'personio_integration_admin_show_pro_hint', array( $this, 'show_pro_hint' ) );
 
 		// add marker for free-version.
-		add_filter( 'admin_body_class', array( $this, 'add_body_class_free' ) );
+		add_filter( 'admin_body_class', array( $this, 'add_body_class' ) );
 
 		// add our own checks in wp-admin.
 		add_action( 'admin_init', array( $this, 'check_for_pagebuilder' ) );
@@ -85,6 +87,11 @@ class Admin {
 		add_action( 'admin_action_personioPositionsImport', array( $this, 'import_positions' ) );
 		add_action( 'admin_action_personioPositionsCancelImport', array( $this, 'cancel_import' ) );
 		add_action( 'admin_action_personioPositionsDelete', array( $this, 'delete_positions' ) );
+
+		// add AJAX-actions.
+		add_action( 'wp_ajax_personio_integration_dismiss_url_hint', array( $this, 'dismiss_url_pointer' ) );
+		add_action( 'wp_ajax_personio_run_import', array( $this, 'run_import' ) );
+		add_action( 'wp_ajax_personio_get_import_info', array( $this, 'get_import_info' ) );
 	}
 
 	/**
@@ -93,6 +100,10 @@ class Admin {
 	 * @return void
 	 */
 	public function add_styles_and_js(): void {
+		// Enabled the pointer-scripts.
+		wp_enqueue_style( 'wp-pointer' );
+		wp_enqueue_script( 'wp-pointer' );
+
 		// admin-specific styles.
 		wp_enqueue_style(
 			'personio_integration-admin-css',
@@ -112,8 +123,8 @@ class Admin {
 		// backend-JS.
 		wp_enqueue_script(
 			'personio_integration-admin-js',
-			Helper::get_plugin_url().'admin/js.js',
-			array( 'jquery' ),
+			Helper::get_plugin_url() . 'admin/js.js',
+			array( 'jquery', 'wp-easy-dialog', 'wp-i18n' ),
 			filemtime( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) . '/admin/js.js' ),
 			true
 		);
@@ -121,54 +132,64 @@ class Admin {
 		// add php-vars to our js-script.
 		wp_localize_script(
 			'personio_integration-admin-js',
-			'customJsVars',
+			'personioIntegrationLightJsVars',
 			array(
 				'ajax_url'                => admin_url( 'admin-ajax.php' ),
 				'pro_url'                 => Helper::get_pro_url(),
-				'label_go_pro'            => __( 'Get Personio Integration Pro', 'personio-integration-light' ),
-				'dismiss_nonce'           => wp_create_nonce( 'wp-dismiss-notice' ),
+				'dismiss_nonce'           => wp_create_nonce( 'personio-integration-dismiss-nonce' ),
+				'dismiss_url_nonce'       => wp_create_nonce( 'personio-integration-dismiss-url' ),
 				'run_import_nonce'        => wp_create_nonce( 'personio-run-import' ),
 				'get_import_nonce'        => wp_create_nonce( 'personio-get-import-info' ),
-				'label_reset_sort'        => __( 'Reset sorting', 'personio-integration-light' ),
-				'label_run_import'        => __( 'Run import', 'personio-integration-light' ),
 				'label_import_is_running' => __( 'Import is running', 'personio-integration-light' ),
-				'txt_please_wait'         => __( 'Please wait', 'personio-integration-light' ),
-				'txt_import_hint'         => __( 'Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'personio-integration-light' ),
-				'txt_import_has_been_run' => sprintf(
-				/* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
-					__( '<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.', 'personio-integration-light' ),
-					esc_url(
-						add_query_arg(
-							array(
-								'post_type' => WP_PERSONIO_INTEGRATION_MAIN_CPT,
-							),
-							get_admin_url() . 'edit.php'
-						)
-					),
-					get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT )
-				),
-				'label_ok'                => __( 'OK', 'personio-integration-light' ),
+				'logo_img'                => Helper::get_logo_img(),
+				'url_example'             => Helper::get_personio_url_example(),
+				'url_positions_backend'   => PersonioPosition::get_instance()->get_link(),
+				'url_positions_frontend'  => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() )
 			)
 		);
+	}
 
-		// embed necessary scripts for progressbar.
-		// TODO replace this
-		if ( ( ! empty( $_GET['post_type'] ) && WP_PERSONIO_INTEGRATION_MAIN_CPT === $_GET['post_type'] ) || ( ! empty( $_GET['import'] ) && 'personio-integration-importer' === $_GET['import'] ) ) {
-			$wp_scripts = wp_scripts();
-			wp_enqueue_script( 'jquery-ui-progressbar' );
-			wp_enqueue_script( 'jquery-ui-dialog' );
-			wp_enqueue_style(
-				'personio-jquery-ui-styles',
-				'https://code.jquery.com/ui/' . $wp_scripts->registered['jquery-ui-core']->ver . '/themes/smoothness/jquery-ui.min.css',
-				false,
-				'1.0.0',
-				false
-			);
+	/**
+	 * Add the dialog-scripts and -styles.
+	 *
+	 * @return void
+	 */
+	public function add_dialog(): void {
+		// embed necessary scripts for dialog.
+		$path = Helper::get_plugin_path().'lib/threadi/wp-easy-dialog/';
+		$url = Helper::get_plugin_url().'lib/threadi/wp-easy-dialog/';
+
+		// bail if path does not exist.
+		if( !file_exists($path) ) {
+			return;
 		}
+
+		// embed the dialog-components JS-script.
+		$script_asset_path = $path . 'build/index.asset.php';
+		$script_asset      = require( $script_asset_path );
+		wp_enqueue_script(
+			'wp-easy-dialog',
+			$url . 'build/index.js',
+			$script_asset['dependencies'],
+			$script_asset['version'],
+			true
+		);
+
+		// embed the dialog-components CSS-script.
+		$admin_css      = $url . 'build/style-index.css';
+		$admin_css_path = $path . 'build/style-index.css';
+		wp_enqueue_style(
+			'wp-easy-dialog',
+			$admin_css,
+			array( 'wp-components' ),
+			filemtime( $admin_css_path )
+		);
 	}
 
 	/**
 	 * Show hint for our Pro-version.
+	 *
+	 * Every $hint should use %1$s where the link to the Pro-info-page is set.
 	 *
 	 * @param string $hint The individual hint to show before pro-hint.
 	 * @return void
@@ -180,15 +201,15 @@ class Admin {
 	/**
 	 * Add marker for free version on body-element
 	 *
-	 * TODO nötig?
-	 *
 	 * @param string $classes List of classes for body-element in wp-admin.
 	 * @return string
 	 * @noinspection PhpUnused
 	 */
-	public function add_body_class_free( string $classes ): string {
-		$classes .= ' personio-integration-free';
+	public function add_body_class( string $classes ): string {
 		if ( ! Helper::is_personio_url_set() ) {
+			if( 0 === absint( get_option( 'personioIntegrationUrlPointer', 0 ) ) ) {
+				$classes .= ' personio-integration-pointer';
+			}
 			$classes .= ' personio-integration-url-missing';
 		}
 		return $classes;
@@ -223,7 +244,6 @@ class Admin {
 		 */
 		if ( false === Helper::is_plugin_active( 'personio-integration-divi/personio-integration-divi.php' ) && ( Helper::is_plugin_active( 'divi-builder/divi-builder.php' ) || 'Divi' === wp_get_theme()->get( 'Name' ) ) ) {
 			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 0 );
 			$transient_obj->set_name( 'personio_integration_divi' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Divi - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Divi.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -238,7 +258,6 @@ class Admin {
 		 */
 		if ( did_action( 'elementor/loaded' ) ) {
 			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 0 );
 			$transient_obj->set_name( 'personio_integration_divi' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Elementor - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Elementor.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -253,7 +272,6 @@ class Admin {
 		 */
 		if ( Helper::is_plugin_active( 'js_composer/js_composer.php' ) ) {
 			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 0 );
 			$transient_obj->set_name( 'personio_integration_wpbakery' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using WPBakery - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in WPBakery.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -268,7 +286,6 @@ class Admin {
 		 */
 		if ( class_exists( 'FLBuilder' ) ) {
 			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 0 );
 			$transient_obj->set_name( 'personio_integration_beaver' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Beaver Builder - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Beaver Builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -283,7 +300,6 @@ class Admin {
 		 */
 		if ( Helper::is_plugin_active( 'siteorigin-panels/siteorigin-panels.php' ) ) {
 			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 0 );
 			$transient_obj->set_name( 'personio_integration_siteorigin' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Site Origin - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Site Origin.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -298,7 +314,6 @@ class Admin {
 		 */
 		if ( Helper::is_plugin_active( 'themify-builder/themify-builder.php' ) ) {
 			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 0 );
 			$transient_obj->set_name( 'personio_integration_siteorigin' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Themify - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Themify.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -313,7 +328,6 @@ class Admin {
 		 */
 		if ( Helper::is_plugin_active( 'fusion-builder/fusion-builder.php' ) ) {
 			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 0 );
 			$transient_obj->set_name( 'personio_integration_avada' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Avada - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Avada.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -367,7 +381,6 @@ class Admin {
 			get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT )
 		);
 		$transient_obj = Transients::get_instance()->add();
-		$transient_obj->set_dismissible_days( 0 );
 		$transient_obj->set_name( 'personio_integration_import_run' );
 		$transient_obj->set_message( $message );
 		$transient_obj->set_type( 'hint' );
@@ -395,7 +408,6 @@ class Admin {
 
 			// add hint.
 			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 0 );
 			$transient_obj->set_name( 'personio_integration_import_canceled' );
 			$transient_obj->set_message( __( '<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes to long please check your hosting logfiles for possible restrictions mentioned there.', 'personio-integration-light' ) . ' <br><br><a href="' . self::get_import_url() . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>' );
 			$transient_obj->set_type( 'error' );
@@ -415,7 +427,6 @@ class Admin {
 		check_ajax_referer( 'wp-personio-integration-delete', 'nonce' );
 
 		$transient_obj = Transients::get_instance()->add();
-		$transient_obj->set_dismissible_days( 0 );
 
 		// do not delete positions if import is running atm.
 		if ( 0 === absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) ) {
@@ -449,14 +460,23 @@ class Admin {
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_no_url_set' );
 			/* translators: %1$s will be replaced by the URL to the settings-page. */
-			$transient_obj->set_message( sprintf( __( 'The specification of your Personio URL is still pending.<br><br><strong>Add it now in the <a href="%1$s">settings page</a></strong>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
+			$transient_obj->set_message( sprintf( __( 'The specification of your Personio URL is still pending. <strong>Add it now on the <a href="%1$s">settings page</a></strong>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
 			$transient_obj->set_type( 'hint' );
+			$transient_obj->set_hide_on( array(
+				add_query_arg(
+					array(
+						'post_type' => 'personioposition',
+						'page' => 'personioPositions'
+					),
+					get_admin_url().'edit.php'
+				)
+			) );
 			$transient_obj->save();
-		} elseif ( get_option( 'personioIntegrationPositionCount', 0 ) > 0 ) {
+		} elseif ( absint( get_option( 'personioIntegrationPositionCount', 0 ) ) > 0 ) {
 			$transient_obj = $transients_obj->add();
-			$transient_obj->set_dismissible_days( 0 );
+			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_limit_hint' );
-			/* translators: %1$s will be replaced by the URL to the settings-page. */
+			/* translators: %1$s will be replaced by the URL to the Pro-information-page. */
 			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro version</a>, any number of positions can be displayed.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->save();
@@ -474,13 +494,12 @@ class Admin {
 	 * @noinspection PhpUnused
 	 */
 	public function check_position_count(): void {
-		$transients_obj = Transients::get_instance();
-		if ( helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationPositionCount', 0 ) && false === $transients_obj->get_transient_by_name( 'personio_integration_import_now' )->is_set() ) ) {
+		if ( Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationPositionCount', 0 ) ) ) {
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_no_position_imported' );
 			/* translators: %1$s will be replaced by the URL to the settings-page. */
-			$transient_obj->set_message( __( 'You have not imported your open positions from Personio until now. Click on the following button to import your positions from Personio now: ', 'personio-integration-light' ) . ' <br><br><a href="' . Helper::get_import_url() . '" class="button button-primary">' . __( 'Run import', 'personio-integration-light' ) . '</a>' );
+			$transient_obj->set_message( __( 'You have not imported your open positions from Personio until now. Click on the following button to import your positions from Personio now: ', 'personio-integration-light' ) . ' <br><br><a href="' . Helper::get_import_url() . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>' );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->save();
 		}
@@ -514,5 +533,60 @@ class Admin {
 				Transients::get_instance()->get_transient_by_name( 'personio_integration_admin_show_review_hint' )->delete();
 			}
 		}
+	}
+
+	/**
+	 * Dismiss URL pointer.
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function dismiss_url_pointer(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-integration-dismiss-url', 'nonce' );
+
+		// hide pointer.
+		update_option( 'personioIntegrationUrlPointer', 1 );
+
+		// return nothing.
+		wp_die();
+	}
+
+	/**
+	 * Start Import via AJAX.
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function run_import(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-run-import', 'nonce' );
+
+		// run import.
+		new Import();
+
+		// return nothing.
+		wp_die();
+	}
+
+	/**
+	 * Return state of the actual running import.
+	 *
+	 * Format: Step;MaxSteps;Running;Errors
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function get_import_info(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-get-import-info', 'nonce' );
+
+		// return actual and max count of import steps.
+		echo absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ) . ';' . absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ) . ';' . absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) . ';' . wp_json_encode(get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) );
+
+		// return nothing else.
+		wp_die();
 	}
 }

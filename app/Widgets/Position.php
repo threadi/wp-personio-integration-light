@@ -43,9 +43,20 @@ class Position extends WP_Widget {
 		$positions_obj = \App\PersonioIntegration\Positions::get_instance();
 		$positions     = array();
 		foreach ( $positions_obj->get_positions( 0 ) as $position ) {
-			$positions[ $position->ID ] = $position->get_title();
+			$positions[ $position->get_id() ] = $position->get_title();
 		}
 
+		// bail if no positions are available.
+		if( empty($positions) ) {
+			return array(
+				'hint' => array(
+					'type' => 'text',
+					'text' => sprintf( __( 'No positions available. Start to import them <a href="%1$s">here</a>.', 'personio-integration-light' ), esc_url( \App\Helper::get_settings_url() ) )
+				)
+			);
+		}
+
+		// return possible configuration for this widget.
 		return array(
 			'postId'              => array(
 				'type'   => 'select',

@@ -55,9 +55,6 @@ class Templates {
 	public function init(): void {
 		add_filter( 'template_include', array( $this, 'get_cpt_template' ) );
 
-		// TODO richtige Stelle?
-		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
-
 		// check for changed templates.
 		add_action( 'admin_init', array( $this, 'check_child_theme_templates' ) );
 
@@ -66,9 +63,9 @@ class Templates {
 		add_filter( 'archive_template', array( $this, 'get_archive_template' ) );
 
 		// support content hooks.
-		add_filter( 'the_content', array( $this, 'prepare_content_template' ), 10, 1 );
-		add_filter( 'the_excerpt', array( $this, 'prepare_excerpt_template' ), 10, 1 );
-		add_filter( 'get_the_excerpt', array( $this, 'prepare_excerpt_template' ), 10, 1 );
+		add_filter( 'the_content', array( $this, 'prepare_content_template' ) );
+		add_filter( 'the_excerpt', array( $this, 'prepare_excerpt_template' ) );
+		add_filter( 'get_the_excerpt', array( $this, 'prepare_excerpt_template' ) );
 		add_action( 'the_post', array( $this, 'update_post_object' ) );
 
 		// our own hooks.
@@ -77,6 +74,7 @@ class Templates {
 		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 );
 		add_action( 'personio_integration_get_formular', array( $this, 'get_formular_template' ), 10, 2 );
 		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
+		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
 	}
 
 	/**
@@ -337,7 +335,6 @@ class Templates {
 
 			// show a transient.
 			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 0 );
 			$transient_obj->set_name( 'personio_integration_no_simplexml' );
 			$transient_obj->set_message( __( '<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'personio-integration-light' ) . $html_list . __( 'Hint: the version-number in the header of the files must match.', 'personio-integration-light' ) );
 			$transient_obj->set_type( 'error' );
@@ -395,8 +392,8 @@ class Templates {
 		// get position as object.
 		$position_obj = Positions::get_instance()->get_position( get_the_ID() );
 
-		// return the content-template.
-		return $this->get_content_template( $position_obj, array() );
+		// return the content of the content-template.
+		return $this->get_content_template( $position_obj, array(), true );
 	}
 
 	/**
@@ -468,9 +465,6 @@ class Templates {
 	public function get_excerpt_template( Position $position, array $attributes, bool $use_return = false ): string {
 		$excerpt   = '';
 		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator', ', ' ) . ' ';
-		if ( empty( $attributes['excerpt'] ) ) {
-			$attributes['excerpt'] = $attributes;
-		}
 		if ( ! empty( $attributes['excerpt'] ) ) {
 			foreach ( $attributes['excerpt'] as $taxonomy_slug ) {
 				$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $taxonomy_slug );

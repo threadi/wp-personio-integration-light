@@ -54,16 +54,22 @@ class Transients {
 	 * @return void
 	 */
 	public function init(): void {
+		// enable our own notices.
 		add_action( 'admin_notices', array( $this, 'init_notices' ) );
+
+		// process AJAX-requests to dismiss transient notices.
+		add_action( 'wp_ajax_dismiss_admin_notice', array( $this, 'dismiss_transient_via_ajax' ) );
 	}
 
 	/**
 	 * Initialize the visibility of any transients as notices.
 	 *
+	 * Only visible for users with capability to manage settings of this plugin.
+	 *
 	 * @return void
 	 */
 	public function init_notices(): void {
-		if ( current_user_can( 'manage_options' ) ) {
+		if ( current_user_can( 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
 			$transients_obj = Transients::get_instance();
 			$transients_obj->check_transients();
 		}
@@ -154,7 +160,7 @@ class Transients {
 		// remove it from the list.
 		unset( $transients[ $transient_to_delete_obj->get_name() ] );
 
-		// transform list to simple array for options-table.
+		// transform list to simple array with transient names for options-table.
 		$transients_in_db = array();
 		foreach ( $transients as $transient ) {
 			$transients_in_db[] = $transient->get_name();
@@ -163,7 +169,7 @@ class Transients {
 	}
 
 	/**
-	 * Check all known transients.
+	 * Check all known transients to show them.
 	 *
 	 * @return void
 	 */
@@ -184,5 +190,42 @@ class Transients {
 	 */
 	public function get_transient_by_name( string $transient ): Transient {
 		return new Transient( $transient );
+	}
+
+	/**
+	 * Handles Ajax request to persist notices dismissal.
+	 * Uses check_ajax_referer to verify nonce.
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function dismiss_transient_via_ajax(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-integration-dismiss-nonce', 'nonce' );
+
+		// bail if function is not called via AJAX.
+		if( ! defined( 'DOING_AJAX') ) {
+			wp_die();
+		}
+
+		// get values.
+		$option_name        = isset( $_POST['option_name'] ) ? sanitize_text_field( wp_unslash( $_POST['option_name'] ) ) : false;
+		$dismissible_length = isset( $_POST['dismissible_length'] ) ? sanitize_text_field( wp_unslash( $_POST['dismissible_length'] ) ) : 14;
+
+		if ( 'forever' !== $dismissible_length ) {
+			// if $dismissible_length is not an integer default to 14.
+			$dismissible_length = ( 0 === absint( $dismissible_length ) ) ? 14 : $dismissible_length;
+			$dismissible_length = strtotime( absint( $dismissible_length ) . ' days' );
+		}
+
+		// save value.
+		update_option( 'pi-dismissed-' . md5( $option_name ), $dismissible_length, true );
+
+		// remove transient.
+		Transients::get_instance()->get_transient_by_name( $option_name )->delete();
+
+		// return nothing.
+		wp_die();
 	}
 }

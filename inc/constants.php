@@ -39,6 +39,11 @@ const WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT = 'personioCreatedAt';
 const WP_PERSONIO_INTEGRATION_IMPORT_RUNNING = 'personioIntegrationImportRunning';
 
 /**
+ * List of possible errors during import.
+ */
+const WP_PERSONIO_INTEGRATION_IMPORT_ERRORS = 'personioIntegrationImportErrors';
+
+/**
  * Update-Flag.
  */
 const WP_PERSONIO_INTEGRATION_UPDATED = 'personio_integration_updateflag';
@@ -100,8 +105,8 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS = array(
 /**
  * Define names for progressbar during import.
  */
-const WP_PERSONIO_OPTION_COUNT = 'piImportCount';
-const WP_PERSONIO_OPTION_MAX   = 'piImportMax';
+const WP_PERSONIO_INTEGRATION_OPTION_COUNT = 'piImportCount';
+const WP_PERSONIO_INTEGRATION_OPTION_MAX   = 'piImportMax';
 
 /**
  * URL to the Gutenberg-templates.

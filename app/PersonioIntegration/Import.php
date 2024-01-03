@@ -58,6 +58,9 @@ class Import {
 		// mark import as running.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
 
+		// reset list of errors during import.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() );
+
 		// get debug-mode.
 		$this->debug = 1 === absint( get_option( 'personioIntegration_debug', 0 ) );
 
@@ -68,8 +71,8 @@ class Import {
 		$language_count = count( $languages );
 
 		// set counter for progressbar in backend.
-		update_option( WP_PERSONIO_OPTION_MAX, $language_count );
-		update_option( WP_PERSONIO_OPTION_COUNT, 0 );
+		update_option( WP_PERSONIO_INTEGRATION_OPTION_MAX, $language_count );
+		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 );
 		$do_not_update_max_counter = false;
 
 		// create array for positions.
@@ -160,7 +163,7 @@ class Import {
 					if ( false !== $last_modified_timestamp && absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $language_name, 0 ) ) === $last_modified_timestamp && ! $this->debug ) {
 						// timestamp did not change -> do nothing if we already have positions in the DB.
 						if ( $positions_count > 0 ) {
-							update_option( WP_PERSONIO_OPTION_COUNT, ++$count );
+							update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, ++$count );
 							$do_nothing = true;
 							$this->log->add_log( sprintf( 'No changes in positions for language %s according to the timestamp we get from Personio. No import run.', esc_html($label) ), 'success' );
 							$progress ? $progress->tick() : false;
@@ -193,7 +196,7 @@ class Import {
 						if ( get_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $language_name, '' ) === $md5hash && ! $this->debug ) {
 							// md5-hash did not change -> do nothing if we already have positions in the DB.
 							if ( $positions_count > 0 ) {
-								update_option( WP_PERSONIO_OPTION_COUNT, ++$count );
+								update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, ++$count );
 								$do_nothing = true;
 								$this->log->add_log( sprintf( 'No changes in positions for language %1$s according to the content we get from Personio. No import run.', esc_html( $label ) ), 'success' );
 								$progress ? $progress->tick() : false;
@@ -208,7 +211,7 @@ class Import {
 							/* translators: %1$s will be replaced by the language-name, %2$s by the error-message */
 							$this->errors[] = sprintf( __( 'XML file from Personio for language %1$s contains incorrect code and therefore cannot be read in. Technical Error: %2$s', 'personio-integration-light' ), esc_html( $language_name ), esc_html( $e->getMessage() ) );
 							// show progress.
-							update_option( WP_PERSONIO_OPTION_COUNT, ++$count );
+							update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, ++$count );
 							$progress ? $progress->tick() : false;
 							continue;
 						}
@@ -231,7 +234,7 @@ class Import {
 
 							// update max-counter only once per import.
 							if ( ! $do_not_update_max_counter ) {
-								update_option( WP_PERSONIO_OPTION_MAX, $language_count * count( $positions ) );
+								update_option( WP_PERSONIO_INTEGRATION_OPTION_MAX, $language_count * count( $positions ) );
 								$do_not_update_max_counter = true;
 							}
 
@@ -265,7 +268,7 @@ class Import {
 								}
 
 								// update counter.
-								update_option( WP_PERSONIO_OPTION_COUNT, ++$count );
+								update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, ++$count );
 							}
 
 							// save the md5-hash of this import-file to prevent reimport.
@@ -366,6 +369,9 @@ class Import {
 				Transients::get_instance()->get_transient_by_name( 'personio_integration_no_position_imported' )->delete();
 			}
 		} else {
+			// document errors.
+			update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, $this->errors );
+
 			// output error-message.
 			$this->show_errors();
 		}

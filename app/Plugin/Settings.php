@@ -183,7 +183,7 @@ class Settings {
 						'callback'            => array( 'App\Plugin\Admin\SettingFields\Text', 'get' ),
 						/* translators: %1$s is replaced with the url to personio account, %2$s is replaced with the url to the personio support */
 						'description'         => sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s">Personio support</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ), esc_url( Helper::get_personio_support_url() ) ),
-						'placeholder'         => Languages::get_instance()->is_german_language() ? 'https://dein-unternehmen.jobs.personio.de' : 'https://yourcompany.jobs.personio.com',
+						'placeholder'         => Helper::get_personio_url_example(),
 						'highlight'           => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
 							'default'           => '',
@@ -274,6 +274,13 @@ class Settings {
 						'description' => __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'    => ! Helper::is_personio_url_set(),
 						'default'     => array( 'recruitingCategory', 'schedule', 'office' ),
+					),
+					'personioIntegrationTemplateListingContentTemplate' => array(
+						'label'       => __( 'Choose template for content in list-view', 'personio-integration-light' ),
+						'callback'    => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
+						'options'     => Templates::get_instance()->get_jobdescription_templates(),
+						'readonly'    => ! Helper::is_personio_url_set(),
+						'default'     => 'default',
 					),
 					'personioIntegrationEnableLinkInList' => array(
 						'label'               => __( 'Enable link to single on list-view', 'personio-integration-light' ),
@@ -493,7 +500,7 @@ class Settings {
 	 */
 	public function add_settings_menu(): void {
 		add_submenu_page(
-			'edit.php?post_type=' . PersonioPosition::get_instance()->get_name(),
+			PersonioPosition::get_instance()->get_link( true ),
 			__( 'Personio Integration Settings', 'personio-integration-light' ),
 			__( 'Settings', 'personio-integration-light' ),
 			'manage_' . PersonioPosition::get_instance()->get_name(),

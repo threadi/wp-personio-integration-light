@@ -70,10 +70,10 @@ class PersonioIntegrationUrl {
 				);
 				// get the body with the contents.
 				$body = wp_remote_retrieve_body( $response );
-				$transient_obj = Transients::get_instance()->add();
-				$transient_obj->set_dismissible_days( 0 );
+
 				if ( ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) || str_starts_with( $body, '<!doctype html>' ) ) {
 					// error occurred => show hint.
+					$transient_obj = Transients::get_instance()->add();
 					$transient_obj->set_name( 'personio_integration_url_not_usable' );
 					/* translators: %1$s is replaced with the entered Personio-URL */
 					$transient_obj->set_message( sprintf( __( 'The specified Personio URL %1$s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there.', 'personio-integration-light' ), esc_url( $value ) ) );
@@ -82,12 +82,6 @@ class PersonioIntegrationUrl {
 					$error = true;
 					$value = '';
 				} else {
-					// URL is available, then show hint and option to import the positions now.
-					$transient_obj->set_name( 'personio_integration_import_now' );
-					$transient_obj->set_message( __( '<strong>The specified Personio URL is reachable.</strong> Click on the following button to import your positions from Personio now:', 'personio-integration-light' ) . ' <br><br><a href="' . Helper::get_import_url() . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>' );
-					$transient_obj->set_type( 'success' );
-					$transient_obj->save();
-
 					// delete other message.
 					Transients::get_instance()->get_transient_by_name( 'personio_integration_no_position_imported' )->delete();
 

@@ -114,7 +114,7 @@ class Dashboard {
 			<?php
 			foreach ( $positions_list as $position ) {
 				?>
-				<li><a href="<?php echo esc_url( get_permalink( $position->ID ) ); ?>"><?php echo esc_html( $position->get_title() ); ?></a></li>
+				<li><a href="<?php echo esc_url( get_permalink( $position->get_id() ) ); ?>"><?php echo esc_html( $position->get_title() ); ?></a></li>
 				<?php
 			}
 			?>
@@ -122,7 +122,8 @@ class Dashboard {
 			<p><a href="<?php echo esc_url( $link ); ?>">
 					<?php
 					/* translators: %1$d will be replaced by the count of positions */
-					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( get_option( WP_PERSONIO_OPTION_COUNT, 0 ) ) );
+					// TODO falsche Zahl wird ausgelesen
+					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ) );
 					?>
 				</a></p>
 			<?php

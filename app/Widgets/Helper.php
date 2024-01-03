@@ -82,6 +82,9 @@ trait Helper {
 					</p>
 					<?php
 					break;
+				case 'text':
+					echo '<p>'.wp_kses_post( $field['text'] ).'</p>';
+					break;
 			}
 		}
 	}

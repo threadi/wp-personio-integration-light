@@ -54,6 +54,13 @@ class Transient {
 	private array $action = array();
 
 	/**
+	 * List of URLs where this transient should not be visible.
+	 *
+	 * @var array
+	 */
+	private array $hide_on = array();
+
+	/**
 	 * Constructor for this object.
 	 *
 	 * If $transient is given, fill the object with its data.
@@ -128,6 +135,7 @@ class Transient {
 			'type'             => $this->get_type(),
 			'dismissible_days' => $this->get_dismissible_days(),
 			'action'           => $this->get_action(),
+			'hide_on'          => $this->get_hide_on()
 		);
 	}
 
@@ -172,6 +180,12 @@ class Transient {
 		$this->set_type( $entry['type'] );
 		$this->set_dismissible_days( $entry['dismissible_days'] );
 		$this->set_action( $entry['action'] );
+		$this->set_hide_on( $entry['hide_on' ] );
+
+		// bail if called URL is on hide-list.
+		if( $this->is_hidden() ) {
+			return;
+		}
 
 		// output, if message is given.
 		if ( $this->has_message() ) {
@@ -339,5 +353,34 @@ class Transient {
 	 */
 	private function has_action(): bool {
 		return ! empty( $this->get_action() );
+	}
+
+	/**
+	 * Hide this transient on specified pages (its URLs).
+	 *
+	 * @return array
+	 */
+	public function get_hide_on(): array {
+		return $this->hide_on;
+	}
+
+	/**
+	 * Hide this transient on specified pages (its URLs).
+	 *
+	 * @param array $hide_on List of URLs where this transient should not be visible.
+	 *
+	 * @return void
+	 */
+	public function set_hide_on( array $hide_on ): void {
+		$this->hide_on = $hide_on;
+	}
+
+	/**
+	 * Check if called URL is on list where this transient should not be visible.
+	 *
+	 * @return bool
+	 */
+	private function is_hidden(): bool {
+		return in_array( Helper::get_current_url(), $this->hide_on, true );
 	}
 }
