@@ -357,6 +357,7 @@ Yes, it is without any further settings.
 * Added some additional classes in templates for better custom styling-possibilities
 * Added option to choose a content template on listings
 * Added support for additional plugins: Open Graph and Twitter Tags, SEOFramework, SEOPress
+* Added link to switch between frontend- and backend-view of single position
 * Advanced Widgets for Positions with missing options
 * Optimized all templates for better handling and optimized output
 * Optimized check for existing part-templates
@@ -365,4 +366,7 @@ Yes, it is without any further settings.
 * New WP- and react-driven dialogs for each interaction with the plugin
 * New check for configured Personio-URL in Site Health
 * Removed 5 minutes cronjob as it is discouraged by WordPress (TODO Migrate)
+* Mark the filter options on Block "Personio Positions" as deprecated incl. warning for user to use Filter Block instead
 * Fixed usage of classic widgets
+* Fixed wrong Position count on dashboard
+* Fixed sorting in Log-table

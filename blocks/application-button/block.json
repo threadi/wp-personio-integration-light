@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
 	"name": "wp-personio-integration/application-button",
-	"version": "2.1.1",
+	"version": "@@VersionNumber@@",
 	"title": "Personio Position Application Button",
 	"category": "widgets",
 	"description": "Provides a Gutenberg Block to show the application button for single position.",

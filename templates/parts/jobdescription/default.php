@@ -2,6 +2,7 @@
 /**
  * Template-file for job description with headers.
  *
+ * @version 3.0.0
  * @package personio-integration-light
  */
 
@@ -9,8 +10,6 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Output of the content a single position with headers.
- *
- * @version: 1.0.1
  */
 
 ?><div class="entry-content"><?php

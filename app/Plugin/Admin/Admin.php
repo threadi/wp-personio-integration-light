@@ -82,6 +82,7 @@ class Admin {
 
 		// register our own importer in backend.
 		add_action( 'admin_init', array( $this, 'add_importer' ) );
+		add_action( 'load-importer-personio-integration-importer', array( $this, 'forward_importer_to_settings' ) );
 
 		// add admin_actions.
 		add_action( 'admin_action_personioPositionsImport', array( $this, 'import_positions' ) );
@@ -218,8 +219,6 @@ class Admin {
 	/**
 	 * Check for supported PageBuilder and show hint if Pro-version would support it.
 	 *
-	 * TODO austauschen durch neues Transient-object.
-	 *
 	 * @return void
 	 */
 	public function check_for_pagebuilder(): void {
@@ -243,7 +242,7 @@ class Admin {
 		 * Check for Divi PageBuilder or Divi Theme.
 		 */
 		if ( false === Helper::is_plugin_active( 'personio-integration-divi/personio-integration-divi.php' ) && ( Helper::is_plugin_active( 'divi-builder/divi-builder.php' ) || 'Divi' === wp_get_theme()->get( 'Name' ) ) ) {
-			$transient_obj = Transients::get_instance()->add();
+			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_divi' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Divi - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Divi.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -257,7 +256,7 @@ class Admin {
 		 * Check for Elementor.
 		 */
 		if ( did_action( 'elementor/loaded' ) ) {
-			$transient_obj = Transients::get_instance()->add();
+			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_divi' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Elementor - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Elementor.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -271,7 +270,7 @@ class Admin {
 		 * Check for WPBakery.
 		 */
 		if ( Helper::is_plugin_active( 'js_composer/js_composer.php' ) ) {
-			$transient_obj = Transients::get_instance()->add();
+			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_wpbakery' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using WPBakery - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in WPBakery.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -285,7 +284,7 @@ class Admin {
 		 * Check for Beaver Builder.
 		 */
 		if ( class_exists( 'FLBuilder' ) ) {
-			$transient_obj = Transients::get_instance()->add();
+			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_beaver' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Beaver Builder - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Beaver Builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -299,7 +298,7 @@ class Admin {
 		 * Check for SiteOrigin.
 		 */
 		if ( Helper::is_plugin_active( 'siteorigin-panels/siteorigin-panels.php' ) ) {
-			$transient_obj = Transients::get_instance()->add();
+			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_siteorigin' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Site Origin - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Site Origin.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -313,7 +312,7 @@ class Admin {
 		 * Check for Themify.
 		 */
 		if ( Helper::is_plugin_active( 'themify-builder/themify-builder.php' ) ) {
-			$transient_obj = Transients::get_instance()->add();
+			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_siteorigin' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Themify - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Themify.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -327,7 +326,7 @@ class Admin {
 		 * Check for Avada.
 		 */
 		if ( Helper::is_plugin_active( 'fusion-builder/fusion-builder.php' ) ) {
-			$transient_obj = Transients::get_instance()->add();
+			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_avada' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Avada - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Avada.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
@@ -348,8 +347,17 @@ class Admin {
 			'personio-integration-importer',
 			__( 'Personio', 'personio-integration-light' ),
 			__( 'Import positions from Personio', 'personio-integration-light' ),
-			array( $this, 'add_menu_content_importexport' ) // TODO Settingspage anzeigen.
+			'__return_true'
 		);
+	}
+
+	/**
+	 * Forward user to settings-page.
+	 *
+	 * @return void
+	 */
+	public function forward_importer_to_settings(): void {
+		wp_safe_redirect( Helper::get_settings_url( 'import' ) );
 	}
 
 	/**

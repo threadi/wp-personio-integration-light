@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle multiple Gutenberg-template.
+ * File to handle multiple Gutenberg-templates.
  *
  * @package personio-integration-light
  */
@@ -61,20 +61,19 @@ class Templates {
 	 * @param array  $result Resulting list of block templates.
 	 * @param array  $query The query.
 	 * @param string $template_type The template type.
+	 *
 	 * @return array
 	 * @noinspection PhpIssetCanBeReplacedWithCoalesceInspection
-	 */
+	 **/
 	public function add_block_templates( array $result, array $query, string $template_type ): array {
-		if ( ! $this->theme_support_block_templates() ) {
-			return $result;
-		}
-
 		// get post type.
 		$post_type = isset( $query['post_type'] ) ? $query['post_type'] : '';
 		$slugs     = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
 
-		// get our templates from filesystem.
+		// get our templates.
 		$templates = $this->get_block_templates( $slugs, $template_type );
+
+		// loop through the templates and add them to the resulting list if they are valid.
 		foreach ( $templates as $template ) {
 			$block_template = $template->get_object();
 			// hide template if post-types doesnt match.
@@ -93,41 +92,7 @@ class Templates {
 	}
 
 	/**
-	 * Check if active theme supports block templates.
-	 *
-	 * @return bool
-	 * @noinspection PhpUndefinedFunctionInspection
-	 */
-	private function theme_support_block_templates(): bool {
-		if (
-			! $this->current_theme_is_fse_theme() &&
-			( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
-		) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Check if the current theme is a block theme.
-	 *
-	 * @return bool
-	 * @noinspection PhpCastIsUnnecessaryInspection
-	 * @noinspection PhpUndefinedFunctionInspection
-	 */
-	private function current_theme_is_fse_theme(): bool {
-		if ( function_exists( 'wp_is_block_theme' ) ) {
-			return (bool) wp_is_block_theme();
-		}
-		if ( function_exists( 'gutenberg_is_fse_theme' ) ) {
-			return (bool) gutenberg_is_fse_theme();
-		}
-		return false;
-	}
-
-	/**
-	 * Get the supported block templates.
+	 * Get the supported block templates from file system AND database.
 	 *
 	 * @param array  $slugs List of slugs.
 	 * @param string $template_type The template.
@@ -146,7 +111,7 @@ class Templates {
 			}
 
 			// create template-object.
-			$template_obj = new template();
+			$template_obj = new Template();
 			$template_obj->set_type( $template_type );
 			$template_obj->set_slug( $template_slug );
 			$template_obj->set_source( $settings['source'] );
@@ -193,7 +158,7 @@ class Templates {
 		}
 
 		// create the template-object.
-		$template_obj = new template();
+		$template_obj = new Template();
 		$template_obj->set_template( $template_slug );
 		$template_obj->set_type( $template_type );
 		$template_obj->set_slug( $template_slug );
@@ -266,11 +231,11 @@ class Templates {
 		}
 
 		$check_query         = new \WP_Query( $query );
-		$saved_woo_templates = $check_query->posts;
+		$saved_templates = $check_query->posts;
 
 		$templates = array();
-		foreach ( $saved_woo_templates as $post ) {
-			$template_obj = new template();
+		foreach ( $saved_templates as $post ) {
+			$template_obj = new Template();
 			$template_obj->set_post_id( $post->ID );
 			$template_obj->set_template( $post->post_name );
 			$template_obj->set_type( $post->post_type );
@@ -292,10 +257,6 @@ class Templates {
 	 * @return void
 	 */
 	public function update_db_templates(): void {
-		if ( ! $this->current_theme_is_fse_theme() ) {
-			return;
-		}
-
 		// loop through the templates an update their template-parts in content to the new theme.
 		foreach ( $this->get_templates_from_db( array(), 'wp_template' ) as $template ) {
 			$updated_content = $template->update_theme_attribute_in_content( $template->get_content() );

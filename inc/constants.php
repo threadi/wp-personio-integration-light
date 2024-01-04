@@ -109,11 +109,6 @@ const WP_PERSONIO_INTEGRATION_OPTION_COUNT = 'piImportCount';
 const WP_PERSONIO_INTEGRATION_OPTION_MAX   = 'piImportMax';
 
 /**
- * URL to the Gutenberg-templates.
- */
-define( 'WP_PERSONIO_GUTENBERG_TEMPLATES', Helper::get_plugin_url() . 'templates/gutenberg/' );
-
-/**
  * Define the Gutenberg-template-parent-ID which should reflect the plugin-directory.
  */
 const WP_PERSONIO_GUTENBERG_PARENT_ID = 'personio-integration-light/personio-integration-light';

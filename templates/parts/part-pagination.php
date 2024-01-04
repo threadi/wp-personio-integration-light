@@ -2,7 +2,7 @@
 /**
  * Template for output a pagination of positions.
  *
- * @version: 1.0.0
+ * @version: 3.0.0
  * @package personio-integration-light
  */
 
@@ -10,8 +10,6 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Output of pagination.
- *
- * @version: 1.1.0
  */
 ?>
 <div class="entry-content">

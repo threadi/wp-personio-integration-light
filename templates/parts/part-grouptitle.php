@@ -2,11 +2,9 @@
 /**
  * Selects and show the group-title if list is grouped by a taxonomy
  *
- * @version: 1.0.0
+ * @version: 3.0.0
  * @package personio-integration-light
  */
-
-use App\helper;
 
 // only if group by is set.
 if ( ! empty( $personio_attributes['groupby'] ) ) {

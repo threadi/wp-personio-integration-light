@@ -2,7 +2,7 @@
 /**
  * Template for output of a list of positions as archive of our custom post type.
  *
- * @version: 1.0.0
+ * @version: 3.0.0
  * @package personio-integration-light
  */
 
@@ -24,6 +24,6 @@ $description = get_the_archive_description();
 <?php
 
 // use shortcode-functions to display the list.
-echo PersonioPosition::get_instance()->shortcode_positions();
+echo PersonioPosition::get_instance()->shortcode_archive();
 
 get_footer();

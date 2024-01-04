@@ -62,15 +62,6 @@ trait Helper {
 		// delete the content of all taxonomies.
 		// -> hint: some will be newly insert after next wp-init.
 		$taxonomies = Taxonomies::get_instance()->get_taxonomies();
-
-		/**
-		 * Get all taxonomies as array.
-		 *
-		 * @since 1.0.0 Available since first release.
-		 *
-		 * @param array $taxonomies The list of taxonomies.
-		 */
-		$taxonomies = apply_filters( 'personio_integration_taxonomies', $taxonomies );
 		$progress   = \App\Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy => $settings ) {
 			// delete all terms of this taxonomy.

@@ -191,7 +191,7 @@ class Position extends WP_Widget {
 		echo $args['before_widget'];
 
 		// get the output.
-		echo PersonioPosition::get_instance()->shortcode_position( $attribute_defaults );
+		echo PersonioPosition::get_instance()->shortcode_single( $attribute_defaults );
 
 		// add wrapper from template around widget-content.
 		echo $args['after_widget'];

@@ -8,6 +8,7 @@
 namespace App\Plugin\Admin\SettingsValidation;
 
 use App\Helper;
+use App\PersonioIntegration\Personio;
 use App\Plugin\Transients;
 
 /**
@@ -22,6 +23,8 @@ class PersonioIntegrationUrl {
 	 * @return string
 	 */
 	public static function validate( string $value ): string {
+		$transients_obj = Transients::get_instance();
+
 		$errors = get_settings_errors();
 		/**
 		 * If a result-entry already exists, do nothing here.
@@ -37,7 +40,7 @@ class PersonioIntegrationUrl {
 			add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'The specification of the Personio URL is mandatory.', 'personio-integration-light' ) );
 
 			// delete import hint.
-			Transients::get_instance()->get_transient_by_name( 'personio_integration_no_position_imported' )->delete();
+			$transients_obj->get_transient_by_name( 'personio_integration_no_position_imported' )->delete();
 
 			$error = true;
 		}
@@ -59,10 +62,12 @@ class PersonioIntegrationUrl {
 				add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'Please enter a valid URL.', 'personio-integration-light' ) );
 				$error = true;
 				$value = '';
-			} elseif ( get_option( 'personioIntegrationUrl', '' ) !== $value ) {
+			} elseif ( Helper::get_personio_url() !== $value ) {
+				$personio_obj = new Personio( $value );
+
 				// -> should return HTTP-Status 200
 				$response = wp_remote_get(
-					Helper::get_personio_xml_url( $value ),
+					$personio_obj->get_xml_url(),
 					array(
 						'timeout'     => 30,
 						'redirection' => 0,
@@ -73,7 +78,7 @@ class PersonioIntegrationUrl {
 
 				if ( ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) || str_starts_with( $body, '<!doctype html>' ) ) {
 					// error occurred => show hint.
-					$transient_obj = Transients::get_instance()->add();
+					$transient_obj = $transients_obj->add();
 					$transient_obj->set_name( 'personio_integration_url_not_usable' );
 					/* translators: %1$s is replaced with the entered Personio-URL */
 					$transient_obj->set_message( sprintf( __( 'The specified Personio URL %1$s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there.', 'personio-integration-light' ), esc_url( $value ) ) );
@@ -96,7 +101,7 @@ class PersonioIntegrationUrl {
 
 		// reset transient if url is set.
 		if ( ! $error ) {
-			$transient_obj = Transients::get_instance()->get_transient_by_name( 'personio_integration_no_url_set' );
+			$transient_obj = $transients_obj->get_transient_by_name( 'personio_integration_no_url_set' );
 			$transient_obj->delete();
 		}
 

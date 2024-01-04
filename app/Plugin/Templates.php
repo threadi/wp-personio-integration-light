@@ -228,15 +228,10 @@ class Templates {
 	 * @return array
 	 */
 	public function get_lowercase_attributes( array $values ): array {
-		// TODO better solution?
-		$array = array();
-		foreach ( $values['attributes'] as $name => $attribute ) {
-			$array[ strtolower( $name ) ] = $attribute;
-		}
 		return array(
 			'defaults'   => $values['defaults'],
 			'settings'   => $values['settings'],
-			'attributes' => $array,
+			'attributes' => array_map('strtolower', $values['attributes'] ),
 		);
 	}
 
@@ -265,8 +260,6 @@ class Templates {
 	/**
 	 * Check for changed templates of our own plugin in the child-theme, if one is used.
 	 *
-	 * TODO testen
-	 *
 	 * @return void
 	 */
 	public function check_child_theme_templates(): void {
@@ -277,21 +270,21 @@ class Templates {
 		}
 
 		// get path for child-theme-templates-directory and check its existence.
-		$path = trailingslashit( get_stylesheet_directory() ) . 'personio-integration-light';
+		$path = trailingslashit( get_stylesheet_directory() ) . 'personio-integration-light/';
 		if ( ! file_exists( $path ) ) {
 			Transients::get_instance()->get_transient_by_name( 'personio_integration_old_templates' )->delete();
 			return;
 		}
 
 		// get all files from child-theme-templates-directory.
-		$files = Helper::get_file_from_directory( $path );
+		$files = Helper::get_files_from_directory( $path );
 		if ( empty( $files ) ) {
 			Transients::get_instance()->get_transient_by_name( 'personio_integration_old_templates' )->delete();
 			return;
 		}
 
 		// get list of all templates of this plugin.
-		$plugin_files = Helper::get_file_from_directory( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) . '/templates' );
+		$plugin_files = Helper::get_files_from_directory( Helper::get_plugin_path() . 'templates/' );
 
 		// collect warnings.
 		$warnings = array();
@@ -305,7 +298,7 @@ class Templates {
 		foreach ( $files as $file ) {
 			// check only files wich are exist in our plugin.
 			if ( isset( $plugin_files[ basename( $file ) ] ) ) {
-				// get the file-version-data.
+				// get the file-version-data of the child-template-file.
 				$file_data = get_file_data( $file, $headers );
 				// only check more if something could be read.
 				if ( isset( $file_data['version'] ) ) {
@@ -336,8 +329,9 @@ class Templates {
 			// show a transient.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_no_simplexml' );
-			$transient_obj->set_message( __( '<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'personio-integration-light' ) . $html_list . __( 'Hint: the version-number in the header of the files must match.', 'personio-integration-light' ) );
+			$transient_obj->set_message( __( '<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'personio-integration-light' ) . $html_list . __( '<strong>Hint:</strong> the version-number in the header of the files must match.', 'personio-integration-light' ) );
 			$transient_obj->set_type( 'error' );
+			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->save();
 		} else {
 			Transients::get_instance()->get_transient_by_name( 'personio_integration_old_templates' )->delete();
@@ -557,21 +551,11 @@ class Templates {
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function personio_integration_get_filter( string $filter, array $attributes ): void {
+	public function get_filter_template( string $filter, array $attributes ): void {
 		$taxonomy_to_use = '';
 		$term_ids        = array();
 
-		// list of taxonomies.
-		$taxonomies = Taxonomies::get_instance()->get_taxonomies();
-
-		/**
-		 * Get all taxonomies as array.
-		 *
-		 * @since 1.0.0 Available since first release.
-		 *
-		 * @param array $taxonomies The list of taxonomies.
-		 */
-		foreach ( apply_filters( 'personio_integration_taxonomies', $taxonomies ) as $taxonomy_name => $taxonomy ) {
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			if ( $filter === $taxonomy['slug'] && 1 === absint( $taxonomy['useInFilter'] ) ) {
 				$taxonomy_to_use = $taxonomy_name;
 				$terms           = get_terms( array( 'taxonomy' => $taxonomy_name ) );
@@ -596,7 +580,6 @@ class Templates {
 			);
 
 			if ( ! empty( $terms ) ) {
-
 				// get the value.
 				$value = 0;
 				// -> if filter is set by editor.
@@ -605,7 +588,7 @@ class Templates {
 				}
 				// -> if filter is set by user in frontend.
 				if ( ! empty( $_GET['personiofilter'] ) && ! empty( $_GET['personiofilter'][ $filter ] ) ) {
-					$value = sanitize_text_field( wp_unslash( $_GET['personiofilter'][ $filter ] ) );
+					$value = absint( wp_unslash( $_GET['personiofilter'][ $filter ] ) );
 				}
 
 				// set name.

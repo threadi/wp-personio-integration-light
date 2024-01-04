@@ -2,7 +2,7 @@
 /**
  * Template for output of a list of positions via shortcode.
  *
- * @version: 2.0.0
+ * @version: 3.0.0
  * @package personio-integration-light
  */
 

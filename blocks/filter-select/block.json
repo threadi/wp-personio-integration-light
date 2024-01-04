@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
 	"name": "wp-personio-integration/filter-select",
-	"version": "2.1.0",
+	"version": "@@VersionNumber@@",
 	"title": "Personio Select Filter",
 	"category": "widgets",
 	"icon": "list-view",

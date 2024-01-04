@@ -209,7 +209,7 @@ class Taxonomies {
 		);
 
 		/**
-		 * Get all taxonomies as array.
+		 * Filter all taxonomies and return the resulting list as array.
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *

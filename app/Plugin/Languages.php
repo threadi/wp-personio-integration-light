@@ -161,7 +161,7 @@ class Languages {
 	 *
 	 * @return string
 	 */
-	public static function get_wp_lang(): string {
+	public function get_wp_lang(): string {
 		$wp_lang = substr( get_bloginfo( 'language' ), 0, 2 );
 
 		/**
@@ -207,7 +207,7 @@ class Languages {
 	 *
 	 * @return string
 	 */
-	public static function get_current_lang(): string {
+	public function get_current_lang(): string {
 		$wp_lang = substr( get_bloginfo( 'language' ), 0, 2 );
 
 		/**

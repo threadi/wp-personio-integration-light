@@ -8,9 +8,12 @@
 namespace App\Plugin;
 
 use App\Helper;
+use App\PageBuilder_Base;
+use App\PersonioIntegration\Position;
 use App\PersonioIntegration\PostTypes\PersonioPosition;
 use App\Plugin\Admin\Admin;
 use App\Third_Party_Plugins;
+use App\Widgets\Positions;
 use App\Widgets\Widgets;
 use WP_Admin_Bar;
 
@@ -70,6 +73,23 @@ class Init {
 
 		// init roles.
 		Roles::get_instance()->init();
+
+		// include our own Gutenberg-pagebuilder-support.
+		include_once Helper::get_plugin_path().'inc/gutenberg.php';
+
+		$page_builder_objects = array();
+		/**
+		 * Register page builder.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $page_builder_objects The list of templates.
+		 */
+		foreach( apply_filters( 'personio_integration_pagebuilder', $page_builder_objects ) as $page_builder_obj ) {
+			if( $page_builder_obj instanceof PageBuilder_Base ) {
+				$page_builder_obj->init();
+			}
+		}
 
 		// init third-party-support.
 		Third_Party_Plugins::get_instance()->init();
@@ -134,7 +154,7 @@ class Init {
 	 * @return void
 	 */
 	public function add_custom_toolbar( WP_Admin_Bar $admin_bar ): void {
-		if ( get_option( 'personioIntegrationUrl', false ) && 0 === absint( get_option( 'personioIntegrationDisableListSlug', 0 ) ) ) {
+		if ( Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationDisableListSlug', 0 ) ) ) {
 			$admin_bar->add_menu(
 				array(
 					'id'     => 'personio-position-list',
@@ -143,6 +163,23 @@ class Init {
 					'href'   => get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT ),
 				)
 			);
+		}
+
+		// add link to view position in frontend if one is called in backend.
+		if( is_admin() && !empty($_GET['post']) ) {
+			$post_id = absint( wp_unslash( $_GET['post'] ) );
+			if( $post_id > 0 && WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( $post_id ) ) {
+				$position_obj = \App\PersonioIntegration\Positions::get_instance()->get_position( $post_id );
+				$admin_bar->add_menu(
+					array(
+						'id'     => 'personio-integration-detail',
+						'parent' => null,
+						'group'  => null,
+						'title'  => __( 'View Position in frontend', 'personio-integration-light' ),
+						'href'   => $position_obj->get_link(),
+					)
+				);
+			}
 		}
 	}
 

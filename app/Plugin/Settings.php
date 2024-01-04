@@ -181,7 +181,7 @@ class Settings {
 					'personioIntegrationUrl'              => array(
 						'label'               => __( 'Personio URL', 'personio-integration-light' ),
 						'callback'            => array( 'App\Plugin\Admin\SettingFields\Text', 'get' ),
-						/* translators: %1$s is replaced with the url to personio account, %2$s is replaced with the url to the personio support */
+						/* translators: %1$s is replaced with the url to Personio login for account access, %2$s is replaced with the url to the Personio support */
 						'description'         => sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s">Personio support</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ), esc_url( Helper::get_personio_support_url() ) ),
 						'placeholder'         => Helper::get_personio_url_example(),
 						'highlight'           => ! Helper::is_personio_url_set(),
@@ -343,7 +343,7 @@ class Settings {
 				'page'     => 'personioIntegrationPositionsTemplates',
 				'callback' => '__return_true',
 				'fields'   => array(
-					'personioIntegrationTemplateExcerptSeparator' => array( // TODO darauf verzichten wegen Template-Nutzung?
+					'personioIntegrationTemplateExcerptSeparator' => array(
 						'label'    => __( 'Separator for details-listing', 'personio-integration-light' ),
 						'callback' => array( 'App\Plugin\Admin\SettingFields\Text', 'get' ),
 						'readonly' => ! Helper::is_personio_url_set(),

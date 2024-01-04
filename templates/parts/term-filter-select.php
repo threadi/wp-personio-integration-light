@@ -2,7 +2,7 @@
 /**
  * Show select-filter for a chosen taxonomy.
  *
- * @version: 1.0.0
+ * @version: 3.0.0
  * @package personio-integration-light
  */
 
@@ -10,8 +10,6 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Template for output a single term filter with select-field.
- *
- * @version: 1.0.0
  */
 ?>
 	<div>

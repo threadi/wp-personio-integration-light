@@ -7,7 +7,6 @@
 
 namespace App;
 
-use App\PersonioIntegration\Position;
 use App\Plugin\Languages;
 use App\Plugin\Templates;
 use WP_Post;
@@ -84,7 +83,7 @@ class Helper {
 	}
 
 	/**
-	 * Return the url to start the import manually.
+	 * Return the URL which starts the import manually.
 	 *
 	 * @return string
 	 */
@@ -343,22 +342,6 @@ class Helper {
 	}
 
 	/**
-	 * Get generated Personio-application-URL.
-	 *
-	 * TODO find better way.
-	 *
-	 * @param Position $position_obj The Position-object.
-	 * @param bool     $without_application Whether the link should be generated with form-#hashtag.
-	 * @return string
-	 */
-	public static function get_personio_application_url( Position $position_obj, bool $without_application = false ): string {
-		if ( $without_application ) {
-			return get_option( 'personioIntegrationUrl', '' ) . '/job/' . absint( $position_obj->get_personio_id() ) . '?display=' . Languages::get_instance()->get_main_language();
-		}
-		return get_option( 'personioIntegrationUrl', '' ) . '/job/' . absint( $position_obj->get_personio_id() ) . '?display=' . Languages::get_instance()->get_main_language() . '#apply';
-	}
-
-	/**
 	 * Get current URL in frontend and backend.
 	 *
 	 * @return string
@@ -393,7 +376,7 @@ class Helper {
 	 */
 	public static function get_attribute_value_from_html( string $attrib, string $tag ): string {
 		// get attribute from html tag.
-		$re = '/' . preg_quote( $attrib, null ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
+		$re = '/' . preg_quote( $attrib ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
 		if ( preg_match( $re, $tag, $match ) ) {
 			return urldecode( $match[2] );
 		}
@@ -403,48 +386,42 @@ class Helper {
 	/**
 	 * Get all files of directory recursively.
 	 *
-	 * TODO replace with WP_Filesystem?
-	 *
 	 * @param string $path The path.
-	 * @param array  $file_list The list of files.
 	 * @return array
 	 */
-	public static function get_file_from_directory( string $path = '.', array $file_list = array() ): array {
-		$ignore = array( '.', '..' );
-		$dh     = opendir( $path );
-		while ( false !== ( $file = readdir( $dh ) ) ) {
-			if ( ! in_array( $file, $ignore, true ) ) {
-				$filepath = $path . '/' . $file;
-				if ( is_dir( $filepath ) ) {
-					$file_list = self::get_file_from_directory( $filepath, $file_list );
-				} else {
-					$file_list[ $file ] = $filepath;
-				}
+	public static function get_files_from_directory( string $path = '.' ): array {
+		// get WP_Filesystem as object.
+		global $wp_filesystem;
+		WP_Filesystem();
+
+		// load files recursive in array and return resulting list.
+		return self::get_files( $wp_filesystem->dirlist( $path, true, true ), $path );
+	}
+
+	/**
+	 * Recursively load files from given array.
+	 *
+	 * @param array  $files Array of file we iterate through.
+	 * @param string $path Absolute path where the files are located.
+	 * @param array  $file_list
+	 *
+	 * @return array
+	 */
+	private static function get_files( array $files, string $path, array $file_list = array() ): array {
+		foreach( $files as $filename => $settings ) {
+			if( 'f' === $settings['type'] ) {
+				$file_list[ $filename ] = $path.$filename;
+			}
+			if( 'd' === $settings['type'] ) {
+				$file_list = self::get_files( $settings['files'], $path.trailingslashit($filename), $file_list );
 			}
 		}
-		closedir( $dh );
+
 		return $file_list;
 	}
 
 	/**
-	 * Return the Personio-XML-URL without any parameter.
-	 *
-	 * TODO find better way.
-	 *
-	 * @param string $domain The domain.
-	 * @return string
-	 */
-	public static function get_personio_xml_url( string $domain ): string {
-		if ( empty( $domain ) ) {
-			return '';
-		}
-		return $domain . '/xml';
-	}
-
-	/**
-	 * Get language-specific personio account login url.
-	 *
-	 * TODO find better way.
+	 * Get language-specific Personio account login url.
 	 *
 	 * @return string
 	 */
@@ -456,7 +433,7 @@ class Helper {
 	}
 
 	/**
-	 * Get language-specific personio account support url.
+	 * Get language-specific Personio account support url.
 	 *
 	 * @return string
 	 */
@@ -468,12 +445,12 @@ class Helper {
 	}
 
 	/**
-	 * Return the configured personio-URL.
+	 * Return the configured Personio-URL.
 	 *
 	 * @return string
 	 */
 	public static function get_personio_url(): string {
-		return get_option( 'personioIntegrationUrl', '' );
+		return apply_filters( 'personio_integration_url', get_option( 'personioIntegrationUrl', '' ) );
 	}
 
 	/**
@@ -505,16 +482,19 @@ class Helper {
 	/**
 	 * Return the settings-URL.
 	 *
+	 * @param string $tab String which represents the tab to link to.
+	 *
 	 * @return string
 	 */
-	public static function get_settings_url(): string {
-		return add_query_arg(
-			array(
-				'post_type' => WP_PERSONIO_INTEGRATION_MAIN_CPT,
-				'page'      => 'personioPositions',
-			),
-			'edit.php'
+	public static function get_settings_url( string $tab = '' ): string {
+		$params = array(
+			'post_type' => WP_PERSONIO_INTEGRATION_MAIN_CPT,
+			'page'      => 'personioPositions',
 		);
+		if( !empty( $tab ) ) {
+			$params['tab'] = $tab;
+		}
+		return add_query_arg( $params, 'edit.php' );
 	}
 
 	/**
@@ -524,7 +504,10 @@ class Helper {
 	 */
 	public static function get_plugin_name(): string {
 		$plugin_data = get_plugin_data( WP_PERSONIO_INTEGRATION_PLUGIN );
-		return $plugin_data['Name'];
+		if( !empty($plugin_data) && !empty($plugin_data['Name']) ) {
+			return $plugin_data['Name'];
+		}
+		return '';
 	}
 
 	/**

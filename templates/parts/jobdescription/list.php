@@ -2,6 +2,7 @@
 /**
  * Template-file for job description as list.
  *
+ * @version 3.0.0
  * @package personio-integration-light
  */
 
@@ -9,10 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Output of the content a single position as list.
- *
- * @version: 1.0.0
  */
-
 $content_array = $position->get_content_as_array();
 if ( ! empty( $content_array ) ) {
 	?><div class="entry-content"><ul class="position-integration-jobdescription"><?php

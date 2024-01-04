@@ -7,6 +7,7 @@
 
 namespace App\PageBuilder\Gutenberg;
 
+use App\Helper;
 use WP_Block_Template;
 
 /**
@@ -76,12 +77,12 @@ class Template {
 	public function __construct() {}
 
 	/**
-	 * Get template file.
+	 * Get path to template file.
 	 *
 	 * @return string
 	 */
-	public function get_file(): string {
-		return WP_PERSONIO_GUTENBERG_TEMPLATES . $this->get_slug() . '.html';
+	public function get_file_path(): string {
+		return Helper::get_plugin_path() . 'templates/gutenberg/' . $this->get_slug() . '.html';
 	}
 
 	/**
@@ -188,7 +189,7 @@ class Template {
 		$new_template_item = array(
 			'slug'        => $this->get_slug(),
 			'id'          => WP_PERSONIO_GUTENBERG_PARENT_ID . '//' . $this->get_slug(),
-			'path'        => $this->get_file(),
+			'path'        => $this->get_file_path(),
 			'type'        => $this->get_type(),
 			'theme'       => WP_PERSONIO_GUTENBERG_PARENT_ID,
 			'source'      => $this->get_source(),
@@ -204,6 +205,7 @@ class Template {
 	 * Return this object as block template.
 	 *
 	 * @return WP_Block_Template
+	 * @noinspection PhpTernaryExpressionCanBeReducedToShortVersionInspection
 	 */
 	public function get_block_template(): WP_Block_Template {
 		// check the source of this template (plugin or theme).
@@ -217,7 +219,7 @@ class Template {
 		$template->id             = $template_is_from_theme ? $theme_name . '//' . $this->get_slug() : WP_PERSONIO_GUTENBERG_PARENT_ID . '//' . $this->get_slug();
 		$template->theme          = $template_is_from_theme ? $theme_name : WP_PERSONIO_GUTENBERG_PARENT_ID;
 		$template->content        = $this->inject_theme_attribute_in_content( $this->get_content() );
-		$template->source         = $this->get_source() ? $this->get_source() : 'plugin'; // TODO check this.
+		$template->source         = $this->get_source() ? $this->get_source() : 'plugin';
 		$template->slug           = $this->get_slug();
 		$template->type           = $this->get_type();
 		$template->title          = $this->get_title();
@@ -258,7 +260,7 @@ class Template {
 		}
 
 		if ( $has_updated_content ) {
-			foreach ( $template_blocks as &$block ) { // TODO check this.
+			foreach ( $template_blocks as &$block ) {
 				$new_content .= serialize_block( $block );
 			}
 
@@ -360,7 +362,7 @@ class Template {
 	 * @return bool
 	 */
 	public function is_valid(): bool {
-		return file_exists( $this->get_file() );
+		return file_exists( $this->get_file_path() );
 	}
 
 	/**
@@ -375,7 +377,7 @@ class Template {
 			\WP_Filesystem();
 			global $wp_filesystem;
 
-			$this->content = $wp_filesystem->get_contents( $this->get_file() );
+			$this->content = $wp_filesystem->get_contents( $this->get_file_path() );
 		}
 		return $this->content;
 	}

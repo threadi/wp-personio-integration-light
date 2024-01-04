@@ -122,8 +122,7 @@ class Dashboard {
 			<p><a href="<?php echo esc_url( $link ); ?>">
 					<?php
 					/* translators: %1$d will be replaced by the count of positions */
-					// TODO falsche Zahl wird ausgelesen
-					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ) );
+					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( Positions::get_instance()->get_positions_count() ) );
 					?>
 				</a></p>
 			<?php

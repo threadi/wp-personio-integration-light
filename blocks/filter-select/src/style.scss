@@ -1,24 +1,24 @@
 .personio-position-filter-select {
-  display: flex;
-  flex-direction: row;
-}
+	display: flex;
+	flex-direction: row;
 
-.personio-position-filter-select legend {
-  display: inline-block;
-  font-weight: bold;
-  margin-right: 1.4em;
-  padding: 0;
-  width: auto;
-}
+	legend {
+		display: inline-block;
+		font-weight: bold;
+		margin-right: 1.4em;
+		padding: 0;
+		width: auto;
+	}
 
-.personio-position-filter-select > div {
-  cursor: pointer;
-  display: inline-block;
-  margin: 0 1.4em 0 0;
-  position: relative;
-  z-index :1;
-}
+	&> div {
+		cursor: pointer;
+		display: inline-block;
+		margin: 0 1.4em 0 0;
+		position: relative;
+		z-index :1;
+	}
 
-.personio-position-filter-select label {
-  display: block;
+	label {
+		display: block;
+	}
 }

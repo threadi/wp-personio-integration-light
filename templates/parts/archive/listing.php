@@ -2,7 +2,7 @@
 /**
  * Listing-template for archive-listing.
  *
- * @version 1.0.0
+ * @version 3.0.0
  * @package personio-integration-light
  */
 

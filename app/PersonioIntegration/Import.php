@@ -99,6 +99,9 @@ class Import {
 		libxml_use_internal_errors( true );
 
 		if ( empty( $this->errors ) ) {
+			// get Personio-URL.
+			$personio_obj = new Personio( Helper::get_personio_url() );
+
 			// define counter.
 			$count = 0;
 
@@ -106,7 +109,7 @@ class Import {
 			$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Get positions from Personio by language', $language_count ) : false;
 			foreach ( $languages as $language_name => $label ) {
 				// get URL.
-				$url = Helper::get_personio_xml_url( Helper::get_personio_url() ) . '?language=' . esc_attr( $language_name );
+				$url = $personio_obj->get_xml_url() . '?language=' . esc_attr( $language_name );
 
 				/**
 				 * Change the URL via hook.
@@ -326,7 +329,7 @@ class Import {
 					$do_delete = apply_filters( 'personio_integration_delete_single_position', $do_delete, $position );
 
 					if ( false !== $do_delete ) {
-						// get personio id.
+						// get Personio ID.
 						$personio_id = $position->get_personio_id();
 						if ( 1 === absint( get_post_meta( $position->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, true ) ) ) {
 							if ( false === delete_post_meta( $position->get_id(), WP_PERSONIO_INTEGRATION_UPDATED ) ) {

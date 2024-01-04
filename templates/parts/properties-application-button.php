@@ -2,7 +2,7 @@
 /**
  * Template for output the application button.
  *
- * @version: 1.0.0
+ * @version: 3.0.0
  * @package personio-integration-light
  */
 
@@ -13,17 +13,17 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Output an application-button for a single position.
- *
- * @version: 1.0.0
  */
 
 // embed block-specific styling.
 require Templates::get_instance()->get_template( 'parts/styling.php' );
 
+// TODO blank auch abschaltbar machen
+
 ?>
 <div class="entry-content">
 	<p class="personio-integration-application-button<?php echo esc_attr( $attributes['classes'] ); ?>">
-		<a class="personio-integration-application-button" href="<?php echo esc_url( Helper::get_personio_application_url( $position ) ); ?>" target="_blank">
+		<a class="personio-integration-application-button" href="<?php echo esc_url( $position->get_application_url() ); ?>" target="_blank">
 			<?php
 			if ( 'archive' === $text_position ) {
 				echo esc_html_x( 'Apply for this position', 'archive', 'personio-integration-light' );

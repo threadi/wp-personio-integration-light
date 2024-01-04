@@ -228,8 +228,8 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function shortcodes(): void {
-		add_shortcode( 'personioPosition', array( $this, 'shortcode_position' ) );
-		add_shortcode( 'personioPositions', array( $this, 'shortcode_positions' ) );
+		add_shortcode( 'personioPosition', array( $this, 'shortcode_single' ) );
+		add_shortcode( 'personioPositions', array( $this, 'shortcode_archive' ) );
 	}
 
 	/**
@@ -253,7 +253,7 @@ class PersonioPosition extends Post_Type {
 	 * @param array $attributes The shortcode attributes.
 	 * @return string
 	 */
-	public function shortcode_position( array $attributes = array() ): string {
+	public function shortcode_single( array $attributes = array() ): string {
 		// convert single shortcode attributes.
 		$personio_attributes = $this->get_single_shortcode_attributes( $attributes );
 
@@ -341,7 +341,7 @@ class PersonioPosition extends Post_Type {
 	 *
 	 * @return string
 	 */
-	public function shortcode_positions( array $attributes = array() ): string {
+	public function shortcode_archive( array $attributes = array() ): string {
 		// set pagination settings.
 		$pagination = true;
 
@@ -403,15 +403,15 @@ class PersonioPosition extends Post_Type {
 
 		// add taxonomies which are available as filter.
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
-			if ( ! empty( $taxonomy['slug'] ) && 1 === absint( $taxonomy['useInFilter'] ) ) {
+			// bail if no slug is set for this taxonomy.
+			if (  empty( $taxonomy['slug'] ) ) {
+				continue;
+			}
+			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
 				if ( ! empty( $_GET['personiofilter'] ) && ! empty( $_GET['personiofilter'][ $taxonomy['slug'] ] ) ) {
 					$attribute_defaults[ $taxonomy['slug'] ] = 0;
 					$attribute_settings[ $taxonomy['slug'] ] = 'filter';
 				}
-			}
-			if ( ! empty( $taxonomy['slug'] ) && 1 === absint( $taxonomy['useInFilter'] ) ) {
-				unset( $attribute_defaults[ $taxonomy['slug'] ] );
-				unset( $attribute_settings[ $taxonomy['slug'] ] );
 			}
 		}
 
@@ -421,17 +421,14 @@ class PersonioPosition extends Post_Type {
 		// get positions-object for search.
 		$positions_obj = Positions::get_instance();
 
-		// unset the id-list if it is empty.
-		// TODO get better solution for limit.
-		if ( empty( $personio_attributes['ids'][0] ) ) {
-			unset( $personio_attributes['ids'] );
-		} else {
+		// filter for specific ids.
+		if ( !empty( $personio_attributes['ids'][0] ) ) {
 			// convert id-list from PersonioId in post_id.
 			$resulting_list = array();
 			foreach ( $personio_attributes['ids'] as $personio_id ) {
 				$position = $positions_obj->get_position_by_personio_id( $personio_id );
 				if ( $position instanceof Position ) {
-					$resulting_list[] = $position->ID;
+					$resulting_list[] = $position->get_id();
 				}
 			}
 			$personio_attributes['ids'] = $resulting_list;
@@ -962,7 +959,7 @@ class PersonioPosition extends Post_Type {
 		global $pagenow, $typenow;
 
 		if ( is_admin() && ! empty( $typenow ) && ! empty( $pagenow ) && 'edit.php' === $pagenow && ! empty( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) && stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'edit.php' ) && stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'post_type=' . $typenow ) && ! stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'page' ) ) {
-			$pagenow = 'edit-' . $typenow . '.php'; // TODO find better solution.
+			$pagenow = 'edit-' . $typenow . '.php';
 		}
 	}
 

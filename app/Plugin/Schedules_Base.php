@@ -1,7 +1,15 @@
 <?php
+/**
+ * File as base for each schedule.
+ *
+ * @package personio-integration-light
+ */
 
 namespace App\Plugin;
 
+/**
+ * Define the base object for schedules.
+ */
 class Schedules_Base {
 	/**
 	 * Name of this event.

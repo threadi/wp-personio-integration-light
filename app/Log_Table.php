@@ -2,14 +2,17 @@
 /**
  * File for handling table of logs in this plugin.
  *
- * TODO mit easy-language abgleichen wg. Sortierung.
- *
  * @package personio-integration-light
  */
 
 namespace App;
 
 use WP_List_Table;
+
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Handler for log-output in backend.
@@ -34,12 +37,34 @@ class Log_Table extends WP_List_Table {
 	 * @return array
 	 */
 	private function table_data(): array {
+		// check nonce.
+		if( isset($_REQUEST['nonce']) && !wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-table-log' ) ) {
+			// redirect user back.
+			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+			exit;
+		}
+
 		global $wpdb;
+
+		// order table.
+		$order_by = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ), true ) ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : 'date';
+		$order    = ( isset( $_REQUEST['order'] ) && in_array( $_REQUEST['order'], array( 'asc', 'desc' ), true ) ) ? sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) : 'desc';
+
+		// define vars for prepared statement.
+		$vars = array(
+			1,
+			$order_by,
+			$order,
+		);
+
 		$sql = '
             SELECT `state`, `time` AS `date`, `log`
             FROM `' . $wpdb->prefix . 'personio_import_logs`
-            ORDER BY `time` DESC';
-		return $wpdb->get_results( $sql, ARRAY_A );
+            WHERE 1 = %1$d
+            ORDER BY %2$s %3$s';
+
+		// get results and return them.
+		return $wpdb->get_results( $wpdb->prepare( $sql, $vars ), ARRAY_A );
 	}
 
 	/**

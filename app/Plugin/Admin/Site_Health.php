@@ -8,6 +8,7 @@
 namespace App\Plugin\Admin;
 
 use App\Helper;
+use App\PersonioIntegration\Personio;
 use App\Plugin\Schedules\Import;
 use WP_REST_Server;
 
@@ -153,6 +154,9 @@ class Site_Health {
 	 * @noinspection PhpUnused
 	 */
 	public function url_availability_checks(): array {
+		// get Personio-object.
+		$personio_obj = new Personio( Helper::get_personio_url() );
+
 		// define default results.
 		$result = array(
 			'label'       => __( 'Personio Integration URL availability Check', 'personio-integration-light' ),
@@ -162,7 +166,7 @@ class Site_Health {
 				'color' => 'gray',
 			),
 			/* translators: %1$s and %2$s will be replaced by the Personio-URL */
-			'description' => sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ), esc_url( Helper::get_personio_url() ) ),
+			'description' => sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ) ),
 			'actions'     => '',
 			'test'        => 'personio_integration_rest_api_url_availability_check',
 		);
@@ -176,7 +180,7 @@ class Site_Health {
 		else {
 			// -> should return HTTP-Status 200.
 			$response = wp_remote_get(
-				Helper::get_personio_xml_url( Helper::get_personio_url() ),
+				$personio_obj->get_xml_url(),
 				array(
 					'timeout'     => 30,
 					'redirection' => 0,
@@ -187,7 +191,7 @@ class Site_Health {
 			if ( ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) || str_starts_with( $body, '<!doctype html>' ) ) {
 				$result['status'] = 'recommended';
 				/* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
-				$result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ), esc_url( Helper::get_personio_url() ), esc_url( Helper::get_settings_url() ), esc_url( helper::get_personio_login_url() ) );
+				$result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ), esc_url( Helper::get_settings_url() ), esc_url( Helper::get_personio_login_url() ) );
 			}
 		}
 

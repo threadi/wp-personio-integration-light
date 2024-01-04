@@ -7,6 +7,7 @@
 
 namespace App\PersonioIntegration;
 
+use App\Helper;
 use App\Log;
 use App\Plugin\Languages;
 use App\Plugin\Templates;
@@ -358,6 +359,7 @@ class Position {
 	 * Get the term of the employment type.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public function get_employment_type_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE, 'name' );
@@ -367,6 +369,7 @@ class Position {
 	 * Get the term of the recruiting category.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public function get_recruiting_category_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY, 'name' );
@@ -376,6 +379,7 @@ class Position {
 	 * Get the term of the schedule.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public function get_schedule_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE, 'name' );
@@ -385,6 +389,7 @@ class Position {
 	 * Get the term of the office category.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public function get_office_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE, 'name' );
@@ -404,6 +409,7 @@ class Position {
 	 * Get the term of the department category.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public function get_department_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT, 'name' );
@@ -433,6 +439,7 @@ class Position {
 	 * Get the term of the keyword category.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public function get_keywords_type_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS, 'name' );
@@ -442,6 +449,7 @@ class Position {
 	 * Get the term of the occupation category.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public function get_occupation_category_name(): string {
 		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY, 'name' );
@@ -575,6 +583,7 @@ class Position {
 	 * *
 	 *
 	 * @return WP_Post
+	 * @noinspection PhpUnusedPrivateMethodInspection
 	 */
 	private function get_post(): WP_Post {
 		return $this->post;
@@ -770,5 +779,18 @@ class Position {
 	 */
 	public function set_created_at( string $created_at ): void {
 		$this->data['createdAt'] = $created_at;
+	}
+
+	/**
+	 * Return the application-URL.
+	 *
+	 * @param bool $without_application True if application-hash should NOT be added.
+	 *
+	 * @return string
+	 * @noinspection PhpUnused
+	 */
+	public function get_application_url( bool $without_application = false ): string {
+		$personio_obj = new Personio( Helper::get_personio_url() );
+		return $personio_obj->get_application_url( $this, $without_application );
 	}
 }
