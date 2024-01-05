@@ -176,7 +176,7 @@ class Third_Party_Plugins {
 	 */
 	private function get_content( int $post_id ): string {
 		$position = new Position( $post_id );
-		$position->set_lang( Languages::get_instance()->get_wp_lang() );
+		$position->set_lang( Languages::get_instance()->get_current_lang() );
 		$description = $position->get_content();
 		if( !empty($description) ) {
 			$text = '';

@@ -183,6 +183,8 @@ class Settings {
 						'callback'            => array( 'App\Plugin\Admin\SettingFields\Text', 'get' ),
 						/* translators: %1$s is replaced with the url to Personio login for account access, %2$s is replaced with the url to the Personio support */
 						'description'         => sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s">Personio support</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ), esc_url( Helper::get_personio_support_url() ) ),
+						/* translators: %1$s is replaced with the name of the Pro-plugin */
+						'pro_hint'            => __( 'Use multiple Personio accounts in one website with %1$s.', 'personio-integration-light' ),
 						'placeholder'         => Helper::get_personio_url_example(),
 						'highlight'           => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
@@ -214,7 +216,7 @@ class Settings {
 							'sanitize_callback' => array( 'App\Plugin\Admin\SettingsValidation\MainLanguage', 'validate' ),
 							'type'              => 'string',
 						),
-						'default'             => Languages::get_instance()->get_wp_lang(),
+						'default'             => Languages::get_instance()->get_current_lang(),
 					),
 				),
 			),
@@ -255,6 +257,7 @@ class Settings {
 					'personioIntegrationTemplateContentListingTemplate' => array(
 						'label'    => __( 'Choose template for listing', 'personio-integration-light' ),
 						'callback' => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
+						'description' => sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ),
 						'options'  => Templates::get_instance()->get_archive_templates(),
 						'readonly' => ! Helper::is_personio_url_set(),
 						'default'  => 'default',
@@ -267,6 +270,14 @@ class Settings {
 						'readonly'    => ! Helper::is_personio_url_set(),
 						'default'     => array( 'title', 'excerpt' ),
 					),
+					'personioIntegrationTemplateListingExcerptsTemplate' => array(
+						'label'       => __( 'Choose template for details in list-view', 'personio-integration-light' ),
+						'callback'    => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
+						'description' => sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ),
+						'options'     => Templates::get_instance()->get_excerpts_templates(),
+						'readonly'    => ! Helper::is_personio_url_set(),
+						'default'     => 'default',
+					),
 					'personioIntegrationTemplateExcerptDefaults' => array(
 						'label'       => __( 'Choose details for positions in list-view', 'personio-integration-light' ),
 						'callback'    => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
@@ -278,6 +289,7 @@ class Settings {
 					'personioIntegrationTemplateListingContentTemplate' => array(
 						'label'       => __( 'Choose template for content in list-view', 'personio-integration-light' ),
 						'callback'    => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
+						'description' => sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ),
 						'options'     => Templates::get_instance()->get_jobdescription_templates(),
 						'readonly'    => ! Helper::is_personio_url_set(),
 						'default'     => 'default',
@@ -306,6 +318,14 @@ class Settings {
 						'readonly'    => ! Helper::is_personio_url_set(),
 						'default'     => array( 'title', 'content', 'formular' ),
 					),
+					'personioIntegrationTemplateDetailsExcerptsTemplate' => array(
+						'label'       => __( 'Choose template for details in details-view', 'personio-integration-light' ),
+						'callback'    => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
+						'description' => sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ),
+						'options'     => Templates::get_instance()->get_excerpts_templates(),
+						'readonly'    => ! Helper::is_personio_url_set(),
+						'default'     => 'default',
+					),
 					'personioIntegrationTemplateExcerptDetail' => array(
 						'label'       => __( 'Choose details', 'personio-integration-light' ),
 						'callback'    => array( 'App\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
@@ -317,10 +337,10 @@ class Settings {
 						'default'     => array( 'recruitingCategory', 'schedule', 'office' ),
 					),
 					'personioIntegrationTemplateJobDescription' => array(
-						'label'       => __( 'Choose job description template', 'personio-integration-light' ),
+						'label'       => __( 'Choose job description template in details-view', 'personio-integration-light' ),
 						'callback'    => array( 'App\Plugin\Admin\SettingFields\Select', 'get' ),
 						'options'     => Templates::get_instance()->get_jobdescription_templates(),
-						'description' => __( 'Choose template to output each job description in detail view. You could add your own template as described in GitHub.', 'personio-integration-light' ),
+						'description' => sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ),
 						'readonly'    => ! Helper::is_personio_url_set(),
 						'default'     => 'default',
 					),

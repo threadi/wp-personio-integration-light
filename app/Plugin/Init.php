@@ -97,12 +97,6 @@ class Init {
 		// init schedules.
 		Schedules::get_instance()->init();
 
-		// on activation.
-		register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( $this, 'activation' ) );
-
-		// on deactivation.
-		register_deactivation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( $this, 'deactivation' ) );
-
 		// register cli.
 		add_action( 'cli_init', array( $this, 'cli' ) );
 
@@ -196,6 +190,18 @@ class Init {
 			array(),
 			filemtime( trailingslashit( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'css/styles.css' )
 		);
+
+		/**
+		 * Load listing-style from Block "list" if FSE-theme is NOT used.
+		 */
+		if( ! Helper::theme_is_fse_theme() ) {
+			wp_enqueue_style(
+				'personio-integration-additional-styles',
+				Helper::get_plugin_url() . 'blocks/list/build/style-index.css',
+				array(),
+				filemtime( trailingslashit( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'blocks/list/build/style-index.css' )
+			);
+		}
 	}
 
 	/**

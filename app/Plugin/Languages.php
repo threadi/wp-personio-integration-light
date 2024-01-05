@@ -7,9 +7,6 @@
 
 namespace App\Plugin;
 
-use App\Helper;
-use Exception;
-
 /**
  * Handler for any language-tasks.
  */
@@ -27,6 +24,25 @@ class Languages {
 	 * @var array|int[]
 	 */
 	private array $languages;
+
+	/**
+	 * List of languages (format: "xx") and their mappings to WP-language (format: "xx_YY")
+	 *
+	 * @var array
+	 */
+	private array $language_to_wp_lang_mapping = array(
+		'de' => array(
+			'de_DE',
+			'de_DE_format',
+			'de_CH',
+			'de_CH_informal',
+			'de_AT'
+		),
+		'en' => array(
+			'en_US',
+			'en_UK'
+		)
+	);
 
 	/**
 	 * Fallback-language.
@@ -73,21 +89,33 @@ class Languages {
 	}
 
 	/**
-	 * Return the value of the main language.
+	 * Return the value of the main language from plugin settings.
+	 *
+	 * Defaults to ISO-639 language-names (e.g. "de").
+	 * Optional uses the WP-language-names (e.g. "de_DE" but also "af").
+	 *
+	 * @param bool $use_wp_lang True if return value should be WP-language.
 	 *
 	 * @return string
 	 */
-	public function get_main_language(): string {
-		// get setting.
+	public function get_main_language( bool $use_wp_lang = false ): string {
+		// get setting for main language.
 		$language_name = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );
 
 		// return its name of it is a known language.
 		if( !empty( $this->get_languages()[$language_name] ) ) {
+
+			// return the wp-language.
+			if( $use_wp_lang ) {
+				return $this->get_lang_mappings($language_name)[0];
+			}
+
+			// return the ISO-639-language.
 			return $language_name;
 		}
 
 		// return nothing for not supported languages.
-		return self::get_wp_lang();
+		return self::get_current_lang();
 	}
 
 	/**
@@ -122,8 +150,21 @@ class Languages {
 			return $this->fallback_language_name;
 		}
 
-		// otherwise return just "en".
-		return 'en';
+		/**
+		 * Define the fallback-language (only used if defined fallback language is not enabled in the settings).
+		 *
+		 * E.g. if english is not enabled, the fallback language will be set to english.
+		 */
+		$fallback_language = 'en';
+
+		/**
+		 * Filter the fallback language.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param string $wp_lang The language-name (e.g. "en").
+		 */
+		return apply_filters( 'personio_integration_fallback_language', $fallback_language );
 	}
 
 	/**
@@ -138,12 +179,13 @@ class Languages {
 	}
 
 	/**
-	 * Check whether a german language is used in this Wordpress-projekt.
+	 * Check whether the current language in this Wordpress-project is a german language.
 	 *
 	 * @return bool
 	 */
 	public function is_german_language(): bool {
 		$german_languages = array(
+			'de',
 			'de-DE',
 			'de-DE_formal',
 			'de-CH',
@@ -152,95 +194,43 @@ class Languages {
 		);
 
 		// return result: true if the actual WP-language is a german language.
-		return in_array( get_bloginfo( 'language' ), $german_languages, true );
+		return in_array( $this->get_current_lang(), $german_languages, true );
 	}
 
 	/**
-	 * Return the default Wordpress-language depending on our own support.
-	 * If language is unknown for our plugin, use english.
+	 * Return the current language in frontend and backend
+	 * depending on our own supported languages.
 	 *
-	 * @return string
-	 */
-	public function get_wp_lang(): string {
-		$wp_lang = substr( get_bloginfo( 'language' ), 0, 2 );
-
-		/**
-		 * Consider the main language set in Polylang for the web page.
-		 */
-		if ( Helper::is_plugin_active( 'polylang/polylang.php' ) && function_exists( 'pll_default_language' ) ) {
-			$wp_lang = pll_default_language();
-		}
-
-		/**
-		 * Consider the main language set in WPML for the web page.
-		 */
-		if ( Helper::is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-			$wp_lang = apply_filters( 'wpml_default_language', null );
-		}
-
-		/**
-		 * Get main language set in weglot for the web page.
-		 */
-		if ( Helper::is_plugin_active( 'weglot/weglot.php' ) && function_exists( 'weglot_get_service' ) ) {
-			try {
-				$language_object = weglot_get_service( 'Language_Service_Weglot' )->get_original_language();
-				if ( $language_object ) {
-					$wp_lang = $language_object->getInternalCode();
-				}
-			} catch ( Exception $e ) {
-				// TODO log errors.
-			}
-		}
-
-		// if language is not known, use default language.
-		if ( Languages::get_instance()->is_language_supported( $wp_lang ) ) {
-			$wp_lang = Languages::get_instance()->get_fallback_language_name();
-		}
-
-		// return resulting language.
-		return $wp_lang;
-	}
-
-	/**
-	 * Return the current language depending on our own support.
-	 * If language is unknown for our plugin, use english.
+	 * If detected language is not supported by our plugin, use the fallback language.
 	 *
 	 * @return string
 	 */
 	public function get_current_lang(): string {
-		$wp_lang = substr( get_bloginfo( 'language' ), 0, 2 );
+		$wp_language = substr( get_bloginfo( 'language' ), 0, 2 );
 
-		/**
-		 * Consider the main language set in Polylang for the web page
-		 */
-		if ( Helper::is_plugin_active( 'polylang/polylang.php' ) && function_exists( 'pll_current_language' ) ) {
-			$wp_lang = pll_current_language();
+		// if language is not known, use fallback language.
+		if ( ! Languages::get_instance()->is_language_supported( $wp_language ) ) {
+			$wp_language = Languages::get_instance()->get_fallback_language_name();
 		}
 
 		/**
-		 * Consider the main language set in WPML for the web page
+		 * Filter the resulting language.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param string $wp_language The language-name (e.g. "en").
 		 */
-		if ( Helper::is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-			$wp_lang = apply_filters( 'wpml_current_language', null );
-		}
+		return apply_filters( 'personio_integration_current_language', $wp_language );
+	}
 
-		/**
-		 * Get current language set in weglot for the web page.
-		 */
-		if ( Helper::is_plugin_active( 'weglot/weglot.php' ) && function_exists( 'weglot_get_current_language' ) ) {
-			try {
-				$wp_lang = weglot_get_current_language();
-			} catch ( Exception $e ) {
-				// TODO log errors.
-			}
-		}
-
-		// if language is not known, use default language.
-		if ( Languages::get_instance()->is_language_supported( $wp_lang ) ) {
-			$wp_lang = Languages::get_instance()->get_fallback_language_name();
-		}
-
-		// return resulting language.
-		return $wp_lang;
+	/**
+	 * Return mapping to WP-language (e.g. 'de_DE') for given language-name (e.g. 'de').
+	 *
+	 * @param string $language_name
+	 *
+	 * @return string[]
+	 */
+	public function get_lang_mappings( string $language_name ): array {
+		return $this->language_to_wp_lang_mapping[$language_name];
 	}
 }

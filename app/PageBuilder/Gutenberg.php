@@ -398,6 +398,10 @@ class Gutenberg extends PageBuilder_Base {
 					'type'    => 'string',
 					'default' => '',
 				),
+				'template' => array(
+					'type'    => 'string',
+					'default' => 'default',
+				),
 				'excerptTemplates' => array(
 					'type'    => 'array',
 					'default' => array( 'recruitingCategory', 'schedule', 'office' ),
@@ -409,6 +413,10 @@ class Gutenberg extends PageBuilder_Base {
 				'wrap'             => array(
 					'type'    => 'boolean',
 					'default' => true,
+				),
+				'separator'             => array(
+					'type'    => 'string',
+					'default' => ', ',
 				),
 			);
 			$list_attributes = apply_filters( 'personio_integration_gutenberg_block_detail_attributes', $list_attributes );
@@ -734,15 +742,27 @@ class Gutenberg extends PageBuilder_Base {
 			$line_break = '';
 		}
 
-		// get content for output.
-		ob_start();
+		// get separator.
+		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator', ', ' ) . ' ';
+		if ( !empty($attributes['separator']) ) {
+			$separator = $attributes['separator'];
+		}
+
+		// get settings for templates.
+		$template = 'default';
+		if( !empty($attributes['template']) ) {
+			$template = $attributes['template'];
+		}
+
+		$details = array();
+
 		// loop through the chosen details.
 		foreach ( $attributes['excerptTemplates'] as $detail ) {
 			// get the terms of this taxonomy.
 			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 				if ( $detail === $taxonomy['slug'] ) {
 					// get value.
-					$value = $position->get_term_name( $taxonomy_name, 'name' );
+					$value = $position->get_term_by_field( $taxonomy_name, 'name' );
 
 					// bail if no value is available.
 					if ( empty( $value ) ) {
@@ -752,11 +772,14 @@ class Gutenberg extends PageBuilder_Base {
 					// get labels of this taxonomy.
 					$labels = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name );
 
-					// output.
-					echo '<p><strong>' . esc_html( $labels['name'] ) . esc_html( $colon ) . '</strong>' . wp_kses_post( $line_break . $value ) . '</p>';
+					$details[$labels['name']] = $value;
 				}
 			}
 		}
+
+		// get content for output.
+		ob_start();
+		include \App\Plugin\Templates::get_instance()->get_template( 'parts/details/'.$template.'.php' );
 		return ob_get_clean();
 	}
 

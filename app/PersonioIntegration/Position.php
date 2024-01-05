@@ -57,13 +57,6 @@ class Position {
 	private bool $debug;
 
 	/**
-	 * The object from WordPress for this position.
-	 *
-	 * @var WP_Post
-	 */
-	private WP_Post $post;
-
-	/**
 	 * Constructor for this position.
 	 *
 	 * @param int $post_id The post_id of this position.
@@ -78,18 +71,18 @@ class Position {
 		if ( $post_id > 0 ) {
 			// get the post as array to save it in this object.
 			$post_array = get_post( $post_id, ARRAY_A );
+
+			// if result is not an array, create an empty array.
 			if ( ! is_array( $post_array ) ) {
 				$post_array = array();
-
-				// get the post as object.
-				$post = get_post( $post_id );
-				if ( $post instanceof WP_Post ) {
-					$this->set_post( $post );
-				}
 			}
+
+			// if result is not our post-type, create an empty array.
 			if ( ! empty( $post_array['post_type'] ) && WP_PERSONIO_INTEGRATION_MAIN_CPT !== $post_array['post_type'] ) {
 				$post_array = array();
 			}
+
+			// set the WP_Post-settings in this object.
 			$this->data = $post_array;
 
 			// set the main language for this position.
@@ -338,7 +331,7 @@ class Position {
 	 * @param string $field The field.
 	 * @return string
 	 */
-	public function get_term_name( string $taxonomy, string $field ): string {
+	public function get_term_by_field( string $taxonomy, string $field ): string {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$this->taxonomy_terms[ $taxonomy ] = get_the_terms( $this->data['ID'], $taxonomy );
 		}
@@ -362,7 +355,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_employment_type_name(): string {
-		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE, 'name' );
+		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE, 'name' );
 	}
 
 	/**
@@ -372,7 +365,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_recruiting_category_name(): string {
-		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY, 'name' );
+		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY, 'name' );
 	}
 
 	/**
@@ -382,7 +375,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_schedule_name(): string {
-		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE, 'name' );
+		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE, 'name' );
 	}
 
 	/**
@@ -392,7 +385,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_office_name(): string {
-		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE, 'name' );
+		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE, 'name' );
 	}
 
 	/**
@@ -402,7 +395,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_office_term_id(): int {
-		return absint( $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE, 'term_id' ) );
+		return absint( $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE, 'term_id' ) );
 	}
 
 	/**
@@ -412,7 +405,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_department_name(): string {
-		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT, 'name' );
+		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT, 'name' );
 	}
 
 	/**
@@ -422,7 +415,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_seniority_name(): string {
-		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY, 'name' );
+		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY, 'name' );
 	}
 
 	/**
@@ -432,7 +425,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_experience_name(): string {
-		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE, 'name' );
+		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE, 'name' );
 	}
 
 	/**
@@ -442,7 +435,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_keywords_type_name(): string {
-		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS, 'name' );
+		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS, 'name' );
 	}
 
 	/**
@@ -452,7 +445,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_occupation_category_name(): string {
-		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY, 'name' );
+		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY, 'name' );
 	}
 
 	/**
@@ -462,7 +455,7 @@ class Position {
 	 * @noinspection PhpUnused
 	 */
 	public function get_occupation_name(): string {
-		return $this->get_term_name( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION, 'name' );
+		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION, 'name' );
 	}
 
 	/**
@@ -576,28 +569,6 @@ class Position {
 	 */
 	public function get_created_at(): string {
 		return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT, true );
-	}
-
-	/**
-	 * Get the WP_Post-object of this position.
-	 * *
-	 *
-	 * @return WP_Post
-	 * @noinspection PhpUnusedPrivateMethodInspection
-	 */
-	private function get_post(): WP_Post {
-		return $this->post;
-	}
-
-	/**
-	 * Set the WP_Post-object of this position.
-	 *
-	 * @param WP_Post $post The object.
-	 *
-	 * @return void
-	 */
-	private function set_post( WP_Post $post ): void {
-		$this->post = $post;
 	}
 
 	/**

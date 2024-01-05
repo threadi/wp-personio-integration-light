@@ -483,6 +483,19 @@ class PersonioPosition extends Post_Type {
 			)
 		);
 
+		// return possible details templates.
+		register_rest_route(
+			'personio/v1',
+			'/details-templates/',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_details_templates_via_rest_api' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
+
 		// return possible jobdescription templates.
 		register_rest_route(
 			'personio/v1',
@@ -553,6 +566,36 @@ class PersonioPosition extends Post_Type {
 
 		// return resulting list of taxonomies.
 		return $taxonomies;
+	}
+
+	/**
+	 * Return list of possible templates for details in REST API.
+	 *
+	 * @return array
+	 * @noinspection PhpUnused
+	 */
+	public function get_details_templates_via_rest_api(): array {
+		$templates = array(
+			array(
+				'id'    => 1,
+				'label' => __( 'Default', 'personio-integration-light' ),
+				'value' => 'default',
+			),
+			array(
+				'id'    => 2,
+				'label' => __( 'As list', 'personio-integration-light' ),
+				'value' => 'list',
+			),
+		);
+
+		/**
+		 * Filter the available details-templates for REST API.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $templates The templates.
+		 */
+		return apply_filters( 'personio_integration_rest_templates_details', $templates );
 	}
 
 	/**
@@ -647,6 +690,9 @@ class PersonioPosition extends Post_Type {
 		// create new column-array.
 		$new_columns = array();
 
+		// add column for Pro-hint with sorting.
+		$new_columns['sort'] = __( 'Sorting', 'personio-integration-light' );
+
 		// add column for PersonioId.
 		$new_columns['id'] = __( 'PersonioID', 'personio-integration-light' );
 
@@ -670,6 +716,9 @@ class PersonioPosition extends Post_Type {
 		if ( 'id' === $column ) {
 			$position = new Position( $post_id );
 			echo absint( $position->get_personio_id() );
+		}
+		if( 'sort' === $column ) {
+			echo '<span class="pro-marker">'.__( 'Only Pro.', 'personio-integration-light' ).'</span>';
 		}
 	}
 
@@ -942,7 +991,7 @@ class PersonioPosition extends Post_Type {
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
 		$position_obj  = Positions::get_instance()->get_position( $post->ID );
 		$taxonomy_name = str_replace( 'personio-position-taxonomy-', '', $attr['id'] );
-		$content = $position_obj->get_term_name( $taxonomy_name, 'name' );
+		$content = $position_obj->get_term_by_field( $taxonomy_name, 'name' );
 		if ( empty( $content ) ) {
 			echo '<i>' . esc_html__( 'No data', 'personio-integration-light' ) . '</i>';
 		} else {
@@ -996,7 +1045,7 @@ class PersonioPosition extends Post_Type {
 	private function get_single_shortcode_attributes_defaults(): array {
 		return array(
 			'personioid'              => 0,
-			'lang'                    => Languages::get_instance()->get_current_lang(),
+			'lang'                    => Languages::get_instance()->get_main_language(),
 			'template'                => '',
 			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults', array() ) ),
 			'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription', 'default' ),

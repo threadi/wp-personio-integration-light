@@ -79,6 +79,7 @@
 .post-type-personioposition .personio-pro-hint {
     background-color: var(--personio-pro-hint-bg);
     color: var(--personio-pro-hint-font);
+	margin-top: 12px;
     padding: 12px;
 }
 
@@ -108,9 +109,7 @@
     width: 72px;
 }
 
-.personio-dialog-no-close .ui-dialog-titlebar-close {
-    display: none;
-}
+body.post-type-personioposition th#id, body.post-type-personioposition th#sort { width: 70px; }
 
 body.post-type-personioposition .tab-content {
     overflow: visible;

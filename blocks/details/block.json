@@ -39,6 +39,10 @@
 		"blockId": {
 			"type": "string"
 		},
+        "template": {
+            "type": "string",
+            "default": "default"
+        },
 		"excerptTemplates": {
 			"type": "array",
 			"default": ["recruitingCategory","schedule","office"]
@@ -50,7 +54,11 @@
 		"wrap": {
 			"type": "boolean",
 			"default": true
-		}
+		},
+        "separator": {
+            "type": "string",
+            "default": ", "
+        }
 	},
 	"example": {
 		"attributes": {

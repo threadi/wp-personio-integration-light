@@ -27,9 +27,11 @@ import {
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
-	onChangeExcerptTemplates,
+  onChangeExcerptTemplates, onChangeTemplate,
 } from '../../components';
+const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
+import { TextControl } from '@wordpress/components';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -46,6 +48,24 @@ export default function Edit( object ) {
 	useEffect(() => {
 		object.setAttributes({blockId: object.clientId});
 	});
+
+  // get possible templates.
+  let templates = [];
+  if( !object.attributes.preview ) {
+    useEffect(() => {
+      dispatch('core').addEntities([
+        {
+          name: 'details-templates',
+          kind: 'personio/v1',
+          baseURL: '/personio/v1/details-templates'
+        }
+      ]);
+    }, []);
+    templates = useSelect((select) => {
+        return select('core').getEntityRecords('personio/v1', 'details-templates') || [];
+      }
+    );
+  }
 
 	/**
 	 * On change of colon setting.
@@ -67,6 +87,16 @@ export default function Edit( object ) {
 		object.setAttributes( { wrap: newValue } );
 	}
 
+  /**
+   * On change of separator setting.
+   *
+   * @param newValue
+   * @param object
+   */
+  const onChangeSeparator = ( newValue, object ) => {
+    object.setAttributes( { separator: newValue } );
+  }
+
 	/**
 	 * Collect return for the edit-function
 	 */
@@ -74,6 +104,17 @@ export default function Edit( object ) {
 		<div { ...useBlockProps() }>
 			<InspectorControls>
 				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
+          <div className="wp-personio-integration-selectcontrol">
+            {
+              <SelectControl
+                label={ __('Choose template', 'personio-integration-light') }
+                value={ object.attributes.template }
+                options={ templates }
+                multiple={ false }
+                onChange={ value => onChangeTemplate(value, object) }
+              />
+            }
+          </div>
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
@@ -94,16 +135,27 @@ export default function Edit( object ) {
 							/>
 						}
 					</div>
-					<ToggleControl
+          {object.attributes.template === 'list' && <div>
+            <ToggleControl
 						label={__('With colon', 'personio-integration-light')}
 						checked={ object.attributes.colon }
 						onChange={ value => onChangeColonVisibility( value, object )  }
-					/>
-					<ToggleControl
-						label={__('With line break', 'personio-integration-light')}
-						checked={ object.attributes.wrap }
-						onChange={ value => onChangeWrapVisibility( value, object )  }
-					/>
+            />
+            <ToggleControl
+              label={__('With line break', 'personio-integration-light')}
+              checked={ object.attributes.wrap }
+              onChange={ value => onChangeWrapVisibility( value, object )  }
+            />
+            </div>
+          }
+          {object.attributes.template === 'default' && <div>
+            <TextControl
+              label={__('Separator', 'personio-integration-light')}
+              value={ object.attributes.separator }
+              onChange={ value => onChangeSeparator( value, object ) }
+            />
+            </div>
+          }
 				</PanelBody>
 			</InspectorControls>
 			<ServerSideRender

@@ -31,6 +31,12 @@ if ( file_exists( __DIR__ . '/lib/autoload.php' ) ) {
 // get constants.
 require_once __DIR__ . '/inc/constants.php';
 
+// on activation.
+register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_instance(), 'activation' ) );
+
+// on deactivation.
+register_deactivation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_instance(), 'deactivation' ) );
+
 add_action( 'plugins_loaded', function() {
 	Init::get_instance()->init();
 } );

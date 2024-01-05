@@ -61,14 +61,19 @@ class Positions {
 	/**
 	 * Return Position object of given id.
 	 *
-	 * @param int $post_id The ID of the post object.
+	 * @param int    $post_id The ID of the post object.
+	 * @param string $language_code The language-code to use for contents of the requested position.
+	 *
 	 * @return Position
 	 */
-	public function get_position( int $post_id ): Position {
-		if ( empty( $this->positions[ $post_id ] ) ) {
-			$this->positions[ $post_id ] = new Position( $post_id );
+	public function get_position( int $post_id, string $language_code = '' ): Position {
+		if ( empty( $this->positions[ $post_id.$language_code ] ) ) {
+			$this->positions[ $post_id.$language_code ] = new Position( $post_id );
+			if( ! empty($language_code) ) {
+				$this->positions[ $post_id.$language_code ]->set_lang( $language_code );
+			}
 		}
-		return $this->positions[ $post_id ];
+		return $this->positions[ $post_id.$language_code ];
 	}
 
 	/**
@@ -164,7 +169,7 @@ class Positions {
 
 		// get the positions as object in array
 		// -> optionally grouped by a given taxonomy.
-		$array = array();
+		$resulting_position_list = array();
 		foreach ( $this->results->posts as $post ) {
 			// get the position object.
 			$position_object = $this->get_position( $post->ID );
@@ -176,14 +181,26 @@ class Positions {
 
 			// consider grouping of entries in list.
 			if ( ! empty( $parameter_to_add['groupby'] ) ) {
-				$array[ $position_object->get_term_name( $parameter_to_add['groupby'], 'name' ) ] = $position_object;
+				$resulting_position_list[ $position_object->get_term_by_field( $parameter_to_add['groupby'], 'name' ) ] = $position_object;
 			} else {
 				// ungrouped simply add the position to the list.
-				$array[] = $position_object;
+				$resulting_position_list[] = $position_object;
 			}
 		}
-		ksort( $array );
-		return $array;
+
+		// sort the list by key.
+		ksort( $resulting_position_list );
+
+		/**
+		 * Filter the resulting list of position objects.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $resulting_position_list List of resulting position objects.
+		 * @param int $limit The limitation of the list.
+		 * @param array $parameter_to_add The list of parameters used to get this list.
+		 */
+		return apply_filters( 'personio_integration_positions_resulting_list', $resulting_position_list, $limit, $parameter_to_add );
 	}
 
 	/**

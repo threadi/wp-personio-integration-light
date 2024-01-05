@@ -198,7 +198,7 @@ class Helper {
 		$attributes = shortcode_atts( $attribute_defaults, $attributes );
 
 		// check if language-setting is valid.
-		if ( Languages::get_instance()->is_language_supported( $attributes['lang'] ) ) {
+		if ( ! Languages::get_instance()->is_language_supported( $attributes['lang'] ) ) {
 			$attributes['lang'] = Languages::get_instance()->get_fallback_language_name();
 		}
 
@@ -517,5 +517,14 @@ class Helper {
 	 */
 	public static function get_personio_url_example(): string {
 		return Languages::get_instance()->is_german_language() ? 'https://dein-unternehmen.jobs.personio.de' : 'https://yourcompany.jobs.personio.com';
+	}
+
+	/**
+	 * Return URL for documentation about templates.
+	 *
+	 * @return string
+	 */
+	public static function get_template_documentation_url(): string {
+		return Languages::get_instance()->is_german_language() ? 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/templates_de.md' : 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/templates.md';
 	}
 }

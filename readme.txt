@@ -358,14 +358,19 @@ Yes, it is without any further settings.
 * Added option to choose a content template on listings
 * Added support for additional plugins: Open Graph and Twitter Tags, SEOFramework, SEOPress
 * Added link to switch between frontend- and backend-view of single position
-* Advanced Widgets for Positions with missing options
+* Added new templates for position title and excerpts
+* Advanced Blocks for Positions
+* Advanced Widgets for Positions
 * Optimized all templates for better handling and optimized output
 * Optimized check for existing part-templates
+* Multiple new hooks.
+* Hook documentation is now [available in repository](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/hooks.md)
 * Compatible with WordPress Coding Standards 3.0 (WCS3.0)
 * New WCS3.0 compatible WP CLI commands (old ones does not exist anymore)
 * New WP- and react-driven dialogs for each interaction with the plugin
 * New check for configured Personio-URL in Site Health
 * Removed 5 minutes cronjob as it is discouraged by WordPress (TODO Migrate)
+* Removed support for multilingual-plugins to detect the actual language (this is now only in Pro-plugin)
 * Mark the filter options on Block "Personio Positions" as deprecated incl. warning for user to use Filter Block instead
 * Fixed usage of classic widgets
 * Fixed wrong Position count on dashboard

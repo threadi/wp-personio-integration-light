@@ -11,9 +11,8 @@ use App\Plugin\Templates;
 while ( $GLOBALS['personio_query_results']->have_posts() ) :
 	$GLOBALS['personio_query_results']->the_post();
 
-	// get the Position as object.
-	$position       = $positions_obj->get_position( get_the_id() );
-	$position->lang = $personio_attributes['lang'];
+	// get the Position as object with the requested language.
+	$position       = $positions_obj->get_position( get_the_id(), $personio_attributes['lang'] );
 
 	// get group title.
 	include Templates::get_instance()->get_template( 'parts/part-grouptitle.php' );
