@@ -104,7 +104,9 @@ class Installer {
 			$import_obj->install();
 
 			// set default settings.
-			foreach ( Settings::get_instance()->get_settings() as $section_settings ) {
+			$settings_obj = Settings::get_instance();
+			$settings_obj->set_settings();
+			foreach ( $settings_obj->get_settings() as $section_settings ) {
 				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 					if ( ! empty( $field_settings['default'] ) && ! get_option( $field_name ) ) {
 						update_option( $field_name, $field_settings['default'], true );

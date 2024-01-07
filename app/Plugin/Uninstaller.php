@@ -110,11 +110,13 @@ class Uninstaller {
 			}
 
 			// delete all collected data.
-			( new cli() )->delete_all();
+			( new Cli() )->delete_all();
 
 			// remove options from settings.
-			foreach ( Settings::get_instance()->get_settings() as $section ) {
-				foreach ( $section['fields'] as $field_name => $field_settings ) {
+			$settings_obj = Settings::get_instance();
+			$settings_obj->set_settings();
+			foreach ( $settings_obj->get_settings() as $section_settings ) {
+				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 					delete_option( $field_name );
 				}
 			}
@@ -144,7 +146,11 @@ class Uninstaller {
 			WP_PERSONIO_INTEGRATION_IMPORT_ERRORS,
 			WP_PERSONIO_INTEGRATION_OPTION_COUNT,
 			WP_PERSONIO_INTEGRATION_OPTION_MAX,
-			'personioIntegrationUrlPointer'
+			'personioIntegrationUrlPointer',
+			'personioIntegrationPositionScheduleInterval',
+			'personioIntegrationVersion',
+			'personioTaxonomyDefaults',
+			'personio_integration_transients'
 		);
 	}
 }

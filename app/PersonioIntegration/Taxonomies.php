@@ -76,6 +76,11 @@ class Taxonomies {
 			return;
 		}
 
+		// disable taxonomy-counting for more speed.
+		wp_defer_term_counting( true );
+
+		$i = 0;
+
 		// loop through our own taxonomies and configure them.
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			// add default terms to taxonomy if they do not exist (only in admin or via CLI).
@@ -84,9 +89,20 @@ class Taxonomies {
 				$has_terms = get_terms( array( 'taxonomy' => $taxonomy_name ) );
 				if ( empty( $has_terms ) ) {
 					$this->add_terms( $taxonomy_obj->defaults, $taxonomy_name );
+
+					// count.
+					$i++;
+
+					// flush cache every 100 items for more speed.
+					if ( $i % 100 == 0 ) {
+						wp_cache_flush();
+					}
 				}
 			}
 		}
+
+		// re-enable taxonomy-counting.
+		wp_defer_term_counting( false );
 
 		// Add or update the wp_option.
 		update_option( 'personioTaxonomyDefaults', 1 );

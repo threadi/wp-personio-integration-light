@@ -98,6 +98,9 @@ trait Helper {
 		// finalize progress.
 		$progress ? $progress->finish() : false;
 
+		// delete marker that default terms has been deleted.
+		delete_option( 'personioTaxonomyDefaults' );
+
 		// output success-message.
 		\App\Helper::is_cli() ? \WP_CLI::success( count( $taxonomies ) . ' taxonomies from local database has been cleaned.' ) : false;
 	}

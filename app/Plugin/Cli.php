@@ -23,6 +23,7 @@ class Cli {
 	 *
 	 * @since  1.0.0
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function get_positions(): void {
 		new Import();
