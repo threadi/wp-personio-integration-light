@@ -130,6 +130,7 @@
             <zipfileset dir="${src.dir}/blocks/application-button/build" prefix="${plugin.slug}/blocks/application-button/build" />
             <zipfileset dir="${src.dir}/blocks/show/" includes="block.json" prefix="${plugin.slug}/blocks/show/" />
             <zipfileset dir="${src.dir}/blocks/show/build" prefix="${plugin.slug}/blocks/show/build" />
+            <zipfileset dir="${src.dir}/blocks/setup/build" prefix="${plugin.slug}/blocks/setup/build" />
             <zipfileset dir="${src.dir}/blocks/" includes="index.php,components.js,index.js" prefix="${plugin.slug}/blocks/" />
             <zipfileset dir="${src.dir}/css" prefix="${plugin.slug}/css" />
             <zipfileset dir="${src.dir}/gfx" prefix="${plugin.slug}/gfx" />

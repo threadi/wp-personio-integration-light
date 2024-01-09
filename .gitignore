@@ -9,6 +9,7 @@
 /blocks/filter-list/build/
 /blocks/filter-select/build/
 /blocks/list/build/
+/blocks/setup/build/
 /blocks/show/build/
 /inc/constants2.php
 *.zip

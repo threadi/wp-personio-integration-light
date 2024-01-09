@@ -11,6 +11,7 @@ use App\Helper;
 use App\PersonioIntegration\Import;
 use App\PersonioIntegration\PostTypes\PersonioPosition;
 use App\Plugin\Cli;
+use App\Plugin\Setup;
 use App\Plugin\Transients;
 
 /**
@@ -64,9 +65,6 @@ class Admin {
 
 		// init site health.
 		Site_Health::get_instance()->init();
-
-		// init transients.
-		Transients::get_instance()->init();
 
 		// show hint for Pro-version.
 		add_action( 'personio_integration_admin_show_pro_hint', array( $this, 'show_pro_hint' ) );
@@ -462,6 +460,7 @@ class Admin {
 	 * @return void
 	 */
 	public function check_config(): void {
+		return; // TODO noch benötigt nach Setup?
 		$transients_obj = Transients::get_instance();
 		if ( ! helper::is_personio_url_set() ) {
 			$transient_obj = $transients_obj->add();
@@ -473,7 +472,7 @@ class Admin {
 			$transient_obj->set_hide_on( array(
 				add_query_arg(
 					array(
-						'post_type' => 'personioposition',
+						'post_type' => PersonioPosition::get_instance()->get_name(),
 						'page' => 'personioPositions'
 					),
 					get_admin_url().'edit.php'
@@ -502,7 +501,8 @@ class Admin {
 	 * @noinspection PhpUnused
 	 */
 	public function check_position_count(): void {
-		if ( Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationPositionCount', 0 ) ) ) {
+		// TODO noch nötig nach Setup?
+		if ( Setup::get_instance()->is_completed() && Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationPositionCount', 0 ) ) ) {
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_no_position_imported' );

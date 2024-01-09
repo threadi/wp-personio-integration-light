@@ -162,7 +162,7 @@ class Settings {
 		$default_filter = get_option( 'personioIntegrationTemplateFilter', array() );
 
 		/**
-		 * Show hint for Pro-plugin with individual text.
+		 * Filter the taxonomy labels before adding them to the settings.
 		 *
 		 * @since 2.3.0 Available since 2.3.0.
 		 *
@@ -210,9 +210,11 @@ class Settings {
 					WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
 						'label'               => __( 'Main language', 'personio-integration-light' ),
 						'callback'            => array( 'App\Plugin\Admin\SettingFields\Multiple_Radios', 'get' ),
+						'description'         => __( 'Set the main language you will use for your open positions.', 'personio-integration-light' ),
 						'options'             => Languages::get_instance()->get_languages(),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
+							'show_in_rest'      => true,
 							'sanitize_callback' => array( 'App\Plugin\Admin\SettingsValidation\MainLanguage', 'validate' ),
 							'type'              => 'string',
 						),
@@ -451,6 +453,13 @@ class Settings {
 					),
 				),
 			),
+			'hidden_section' => array(
+				'fields' => array(
+					'personioIntegrationSetup' => array(
+						'default' => array()
+					)
+				)
+			)
 		);
 	}
 
@@ -461,12 +470,14 @@ class Settings {
 	 */
 	public function register_settings(): void {
 		foreach ( $this->settings as $section_settings ) {
-			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-				register_setting(
-					$section_settings['page'],
-					$field_name,
-					! empty( $field_settings['register_attributes'] ) ? $field_settings['register_attributes'] : array()
-				);
+			if( !empty($section_settings['page']) ) {
+				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
+					register_setting(
+						$section_settings['page'],
+						$field_name,
+						! empty( $field_settings['register_attributes'] ) ? $field_settings['register_attributes'] : array()
+					);
+				}
 			}
 		}
 	}
@@ -478,7 +489,7 @@ class Settings {
 	 */
 	public function register_fields(): void {
 		foreach ( $this->settings as $section_name => $section_settings ) {
-			if ( ! empty( $section_settings ) ) {
+			if ( ! empty( $section_settings ) && ! empty($section_settings['page']) && ! empty($section_settings['label']) && ! empty($section_settings['callback']) ) {
 				// add section.
 				add_settings_section(
 					$section_name,
@@ -514,20 +525,22 @@ class Settings {
 	}
 
 	/**
-	 * Add settings-page for the plugin.
+	 * Add settings-page for the plugin if setup has been completed.
 	 *
 	 * @return void
 	 */
 	public function add_settings_menu(): void {
-		add_submenu_page(
-			PersonioPosition::get_instance()->get_link( true ),
-			__( 'Personio Integration Settings', 'personio-integration-light' ),
-			__( 'Settings', 'personio-integration-light' ),
-			'manage_' . PersonioPosition::get_instance()->get_name(),
-			'personioPositions',
-			array( $this, 'add_settings_content' ),
-			1
-		);
+		if( Setup::get_instance()->is_completed() ) {
+			add_submenu_page(
+				PersonioPosition::get_instance()->get_link( true ),
+				__( 'Personio Integration Settings', 'personio-integration-light' ),
+				__( 'Settings', 'personio-integration-light' ),
+				'manage_' . PersonioPosition::get_instance()->get_name(),
+				'personioPositions',
+				array( $this, 'add_settings_content' ),
+				1
+			);
+		}
 	}
 
 	/**
@@ -560,7 +573,7 @@ class Settings {
 					// Set url.
 					$url = add_query_arg(
 						array(
-							'post_type' => 'personioposition',
+							'post_type' => PersonioPosition::get_instance()->get_name(),
 							'page'      => 'personioPositions',
 							'tab'       => $tab_name,
 						),
@@ -643,5 +656,23 @@ class Settings {
 	 */
 	public function get_setting( string $setting ): string {
 		return get_option( $setting );
+	}
+
+	/**
+	 * Return settings for single field.
+	 *
+	 * @param string $field
+	 *
+	 * @return array
+	 */
+	public function get_settings_for_field( string $field ): array {
+		foreach ( $this->settings as $section_settings ) {
+			foreach( $section_settings['fields'] as $field_name => $field_settings ) {
+				if( $field === $field_name ) {
+					return $field_settings;
+				}
+			}
+		}
+		return array();
 	}
 }

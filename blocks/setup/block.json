@@ -1,0 +1,13 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "wp-personio-integration/setup",
+	"version": "@@VersionNumber@@",
+	"title": "Personio Integration Light Setup",
+	"category": "widgets",
+	"description": "Used to setup this plugin initially.",
+	"textdomain": "personio-integration-light",
+	"editorScript": "file:build/index.js",
+	"editorStyle": "file:build/index.css",
+	"style": "file:build/style-index.css",
+}

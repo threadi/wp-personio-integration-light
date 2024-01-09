@@ -9,6 +9,7 @@ namespace App\PersonioIntegration;
 
 use App\Helper;
 use App\Plugin\Languages;
+use App\Plugin\Setup;
 use WP_Screen;
 use WP_Term;
 
@@ -71,6 +72,11 @@ class Taxonomies {
 	 * @return void
 	 */
 	public function create_defaults(): void {
+		// bail if setup is not completed.
+		if( ! Setup::get_instance()->is_completed() ) {
+			return;
+		}
+
 		// Exit if the work has already been done.
 		if ( 1 === absint( get_option( 'personioTaxonomyDefaults', 0 ) ) ) {
 			return;

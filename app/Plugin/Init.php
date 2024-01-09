@@ -56,11 +56,17 @@ class Init {
 	 * @return void
 	 */
 	public function init(): void {
-		// register our post-types and taxonomies.
-		PersonioPosition::get_instance()->init();
+		// init transients.
+		Transients::get_instance()->init();
 
 		// register settings.
 		Settings::get_instance()->init();
+
+		// check setup state.
+		Setup::get_instance()->init();
+
+		// register our post-types and taxonomies.
+		PersonioPosition::get_instance()->init();
 
 		// init classic widget support.
 		Widgets::get_instance()->init();
@@ -75,7 +81,7 @@ class Init {
 		Roles::get_instance()->init();
 
 		// include our own Gutenberg-pagebuilder-support.
-		include_once Helper::get_plugin_path().'inc/gutenberg.php';
+		include_once Helper::get_plugin_path() . 'inc/gutenberg.php';
 
 		$page_builder_objects = array();
 		/**
@@ -85,8 +91,8 @@ class Init {
 		 *
 		 * @param array $page_builder_objects The list of templates.
 		 */
-		foreach( apply_filters( 'personio_integration_pagebuilder', $page_builder_objects ) as $page_builder_obj ) {
-			if( $page_builder_obj instanceof PageBuilder_Base ) {
+		foreach ( apply_filters( 'personio_integration_pagebuilder', $page_builder_objects ) as $page_builder_obj ) {
+			if ( $page_builder_obj instanceof PageBuilder_Base ) {
 				$page_builder_obj->init();
 			}
 		}
@@ -107,7 +113,10 @@ class Init {
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_frontend' ), PHP_INT_MAX );
 
 		// add action links on plugin-list.
-		add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_setting_link' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array(
+			$this,
+			'add_setting_link'
+		) );
 
 		// reset permalinks on request.
 		add_action( 'wp', array( $this, 'update_slugs' ) );
