@@ -12,4 +12,22 @@
 	button {
 		margin-top: 1em;
 	}
+
+	.wp-setup-error {
+		span.hint {
+			color: red;
+			display: block;
+		}
+		input {
+			border: 1px solid red;
+			box-shadow: none;
+		}
+	}
+
+	.wp-setup-ok {
+		input {
+			border: 1px solid green;
+			box-shadow: none;
+		}
+	}
 }

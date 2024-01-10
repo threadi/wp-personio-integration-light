@@ -9,7 +9,8 @@ namespace App\Plugin;
 
 use App\Helper;
 use App\PersonioIntegration\PostTypes\PersonioPosition;
-use Error;
+use WP_REST_Request;
+use WP_REST_Server;
 
 /**
  * Initialize this plugin.
@@ -46,20 +47,20 @@ class Setup {
 		// define setup.
 		$this->setup = array(
 			1 => array(
-				array(
+				'personioIntegrationUrl' => array(
 					'type' => 'TextControl',
-					'field' => 'personioIntegrationUrl',
 					'label' => $url_settings['label'],
 					'help' => $url_settings['description'],
 					'placeholder' => $url_settings['placeholder'],
-					'required' => true
+					'required' => true,
+					'validation_callback' => 'App\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::rest_validate'
 				),
-				array(
+				WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
 					'type' => 'RadioControl',
-					'field' => WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE,
 					'label' => $language_setting['label'],
 					'help' => $language_setting['description'],
-					'options' => $this->convert_options_for_react( $language_setting['options'] )
+					'options' => $this->convert_options_for_react( $language_setting['options'] ),
+					'validation_callback' => 'App\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate'
 				)
 			)
 		);
@@ -68,6 +69,12 @@ class Setup {
 		add_action( 'admin_action_personioIntegrationSetup', array( $this, 'display' ) );
 		add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+
+		// register REST API.
+		add_action( 'rest_api_init', array( $this, 'add_rest_api' ) );
+
+		// add field validation via AJAX.
+		add_action( 'wp_ajax_personio_setup_validation', array( $this, 'validate_field' ) );
 	}
 
 	/**
@@ -77,8 +84,11 @@ class Setup {
 	 */
 	private function get_setup_link(): string {
 		return add_query_arg(
-			array( 'action' => 'personioIntegrationSetup' ),
-			'edit.php'
+			array(
+				'post_type' => PersonioPosition::get_instance()->get_name(),
+				'page' => 'personioPositions'
+			),
+			get_admin_url().'edit.php'
 		);
 	}
 
@@ -190,7 +200,7 @@ class Setup {
 	 * @return void
 	 */
 	public function display(): void {
-		echo '<div id="wp-plugin-setup" data-config="'.esc_attr( wp_json_encode( $this->get_setup() ) ).'"></div>';
+		echo '<div id="wp-plugin-setup" data-config="'.esc_attr( wp_json_encode( $this->get_config() ) ).'" data-fields="'.esc_attr( wp_json_encode( $this->get_setup() ) ).'"></div>';
 	}
 
 	/**
@@ -228,25 +238,30 @@ class Setup {
 		}
 
 		// embed the setup-JS-script.
-		$script_asset_path = $path . 'build/index.asset.php';
+		$script_asset_path = $path . 'build/setup.asset.php';
 		$script_asset      = require( $script_asset_path );
 		wp_enqueue_script(
-			'personio-integration-setup',
-			$url . 'build/index.js',
+			'wp-easy-setup',
+			$url . 'build/setup.js',
 			$script_asset['dependencies'],
 			$script_asset['version'],
 			true
 		);
 
 		// embed the dialog-components CSS-script.
-		$admin_css      = $url . 'build/index.css';
-		$admin_css_path = $path . 'build/index.css';
+		$admin_css      = $url . 'build/setup.css';
+		$admin_css_path = $path . 'build/setup.css';
 		wp_enqueue_style(
-			'personio-integration-setup',
+			'wp-easy-setup',
 			$admin_css,
 			array( 'wp-components' ),
 			filemtime( $admin_css_path )
 		);
+
+		wp_localize_script( 'wp-easy-setup', 'wp_easy_setup', array(
+			'rest_nonce' => wp_create_nonce( 'wp_rest' ),
+			'validation_url' => '/wp-json/wp-easy-setup/v1/validate-field' // TODO generieren
+		) );
 	}
 
 	/**
@@ -270,5 +285,88 @@ class Setup {
 
 		// return resulting list.
 		return $resulting_array;
+	}
+
+	/**
+	 * Validate a given field via REST API request.
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function validate_field( WP_REST_Request $request ): void {
+		$validation_result = array(
+			'field_name' => false,
+			'result' => 'error'
+		);
+
+		// get setup step.
+		$step = $request->get_param('step');
+
+		// get field-name.
+		$field_name = $request->get_param('field_name');
+
+		// get value.
+		$value = $request->get_param('value');
+
+		// get setup-fields.
+		$fields = $this->get_setup();
+
+		// run check if all 3 vars are filled.
+		if( !empty( $step ) && !empty( $field_name ) ) {
+			// set field for response.
+			$validation_result['field_name'] = $field_name;
+			// check if field exist in step.
+			if( !empty( $fields[$step][$field_name]) ) {
+				// get validation-callback for this field.
+				$validation_callback = $this->get_setup()[ $step ][ $field_name ]['validation_callback'];
+				if ( !empty($validation_callback) ) {
+					if ( is_callable($validation_callback) ) {
+						$validation_result['result'] = call_user_func( $validation_callback, $value );
+					}
+				}
+			}
+		}
+
+		// Make your array as json
+		wp_send_json($validation_result);
+
+		// Don't forget to stop execution afterward.
+		wp_die();
+	}
+
+	/**
+	 * Add rest api endpoints.
+	 *
+	 * @return void
+	 */
+	public function add_rest_api(): void {
+		register_rest_route(
+			'wp-easy-setup/v1',
+			'/validate-field/',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'validate_field' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+	}
+
+	/**
+	 * Return configuration for setup.
+
+	 * Here we define how many steps are used.
+	 *
+	 * @return array
+	 */
+	private function get_config(): array {
+		return array(
+			'title' => __( 'Personio Integration Setup', 'personio-integration-light' ),
+			'steps' => 2,
+			'continue_button_label' => __( 'Continue', 'personio-integration-light' )
+		);
 	}
 }
