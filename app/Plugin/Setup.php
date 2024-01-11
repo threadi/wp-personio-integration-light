@@ -62,6 +62,12 @@ class Setup {
 					'options' => $this->convert_options_for_react( $language_setting['options'] ),
 					'validation_callback' => 'App\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate'
 				)
+			),
+			2 => array(
+				'importTaxonomies' => array(
+					'type' => 'ProgressBar',
+					'label' => 'Import running',
+				)
 			)
 		);
 

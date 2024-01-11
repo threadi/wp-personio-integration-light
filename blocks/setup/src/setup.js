@@ -27,19 +27,20 @@ import React from 'react'
 /**
  * Object which handles the setup.
  */
-class App extends Component {
+class WpEasySetup extends Component {
   constructor() {
     super( ...arguments );
     this.state = {
-      result: {},
-      successfully_filled: [],
-      is_api_loaded: false,
+      results: {}, // collection of field validation results.
+      step: 1, // initially setup-step.
+      button_disabled: true, // marker for continue-button-state.
+      is_api_loaded: false, // marker if API has been loaded.
     };
 
     /**
      * Add our fields to the list with empty init value.
      */
-    Object.keys(this.props.fields[1]).map( field_name => {
+    Object.keys(this.props.fields[this.state.step]).map( field_name => {
       this.state[field_name] = '';
     })
   }
@@ -55,14 +56,17 @@ class App extends Component {
         this.settings.fetch().then( ( response ) => {
           // collect settings for state, first mark the api as loaded.
           let state = {
-            result: {},
+            results: {},
             is_api_loaded: true,
           };
 
-          // check if response contains one of our fields and add its value to state.
-          Object.keys(this.props.fields[1]).map( field_name => {
+          // check if response contains one of our fields, add its value to state and mark it as filled via empty result-value.
+          Object.keys(this.props.fields[this.state.step]).map( field_name => {
             if( response[field_name] ) {
               state[field_name] = response[field_name];
+              state.results[field_name] = {
+                'result': []
+              }
             }
           });
 
@@ -95,6 +99,12 @@ class App extends Component {
         return <RadioControlObject field_name={ field_name } field={ field } object={ this } />;
 
       /**
+       * Show Progressbar component during running some server-side tasks.
+       */
+      case 'ProgressBar':
+        return 'progressbar ausgeben' // TODO
+
+      /**
        * Return empty string for all other types.
        */
       default:
@@ -108,21 +118,7 @@ class App extends Component {
    * @returns {JSX.Element}
    */
   render() {
-    /**
-     * Check button usability.
-     * Return true if button should be disabled.
-     * Return false if he should be enabled.
-     *
-     * @returns {boolean}
-     */
-    let checkButtonUsability = () => {
-      console.log("aaaa");
-      return true;
-    }
-    /**
-     * TODO Erfassen, ob alle Felder im aktuellen Schritt erfolgreich ausgefüllt sind über successfully_filled.
-     * Und wenn ja den Button aktivieren.
-     */
+    setButtonDisabledState( this );
 
     return (
       <Fragment>
@@ -136,12 +132,12 @@ class App extends Component {
         <div className="wp-easy-setup__main">
           <Panel>
             <PanelBody>
-              {Object.keys(this.props.fields[1]).map( field_name => (
-                <div key={ field_name }>{this.renderControlSetting( field_name, this.props.fields[1][field_name] )}</div>
+              {Object.keys(this.props.fields[this.state.step]).map( field_name => (
+                <div key={ field_name }>{this.renderControlSetting( field_name, this.props.fields[this.state.step][field_name] )}</div>
               ) )}
               <Button
                 isPrimary
-                disabled={() => checkButtonUsability()}
+                disabled={this.state.button_disabled}
                 onClick={() => onSaveSetup( this )}
               >
                 { this.props.config.continue_button_label }
@@ -160,20 +156,28 @@ class App extends Component {
 document.addEventListener( 'DOMContentLoaded', () => {
   let html_obj = document.getElementById('wp-plugin-setup');
   if( html_obj ) {
-    let confirm_dialog = ReactDOM.createRoot(html_obj);
-    confirm_dialog.render(
-      <App fields={JSON.parse(html_obj.dataset.fields)} config={JSON.parse(html_obj.dataset.config)} />
+    ReactDOM.createRoot(html_obj).render(
+      <WpEasySetup fields={JSON.parse(html_obj.dataset.fields)} config={JSON.parse(html_obj.dataset.config)} />
     );
   }
 });
 
 /**
- * Save the actual setup.
+ * Save the fields of the actual setup step via REST API.
  */
 export const onSaveSetup = ( object ) => {
+  // remove internal used parameter.
   let state = object.state;
   delete state.is_api_loaded;
+  delete state.results;
+
+  // save it via REST API for settings.
   new api.models.Settings( state ).save();
+
+  // set next step for setup.
+  object.setState( { 'step': object.state.step + 1 } );
+
+  console.log(object.props.fields);
 }
 
 /**
@@ -196,14 +200,14 @@ export const onChangeField = ( object, field_name, field, newValue,  ) => {
         'X-WP-Nonce': wp_easy_setup.rest_nonce
       },
       body: JSON.stringify({
-        'step': 1,
+        'step': object.state.step,
         'field_name': field_name,
         'value': newValue
       })
     } )
       .then( response => response.json() )
       .then( function(result) {
-          object.result = result;
+          object.state.results[field_name] = result;
           object.setState( {[field_name]: newValue} );
         }
       )
@@ -212,4 +216,21 @@ export const onChangeField = ( object, field_name, field, newValue,  ) => {
   else {
     object.setState( {[field_name]: newValue} )
   }
+}
+
+/**
+ * Set button state depending on filled forms.
+ *
+ * @param object
+ */
+export function setButtonDisabledState( object ) {
+  let fields_count = 0;
+  let fields_filled_count = 0;
+  {Object.keys(object.props.fields[object.state.step]).map( field_name => {
+    fields_count++;
+    if( object.state[field_name] && object.state.results[field_name] && object.state.results[field_name].result.length === 0 ) {
+      fields_filled_count++;
+    }
+  })}
+  object.state.button_disabled = fields_count !== fields_filled_count;
 }

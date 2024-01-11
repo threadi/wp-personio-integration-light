@@ -1,4 +1,4 @@
-import {onChangeField} from "./setup";
+import {onChangeField, setButtonDisabledState} from "./setup";
 
 /**
  * Import dependencies.
@@ -28,30 +28,17 @@ export default class TextControlObject extends Component {
      * @type {string}
      */
     let classes = "";
-    if( this.props.object.result && this.props.object.result.field_name === this.props.field_name ) {
-      if ( this.props.object.result.result.error) {
+    if( this.props.object.state.results[this.props.field_name] ) {
+      if ( this.props.object.state.results[this.props.field_name].error) {
         classes = 'wp-setup-error';
-        if (this.props.object.result.result.text) {
-          helper_text = <><span className="hint">{this.props.object.result.result.text}</span><span
+        if (this.props.object.state.results[this.props.field_name].text) {
+          helper_text = <><span className="hint">{this.props.object.state.results[this.props.field_name].text}</span><span
             dangerouslySetInnerHTML={{__html: this.props.field.help}}/></>;
-        }
-        let successfully_filled_field_name_index =  this.props.object.state.successfully_filled.indexOf( this.props.field_name );
-        if( successfully_filled_field_name_index !== -1 ) {
-          this.props.object.state.successfully_filled.splice( successfully_filled_field_name_index, 1 );
         }
       }
       else if( this.props.object.state[this.props.field_name].length > 0 ) {
         classes = 'wp-setup-ok';
-        let successfully_filled_field_name_index =  this.props.object.state.successfully_filled.indexOf( this.props.field_name );
-        if( successfully_filled_field_name_index === -1 ) {
-          this.props.object.state.successfully_filled.push( this.props.field_name );
-        }
-      }
-      else if( this.props.object.state[this.props.field_name].length === 0 ) {
-        let successfully_filled_field_name_index =  this.props.object.state.successfully_filled.indexOf( this.props.field_name );
-        if( successfully_filled_field_name_index !== -1 ) {
-          this.props.object.state.successfully_filled.splice( successfully_filled_field_name_index, 1 );
-        }
+        this.props.object.state.results[this.props.field_name].filled = true;
       }
     }
 
