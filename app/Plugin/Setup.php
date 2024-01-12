@@ -8,7 +8,10 @@
 namespace App\Plugin;
 
 use App\Helper;
+use App\PersonioIntegration\Import;
 use App\PersonioIntegration\PostTypes\PersonioPosition;
+use App\PersonioIntegration\Taxonomies;
+use Automattic\WooCommerce\Admin\Features\OnboardingTasks\Tasks\Tax;
 use WP_REST_Request;
 use WP_REST_Server;
 
@@ -64,9 +67,9 @@ class Setup {
 				)
 			),
 			2 => array(
-				'importTaxonomies' => array(
+				'runSetup' => array(
 					'type' => 'ProgressBar',
-					'label' => 'Import running',
+					'label' => __( 'Setup preparing your Personio data', 'personio-integration-light' ),
 				)
 			)
 		);
@@ -75,12 +78,12 @@ class Setup {
 		add_action( 'admin_action_personioIntegrationSetup', array( $this, 'display' ) );
 		add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+		add_action( 'personio_integration_import_count', array( $this, 'update_process_step' ) );
+		add_action( 'personio_integration_import_finished', array( $this, 'update_process_step' ) );
+		add_action( 'personio_integration_import_max_steps', array( $this, 'update_process_max_steps' ) );
 
 		// register REST API.
 		add_action( 'rest_api_init', array( $this, 'add_rest_api' ) );
-
-		// add field validation via AJAX.
-		add_action( 'wp_ajax_personio_setup_validation', array( $this, 'validate_field' ) );
 	}
 
 	/**
@@ -266,7 +269,9 @@ class Setup {
 
 		wp_localize_script( 'wp-easy-setup', 'wp_easy_setup', array(
 			'rest_nonce' => wp_create_nonce( 'wp_rest' ),
-			'validation_url' => '/wp-json/wp-easy-setup/v1/validate-field' // TODO generieren
+			'validation_url' => '/wp-json/wp-easy-setup/v1/validate-field', // TODO generieren
+			'process_url' => '/wp-json/wp-easy-setup/v1/process', // TODO generieren
+			'process_info_url' => '/wp-json/wp-easy-setup/v1/get-process-info' // TODO generieren
 		) );
 	}
 
@@ -335,7 +340,7 @@ class Setup {
 			}
 		}
 
-		// Make your array as json
+		// Return JSON with results.
 		wp_send_json($validation_result);
 
 		// Don't forget to stop execution afterward.
@@ -359,6 +364,28 @@ class Setup {
 				},
 			)
 		);
+		register_rest_route(
+			'wp-easy-setup/v1',
+			'/process/',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'process_init' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+		register_rest_route(
+			'wp-easy-setup/v1',
+			'/get-process-info/',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'get_process_info' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 	}
 
 	/**
@@ -372,7 +399,99 @@ class Setup {
 		return array(
 			'title' => __( 'Personio Integration Setup', 'personio-integration-light' ),
 			'steps' => 2,
-			'continue_button_label' => __( 'Continue', 'personio-integration-light' )
+			'back_button_label' => __( 'Back', 'personio-integration-light' ),
+			'continue_button_label' => __( 'Continue', 'personio-integration-light' ),
+			'finish_button_label' => __( 'Finish', 'personio-integration-light' )
 		);
 	}
+
+	/**
+	 * Run the setup-progress via REST API.
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function process_init(): void {
+		// set marker that setup is running.
+		update_option( 'wp_easy_setup_pi_running', 1 );
+
+		// set max step count (taxonomy-labels + Personio-accounts).
+		update_option( 'wp_easy_setup_pi_max_steps', Taxonomies::get_instance()->get_taxonomy_defaults_count() + 1 );
+
+		// set actual steps to 0.
+		update_option( 'wp_easy_setup_pi_step', 0 );
+
+		// 1. Run import taxonomies.
+		$this->set_process_label( __( 'Import Personio labels running.', 'personio-integration-light' ) );
+		Taxonomies::get_instance()->create_defaults( array( $this, 'update_process_step' ) );
+
+		// 2. Run import positions.
+		$this->set_process_label( __( 'Import of your Personio positions running.', 'personio-integration-light' ) );
+		new Import();
+
+		// cleanup.
+		update_option( 'wp_easy_setup_pi_step_label', __( 'Setup has been run.', 'personio-integration-light' ) );
+		delete_option( 'wp_easy_setup_pi_running' );
+
+		// return empty json.
+		wp_send_json(array());
+
+		// Don't forget to stop execution afterward.
+		wp_die();
+	}
+
+	/**
+	 * Set process label.
+	 *
+	 * @param string $label
+	 *
+	 * @return void
+	 */
+	private function set_process_label( string $label ): void {
+		update_option( 'wp_easy_setup_pi_step_label', $label );
+	}
+
+	/**
+	 * Updates the process step.
+	 *
+	 * @param int $step Steps to add.
+	 *
+	 * @return void
+	 */
+	public function update_process_step( int $step = 1 ): void {
+		update_option( 'wp_easy_setup_pi_step', absint(get_option( 'wp_easy_setup_pi_step', 0 ) + $step ) );
+	}
+
+	/**
+	 * Updates the max steps for processing.
+	 *
+	 * @param int $max_steps Steps to add to max steps.
+	 *
+	 * @return void
+	 */
+	public function update_process_max_steps( int $max_steps = 1 ): void {
+		update_option( 'wp_easy_setup_pi_max_steps', absint(get_option( 'wp_easy_setup_pi_max_steps', 0 ) + $max_steps ) );
+	}
+
+	/**
+	 * Get progress info via REST API.
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function get_process_info(): void {
+		$return = array(
+			'running' => absint(get_option( 'wp_easy_setup_pi_running', 0 )),
+			'max' => absint(get_option( 'wp_easy_setup_pi_max_steps', 0 )),
+			'step' => absint(get_option( 'wp_easy_setup_pi_step', 0 )),
+			'step_label' => get_option( 'wp_easy_setup_pi_step_label', '' )
+		);
+
+		// Return JSON with result.
+		wp_send_json($return);
+
+		// Don't forget to stop execution afterward.
+		wp_die();
+	}
+
 }

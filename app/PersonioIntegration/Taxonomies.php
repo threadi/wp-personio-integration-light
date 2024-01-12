@@ -9,7 +9,6 @@ namespace App\PersonioIntegration;
 
 use App\Helper;
 use App\Plugin\Languages;
-use App\Plugin\Setup;
 use WP_Screen;
 use WP_Term;
 
@@ -56,9 +55,6 @@ class Taxonomies {
 		// register taxonomies.
 		add_action( 'init', array( $this, 'register' ) );
 
-		// create defaults.
-		add_action( 'init', array( $this, 'create_defaults' ) );
-
 		// our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_taxonomies' ) );
 
@@ -69,32 +65,34 @@ class Taxonomies {
 	/**
 	 * One-time function to create taxonomy-defaults.
 	 *
+	 * @param array $callback Callback for each step (optional).
+	 *
 	 * @return void
 	 */
-	public function create_defaults(): void {
-		// bail if setup is not completed.
-		if( ! Setup::get_instance()->is_completed() ) {
-			return;
-		}
-
+	public function create_defaults( array $callback = array() ): void {
 		// Exit if the work has already been done.
-		if ( 1 === absint( get_option( 'personioTaxonomyDefaults', 0 ) ) ) {
+		/*if ( 1 === absint( get_option( 'personioTaxonomyDefaults', 0 ) ) ) {
+			// update steps via callback.
+			if( ! empty ( $callback ) && is_callable( $callback ) ) {
+				call_user_func( $callback, $this->get_taxonomy_defaults_count() );
+			}
+
 			return;
-		}
+		}*/
 
 		// disable taxonomy-counting for more speed.
 		wp_defer_term_counting( true );
 
 		$i = 0;
 
-		// loop through our own taxonomies and configure them.
+		// loop through our own taxonomies and add their default terms.
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			// add default terms to taxonomy if they do not exist (only in admin or via CLI).
 			$taxonomy_obj = get_taxonomy( $taxonomy_name );
-			if ( ! empty( $taxonomy_obj->defaults ) && ( is_admin() || Helper::is_cli() ) ) {
+			if ( ! empty( $taxonomy_obj->defaults ) ) {
 				$has_terms = get_terms( array( 'taxonomy' => $taxonomy_name ) );
 				if ( empty( $has_terms ) ) {
-					$this->add_terms( $taxonomy_obj->defaults, $taxonomy_name );
+					$this->add_terms( $taxonomy_obj->defaults, $taxonomy_name, $callback );
 
 					// count.
 					$i++;
@@ -103,6 +101,9 @@ class Taxonomies {
 					if ( $i % 100 == 0 ) {
 						wp_cache_flush();
 					}
+				}
+				else if( ! empty ( $callback ) && is_callable( $callback ) ) {
+					call_user_func( $callback, count($taxonomy_obj->defaults) );
 				}
 			}
 		}
@@ -505,16 +506,22 @@ class Taxonomies {
 	 *
 	 * @param array  $list_or_terms List of terms to add.
 	 * @param string $taxonomy_name Name of the taxonomy.
+	 * @param array  $callback Callback if term has been processed.
 	 *
 	 * @return void
 	 */
-	private function add_terms( array $list_or_terms, string $taxonomy_name ): void {
+	private function add_terms( array $list_or_terms, string $taxonomy_name, array $callback ): void {
 		foreach ( $list_or_terms as $term => $term_title ) {
 			if ( ! term_exists( $term, $taxonomy_name ) ) {
 				wp_insert_term(
 					$term,
 					$taxonomy_name
 				);
+			}
+
+			// update steps via callback.
+			if( ! empty ( $callback ) && is_callable( $callback ) ) {
+				call_user_func( $callback, 1 );
 			}
 		}
 	}
@@ -533,6 +540,19 @@ class Taxonomies {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Return count of taxonomy default labels.
+	 *
+	 * @return int
+	 */
+	public function get_taxonomy_defaults_count(): int {
+		$count = 0;
+		foreach( $this->get_taxonomy_defaults() as $labels ) {
+			$count = $count + count($labels);
+		}
+		return $count;
 	}
 
 	/**

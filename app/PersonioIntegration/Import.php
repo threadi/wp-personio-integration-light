@@ -42,9 +42,7 @@ class Import {
 	private Log $log;
 
 	/**
-	 * Constructor which starts the import directly.
-	 *
-	 * @noinspection PhpUndefinedFunctionInspection
+	 * Constructor which runs the import of position for single Personio-account.
 	 */
 	public function __construct() {
 		// get log-object.
@@ -73,6 +71,16 @@ class Import {
 		// set counter for progressbar in backend.
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_MAX, $language_count );
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 );
+
+		/**
+		 * Set max steps in external objects.
+		 *
+		 * @param int $language_count The steps to add.
+		 *
+		 * @since 3.0.0 Available since release 3.0.0.
+		 */
+		do_action( 'personio_integration_import_max_steps', $language_count );
+
 		$do_not_update_max_counter = false;
 
 		// create array for positions.
@@ -237,8 +245,19 @@ class Import {
 
 							// update max-counter only once per import.
 							if ( ! $do_not_update_max_counter ) {
-								update_option( WP_PERSONIO_INTEGRATION_OPTION_MAX, $language_count * count( $positions ) );
+								$max_counter = $language_count * count( $positions );
+
+								update_option( WP_PERSONIO_INTEGRATION_OPTION_MAX, $max_counter );
 								$do_not_update_max_counter = true;
+
+								/**
+								 * Run custom actions after finished import of single Personio-URL.
+								 *
+								 * @param int $max_counter The steps to add.
+								 *
+								 * @since 3.0.0 Available since release 3.0.0.
+								 */
+								do_action( 'personio_integration_import_max_steps', $max_counter );
 							}
 
 							// loop through the positions and import them.
@@ -270,8 +289,19 @@ class Import {
 									$this->log->add_log( sprintf( 'Position %1$s has not been imported.', esc_html( $position->id ) ), 'success' );
 								}
 
+								++$count;
+
 								// update counter.
-								update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, ++$count );
+								update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, $count );
+
+								/**
+								 * Run custom actions after finished import of single Personio-URL.
+								 *
+								 * @param int $step The step to add.
+								 *
+								 * @since 3.0.0 Available since release 3.0.0.
+								 */
+								do_action( 'personio_integration_import_count', $count );
 							}
 
 							// save the md5-hash of this import-file to prevent reimport.
@@ -353,7 +383,7 @@ class Import {
 			}
 
 			/**
-			 * Run custom actions after import of single Personio-URL has been done.
+			 * Run custom actions after import of single Personio-URL has been done without errors.
 			 *
 			 * @since 2.0.0 Available since release 2.0.0.
 			 */
@@ -378,6 +408,18 @@ class Import {
 			// output error-message.
 			$this->show_errors();
 		}
+
+		// define step-count that has been run.
+		$step = 1;
+
+		/**
+		 * Run custom actions after finished import of single Personio-URL.
+		 *
+		 * @param int $step The step to add.
+		 *
+		 * @since 3.0.0 Available since release 3.0.0.
+		 */
+		do_action( 'personio_integration_import_finished', $step );
 
 		// mark import as not running anymore.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );

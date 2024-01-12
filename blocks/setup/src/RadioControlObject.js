@@ -14,6 +14,11 @@ export default class RadioControlObject extends Component {
     super( ...arguments );
   }
 
+  /**
+   * Render the output.
+   *
+   * @returns {JSX.Element}
+   */
   render() {
     /**
      * Create helper text.

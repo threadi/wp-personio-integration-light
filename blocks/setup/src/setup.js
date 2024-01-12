@@ -10,6 +10,7 @@
 import './setup.scss';
 import RadioControlObject from './RadioControlObject';
 import TextControlObject from './TextControlObject';
+import ProgressBarObject from './ProgressBarObject';
 
 // import dependencies.
 import {
@@ -34,6 +35,7 @@ class WpEasySetup extends Component {
       results: {}, // collection of field validation results.
       step: 1, // initially setup-step.
       button_disabled: true, // marker for continue-button-state.
+      finish_button_disabled: true, // marker for finish-button-state.
       is_api_loaded: false, // marker if API has been loaded.
     };
 
@@ -102,7 +104,7 @@ class WpEasySetup extends Component {
        * Show Progressbar component during running some server-side tasks.
        */
       case 'ProgressBar':
-        return 'progressbar ausgeben' // TODO
+        return <ProgressBarObject field_name={ field_name } field={ field } object={ this } />
 
       /**
        * Return empty string for all other types.
@@ -135,13 +137,29 @@ class WpEasySetup extends Component {
               {Object.keys(this.props.fields[this.state.step]).map( field_name => (
                 <div key={ field_name }>{this.renderControlSetting( field_name, this.props.fields[this.state.step][field_name] )}</div>
               ) )}
-              <Button
+              {this.state.step > 1 && <Button
+                isSecondary
+                onClick={() => this.setState( { 'step': this.state.step - 1 } )}
+              >
+                { this.props.config.back_button_label }
+              </Button>
+              }
+              {this.state.step < this.props.config.steps && <Button
                 isPrimary
                 disabled={this.state.button_disabled}
                 onClick={() => onSaveSetup( this )}
               >
                 { this.props.config.continue_button_label }
               </Button>
+              }
+              {this.state.step === this.props.config.steps && <Button
+                isPrimary
+                disabled={this.state.finish_button_disabled}
+                onClick={() => alert("ok")} // TODO am server speichern, dass setup completed ist und zur liste der stellen wechseln
+              >
+                { this.props.config.finish_button_label }
+              </Button>
+              }
             </PanelBody>
           </Panel>
         </div>
@@ -169,15 +187,12 @@ export const onSaveSetup = ( object ) => {
   // remove internal used parameter.
   let state = object.state;
   delete state.is_api_loaded;
-  delete state.results;
 
   // save it via REST API for settings.
   new api.models.Settings( state ).save();
 
   // set next step for setup.
   object.setState( { 'step': object.state.step + 1 } );
-
-  console.log(object.props.fields);
 }
 
 /**
