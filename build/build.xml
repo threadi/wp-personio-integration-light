@@ -35,7 +35,7 @@
     <!-- generate autoloader for release -->
     <target name="autoloader-generation">
         <delete file="${log.dir}/autoloader-generation.txt"/>
-        <exec dir="${src.dir}" failonerror="true" executable="${composer.path}" output="${log.dir}/composer-install.txt">
+        <exec dir="${src.dir}" failonerror="true" executable="${composer.path}" output="${log.dir}/autoloader-generation.txt">
             <arg line="dump-autoload -oa --no-dev"/>
         </exec>
     </target>
