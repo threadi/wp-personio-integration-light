@@ -5,14 +5,14 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-use App\Helper;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use PersonioIntegrationLight\Helper;
 
 /**
  * Initialize a single transient-object.
@@ -135,7 +135,7 @@ class Transient {
 			'type'             => $this->get_type(),
 			'dismissible_days' => $this->get_dismissible_days(),
 			'action'           => $this->get_action(),
-			'hide_on'          => $this->get_hide_on()
+			'hide_on'          => $this->get_hide_on(),
 		);
 	}
 
@@ -180,10 +180,10 @@ class Transient {
 		$this->set_type( $entry['type'] );
 		$this->set_dismissible_days( $entry['dismissible_days'] );
 		$this->set_action( $entry['action'] );
-		$this->set_hide_on( $entry['hide_on' ] );
+		$this->set_hide_on( $entry['hide_on'] );
 
 		// bail if called URL is on hide-list.
-		if( $this->is_hidden() ) {
+		if ( $this->is_hidden() ) {
 			return;
 		}
 

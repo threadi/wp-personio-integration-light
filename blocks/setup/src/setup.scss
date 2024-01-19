@@ -1,7 +1,28 @@
 #wp-plugin-setup {
-	margin: 0 auto;
-	width: 60%;
+	margin: 3em auto 0;
+	width: 40%;
 	min-width: 420px;
+
+	.wp-easy-setup__header {
+		overflow: hidden;
+		margin-bottom: 2em;
+	}
+
+	.wp-easy-setup__header:before {
+		background-image: url(../../../gfx/personio_logo_big.png);
+		background-repeat: no-repeat;
+		background-size: cover;
+		content: '';
+		display: inline-block;
+		margin-top: 8px;
+		width: 130px;
+		height: 41px;
+		float: right;
+	}
+
+	.components-panel__body p {
+		line-height: 1.6;
+	}
 
 	.components-base-control__field > label {
 		display: block;
@@ -27,6 +48,10 @@
 
 	button {
 		margin-top: 1em;
+		span > span {
+			display: inline-block;
+			margin-left: 0.4em;
+		}
 	}
 
 	.wp-setup-error {

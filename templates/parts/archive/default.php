@@ -6,13 +6,13 @@
  * @package personio-integration-light
  */
 
-use App\Plugin\Templates;
+use PersonioIntegrationLight\Plugin\Templates;
 
 while ( $GLOBALS['personio_query_results']->have_posts() ) :
 	$GLOBALS['personio_query_results']->the_post();
 
 	// get the Position as object with the requested language.
-	$position       = $positions_obj->get_position( get_the_id(), $personio_attributes['lang'] );
+	$position = $positions_obj->get_position( get_the_id(), $personio_attributes['lang'] );
 
 	// get group title.
 	include Templates::get_instance()->get_template( 'parts/part-grouptitle.php' );

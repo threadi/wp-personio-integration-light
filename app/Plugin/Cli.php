@@ -5,11 +5,11 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace PersonioIntegrationLight\Plugin;
 
-use App\Log;
-use App\PersonioIntegration\Import;
-use App\Plugin\Cli\Helper;
+use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\Import;
+use PersonioIntegrationLight\Plugin\Cli\Helper;
 
 /**
  * Handler for recruitment from HR Personio

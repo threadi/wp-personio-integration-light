@@ -6,7 +6,7 @@
  * @package personio-integration-light
  */
 
-use App\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 defined( 'ABSPATH' ) || exit;
 

@@ -5,7 +5,12 @@
  * @package personio-integration-light
  */
 
-namespace App\Widgets;
+namespace PersonioIntegrationLight\Widgets;
+
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 use const WP_CLI;
 
@@ -83,7 +88,7 @@ trait Helper {
 					<?php
 					break;
 				case 'text':
-					echo '<p>'.wp_kses_post( $field['text'] ).'</p>';
+					echo '<p>' . wp_kses_post( $field['text'] ) . '</p>';
 					break;
 			}
 		}

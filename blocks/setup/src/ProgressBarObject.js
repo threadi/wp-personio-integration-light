@@ -3,6 +3,7 @@
  */
 import { Component } from '@wordpress/element';
 import newId from './helper/getid';
+import {showError} from "./setup";
 
 /**
  * Check the state of the progress.
@@ -34,7 +35,7 @@ function getProcessInfo( object ) {
         object.props.object.setState( { 'finish_button_disabled': false });
       }
     })
-    .catch( error => console.log( error ) ); // TODO better error handling
+    .catch( error => showError( error ) )
   }, 500)
 }
 
@@ -62,7 +63,7 @@ export default class ProgressBarObject extends Component {
             'X-WP-Nonce': wp_easy_setup.rest_nonce
           }
         } )
-        .catch( error => console.log( error ) ); // TODO better error handling
+        .catch( error => showError( error ) )
       // get info about process every x ms.
       getProcessInfo( this );
     }, 500 );

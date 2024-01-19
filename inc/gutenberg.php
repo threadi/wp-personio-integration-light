@@ -1,11 +1,11 @@
 <?php
 /**
- * Add pagebuilder Gutenberg.
+ * Add pagebuilder Gutenberg aka Block Editor.
  *
  * @package personio-integration-light
  */
 
-use App\PageBuilder\Gutenberg;
+use PersonioIntegrationLight\PageBuilder\Gutenberg;
 
 /**
  * Add the pagebuilder Gutenberg as object to the list.

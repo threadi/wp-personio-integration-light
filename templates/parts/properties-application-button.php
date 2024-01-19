@@ -11,8 +11,8 @@
  * @package personio-integration-light
  */
 
-use App\Helper;
-use App\Plugin\Templates;
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Plugin\Templates;
 
 defined( 'ABSPATH' ) || exit;
 

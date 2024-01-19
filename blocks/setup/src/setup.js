@@ -137,11 +137,11 @@ class WpEasySetup extends Component {
               {Object.keys(this.props.fields[this.state.step]).map( field_name => (
                 <div key={ field_name }>{this.renderControlSetting( field_name, this.props.fields[this.state.step][field_name] )}</div>
               ) )}
-              {this.state.step > 1 && <Button
+              {this.state.step > 1 && this.state.step !== this.props.config.steps && <Button
                 isSecondary
                 onClick={() => this.setState( { 'step': this.state.step - 1 } )}
               >
-                { this.props.config.back_button_label }
+                { <span dangerouslySetInnerHTML={{__html: this.props.config.back_button_label}}/> }
               </Button>
               }
               {this.state.step < this.props.config.steps && <Button
@@ -149,15 +149,15 @@ class WpEasySetup extends Component {
                 disabled={this.state.button_disabled}
                 onClick={() => onSaveSetup( this )}
               >
-                { this.props.config.continue_button_label }
+                { <span dangerouslySetInnerHTML={{__html: this.props.config.continue_button_label}}/> }
               </Button>
               }
               {this.state.step === this.props.config.steps && <Button
                 isPrimary
                 disabled={this.state.finish_button_disabled}
-                onClick={() => alert("ok")} // TODO am server speichern, dass setup completed ist und zur liste der stellen wechseln
+                onClick={() => onSetupCompleted()}
               >
-                { this.props.config.finish_button_label }
+                { <span dangerouslySetInnerHTML={{__html: this.props.config.finish_button_label}}/> }
               </Button>
               }
             </PanelBody>
@@ -196,6 +196,28 @@ export const onSaveSetup = ( object ) => {
 }
 
 /**
+ * Mark setup as completed and forward user to given path from response.
+ */
+export const onSetupCompleted = () => {
+  fetch( wp_easy_setup.completed_url, {
+    method: 'POST',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+      'X-WP-Nonce': wp_easy_setup.rest_nonce
+    }
+  } )
+    .then( response => response.json() )
+    .then( function( result ) {
+        if( result.forward ) {
+          location.href = result.forward;
+        }
+      }
+    )
+    .catch( error => showError( error ) );
+}
+
+/**
  * Check value of single field. Mark field with hints if some error occurred.
  *
  * Change value of single field no matter what the result is.
@@ -221,12 +243,12 @@ export const onChangeField = ( object, field_name, field, newValue,  ) => {
       })
     } )
       .then( response => response.json() )
-      .then( function(result) {
+      .then( function( result ) {
           object.state.results[field_name] = result;
           object.setState( {[field_name]: newValue} );
         }
       )
-      .catch( error => console.log( error ) ); // TODO better error handling
+      .catch( error => showError( error ) );
   }
   else {
     object.setState( {[field_name]: newValue} )
@@ -248,4 +270,28 @@ export function setButtonDisabledState( object ) {
     }
   })}
   object.state.button_disabled = fields_count !== fields_filled_count;
+}
+
+/**
+ * Show error as dialog.
+ *
+ * @param error
+ */
+export function showError( error ) {
+  let dialog_config = {
+    detail: {
+      title: wp_easy_setup.title_error,
+      texts: [
+        '<p><strong>' + wp_easy_setup.txt_error_1 + '</strong><br><pre>' + error + '</pre></p><p>' + wp_easy_setup.txt_error_2 + '</p>'
+      ],
+      buttons: [
+        {
+          'action': 'closeDialog();',
+          'variant': 'primary',
+          'text': 'OK'
+        }
+      ]
+    }
+  }
+  personio_integration_create_dialog( dialog_config )
 }

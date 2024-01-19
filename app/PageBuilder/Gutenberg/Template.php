@@ -5,9 +5,14 @@
  * @package personio-integration-light
  */
 
-namespace App\PageBuilder\Gutenberg;
+namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 
-use App\Helper;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
 use WP_Block_Template;
 
 /**

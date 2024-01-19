@@ -5,10 +5,15 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace PersonioIntegrationLight\Plugin;
 
-use App\Helper;
-use App\Widgets\Widgets;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Widgets\Widgets;
 
 /**
  * Helper-function for plugin-activation and -deactivation.
@@ -89,7 +94,7 @@ class Uninstaller {
 		Widgets::get_instance()->uninstall();
 
 		// remove transients.
-		foreach( Transients::get_instance()->get_transients() as $transient_obj ) {
+		foreach ( Transients::get_instance()->get_transients() as $transient_obj ) {
 			$transient_obj->delete();
 		}
 
@@ -122,7 +127,7 @@ class Uninstaller {
 			}
 
 			// remove manuel options.
-			foreach( $this->get_options() as $option ) {
+			foreach ( $this->get_options() as $option ) {
 				delete_option( $option );
 			}
 		}
@@ -146,7 +151,6 @@ class Uninstaller {
 			WP_PERSONIO_INTEGRATION_IMPORT_ERRORS,
 			WP_PERSONIO_INTEGRATION_OPTION_COUNT,
 			WP_PERSONIO_INTEGRATION_OPTION_MAX,
-			'personioIntegrationUrlPointer',
 			'personioIntegrationPositionScheduleInterval',
 			'personioIntegrationVersion',
 			'personioTaxonomyDefaults',
@@ -154,7 +158,8 @@ class Uninstaller {
 			'wp_easy_setup_pi_max_steps',
 			'wp_easy_setup_pi_step',
 			'wp_easy_setup_pi_step_label',
-			'wp_easy_setup_pi_running'
+			'wp_easy_setup_pi_running',
+			'wp_easy_setup_completed',
 		);
 	}
 }

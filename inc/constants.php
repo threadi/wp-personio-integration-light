@@ -8,9 +8,6 @@
 /**
  * Name of the custom posttype for positions.
  */
-
-use App\Helper;
-
 const WP_PERSONIO_INTEGRATION_MAIN_CPT = 'personioposition';
 
 /**
@@ -97,7 +94,7 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST = 'personio_integration_transients
  * Set list of manuel transients which are not managed via Transients-object.
  */
 const WP_PERSONIO_INTEGRATION_TRANSIENTS = array(
-	'personio_integration_update_slugs'                => array(
+	'personio_integration_update_slugs' => array(
 		'type' => 'success',
 	),
 );

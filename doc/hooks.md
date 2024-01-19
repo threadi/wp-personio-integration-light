@@ -170,7 +170,7 @@ Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [l
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$this` | `\App\PersonioIntegration\Position` | The object of this position.
+`$this` | `\PersonioIntegrationLight\PersonioIntegration\Position` | The object of this position.
 
 **Changelog**
 
@@ -188,7 +188,7 @@ Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php)
 
 Argument | Type | Description
 -------- | ---- | -----------
-`WP_PERSONIO_INTEGRATION_LANGUAGES_COMPLETE` |  | 
+`WP_PERSONIO_INTEGRATION_LANGUAGES_COMPLETE` |  |
 
 Source: [app/Plugin/Languages.php](Plugin/Languages.php), [line 50](Plugin/Languages.php#L50-L50)
 
@@ -198,7 +198,7 @@ Source: [app/Plugin/Languages.php](Plugin/Languages.php), [line 50](Plugin/Langu
 
 Argument | Type | Description
 -------- | ---- | -----------
-`array('de' => __('German', 'personio-integration-light'), 'en' => __('English', 'personio-integration-light'))` |  | 
+`array('de' => __('German', 'personio-integration-light'), 'en' => __('English', 'personio-integration-light'))` |  |
 
 Source: [app/Plugin/Languages.php](Plugin/Languages.php), [line 60](Plugin/Languages.php#L60-L66)
 
@@ -226,7 +226,7 @@ Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 93](Plugin/Templ
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$directory` |  | 
+`$directory` |  |
 
 Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 134](Plugin/Templates.php#L134-L134)
 
@@ -236,7 +236,7 @@ Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 134](Plugin/Temp
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$directory` |  | 
+`$directory` |  |
 
 Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 168](Plugin/Templates.php#L168-L168)
 
@@ -388,7 +388,7 @@ Source: [app/Plugin/Admin/SettingFields/MultiSelect.php](Plugin/Admin/SettingFie
 
 ### `personio_integration_schedules`
 
-*Add custom schedules to use. This must be objects based on App\Plugin\Schedules_Base.*
+*Add custom schedules to use. This must be objects based on PersonioIntegrationLight\Plugin\Schedules_Base.*
 
 **Arguments**
 
@@ -450,7 +450,7 @@ Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [l
 Argument | Type | Description
 -------- | ---- | -----------
 `$run_import` | `bool` | The individual text.
-`$position` |  | 
+`$position` |  |
 `$key` | `string` | The language-marker.
 
 **Changelog**
@@ -470,7 +470,7 @@ Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [l
 Argument | Type | Description
 -------- | ---- | -----------
 `$do_delete` | `bool` | Marker to delete the position.
-`$position` | `\App\PersonioIntegration\Position` | The position as object.
+`$position` | `\PersonioIntegrationLight\PersonioIntegration\Position` | The position as object.
 
 **Changelog**
 
@@ -488,7 +488,7 @@ Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [l
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$position_object` | `\App\PersonioIntegration\Position` | The object of this position.
+`$position_object` | `\PersonioIntegrationLight\PersonioIntegration\Position` | The object of this position.
 `$position` | `object` | The XML-object with the data from Personio.
 
 **Changelog**
@@ -565,7 +565,7 @@ Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php)
 Argument | Type | Description
 -------- | ---- | -----------
 `$array` | `array` | The position data as array.
-`$this` | `\App\PersonioIntegration\Position` | The object we are in.
+`$this` | `\PersonioIntegrationLight\PersonioIntegration\Position` | The object we are in.
 
 **Changelog**
 
@@ -654,8 +654,8 @@ Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegra
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$limit_by_wp` |  | 
-`$personio_attributes['limit']` |  | 
+`$limit_by_wp` |  |
+`$personio_attributes['limit']` |  |
 
 Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 452](PersonioIntegration/PostTypes/PersonioPosition.php#L452-L452)
 
@@ -742,7 +742,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$name` | `string` | The public name for the requested taxonomy.
 `$taxonomy` | `string` | The name of the requested taxonomy.
-`$position` | `\App\PersonioIntegration\Position` | The position as object.
+`$position` | `\PersonioIntegrationLight\PersonioIntegration\Position` | The position as object.
 
 **Changelog**
 

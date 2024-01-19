@@ -5,12 +5,17 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin\SettingsValidation;
+namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 
-use App\Helper;
-use App\PersonioIntegration\Personio;
-use App\Plugin\Admin\Settings_Validation_Base;
-use App\Plugin\Transients;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Personio;
+use PersonioIntegrationLight\Plugin\Admin\Settings_Validation_Base;
+use PersonioIntegrationLight\Plugin\Transients;
 
 /**
  * Object which validates the given URL.
@@ -41,9 +46,6 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 			if ( 0 === strlen( $value ) ) {
 				add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'The specification of the Personio URL is mandatory.', 'personio-integration-light' ) );
 
-				// delete import hint.
-				$transients_obj->get_transient_by_name( 'personio_integration_no_position_imported' )->delete();
-
 				$error = true;
 			}
 			if ( self::has_size( $value ) ) {
@@ -69,11 +71,8 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 						$error = true;
 						$value = '';
 					} else {
-						// delete other message.
-						Transients::get_instance()->get_transient_by_name( 'personio_integration_no_position_imported' )->delete();
-
 						// reset options for the import.
-						foreach ( \App\Plugin\Languages::get_instance()->get_active_languages() as $language_name => $label ) {
+						foreach ( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_active_languages() as $language_name => $label ) {
 							delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $language_name );
 							delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $language_name );
 						}
@@ -137,33 +136,30 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 		$value = self::cleanup_url_string( $value );
 
 		// check if value has size.
-		if( ! self::has_size( $value ) ) {
+		if ( ! self::has_size( $value ) ) {
 			// return empty string as we do not mark this as failure.
 			return array();
-		}
-		elseif( ! self::validate_url( $value ) ) {
+		} elseif ( ! self::validate_url( $value ) ) {
 			// return error as the given string is not a valid URL.
 			return array(
 				'error' => 'no_url',
-				'text' => __( 'Given URL is not valid.', 'personio-integration-light' )
+				'text'  => __( 'Given URL is not valid.', 'personio-integration-light' ),
 			);
-		}
-		elseif( ! self::check_personio_in_url( $value ) ) {
+		} elseif ( ! self::check_personio_in_url( $value ) ) {
 			// return error as the given string is a URL but not for Personio.
 			return array(
 				'error' => 'no_personio_url',
-				'text' => __( 'The specified Personio URL is not a Personio-URL. It must end with <i>.jobs.personio.com</i> or <i>.jobs.personio.de</i>.', 'personio-integration-light' )
+				'text'  => __( 'The specified Personio URL is not a Personio-URL. It must end with <i>.jobs.personio.com</i> or <i>.jobs.personio.de</i>.', 'personio-integration-light' ),
 			);
-		}
-		elseif( ! self::check_url( $value ) ) {
+		} elseif ( ! self::check_url( $value ) ) {
 			// return error as the given URL is not a usable Personio-URL.
 			return array(
 				'error' => 'url_not_available',
-				'text' => __( 'The specified Personio URL is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there.', 'personio-integration-light' )
+				'text'  => __( 'The specified Personio URL is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there.', 'personio-integration-light' ),
 			);
 		}
 
-		// return empty result if no error occurred.
+		// return empty value if no error occurred.
 		return array();
 	}
 
@@ -196,7 +192,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 *
 	 * @return string
 	 */
-	private static function cleanup_url_string( string $value ): string {
+	public static function cleanup_url_string( string $value ): string {
 		// remove slash on the end of the given url.
 		return rtrim( $value, '/' );
 	}

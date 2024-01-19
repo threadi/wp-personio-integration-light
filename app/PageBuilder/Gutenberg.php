@@ -5,15 +5,20 @@
  * @package personio-integration-light
  */
 
-namespace App\PageBuilder;
+namespace PersonioIntegrationLight\PageBuilder;
 
-use App\Helper;
-use App\PageBuilder\Gutenberg\Templates;
-use App\PageBuilder_Base;
-use App\PersonioIntegration\Position;
-use App\PersonioIntegration\Positions;
-use App\PersonioIntegration\PostTypes\PersonioPosition;
-use App\PersonioIntegration\Taxonomies;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PageBuilder\Gutenberg\Templates;
+use PersonioIntegrationLight\PageBuilder_Base;
+use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 
 /**
  * Object to handle the Gutenberg support.
@@ -398,7 +403,7 @@ class Gutenberg extends PageBuilder_Base {
 					'type'    => 'string',
 					'default' => '',
 				),
-				'template' => array(
+				'template'         => array(
 					'type'    => 'string',
 					'default' => 'default',
 				),
@@ -414,7 +419,7 @@ class Gutenberg extends PageBuilder_Base {
 					'type'    => 'boolean',
 					'default' => true,
 				),
-				'separator'             => array(
+				'separator'        => array(
 					'type'    => 'string',
 					'default' => ', ',
 				),
@@ -681,7 +686,7 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function get_application_button( array $attributes ): string {
 		$position = $this->get_position_by_request();
-		if ( ( $position instanceof Position && ! $position->is_valid() ) || !( $position instanceof Position ) ) {
+		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! ( $position instanceof Position ) ) {
 			return '';
 		}
 
@@ -713,7 +718,7 @@ class Gutenberg extends PageBuilder_Base {
 
 		// get the output.
 		ob_start();
-		\App\Plugin\Templates::get_instance()->get_formular_template( $position, $attributes );
+		\PersonioIntegrationLight\Plugin\Templates::get_instance()->get_formular_template( $position, $attributes );
 		return ob_get_clean();
 	}
 
@@ -726,7 +731,7 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function get_details( array $attributes ): string {
 		$position = $this->get_position_by_request();
-		if ( ( $position instanceof Position && ! $position->is_valid() ) || !( $position instanceof Position ) ) {
+		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! ( $position instanceof Position ) ) {
 			return '';
 		}
 
@@ -744,13 +749,13 @@ class Gutenberg extends PageBuilder_Base {
 
 		// get separator.
 		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator', ', ' ) . ' ';
-		if ( !empty($attributes['separator']) ) {
+		if ( ! empty( $attributes['separator'] ) ) {
 			$separator = $attributes['separator'];
 		}
 
 		// get settings for templates.
 		$template = 'default';
-		if( !empty($attributes['template']) ) {
+		if ( ! empty( $attributes['template'] ) ) {
 			$template = $attributes['template'];
 		}
 
@@ -772,14 +777,14 @@ class Gutenberg extends PageBuilder_Base {
 					// get labels of this taxonomy.
 					$labels = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name );
 
-					$details[$labels['name']] = $value;
+					$details[ $labels['name'] ] = $value;
 				}
 			}
 		}
 
 		// get content for output.
 		ob_start();
-		include \App\Plugin\Templates::get_instance()->get_template( 'parts/details/'.$template.'.php' );
+		include \PersonioIntegrationLight\Plugin\Templates::get_instance()->get_template( 'parts/details/' . $template . '.php' );
 		return ob_get_clean();
 	}
 
@@ -792,7 +797,7 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function get_description( array $attributes ): string {
 		$position = $this->get_position_by_request();
-		if ( ( $position instanceof Position && ! $position->is_valid() ) || !( $position instanceof Position ) ) {
+		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! ( $position instanceof Position ) ) {
 			return '';
 		}
 
@@ -820,12 +825,12 @@ class Gutenberg extends PageBuilder_Base {
 			'jobdescription_template' => empty( $attributes['template'] ) ? get_option( 'personioIntegrationTemplateJobDescription', 'default' ) : $attributes['template'],
 			'templates'               => array( 'content' ),
 			'styles'                  => implode( PHP_EOL, $styles_array ),
-			'classes'                 => $class . ' ' . helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
+			'classes'                 => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 		);
 
 		// get the output.
 		ob_start();
-		\App\Plugin\Templates::get_instance()->get_content_template( $position, $attributes );
+		\PersonioIntegrationLight\Plugin\Templates::get_instance()->get_content_template( $position, $attributes );
 		return ob_get_clean();
 	}
 
@@ -851,5 +856,4 @@ class Gutenberg extends PageBuilder_Base {
 		// return the object.
 		return $position;
 	}
-
 }

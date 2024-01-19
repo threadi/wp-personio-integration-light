@@ -5,13 +5,18 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace PersonioIntegrationLight\Plugin;
 
-use App\Helper;
-use App\PersonioIntegration\Position;
-use App\PersonioIntegration\Positions;
-use App\PersonioIntegration\PostTypes\PersonioPosition;
-use App\PersonioIntegration\Taxonomies;
+// prevent also other direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use WP_Post;
 
 /**
@@ -97,7 +102,7 @@ class Templates {
 		 *
 		 * @param array $templates List of templates (filename => label).
 		 */
-		return apply_filters( 'personio_integration_templates_archive',	$templates );
+		return apply_filters( 'personio_integration_templates_archive', $templates );
 	}
 
 	/**
@@ -233,7 +238,7 @@ class Templates {
 		return array(
 			'defaults'   => $values['defaults'],
 			'settings'   => $values['settings'],
-			'attributes' => array_change_key_case($values['attributes'] ),
+			'attributes' => array_change_key_case( $values['attributes'] ),
 		);
 	}
 
@@ -455,11 +460,10 @@ class Templates {
 		}
 
 		// output for not linked title.
-		if( false !== $attributes['donotlink'] ) {
-			include Templates::get_instance()->get_template( 'parts/part-title.php' );
-		}
-		else {
-			include Templates::get_instance()->get_template( 'parts/part-title-linked.php' );
+		if ( false !== $attributes['donotlink'] ) {
+			include self::get_instance()->get_template( 'parts/part-title.php' );
+		} else {
+			include self::get_instance()->get_template( 'parts/part-title-linked.php' );
 		}
 	}
 
@@ -474,13 +478,13 @@ class Templates {
 	 */
 	public function get_excerpt_template( Position $position, array $attributes, bool $use_return = false ): string {
 		// collect the details in this array
-		$details   = array();
+		$details = array();
 
 		// get the configured separator
 		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator', ', ' ) . ' ';
 
 		// get colon setting.
-		$colon = ":";
+		$colon = ':';
 
 		// get line break from setting.
 		$line_break = '<br>';
@@ -501,31 +505,30 @@ class Templates {
 				$terms = get_the_terms( $position->get_id(), $taxonomy_name );
 
 				// if term exist, get the corresponding term-label.
-				if( !empty($terms) ) {
+				if ( ! empty( $terms ) ) {
 					$added = false;
 					foreach ( $terms as $term ) {
-						if( !empty($terms_label[ $term->slug ]) ) {
-							$details[$taxonomy_label] = $terms_label[ $term->slug ];
-							$added = true;
+						if ( ! empty( $terms_label[ $term->slug ] ) ) {
+							$details[ $taxonomy_label ] = $terms_label[ $term->slug ];
+							$added                      = true;
 						}
 					}
 
 					// for not translated label.
-					if( ! $added ) {
-						$details[$taxonomy_label] = $terms[0]->name;
+					if ( ! $added ) {
+						$details[ $taxonomy_label ] = $terms[0]->name;
 					}
 				}
 			}
 		}
 		if ( ! empty( $details ) ) {
 			// get configured template of none has been set for this output.
-			if( empty($attributes['excerpt_template']) ) {
-				$template = Settings::get_instance()->get_setting(is_singular() ? 'personioIntegrationTemplateDetailsExcerptsTemplate' : 'personioIntegrationTemplateListingExcerptsTemplate' );
-			}
-			else {
+			if ( empty( $attributes['excerpt_template'] ) ) {
+				$template = Settings::get_instance()->get_setting( is_singular() ? 'personioIntegrationTemplateDetailsExcerptsTemplate' : 'personioIntegrationTemplateListingExcerptsTemplate' );
+			} else {
 				$template = $attributes['excerpt_template'];
 			}
-			$template_file = 'parts/details/'.$template.'.php';
+			$template_file = 'parts/details/' . $template . '.php';
 
 			// get template and return it.
 			ob_start();
@@ -533,7 +536,7 @@ class Templates {
 			$content = ob_get_clean();
 
 			// return content depending on setting.
-			if( $use_return ) {
+			if ( $use_return ) {
 				return $content;
 			}
 			echo $content;
@@ -616,15 +619,15 @@ class Templates {
 	 *
 	 * Necessary primary for FSE-themes.
 	 *
-	 * @param string $post_title The title.
+	 * @param string             $post_title The title.
 	 * @param int|string|WP_Post $post_id The post ID.
 	 *
 	 * @return string
 	 */
 	public function update_post_title( string $post_title, int|string|WP_Post $post_id ): string {
 		// change the title only for our own cpt.
-		if( WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( $post_id ) ) {
-			if( $post_id instanceof WP_Post ) {
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( $post_id ) ) {
+			if ( $post_id instanceof WP_Post ) {
 				$post_id = $post_id->ID;
 			}
 			$position_obj = Positions::get_instance()->get_position( absint( $post_id ) );
@@ -688,7 +691,7 @@ class Templates {
 				$filtername = $taxonomy->labels->singular_name;
 
 				// get url.
-				$page_url = helper::get_current_url();
+				$page_url = Helper::get_current_url();
 
 				// output of filter.
 				include $this->get_template( 'parts/term-filter-' . $attributes['filtertype'] . '.php' );
@@ -711,19 +714,18 @@ class Templates {
 		$template_file = 'parts/properties-content.php';
 
 		// if old template does not exist, use the one we configured.
-		if( ! $this->has_template( $template_file ) ) {
+		if ( ! $this->has_template( $template_file ) ) {
 			// get configured template if none has been set for this output.
-			if( empty($attributes['jobdescription_template']) ) {
-				$template = Settings::get_instance()->get_setting(is_singular() ? 'personioIntegrationTemplateJobDescription' : 'personioIntegrationTemplateListingContentTemplate' );
-				if( ! $this->has_template( $template_file ) ) {
+			if ( empty( $attributes['jobdescription_template'] ) ) {
+				$template = Settings::get_instance()->get_setting( is_singular() ? 'personioIntegrationTemplateJobDescription' : 'personioIntegrationTemplateListingContentTemplate' );
+				if ( ! $this->has_template( $template_file ) ) {
 					// set default template if none has been configured (should never happen).
 					$template = 'default';
 				}
-			}
-			else {
+			} else {
 				$template = $attributes['jobdescription_template'];
 			}
-			$template_file = 'parts/jobdescription/'.$template.'.php';
+			$template_file = 'parts/jobdescription/' . $template . '.php';
 		}
 
 		// get template and return it.
@@ -732,7 +734,7 @@ class Templates {
 		$content = ob_get_clean();
 
 		// return content depending on setting.
-		if( $use_return ) {
+		if ( $use_return ) {
 			return $content;
 		}
 		echo $content;

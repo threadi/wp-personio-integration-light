@@ -7,7 +7,7 @@
 
 namespace App;
 
-use App\Plugin\Uninstaller;
+use PersonioIntegrationLight\Plugin\Uninstaller;
 
 // if uninstall.php is not called by WordPress, die.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {

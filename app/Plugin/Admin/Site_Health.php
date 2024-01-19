@@ -5,11 +5,11 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin;
+namespace PersonioIntegrationLight\Plugin\Admin;
 
-use App\Helper;
-use App\PersonioIntegration\Personio;
-use App\Plugin\Schedules\Import;
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Personio;
+use PersonioIntegrationLight\Plugin\Schedules\Import;
 use WP_REST_Server;
 
 /**
@@ -112,7 +112,7 @@ class Site_Health {
 		);
 
 		// get scheduled event.
-		$schedule_obj = new Import();
+		$schedule_obj    = new Import();
 		$scheduled_event = $schedule_obj->get_event();
 
 		// event does not exist => show error.
@@ -172,12 +172,11 @@ class Site_Health {
 		);
 
 		// -> return error if URL is not set.
-		if( ! Helper::is_personio_url_set() ) {
+		if ( ! Helper::is_personio_url_set() ) {
 			$result['status'] = 'recommended';
 			/* translators: %1$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
-			$result['description'] = sprintf( __( 'No Personio-URL set!<br><strong>Please enter the URL <a href="%1$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%2$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ), esc_url( helper::get_personio_login_url() ) );
-		}
-		else {
+			$result['description'] = sprintf( __( 'No Personio-URL set!<br><strong>Please enter the URL <a href="%1$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%2$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ), esc_url( Helper::get_personio_login_url() ) );
+		} else {
 			// -> should return HTTP-Status 200.
 			$response = wp_remote_get(
 				$personio_obj->get_xml_url(),

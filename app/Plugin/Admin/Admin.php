@@ -5,14 +5,14 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin;
+namespace PersonioIntegrationLight\Plugin\Admin;
 
-use App\Helper;
-use App\PersonioIntegration\Import;
-use App\PersonioIntegration\PostTypes\PersonioPosition;
-use App\Plugin\Cli;
-use App\Plugin\Setup;
-use App\Plugin\Transients;
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Import;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Cli;
+use PersonioIntegrationLight\Plugin\Setup;
+use PersonioIntegrationLight\Plugin\Transients;
 
 /**
  * Helper-function for tasks in wp-admin.
@@ -69,13 +69,9 @@ class Admin {
 		// show hint for Pro-version.
 		add_action( 'personio_integration_admin_show_pro_hint', array( $this, 'show_pro_hint' ) );
 
-		// add marker for free-version.
-		add_filter( 'admin_body_class', array( $this, 'add_body_class' ) );
-
 		// add our own checks in wp-admin.
 		add_action( 'admin_init', array( $this, 'check_for_pagebuilder' ) );
 		add_action( 'admin_init', array( $this, 'check_config' ) );
-		add_action( 'admin_init', array( $this, 'check_position_count' ) );
 		add_action( 'admin_init', array( $this, 'show_review_hint' ) );
 
 		// register our own importer in backend.
@@ -88,7 +84,6 @@ class Admin {
 		add_action( 'admin_action_personioPositionsDelete', array( $this, 'delete_positions' ) );
 
 		// add AJAX-actions.
-		add_action( 'wp_ajax_personio_integration_dismiss_url_hint', array( $this, 'dismiss_url_pointer' ) );
 		add_action( 'wp_ajax_personio_run_import', array( $this, 'run_import' ) );
 		add_action( 'wp_ajax_personio_get_import_info', array( $this, 'get_import_info' ) );
 	}
@@ -143,7 +138,7 @@ class Admin {
 				'logo_img'                => Helper::get_logo_img(),
 				'url_example'             => Helper::get_personio_url_example(),
 				'url_positions_backend'   => PersonioPosition::get_instance()->get_link(),
-				'url_positions_frontend'  => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() )
+				'url_positions_frontend'  => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ),
 			)
 		);
 	}
@@ -155,17 +150,17 @@ class Admin {
 	 */
 	public function add_dialog(): void {
 		// embed necessary scripts for dialog.
-		$path = Helper::get_plugin_path().'lib/threadi/wp-easy-dialog/';
-		$url = Helper::get_plugin_url().'lib/threadi/wp-easy-dialog/';
+		$path = Helper::get_plugin_path() . 'lib/threadi/wp-easy-dialog/';
+		$url  = Helper::get_plugin_url() . 'lib/threadi/wp-easy-dialog/';
 
 		// bail if path does not exist.
-		if( !file_exists($path) ) {
+		if ( ! file_exists( $path ) ) {
 			return;
 		}
 
 		// embed the dialog-components JS-script.
 		$script_asset_path = $path . 'build/index.asset.php';
-		$script_asset      = require( $script_asset_path );
+		$script_asset      = require $script_asset_path;
 		wp_enqueue_script(
 			'wp-easy-dialog',
 			$url . 'build/index.js',
@@ -195,23 +190,6 @@ class Admin {
 	 */
 	public function show_pro_hint( string $hint ): void {
 		echo '<p class="personio-pro-hint">' . sprintf( wp_kses_post( $hint ), '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">Personio Integration Pro (opens new window)</a>' ) . '</p>';
-	}
-
-	/**
-	 * Add marker for free version on body-element
-	 *
-	 * @param string $classes List of classes for body-element in wp-admin.
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function add_body_class( string $classes ): string {
-		if ( ! Helper::is_personio_url_set() ) {
-			if( 0 === absint( get_option( 'personioIntegrationUrlPointer', 0 ) ) ) {
-				$classes .= ' personio-integration-pointer';
-			}
-			$classes .= ' personio-integration-url-missing';
-		}
-		return $classes;
 	}
 
 	/**
@@ -376,14 +354,7 @@ class Admin {
 				'<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.',
 				'personio-integration-light'
 			),
-			esc_url(
-				add_query_arg(
-					array(
-						'post_type' => WP_PERSONIO_INTEGRATION_MAIN_CPT,
-					),
-					get_admin_url() . 'edit.php'
-				)
-			),
+			esc_url( PersonioPosition::get_instance()->get_link() ),
 			get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT )
 		);
 		$transient_obj = Transients::get_instance()->add();
@@ -391,9 +362,6 @@ class Admin {
 		$transient_obj->set_message( $message );
 		$transient_obj->set_type( 'hint' );
 		$transient_obj->save();
-
-		// remove other hint.
-		Transients::get_instance()->get_transient_by_name('personio_integration_no_position_imported' )->delete();
 
 		// redirect user.
 		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
@@ -460,24 +428,20 @@ class Admin {
 	 * @return void
 	 */
 	public function check_config(): void {
-		return; // TODO noch benötigt nach Setup?
+		// bail if setup is not completed.
+		if ( ! Setup::get_instance()->is_completed() ) {
+			return;
+		}
+
 		$transients_obj = Transients::get_instance();
-		if ( ! helper::is_personio_url_set() ) {
+		if ( ! Helper::is_personio_url_set() ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_no_url_set' );
 			/* translators: %1$s will be replaced by the URL to the settings-page. */
 			$transient_obj->set_message( sprintf( __( 'The specification of your Personio URL is still pending. <strong>Add it now on the <a href="%1$s">settings page</a></strong>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
 			$transient_obj->set_type( 'hint' );
-			$transient_obj->set_hide_on( array(
-				add_query_arg(
-					array(
-						'post_type' => PersonioPosition::get_instance()->get_name(),
-						'page' => 'personioPositions'
-					),
-					get_admin_url().'edit.php'
-				)
-			) );
+			$transient_obj->set_hide_on( array( Helper::get_settings_url() ) );
 			$transient_obj->save();
 		} elseif ( absint( get_option( 'personioIntegrationPositionCount', 0 ) ) > 0 ) {
 			$transient_obj = $transients_obj->add();
@@ -487,29 +451,9 @@ class Admin {
 			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro version</a>, any number of positions can be displayed.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->save();
-		}
-		else {
-			$transients_obj->get_transient_by_name('personio_integration_no_url_set')->delete();
-			$transients_obj->get_transient_by_name('personio_integration_limit_hint')->delete();
-		}
-	}
-
-	/**
-	 * Activate transient-based hint if configuration is set but no positions are imported until now.
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function check_position_count(): void {
-		// TODO noch nötig nach Setup?
-		if ( Setup::get_instance()->is_completed() && Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationPositionCount', 0 ) ) ) {
-			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_dismissible_days( 60 );
-			$transient_obj->set_name( 'personio_integration_no_position_imported' );
-			/* translators: %1$s will be replaced by the URL to the settings-page. */
-			$transient_obj->set_message( __( 'You have not imported your open positions from Personio until now. Click on the following button to import your positions from Personio now: ', 'personio-integration-light' ) . ' <br><br><a href="' . Helper::get_import_url() . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>' );
-			$transient_obj->set_type( 'error' );
-			$transient_obj->save();
+		} else {
+			$transients_obj->get_transient_by_name( 'personio_integration_no_url_set' )->delete();
+			$transients_obj->get_transient_by_name( 'personio_integration_limit_hint' )->delete();
 		}
 	}
 
@@ -530,34 +474,19 @@ class Admin {
 				$transient_obj = Transients::get_instance()->add();
 				$transient_obj->set_dismissible_days( 90 );
 				$transient_obj->set_name( 'personio_integration_admin_show_review_hint' );
-				$transient_obj->set_message( sprintf(
+				$transient_obj->set_message(
+					sprintf(
 					/* translators: %1$s is replaced with "string" */
-					sprintf( __( 'Your use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="https://wordpress.org/plugins/personio-integration-light/#reviews" target="_blank">leave us a review (opens new window)</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ) ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
-					Helper::get_pro_url()
-				) );
+						sprintf( __( 'Your use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="https://wordpress.org/plugins/personio-integration-light/#reviews" target="_blank">leave us a review (opens new window)</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ) ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
+						Helper::get_pro_url()
+					)
+				);
 				$transient_obj->set_type( 'error' );
 				$transient_obj->save();
 			} else {
 				Transients::get_instance()->get_transient_by_name( 'personio_integration_admin_show_review_hint' )->delete();
 			}
 		}
-	}
-
-	/**
-	 * Dismiss URL pointer.
-	 *
-	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
-	 */
-	public function dismiss_url_pointer(): void {
-		// check nonce.
-		check_ajax_referer( 'personio-integration-dismiss-url', 'nonce' );
-
-		// hide pointer.
-		update_option( 'personioIntegrationUrlPointer', 1 );
-
-		// return nothing.
-		wp_die();
 	}
 
 	/**
@@ -592,7 +521,7 @@ class Admin {
 		check_ajax_referer( 'personio-get-import-info', 'nonce' );
 
 		// return actual and max count of import steps.
-		echo absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ) . ';' . absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ) . ';' . absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) . ';' . wp_json_encode(get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) );
+		echo absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ) . ';' . absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ) . ';' . absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) . ';' . wp_json_encode( get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) );
 
 		// return nothing else.
 		wp_die();

@@ -8,7 +8,7 @@
  * @param string $line_break Setting for linke break after taxonomy-label.
  *
  * @package personio-integration-light
- *´@version: 3.0.0
+ * ´@version: 3.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -16,8 +16,8 @@ defined( 'ABSPATH' ) || exit;
 ?>
 <div class="entry-content">
 	<?php
-		foreach( $details as $taxonomy_name => $value ) {
-			echo '<p><strong>' . esc_html( $taxonomy_name ) . esc_html( $colon ) . '</strong>' . wp_kses_post( $line_break . $value ) . '</p>';
-		}
+	foreach ( $details as $taxonomy_name => $value ) {
+		echo '<p><strong>' . esc_html( $taxonomy_name ) . esc_html( $colon ) . '</strong>' . wp_kses_post( $line_break . $value ) . '</p>';
+	}
 	?>
 </div>

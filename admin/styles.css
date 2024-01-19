@@ -76,6 +76,10 @@
     padding: 0 8px;
 }
 
+body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
+	margin-left: 0.4em;
+}
+
 .post-type-personioposition .personio-pro-hint {
     background-color: var(--personio-pro-hint-bg);
     color: var(--personio-pro-hint-font);
@@ -160,3 +164,5 @@ body.wp-easy-dialog-on-body.wp-core-ui .hide-header .wp-easy-dialog-text {
 body.wp-easy-dialog-on-body.wp-core-ui .components-modal__header .components-modal__header-heading {
 	padding-right: 162px;
 }
+
+.nav-tab-help { float: right }

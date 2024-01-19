@@ -5,9 +5,14 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin\SettingFields;
+namespace PersonioIntegrationLight\Plugin\Admin\SettingFields;
 
-use App\Plugin\Languages;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Plugin\Languages;
 
 /**
  * Initialize the field.
@@ -26,15 +31,15 @@ class Multiple_Checkboxes {
 			foreach ( $attributes['options'] as $key => $enabled ) {
 
 				// get language name.
-				$languages = Languages::get_instance()->get_languages();
-				$language_name = $languages[$key];
+				$languages     = Languages::get_instance()->get_languages();
+				$language_name = $languages[ $key ];
 
 				// get checked-marker.
-				$checked = !empty( get_option($attributes['fieldId'])[$key]) ? ' checked="checked"' : '';
+				$checked = ! empty( get_option( $attributes['fieldId'] )[ $key ] ) ? ' checked="checked"' : '';
 
 				// get title.
 				/* translators: %1$s is replaced with "string" */
-				$title = sprintf( __( 'Mark to enable %1$s', 'personio-integration-light' ), esc_html($language_name) );
+				$title = sprintf( __( 'Mark to enable %1$s', 'personio-integration-light' ), esc_html( $language_name ) );
 
 				// readonly.
 				$readonly = '';

@@ -5,7 +5,12 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin\SettingFields;
+namespace PersonioIntegrationLight\Plugin\Admin\SettingFields;
+
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Initialize the field.

@@ -5,10 +5,11 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin;
+namespace PersonioIntegrationLight\Plugin\Admin;
 
-use App\Helper;
-use App\PersonioIntegration\Positions;
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
  * Helper-function for Dashboard options of this plugin.
@@ -103,13 +104,6 @@ class Dashboard {
 		if ( 0 === count( $positions_list ) ) {
 			echo '<p>' . esc_html__( 'Actually there are no positions imported from Personio.', 'personio-integration-light' ) . '</p>';
 		} else {
-			$link = add_query_arg(
-				array(
-					'post_type' => WP_PERSONIO_INTEGRATION_MAIN_CPT,
-				),
-				get_admin_url() . 'edit.php'
-			);
-
 			?><ul class="personio_positions">
 			<?php
 			foreach ( $positions_list as $position ) {
@@ -119,7 +113,7 @@ class Dashboard {
 			}
 			?>
 			</ul>
-			<p><a href="<?php echo esc_url( $link ); ?>">
+			<p><a href="<?php echo esc_url( PersonioPosition::get_instance()->get_link() ); ?>">
 					<?php
 					/* translators: %1$d will be replaced by the count of positions */
 					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( Positions::get_instance()->get_positions_count() ) );

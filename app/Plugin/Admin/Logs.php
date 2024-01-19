@@ -5,9 +5,9 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin;
+namespace PersonioIntegrationLight\Plugin\Admin;
 
-use App\Log_Table;
+use PersonioIntegrationLight\Log_Table;
 
 /**
  * Object to handle the output.

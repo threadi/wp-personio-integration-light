@@ -5,11 +5,15 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace PersonioIntegrationLight\Plugin;
 
-use App\Helper;
-use App\Plugin\Schedules\Import;
-use WP_Query;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Plugin\Schedules\Import;
 
 /**
  * Helper-function for updates of this plugin.
@@ -84,7 +88,7 @@ class Update {
 				(
 					function_exists( 'wp_is_development_mode' ) && false === wp_is_development_mode( 'plugin' )
 				)
-				|| !function_exists( 'wp_is_development_mode' )
+				|| ! function_exists( 'wp_is_development_mode' )
 			)
 			&& version_compare( $installed_plugin_version, $db_plugin_version, '>' )
 		) {
@@ -122,6 +126,11 @@ class Update {
 					update_option( $field_name, $field_settings['default'], true );
 				}
 			}
+		}
+
+		// if Personio-URL is set, set setup to complete.
+		if ( Helper::is_personio_url_set() ) {
+			Setup::get_instance()->set_completed();
 		}
 	}
 }

@@ -5,10 +5,15 @@
  * @package personio-integration-light
  */
 
-namespace App;
+namespace PersonioIntegrationLight;
 
-use App\PersonioIntegration\Position;
-use App\Plugin\Languages;
+// prevent also other direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\Plugin\Languages;
 use WP_Post;
 use Yoast\WP\SEO\Presentations\Indexable_Presentation;
 
@@ -101,7 +106,7 @@ class Third_Party_Plugins {
 	 * @return string
 	 */
 	public function yoast( string $meta_og_description, Indexable_Presentation $presentation ): string {
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $presentation->model->object_sub_type && absint($presentation->model->object_id) > 0 ) {
+		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $presentation->model->object_sub_type && absint( $presentation->model->object_id ) > 0 ) {
 			// return resulting text without line breaks.
 			return $this->replace_linebreaks( $this->get_content( $presentation->model->object_id ) );
 		}
@@ -120,7 +125,7 @@ class Third_Party_Plugins {
 			$object = get_queried_object();
 			if ( $object instanceof WP_Post && WP_PERSONIO_INTEGRATION_MAIN_CPT === $object->post_type ) {
 				// return resulting text without line breaks.
-				return $this->replace_linebreaks( $this->get_content($object->ID) );
+				return $this->replace_linebreaks( $this->get_content( $object->ID ) );
 			}
 		}
 		return $description;
@@ -140,7 +145,7 @@ class Third_Party_Plugins {
 			$description = preg_replace( '/\s+/', ' ', $description );
 
 			// update settings.
-			$position = new Position( get_queried_object_id() );
+			$position                           = new Position( get_queried_object_id() );
 			$og_array['og']['title']            = $position->get_title();
 			$og_array['og']['description']      = $description;
 			$og_array['twitter']['title']       = $position->get_title();
@@ -178,7 +183,7 @@ class Third_Party_Plugins {
 		$position = new Position( $post_id );
 		$position->set_lang( Languages::get_instance()->get_current_lang() );
 		$description = $position->get_content();
-		if( !empty($description) ) {
+		if ( ! empty( $description ) ) {
 			$text = '';
 			foreach ( $description['jobDescription'] as $content ) {
 				$text .= $content['name'] . ' ' . $content['value'];
@@ -229,8 +234,8 @@ class Third_Party_Plugins {
 	 */
 	public function seoframework( array $fields ): array {
 		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
-			$description = $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
-			$fields['description']['attributes']['content'] = $description;
+			$description                                       = $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
+			$fields['description']['attributes']['content']    = $description;
 			$fields['og:description']['attributes']['content'] = $description;
 			$fields['twitter:description']['attributes']['content'] = $description;
 		}
@@ -246,9 +251,9 @@ class Third_Party_Plugins {
 	 */
 	public function seoframework_schema( array $graph ): array {
 		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
-			foreach( $graph as $index => $entry ) {
-				if( !empty($entry['description']) && 'WebPage' === $entry['@type'] ) {
-					$graph[$index]['description'] = $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
+			foreach ( $graph as $index => $entry ) {
+				if ( ! empty( $entry['description'] ) && 'WebPage' === $entry['@type'] ) {
+					$graph[ $index ]['description'] = $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
 				}
 			}
 		}
@@ -265,7 +270,7 @@ class Third_Party_Plugins {
 	public function seopress_og_description( string $meta_og_description ): string {
 		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
 			// get og:description.
-			return '<meta property="og:description" content="'.wp_kses_post($this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) ) ).'" />';
+			return '<meta property="og:description" content="' . wp_kses_post( $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) ) ) . '" />';
 		}
 
 		// return resulting text.

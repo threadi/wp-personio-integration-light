@@ -34,10 +34,10 @@ export default class TextControlObject extends Component {
      */
     let classes = "";
     if( this.props.object.state.results[this.props.field_name] ) {
-      if ( this.props.object.state.results[this.props.field_name].error) {
+      if ( this.props.object.state.results[this.props.field_name].result.error ) {
         classes = 'wp-setup-error';
-        if (this.props.object.state.results[this.props.field_name].text) {
-          helper_text = <><span className="hint">{this.props.object.state.results[this.props.field_name].text}</span><span
+        if ( this.props.object.state.results[this.props.field_name].text ) {
+          helper_text = <><span className="hint">{this.props.object.state.results[this.props.field_name].result.text}</span><span
             dangerouslySetInnerHTML={{__html: this.props.field.help}}/></>;
         }
       }

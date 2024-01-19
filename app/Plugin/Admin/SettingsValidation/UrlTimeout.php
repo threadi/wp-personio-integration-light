@@ -5,7 +5,12 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin\SettingsValidation;
+namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
+
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Object which validates the timeout given.

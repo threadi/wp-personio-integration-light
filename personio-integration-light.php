@@ -16,13 +16,13 @@
 
 namespace App;
 
-use App\Plugin\Init;
+use PersonioIntegrationLight\Plugin\Init;
 
 // set version number.
-define( 'WP_PERSONIO_INTEGRATION_VERSION', '@@VersionNumber@@');
+define( 'WP_PERSONIO_INTEGRATION_VERSION', '@@VersionNumber@@' );
 
 // save plugin-path.
-define( 'WP_PERSONIO_INTEGRATION_PLUGIN', __FILE__);
+define( 'WP_PERSONIO_INTEGRATION_PLUGIN', __FILE__ );
 
 if ( file_exists( __DIR__ . '/lib/autoload.php' ) ) {
 	require_once __DIR__ . '/lib/autoload.php';
@@ -37,6 +37,9 @@ register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_insta
 // on deactivation.
 register_deactivation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_instance(), 'deactivation' ) );
 
-add_action( 'plugins_loaded', function() {
-	Init::get_instance()->init();
-} );
+add_action(
+	'plugins_loaded',
+	function () {
+		Init::get_instance()->init();
+	}
+);

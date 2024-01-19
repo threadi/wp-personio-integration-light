@@ -5,12 +5,17 @@
  * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration;
+namespace PersonioIntegrationLight\PersonioIntegration;
 
-use App\Helper;
-use App\Log;
-use App\Plugin\Languages;
-use App\Plugin\Templates;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Templates;
 use SimpleXMLElement;
 use WP_Post;
 use WP_Query;

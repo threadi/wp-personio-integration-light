@@ -5,7 +5,12 @@
  * @package personio-integration-light
  */
 
-namespace App\PageBuilder\Gutenberg;
+namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
+
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 use WP_Block_Template;
 
@@ -230,7 +235,7 @@ class Templates {
 			$query['post_name__in'] = $slugs;
 		}
 
-		$check_query         = new \WP_Query( $query );
+		$check_query     = new \WP_Query( $query );
 		$saved_templates = $check_query->posts;
 
 		$templates = array();

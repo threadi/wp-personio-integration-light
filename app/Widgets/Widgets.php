@@ -5,7 +5,12 @@
  * @package personio-integration-light
  */
 
-namespace App\Widgets;
+namespace PersonioIntegrationLight\Widgets;
+
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Handler for Widgets.
@@ -57,8 +62,8 @@ class Widgets {
 	 */
 	public function activate(): void {
 		if ( function_exists( 'wp_use_widgets_block_editor' ) && ! wp_use_widgets_block_editor() ) {
-			register_widget( 'App\Widgets\Position' );
-			register_widget( 'App\Widgets\Positions' );
+			register_widget( 'PersonioIntegrationLight\Widgets\Position' );
+			register_widget( 'PersonioIntegrationLight\Widgets\Positions' );
 		}
 	}
 
@@ -68,7 +73,7 @@ class Widgets {
 	 * @return void
 	 */
 	public function deactivate(): void {
-		if ( ( function_exists( 'wp_use_widgets_block_editor' ) && wp_use_widgets_block_editor() )  ) {
+		if ( ( function_exists( 'wp_use_widgets_block_editor' ) && wp_use_widgets_block_editor() ) ) {
 			$this->uninstall();
 		}
 	}
@@ -79,10 +84,9 @@ class Widgets {
 	 * @return void
 	 */
 	public function uninstall(): void {
-		unregister_widget( 'App\Widgets\Position' );
-		unregister_widget( 'App\Widgets\Positions' );
+		unregister_widget( 'PersonioIntegrationLight\Widgets\Position' );
+		unregister_widget( 'PersonioIntegrationLight\Widgets\Positions' );
 		delete_option( 'widget_personiopositionwidget' );
 		delete_option( 'widget_personiopositionswidget' );
 	}
-
 }

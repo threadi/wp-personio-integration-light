@@ -5,10 +5,16 @@
  * @package personio-integration-light
  */
 
-namespace App;
+namespace PersonioIntegrationLight;
 
-use App\Plugin\Languages;
-use App\Plugin\Templates;
+// prevent also other direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Templates;
 use WP_Post;
 use WP_Post_Type;
 use WP_Rewrite;
@@ -347,8 +353,8 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_current_url(): string {
-		if( is_admin() ) {
-			return admin_url( basename( $_SERVER['REQUEST_URI'] ) );
+		if ( is_admin() ) {
+			return admin_url( basename( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) );
 		}
 
 		// set return value for page url.
@@ -408,12 +414,12 @@ class Helper {
 	 * @return array
 	 */
 	private static function get_files( array $files, string $path, array $file_list = array() ): array {
-		foreach( $files as $filename => $settings ) {
-			if( 'f' === $settings['type'] ) {
-				$file_list[ $filename ] = $path.$filename;
+		foreach ( $files as $filename => $settings ) {
+			if ( 'f' === $settings['type'] ) {
+				$file_list[ $filename ] = $path . $filename;
 			}
-			if( 'd' === $settings['type'] ) {
-				$file_list = self::get_files( $settings['files'], $path.trailingslashit($filename), $file_list );
+			if ( 'd' === $settings['type'] ) {
+				$file_list = self::get_files( $settings['files'], $path . trailingslashit( $filename ), $file_list );
 			}
 		}
 
@@ -488,13 +494,13 @@ class Helper {
 	 */
 	public static function get_settings_url( string $tab = '' ): string {
 		$params = array(
-			'post_type' => WP_PERSONIO_INTEGRATION_MAIN_CPT,
+			'post_type' => PersonioPosition::get_instance()->get_name(),
 			'page'      => 'personioPositions',
 		);
-		if( !empty( $tab ) ) {
+		if ( ! empty( $tab ) ) {
 			$params['tab'] = $tab;
 		}
-		return add_query_arg( $params, 'edit.php' );
+		return add_query_arg( $params, get_admin_url() . 'edit.php' );
 	}
 
 	/**
@@ -504,7 +510,7 @@ class Helper {
 	 */
 	public static function get_plugin_name(): string {
 		$plugin_data = get_plugin_data( WP_PERSONIO_INTEGRATION_PLUGIN );
-		if( !empty($plugin_data) && !empty($plugin_data['Name']) ) {
+		if ( ! empty( $plugin_data ) && ! empty( $plugin_data['Name'] ) ) {
 			return $plugin_data['Name'];
 		}
 		return '';
@@ -526,5 +532,14 @@ class Helper {
 	 */
 	public static function get_template_documentation_url(): string {
 		return Languages::get_instance()->is_german_language() ? 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/templates_de.md' : 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/templates.md';
+	}
+
+	/**
+	 * Return the plugin support url: the forum on wordpress.org.
+	 *
+	 * @return string
+	 */
+	public static function get_plugin_support_url(): string {
+		return 'https://wordpress.org/support/plugin/personio-integration-light/';
 	}
 }

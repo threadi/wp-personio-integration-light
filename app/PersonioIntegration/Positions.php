@@ -5,9 +5,14 @@
  * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration;
+namespace PersonioIntegrationLight\PersonioIntegration;
 
-use App\Helper;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
 use WP_Query;
 
 /**
@@ -67,13 +72,13 @@ class Positions {
 	 * @return Position
 	 */
 	public function get_position( int $post_id, string $language_code = '' ): Position {
-		if ( empty( $this->positions[ $post_id.$language_code ] ) ) {
-			$this->positions[ $post_id.$language_code ] = new Position( $post_id );
-			if( ! empty($language_code) ) {
-				$this->positions[ $post_id.$language_code ]->set_lang( $language_code );
+		if ( empty( $this->positions[ $post_id . $language_code ] ) ) {
+			$this->positions[ $post_id . $language_code ] = new Position( $post_id );
+			if ( ! empty( $language_code ) ) {
+				$this->positions[ $post_id . $language_code ]->set_lang( $language_code );
 			}
 		}
-		return $this->positions[ $post_id.$language_code ];
+		return $this->positions[ $post_id . $language_code ];
 	}
 
 	/**

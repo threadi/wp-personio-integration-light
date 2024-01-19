@@ -5,12 +5,16 @@
  * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration;
+namespace PersonioIntegrationLight\PersonioIntegration;
 
-use App\Helper;
-use App\Log;
-use App\Plugin\Languages;
-use App\Plugin\Transients;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\Plugin\Languages;
 use Exception;
 use SimpleXMLElement;
 use WP_Post;
@@ -176,7 +180,7 @@ class Import {
 						if ( $positions_count > 0 ) {
 							update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, ++$count );
 							$do_nothing = true;
-							$this->log->add_log( sprintf( 'No changes in positions for language %s according to the timestamp we get from Personio. No import run.', esc_html($label) ), 'success' );
+							$this->log->add_log( sprintf( 'No changes in positions for language %s according to the timestamp we get from Personio. No import run.', esc_html( $label ) ), 'success' );
 							$progress ? $progress->tick() : false;
 							continue;
 						}
@@ -395,12 +399,6 @@ class Import {
 			// save position count.
 			$count_positions = $positions_object->get_positions_count();
 			update_option( 'personioIntegrationPositionCount', $count_positions );
-
-			// remove no-import-hin if positions are available in local db.
-			if ( $count_positions > 0 ) {
-				// remove transient with no-import-hint.
-				Transients::get_instance()->get_transient_by_name( 'personio_integration_no_position_imported' )->delete();
-			}
 		} else {
 			// document errors.
 			update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, $this->errors );

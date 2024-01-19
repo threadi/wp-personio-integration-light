@@ -7,10 +7,10 @@
  * @param array    $attributes   Settings for output as array.
  *
  * @package personio-integration-light
-  *@version: 3.0.0
+ * @version: 3.0.0
  */
 
-use App\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Position;
 
 defined( 'ABSPATH' ) || exit;
 

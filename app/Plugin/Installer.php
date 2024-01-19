@@ -5,11 +5,16 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace PersonioIntegrationLight\Plugin;
 
-use App\Helper;
-use App\Log;
-use App\Plugin\Schedules\Import;
+// prevent also other direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\Plugin\Schedules\Import;
 
 /**
  * Helper-function for plugin-activation and -deactivation.
@@ -87,7 +92,7 @@ class Installer {
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_no_simplexml' );
-			$transient_obj->set_message( '<strong>'.__( 'Plugin was not activated!', 'personio-integration-light' ).'</strong><br>'.__( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' ) );
+			$transient_obj->set_message( '<strong>' . __( 'Plugin was not activated!', 'personio-integration-light' ) . '</strong><br>' . __( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->save();
 			$error = true;
@@ -130,7 +135,7 @@ class Installer {
 			$log = new Log();
 			$log->create_table();
 
-			\App\Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin.' ) : false;
+			\PersonioIntegrationLight\Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin.' ) : false;
 		}
 	}
 }

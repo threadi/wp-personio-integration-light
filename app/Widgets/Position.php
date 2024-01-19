@@ -5,10 +5,15 @@
  * @package personio-integration-light
  */
 
-namespace App\Widgets;
+namespace PersonioIntegrationLight\Widgets;
 
-use App\PersonioIntegration\PostTypes\PersonioPosition;
-use App\PersonioIntegration\Taxonomies;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use WP_Widget;
 
 /**
@@ -40,19 +45,19 @@ class Position extends WP_Widget {
 	 */
 	private function getFields(): array {
 		// get the actual positions.
-		$positions_obj = \App\PersonioIntegration\Positions::get_instance();
+		$positions_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance();
 		$positions     = array();
 		foreach ( $positions_obj->get_positions( 0 ) as $position ) {
 			$positions[ $position->get_id() ] = $position->get_title();
 		}
 
 		// bail if no positions are available.
-		if( empty($positions) ) {
+		if ( empty( $positions ) ) {
 			return array(
 				'hint' => array(
 					'type' => 'text',
-					'text' => sprintf( __( 'No positions available. Start to import them <a href="%1$s">here</a>.', 'personio-integration-light' ), esc_url( \App\Helper::get_settings_url() ) )
-				)
+					'text' => sprintf( __( 'No positions available. Start to import them <a href="%1$s">here</a>.', 'personio-integration-light' ), esc_url( \PersonioIntegrationLight\Helper::get_settings_url() ) ),
+				),
 			);
 		}
 

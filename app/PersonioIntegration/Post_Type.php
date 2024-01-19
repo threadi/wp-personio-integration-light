@@ -5,7 +5,12 @@
  * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration;
+namespace PersonioIntegrationLight\PersonioIntegration;
+
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Base Object for each post-type.

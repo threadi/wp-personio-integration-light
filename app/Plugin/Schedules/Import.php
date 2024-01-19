@@ -5,9 +5,14 @@
  * @package personio-intregation.
  */
 
-namespace App\Plugin\Schedules;
+namespace PersonioIntegrationLight\Plugin\Schedules;
 
-use App\Plugin\Schedules_Base;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Plugin\Schedules_Base;
 
 /**
  * Object for this schedule.
@@ -47,7 +52,7 @@ class Import extends Schedules_Base {
 	 */
 	public function run(): void {
 		if ( 1 === absint( get_option( 'personioIntegrationEnablePositionSchedule', 0 ) ) ) {
-			new \App\PersonioIntegration\Import();
+			new \PersonioIntegrationLight\PersonioIntegration\Import();
 		}
 	}
 }

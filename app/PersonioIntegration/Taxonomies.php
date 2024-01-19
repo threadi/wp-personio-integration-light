@@ -5,10 +5,15 @@
  * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration;
+namespace PersonioIntegrationLight\PersonioIntegration;
 
-use App\Helper;
-use App\Plugin\Languages;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Plugin\Languages;
 use WP_Screen;
 use WP_Term;
 
@@ -71,7 +76,8 @@ class Taxonomies {
 	 */
 	public function create_defaults( array $callback = array() ): void {
 		// Exit if the work has already been done.
-		/*if ( 1 === absint( get_option( 'personioTaxonomyDefaults', 0 ) ) ) {
+		/*
+		if ( 1 === absint( get_option( 'personioTaxonomyDefaults', 0 ) ) ) {
 			// update steps via callback.
 			if( ! empty ( $callback ) && is_callable( $callback ) ) {
 				call_user_func( $callback, $this->get_taxonomy_defaults_count() );
@@ -86,7 +92,7 @@ class Taxonomies {
 		$i = 0;
 
 		// loop through our own taxonomies and add their default terms.
-		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
+		foreach ( self::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			// add default terms to taxonomy if they do not exist (only in admin or via CLI).
 			$taxonomy_obj = get_taxonomy( $taxonomy_name );
 			if ( ! empty( $taxonomy_obj->defaults ) ) {
@@ -95,15 +101,14 @@ class Taxonomies {
 					$this->add_terms( $taxonomy_obj->defaults, $taxonomy_name, $callback );
 
 					// count.
-					$i++;
+					++$i;
 
 					// flush cache every 100 items for more speed.
 					if ( $i % 100 == 0 ) {
 						wp_cache_flush();
 					}
-				}
-				else if( ! empty ( $callback ) && is_callable( $callback ) ) {
-					call_user_func( $callback, count($taxonomy_obj->defaults) );
+				} elseif ( ! empty( $callback ) && is_callable( $callback ) ) {
+					call_user_func( $callback, count( $taxonomy_obj->defaults ) );
 				}
 			}
 		}
@@ -176,7 +181,7 @@ class Taxonomies {
 				'slug'        => 'occupation_detail',
 				'useInFilter' => 1,
 			),
-			WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE    => array(
+			WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE     => array(
 				'attr'        => array( // taxonomy settings deviating from default.
 					'rewrite' => array( 'slug' => 'office' ),
 				),
@@ -191,52 +196,52 @@ class Taxonomies {
 				'useInFilter' => 1,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+				'attr'                 => array( // taxonomy settings deviating from default.
 					'rewrite' => array( 'slug' => 'employmenttype' ),
 				),
-				'slug'        => 'employmenttype',
-				'useInFilter' => 1,
-				'initiallyHideInTable' => 1
+				'slug'                 => 'employmenttype',
+				'useInFilter'          => 1,
+				'initiallyHideInTable' => 1,
 			),
-			WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+			WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY  => array(
+				'attr'                 => array( // taxonomy settings deviating from default.
 					'rewrite' => array( 'slug' => 'seniority' ),
 				),
-				'slug'        => 'seniority',
-				'useInFilter' => 1,
-				'initiallyHideInTable' => 1
+				'slug'                 => 'seniority',
+				'useInFilter'          => 1,
+				'initiallyHideInTable' => 1,
 			),
-			WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE  => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+			WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE   => array(
+				'attr'                 => array( // taxonomy settings deviating from default.
 					'rewrite' => array( 'slug' => 'schedule' ),
 				),
-				'slug'        => 'schedule',
-				'useInFilter' => 1,
-				'initiallyHideInTable' => 1
+				'slug'                 => 'schedule',
+				'useInFilter'          => 1,
+				'initiallyHideInTable' => 1,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+				'attr'                 => array( // taxonomy settings deviating from default.
 					'rewrite' => array( 'slug' => 'experience' ),
 				),
-				'slug'        => 'experience',
-				'useInFilter' => 1,
-				'initiallyHideInTable' => 1
+				'slug'                 => 'experience',
+				'useInFilter'          => 1,
+				'initiallyHideInTable' => 1,
 			),
-			WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES => array(
+			WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES  => array(
 				'attr'        => array( // taxonomy settings deviating from default.
 					'show_ui' => false,
 				),
 				'slug'        => 'language',
 				'useInFilter' => 0,
 			),
-			WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS  => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+			WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS   => array(
+				'attr'                 => array( // taxonomy settings deviating from default.
 					'rewrite' => array( 'slug' => 'keyword' ),
 				),
-				'slug'        => 'keyword',
-				'useInFilter' => 1,
-				'initiallyHideInTable' => 1
-			)
+				'slug'                 => 'keyword',
+				'useInFilter'          => 1,
+				'initiallyHideInTable' => 1,
+			),
 		);
 
 		/**
@@ -409,10 +414,9 @@ class Taxonomies {
 
 		// switch to main language.
 		if ( ! is_admin() ) {
-			if( empty($language_code) ) {
+			if ( empty( $language_code ) ) {
 				$language_code = Languages::get_instance()->get_main_language( true );
-			}
-			else {
+			} else {
 				$language_code = Languages::get_instance()->get_lang_mappings( $language_code )[0];
 			}
 			switch_to_locale( $language_code );
@@ -481,7 +485,7 @@ class Taxonomies {
 	 */
 	public function check_taxonomies( array $settings ): array {
 		// check each taxonomy if it is used as restriction for this list.
-		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
+		foreach ( self::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			$slug = strtolower( $taxonomy['slug'] );
 			if ( ! empty( $settings['attributes'][ $slug ] ) ) {
 				$term = get_term_by( 'id', $settings['attributes'][ $slug ], $taxonomy_name );
@@ -520,7 +524,7 @@ class Taxonomies {
 			}
 
 			// update steps via callback.
-			if( ! empty ( $callback ) && is_callable( $callback ) ) {
+			if ( ! empty( $callback ) && is_callable( $callback ) ) {
 				call_user_func( $callback, 1 );
 			}
 		}
@@ -534,8 +538,8 @@ class Taxonomies {
 	 * @return string|false
 	 */
 	public function get_taxonomy_name_by_slug( string $slug ): string|false {
-		foreach( $this->get_taxonomies() as $taxonomy_name => $settings ) {
-			if( $slug === $settings['slug'] ) {
+		foreach ( $this->get_taxonomies() as $taxonomy_name => $settings ) {
+			if ( $slug === $settings['slug'] ) {
 				return $taxonomy_name;
 			}
 		}
@@ -549,8 +553,8 @@ class Taxonomies {
 	 */
 	public function get_taxonomy_defaults_count(): int {
 		$count = 0;
-		foreach( $this->get_taxonomy_defaults() as $labels ) {
-			$count = $count + count($labels);
+		foreach ( $this->get_taxonomy_defaults() as $labels ) {
+			$count = $count + count( $labels );
 		}
 		return $count;
 	}
@@ -914,10 +918,9 @@ class Taxonomies {
 		// set language in frontend to read the texts depending on main-language.
 		$locale = get_locale();
 		if ( ! is_admin() ) {
-			if( empty($language_code) ) {
+			if ( empty( $language_code ) ) {
 				$language_code = Languages::get_instance()->get_main_language( true );
-			}
-			else {
+			} else {
 				$language_code = Languages::get_instance()->get_lang_mappings( $language_code )[0];
 			}
 			switch_to_locale( $language_code );
@@ -943,17 +946,17 @@ class Taxonomies {
 	/**
 	 * Hide some taxonomy-columns in our own cpt-table.
 	 *
-	 * @param array $hidden
+	 * @param array     $hidden
 	 * @param WP_Screen $screen
-	 * @param bool $use_defaults
+	 * @param bool      $use_defaults
 	 *
 	 * @return mixed
 	 */
 	public function hide_columns( array $hidden, WP_Screen $screen, bool $use_defaults ): array {
-		if( $use_defaults && WP_PERSONIO_INTEGRATION_MAIN_CPT === $screen->post_type ) {
-			foreach( $this->get_taxonomies() as $taxonomy_name => $settings ) {
-				if( !empty( $settings['initiallyHideInTable'] ) && 1 === absint( $settings['initiallyHideInTable'] ) ) {
-					$hidden[] = 'taxonomy-'.$taxonomy_name;
+		if ( $use_defaults && WP_PERSONIO_INTEGRATION_MAIN_CPT === $screen->post_type ) {
+			foreach ( $this->get_taxonomies() as $taxonomy_name => $settings ) {
+				if ( ! empty( $settings['initiallyHideInTable'] ) && 1 === absint( $settings['initiallyHideInTable'] ) ) {
+					$hidden[] = 'taxonomy-' . $taxonomy_name;
 				}
 			}
 		}

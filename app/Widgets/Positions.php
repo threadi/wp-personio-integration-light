@@ -5,11 +5,16 @@
  * @package personio-integration-light
  */
 
-namespace App\Widgets;
+namespace PersonioIntegrationLight\Widgets;
 
-use App\PersonioIntegration\PostTypes\PersonioPosition;
-use App\PersonioIntegration\Taxonomies;
-use App\Plugin\Templates;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\Plugin\Templates;
 use WP_Widget;
 
 /**
@@ -119,7 +124,7 @@ class Positions extends WP_Widget {
 					'no'  => esc_html__( 'Hide', 'personio-integration-light' ),
 				),
 			),
-			'content_template' => array(
+			'content_template'    => array(
 				'type'   => 'select',
 				'title'  => __( 'Choose content template', 'personio-integration-light' ),
 				'std'    => 'default',
@@ -206,14 +211,14 @@ class Positions extends WP_Widget {
 		}
 
 		$attribute_defaults = array(
-			'templates' => $templates,
-			'excerpt'   => $excerpt_templates,
-			'donotlink' => $do_not_link,
-			'sort'      => $settings['sort'],
-			'sortby'    => $settings['sortby'],
-			'groupby'   => $settings['groupby'],
-			'limit'     => $limit,
-			'jobdescription_template' => $settings['content_template']
+			'templates'               => $templates,
+			'excerpt'                 => $excerpt_templates,
+			'donotlink'               => $do_not_link,
+			'sort'                    => $settings['sort'],
+			'sortby'                  => $settings['sortby'],
+			'groupby'                 => $settings['groupby'],
+			'limit'                   => $limit,
+			'jobdescription_template' => $settings['content_template'],
 		);
 
 		// add wrapper from template around widget-content.

@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use App\Plugin\Templates;
+use PersonioIntegrationLight\Plugin\Templates;
 
 // embed block-specific styling.
 require Templates::get_instance()->get_template( 'parts/styling.php' );

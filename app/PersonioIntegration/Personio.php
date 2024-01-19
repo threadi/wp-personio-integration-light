@@ -5,9 +5,14 @@
  * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration;
+namespace PersonioIntegrationLight\PersonioIntegration;
 
-use App\Plugin\Languages;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Plugin\Languages;
 
 /**
  * Object for single Personio-account in WordPress.
@@ -68,6 +73,6 @@ class Personio {
 	 * @return string
 	 */
 	public function get_xml_url(): string {
-		return $this->get_url().'/xml';
+		return $this->get_url() . '/xml';
 	}
 }

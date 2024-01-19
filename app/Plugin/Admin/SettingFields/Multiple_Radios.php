@@ -5,9 +5,14 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin\SettingFields;
+namespace PersonioIntegrationLight\Plugin\Admin\SettingFields;
 
-use App\Plugin\Languages;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Plugin\Languages;
 
 /**
  * Initialize the field.
@@ -28,8 +33,8 @@ class Multiple_Radios {
 				$checked = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, '' ) === $key ? ' checked="checked"' : '';
 
 				// get the language name.
-				$languages = Languages::get_instance()->get_languages();
-				$language_name = $languages[$key];
+				$languages     = Languages::get_instance()->get_languages();
+				$language_name = $languages[ $key ];
 
 				// get title.
 				/* translators: %1$s is replaced with "string" */

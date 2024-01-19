@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin;
+namespace PersonioIntegrationLight\Plugin\Admin;
 
 /**
  * Base-Object for each validation-object.
@@ -20,6 +20,6 @@ class Settings_Validation_Base {
 	 * @return bool
 	 */
 	protected static function has_size( string $value ): bool {
-		return strlen($value);
+		return strlen( $value );
 	}
 }

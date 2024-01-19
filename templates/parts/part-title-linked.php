@@ -10,7 +10,7 @@
  * @version : 3.0.0
  */
 
-use App\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Position;
 
 defined( 'ABSPATH' ) || exit;
 

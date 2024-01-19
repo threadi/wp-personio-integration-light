@@ -5,16 +5,19 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace PersonioIntegrationLight\Plugin;
 
-use App\Helper;
-use App\PageBuilder_Base;
-use App\PersonioIntegration\Position;
-use App\PersonioIntegration\PostTypes\PersonioPosition;
-use App\Plugin\Admin\Admin;
-use App\Third_Party_Plugins;
-use App\Widgets\Positions;
-use App\Widgets\Widgets;
+// prevent also other direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PageBuilder_Base;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Admin\Admin;
+use PersonioIntegrationLight\Third_Party_Plugins;
+use PersonioIntegrationLight\Widgets\Widgets;
 use WP_Admin_Bar;
 
 /**
@@ -113,10 +116,13 @@ class Init {
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_frontend' ), PHP_INT_MAX );
 
 		// add action links on plugin-list.
-		add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array(
-			$this,
-			'add_setting_link'
-		) );
+		add_filter(
+			'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ),
+			array(
+				$this,
+				'add_setting_link',
+			)
+		);
 
 		// reset permalinks on request.
 		add_action( 'wp', array( $this, 'update_slugs' ) );
@@ -146,7 +152,7 @@ class Init {
 	 * @return void
 	 */
 	public function cli(): void {
-		\WP_CLI::add_command( 'personio', 'App\Plugin\Cli' );
+		\WP_CLI::add_command( 'personio', 'PersonioIntegrationLight\Plugin\Cli' );
 	}
 
 	/**
@@ -169,10 +175,10 @@ class Init {
 		}
 
 		// add link to view position in frontend if one is called in backend.
-		if( is_admin() && !empty($_GET['post']) ) {
+		if ( is_admin() && ! empty( $_GET['post'] ) ) {
 			$post_id = absint( wp_unslash( $_GET['post'] ) );
-			if( $post_id > 0 && WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( $post_id ) ) {
-				$position_obj = \App\PersonioIntegration\Positions::get_instance()->get_position( $post_id );
+			if ( $post_id > 0 && WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( $post_id ) ) {
+				$position_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_position( $post_id );
 				$admin_bar->add_menu(
 					array(
 						'id'     => 'personio-integration-detail',
@@ -203,7 +209,7 @@ class Init {
 		/**
 		 * Load listing-style from Block "list" if FSE-theme is NOT used.
 		 */
-		if( ! Helper::theme_is_fse_theme() ) {
+		if ( ! Helper::theme_is_fse_theme() ) {
 			wp_enqueue_style(
 				'personio-integration-additional-styles',
 				Helper::get_plugin_url() . 'blocks/list/build/style-index.css',
@@ -220,17 +226,8 @@ class Init {
 	 * @return array
 	 */
 	public function add_setting_link( array $links ): array {
-		// build and escape the URL.
-		$url = add_query_arg(
-			array(
-				'page'      => 'personioPositions',
-				'post_type' => WP_PERSONIO_INTEGRATION_MAIN_CPT,
-			),
-			get_admin_url() . 'edit.php'
-		);
-
 		// create the link.
-		$settings_link = "<a href='" . esc_url( $url ) . "'>" . __( 'Settings', 'personio-integration-light' ) . '</a>';
+		$settings_link = "<a href='" . esc_url( Helper::get_settings_url() ) . "'>" . __( 'Settings', 'personio-integration-light' ) . '</a>';
 
 		// adds the link to the end of the array.
 		$links[] = $settings_link;

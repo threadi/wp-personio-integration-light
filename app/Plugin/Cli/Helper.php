@@ -5,12 +5,17 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Cli;
+namespace PersonioIntegrationLight\Plugin\Cli;
 
-use App\Log;
-use App\PersonioIntegration\Positions;
-use App\PersonioIntegration\Taxonomies;
-use App\Plugin\Languages;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\Plugin\Languages;
 
 /**
  * Trait with helper-functions.
@@ -26,7 +31,7 @@ trait Helper {
 		$positions_obj  = Positions::get_instance();
 		$positions      = $positions_obj->get_positions();
 		$position_count = count( $positions );
-		$progress       = \App\Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local positions', $position_count ) : false;
+		$progress       = \PersonioIntegrationLight\Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local positions', $position_count ) : false;
 		foreach ( $positions as $position ) {
 			// delete it.
 			wp_delete_post( $position->get_id(), true );
@@ -47,7 +52,7 @@ trait Helper {
 		}
 
 		// output success-message.
-		\App\Helper::is_cli() ? \WP_CLI::success( $position_count . ' positions from local database deleted.' ) : false;
+		\PersonioIntegrationLight\Helper::is_cli() ? \WP_CLI::success( $position_count . ' positions from local database deleted.' ) : false;
 	}
 
 	/**
@@ -62,7 +67,7 @@ trait Helper {
 		// delete the content of all taxonomies.
 		// -> hint: some will be newly insert after next wp-init.
 		$taxonomies = Taxonomies::get_instance()->get_taxonomies();
-		$progress   = \App\Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
+		$progress   = \PersonioIntegrationLight\Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy => $settings ) {
 			// delete all terms of this taxonomy.
 			$sql    = '
@@ -102,6 +107,6 @@ trait Helper {
 		delete_option( 'personioTaxonomyDefaults' );
 
 		// output success-message.
-		\App\Helper::is_cli() ? \WP_CLI::success( count( $taxonomies ) . ' taxonomies from local database has been cleaned.' ) : false;
+		\PersonioIntegrationLight\Helper::is_cli() ? \WP_CLI::success( count( $taxonomies ) . ' taxonomies from local database has been cleaned.' ) : false;
 	}
 }

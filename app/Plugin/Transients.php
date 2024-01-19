@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -70,7 +70,7 @@ class Transients {
 	 */
 	public function init_notices(): void {
 		if ( current_user_can( 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
-			$transients_obj = Transients::get_instance();
+			$transients_obj = self::get_instance();
 			$transients_obj->check_transients();
 		}
 	}
@@ -205,7 +205,7 @@ class Transients {
 		check_ajax_referer( 'personio-integration-dismiss-nonce', 'nonce' );
 
 		// bail if function is not called via AJAX.
-		if( ! defined( 'DOING_AJAX') ) {
+		if ( ! defined( 'DOING_AJAX' ) ) {
 			wp_die();
 		}
 
@@ -223,7 +223,7 @@ class Transients {
 		update_option( 'pi-dismissed-' . md5( $option_name ), $dismissible_length, true );
 
 		// remove transient.
-		Transients::get_instance()->get_transient_by_name( $option_name )->delete();
+		self::get_instance()->get_transient_by_name( $option_name )->delete();
 
 		// return nothing.
 		wp_die();

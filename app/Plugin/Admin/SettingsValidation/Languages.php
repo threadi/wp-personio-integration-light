@@ -5,7 +5,12 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin\SettingsValidation;
+namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
+
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Object which validates the given URL.
@@ -22,15 +27,15 @@ class Languages {
 		// if empty set english.
 		if ( empty( $values ) ) {
 			add_settings_error( 'personioIntegrationLanguages', 'personioIntegrationLanguages', __( 'You must enable one language. English will be set.', 'personio-integration-light' ) );
-			$values = array( \App\Plugin\Languages::get_instance()->get_fallback_language_name() => 1 );
+			$values = array( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_fallback_language_name() => 1 );
 		}
 
 		// check if new configuration would change anything.
-		$actual_languages = \App\Plugin\Languages::get_instance()->get_languages();
+		$actual_languages = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_languages();
 		if ( $values !== $actual_languages ) {
 
 			// first remove all language-specific settings.
-			foreach ( \App\Plugin\Languages::get_instance()->get_languages() as $language_name => $label ) {
+			foreach ( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_languages() as $language_name => $label ) {
 				delete_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $language_name );
 				delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $language_name );
 				delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $language_name );

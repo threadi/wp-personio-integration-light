@@ -1,27 +1,33 @@
 <?php
 /**
- * File to handle the post-type PersonioPostion.
+ * File to handle our own custom post type PersonioPostion.
  *
  * @package personio-integration-light
  */
 
-namespace App\PersonioIntegration\PostTypes;
+namespace PersonioIntegrationLight\PersonioIntegration\PostTypes;
 
-use App\Helper;
-use App\Log;
-use App\PersonioIntegration\Position;
-use App\PersonioIntegration\Positions;
-use App\PersonioIntegration\Post_Type;
-use App\PersonioIntegration\Taxonomies;
-use App\Plugin\Languages;
-use App\Plugin\Templates;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\PersonioIntegration\Post_Type;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\Plugin\Admin\Admin;
+use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Templates;
 use WP_Post;
 use WP_Query;
 use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * Object of this cpt.
+ * Object of this custom post type.
  */
 class PersonioPosition extends Post_Type {
 	/**
@@ -66,7 +72,7 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function init(): void {
-		// register our taxonomies.
+		// register taxonomies for this cpt.
 		Taxonomies::get_instance()->init();
 
 		// register this cpt.
@@ -97,7 +103,7 @@ class PersonioPosition extends Post_Type {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
 
-		// our own hooks.
+		// use our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_filter_type' ) );
 
 		// search hooks.
@@ -105,7 +111,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Register this post-type.
+	 * Register this custom post type.
 	 *
 	 * @return void
 	 */
@@ -126,14 +132,14 @@ class PersonioPosition extends Post_Type {
 
 		// get slugs.
 		$archive_slug = Helper::get_archive_slug();
-		$single_slug = Helper::get_detail_slug();
+		$single_slug  = Helper::get_detail_slug();
 
 		// set arguments for our own cpt.
 		$args = array(
 			'label'               => $labels['name'],
 			'description'         => '',
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'editor', 'custom-fields' ),
+			'supports'            => array( '' ),
 			'public'              => true,
 			'hierarchical'        => false,
 			'show_ui'             => true,
@@ -358,53 +364,53 @@ class PersonioPosition extends Post_Type {
 
 		// define the default values for each attribute.
 		$attribute_defaults = array(
-			'lang'             => Languages::get_instance()->get_current_lang(),
-			'showfilter'       => ( 1 === absint( get_option( 'personioIntegrationEnableFilter', 0 ) ) ),
-			'filter'           => implode( ',', get_option( 'personioIntegrationTemplateFilter', '' ) ),
-			'filtertype'       => get_option( 'personioIntegrationFilterType', 'select' ),
-			'template'         => '',
-			'templates'        => implode( ',', get_option( 'personioIntegrationTemplateContentList', '' ) ),
-			'listing_template' => get_option( 'personioIntegrationTemplateContentListingTemplate', 'default' ),
+			'lang'                    => Languages::get_instance()->get_current_lang(),
+			'showfilter'              => ( 1 === absint( get_option( 'personioIntegrationEnableFilter', 0 ) ) ),
+			'filter'                  => implode( ',', get_option( 'personioIntegrationTemplateFilter', '' ) ),
+			'filtertype'              => get_option( 'personioIntegrationFilterType', 'select' ),
+			'template'                => '',
+			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentList', '' ) ),
+			'listing_template'        => get_option( 'personioIntegrationTemplateContentListingTemplate', 'default' ),
 			'jobdescription_template' => get_option( 'personioIntegrationTemplateListingContentTemplate', 'default' ),
-			'excerpt'          => implode( ',', get_option( 'personioIntegrationTemplateExcerptDefaults', '' ) ),
-			'ids'              => '',
-			'donotlink'        => ( 0 === absint( get_option( 'personioIntegrationEnableLinkInList', 0 ) ) ),
-			'sort'             => 'asc',
-			'sortby'           => 'title',
-			'limit'            => 0,
-			'nopagination'     => $pagination,
-			'groupby'          => '',
-			'styles'           => '',
-			'classes'          => '',
+			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDefaults', '' ) ),
+			'ids'                     => '',
+			'donotlink'               => ( 0 === absint( get_option( 'personioIntegrationEnableLinkInList', 0 ) ) ),
+			'sort'                    => 'asc',
+			'sortby'                  => 'title',
+			'limit'                   => 0,
+			'nopagination'            => $pagination,
+			'groupby'                 => '',
+			'styles'                  => '',
+			'classes'                 => '',
 		);
 
 		// define the settings for each attribute (array or string).
 		$attribute_settings = array(
-			'id'               => 'string',
-			'lang'             => 'string',
-			'showfilter'       => 'bool',
-			'filter'           => 'array',
-			'template'         => 'string',
-			'listing_template' => 'listing_template',
+			'id'                      => 'string',
+			'lang'                    => 'string',
+			'showfilter'              => 'bool',
+			'filter'                  => 'array',
+			'template'                => 'string',
+			'listing_template'        => 'listing_template',
 			'jobdescription_template' => 'jobdescription_template',
-			'templates'        => 'array',
-			'excerpt'          => 'array',
-			'ids'              => 'array',
-			'donotlink'        => 'bool',
-			'sort'             => 'string',
-			'sortby'           => 'string',
-			'limit'            => 'unsignedint',
-			'filtertype'       => 'string',
-			'nopagination'     => 'bool',
-			'groupby'          => 'string',
-			'styles'           => 'string',
-			'classes'          => 'string',
+			'templates'               => 'array',
+			'excerpt'                 => 'array',
+			'ids'                     => 'array',
+			'donotlink'               => 'bool',
+			'sort'                    => 'string',
+			'sortby'                  => 'string',
+			'limit'                   => 'unsignedint',
+			'filtertype'              => 'string',
+			'nopagination'            => 'bool',
+			'groupby'                 => 'string',
+			'styles'                  => 'string',
+			'classes'                 => 'string',
 		);
 
 		// add taxonomies which are available as filter.
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			// bail if no slug is set for this taxonomy.
-			if (  empty( $taxonomy['slug'] ) ) {
+			if ( empty( $taxonomy['slug'] ) ) {
 				continue;
 			}
 			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
@@ -422,7 +428,7 @@ class PersonioPosition extends Post_Type {
 		$positions_obj = Positions::get_instance();
 
 		// filter for specific ids.
-		if ( !empty( $personio_attributes['ids'][0] ) ) {
+		if ( ! empty( $personio_attributes['ids'][0] ) ) {
 			// convert id-list from PersonioId in post_id.
 			$resulting_list = array();
 			foreach ( $personio_attributes['ids'] as $personio_id ) {
@@ -666,7 +672,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function delete( int $post_id ): void {
 		// bail if this is not our own cpt.
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT !== get_post_type( $post_id ) ) {
+		if ( $this->get_name() !== get_post_type( $post_id ) ) {
 			return;
 		}
 
@@ -717,8 +723,8 @@ class PersonioPosition extends Post_Type {
 			$position = new Position( $post_id );
 			echo absint( $position->get_personio_id() );
 		}
-		if( 'sort' === $column ) {
-			echo '<span class="pro-marker">'.__( 'Only Pro.', 'personio-integration-light' ).'</span>';
+		if ( 'sort' === $column ) {
+			echo '<span class="pro-marker">' . __( 'Only Pro.', 'personio-integration-light' ) . '</span>';
 		}
 	}
 
@@ -851,7 +857,7 @@ class PersonioPosition extends Post_Type {
 	 * @return WP_Query
 	 */
 	public function ignore_author( WP_Query $query ): WP_Query {
-		if ( is_admin() && ! empty( $query->query_vars['post_type'] ) && WP_PERSONIO_INTEGRATION_MAIN_CPT === $query->query_vars['post_type'] ) {
+		if ( is_admin() && ! empty( $query->query_vars['post_type'] ) && $this->get_name() === $query->query_vars['post_type'] ) {
 			$query->set( 'author', 0 );
 		}
 		return $query;
@@ -864,19 +870,14 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function remove_cpt_supports(): void {
-		// remove title, editor and custom fields.
-		remove_post_type_support( WP_PERSONIO_INTEGRATION_MAIN_CPT, 'title' );
-		remove_post_type_support( WP_PERSONIO_INTEGRATION_MAIN_CPT, 'editor' );
-		remove_post_type_support( WP_PERSONIO_INTEGRATION_MAIN_CPT, 'custom-fields' );
+		// remove generic meta box for slug.
+		remove_meta_box( 'slugdiv', $this->get_name(), 'normal' );
 
-		// remove meta box for slug.
-		remove_meta_box( 'slugdiv', WP_PERSONIO_INTEGRATION_MAIN_CPT, 'normal' );
-
-		// remove taxonomy-meta-boxes.
+		// remove generic taxonomy-meta-boxes.
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $settings ) {
 			$taxonomy              = get_taxonomy( $taxonomy_name );
 			$taxonomy->meta_box_cb = false;
-			register_taxonomy( $taxonomy_name, WP_PERSONIO_INTEGRATION_MAIN_CPT, $taxonomy );
+			register_taxonomy( $taxonomy_name, $this->get_name(), $taxonomy );
 		}
 	}
 
@@ -890,30 +891,30 @@ class PersonioPosition extends Post_Type {
 		// TODO für Pro ausblendbar machen
 		add_meta_box(
 			'personio-edit-hints',
-			__( 'Show Personio position data', 'personio-integration-light' ),
+			__( 'About this page', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_data_hint' ),
-			WP_PERSONIO_INTEGRATION_MAIN_CPT
+			$this->get_name()
 		);
 
 		add_meta_box(
 			'personio-position-personio-id',
 			__( 'PersonioID', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_personio_id' ),
-			WP_PERSONIO_INTEGRATION_MAIN_CPT
+			$this->get_name()
 		);
 
 		add_meta_box(
 			'personio-position-title',
 			__( 'Title', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_title' ),
-			WP_PERSONIO_INTEGRATION_MAIN_CPT
+			$this->get_name()
 		);
 
 		add_meta_box(
 			'personio-position-text',
 			__( 'Description', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_description' ),
-			WP_PERSONIO_INTEGRATION_MAIN_CPT
+			$this->get_name()
 		);
 
 		// get taxonomies as object.
@@ -926,10 +927,19 @@ class PersonioPosition extends Post_Type {
 				'personio-position-taxonomy-' . $taxonomy_name,
 				$labels['name'],
 				array( $this, 'get_meta_box_for_taxonomy' ),
-				WP_PERSONIO_INTEGRATION_MAIN_CPT,
+				$this->get_name(),
 				'side'
 			);
 		}
+
+		// add meta box with Pro-hint for subcompany-field which is only in Pro.
+		add_meta_box(
+			'personio-position-taxonomy-subcompany',
+			__( 'Subcompany', 'personio-integration-light' ),
+			array( $this, 'get_meta_box_for_pro_taxonomy' ),
+			$this->get_name(),
+			'side'
+		);
 	}
 
 	/**
@@ -944,7 +954,7 @@ class PersonioPosition extends Post_Type {
 			if ( $position->is_valid() ) {
 				$url = Helper::get_personio_login_url();
 				/* translators: %1$s will be replaced by the URL for Personio */
-				printf( wp_kses_post( __( 'At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'personio-integration-light' ) ), esc_html( $position->get_title() ), esc_url( $url ) );
+				printf( wp_kses_post( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the job details in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'personio-integration-light' ) ), esc_html( $position->get_title() ), esc_url( $url ) );
 			}
 		}
 	}
@@ -975,8 +985,10 @@ class PersonioPosition extends Post_Type {
 	 * Show content of position in meta box.
 	 *
 	 * @param WP_Post $post Object of the post.
+	 *
 	 * @return void
-	 */
+	 * @noinspection PhpUnusedParameterInspection
+	 **/
 	public function get_meta_box_for_description( WP_Post $post ): void {
 		the_content();
 	}
@@ -991,11 +1003,38 @@ class PersonioPosition extends Post_Type {
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
 		$position_obj  = Positions::get_instance()->get_position( $post->ID );
 		$taxonomy_name = str_replace( 'personio-position-taxonomy-', '', $attr['id'] );
-		$content = $position_obj->get_term_by_field( $taxonomy_name, 'name' );
+		$content       = $position_obj->get_term_by_field( $taxonomy_name, 'name' );
 		if ( empty( $content ) ) {
 			echo '<i>' . esc_html__( 'No data', 'personio-integration-light' ) . '</i>';
 		} else {
-			echo wp_kses_post( $content );
+			// create filter url.
+			$filter_url = add_query_arg(
+				array(
+					's'                              => '',
+					'post_type'                      => $this->get_name(),
+					'admin_filter_' . $taxonomy_name => $position_obj->get_term_by_field( $taxonomy_name, 'term_id' ),
+					'paged'                          => 1,
+				),
+				admin_url() . 'edit.php'
+			);
+
+			// output.
+			echo '<a href="' . esc_url( $filter_url ) . '">' . wp_kses_post( $content ) . '</a>';
+		}
+	}
+
+	/**
+	 * Show any taxonomy of position in their own meta box.
+	 *
+	 * @param WP_Post $post Object of the post.
+	 * @param array   $attr The attributes.
+	 *
+	 * @return void
+	 * @noinspection PhpUnusedParameterInspection
+	 **/
+	public function get_meta_box_for_pro_taxonomy( WP_Post $post, array $attr ): void {
+		if ( ! empty( $attr['title'] ) ) {
+			Admin::get_instance()->show_pro_hint( __( 'Use this taxonomy with %1$s.', 'personio-integration-light' ) );
 		}
 	}
 
@@ -1025,14 +1064,14 @@ class PersonioPosition extends Post_Type {
 
 		// define the settings for each attribute (array or string).
 		$attribute_settings = array(
-			'personioid' => 'int',
-			'lang'       => 'string',
-			'templates'  => 'array',
-			'excerpt'    => 'array',
-			'donotlink'  => 'bool',
-			'styles'     => 'string',
-			'classes'    => 'string',
-			'jobdescription_template' => 'jobdescription_template'
+			'personioid'              => 'int',
+			'lang'                    => 'string',
+			'templates'               => 'array',
+			'excerpt'                 => 'array',
+			'donotlink'               => 'bool',
+			'styles'                  => 'string',
+			'classes'                 => 'string',
+			'jobdescription_template' => 'jobdescription_template',
 		);
 		return Helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
 	}
@@ -1137,7 +1176,7 @@ class PersonioPosition extends Post_Type {
 	public function get_link( bool $without_admin_url = false ): string {
 		return add_query_arg(
 			array(
-				'post_type' => PersonioPosition::get_instance()->get_name(),
+				'post_type' => self::get_instance()->get_name(),
 			),
 			( $without_admin_url ? '' : get_admin_url() ) . 'edit.php'
 		);

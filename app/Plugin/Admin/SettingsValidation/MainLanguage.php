@@ -5,10 +5,15 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin\Admin\SettingsValidation;
+namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 
-use App\Helper;
-use App\Plugin\Admin\Settings_Validation_Base;
+// prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Plugin\Admin\Settings_Validation_Base;
 
 /**
  * Object which validates the main language.
@@ -24,10 +29,10 @@ class MainLanguage extends Settings_Validation_Base {
 		if ( ! Helper::is_admin_api_request() ) {
 			if ( ! self::has_size( $value ) ) {
 				add_settings_error( 'personioIntegrationMainLanguage', 'personioIntegrationMainLanguage', __( 'No main language was specified. The specification of a main language is mandatory.', 'personio-integration-light' ) );
-				$value = \App\Plugin\Languages::get_instance()->get_main_language();
+				$value = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language();
 			} elseif ( ! self::check_language( $value ) ) {
 				add_settings_error( 'personioIntegrationMainLanguage', 'personioIntegrationMainLanguage', __( 'The selected main language is not activated as a language.', 'personio-integration-light' ) );
-				$value = \App\Plugin\Languages::get_instance()->get_main_language();
+				$value = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language();
 			}
 		}
 		return $value;
@@ -48,13 +53,12 @@ class MainLanguage extends Settings_Validation_Base {
 		// check the given string size.
 		if ( ! self::has_size( $value ) ) {
 			return array(
-				'error' => 'no_size'
+				'error' => 'no_size',
 			);
-		}
-		elseif ( ! self::check_language( $value ) ) {
+		} elseif ( ! self::check_language( $value ) ) {
 			// return error if language is not available.
 			return array(
-				'error' => 'language_not_available'
+				'error' => 'language_not_available',
 			);
 		}
 
@@ -70,11 +74,11 @@ class MainLanguage extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	private static function check_language( string $language_string ): bool {
-		$languages = \App\Plugin\Languages::get_instance()->get_languages();
-		if( empty($languages) ) {
+		$languages = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_languages();
+		if ( empty( $languages ) ) {
 			return false;
 		}
-		if( empty($languages[$language_string]) ) {
+		if ( empty( $languages[ $language_string ] ) ) {
 			return false;
 		}
 		return true;

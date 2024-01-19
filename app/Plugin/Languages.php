@@ -5,7 +5,12 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace PersonioIntegrationLight\Plugin;
+
+// prevent also other direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Handler for any language-tasks.
@@ -36,12 +41,12 @@ class Languages {
 			'de_DE_format',
 			'de_CH',
 			'de_CH_informal',
-			'de_AT'
+			'de_AT',
 		),
 		'en' => array(
 			'en_US',
-			'en_UK'
-		)
+			'en_UK',
+		),
 	);
 
 	/**
@@ -103,11 +108,11 @@ class Languages {
 		$language_name = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );
 
 		// return its name of it is a known language.
-		if( !empty( $this->get_languages()[$language_name] ) ) {
+		if ( ! empty( $this->get_languages()[ $language_name ] ) ) {
 
 			// return the wp-language.
-			if( $use_wp_lang ) {
-				return $this->get_lang_mappings($language_name)[0];
+			if ( $use_wp_lang ) {
+				return $this->get_lang_mappings( $language_name )[0];
 			}
 
 			// return the ISO-639-language.
@@ -129,9 +134,9 @@ class Languages {
 
 		// add active languages to returning list if they exist as language.
 		$languages = array();
-		foreach( $this->get_languages() as $language_name => $label ) {
-			if( !empty($active_languages[$language_name]) ) {
-				$languages[$language_name] = $label;
+		foreach ( $this->get_languages() as $language_name => $label ) {
+			if ( ! empty( $active_languages[ $language_name ] ) ) {
+				$languages[ $language_name ] = $label;
 			}
 		}
 
@@ -146,7 +151,7 @@ class Languages {
 	 */
 	public function get_fallback_language_name(): string {
 		// check if configured fallback language name is supported and return it.
-		if( !empty( $this->get_languages()[$this->fallback_language_name] ) ) {
+		if ( ! empty( $this->get_languages()[ $this->fallback_language_name ] ) ) {
 			return $this->fallback_language_name;
 		}
 
@@ -175,7 +180,7 @@ class Languages {
 	 * @return bool
 	 */
 	public function is_language_supported( string $language_name ): bool {
-		return !empty( $this->get_languages()[$language_name] );
+		return ! empty( $this->get_languages()[ $language_name ] );
 	}
 
 	/**
@@ -209,8 +214,8 @@ class Languages {
 		$wp_language = substr( get_bloginfo( 'language' ), 0, 2 );
 
 		// if language is not known, use fallback language.
-		if ( ! Languages::get_instance()->is_language_supported( $wp_language ) ) {
-			$wp_language = Languages::get_instance()->get_fallback_language_name();
+		if ( ! self::get_instance()->is_language_supported( $wp_language ) ) {
+			$wp_language = self::get_instance()->get_fallback_language_name();
 		}
 
 		/**
@@ -231,6 +236,6 @@ class Languages {
 	 * @return string[]
 	 */
 	public function get_lang_mappings( string $language_name ): array {
-		return $this->language_to_wp_lang_mapping[$language_name];
+		return $this->language_to_wp_lang_mapping[ $language_name ];
 	}
 }

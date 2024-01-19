@@ -5,7 +5,12 @@
  * @package personio-integration-light
  */
 
-namespace App;
+namespace PersonioIntegrationLight;
+
+// prevent also other direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 use WP_List_Table;
 
@@ -38,7 +43,7 @@ class Log_Table extends WP_List_Table {
 	 */
 	private function table_data(): array {
 		// check nonce.
-		if( isset($_REQUEST['nonce']) && !wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-table-log' ) ) {
+		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-table-log' ) ) {
 			// redirect user back.
 			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
 			exit;

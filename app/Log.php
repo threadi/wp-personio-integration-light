@@ -5,7 +5,12 @@
  * @package personio-integration-light
  */
 
-namespace App;
+namespace PersonioIntegrationLight;
+
+// prevent also other direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Handler for logging in this plugin.

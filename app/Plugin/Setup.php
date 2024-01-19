@@ -5,13 +5,17 @@
  * @package personio-integration-light
  */
 
-namespace App\Plugin;
+namespace PersonioIntegrationLight\Plugin;
 
-use App\Helper;
-use App\PersonioIntegration\Import;
-use App\PersonioIntegration\PostTypes\PersonioPosition;
-use App\PersonioIntegration\Taxonomies;
-use Automattic\WooCommerce\Admin\Features\OnboardingTasks\Tasks\Tax;
+// prevent also other direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Import;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use WP_REST_Request;
 use WP_REST_Server;
 
@@ -50,28 +54,28 @@ class Setup {
 		// define setup.
 		$this->setup = array(
 			1 => array(
-				'personioIntegrationUrl' => array(
-					'type' => 'TextControl',
-					'label' => $url_settings['label'],
-					'help' => $url_settings['description'],
-					'placeholder' => $url_settings['placeholder'],
-					'required' => true,
-					'validation_callback' => 'App\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::rest_validate'
+				'personioIntegrationUrl'              => array(
+					'type'                => 'TextControl',
+					'label'               => $url_settings['label'],
+					'help'                => $url_settings['description'],
+					'placeholder'         => $url_settings['placeholder'],
+					'required'            => true,
+					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::rest_validate',
 				),
 				WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
-					'type' => 'RadioControl',
-					'label' => $language_setting['label'],
-					'help' => $language_setting['description'],
-					'options' => $this->convert_options_for_react( $language_setting['options'] ),
-					'validation_callback' => 'App\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate'
-				)
+					'type'                => 'RadioControl',
+					'label'               => $language_setting['label'],
+					'help'                => $language_setting['description'],
+					'options'             => $this->convert_options_for_react( $language_setting['options'] ),
+					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate',
+				),
 			),
 			2 => array(
 				'runSetup' => array(
-					'type' => 'ProgressBar',
+					'type'  => 'ProgressBar',
 					'label' => __( 'Setup preparing your Personio data', 'personio-integration-light' ),
-				)
-			)
+				),
+			),
 		);
 
 		// add hooks.
@@ -92,13 +96,7 @@ class Setup {
 	 * @return string
 	 */
 	private function get_setup_link(): string {
-		return add_query_arg(
-			array(
-				'post_type' => PersonioPosition::get_instance()->get_name(),
-				'page' => 'personioPositions'
-			),
-			get_admin_url().'edit.php'
-		);
+		return Helper::get_settings_url();
 	}
 
 	/**
@@ -134,55 +132,61 @@ class Setup {
 	 * @return bool
 	 */
 	public function is_completed(): bool {
-		return false;
+		return (bool) get_option( 'wp_easy_setup_completed', false );
 	}
 
 	/**
-	 * Check if some parts of setup should be run.
+	 * Set setup as completed.
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function set_completed(): void {
+		update_option( 'wp_easy_setup_completed', true );
+
+		if ( Helper::is_admin_api_request() ) {
+			// Return JSON with forward-URL.
+			wp_send_json(
+				array(
+					'forward' => PersonioPosition::get_instance()->get_link(),
+				)
+			);
+
+			// Don't forget to stop execution afterward.
+			wp_die();
+		}
+	}
+
+	/**
+	 * Check if setup should be run and show hint for it.
 	 *
 	 * @return void
 	 */
 	public function check(): void {
-		// marker if setup should be enabled.
-		$enable_setup = false;
-
-		// get actual state.
-		$setup_status = get_option( 'personioIntegrationSetup', array() );
-
-		// compare actual state with setup-configuration.
-		foreach( $this->get_setup() as $step => $settings ) {
-			if ( empty( $setup_status[ $step ] ) ) {
-				$enable_setup = true;
-			}
-		}
-
 		// get transients object.
 		$transients_obj = Transients::get_instance();
 
 		// check if setup should be run.
-		if( $enable_setup ) {
+		if ( ! $this->is_completed() ) {
 			// delete all other transients.
-			foreach( $transients_obj->get_transients() as $transient_obj ) {
+			foreach ( $transients_obj->get_transients() as $transient_obj ) {
 				$transient_obj->delete();
 			}
 
 			// add hint to run setup.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_start_setup_hint' );
-			$transient_obj->set_message( sprintf( '<a href="%1$s" class="button button-primary">'.__( 'Run Setup to use Personio Integration Light', 'personio-integration-light' ).'</a>', esc_url( $this->get_setup_link() ) ) );
+			$transient_obj->set_message( __( '<strong>You have installed Personio Integration Light - nice and thank you!</strong> Now run the setup to expand your website with the possibilities of this plugin.', 'personio-integration-light' ) . '<br><br>' . sprintf( '<a href="%1$s" class="button button-primary">' . __( 'Start setup', 'personio-integration-light' ) . '</a>', esc_url( $this->get_setup_link() ) ) );
 			$transient_obj->set_type( 'error' );
-			$transient_obj->set_hide_on( array(
-				add_query_arg(
-					array(
-						'post_type' => PersonioPosition::get_instance()->get_name(),
-						'page' => 'personioPositions'
-					),
-					get_admin_url().'edit.php'
+			$transient_obj->set_hide_on(
+				array(
+					Helper::get_settings_url(),
+					PersonioPosition::get_instance()->get_link(),
+					add_query_arg( array( 'page' => 'personioPositions' ), admin_url() . 'admin.php' ),
 				)
-			) );
+			);
 			$transient_obj->save();
-		}
-		else {
+		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_start_setup_hint' )->delete();
 		}
 	}
@@ -209,7 +213,7 @@ class Setup {
 	 * @return void
 	 */
 	public function display(): void {
-		echo '<div id="wp-plugin-setup" data-config="'.esc_attr( wp_json_encode( $this->get_config() ) ).'" data-fields="'.esc_attr( wp_json_encode( $this->get_setup() ) ).'"></div>';
+		echo '<div id="wp-plugin-setup" data-config="' . esc_attr( wp_json_encode( $this->get_config() ) ) . '" data-fields="' . esc_attr( wp_json_encode( $this->get_setup() ) ) . '"></div>';
 	}
 
 	/**
@@ -218,16 +222,20 @@ class Setup {
 	 * @return void
 	 */
 	public function add_setup_menu(): void {
-		if( ! $this->is_completed() ) {
+		if ( ! $this->is_completed() ) {
+			// add setup menu entry.
 			add_submenu_page(
 				PersonioPosition::get_instance()->get_link( true ),
-				__( 'Personio Integration Settings', 'personio-integration-light' ),
+				__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
 				__( 'Setup', 'personio-integration-light' ),
 				'manage_' . PersonioPosition::get_instance()->get_name(),
 				'personioPositions',
 				array( $this, 'display' ),
 				1
 			);
+
+			// remove menu page of our own cpt.
+			remove_submenu_page( 'edit.php?post_type=' . PersonioPosition::get_instance()->get_name(), 'edit.php?post_type=' . PersonioPosition::get_instance()->get_name() );
 		}
 	}
 
@@ -238,17 +246,17 @@ class Setup {
 	 */
 	public function admin_scripts(): void {
 		// embed necessary scripts for setup.
-		$path = Helper::get_plugin_path().'blocks/setup/';
-		$url = Helper::get_plugin_url().'blocks/setup/';
+		$path = Helper::get_plugin_path() . 'blocks/setup/';
+		$url  = Helper::get_plugin_url() . 'blocks/setup/';
 
 		// bail if path does not exist.
-		if( !file_exists($path) ) {
+		if ( ! file_exists( $path ) ) {
 			return;
 		}
 
 		// embed the setup-JS-script.
 		$script_asset_path = $path . 'build/setup.asset.php';
-		$script_asset      = require( $script_asset_path );
+		$script_asset      = require $script_asset_path;
 		wp_enqueue_script(
 			'wp-easy-setup',
 			$url . 'build/setup.js',
@@ -267,12 +275,21 @@ class Setup {
 			filemtime( $admin_css_path )
 		);
 
-		wp_localize_script( 'wp-easy-setup', 'wp_easy_setup', array(
-			'rest_nonce' => wp_create_nonce( 'wp_rest' ),
-			'validation_url' => '/wp-json/wp-easy-setup/v1/validate-field', // TODO generieren
-			'process_url' => '/wp-json/wp-easy-setup/v1/process', // TODO generieren
-			'process_info_url' => '/wp-json/wp-easy-setup/v1/get-process-info' // TODO generieren
-		) );
+		wp_localize_script(
+			'wp-easy-setup',
+			'wp_easy_setup',
+			array(
+				'rest_nonce'       => wp_create_nonce( 'wp_rest' ),
+				'validation_url'   => rest_url( 'wp-easy-setup/v1/validate-field' ),
+				'process_url'      => rest_url( 'wp-easy-setup/v1/process' ),
+				'process_info_url' => rest_url( 'wp-easy-setup/v1/get-process-info' ),
+				'completed_url'    => rest_url( 'wp-easy-setup/v1/completed' ),
+				'title_error'      => __( 'Error', 'personio-integration-light' ),
+				'txt_error_1'      => __( 'The following error occurred:', 'personio-integration-light' ),
+				/* translators: %1$s will be replaced with the URL of the plugin-forum on wordpress.org */
+				'txt_error_2'      => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
+			)
+		);
 	}
 
 	/**
@@ -287,10 +304,10 @@ class Setup {
 		$resulting_array = array();
 
 		// loop through the options.
-		foreach( $options as $key => $label ) {
+		foreach ( $options as $key => $label ) {
 			$resulting_array[] = array(
 				'label' => $label,
-				'value' => $key
+				'value' => $key,
 			);
 		}
 
@@ -301,7 +318,7 @@ class Setup {
 	/**
 	 * Validate a given field via REST API request.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param WP_REST_Request $request The REST API request object.
 	 *
 	 * @return void
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
@@ -309,31 +326,31 @@ class Setup {
 	public function validate_field( WP_REST_Request $request ): void {
 		$validation_result = array(
 			'field_name' => false,
-			'result' => 'error'
+			'result'     => 'error',
 		);
 
 		// get setup step.
-		$step = $request->get_param('step');
+		$step = $request->get_param( 'step' );
 
 		// get field-name.
-		$field_name = $request->get_param('field_name');
+		$field_name = $request->get_param( 'field_name' );
 
 		// get value.
-		$value = $request->get_param('value');
+		$value = $request->get_param( 'value' );
 
 		// get setup-fields.
 		$fields = $this->get_setup();
 
 		// run check if all 3 vars are filled.
-		if( !empty( $step ) && !empty( $field_name ) ) {
+		if ( ! empty( $step ) && ! empty( $field_name ) ) {
 			// set field for response.
 			$validation_result['field_name'] = $field_name;
 			// check if field exist in step.
-			if( !empty( $fields[$step][$field_name]) ) {
+			if ( ! empty( $fields[ $step ][ $field_name ] ) ) {
 				// get validation-callback for this field.
 				$validation_callback = $this->get_setup()[ $step ][ $field_name ]['validation_callback'];
-				if ( !empty($validation_callback) ) {
-					if ( is_callable($validation_callback) ) {
+				if ( ! empty( $validation_callback ) ) {
+					if ( is_callable( $validation_callback ) ) {
 						$validation_result['result'] = call_user_func( $validation_callback, $value );
 					}
 				}
@@ -341,7 +358,7 @@ class Setup {
 		}
 
 		// Return JSON with results.
-		wp_send_json($validation_result);
+		wp_send_json( $validation_result );
 
 		// Don't forget to stop execution afterward.
 		wp_die();
@@ -386,6 +403,17 @@ class Setup {
 				},
 			)
 		);
+		register_rest_route(
+			'wp-easy-setup/v1',
+			'/completed/',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'set_completed' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 	}
 
 	/**
@@ -397,11 +425,11 @@ class Setup {
 	 */
 	private function get_config(): array {
 		return array(
-			'title' => __( 'Personio Integration Setup', 'personio-integration-light' ),
-			'steps' => 2,
-			'back_button_label' => __( 'Back', 'personio-integration-light' ),
-			'continue_button_label' => __( 'Continue', 'personio-integration-light' ),
-			'finish_button_label' => __( 'Finish', 'personio-integration-light' )
+			'title'                 => __( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
+			'steps'                 => 2,
+			'back_button_label'     => __( 'Back', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-undo"></span>',
+			'continue_button_label' => __( 'Continue', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-play"></span>',
+			'finish_button_label'   => __( 'Finish', 'personio-integration-light' ) . '<span class="dashicons dashicons-saved"></span>',
 		);
 	}
 
@@ -434,7 +462,7 @@ class Setup {
 		delete_option( 'wp_easy_setup_pi_running' );
 
 		// return empty json.
-		wp_send_json(array());
+		wp_send_json( array() );
 
 		// Don't forget to stop execution afterward.
 		wp_die();
@@ -459,7 +487,7 @@ class Setup {
 	 * @return void
 	 */
 	public function update_process_step( int $step = 1 ): void {
-		update_option( 'wp_easy_setup_pi_step', absint(get_option( 'wp_easy_setup_pi_step', 0 ) + $step ) );
+		update_option( 'wp_easy_setup_pi_step', absint( get_option( 'wp_easy_setup_pi_step', 0 ) + $step ) );
 	}
 
 	/**
@@ -470,7 +498,7 @@ class Setup {
 	 * @return void
 	 */
 	public function update_process_max_steps( int $max_steps = 1 ): void {
-		update_option( 'wp_easy_setup_pi_max_steps', absint(get_option( 'wp_easy_setup_pi_max_steps', 0 ) + $max_steps ) );
+		update_option( 'wp_easy_setup_pi_max_steps', absint( get_option( 'wp_easy_setup_pi_max_steps', 0 ) + $max_steps ) );
 	}
 
 	/**
@@ -481,17 +509,16 @@ class Setup {
 	 */
 	public function get_process_info(): void {
 		$return = array(
-			'running' => absint(get_option( 'wp_easy_setup_pi_running', 0 )),
-			'max' => absint(get_option( 'wp_easy_setup_pi_max_steps', 0 )),
-			'step' => absint(get_option( 'wp_easy_setup_pi_step', 0 )),
-			'step_label' => get_option( 'wp_easy_setup_pi_step_label', '' )
+			'running'    => absint( get_option( 'wp_easy_setup_pi_running', 0 ) ),
+			'max'        => absint( get_option( 'wp_easy_setup_pi_max_steps', 0 ) ),
+			'step'       => absint( get_option( 'wp_easy_setup_pi_step', 0 ) ),
+			'step_label' => get_option( 'wp_easy_setup_pi_step_label', '' ),
 		);
 
 		// Return JSON with result.
-		wp_send_json($return);
+		wp_send_json( $return );
 
 		// Don't forget to stop execution afterward.
 		wp_die();
 	}
-
 }
