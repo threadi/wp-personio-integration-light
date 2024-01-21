@@ -44,11 +44,15 @@
     <target name="npm-install">
         <delete file="${log.dir}/npm-install1.txt"/>
         <delete file="${log.dir}/npm-install2.txt"/>
+        <delete file="${log.dir}/npm-install3.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-install1.txt">
-            <arg line="i"/>
+            <arg line="install"/>
         </exec>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-install2.txt">
-            <arg line="i concurrently"/>
+            <arg line="install concurrently"/>
+        </exec>
+        <exec dir="${src.dir}/lib/threadi/wp-easy-dialog/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-install3.txt">
+            <arg line="install"/>
         </exec>
     </target>
 
@@ -61,6 +65,8 @@
         <delete file="${log.dir}/npm-build5.txt"/>
         <delete file="${log.dir}/npm-build6.txt"/>
         <delete file="${log.dir}/npm-build7.txt"/>
+        <delete file="${log.dir}/npm-build8.txt"/>
+        <delete file="${log.dir}/npm-build9.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build1.txt">
             <arg line="run build:show"/>
         </exec>
@@ -81,6 +87,12 @@
         </exec>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build7.txt">
             <arg line="run build:description"/>
+        </exec>
+        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build8.txt">
+            <arg line="run build:setup"/>
+        </exec>
+        <exec dir="${src.dir}/lib/threadi/wp-easy-dialog/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build9.txt">
+            <arg line="run build"/>
         </exec>
     </target>
 
