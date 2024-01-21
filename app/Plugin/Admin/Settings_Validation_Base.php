@@ -15,7 +15,7 @@ class Settings_Validation_Base {
 	/**
 	 * Check size of given string.
 	 *
-	 * @param string $value
+	 * @param string $value The value.
 	 *
 	 * @return bool
 	 */

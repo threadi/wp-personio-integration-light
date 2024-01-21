@@ -122,7 +122,7 @@
     <!-- check WCS compatibility -->
     <target name="check-wcs" depends="composer-install">
         <exec dir="${src.dir}" failonerror="true" executable="lib/bin/phpcs">
-            <arg line="--extensions=php --ignore=*/lib/*,*/node_modules/*,*/blocks/*,*/svn/* --standard=ruleset.xml ."/>
+            <arg line="--extensions=php --ignore=*/lib/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/* --standard=ruleset.xml ."/>
         </exec>
     </target>
 

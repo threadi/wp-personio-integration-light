@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * Template for output a single term filter a linklist.
  */
 ?>
-	<div<?php echo ! empty( $_GET['personiofilter'][ $filter ] ) ? ' class="personio-filter-selected"' : ''; ?>>
+	<div<?php echo ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ? ' class="personio-filter-selected"' : ''; ?>>
 		<label><?php echo esc_html( $filtername ); ?></label>
 		<ul>
 			<?php

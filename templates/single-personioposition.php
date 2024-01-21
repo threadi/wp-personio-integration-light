@@ -18,6 +18,6 @@ get_header();
 $arguments = array(
 	'personioid' => get_post_meta( get_the_ID(), WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, true ),
 );
-echo PersonioPosition::get_instance()->shortcode_single( $arguments );
+echo wp_kses_post( PersonioPosition::get_instance()->shortcode_single( $arguments ) );
 
 get_footer();

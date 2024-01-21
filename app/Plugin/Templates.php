@@ -82,6 +82,9 @@ class Templates {
 		add_action( 'personio_integration_get_formular', array( $this, 'get_formular_template' ), 10, 2 );
 		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
+
+		// expand kses-filter.
+		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
 	}
 
 	/**
@@ -477,10 +480,10 @@ class Templates {
 	 * @return string
 	 */
 	public function get_excerpt_template( Position $position, array $attributes, bool $use_return = false ): string {
-		// collect the details in this array
+		// collect the details in this array.
 		$details = array();
 
-		// get the configured separator
+		// get the configured separator.
 		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator', ', ' ) . ' ';
 
 		// get colon setting.
@@ -539,11 +542,11 @@ class Templates {
 			if ( $use_return ) {
 				return $content;
 			}
-			echo $content;
+			echo wp_kses_post( $content );
 			return '';
 		}
 
-		// return nothing
+		// return nothing.
 		return '';
 	}
 
@@ -682,8 +685,8 @@ class Templates {
 					$value = $attributes['office'];
 				}
 				// -> if filter is set by user in frontend.
-				if ( ! empty( $_GET['personiofilter'] ) && ! empty( $_GET['personiofilter'][ $filter ] ) ) {
-					$value = absint( wp_unslash( $_GET['personiofilter'][ $filter ] ) );
+				if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ) {
+					$value = absint( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] );
 				}
 
 				// set name.
@@ -737,7 +740,40 @@ class Templates {
 		if ( $use_return ) {
 			return $content;
 		}
-		echo $content;
+		echo wp_kses_post( $content );
 		return '';
+	}
+
+	/**
+	 * Extend kses-filter for form-element if our own cpt is called.
+	 *
+	 * @param array  $allowed_tags List of allowed tags and attributes.
+	 * @param string $context The context where this is called.
+	 *
+	 * @return array
+	 */
+	public function add_kses_html( array $allowed_tags, string $context ): array {
+		$false = false;
+		/**
+		 * Prevent filtering the HTML-code via kses.
+		 * We need this only for the filter-form.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param bool $false False if filter should be run.
+		 */
+		if ( apply_filters( 'personio_integration_add_kses_filter', $false ) ) {
+			return $allowed_tags;
+		}
+
+		if ( 'post' === $context ) {
+			$allowed_tags['form'] = array(
+				'action' => true,
+				'method' => true,
+				'class'  => true,
+				'id'     => true,
+			);
+		}
+		return $allowed_tags;
 	}
 }

@@ -154,8 +154,8 @@ class Helper {
 	 */
 	public static function is_admin_api_request(): bool {
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST // Case #1.
-			|| isset( $_GET['rest_route'] ) // (#2)
-				&& str_starts_with( sanitize_text_field( wp_unslash( $_GET['rest_route'] ) ), '/' ) ) {
+			|| isset( $GLOBALS['wp']->query_vars['rest_route'] ) // (#2)
+				&& str_starts_with( $GLOBALS['wp']->query_vars['rest_route'], '/' ) ) {
 			return true;
 		}
 
@@ -235,8 +235,8 @@ class Helper {
 					// if filter is set in config.
 					$attributes[ $name ] = absint( $attribute );
 					// if filter is set via request.
-					if ( ! empty( $_GET['personiofilter'][ $name ] ) ) {
-						$attributes[ $name ] = absint( wp_unslash( $_GET['personiofilter'][ $name ] ) );
+					if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $name ] ) ) {
+						$attributes[ $name ] = absint( $GLOBALS['wp']->query_vars['personiofilter'][ $name ] );
 					}
 				}
 				if ( 'listing_template' === $attribute_settings[ $name ] ) {
@@ -353,7 +353,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_current_url(): string {
-		if ( is_admin() ) {
+		if ( is_admin() && ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			return admin_url( basename( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) );
 		}
 
@@ -382,7 +382,7 @@ class Helper {
 	 */
 	public static function get_attribute_value_from_html( string $attrib, string $tag ): string {
 		// get attribute from html tag.
-		$re = '/' . preg_quote( $attrib ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
+		$re = '/' . preg_quote( $attrib, null ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
 		if ( preg_match( $re, $tag, $match ) ) {
 			return urldecode( $match[2] );
 		}
@@ -409,7 +409,7 @@ class Helper {
 	 *
 	 * @param array  $files Array of file we iterate through.
 	 * @param string $path Absolute path where the files are located.
-	 * @param array  $file_list
+	 * @param array  $file_list List of files.
 	 *
 	 * @return array
 	 */

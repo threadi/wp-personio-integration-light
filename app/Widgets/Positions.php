@@ -211,6 +211,7 @@ class Positions extends WP_Widget {
 		}
 
 		$attribute_defaults = array(
+			'showfilter'              => false,
 			'templates'               => $templates,
 			'excerpt'                 => $excerpt_templates,
 			'donotlink'               => $do_not_link,
@@ -222,12 +223,12 @@ class Positions extends WP_Widget {
 		);
 
 		// add wrapper from template around widget-content.
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 
 		// get the output.
-		echo PersonioPosition::get_instance()->shortcode_archive( $attribute_defaults );
+		echo wp_kses_post( PersonioPosition::get_instance()->shortcode_archive( $attribute_defaults ) );
 
 		// add wrapper from template around widget-content.
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 }

@@ -24,6 +24,6 @@ $description = get_the_archive_description();
 <?php
 
 // use shortcode-functions to display the list.
-echo PersonioPosition::get_instance()->shortcode_archive();
+echo wp_kses_post( PersonioPosition::get_instance()->shortcode_archive() );
 
 get_footer();

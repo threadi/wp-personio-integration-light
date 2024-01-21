@@ -200,12 +200,12 @@ class Third_Party_Plugins {
 	/**
 	 * Replace all linebreaks in given string.
 	 *
-	 * @param string $string
+	 * @param string $text_to_parse The text where we replace the line breaks.
 	 *
 	 * @return string
 	 */
-	private function replace_linebreaks( string $string ): string {
-		return preg_replace( '/\s+/', ' ', $string );
+	private function replace_linebreaks( string $text_to_parse ): string {
+		return preg_replace( '/\s+/', ' ', $text_to_parse );
 	}
 
 	/**
@@ -280,7 +280,7 @@ class Third_Party_Plugins {
 	/**
 	 * Optimize the output for SEO-description with plugin SEOPress.
 	 *
-	 * @param string $description
+	 * @param string $description The SEO-description text.
 	 *
 	 * @return string
 	 */

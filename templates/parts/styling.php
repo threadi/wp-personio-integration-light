@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 if ( ! empty( $styles ) ) {
 	?>
 		<style>
-			<?php echo $styles; ?>
+			<?php echo wp_kses_post( $styles ); ?>
 		</style>
 	<?php
 }

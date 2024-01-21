@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
 				'current' => max( 1, get_query_var( 'paged' ) ),
 				'total'   => $positions_obj->get_results()->max_num_pages,
 			);
-			echo paginate_links( $query );
+			echo wp_kses_post( paginate_links( $query ) );
 			?>
 	</p>
 </div>

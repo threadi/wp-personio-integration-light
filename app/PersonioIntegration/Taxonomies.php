@@ -75,17 +75,6 @@ class Taxonomies {
 	 * @return void
 	 */
 	public function create_defaults( array $callback = array() ): void {
-		// Exit if the work has already been done.
-		/*
-		if ( 1 === absint( get_option( 'personioTaxonomyDefaults', 0 ) ) ) {
-			// update steps via callback.
-			if( ! empty ( $callback ) && is_callable( $callback ) ) {
-				call_user_func( $callback, $this->get_taxonomy_defaults_count() );
-			}
-
-			return;
-		}*/
-
 		// disable taxonomy-counting for more speed.
 		wp_defer_term_counting( true );
 
@@ -104,7 +93,7 @@ class Taxonomies {
 					++$i;
 
 					// flush cache every 100 items for more speed.
-					if ( $i % 100 == 0 ) {
+					if ( 0 === $i % 100 ) {
 						wp_cache_flush();
 					}
 				} elseif ( ! empty( $callback ) && is_callable( $callback ) ) {
@@ -533,7 +522,7 @@ class Taxonomies {
 	/**
 	 * Return taxonomy by given slug.
 	 *
-	 * @param string $slug
+	 * @param string $slug The requested slug.
 	 *
 	 * @return string|false
 	 */
@@ -910,7 +899,7 @@ class Taxonomies {
 	 * Get language-specific defaults for a requested taxonomy terms.
 	 *
 	 * @param string $taxonomy The requested taxonomy.
-	 * @param string $language_code
+	 * @param string $language_code The requested language-name (e.g. 'de').
 	 *
 	 * @return array
 	 */
@@ -946,9 +935,9 @@ class Taxonomies {
 	/**
 	 * Hide some taxonomy-columns in our own cpt-table.
 	 *
-	 * @param array     $hidden
-	 * @param WP_Screen $screen
-	 * @param bool      $use_defaults
+	 * @param array     $hidden List of columns to hide.
+	 * @param WP_Screen $screen Actual screen-object.
+	 * @param bool      $use_defaults If defaults should be used.
 	 *
 	 * @return mixed
 	 */

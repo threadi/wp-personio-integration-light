@@ -202,7 +202,7 @@ class Admin {
 		$transients_obj = Transients::get_instance();
 
 		// bail if our Pro-plugin is active.
-		// TODO move to Pro
+		// TODO move to Pro.
 		if ( false !== Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
 			delete_transient( 'personio_integration_divi' );
 			delete_transient( 'personio_integration_elementor' );

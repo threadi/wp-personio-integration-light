@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 // embed block-specific styling.
 require Templates::get_instance()->get_template( 'parts/styling.php' );
 
-// TODO blank auch abschaltbar machen
+// TODO blank auch abschaltbar machen.
 
 ?>
 <div class="entry-content">

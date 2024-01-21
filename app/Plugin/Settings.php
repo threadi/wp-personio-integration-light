@@ -268,6 +268,7 @@ class Settings {
 					'personioIntegrationTemplateContentListingTemplate' => array(
 						'label'       => __( 'Choose template for listing', 'personio-integration-light' ),
 						'callback'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Select', 'get' ),
+						/* translators: %1$s will be replaced with the documentation-URL */
 						'description' => sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ),
 						'options'     => Templates::get_instance()->get_archive_templates(),
 						'readonly'    => ! Helper::is_personio_url_set(),
@@ -284,6 +285,7 @@ class Settings {
 					'personioIntegrationTemplateListingExcerptsTemplate' => array(
 						'label'       => __( 'Choose template for details in list-view', 'personio-integration-light' ),
 						'callback'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Select', 'get' ),
+						/* translators: %1$s will be replaced with the documentation-URL */
 						'description' => sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ),
 						'options'     => Templates::get_instance()->get_excerpts_templates(),
 						'readonly'    => ! Helper::is_personio_url_set(),
@@ -300,6 +302,7 @@ class Settings {
 					'personioIntegrationTemplateListingContentTemplate' => array(
 						'label'       => __( 'Choose template for content in list-view', 'personio-integration-light' ),
 						'callback'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Select', 'get' ),
+						/* translators: %1$s will be replaced with the documentation-URL */
 						'description' => sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ),
 						'options'     => Templates::get_instance()->get_jobdescription_templates(),
 						'readonly'    => ! Helper::is_personio_url_set(),
@@ -332,6 +335,7 @@ class Settings {
 					'personioIntegrationTemplateDetailsExcerptsTemplate' => array(
 						'label'       => __( 'Choose template for details in details-view', 'personio-integration-light' ),
 						'callback'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Select', 'get' ),
+						/* translators: %1$s will be replaced with the documentation-URL */
 						'description' => sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ),
 						'options'     => Templates::get_instance()->get_excerpts_templates(),
 						'readonly'    => ! Helper::is_personio_url_set(),
@@ -351,6 +355,7 @@ class Settings {
 						'label'       => __( 'Choose job description template in details-view', 'personio-integration-light' ),
 						'callback'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Select', 'get' ),
 						'options'     => Templates::get_instance()->get_jobdescription_templates(),
+						/* translators: %1$s will be replaced with the documentation-URL */
 						'description' => sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ),
 						'readonly'    => ! Helper::is_personio_url_set(),
 						'default'     => 'default',
@@ -390,7 +395,8 @@ class Settings {
 					'personioIntegration_advanced_pro_hint' => array(
 						'label'    => '',
 						'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\ProHint', 'get' ),
-						'pro_hint' => __( 'With %s you get more advanced options, e.g. to change the URL of archives with positions.', 'personio-integration-light' ),
+						/* translators: %1$s will be replaced with the plugin Pro name */
+						'pro_hint' => __( 'With %1$s you get more advanced options, e.g. to change the URL of archives with positions.', 'personio-integration-light' ),
 					),
 					'personioIntegrationExtendSearch'      => array(
 						'label'               => __( 'Note the position-keywords in search in frontend', 'personio-integration-light' ),
@@ -551,6 +557,13 @@ class Settings {
 	 * @return void
 	 */
 	public function add_settings_content(): void {
+		// check nonce.
+		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-setup' ) ) {
+			// redirect user back.
+			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+			exit;
+		}
+
 		// check user capabilities.
 		if ( ! current_user_can( 'manage_' . PersonioPosition::get_instance()->get_name() ) ) {
 			return;
@@ -659,7 +672,7 @@ class Settings {
 	/**
 	 * Return a single actual setting.
 	 *
-	 * @param string $setting
+	 * @param string $setting The requested setting as string.
 	 *
 	 * @return string
 	 */
@@ -688,7 +701,7 @@ class Settings {
 	/**
 	 * Cleanup the Personio URL setting before saving it.
 	 *
-	 * @param string $value
+	 * @param string $value The value to clean.
 	 *
 	 * @return string
 	 */

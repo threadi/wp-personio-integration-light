@@ -56,6 +56,7 @@ class Position extends WP_Widget {
 			return array(
 				'hint' => array(
 					'type' => 'text',
+					/* translators: %1$s will be replaced with the URL to start the import */
 					'text' => sprintf( __( 'No positions available. Start to import them <a href="%1$s">here</a>.', 'personio-integration-light' ), esc_url( \PersonioIntegrationLight\Helper::get_settings_url() ) ),
 				),
 			);
@@ -193,12 +194,12 @@ class Position extends WP_Widget {
 		);
 
 		// add wrapper from template around widget-content.
-		echo $args['before_widget'];
+		echo wp_kses_post( $args['before_widget'] );
 
 		// get the output.
-		echo PersonioPosition::get_instance()->shortcode_single( $attribute_defaults );
+		echo wp_kses_post( PersonioPosition::get_instance()->shortcode_single( $attribute_defaults ) );
 
 		// add wrapper from template around widget-content.
-		echo $args['after_widget'];
+		echo wp_kses_post( $args['after_widget'] );
 	}
 }

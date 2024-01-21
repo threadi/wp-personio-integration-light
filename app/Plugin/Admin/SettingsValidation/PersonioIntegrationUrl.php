@@ -94,7 +94,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	/**
 	 * Check availability of given Personio-URL.
 	 *
-	 * @param string $value
+	 * @param string $value The value to check.
 	 *
 	 * @return bool
 	 */
@@ -166,7 +166,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	/**
 	 * Check if one of the allowed personio-URL is in the given string.
 	 *
-	 * @param string $value
+	 * @param string $value The value to check.
 	 *
 	 * @return bool
 	 */

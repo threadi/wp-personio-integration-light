@@ -414,7 +414,7 @@ class PersonioPosition extends Post_Type {
 				continue;
 			}
 			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
-				if ( ! empty( $_GET['personiofilter'] ) && ! empty( $_GET['personiofilter'][ $taxonomy['slug'] ] ) ) {
+				if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $taxonomy['slug'] ] ) ) {
 					$attribute_defaults[ $taxonomy['slug'] ] = 0;
 					$attribute_settings[ $taxonomy['slug'] ] = 'filter';
 				}
@@ -724,7 +724,7 @@ class PersonioPosition extends Post_Type {
 			echo absint( $position->get_personio_id() );
 		}
 		if ( 'sort' === $column ) {
-			echo '<span class="pro-marker">' . __( 'Only Pro.', 'personio-integration-light' ) . '</span>';
+			echo '<span class="pro-marker">' . esc_html__( 'Only Pro.', 'personio-integration-light' ) . '</span>';
 		}
 	}
 
@@ -762,6 +762,13 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function add_filter(): void {
+		// check nonce.
+		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-cpt' ) ) {
+			// redirect user back.
+			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+			exit;
+		}
+
 		$post_type = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : 'post';
 
 		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $post_type ) {
@@ -808,6 +815,13 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function use_filter( WP_Query $query ): void {
+		// check nonce.
+		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-cpt' ) ) {
+			// redirect user back.
+			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+			exit;
+		}
+
 		global $pagenow;
 		$post_type = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : 'post';
 
@@ -888,7 +902,7 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function add_meta_box(): void {
-		// TODO für Pro ausblendbar machen
+		// TODO für Pro ausblendbar machen.
 		add_meta_box(
 			'personio-edit-hints',
 			__( 'About this page', 'personio-integration-light' ),
@@ -1034,6 +1048,7 @@ class PersonioPosition extends Post_Type {
 	 **/
 	public function get_meta_box_for_pro_taxonomy( WP_Post $post, array $attr ): void {
 		if ( ! empty( $attr['title'] ) ) {
+			/* translators: %1$s will be replaced with the plugin pro-name */
 			Admin::get_instance()->show_pro_hint( __( 'Use this taxonomy with %1$s.', 'personio-integration-light' ) );
 		}
 	}

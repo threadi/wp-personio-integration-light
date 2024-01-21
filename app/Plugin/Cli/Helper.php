@@ -70,8 +70,9 @@ trait Helper {
 		$progress   = \PersonioIntegrationLight\Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy => $settings ) {
 			// delete all terms of this taxonomy.
-			$sql    = '
-                DELETE FROM ' . $wpdb->terms . '
+			$wpdb->query(
+				$wpdb->prepare(
+					'DELETE FROM ' . $wpdb->terms . '
                 WHERE term_id IN
                 (
                     SELECT ' . $wpdb->terms . '.term_id
@@ -79,11 +80,12 @@ trait Helper {
                     JOIN ' . $wpdb->term_taxonomy . '
                     ON ' . $wpdb->term_taxonomy . '.term_id = ' . $wpdb->terms . '.term_id
                     WHERE taxonomy = %s
-                )';
-			$params = array(
-				$taxonomy,
+                )',
+					array(
+						$taxonomy,
+					)
+				)
 			);
-			$wpdb->query( $wpdb->prepare( $sql, $params ) );
 
 			// delete all taxonomy-entries.
 			$wpdb->query( $wpdb->prepare( 'DELETE FROM ' . $wpdb->term_taxonomy . ' WHERE taxonomy = %s', array( $taxonomy ) ) );

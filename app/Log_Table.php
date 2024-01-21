@@ -55,21 +55,21 @@ class Log_Table extends WP_List_Table {
 		$order_by = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ), true ) ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : 'date';
 		$order    = ( isset( $_REQUEST['order'] ) && in_array( $_REQUEST['order'], array( 'asc', 'desc' ), true ) ) ? sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) : 'desc';
 
-		// define vars for prepared statement.
-		$vars = array(
-			1,
-			$order_by,
-			$order,
-		);
-
-		$sql = '
-            SELECT `state`, `time` AS `date`, `log`
-            FROM `' . $wpdb->prefix . 'personio_import_logs`
-            WHERE 1 = %1$d
-            ORDER BY %2$s %3$s';
-
 		// get results and return them.
-		return $wpdb->get_results( $wpdb->prepare( $sql, $vars ), ARRAY_A );
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT `state`, `time` AS `date`, `log`
+            			FROM `' . $wpdb->prefix . 'personio_import_logs`
+                        WHERE 1 = %d
+                        ORDER BY %s %s',
+				array(
+					1,
+					$order_by,
+					$order,
+				)
+			),
+			ARRAY_A
+		);
 	}
 
 	/**

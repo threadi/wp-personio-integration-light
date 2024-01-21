@@ -231,7 +231,7 @@ class Languages {
 	/**
 	 * Return mapping to WP-language (e.g. 'de_DE') for given language-name (e.g. 'de').
 	 *
-	 * @param string $language_name
+	 * @param string $language_name The requested language name (e.g. 'de').
 	 *
 	 * @return string[]
 	 */

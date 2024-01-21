@@ -13,12 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PageBuilder\Gutenberg;
 use PersonioIntegrationLight\PageBuilder_Base;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
 use PersonioIntegrationLight\Widgets\Widgets;
 use WP_Admin_Bar;
+use WP_Post;
 
 /**
  * Initialize this plugin.
@@ -83,9 +86,6 @@ class Init {
 		// init roles.
 		Roles::get_instance()->init();
 
-		// include our own Gutenberg-pagebuilder-support.
-		include_once Helper::get_plugin_path() . 'inc/gutenberg.php';
-
 		$page_builder_objects = array();
 		/**
 		 * Register page builder.
@@ -124,8 +124,12 @@ class Init {
 			)
 		);
 
-		// reset permalinks on request.
+		// add our own Gutenberg-pagebuilder-support.
+		add_filter( 'personio_integration_pagebuilder', array( $this, 'add_pagebuilder_gutenberg' ) );
+
+		// request-hooks.
 		add_action( 'wp', array( $this, 'update_slugs' ) );
+		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 	}
 
 	/**
@@ -175,10 +179,10 @@ class Init {
 		}
 
 		// add link to view position in frontend if one is called in backend.
-		if ( is_admin() && ! empty( $_GET['post'] ) ) {
-			$post_id = absint( wp_unslash( $_GET['post'] ) );
-			if ( $post_id > 0 && WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( $post_id ) ) {
-				$position_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_position( $post_id );
+		if ( is_admin() ) {
+			global $post;
+			if ( $post instanceof WP_Post && WP_PERSONIO_INTEGRATION_MAIN_CPT === $post->post_type ) {
+				$position_obj = Positions::get_instance()->get_position( $post->ID );
 				$admin_bar->add_menu(
 					array(
 						'id'     => 'personio-integration-detail',
@@ -246,5 +250,30 @@ class Init {
 			flush_rewrite_rules();
 			delete_transient( 'personio_integration_update_slugs' );
 		}
+	}
+
+	/**
+	 * Register our custom query_vars for frontend.
+	 *
+	 * @param array $query_vars List of query vars.
+	 *
+	 * @return array
+	 */
+	public function add_query_vars( array $query_vars ): array {
+		// variable for filter.
+		$query_vars[] = 'personiofilter';
+		return $query_vars;
+	}
+
+	/**
+	 * Add the pagebuilder Gutenberg as object to the list.
+	 *
+	 * @param array $pagebuilder_objects List of pagebuilder as objects.
+	 *
+	 * @return array
+	 */
+	public function add_pagebuilder_gutenberg( array $pagebuilder_objects ): array {
+		$pagebuilder_objects[] = Gutenberg::get_instance();
+		return $pagebuilder_objects;
 	}
 }

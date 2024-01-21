@@ -471,7 +471,7 @@ class Setup {
 	/**
 	 * Set process label.
 	 *
-	 * @param string $label
+	 * @param string $label The label to process.
 	 *
 	 * @return void
 	 */

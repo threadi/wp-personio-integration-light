@@ -84,42 +84,42 @@ class Dashboard {
 	 *
 	 * @param string $post The post as object.
 	 * @param array  $callback_args List of arguments.
-	 *
-	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function get_widget_content( string $post, array $callback_args ): void {
-		$positions_obj = Positions::get_instance();
-		if ( function_exists( 'personio_integration_set_ordering' ) ) {
-			remove_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
-		}
-		$positions_list = $positions_obj->get_positions(
-			3,
-			array(
-				'sortby' => 'date',
-				'sort'   => 'DESC',
-			)
-		);
-		if ( function_exists( 'personio_integration_set_ordering' ) ) {
-			add_filter( 'pre_get_posts', 'personio_integration_set_ordering' ); }
-		if ( 0 === count( $positions_list ) ) {
-			echo '<p>' . esc_html__( 'Actually there are no positions imported from Personio.', 'personio-integration-light' ) . '</p>';
-		} else {
-			?><ul class="personio_positions">
-			<?php
-			foreach ( $positions_list as $position ) {
+		if ( empty( $post ) && ! empty( $callback_args ) ) {
+			$positions_obj = Positions::get_instance();
+			if ( function_exists( 'personio_integration_set_ordering' ) ) {
+				remove_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
+			}
+			$positions_list = $positions_obj->get_positions(
+				3,
+				array(
+					'sortby' => 'date',
+					'sort'   => 'DESC',
+				)
+			);
+			if ( function_exists( 'personio_integration_set_ordering' ) ) {
+				add_filter( 'pre_get_posts', 'personio_integration_set_ordering' ); }
+			if ( 0 === count( $positions_list ) ) {
+				echo '<p>' . esc_html__( 'Actually there are no positions imported from Personio.', 'personio-integration-light' ) . '</p>';
+			} else {
+				?><ul class="personio_positions">
+				<?php
+				foreach ( $positions_list as $position ) {
+					?>
+					<li><a href="<?php echo esc_url( get_permalink( $position->get_id() ) ); ?>"><?php echo esc_html( $position->get_title() ); ?></a></li>
+					<?php
+				}
 				?>
-				<li><a href="<?php echo esc_url( get_permalink( $position->get_id() ) ); ?>"><?php echo esc_html( $position->get_title() ); ?></a></li>
+				</ul>
+				<p><a href="<?php echo esc_url( PersonioPosition::get_instance()->get_link() ); ?>">
+						<?php
+						/* translators: %1$d will be replaced by the count of positions */
+						printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( Positions::get_instance()->get_positions_count() ) );
+						?>
+					</a></p>
 				<?php
 			}
-			?>
-			</ul>
-			<p><a href="<?php echo esc_url( PersonioPosition::get_instance()->get_link() ); ?>">
-					<?php
-					/* translators: %1$d will be replaced by the count of positions */
-					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( Positions::get_instance()->get_positions_count() ) );
-					?>
-				</a></p>
-			<?php
 		}
 	}
 }

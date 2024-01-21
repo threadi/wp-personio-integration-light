@@ -82,7 +82,7 @@ class Uninstaller {
 	/**
 	 * Define the tasks to run during deactivation.
 	 *
-	 * @param array $delete_data
+	 * @param array $delete_data Whether all data should be removed or not (should be an array with value 1 for yes).
 	 *
 	 * @return void
 	 */
