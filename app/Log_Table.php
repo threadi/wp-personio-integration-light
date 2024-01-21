@@ -42,30 +42,40 @@ class Log_Table extends WP_List_Table {
 	 * @return array
 	 */
 	private function table_data(): array {
-		// check nonce.
-		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-table-log' ) ) {
-			// redirect user back.
-			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
-			exit;
-		}
-
 		global $wpdb;
 
 		// order table.
-		$order_by = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ), true ) ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : 'date';
-		$order    = ( isset( $_REQUEST['order'] ) && in_array( $_REQUEST['order'], array( 'asc', 'desc' ), true ) ) ? sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) : 'desc';
+		$order_by = filter_input( INPUT_GET, 'orderby', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( is_null( $order_by ) ) {
+			$order_by = 'date';
+		}
+		$order = sanitize_sql_orderby( filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
 
 		// get results and return them.
+		if ( 'asc' === $order ) {
+			return $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT `state`, `time` AS `date`, `log`
+            			FROM `' . $wpdb->prefix . 'personio_import_logs`
+                        WHERE 1 = %d
+                        ORDER BY %i ASC',
+					array(
+						1,
+						$order_by,
+					)
+				),
+				ARRAY_A
+			);
+		}
 		return $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
                         WHERE 1 = %d
-                        ORDER BY %s %s',
+                        ORDER BY %i DESC',
 				array(
 					1,
 					$order_by,
-					$order,
 				)
 			),
 			ARRAY_A

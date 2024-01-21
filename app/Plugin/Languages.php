@@ -90,7 +90,16 @@ class Languages {
 	 * @noinspection PhpUnused
 	 */
 	public function get_languages(): array {
-		return apply_filters( 'personio_integration_supported_languages', $this->languages );
+		$languages = $this->languages;
+
+		/**
+		 * Return the supported languages.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param string $languages List of supported languages.
+		 */
+		return apply_filters( 'personio_integration_supported_languages', $languages );
 	}
 
 	/**

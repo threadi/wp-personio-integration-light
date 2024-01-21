@@ -25,13 +25,6 @@ class Checkbox {
 	 * @return void
 	 */
 	public static function get( array $attributes ): void {
-		// check nonce.
-		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-setup' ) ) {
-			// redirect user back.
-			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
-			exit;
-		}
-
 		if ( ! empty( $attributes['fieldId'] ) ) {
 			// get title.
 			$title = '';
@@ -53,7 +46,7 @@ class Checkbox {
 					name="<?php echo esc_attr( $attributes['fieldId'] ); ?>"
 					value="1"
 				<?php
-				echo ( 1 === absint( get_option( $attributes['fieldId'], 0 ) ) || ( isset( $_POST[ $attributes['fieldId'] ] ) && 1 === absint( $_POST[ $attributes['fieldId'] ] ) ) ) ? ' checked="checked"' : '';
+				echo ( 1 === absint( get_option( $attributes['fieldId'], 0 ) ) || 1 === absint( filter_input( INPUT_GET, $attributes['fieldId'], FILTER_SANITIZE_NUMBER_INT ) ) ) ? ' checked="checked"' : '';
 				?>
 				<?php echo esc_attr( $readonly ); ?>
 					class="personio-field-width"

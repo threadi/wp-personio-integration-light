@@ -762,14 +762,10 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function add_filter(): void {
-		// check nonce.
-		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-cpt' ) ) {
-			// redirect user back.
-			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
-			exit;
+		$post_type = sanitize_text_field( wp_unslash( filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
+		if ( is_null( $post_type ) ) {
+			$post_type = 'general';
 		}
-
-		$post_type = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : 'post';
 
 		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $post_type ) {
 			// add filter for each taxonomy.
@@ -796,7 +792,7 @@ class PersonioPosition extends Post_Type {
 							<?php
 							foreach ( $terms as $term ) {
 								?>
-								<option value="<?php echo esc_attr( $term->term_id ); ?>"<?php echo ( isset( $_GET[ 'admin_filter_' . $taxonomy_name ] ) && absint( $_GET[ 'admin_filter_' . $taxonomy_name ] ) === $term->term_id ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( $term->name ); ?></option>
+								<option value="<?php echo esc_attr( $term->term_id ); ?>"<?php echo ( absint( filter_input( INPUT_GET, 'admin_filter_' . $taxonomy_name, FILTER_SANITIZE_NUMBER_INT ) ) === $term->term_id ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( $term->name ); ?></option>
 								<?php
 							}
 							?>
@@ -815,26 +811,22 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function use_filter( WP_Query $query ): void {
-		// check nonce.
-		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-cpt' ) ) {
-			// redirect user back.
-			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
-			exit;
-		}
-
 		global $pagenow;
-		$post_type = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : 'post';
+		$post_type = sanitize_text_field( wp_unslash( filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
+		if ( is_null( $post_type ) ) {
+			$post_type = 'post';
+		}
 
 		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $post_type && 'edit.php' === $pagenow ) {
 			// add filter for each taxonomy.
 			$tax_query = array();
 			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 				if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
-					if ( isset( $_GET[ 'admin_filter_' . $taxonomy_name ] ) && absint( wp_unslash( $_GET[ 'admin_filter_' . $taxonomy_name ] ) ) > 0 ) {
+					if ( absint( wp_unslash( filter_input( INPUT_GET, 'admin_filter_' . $taxonomy_name, FILTER_SANITIZE_NUMBER_INT ) ) ) > 0 ) {
 						$tax_query[] = array(
 							'taxonomy' => $taxonomy_name,
 							'field'    => 'term_id',
-							'terms'    => absint( wp_unslash( $_GET[ 'admin_filter_' . $taxonomy_name ] ) ),
+							'terms'    => absint( wp_unslash( filter_input( INPUT_GET, 'admin_filter_' . $taxonomy_name, FILTER_SANITIZE_NUMBER_INT ) ) ),
 						);
 					}
 				}

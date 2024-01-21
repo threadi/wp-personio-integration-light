@@ -557,20 +557,16 @@ class Settings {
 	 * @return void
 	 */
 	public function add_settings_content(): void {
-		// check nonce.
-		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-setup' ) ) {
-			// redirect user back.
-			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
-			exit;
-		}
-
 		// check user capabilities.
 		if ( ! current_user_can( 'manage_' . PersonioPosition::get_instance()->get_name() ) ) {
 			return;
 		}
 
-		// get the active tab from the $_GET param.
-		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general';
+		// get the active tab from the request-param.
+		$tab = sanitize_text_field( wp_unslash( filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
+		if ( is_null( $tab ) ) {
+			$tab = 'general';
+		}
 
 		// set page to show.
 		$page = 'personioIntegrationPositions';
