@@ -155,6 +155,7 @@ class Uninstaller {
 			'personioIntegrationVersion',
 			'personioTaxonomyDefaults',
 			'personio_integration_transients',
+			'personioIntegrationLightInstallDate',
 			'wp_easy_setup_pi_max_steps',
 			'wp_easy_setup_pi_step',
 			'wp_easy_setup_pi_step_label',

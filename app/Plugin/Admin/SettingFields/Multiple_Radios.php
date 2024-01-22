@@ -12,8 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use PersonioIntegrationLight\Plugin\Languages;
-
 /**
  * Initialize the field.
  */
@@ -28,13 +26,9 @@ class Multiple_Radios {
 	 */
 	public static function get( array $attributes ): void {
 		if ( ! empty( $attributes['fieldId'] ) ) {
-			foreach ( $attributes['options'] as $key => $enabled ) {
+			foreach ( $attributes['options'] as $key => $language_name ) {
 				// get check state.
 				$checked = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, '' ) === $key ? ' checked="checked"' : '';
-
-				// get the language name.
-				$languages     = Languages::get_instance()->get_languages();
-				$language_name = $languages[ $key ];
 
 				// get title.
 				/* translators: %1$s is replaced with "string" */

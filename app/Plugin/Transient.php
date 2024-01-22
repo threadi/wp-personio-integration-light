@@ -241,18 +241,22 @@ class Transient {
 	}
 
 	/**
-	 * Delete this transient from WP and our own list.
+	 * Delete this transient from WP and our own list if it exists there.
 	 *
 	 * This does not remove the dismiss-marker as it should be independent of the settings itself.
 	 *
 	 * @return void
 	 */
 	public function delete(): void {
-		// delete from our own list.
-		Transients::get_instance()->delete_transient( $this );
+		$transients_obj = Transients::get_instance();
 
-		// delete from WP.
-		delete_transient( $this->get_name() );
+		if ( $transients_obj->is_transient_set( $this->get_name() ) ) {
+			// delete from our own list.
+			Transients::get_instance()->delete_transient( $this );
+
+			// delete from WP.
+			delete_transient( $this->get_name() );
+		}
 	}
 
 	/**

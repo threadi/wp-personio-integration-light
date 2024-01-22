@@ -37,7 +37,7 @@ class Checkbox {
 			if ( isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ) {
 				$readonly = ' disabled';
 				?>
-				<input type="hidden" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>_ro" value="<?php echo ( 1 === absint( get_option( $attributes['fieldId'], 0 ) ) || ( isset( $_POST[ $attributes['fieldId'] ] ) && 1 === absint( $_POST[ $attributes['fieldId'] ] ) ) ) ? '1' : '0'; ?>">
+				<input type="hidden" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>_ro" value="<?php echo ( 1 === absint( get_option( $attributes['fieldId'], 0 ) ) || 1 === absint( filter_input( INPUT_POST, $attributes['fieldId'], FILTER_SANITIZE_NUMBER_INT ) ) ) ? '1' : '0'; ?>">
 				<?php
 			}
 

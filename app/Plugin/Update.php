@@ -132,5 +132,10 @@ class Update {
 		if ( Helper::is_personio_url_set() ) {
 			Setup::get_instance()->set_completed();
 		}
+
+		// set install-date if not set.
+		if ( ! get_option( 'personioIntegrationLightInstallDate' ) ) {
+			update_option( 'personioIntegrationLightInstallDate', time() );
+		}
 	}
 }

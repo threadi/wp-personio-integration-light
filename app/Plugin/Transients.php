@@ -113,6 +113,18 @@ class Transients {
 	}
 
 	/**
+	 * Check if a given transient is known to this handler.
+	 *
+	 * @param string $transient_name The requested transient-name.
+	 *
+	 * @return bool
+	 */
+	public function is_transient_set( string $transient_name ): bool {
+		$transients = $this->get_transients();
+		return ! empty( $transients[ $transient_name ] );
+	}
+
+	/**
 	 * Add new transient to list of our plugin-specific transients.
 	 *
 	 * @param Transient $transient_obj The transient-object to add.

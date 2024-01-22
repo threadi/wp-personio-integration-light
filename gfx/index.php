@@ -4,4 +4,3 @@
  *
  * @package personio-integration-light
  */
-

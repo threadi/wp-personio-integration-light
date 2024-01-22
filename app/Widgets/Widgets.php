@@ -52,7 +52,6 @@ class Widgets {
 	 */
 	public function init(): void {
 		add_action( 'widgets_init', array( $this, 'activate' ) );
-		add_action( 'widgets_init', array( $this, 'deactivate' ), 20 );
 	}
 
 	/**
@@ -73,7 +72,7 @@ class Widgets {
 	 * @return void
 	 */
 	public function deactivate(): void {
-		if ( ( function_exists( 'wp_use_widgets_block_editor' ) && wp_use_widgets_block_editor() ) ) {
+		if ( function_exists( 'wp_use_widgets_block_editor' ) && wp_use_widgets_block_editor() ) {
 			$this->uninstall();
 		}
 	}

@@ -25,20 +25,14 @@ class Number {
 	 * @return void
 	 */
 	public static function get( array $attributes ): void {
-		// check nonce.
-		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-setup' ) ) {
-			// redirect user back.
-			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
-			exit;
-		}
-
 		if ( ! empty( $attributes['fieldId'] ) ) {
 			// get value from config.
 			$value = get_option( $attributes['fieldId'], '' );
 
-			// or get if from request.
-			if ( isset( $_POST[ $attributes['fieldId'] ] ) ) {
-				$value = sanitize_text_field( wp_unslash( $_POST[ $attributes['fieldId'] ] ) );
+			// or get it from request.
+			$request_value = sanitize_text_field( wp_unslash( filter_input( INPUT_POST, $attributes['fieldId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
+			if ( ! empty( $request_value ) ) {
+				$value = $request_value;
 			}
 
 			// get title.

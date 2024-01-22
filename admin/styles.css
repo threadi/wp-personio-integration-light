@@ -74,6 +74,7 @@
     color: var(--personio-pro-font);
     display: inline-block;
     padding: 0 8px;
+	text-decoration: none
 }
 
 body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
@@ -165,4 +166,14 @@ body.wp-easy-dialog-on-body.wp-core-ui .components-modal__header .components-mod
 	padding-right: 162px;
 }
 
-.nav-tab-help { float: right }
+.nav-tab-help {
+	float: right
+}
+
+.nav-tab-help:before {
+	content: "\f125";
+	display: inline-block;
+	font-family: "dashicons", sans-serif;
+	font-size: 12px;
+	margin-right: 8px;
+}

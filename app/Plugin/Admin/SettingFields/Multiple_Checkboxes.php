@@ -12,8 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use PersonioIntegrationLight\Plugin\Languages;
-
 /**
  * Initialize the field.
  */
@@ -28,12 +26,7 @@ class Multiple_Checkboxes {
 	 */
 	public static function get( array $attributes ): void {
 		if ( ! empty( $attributes['fieldId'] ) ) {
-			foreach ( $attributes['options'] as $key => $enabled ) {
-
-				// get language name.
-				$languages     = Languages::get_instance()->get_languages();
-				$language_name = $languages[ $key ];
-
+			foreach ( $attributes['options'] as $key => $language_name ) {
 				// get checked-marker.
 				$checked = ! empty( get_option( $attributes['fieldId'] )[ $key ] ) ? ' checked="checked"' : '';
 

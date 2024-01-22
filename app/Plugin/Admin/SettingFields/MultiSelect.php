@@ -25,13 +25,6 @@ class MultiSelect {
 	 * @return void
 	 */
 	public static function get( array $attributes ): void {
-		// check nonce.
-		if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'personio-integration-setup' ) ) {
-			// redirect user back.
-			wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
-			exit;
-		}
-
 		if ( ! empty( $attributes['fieldId'] ) && ! empty( $attributes['options'] ) ) {
 			/**
 			 * Change MultiSelect-field-attributes.
@@ -48,11 +41,10 @@ class MultiSelect {
 				$actual_values = array();
 			}
 
-			// or get them from request.
-			if ( isset( $_POST[ $attributes['fieldId'] ] ) && is_array( $_POST[ $attributes['fieldId'] ] ) ) {
-				$actual_values = array();
-				$values        = array_map( 'sanitize_text_field', wp_unslash( $_POST[ $attributes['fieldId'] ] ) );
-				foreach ( $values as $key => $item ) {
+			// or get it from request.
+			$request_value = array_map( 'sanitize_text_field', wp_unslash( filter_input( INPUT_POST, $attributes['fieldId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
+			if ( ! empty( $request_value ) ) {
+				foreach ( $request_value as $key => $item ) {
 					$actual_values[ absint( $key ) ] = sanitize_text_field( $item );
 				}
 			}

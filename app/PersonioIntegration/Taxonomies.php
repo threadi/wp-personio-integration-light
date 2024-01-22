@@ -58,7 +58,7 @@ class Taxonomies {
 	 */
 	public function init(): void {
 		// register taxonomies.
-		add_action( 'init', array( $this, 'register' ) );
+		add_action( 'init', array( $this, 'register' ), 0 );
 
 		// our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_taxonomies' ) );

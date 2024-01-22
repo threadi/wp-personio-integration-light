@@ -83,6 +83,7 @@ class Settings {
 		// add admin-menu.
 		add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
 
+		// cleanup setting.
 		add_filter( 'pre_update_option_personioIntegrationUrl', array( $this, 'cleanup_personio_url_setting' ) );
 	}
 
@@ -94,52 +95,36 @@ class Settings {
 	public function set_settings(): void {
 		// set tabs.
 		$this->tabs = array(
-			'general'           => array(
+			'general'   => array(
 				'label' => __( 'General Settings', 'personio-integration-light' ),
 				'key'   => '',
 				'page'  => 'personioIntegrationPositions',
 			),
-			'templates'         => array(
+			'templates' => array(
 				'label' => __( 'Templates', 'personio-integration-light' ),
 				'key'   => 'templates',
 				'page'  => 'personioIntegrationPositionsTemplates',
 			),
-			'import'            => array(
+			'import'    => array(
 				'label' => __( 'Import', 'personio-integration-light' ),
 				'key'   => 'import',
 				'page'  => 'personioIntegrationPositionsImport',
 			),
-			'applications'      => array(
-				'label'    => __( 'Applications', 'personio-integration-light' ),
+			'pro_hint'  => array(
+				'label'    => __( 'Applications, SEO, Tracking & more', 'personio-integration-light' ),
 				'only_pro' => true,
 			),
-			'application_forms' => array(
-				'label'    => __( 'Application Forms', 'personio-integration-light' ),
-				'only_pro' => true,
-			),
-			'seo'               => array(
-				'label'    => __( 'SEO', 'personio-integration-light' ),
-				'only_pro' => true,
-			),
-			'tracking'          => array(
-				'label'    => __( 'Tracking', 'personio-integration-light' ),
-				'only_pro' => true,
-			),
-			'permissions'       => array(
-				'label'    => __( 'Permissions', 'personio-integration-light' ),
-				'only_pro' => true,
-			),
-			'advanced'          => array(
+			'advanced'  => array(
 				'label' => __( 'Advanced', 'personio-integration-light' ),
 				'key'   => 'advanced',
 				'page'  => 'personioIntegrationPositionsAdvanced',
 			),
-			'logs'              => array(
+			'logs'      => array(
 				'label'    => __( 'Logs', 'personio-integration-light' ),
 				'key'      => 'advanced',
 				'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\Logs', 'show' ),
 			),
-			'help'              => array(
+			'help'      => array(
 				'label' => __( 'Questions? Check our forum!', 'personio-integration-light' ),
 				'key'   => 'help',
 				'url'   => Helper::get_plugin_support_url(),
@@ -202,6 +187,7 @@ class Settings {
 							'sanitize_callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ),
 							'type'              => 'string',
 						),
+						'default' => ''
 					),
 					WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION => array(
 						'label'               => __( 'Used languages', 'personio-integration-light' ),
@@ -615,7 +601,7 @@ class Settings {
 					// decide which tab-type we want to output.
 					if ( isset( $tab_settings['only_pro'] ) && false !== $tab_settings['only_pro'] ) {
 						?>
-						<span class="nav-tab" title="<?php echo esc_attr__( 'Only in Pro.', 'personio-integration-light' ); ?>"><?php echo esc_html( $tab_settings['label'] ); ?> <span class="pro-marker">Pro</span></span>
+						<span class="nav-tab" title="<?php echo esc_attr__( 'Only in Pro.', 'personio-integration-light' ); ?>"><?php echo esc_html( $tab_settings['label'] ); ?> <a class="pro-marker" href="<?php echo esc_url( Helper::get_pro_url() ); ?>" target="_blank">Pro</a></span>
 						<?php
 					} elseif ( isset( $tab_settings['do_not_link'] ) && false !== $tab_settings['do_not_link'] ) {
 						?>
