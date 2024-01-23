@@ -697,7 +697,18 @@ class PersonioPosition extends Post_Type {
 		$new_columns = array();
 
 		// add column for Pro-hint with sorting.
-		$new_columns['sort'] = __( 'Sorting', 'personio-integration-light' );
+		$false = false;
+
+		/**
+		 * Hide the additional the sort column which is only filled in Pro.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		if( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			$new_columns['sort'] = __( 'Sorting', 'personio-integration-light' );
+		}
 
 		// add column for PersonioId.
 		$new_columns['id'] = __( 'PersonioID', 'personio-integration-light' );
@@ -723,8 +734,9 @@ class PersonioPosition extends Post_Type {
 			$position = new Position( $post_id );
 			echo absint( $position->get_personio_id() );
 		}
+
 		if ( 'sort' === $column ) {
-			echo '<span class="pro-marker">' . esc_html__( 'Only Pro.', 'personio-integration-light' ) . '</span>';
+			echo '<span class="pro-marker">' . esc_html__( 'Only in Pro', 'personio-integration-light' ) . '</span>';
 		}
 	}
 
@@ -764,7 +776,7 @@ class PersonioPosition extends Post_Type {
 	public function add_filter(): void {
 		$post_type = sanitize_text_field( wp_unslash( filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
 		if ( is_null( $post_type ) ) {
-			$post_type = 'general';
+			$post_type = '';
 		}
 
 		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $post_type ) {

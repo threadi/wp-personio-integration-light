@@ -98,6 +98,7 @@ class Positions {
 			'order'          => 'asc',
 			'orderby'        => 'title',
 			'paged'          => ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1,
+			'fields'         => 'ids',
 		);
 		if ( ! empty( $parameter_to_add['ids'] ) ) {
 			$query['post__in'] = $parameter_to_add['ids'];
@@ -175,9 +176,9 @@ class Positions {
 		// get the positions as object in array
 		// -> optionally grouped by a given taxonomy.
 		$resulting_position_list = array();
-		foreach ( $this->results->posts as $post ) {
+		foreach ( $this->results->posts as $post_id ) {
 			// get the position object.
-			$position_object = $this->get_position( $post->ID );
+			$position_object = $this->get_position( absint( $post_id ) );
 
 			// set used language on position-object.
 			if ( ! empty( $parameter_to_add['lang'] ) ) {

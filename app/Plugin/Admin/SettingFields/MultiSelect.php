@@ -42,8 +42,9 @@ class MultiSelect {
 			}
 
 			// or get it from request.
-			$request_value = array_map( 'sanitize_text_field', wp_unslash( filter_input( INPUT_POST, $attributes['fieldId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
+			$request_value = wp_unslash( filter_input( INPUT_POST, $attributes['fieldId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
 			if ( ! empty( $request_value ) ) {
+				$request_value = array_map( 'sanitize_text_field', $request_value );
 				foreach ( $request_value as $key => $item ) {
 					$actual_values[ absint( $key ) ] = sanitize_text_field( $item );
 				}

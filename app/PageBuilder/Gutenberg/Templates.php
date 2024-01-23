@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use WP_Block_Template;
+use WP_Query;
 
 /**
  * Object to handle all Gutenberg-templates of this plugin.
@@ -63,19 +64,19 @@ class Templates {
 	 *
 	 * @source BlockTemplatesController.php from WooCommerce
 	 *
-	 * @param array  $result Resulting list of block templates.
+	 * @param array  $template_list Resulting list of block templates.
 	 * @param array  $query The query.
 	 * @param string $template_type The template type.
 	 *
 	 * @return array
 	 * @noinspection PhpIssetCanBeReplacedWithCoalesceInspection
 	 **/
-	public function add_block_templates( array $result, array $query, string $template_type ): array {
+	public function add_block_templates( array $template_list, array $query, string $template_type ): array {
 		// get post type.
 		$post_type = isset( $query['post_type'] ) ? $query['post_type'] : '';
 		$slugs     = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
 
-		// get our templates.
+		// get our own templates.
 		$templates = $this->get_block_templates( $slugs, $template_type );
 
 		// loop through the templates and add them to the resulting list if they are valid.
@@ -89,15 +90,15 @@ class Templates {
 				continue;
 			}
 
-			$result[] = $template->get_block_template();
+			$template_list[] = $template->get_block_template();
 		}
 
 		// return resulting list of templates.
-		return $result;
+		return $template_list;
 	}
 
 	/**
-	 * Get the supported block templates from file system AND database.
+	 * Get the supported block templates from file system (plugin-source) AND database (custom templates from user).
 	 *
 	 * @param array  $slugs List of slugs.
 	 * @param string $template_type The template.
@@ -127,6 +128,7 @@ class Templates {
 			}
 		}
 
+		// return merged list of templates from filesystem AND database.
 		return array_merge( $templates, $this->get_templates_from_db( $slugs, $template_type ) );
 	}
 
@@ -218,6 +220,7 @@ class Templates {
 	 * @return array
 	 */
 	public function get_templates_from_db( array $slugs, string $template_type ): array {
+		// define query for custom template in db.
 		$query = array(
 			'post_type'      => $template_type,
 			'posts_per_page' => -1,
@@ -235,11 +238,11 @@ class Templates {
 			$query['post_name__in'] = $slugs;
 		}
 
-		$check_query     = new \WP_Query( $query );
-		$saved_templates = $check_query->posts;
+		$check_query      = new WP_Query( $query );
+		$custom_templates = $check_query->posts;
 
 		$templates = array();
-		foreach ( $saved_templates as $post ) {
+		foreach ( $custom_templates as $post ) {
 			$template_obj = new Template();
 			$template_obj->set_post_id( $post->ID );
 			$template_obj->set_template( $post->post_name );
@@ -257,12 +260,14 @@ class Templates {
 	}
 
 	/**
-	 * Update the db-based themes if theme has been switched to another block-theme.
+	 * Update the db-based templates if theme has been switched to another block-theme.
+	 *
+	 * E.g. necessary to adjust header- and footer-templates.
 	 *
 	 * @return void
 	 */
 	public function update_db_templates(): void {
-		// loop through the templates an update their template-parts in content to the new theme.
+		// loop through the templates and update their template-parts in content to the new theme.
 		foreach ( $this->get_templates_from_db( array(), 'wp_template' ) as $template ) {
 			$updated_content = $template->update_theme_attribute_in_content( $template->get_content() );
 			$query           = array(

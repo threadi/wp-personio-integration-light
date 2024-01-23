@@ -59,6 +59,7 @@ class Admin {
 		// enqueue scripts and styles.
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_styles_and_js' ), PHP_INT_MAX );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_dialog' ), PHP_INT_MAX );
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_intro_js' ), PHP_INT_MAX );
 
 		// initialize the Dashboard-support.
 		Dashboard::get_instance()->init();
@@ -68,6 +69,7 @@ class Admin {
 
 		// show hint for Pro-version.
 		add_action( 'personio_integration_admin_show_pro_hint', array( $this, 'show_pro_hint' ) );
+		add_filter( 'admin_body_class', array( $this, 'add_body_classes' ));
 
 		// add our own checks in wp-admin.
 		add_action( 'admin_init', array( $this, 'check_for_pagebuilder' ) );
@@ -94,10 +96,6 @@ class Admin {
 	 * @return void
 	 */
 	public function add_styles_and_js(): void {
-		// Enabled the pointer-scripts.
-		wp_enqueue_style( 'wp-pointer' );
-		wp_enqueue_script( 'wp-pointer' );
-
 		// admin-specific styles.
 		wp_enqueue_style(
 			'personio_integration-admin-css',
@@ -169,7 +167,7 @@ class Admin {
 			true
 		);
 
-		// embed the dialog-components CSS-script.
+		// embed the dialog-components CSS-file.
 		$admin_css      = $url . 'build/style-index.css';
 		$admin_css_path = $path . 'build/style-index.css';
 		wp_enqueue_style(
@@ -177,6 +175,43 @@ class Admin {
 			$admin_css,
 			array( 'wp-components' ),
 			filemtime( $admin_css_path )
+		);
+	}
+
+	/**
+	 * Add the intro.js-scripts and -styles.
+	 *
+	 * @source https://introjs.com/docs/examples/basic/hello-world
+	 *
+	 * @return void
+	 */
+	public function add_intro_js(): void {
+		// TODO Intro auch verwenden, siehe @source.
+
+		// embed necessary scripts for dialog.
+		$path = Helper::get_plugin_path() . 'node_modules/intro.js/minified/';
+		$url  = Helper::get_plugin_url() . 'node_modules/intro.js/minified/';
+
+		// bail if path does not exist.
+		if ( ! file_exists( $path ) ) {
+			return;
+		}
+
+		// embed the JS-script.
+		wp_enqueue_script(
+			'personio-integration-intro-js',
+			$url . 'intro.min.js',
+			array(),
+			filemtime( trailingslashit($path) . 'intro.min.js' ),
+			true
+		);
+
+		// embed the CSS-file.
+		wp_enqueue_style(
+			'personio-integration-intro-js',
+			$url. 'introjs.min.css',
+			array(),
+			filemtime( trailingslashit($path) . 'introjs.min.css' ),
 		);
 	}
 
@@ -203,7 +238,15 @@ class Admin {
 
 		// bail if our Pro-plugin is active.
 		// TODO move to Pro.
-		if ( false !== Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
+		$false = false;
+		/**
+		 * Hide the additional buttons for reviews or pro-version.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			delete_transient( 'personio_integration_divi' );
 			delete_transient( 'personio_integration_elementor' );
 			delete_transient( 'personio_integration_wpbakery' );
@@ -215,14 +258,15 @@ class Admin {
 		}
 
 		/**
-		 * Check for Divi PageBuilder or Divi Theme.
+		 * Check for Divi PageBuilder or Divi Theme or Divi Child Theme.
 		 */
-		if ( false === Helper::is_plugin_active( 'personio-integration-divi/personio-integration-divi.php' ) && ( Helper::is_plugin_active( 'divi-builder/divi-builder.php' ) || 'Divi' === wp_get_theme()->get( 'Name' ) ) ) {
+		if ( false === Helper::is_plugin_active( 'personio-integration-divi/personio-integration-divi.php' ) && Helper::is_divi_active() ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_divi' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Divi - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Divi.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
+			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
 		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_divi' )->delete();
@@ -237,6 +281,7 @@ class Admin {
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Elementor - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Elementor.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
+			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
 		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_elementor' )->delete();
@@ -251,6 +296,7 @@ class Admin {
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using WPBakery - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in WPBakery.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
+			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
 		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_wpbakery' )->delete();
@@ -265,6 +311,7 @@ class Admin {
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Beaver Builder - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Beaver Builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
+			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
 		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_beaver' )->delete();
@@ -279,6 +326,7 @@ class Admin {
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Site Origin - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Site Origin.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
+			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
 		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_siteorigin' )->delete();
@@ -293,20 +341,22 @@ class Admin {
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Themify - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Themify.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
+			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
 		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_themify' )->delete();
 		}
 
 		/**
-		 * Check for Avada.
+		 * Check for Avada with Fusion Builder.
 		 */
-		if ( Helper::is_plugin_active( 'fusion-builder/fusion-builder.php' ) ) {
+		if ( Helper::is_avada_active() ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_avada' );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
 			$transient_obj->set_message( sprintf( __( 'We realized that you are using Avada - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Avada.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
+			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
 		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_avada' )->delete();
@@ -476,9 +526,9 @@ class Admin {
 				$transient_obj->set_name( 'personio_integration_admin_show_review_hint' );
 				$transient_obj->set_message(
 					sprintf(
-					/* translators: %1$s is replaced with "string" */
+						/* translators: %1$s is replaced with "string" */
 						sprintf( __( 'Your use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="https://wordpress.org/plugins/personio-integration-light/#reviews" target="_blank">leave us a review (opens new window)</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ) ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
-						Helper::get_pro_url()
+						esc_url( Helper::get_pro_url() )
 					)
 				);
 				$transient_obj->set_type( 'error' );
@@ -525,5 +575,28 @@ class Admin {
 
 		// return nothing else.
 		wp_die();
+	}
+
+	/**
+	 * Add custom classes to body-tag.
+	 *
+	 * @param string $classes List of classes.
+	 *
+	 * @return string
+	 */
+	public function add_body_classes( string $classes ): string {
+		$false = false;
+
+		/**
+		 * Hide the additional buttons for reviews or pro-version.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		if( apply_filters( 'personio_integration_hide_pro_hints', $false ) || ! Helper::is_personio_url_set() ) {
+			$classes .= ' personio-integration-hide-buttons';
+		}
+		return $classes;
 	}
 }

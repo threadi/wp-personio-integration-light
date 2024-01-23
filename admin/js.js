@@ -2,9 +2,17 @@ jQuery(document).ready(function($) {
     // get internationalization tools of WordPress.
     let { __ } = wp.i18n;
 
-    // add option near to list-headline
-    $('body.post-type-personioposition:not(.edit-tags-php):not(.personioposition_page_personioApplication):not(.personioposition_page_personioformtemplate) h1.wp-heading-inline').after('<a class="page-title-action personio-pro-hint" href="' + personioIntegrationLightJsVars.pro_url + '" target="_blank">' + __( 'Get Personio Integration Pro', 'personio-integration-light' ) + '</a>');
-    $('body.post-type-personioposition.edit-php:not(.personio-integration-url-missing) h1.wp-heading-inline, body.post-type-personioposition.edit-personioposition-php:not(.personio-integration-url-missing) h1.wp-heading-inline').after('<a class="page-title-action personio-integration-import-hint" href="admin.php?action=personioPositionsImport">' + __( 'Run import', 'personio-integration-light' ) + '</a>');
+    // add option near to list-headline.
+    $('body.post-type-personioposition:not(.personio-integration-hide-buttons):not(.edit-tags-php):not(.personioposition_page_personioApplication):not(.personioposition_page_personioformtemplate) h1.wp-heading-inline').after('<a class="page-title-action personio-pro-hint" href="' + personioIntegrationLightJsVars.pro_url + '" target="_blank">' + __( 'Get Personio Integration Pro', 'personio-integration-light' ) + '</a>');
+    $('body.post-type-personioposition.edit-php h1.wp-heading-inline, body.post-type-personioposition.edit-personioposition-php:not(.personio-integration-url-missing) h1.wp-heading-inline').after('<a class="page-title-action personio-integration-import-hint" href="admin.php?action=personioPositionsImport">' + __( 'Run import', 'personio-integration-light' ) + '</a>');
+    $('body.post-type-personioposition:not(.personio-integration-hide-buttons) h1').each(function() {
+      let button = document.createElement('a');
+      button.className = 'review-hint-button page-title-action';
+      button.href = 'https://wordpress.org/plugins/personio-integration-light/#reviews';
+      button.innerHTML = __( 'Rate us', 'personio-integration-light' );
+      button.target = '_blank';
+      this.after(button);
+    })
 
     // save to hide transient-messages via ajax-request
     $('div[data-dismissible] button.notice-dismiss').on('click',
@@ -74,7 +82,7 @@ jQuery(document).ready(function($) {
           ],
           buttons: [
             {
-              'action': 'location.href=" ' + $(this).attr('href') +  ' "',
+              'action': 'location.href="' + $(this).attr('href') +  '"',
               'variant': 'primary',
               'text': __( 'Yes', 'personio-integration-light' )
             },
@@ -89,29 +97,62 @@ jQuery(document).ready(function($) {
       personio_integration_create_dialog( dialog_config );
     });
 
-    // show pointer where user could add its Personio-URL.
-    if (jQuery.fn.pointer) {
-      $('body.personio-integration-pointer input#personioIntegrationUrl').pointer(
-        {
-          content: '<p>' + personioIntegrationLightJsVars.logo_img + sprintf( __( '<strong>Add your Personio URL.</strong></p><p>This must be the public URL of your Personio account, e.g. <i>%1$s</i>.', 'personio-integration-light' ), personioIntegrationLightJsVars.url_example ) + '</p>',
-          position: {
-            edge: 'bottom',
-            align: 'left'
-          },
-          pointerClass: 'personio-integration-light-url-pointer',
-          close: function () {
-            // save via ajax the hiding of this hint.
-            let data = {
-              'action': 'personio_integration_dismiss_url_hint',
-              'nonce': personioIntegrationLightJsVars.dismiss_url_nonce
-            };
+    /**
+     * Add hint for applications in Pro in menu.
+     */
+    $("#menu-posts-personioposition a[href='#']").on( 'click', function(e) {
+      e.preventDefault();
 
-            // run ajax request to save this setting
-            $.post(personioIntegrationLightJsVars.ajax_url, data);
-          }
+      let dialog_config = {
+        detail: {
+          title: __( 'Use applications with Personio Integration Pro', 'personio-integration-light' ),
+          texts: [
+            '<p>' + __( 'With <strong>Personio Integration Pro</strong> you will be able to capture applications within your website.<br>Several form templates are available for this purpose, which you can also customize individually.<br>Incoming applications are automatically transferred to your Personio account via the Personio API.', 'personio-integration-light' ) + '</p>'
+          ],
+          buttons: [
+            {
+              'action': 'window.open( "' + personioIntegrationLightJsVars.pro_url + '", "_blank" )',
+              'variant': 'primary',
+              'text': __( 'Get more information', 'personio-integration-light' )
+            },
+            {
+              'action': 'closeDialog();',
+              'variant': 'secondary',
+              'text': __( 'I\'ll look later', 'personio-integration-light' )
+            }
+          ]
         }
-      ).pointer('open');
-    }
+      }
+      personio_integration_create_dialog( dialog_config );
+    });
+
+    $('body.post-type-personioposition .table-view-list').each(function() {
+      introJs().setOptions({
+        nextLabel: __( 'Next', 'personio-integration-light' ),
+        prevLabel: __( 'Back', 'personio-integration-light' ),
+        doneLabel: __( 'Done', 'personio-integration-light' ),
+        steps: [
+          {
+            title: __( 'Intro', 'personio-integration-light' ),
+            intro: __( 'Thank you for installing Personio Integration Light. We will show you some basics to use this plugin.', 'personio-integration-light' )
+          },
+          {
+            element: this,
+            title: __( 'Your positions', 'personio-integration-light' ),
+            intro: __( 'This is the list of your positions from Personio. This will be updated daily or if you run the import.', 'personio-integration-light' )
+          },
+          {
+            element: document.querySelector('.personio-integration-import-hint'),
+            title: __( 'Run the import', 'personio-integration-light' ),
+            intro: __( 'On this button you could run the import of new Positions any time. They can be displayed immediately afterwards in the frontend to your visitors.', 'personio-integration-light' )
+          },
+          {
+            element: document.querySelector('#wp-admin-bar-personio-integration-list'),
+            intro: 'aaaa' // TODO
+          }
+        ]
+      }).start();
+    });
 });
 
 /**

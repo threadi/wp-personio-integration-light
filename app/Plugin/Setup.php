@@ -197,6 +197,8 @@ class Setup {
 	 * @return array
 	 */
 	private function get_setup(): array {
+		$setup = $this->setup;
+
 		/**
 		 * Filter the configured setup for this plugin.
 		 *
@@ -204,7 +206,7 @@ class Setup {
 		 *
 		 * @param array $setup The setup-configuration.
 		 */
-		return apply_filters( 'personio_integration_setup', $this->setup );
+		return apply_filters( 'personio_integration_setup', $setup );
 	}
 
 	/**

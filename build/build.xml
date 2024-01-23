@@ -159,6 +159,7 @@
             <zipfileset dir="${src.dir}/lib" includes="autoload.php" fullpath="${plugin.slug}/lib/autoload.php" />
             <zipfileset dir="${src.dir}/lib/composer" prefix="${plugin.slug}/lib/composer" />
             <zipfileset dir="${src.dir}/lib/threadi/wp-easy-dialog/build/" prefix="${plugin.slug}/lib/threadi/wp-easy-dialog/build/" />
+            <zipfileset dir="${src.dir}/node_modules/intro.js/minified/" prefix="${plugin.slug}/node_modules/intro.js/minified/" />
             <zipfileset dir="${src.dir}/inc" prefix="${plugin.slug}/inc" />
             <zipfileset dir="${src.dir}/templates" prefix="${plugin.slug}/templates" />
             <zipfileset dir="${src.dir}" includes="wpml-config.xml" fullpath="${plugin.slug}/wpml-config.xml" />

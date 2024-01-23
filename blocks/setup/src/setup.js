@@ -110,7 +110,7 @@ class WpEasySetup extends Component {
        * Return empty string for all other types.
        */
       default:
-        return ''
+        return <div dangerouslySetInnerHTML={{__html: field.text}} />
     }
   }
 

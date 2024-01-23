@@ -113,8 +113,8 @@ class Installer {
 			$settings_obj->set_settings();
 			foreach ( $settings_obj->get_settings() as $section_settings ) {
 				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-					if ( ! empty( $field_settings['default'] ) && ! get_option( $field_name ) ) {
-						update_option( $field_name, $field_settings['default'], true );
+					if ( isset( $field_settings['default'] ) && ! get_option( $field_name ) ) {
+						add_option( $field_name, $field_settings['default'], '', true );
 					}
 				}
 			}

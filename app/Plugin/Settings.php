@@ -76,6 +76,7 @@ class Settings {
 
 		// register all settings for this plugin.
 		add_action( 'init', array( $this, 'register_settings' ) );
+		add_action( 'init', array( $this, 'change_settings' ) );
 
 		// register fields to manage the settings.
 		add_action( 'admin_init', array( $this, 'register_fields' ) );
@@ -111,7 +112,7 @@ class Settings {
 				'page'  => 'personioIntegrationPositionsImport',
 			),
 			'pro_hint'  => array(
-				'label'    => __( 'Applications, SEO, Tracking & more', 'personio-integration-light' ),
+				'label'    => __( 'Applications, SEO & more', 'personio-integration-light' ),
 				'only_pro' => true,
 			),
 			'advanced'  => array(
@@ -128,7 +129,7 @@ class Settings {
 				'label' => __( 'Questions? Check our forum!', 'personio-integration-light' ),
 				'key'   => 'help',
 				'url'   => Helper::get_plugin_support_url(),
-				'class' => 'nav-tab-help',
+				'class' => 'nav-tab-help nav-tab-active',
 			),
 		);
 
@@ -165,6 +166,14 @@ class Settings {
 		 */
 		$filter = apply_filters( 'personio_integration_settings_get_list', $labels, $default_filter );
 
+		// get editor URL.
+		$editor_url = add_query_arg(
+			array(
+				'path' => '/wp_template/all',
+			),
+			admin_url( 'site-editor.php' )
+		);
+
 		// define settings for this plugin.
 		$this->settings = array(
 			'settings_section_main'            => array(
@@ -187,7 +196,7 @@ class Settings {
 							'sanitize_callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ),
 							'type'              => 'string',
 						),
-						'default' => ''
+						'default'             => '',
 					),
 					WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION => array(
 						'label'               => __( 'Used languages', 'personio-integration-light' ),
@@ -222,6 +231,13 @@ class Settings {
 				'page'     => 'personioIntegrationPositionsTemplates',
 				'callback' => '__return_true',
 				'fields'   => array(
+					'fse_theme_hint'                      => array(
+						'label'       => '',
+						'callback'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\TextHints', 'get' ),
+						/* translators: %1$s will be replaced with the name of the theme, %2$s will be replaced by the URL for the editor */
+						'description' => sprintf( __( 'You are using with <i>%1$s</i> a modern block theme. The settings here will therefore might not work. Edit the archive- and single-template under <a href="%2$s">Appearance > Editor > Templates > Manage</a>.', 'personio-integration-light' ), esc_html( Helper::get_theme_title() ), esc_url( $editor_url ) ),
+						'highlight'   => true,
+					),
 					'personioIntegrationEnableFilter'     => array(
 						'label'               => __( 'Enable filter on list-view', 'personio-integration-light' ),
 						'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
@@ -229,6 +245,7 @@ class Settings {
 						'register_attributes' => array(
 							'type' => 'integer',
 						),
+						'default'             => 0,
 					),
 					'personioIntegrationTemplateFilter'   => array(
 						'label'               => __( 'Available filter for details', 'personio-integration-light' ),
@@ -347,16 +364,24 @@ class Settings {
 						'default'     => 'default',
 					),
 					'personioIntegrationTemplateBackToListButton' => array(
-						'label'    => __( 'Enable back to list-link', 'personio-integration-light' ),
-						'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-						'readonly' => ! Helper::is_personio_url_set(),
+						'label'               => __( 'Enable back to list-link', 'personio-integration-light' ),
+						'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type' => 'integer',
+						),
+						'default'             => 0,
 					),
 					'personioIntegrationTemplateBackToListUrl' => array(
-						'label'       => __( 'URL for back to list-link', 'personio-integration-light' ),
-						'callback'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Text', 'get' ),
+						'label'               => __( 'URL for back to list-link', 'personio-integration-light' ),
+						'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Text', 'get' ),
 						/* translators: %1$s will be replaced by the list-slug */
-						'description' => sprintf( __( 'If empty the link will be set to list-slug <a href="%1$s">%1$s</a>.', 'personio-integration-light' ), esc_url( trailingslashit( get_home_url() ) . Helper::get_archive_slug() ) ),
-						'readonly'    => ! Helper::is_personio_url_set(),
+						'description'         => sprintf( __( 'If empty the link will be set to list-slug <a href="%1$s">%1$s</a>.', 'personio-integration-light' ), esc_url( trailingslashit( get_home_url() ) . Helper::get_archive_slug() ) ),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type' => 'string',
+						),
+						'default'             => '',
 					),
 				),
 			),
@@ -425,6 +450,7 @@ class Settings {
 						'register_attributes' => array(
 							'type' => 'integer',
 						),
+						'default'             => 0,
 					),
 				),
 			),
@@ -454,6 +480,22 @@ class Settings {
 					),
 				),
 			),
+			'hidden_section'                   => array(
+				'fields' => array(
+					'wp_easy_setup_completed'         => array(
+						'register_attributes' => array(
+							'type' => 'integer',
+						),
+						'default'             => 0,
+					),
+					'personio_integration_transients' => array(
+						'register_attributes' => array(
+							'type' => 'integer',
+						),
+						'default'             => 0,
+					),
+				),
+			),
 		);
 	}
 
@@ -463,7 +505,7 @@ class Settings {
 	 * @return void
 	 */
 	public function register_settings(): void {
-		foreach ( $this->settings as $section_settings ) {
+		foreach ( $this->get_settings() as $section_settings ) {
 			if ( ! empty( $section_settings['page'] ) ) {
 				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 					register_setting(
@@ -482,7 +524,7 @@ class Settings {
 	 * @return void
 	 */
 	public function register_fields(): void {
-		foreach ( $this->settings as $section_name => $section_settings ) {
+		foreach ( $this->get_settings() as $section_name => $section_settings ) {
 			if ( ! empty( $section_settings ) && ! empty( $section_settings['page'] ) && ! empty( $section_settings['label'] ) && ! empty( $section_settings['callback'] ) ) {
 				// add section.
 				add_settings_section(
@@ -525,6 +567,7 @@ class Settings {
 	 */
 	public function add_settings_menu(): void {
 		if ( Setup::get_instance()->is_completed() ) {
+			// add menu entry for settings page.
 			add_submenu_page(
 				PersonioPosition::get_instance()->get_link( true ),
 				__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Settings', 'personio-integration-light' ),
@@ -534,6 +577,27 @@ class Settings {
 				array( $this, 'add_settings_content' ),
 				1
 			);
+
+			// add menu entry for applications (with hint to pro).
+			$false = false;
+			/**
+			 * Hide the additional the sort column which is only filled in Pro.
+			 *
+			 * @since 3.0.0 Available since 3.0.0
+			 *
+			 * @param array $false Set true to hide the buttons.
+			 */
+			if( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+				add_submenu_page(
+					PersonioPosition::get_instance()->get_link( true ),
+					__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Settings', 'personio-integration-light' ),
+					__( 'Applications', 'personio-integration-light' ),
+					'manage_' . PersonioPosition::get_instance()->get_name(),
+					'#',
+					false,
+					2
+				);
+			}
 		}
 	}
 
@@ -550,7 +614,7 @@ class Settings {
 
 		// get the active tab from the request-param.
 		$tab = sanitize_text_field( wp_unslash( filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
-		if ( is_null( $tab ) ) {
+		if ( empty( $tab ) ) {
 			$tab = 'general';
 		}
 
@@ -563,10 +627,10 @@ class Settings {
 		// output wrapper.
 		?>
 		<div class="wrap">
-			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+			<h1 class="wp-heading-inline"><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<nav class="nav-tab-wrapper">
 				<?php
-				foreach ( $this->tabs as $tab_name => $tab_settings ) {
+				foreach ( $this->get_tabs() as $tab_name => $tab_settings ) {
 					// Set url.
 					$url    = add_query_arg(
 						array(
@@ -601,7 +665,7 @@ class Settings {
 					// decide which tab-type we want to output.
 					if ( isset( $tab_settings['only_pro'] ) && false !== $tab_settings['only_pro'] ) {
 						?>
-						<span class="nav-tab" title="<?php echo esc_attr__( 'Only in Pro.', 'personio-integration-light' ); ?>"><?php echo esc_html( $tab_settings['label'] ); ?> <a class="pro-marker" href="<?php echo esc_url( Helper::get_pro_url() ); ?>" target="_blank">Pro</a></span>
+						<span class="nav-tab" title="<?php echo esc_attr__( 'Only in Pro.', 'personio-integration-light' ); ?>"><?php echo esc_html( $tab_settings['label'] ); ?> <a class="pro-marker" href="<?php echo esc_url( Helper::get_pro_url() ); ?>" target="_blank">Pro <span class="dashicons dashicons-external"></span></a></span>
 						<?php
 					} elseif ( isset( $tab_settings['do_not_link'] ) && false !== $tab_settings['do_not_link'] ) {
 						?>
@@ -623,7 +687,7 @@ class Settings {
 				settings_errors();
 
 				?>
-					<form method="POST" action="<?php echo esc_url( get_admin_url() ); ?>options.php">
+					<form method="post" action="<?php echo esc_url( get_admin_url() ); ?>options.php" class="personio-integration-settings">
 					<?php
 					settings_fields( $page );
 					do_settings_sections( $page );
@@ -648,7 +712,16 @@ class Settings {
 	 * @return array
 	 */
 	public function get_settings(): array {
-		return $this->settings;
+		$settings = $this->settings;
+
+		/**
+		 * Filter the plugin-settings.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $settings The settings as array.
+		 */
+		return apply_filters( 'personio_integration_settings', $settings );
 	}
 
 	/**
@@ -670,7 +743,7 @@ class Settings {
 	 * @return array
 	 */
 	public function get_settings_for_field( string $field ): array {
-		foreach ( $this->settings as $section_settings ) {
+		foreach ( $this->get_settings() as $section_settings ) {
 			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 				if ( $field === $field_name ) {
 					return $field_settings;
@@ -689,5 +762,80 @@ class Settings {
 	 */
 	public function cleanup_personio_url_setting( string $value ): string {
 		return PersonioIntegrationUrl::cleanup_url_string( $value );
+	}
+
+	/**
+	 * Change settings depending on additional hooks.
+	 *
+	 * @return void
+	 */
+	public function change_settings(): void {
+		$false = false;
+
+		/**
+		 * Hide the additional buttons for reviews or pro-version.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		if( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			add_filter( 'personio_integration_settings', array( $this, 'remove_pro_hints_from_settings' ) );
+			add_filter( 'personio_integration_settings_tabs', array( $this, 'remove_pro_hints_from_tabs' ) );
+		}
+	}
+
+	/**
+	 * Remove the pro hints in the settings.
+	 *
+	 * @param array $settings
+	 *
+	 * @return array
+	 */
+	public function remove_pro_hints_from_settings( array $settings ): array {
+		foreach ( $settings as $section_name => $section_settings ) {
+			if ( ! empty( $section_settings['page'] ) ) {
+				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
+					if( isset($settings[$section_name]['fields'][$field_name]['pro_hint']) ) {
+						unset( $settings[ $section_name ]['fields'][ $field_name ]['pro_hint'] );
+					}
+				}
+			}
+		}
+		return $settings;
+	}
+
+	/**
+	 * Return the tabs for the settings page.
+	 *
+	 * @return array
+	 */
+	private function get_tabs(): array {
+		$tabs = $this->tabs;
+
+		/**
+		 * Filter the list of tabs.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		return apply_filters( 'personio_integration_settings_tabs', $tabs );
+	}
+
+	/**
+	 * Remove tabs with pro hints from tab-listing.
+	 *
+	 * @param array $tabs
+	 *
+	 * @return array
+	 */
+	public function remove_pro_hints_from_tabs( array $tabs ): array {
+		foreach( $tabs as $tab_name => $setting ) {
+			if( isset($setting['only_pro']) ) {
+				unset( $tabs[$tab_name]);
+			}
+		}
+		return $tabs;
 	}
 }

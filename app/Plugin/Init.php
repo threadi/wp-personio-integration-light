@@ -86,13 +86,16 @@ class Init {
 		// init roles.
 		Roles::get_instance()->init();
 
+		// add our own Gutenberg-pagebuilder-support.
+		add_filter( 'personio_integration_pagebuilder', array( $this, 'add_pagebuilder_gutenberg' ) );
+
 		$page_builder_objects = array();
 		/**
-		 * Register page builder.
+		 * Register supported page builders.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $page_builder_objects The list of templates.
+		 * @param array $page_builder_objects The list of page builders.
 		 */
 		foreach ( apply_filters( 'personio_integration_pagebuilder', $page_builder_objects ) as $page_builder_obj ) {
 			if ( $page_builder_obj instanceof PageBuilder_Base ) {
@@ -123,9 +126,6 @@ class Init {
 				'add_setting_link',
 			)
 		);
-
-		// add our own Gutenberg-pagebuilder-support.
-		add_filter( 'personio_integration_pagebuilder', array( $this, 'add_pagebuilder_gutenberg' ) );
 
 		// request-hooks.
 		add_action( 'wp', array( $this, 'update_slugs' ) );
@@ -176,22 +176,37 @@ class Init {
 					'href'   => get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT ),
 				)
 			);
-		}
 
-		// add link to view position in frontend if one is called in backend.
-		if ( is_admin() ) {
-			global $post;
-			if ( $post instanceof WP_Post && WP_PERSONIO_INTEGRATION_MAIN_CPT === $post->post_type ) {
-				$position_obj = Positions::get_instance()->get_position( $post->ID );
-				$admin_bar->add_menu(
-					array(
-						'id'     => 'personio-integration-detail',
-						'parent' => null,
-						'group'  => null,
-						'title'  => __( 'View Position in frontend', 'personio-integration-light' ),
-						'href'   => $position_obj->get_link(),
-					)
-				);
+			// add links in admin-bar in backend.
+			if ( is_admin() ) {
+				// add link to view position in frontend if one is called in backend.
+				$post_id = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) );
+				if ( $post_id > 0 && WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( $post_id ) ) {
+					$position_obj = Positions::get_instance()->get_position( $post_id );
+					$admin_bar->add_menu(
+						array(
+							'id'     => 'personio-integration-detail',
+							'parent' => null,
+							'group'  => null,
+							'title'  => __( 'View Position in frontend', 'personio-integration-light' ),
+							'href'   => $position_obj->get_link(),
+						)
+					);
+				}
+				else {
+					$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+					if( ! empty( $post_type) && WP_PERSONIO_INTEGRATION_MAIN_CPT === $post_type ) {
+						$admin_bar->add_menu(
+							array(
+								'id'     => 'personio-integration-list',
+								'parent' => null,
+								'group'  => null,
+								'title'  => __( 'View Positions in frontend', 'personio-integration-light' ),
+								'href'   => get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT ),
+							)
+						);
+					}
+				}
 			}
 		}
 	}

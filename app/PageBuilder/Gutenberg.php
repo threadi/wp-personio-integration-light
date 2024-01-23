@@ -62,6 +62,8 @@ class Gutenberg extends PageBuilder_Base {
 	public function init(): void {
 		// bail if theme is not an FSE-theme with Block support.
 		if ( ! $this->theme_support_block_templates() ) {
+			// remove hint from settings.
+			add_filter( 'personio_integration_settings', array( $this, 'remove_fse_hint' ) );
 			return;
 		}
 
@@ -206,6 +208,13 @@ class Gutenberg extends PageBuilder_Base {
 					'type' => 'string',
 				),
 			);
+			/**
+			 * Filter the attributes for single Block.
+			 *
+			 * @since 2.0.0 Available since 2.0.0
+			 *
+			 * @param array $single_attributes The settings as array.
+			 */
 			$single_attributes = apply_filters( 'personio_integration_gutenberg_block_single_attributes', $single_attributes );
 
 			// register single block.
@@ -855,5 +864,19 @@ class Gutenberg extends PageBuilder_Base {
 
 		// return the object.
 		return $position;
+	}
+
+	/**
+	 * Remove the FSE-hint from settings.
+	 *
+	 * @param array $settings Array with the settings.
+	 *
+	 * @return array
+	 */
+	public function remove_fse_hint( array $settings ): array {
+		if ( isset( $settings['settings_section_template_list']['fields']['fse_theme_hint'] ) ) {
+			unset( $settings['settings_section_template_list']['fields']['fse_theme_hint'] );
+		}
+		return $settings;
 	}
 }
