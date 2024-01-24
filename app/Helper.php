@@ -585,4 +585,13 @@ class Helper {
 		}
 		return $is_divi;
 	}
+
+	/**
+	 * Return the review-URL.
+	 *
+	 * @return string
+	 */
+	public static function get_review_url(): string {
+		return 'https://wordpress.org/plugins/personio-integration-light/#reviews';
+	}
 }

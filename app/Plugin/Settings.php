@@ -89,7 +89,7 @@ class Settings {
 	}
 
 	/**
-	 * Set ALL settings.
+	 * Define ALL settings.
 	 *
 	 * @return void
 	 */
@@ -443,6 +443,10 @@ class Settings {
 						),
 						'default'             => 1,
 					),
+					'personioIntegrationResetIntro' => array(
+						'label'    => __( 'Reset intro', 'personio-integration-light' ),
+						'callback' => array( 'PersonioIntegrationLight\Plugin\Intro', 'show_reset_button' ),
+					),
 					'personioIntegration_debug'            => array(
 						'label'               => __( 'Debug-Mode', 'personio-integration-light' ),
 						'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
@@ -489,6 +493,12 @@ class Settings {
 						'default'             => 0,
 					),
 					'personio_integration_transients' => array(
+						'register_attributes' => array(
+							'type' => 'integer',
+						),
+						'default'             => 0,
+					),
+					'personio-integration-intro' => array(
 						'register_attributes' => array(
 							'type' => 'integer',
 						),

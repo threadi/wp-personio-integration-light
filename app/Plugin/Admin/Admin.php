@@ -59,7 +59,6 @@ class Admin {
 		// enqueue scripts and styles.
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_styles_and_js' ), PHP_INT_MAX );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_dialog' ), PHP_INT_MAX );
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_intro_js' ), PHP_INT_MAX );
 
 		// initialize the Dashboard-support.
 		Dashboard::get_instance()->init();
@@ -101,7 +100,7 @@ class Admin {
 			'personio_integration-admin-css',
 			Helper::get_plugin_url() . 'admin/styles.css',
 			array(),
-			filemtime( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) . '/admin/styles.css' ),
+			filemtime( Helper::get_plugin_path() . '/admin/styles.css' ),
 		);
 
 		// admin- and backend-styles for attribute-type-output.
@@ -109,15 +108,15 @@ class Admin {
 			'personio_integration-styles',
 			Helper::get_plugin_url() . 'css/styles.css',
 			array(),
-			filemtime( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) . '/css/styles.css' )
+			filemtime( Helper::get_plugin_path() . '/css/styles.css' )
 		);
 
 		// backend-JS.
 		wp_enqueue_script(
 			'personio_integration-admin-js',
 			Helper::get_plugin_url() . 'admin/js.js',
-			array( 'jquery', 'wp-easy-dialog', 'wp-i18n' ),
-			filemtime( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) . '/admin/js.js' ),
+			array( 'jquery', 'wp-easy-dialog' ),
+			filemtime( Helper::get_plugin_path() . '/admin/js.js' ),
 			true
 		);
 
@@ -135,8 +134,24 @@ class Admin {
 				'label_import_is_running' => __( 'Import is running', 'personio-integration-light' ),
 				'logo_img'                => Helper::get_logo_img(),
 				'url_example'             => Helper::get_personio_url_example(),
-				'url_positions_backend'   => PersonioPosition::get_instance()->get_link(),
-				'url_positions_frontend'  => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ),
+				'title_rate_us' => __( 'Rate us', 'personio-integration-light' ),
+				'title_run_import' => __( 'Run import', 'personio-integration-light' ),
+				'title_get_pro' => __( 'Get Personio Integration Pro', 'personio-integration-light' ),
+				'title_import_progress' => __('Import in progress', 'personio-integration-light' ),
+				'title_delete_positions' => __( 'Delete all positions', 'personio-integration-light' ),
+				'txt_delete_positions' => __( '<strong>Are you sure you want to delete all positions in WordPress?</strong><br>Hint: the positions in Personio are not influenced.', 'personio-integration-light' ),
+				'lbl_yes' => __( 'Yes', 'personio-integration-light' ),
+				'lbl_no' => __( 'No', 'personio-integration-light' ),
+				'title_pro_hint' => __( 'Use applications with Personio Integration Pro', 'personio-integration-light' ),
+				'txt_pro_hint' => __( 'With <strong>Personio Integration Pro</strong> you will be able to capture applications within your website.<br>Several form templates are available for this purpose, which you can also customize individually.<br>Incoming applications are automatically transferred to your Personio account via the Personio API.', 'personio-integration-light' ),
+				'lbl_get_more_information' => __( 'Get more information', 'personio-integration-light' ),
+				'lbl_look_later' => __( 'I\'ll look later', 'personio-integration-light' ),
+				'title_error' => __( 'Error during import of positions', 'personio-integration-light' ),
+				'txt_error' => __( '<strong>Error during import of positions.</strong> The following error occurred:', 'personio-integration-light' ),
+				'lbl_ok' => __( 'OK', 'personio-integration-light' ),
+				'title_import_success' => __( 'Positions has been imported', 'personio-integration-light' ),
+				/* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
+				'txt_import_success' => sprintf( __( '<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.','personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ), esc_url( get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ) ) )
 			)
 		);
 	}
@@ -175,43 +190,6 @@ class Admin {
 			$admin_css,
 			array( 'wp-components' ),
 			filemtime( $admin_css_path )
-		);
-	}
-
-	/**
-	 * Add the intro.js-scripts and -styles.
-	 *
-	 * @source https://introjs.com/docs/examples/basic/hello-world
-	 *
-	 * @return void
-	 */
-	public function add_intro_js(): void {
-		// TODO Intro auch verwenden, siehe @source.
-
-		// embed necessary scripts for dialog.
-		$path = Helper::get_plugin_path() . 'node_modules/intro.js/minified/';
-		$url  = Helper::get_plugin_url() . 'node_modules/intro.js/minified/';
-
-		// bail if path does not exist.
-		if ( ! file_exists( $path ) ) {
-			return;
-		}
-
-		// embed the JS-script.
-		wp_enqueue_script(
-			'personio-integration-intro-js',
-			$url . 'intro.min.js',
-			array(),
-			filemtime( trailingslashit($path) . 'intro.min.js' ),
-			true
-		);
-
-		// embed the CSS-file.
-		wp_enqueue_style(
-			'personio-integration-intro-js',
-			$url. 'introjs.min.css',
-			array(),
-			filemtime( trailingslashit($path) . 'introjs.min.css' ),
 		);
 	}
 
@@ -525,11 +503,8 @@ class Admin {
 				$transient_obj->set_dismissible_days( 90 );
 				$transient_obj->set_name( 'personio_integration_admin_show_review_hint' );
 				$transient_obj->set_message(
-					sprintf(
-						/* translators: %1$s is replaced with "string" */
-						sprintf( __( 'Your use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="https://wordpress.org/plugins/personio-integration-light/#reviews" target="_blank">leave us a review (opens new window)</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ) ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
-						esc_url( Helper::get_pro_url() )
-					)
+					/* translators: %1$d is replaced with a day-count, %2$s will be replaced with the review-URL */
+					sprintf( __( 'Your use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="%2$s" target="_blank">leave us a review (opens new window)</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ), esc_url( Helper::get_review_url() ) ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
 				);
 				$transient_obj->set_type( 'error' );
 				$transient_obj->save();

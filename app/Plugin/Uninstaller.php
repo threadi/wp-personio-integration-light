@@ -161,6 +161,7 @@ class Uninstaller {
 			'wp_easy_setup_pi_step_label',
 			'wp_easy_setup_pi_running',
 			'wp_easy_setup_completed',
+			'personio-integration-intro'
 		);
 	}
 }

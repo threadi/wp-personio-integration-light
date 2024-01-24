@@ -128,9 +128,10 @@ class Update {
 			}
 		}
 
-		// if Personio-URL is set, set setup to complete.
+		// if Personio-URL is set, set setup and intro to complete.
 		if ( Helper::is_personio_url_set() ) {
 			Setup::get_instance()->set_completed();
+			Intro::get_instance()->set_closed();
 		}
 
 		// set install-date if not set.

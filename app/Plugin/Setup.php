@@ -38,7 +38,7 @@ class Setup {
 	private array $setup;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this handler.
 	 */
 	private function __construct() {
 		// get properties from settings.
@@ -148,7 +148,7 @@ class Setup {
 			// Return JSON with forward-URL.
 			wp_send_json(
 				array(
-					'forward' => PersonioPosition::get_instance()->get_link(),
+					'forward' => Intro::get_instance()->get_start_url(),
 				)
 			);
 
@@ -277,6 +277,7 @@ class Setup {
 			filemtime( $admin_css_path )
 		);
 
+		// localize the script.
 		wp_localize_script(
 			'wp-easy-setup',
 			'wp_easy_setup',
@@ -428,7 +429,7 @@ class Setup {
 	private function get_config(): array {
 		return array(
 			'title'                 => __( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
-			'steps'                 => 2,
+			'steps'                 => count($this->get_setup()),
 			'back_button_label'     => __( 'Back', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-undo"></span>',
 			'continue_button_label' => __( 'Continue', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-play"></span>',
 			'finish_button_label'   => __( 'Finish', 'personio-integration-light' ) . '<span class="dashicons dashicons-saved"></span>',

@@ -71,6 +71,9 @@ class Init {
 		// check setup state.
 		Setup::get_instance()->init();
 
+		// check intro state.
+		Intro::get_instance()->init();
+
 		// register our post-types and taxonomies.
 		PersonioPosition::get_instance()->init();
 

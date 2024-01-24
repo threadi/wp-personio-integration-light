@@ -1,4 +1,4 @@
-# Copyright (C) 2023 laOlaWeb
+# Copyright (C) 2024 laOlaWeb
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
@@ -9,14 +9,18 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-21T16:06:57+01:00\n"
+"POT-Creation-Date: 2024-01-24T16:30:26+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: personio-integration-light\n"
 
 #. Plugin Name of the plugin
-#: inc/init.php:775
-#: inc/init.php:830
+#: app/Plugin/Admin/Site_Health.php:106
+#: app/Plugin/Admin/Site_Health.php:165
+#: app/Plugin/Settings.php:583
+#: app/Plugin/Settings.php:603
+#: app/Plugin/Setup.php:231
+#: app/Plugin/Setup.php:431
 msgid "Personio Integration Light"
 msgstr ""
 
@@ -32,2524 +36,2592 @@ msgstr ""
 msgid "https://laolaweb.com"
 msgstr ""
 
-#: classes/class-helper.php:77
-#: classes/class-helper.php:83
-#: classes/class-helper.php:96
-#: classes/class-helper.php:103
-#: classes/class-helper.php:121
-#: classes/class-helper.php:139
-#: classes/class-helper.php:147
-#: classes/class-helper.php:155
-#: classes/class-helper.php:160
-#: classes/class-helper.php:169
-#: classes/class-helper.php:178
-#: classes/class-helper.php:183
-#: classes/class-helper.php:190
-#: classes/class-helper.php:196
-#: classes/class-helper.php:202
-#: classes/class-helper.php:208
-#: classes/class-helper.php:214
-#: classes/class-helper.php:220
-#: classes/class-helper.php:226
-#: classes/class-helper.php:232
-#: classes/class-helper.php:241
-msgid "Personio Integration"
-msgstr ""
-
-#: classes/class-helper.php:78
-msgid "Plugin was not activated!"
-msgstr ""
-
-#: classes/class-helper.php:79
-msgid "The PHP extension simplexml is missing on the system. Please contact your hoster about this."
-msgstr ""
-
-#: classes/class-helper.php:84
-msgid "The specification of your Personio URL is still pending."
-msgstr ""
-
-#. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:86
-msgid "To do this, please go to the <a href=\"%s\">settings page</a>."
-msgstr ""
-
-#: classes/class-helper.php:97
-msgid "You have not imported your open positions from Personio until now."
-msgstr ""
-
-#. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:99
-msgid "Click on the following button to import your positions from Personio now:"
-msgstr ""
-
-#. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:99
-#: classes/class-helper.php:156
-#: classes/class-helper.php:179
-#: inc/admin.php:52
-#: inc/settings/import.php:202
-msgid "Run import"
-msgstr ""
-
-#. translators: %1$s is replaced with "string", %2$s is replaced with "string"
-#: classes/class-helper.php:106
-#: inc/admin.php:58
-msgid "<strong>The import has been manually run.</strong> Please check the list of positions <a href=\"%1$s\">in backend</a> and <a href=\"%2$s\">frontend</a>."
-msgstr ""
-
-#. translators: %1$s is replaced with "string", %2$s is replaced with "string"
-#: classes/class-helper.php:124
-msgid "<strong>The import has been canceled.</strong> Please check the list of positions <a href=\"%1$s\">in backend</a> and <a href=\"%2$s\">frontend</a>."
-msgstr ""
-
-#: classes/class-helper.php:140
-msgid "<strong>The positions has been deleted.</strong> You can run the import anytime again to import positions."
-msgstr ""
-
-#: classes/class-helper.php:148
-msgid "<strong>The positions could not been deleted.</strong> An import is actual running."
-msgstr ""
-
-#: classes/class-helper.php:156
-msgid "<strong>The specified Personio URL is reachable.</strong> Click on the following button to import your positions from Personio now:"
-msgstr ""
-
-#. translators: %1$s is replaced with the entered Personio-URL
-#: classes/class-helper.php:163
-msgid "The specified Personio URL %s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there."
-msgstr ""
-
-#. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:172
-msgid "The list of positions is limited to a maximum of 10 entries in the frontend. With <a href=\"%s\">Personio Integration Pro version</a>, any number of positions can be displayed."
-msgstr ""
-
-#: classes/class-helper.php:179
-msgid "<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes to long please check your hosting logfiles for possible restrictions mentioned there."
-msgstr ""
-
-#: classes/class-helper.php:184
-msgid "<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:"
-msgstr ""
-
-#: classes/class-helper.php:186
-msgid "Hint: the version-number in the header of the files must match."
-msgstr ""
-
-#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
-#: classes/class-helper.php:192
-msgid "We realized that you are using Divi - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Divi."
-msgstr ""
-
-#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
-#: classes/class-helper.php:198
-msgid "We realized that you are using Elementor - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Elementor."
-msgstr ""
-
-#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
-#: classes/class-helper.php:204
-msgid "We realized that you are using WPBakery - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in WPBakery."
-msgstr ""
-
-#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
-#: classes/class-helper.php:210
-msgid "We realized that you are using Beaver Builder - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Beaver Builder."
-msgstr ""
-
-#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
-#: classes/class-helper.php:216
-msgid "We realized that you are using Site Origin - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Site Origin."
-msgstr ""
-
-#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
-#: classes/class-helper.php:222
-msgid "We realized that you are using Themify - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Themify."
-msgstr ""
-
-#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
-#: classes/class-helper.php:228
-msgid "We realized that you are using Avada - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Avada."
-msgstr ""
-
-#. translators: %1$s is replaced with "string"
-#: classes/class-helper.php:235
-msgid "Your use the WordPress-plugin Personio Integration since more than %d days. Do you like it? Feel free to <a href=\"https://wordpress.org/plugins/personio-integration-light/#reviews\" target=\"_blank\">leave us a review (opens new window)</a>."
-msgstr ""
-
-#: classes/class-helper.php:242
-msgid "You are using our old text domain to adapt textes of Personio Integration Light. Please note that we have a new text domain. You need to re-enter your customizations in this one. Sorry for the inconvenience - it will be a one-time thing."
-msgstr ""
-
-#: classes/class-helper.php:422
+#: app/Helper.php:128
 #: blocks/list/build/index.js:229
 #: blocks/list/build/index.js:168
 msgid "select-box"
 msgstr ""
 
-#: classes/class-helper.php:423
+#: app/Helper.php:129
 #: blocks/list/build/index.js:226
 #: blocks/list/build/index.js:167
 msgid "list of links"
 msgstr ""
 
-#: classes/class-helper.php:756
-msgctxt "taxonomy general name"
-msgid "Categories"
-msgstr ""
-
-#: classes/class-helper.php:757
-msgctxt "taxonomy singular name"
-msgid "Category"
-msgstr ""
-
-#: classes/class-helper.php:758
-msgid "Search category"
-msgstr ""
-
-#: classes/class-helper.php:759
-msgid "Edit category"
-msgstr ""
-
-#: classes/class-helper.php:760
-msgid "Update category"
-msgstr ""
-
-#: classes/class-helper.php:761
-msgid "Categories"
-msgstr ""
-
-#: classes/class-helper.php:764
-msgctxt "taxonomy general name"
-msgid "Job types"
-msgstr ""
-
-#: classes/class-helper.php:765
-msgctxt "taxonomy singular name"
-msgid "Job type"
-msgstr ""
-
-#: classes/class-helper.php:766
-msgid "Search Job type"
-msgstr ""
-
-#: classes/class-helper.php:767
-msgid "Edit Job type"
-msgstr ""
-
-#: classes/class-helper.php:768
-msgid "Update Job type"
-msgstr ""
-
-#: classes/class-helper.php:769
-msgid "Job types"
-msgstr ""
-
-#: classes/class-helper.php:772
-msgctxt "taxonomy general name"
-msgid "Job type details"
-msgstr ""
-
-#: classes/class-helper.php:773
-msgctxt "taxonomy singular name"
-msgid "Job type detail"
-msgstr ""
-
-#: classes/class-helper.php:774
-msgid "Search Job type detail"
-msgstr ""
-
-#: classes/class-helper.php:775
-msgid "Edit Job type detail"
-msgstr ""
-
-#: classes/class-helper.php:776
-msgid "Update Job type detail"
-msgstr ""
-
-#: classes/class-helper.php:777
-#: inc/init.php:347
-#: blocks/details/build/index.js:263
-#: blocks/details/build/index.js:172
-msgid "Job type details"
-msgstr ""
-
-#: classes/class-helper.php:780
-msgctxt "taxonomy general name"
-msgid "Locations"
-msgstr ""
-
-#: classes/class-helper.php:781
-msgctxt "taxonomy singular name"
-msgid "Location"
-msgstr ""
-
-#: classes/class-helper.php:782
-msgid "Search location"
-msgstr ""
-
-#: classes/class-helper.php:783
-msgid "Edit location"
-msgstr ""
-
-#: classes/class-helper.php:784
-msgid "Update location"
-msgstr ""
-
-#: classes/class-helper.php:785
-msgid "Locations"
-msgstr ""
-
-#: classes/class-helper.php:788
-msgctxt "taxonomy general name"
-msgid "Departments"
-msgstr ""
-
-#: classes/class-helper.php:789
-msgctxt "taxonomy singular name"
-msgid "Department"
-msgstr ""
-
-#: classes/class-helper.php:790
-msgid "Search department"
-msgstr ""
-
-#: classes/class-helper.php:791
-msgid "Edit department"
-msgstr ""
-
-#: classes/class-helper.php:792
-msgid "Update department"
-msgstr ""
-
-#: classes/class-helper.php:793
-msgid "Departments"
-msgstr ""
-
-#: classes/class-helper.php:796
-msgctxt "taxonomy general name"
-msgid "Employment types"
-msgstr ""
-
-#: classes/class-helper.php:797
-msgctxt "taxonomy singular name"
-msgid "Employment type"
-msgstr ""
-
-#: classes/class-helper.php:798
-msgid "Search employment type"
-msgstr ""
-
-#: classes/class-helper.php:799
-msgid "Edit employment type"
-msgstr ""
-
-#: classes/class-helper.php:800
-msgid "Update employment type"
-msgstr ""
-
-#: classes/class-helper.php:801
-msgid "Employment types"
-msgstr ""
-
-#: classes/class-helper.php:804
-msgctxt "taxonomy general name"
-msgid "Experiences"
-msgstr ""
-
-#: classes/class-helper.php:805
-msgctxt "taxonomy singular name"
-msgid "Experience"
-msgstr ""
-
-#: classes/class-helper.php:806
-msgid "Search Experience"
-msgstr ""
-
-#: classes/class-helper.php:807
-msgid "Edit Experience"
-msgstr ""
-
-#: classes/class-helper.php:808
-msgid "Update Experience"
-msgstr ""
-
-#: classes/class-helper.php:809
-msgid "Experiences"
-msgstr ""
-
-#: classes/class-helper.php:812
-msgctxt "taxonomy general name"
-msgid "Contract types"
-msgstr ""
-
-#: classes/class-helper.php:813
-msgctxt "taxonomy singular name"
-msgid "Contract type"
-msgstr ""
-
-#: classes/class-helper.php:814
-msgid "Search Contract type"
-msgstr ""
-
-#: classes/class-helper.php:815
-msgid "Edit Contract type"
-msgstr ""
-
-#: classes/class-helper.php:816
-msgid "Update Contract type"
-msgstr ""
-
-#: classes/class-helper.php:817
-msgid "Contract types"
-msgstr ""
-
-#: classes/class-helper.php:820
-msgctxt "taxonomy general name"
-msgid "Years of experiences"
-msgstr ""
-
-#: classes/class-helper.php:821
-msgctxt "taxonomy singular name"
-msgid "Years of experience"
-msgstr ""
-
-#: classes/class-helper.php:822
-msgid "Search years of experience"
-msgstr ""
-
-#: classes/class-helper.php:823
-msgid "Edit years of experience"
-msgstr ""
-
-#: classes/class-helper.php:824
-msgid "Update years of experience"
-msgstr ""
-
-#: classes/class-helper.php:825
-msgid "Years of experiences"
-msgstr ""
-
-#: classes/class-helper.php:828
-msgctxt "taxonomy general name"
-msgid "Languages"
-msgstr ""
-
-#: classes/class-helper.php:829
-msgctxt "taxonomy singular name"
-msgid "Language"
-msgstr ""
-
-#: classes/class-helper.php:830
-msgid "Search language"
-msgstr ""
-
-#: classes/class-helper.php:831
-msgid "Edit language"
-msgstr ""
-
-#: classes/class-helper.php:832
-msgid "Update language"
-msgstr ""
-
-#: classes/class-helper.php:833
-msgid "Languages"
-msgstr ""
-
-#: classes/class-helper.php:836
-msgctxt "taxonomy general name"
-msgid "Keywords"
-msgstr ""
-
-#: classes/class-helper.php:837
-msgctxt "taxonomy singular name"
-msgid "Keyword"
-msgstr ""
-
-#: classes/class-helper.php:838
-msgid "Search Keywords"
-msgstr ""
-
-#: classes/class-helper.php:839
-msgid "Edit Keyword"
-msgstr ""
-
-#: classes/class-helper.php:840
-msgid "Update keyword"
-msgstr ""
-
-#: classes/class-helper.php:841
-msgid "Keywords"
-msgstr ""
-
-#: classes/class-helper.php:869
-msgid "Accounting/Finance"
-msgstr ""
-
-#: classes/class-helper.php:870
-msgid "Administrative/Clerical"
-msgstr ""
-
-#: classes/class-helper.php:871
-msgid "Banking/Real Estate/Mortgage Professionals"
-msgstr ""
-
-#: classes/class-helper.php:872
-msgid "Building Construction/Skilled Trades"
-msgstr ""
-
-#: classes/class-helper.php:873
-msgid "Business/Strategic Management"
-msgstr ""
-
-#: classes/class-helper.php:874
-msgid "Creative/Design"
-msgstr ""
-
-#: classes/class-helper.php:875
-msgid "Customer Support/Client Care"
-msgstr ""
-
-#: classes/class-helper.php:876
-msgid "Editorial/Writing"
-msgstr ""
-
-#: classes/class-helper.php:877
-msgid "Engineering"
-msgstr ""
-
-#: classes/class-helper.php:878
-msgid "Food Services/Hospitality"
-msgstr ""
-
-#: classes/class-helper.php:879
-msgid "Human Resources"
-msgstr ""
-
-#: classes/class-helper.php:880
-msgid "Installation/Maintenance/Repair"
-msgstr ""
-
-#: classes/class-helper.php:881
-msgid "IT/Software Development"
-msgstr ""
-
-#: classes/class-helper.php:882
-msgid "Legal"
-msgstr ""
-
-#: classes/class-helper.php:883
-msgid "Logistics/Transportation"
-msgstr ""
-
-#: classes/class-helper.php:884
-msgid "Marketing/Product"
-msgstr ""
-
-#: classes/class-helper.php:885
-msgid "Medical/Health"
-msgstr ""
-
-#: classes/class-helper.php:886
-#: classes/class-helper.php:1102
-msgid "Other"
-msgstr ""
-
-#: classes/class-helper.php:887
-msgid "Production/Operations"
-msgstr ""
-
-#: classes/class-helper.php:888
-msgid "Project/Program Management"
-msgstr ""
-
-#: classes/class-helper.php:889
-msgid "Quality Assurance/Safety"
-msgstr ""
-
-#: classes/class-helper.php:890
-msgid "R&D/Science"
-msgstr ""
-
-#: classes/class-helper.php:891
-msgid "Sales/Business Development"
-msgstr ""
-
-#: classes/class-helper.php:892
-msgid "Security/Protective Services"
-msgstr ""
-
-#: classes/class-helper.php:893
-msgid "Training/Instruction"
-msgstr ""
-
-#: classes/class-helper.php:896
-msgid "Actuarial Analysis"
-msgstr ""
-
-#: classes/class-helper.php:897
-msgid "Bookkeeping/General Ledger"
-msgstr ""
-
-#: classes/class-helper.php:898
-msgid "Financial Control"
-msgstr ""
-
-#: classes/class-helper.php:899
-msgid "Corporate Finance"
-msgstr ""
-
-#: classes/class-helper.php:900
-msgid "Accounts Payable/Receivable"
-msgstr ""
-
-#: classes/class-helper.php:901
-msgid "Financial Planning/Advising"
-msgstr ""
-
-#: classes/class-helper.php:902
-msgid "Financial Analysis/Research/Reporting"
-msgstr ""
-
-#: classes/class-helper.php:903
-msgid "Corporate Accounting"
-msgstr ""
-
-#: classes/class-helper.php:904
-msgid "Fund Accounting"
-msgstr ""
-
-#: classes/class-helper.php:905
-msgid "Claims Review and Adjusting"
-msgstr ""
-
-#: classes/class-helper.php:906
-msgid "Securities Analysis/Research"
-msgstr ""
-
-#: classes/class-helper.php:907
-msgid "Real Estate Appraisal"
-msgstr ""
-
-#: classes/class-helper.php:908
-msgid "Real Estate Leasing/Acquisition"
-msgstr ""
-
-#: classes/class-helper.php:909
-msgid "Collections"
-msgstr ""
-
-#: classes/class-helper.php:910
-msgid "Investment Management"
-msgstr ""
-
-#: classes/class-helper.php:911
-msgid "Credit Review/Analysis"
-msgstr ""
-
-#: classes/class-helper.php:912
-msgid "Risk Management/Compliance"
-msgstr ""
-
-#: classes/class-helper.php:913
-msgid "Tax Assessment and Collections"
-msgstr ""
-
-#: classes/class-helper.php:914
-msgid "Tax Accounting"
-msgstr ""
-
-#: classes/class-helper.php:915
-msgid "Policy Underwriting"
-msgstr ""
-
-#: classes/class-helper.php:916
-#: classes/class-helper.php:1152
-msgid "Financial Products Sales/Brokerage"
-msgstr ""
-
-#: classes/class-helper.php:917
-msgid "Audit"
-msgstr ""
-
-#: classes/class-helper.php:918
-msgid "General/Other: Accounting/Finance"
-msgstr ""
-
-#: classes/class-helper.php:919
-msgid "Filing/Records Management"
-msgstr ""
-
-#: classes/class-helper.php:920
-msgid "Executive Support"
-msgstr ""
-
-#: classes/class-helper.php:921
-msgid "Data Entry/Order Processing"
-msgstr ""
-
-#: classes/class-helper.php:922
-#: classes/class-helper.php:1011
-msgid "Front Desk/Reception"
-msgstr ""
-
-#: classes/class-helper.php:923
-msgid "Property Management"
-msgstr ""
-
-#: classes/class-helper.php:924
-msgid "Office Management"
-msgstr ""
-
-#: classes/class-helper.php:925
-msgid "Administrative Support"
-msgstr ""
-
-#: classes/class-helper.php:926
-msgid "Claims Processing"
-msgstr ""
-
-#: classes/class-helper.php:927
-msgid "Transcription"
-msgstr ""
-
-#: classes/class-helper.php:928
-#: classes/class-helper.php:1050
-msgid "Paralegal & Legal Secretary"
-msgstr ""
-
-#: classes/class-helper.php:929
-msgid "General/Other: Administrative/Clerical"
-msgstr ""
-
-#: classes/class-helper.php:930
-msgid "Loan Officer/Originator"
-msgstr ""
-
-#: classes/class-helper.php:931
-msgid "Escrow Officer/Manager"
-msgstr ""
-
-#: classes/class-helper.php:932
-msgid "Store/Branch Management"
-msgstr ""
-
-#: classes/class-helper.php:933
-msgid "Mortgage Broker"
-msgstr ""
-
-#: classes/class-helper.php:934
-msgid "Real Estate Agent/Broker"
-msgstr ""
-
-#: classes/class-helper.php:935
-msgid "Real Estate Law"
-msgstr ""
-
-#: classes/class-helper.php:936
-msgid "Credit Manager"
-msgstr ""
-
-#: classes/class-helper.php:937
-msgid "Bank Teller"
-msgstr ""
-
-#: classes/class-helper.php:938
-msgid "Underwriter"
-msgstr ""
-
-#: classes/class-helper.php:939
-msgid "Title Officer/Closer"
-msgstr ""
-
-#: classes/class-helper.php:940
-msgid "Site Superintendent"
-msgstr ""
-
-#: classes/class-helper.php:941
-msgid "Concrete and Masonry"
-msgstr ""
-
-#: classes/class-helper.php:942
-msgid "Heavy Equipment Operation"
-msgstr ""
-
-#: classes/class-helper.php:943
-msgid "Roofing"
-msgstr ""
-
-#: classes/class-helper.php:944
-msgid "Electrician"
-msgstr ""
-
-#: classes/class-helper.php:945
-msgid "Flooring/Tiling/Painting/Wallpapering"
-msgstr ""
-
-#: classes/class-helper.php:946
-msgid "HVAC"
-msgstr ""
-
-#: classes/class-helper.php:947
-msgid "Plumbing/Pipefitting"
-msgstr ""
-
-#: classes/class-helper.php:948
-msgid "Ironwork/Metal Fabrication"
-msgstr ""
-
-#: classes/class-helper.php:949
-msgid "CAD/Drafting"
-msgstr ""
-
-#: classes/class-helper.php:950
-msgid "Surveying"
-msgstr ""
-
-#: classes/class-helper.php:951
-msgid "Sheetrock/Plastering"
-msgstr ""
-
-#: classes/class-helper.php:952
-msgid "Carpentry/Framing"
-msgstr ""
-
-#: classes/class-helper.php:953
-msgid "General/Other: Construction/Skilled Trades"
-msgstr ""
-
-#: classes/class-helper.php:954
-msgid "Business Analysis/Research"
-msgstr ""
-
-#: classes/class-helper.php:955
-msgid "Managerial Consulting"
-msgstr ""
-
-#: classes/class-helper.php:956
-msgid "Franchise-Business Ownership"
-msgstr ""
-
-#: classes/class-helper.php:957
-msgid "Business Unit Management"
-msgstr ""
-
-#: classes/class-helper.php:958
-msgid "President/Top Executive"
-msgstr ""
-
-#: classes/class-helper.php:959
-msgid "Public Health Administration"
-msgstr ""
-
-#: classes/class-helper.php:960
-msgid "Hotel/Lodging Management"
-msgstr ""
-
-#: classes/class-helper.php:961
-msgid "Hospital/Clinic Administration"
-msgstr ""
-
-#: classes/class-helper.php:962
-msgid "Mergers and Acquisitions"
-msgstr ""
-
-#: classes/class-helper.php:963
-msgid "Restaurant Management"
-msgstr ""
-
-#: classes/class-helper.php:964
-msgid "School/College Administration"
-msgstr ""
-
-#: classes/class-helper.php:965
-msgid "Town/City Planning"
-msgstr ""
-
-#: classes/class-helper.php:966
-msgid "Strategic Planning/Intelligence"
-msgstr ""
-
-#: classes/class-helper.php:967
-msgid "General/Other: Business/Strategic Management"
-msgstr ""
-
-#: classes/class-helper.php:968
-msgid "Architecture/Interior Design"
-msgstr ""
-
-#: classes/class-helper.php:969
-msgid "Computer Animation & Multimedia"
-msgstr ""
-
-#: classes/class-helper.php:970
-msgid "Creative Direction/Lead"
-msgstr ""
-
-#: classes/class-helper.php:971
-msgid "Graphic Arts/Illustration"
-msgstr ""
-
-#: classes/class-helper.php:972
-msgid "Industrial Design"
-msgstr ""
-
-#: classes/class-helper.php:973
-msgid "Fashion & Accessories Design"
-msgstr ""
-
-#: classes/class-helper.php:974
-msgid "Photography and Videography"
-msgstr ""
-
-#: classes/class-helper.php:975
-msgid "Web/UI/UX Design"
-msgstr ""
-
-#: classes/class-helper.php:976
-msgid "Advertising Writing (Creative)"
-msgstr ""
-
-#: classes/class-helper.php:977
-msgid "General/Other: Creative/Design"
-msgstr ""
-
-#: classes/class-helper.php:978
-msgid "Call Center"
-msgstr ""
-
-#: classes/class-helper.php:979
-msgid "Flight Attendant"
-msgstr ""
-
-#: classes/class-helper.php:980
-msgid "Hair Cutting/Styling"
-msgstr ""
-
-#: classes/class-helper.php:981
-msgid "Retail Customer Service"
-msgstr ""
-
-#: classes/class-helper.php:982
-msgid "Account Management (Non-Commissioned)"
-msgstr ""
-
-#: classes/class-helper.php:983
-msgid "Customer Training"
-msgstr ""
-
-#: classes/class-helper.php:984
-msgid "Reservations/Ticketing"
-msgstr ""
-
-#: classes/class-helper.php:985
-msgid "General/Other: Customer Support/Client Care"
-msgstr ""
-
-#: classes/class-helper.php:986
-msgid "Technical Customer Service"
-msgstr ""
-
-#: classes/class-helper.php:987
-msgid "Documentation/Technical Writing"
-msgstr ""
-
-#: classes/class-helper.php:988
-msgid "Journalism"
-msgstr ""
-
-#: classes/class-helper.php:989
-msgid "Digital Content Development"
-msgstr ""
-
-#: classes/class-helper.php:990
-msgid "Editing & Proofreading"
-msgstr ""
-
-#: classes/class-helper.php:991
-msgid "General/Other: Editorial/Writing"
-msgstr ""
-
-#: classes/class-helper.php:992
-msgid "Translation/Interpretation"
-msgstr ""
-
-#: classes/class-helper.php:993
-msgid "Civil & Structural Engineering"
-msgstr ""
-
-#: classes/class-helper.php:994
-msgid "Bio-Engineering"
-msgstr ""
-
-#: classes/class-helper.php:995
-msgid "Chemical Engineering"
-msgstr ""
-
-#: classes/class-helper.php:996
-msgid "Electrical/Electronics Engineering"
-msgstr ""
-
-#: classes/class-helper.php:997
-msgid "Energy/Nuclear Engineering"
-msgstr ""
-
-#: classes/class-helper.php:998
-msgid "RF/Wireless Engineering"
-msgstr ""
-
-#: classes/class-helper.php:999
-msgid "Aeronautic/Avionic Engineering"
-msgstr ""
-
-#: classes/class-helper.php:1000
-msgid "Mechanical Engineering"
-msgstr ""
-
-#: classes/class-helper.php:1001
-msgid "Systems/Process Engineering"
-msgstr ""
-
-#: classes/class-helper.php:1002
-msgid "Industrial/Manufacturing Engineering"
-msgstr ""
-
-#: classes/class-helper.php:1003
-msgid "Naval Architecture/Marine Engineering"
-msgstr ""
-
-#: classes/class-helper.php:1004
-msgid "Environmental and Geological Engineering"
-msgstr ""
-
-#: classes/class-helper.php:1005
-msgid "General/Other: Engineering"
-msgstr ""
-
-#: classes/class-helper.php:1006
-msgid "Food & Beverage Serving"
-msgstr ""
-
-#: classes/class-helper.php:1007
-msgid "Host/Hostess"
-msgstr ""
-
-#: classes/class-helper.php:1008
-msgid "Guest Services/Concierge"
-msgstr ""
-
-#: classes/class-helper.php:1009
-msgid "Food Preparation/Cooking"
-msgstr ""
-
-#: classes/class-helper.php:1010
-msgid "Guide (Tour)"
-msgstr ""
-
-#: classes/class-helper.php:1012
-msgid "Wine Steward (Sommelier)"
-msgstr ""
-
-#: classes/class-helper.php:1013
-msgid "General/Other: Food Services"
-msgstr ""
-
-#: classes/class-helper.php:1014
-#: classes/class-helper.php:1164
-msgid "Corporate Development and Training"
-msgstr ""
-
-#: classes/class-helper.php:1015
-msgid "Compensation/Benefits Policy"
-msgstr ""
-
-#: classes/class-helper.php:1016
-msgid "Diversity Management/EEO/Compliance"
-msgstr ""
-
-#: classes/class-helper.php:1017
-msgid "Academic Admissions and Advising"
-msgstr ""
-
-#: classes/class-helper.php:1018
-msgid "Payroll and Benefits Administration"
-msgstr ""
-
-#: classes/class-helper.php:1019
-msgid "Recruiting/Sourcing"
-msgstr ""
-
-#: classes/class-helper.php:1020
-msgid "HR Systems Administration"
-msgstr ""
-
-#: classes/class-helper.php:1021
-msgid "General/Other: Human Resources"
-msgstr ""
-
-#: classes/class-helper.php:1022
-msgid "Computer/Electronics/Telecomm Install/Maintain/Repair"
-msgstr ""
-
-#: classes/class-helper.php:1023
-msgid "Oil Rig & Pipeline Install/Maintain/Repair"
-msgstr ""
-
-#: classes/class-helper.php:1024
-msgid "Facilities Maintenance"
-msgstr ""
-
-#: classes/class-helper.php:1025
-msgid "Janitorial & Cleaning"
-msgstr ""
-
-#: classes/class-helper.php:1026
-msgid "Vehicle Repair and Maintenance"
-msgstr ""
-
-#: classes/class-helper.php:1027
-msgid "Wire and Cable Install/Maintain/Repair"
-msgstr ""
-
-#: classes/class-helper.php:1028
-msgid "Landscaping"
-msgstr ""
-
-#: classes/class-helper.php:1029
-msgid "Equipment Install/Maintain/Repair"
-msgstr ""
-
-#: classes/class-helper.php:1030
-msgid "Locksmith"
-msgstr ""
-
-#: classes/class-helper.php:1031
-msgid "General/Other: Installation/Maintenance/Repair"
-msgstr ""
-
-#: classes/class-helper.php:1032
-msgid "Usability/Information Architecture"
-msgstr ""
-
-#: classes/class-helper.php:1033
-msgid "Desktop Service and Support"
-msgstr ""
-
-#: classes/class-helper.php:1034
-msgid "Computer/Network Security"
-msgstr ""
-
-#: classes/class-helper.php:1035
-msgid "Database Development/Administration"
-msgstr ""
-
-#: classes/class-helper.php:1036
-msgid "Enterprise Software Implementation & Consulting"
-msgstr ""
-
-#: classes/class-helper.php:1037
-#: classes/class-helper.php:1118
-msgid "IT Project Management"
-msgstr ""
-
-#: classes/class-helper.php:1038
-msgid "Software/System Architecture"
-msgstr ""
-
-#: classes/class-helper.php:1039
-msgid "Software/Web Development"
-msgstr ""
-
-#: classes/class-helper.php:1040
-msgid "Network and Server Administration"
-msgstr ""
-
-#: classes/class-helper.php:1041
-msgid "Systems Analysis - IT"
-msgstr ""
-
-#: classes/class-helper.php:1042
-msgid "Telecommunications Administration/Management"
-msgstr ""
-
-#: classes/class-helper.php:1043
-msgid "General/Other: IT/Software Development"
-msgstr ""
-
-#: classes/class-helper.php:1044
-msgid "Labor & Employment Law"
-msgstr ""
-
-#: classes/class-helper.php:1045
-msgid "Patent/IP Law"
-msgstr ""
-
-#: classes/class-helper.php:1046
-msgid "Regulatory/Compliance Law"
-msgstr ""
-
-#: classes/class-helper.php:1047
-msgid "Tax Law"
-msgstr ""
-
-#: classes/class-helper.php:1048
-msgid "Attorney"
-msgstr ""
-
-#: classes/class-helper.php:1049
-msgid "Contracts Administration"
-msgstr ""
-
-#: classes/class-helper.php:1051
-msgid "General/Other: Legal"
-msgstr ""
-
-#: classes/class-helper.php:1052
-msgid "Car, Van and Bus Driving"
-msgstr ""
-
-#: classes/class-helper.php:1053
-msgid "Train or Rail Operator"
-msgstr ""
-
-#: classes/class-helper.php:1054
-msgid "Purchasing Goods and Services"
-msgstr ""
-
-#: classes/class-helper.php:1055
-msgid "Piloting: Air and Marine"
-msgstr ""
-
-#: classes/class-helper.php:1056
-msgid "Cargo and Baggage Handling"
-msgstr ""
-
-#: classes/class-helper.php:1057
-msgid "Hazardous Materials Handling"
-msgstr ""
-
-#: classes/class-helper.php:1058
-msgid "Merchandise Planning and Buying"
-msgstr ""
-
-#: classes/class-helper.php:1059
-msgid "Import/Export Administration"
-msgstr ""
-
-#: classes/class-helper.php:1060
-msgid "Cost Estimating"
-msgstr ""
-
-#: classes/class-helper.php:1061
-msgid "Messenger/Courier"
-msgstr ""
-
-#: classes/class-helper.php:1062
-msgid "Truck Driving"
-msgstr ""
-
-#: classes/class-helper.php:1063
-msgid "Supplier Management/Vendor Management"
-msgstr ""
-
-#: classes/class-helper.php:1064
-msgid "Equipment/Forklift/Crane Operation"
-msgstr ""
-
-#: classes/class-helper.php:1065
-msgid "Inventory Planning and Management"
-msgstr ""
-
-#: classes/class-helper.php:1066
-msgid "Vehicle Dispatch, Routing and Scheduling"
-msgstr ""
-
-#: classes/class-helper.php:1067
-msgid "Shipping and Receiving/Warehousing"
-msgstr ""
-
-#: classes/class-helper.php:1068
-msgid "General/Other: Logistics/Transportation"
-msgstr ""
-
-#: classes/class-helper.php:1069
-msgid "Visual/Display Merchandising"
-msgstr ""
-
-#: classes/class-helper.php:1070
-msgid "Brand/Product Marketing"
-msgstr ""
-
-#: classes/class-helper.php:1071
-msgid "Direct Marketing (CRM)"
-msgstr ""
-
-#: classes/class-helper.php:1072
-msgid "Events/Promotional Marketing"
-msgstr ""
-
-#: classes/class-helper.php:1073
-msgid "Investor and Public/Media Relations"
-msgstr ""
-
-#: classes/class-helper.php:1074
-msgid "Marketing Communications"
-msgstr ""
-
-#: classes/class-helper.php:1075
-msgid "Market Research"
-msgstr ""
-
-#: classes/class-helper.php:1076
-msgid "Media Planning and Buying"
-msgstr ""
-
-#: classes/class-helper.php:1077
-msgid "Marketing Production/Traffic"
-msgstr ""
-
-#: classes/class-helper.php:1078
-msgid "Product Management"
-msgstr ""
-
-#: classes/class-helper.php:1079
-msgid "Telemarketing"
-msgstr ""
-
-#: classes/class-helper.php:1080
-msgid "Copy Writing/Editing"
-msgstr ""
-
-#: classes/class-helper.php:1081
-msgid "General/Other: Marketing/Product"
-msgstr ""
-
-#: classes/class-helper.php:1082
-msgid "Healthcare Aid"
-msgstr ""
-
-#: classes/class-helper.php:1083
-msgid "Pharmacy"
-msgstr ""
-
-#: classes/class-helper.php:1084
-msgid "Nutrition and Diet"
-msgstr ""
-
-#: classes/class-helper.php:1085
-msgid "Nursing"
-msgstr ""
-
-#: classes/class-helper.php:1086
-msgid "Laboratory/Pathology"
-msgstr ""
-
-#: classes/class-helper.php:1087
-msgid "Physician Assistant/Nurse Practitioner"
-msgstr ""
-
-#: classes/class-helper.php:1088
-msgid "Optical"
-msgstr ""
-
-#: classes/class-helper.php:1089
-msgid "Medical Therapy/Rehab Services"
-msgstr ""
-
-#: classes/class-helper.php:1090
-msgid "Medical Practitioner"
-msgstr ""
-
-#: classes/class-helper.php:1091
-msgid "Mental Health"
-msgstr ""
-
-#: classes/class-helper.php:1092
-msgid "Medical Imaging"
-msgstr ""
-
-#: classes/class-helper.php:1093
-msgid "EMT/Paramedic"
-msgstr ""
-
-#: classes/class-helper.php:1094
-msgid "Social Service"
-msgstr ""
-
-#: classes/class-helper.php:1095
-msgid "Sports Medicine"
-msgstr ""
-
-#: classes/class-helper.php:1096
-msgid "Veterinary/Animal Care"
-msgstr ""
-
-#: classes/class-helper.php:1097
-msgid "Dental Assistant/Hygienist"
-msgstr ""
-
-#: classes/class-helper.php:1098
-msgid "Dental Practitioner"
-msgstr ""
-
-#: classes/class-helper.php:1099
-msgid "General/Other: Medical/Health"
-msgstr ""
-
-#: classes/class-helper.php:1100
-msgid "Work at Home"
-msgstr ""
-
-#: classes/class-helper.php:1101
-msgid "Career Fair"
-msgstr ""
-
-#: classes/class-helper.php:1103
-msgid "Waste Pick-up and Removal"
-msgstr ""
-
-#: classes/class-helper.php:1104
-msgid "Operations/Plant Management"
-msgstr ""
-
-#: classes/class-helper.php:1105
-msgid "Equipment Operations"
-msgstr ""
-
-#: classes/class-helper.php:1106
-msgid "Scientific/Technical Production"
-msgstr ""
-
-#: classes/class-helper.php:1107
-msgid "Layout, Prepress, Printing, & Binding Operations"
-msgstr ""
-
-#: classes/class-helper.php:1108
-msgid "Assembly/Assembly Line"
-msgstr ""
-
-#: classes/class-helper.php:1109
-msgid "Moldmaking/Casting"
-msgstr ""
-
-#: classes/class-helper.php:1110
-msgid "Metal Fabrication and Welding"
-msgstr ""
-
-#: classes/class-helper.php:1111
-msgid "Audio/Video Broadcast & Postproduction"
-msgstr ""
-
-#: classes/class-helper.php:1112
-msgid "Sewing and Tailoring"
-msgstr ""
-
-#: classes/class-helper.php:1113
-msgid "Laundry and Dry-Cleaning Operations"
-msgstr ""
-
-#: classes/class-helper.php:1114
-msgid "Machining/CNC"
-msgstr ""
-
-#: classes/class-helper.php:1115
-msgid "General/Other: Production/Operations"
-msgstr ""
-
-#: classes/class-helper.php:1116
-msgid "Event Planning/Coordination"
-msgstr ""
-
-#: classes/class-helper.php:1117
-#: classes/class-helper.php:1119
-msgid "General/Other: Project/Program Management"
-msgstr ""
-
-#: classes/class-helper.php:1120
-msgid "Occupational Health and Safety"
-msgstr ""
-
-#: classes/class-helper.php:1121
-msgid "Building/Construction Inspection"
-msgstr ""
-
-#: classes/class-helper.php:1122
-msgid "Fraud Investigation"
-msgstr ""
-
-#: classes/class-helper.php:1123
-msgid "ISO Certification"
-msgstr ""
-
-#: classes/class-helper.php:1124
-msgid "Food Safety and Inspection"
-msgstr ""
-
-#: classes/class-helper.php:1125
-msgid "Production Quality Assurance"
-msgstr ""
-
-#: classes/class-helper.php:1126
-msgid "Six Sigma/Black Belt/TQM"
-msgstr ""
-
-#: classes/class-helper.php:1127
-msgid "Software Quality Assurance"
-msgstr ""
-
-#: classes/class-helper.php:1128
-msgid "Vehicle Inspection"
-msgstr ""
-
-#: classes/class-helper.php:1129
-msgid "Environmental Protection/Conservation"
-msgstr ""
-
-#: classes/class-helper.php:1130
-msgid "General/Other: Quality Assurance/Safety"
-msgstr ""
-
-#: classes/class-helper.php:1131
-msgid "Biological/Chemical Research"
-msgstr ""
-
-#: classes/class-helper.php:1132
-msgid "Materials/Physical Research"
-msgstr ""
-
-#: classes/class-helper.php:1133
-msgid "Mathematical/Statistical Research"
-msgstr ""
-
-#: classes/class-helper.php:1134
-msgid "Clinical Research"
-msgstr ""
-
-#: classes/class-helper.php:1135
-msgid "New Product R&D"
-msgstr ""
-
-#: classes/class-helper.php:1136
-msgid "Pharmaceutical Research"
-msgstr ""
-
-#: classes/class-helper.php:1137
-msgid "Environmental/Geological Testing & Analysis"
-msgstr ""
-
-#: classes/class-helper.php:1138
-msgid "General/Other: R&D/Science"
-msgstr ""
-
-#: classes/class-helper.php:1139
-msgid "Account Management (Commissioned)"
-msgstr ""
-
-#: classes/class-helper.php:1140
-msgid "Field Sales"
-msgstr ""
-
-#: classes/class-helper.php:1141
-msgid "Business Development/New Accounts"
-msgstr ""
-
-#: classes/class-helper.php:1142
-msgid "Retail/Counter Sales and Cashier"
-msgstr ""
-
-#: classes/class-helper.php:1143
-msgid "Wholesale/Reselling Sales"
-msgstr ""
-
-#: classes/class-helper.php:1144
-msgid "International Sales"
-msgstr ""
-
-#: classes/class-helper.php:1145
-msgid "Fundraising"
-msgstr ""
-
-#: classes/class-helper.php:1146
-msgid "Technical Presales Support & Technical Sales"
-msgstr ""
-
-#: classes/class-helper.php:1147
-msgid "Telesales"
-msgstr ""
-
-#: classes/class-helper.php:1148
-msgid "Travel Agent/Ticket Sales"
-msgstr ""
-
-#: classes/class-helper.php:1149
-msgid "Media and Advertising Sales"
-msgstr ""
-
-#: classes/class-helper.php:1150
-msgid "Insurance Agent/Broker"
-msgstr ""
-
-#: classes/class-helper.php:1151
-msgid "Sales Support/Assistance"
-msgstr ""
-
-#: classes/class-helper.php:1153
-msgid "General/Other: Sales/Business Development"
-msgstr ""
-
-#: classes/class-helper.php:1154
-msgid "Customs/Immigration"
-msgstr ""
-
-#: classes/class-helper.php:1155
-msgid "Firefighting and Rescue"
-msgstr ""
-
-#: classes/class-helper.php:1156
-msgid "Airport Security and Screening"
-msgstr ""
-
-#: classes/class-helper.php:1157
-msgid "Store Security/Loss Prevention"
-msgstr ""
-
-#: classes/class-helper.php:1158
-msgid "Security Intelligence & Analysis"
-msgstr ""
-
-#: classes/class-helper.php:1159
-msgid "Police-Law Enforcement"
-msgstr ""
-
-#: classes/class-helper.php:1160
-msgid "Security Guard"
-msgstr ""
-
-#: classes/class-helper.php:1161
-msgid "Correctional Officer"
-msgstr ""
-
-#: classes/class-helper.php:1162
-msgid "Military Combat"
-msgstr ""
-
-#: classes/class-helper.php:1163
-msgid "General/Other: Security/Protective Services"
-msgstr ""
-
-#: classes/class-helper.php:1165
-msgid "Continuing/Adult"
-msgstr ""
-
-#: classes/class-helper.php:1166
-msgid "Elementary School"
-msgstr ""
-
-#: classes/class-helper.php:1167
-msgid "Software/Web Training"
-msgstr ""
-
-#: classes/class-helper.php:1168
-msgid "Early Childhood Care & Development"
-msgstr ""
-
-#: classes/class-helper.php:1169
-msgid "University"
-msgstr ""
-
-#: classes/class-helper.php:1170
-msgid "Junior/High School"
-msgstr ""
-
-#: classes/class-helper.php:1171
-msgid "Classroom Teaching"
-msgstr ""
-
-#: classes/class-helper.php:1172
-msgid "Special Education"
-msgstr ""
-
-#: classes/class-helper.php:1173
-msgid "Fitness & Sports Training/Instruction"
-msgstr ""
-
-#: classes/class-helper.php:1174
-msgid "General/Other: Training/Instruction"
-msgstr ""
-
-#: classes/class-helper.php:1177
-msgid "Permanent employee"
-msgstr ""
-
-#: classes/class-helper.php:1178
-msgid "Intern"
-msgstr ""
-
-#: classes/class-helper.php:1179
-msgid "Trainee"
-msgstr ""
-
-#: classes/class-helper.php:1180
-msgid "Freelance"
-msgstr ""
-
-#: classes/class-helper.php:1181
-msgid "Temporary"
-msgstr ""
-
-#: classes/class-helper.php:1182
-msgid "Working Student"
-msgstr ""
-
-#: classes/class-helper.php:1185
-msgid "full-time"
-msgstr ""
-
-#: classes/class-helper.php:1186
-msgid "part-time"
-msgstr ""
-
-#: classes/class-helper.php:1187
-msgid "full- or part-time"
-msgstr ""
-
-#: classes/class-helper.php:1190
-msgid "entry-level"
-msgstr ""
-
-#: classes/class-helper.php:1191
-msgid "experienced"
-msgstr ""
-
-#: classes/class-helper.php:1192
-msgid "executive"
-msgstr ""
-
-#: classes/class-helper.php:1193
-msgid "student"
-msgstr ""
-
-#: classes/class-helper.php:1196
-msgid "less than 1 year"
-msgstr ""
-
-#: classes/class-helper.php:1197
-msgid "1-2 years"
-msgstr ""
-
-#: classes/class-helper.php:1198
-msgid "2-5 years"
-msgstr ""
-
-#: classes/class-helper.php:1199
-msgid "5-7 years"
-msgstr ""
-
-#: classes/class-helper.php:1200
-msgid "7-10 years"
-msgstr ""
-
-#: classes/class-helper.php:1201
-msgid "10-15 years"
-msgstr ""
-
-#: classes/class-helper.php:1202
-msgid "more than 15 years"
-msgstr ""
-
-#: classes/class-import.php:67
-msgid "Personio URL not configured."
-msgstr ""
-
-#. translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404)
-#: classes/class-import.php:226
-msgid "Personio URL for language %1$s not available. Returned HTTP-Status %2$d. Please check the URL you configured and if it is available."
-msgstr ""
-
-#: classes/class-import.php:320
-msgid "Error during Personio Positions Import"
-msgstr ""
-
-#: classes/class-import.php:321
-msgid "The following error occurred when importing positions provided by Personio:"
-msgstr ""
-
-#: classes/class-import.php:322
-msgid "Sent by the plugin Personio Integration"
-msgstr ""
-
-#: classes/class-logs.php:42
+#: app/Log_Table.php:33
 msgid "state"
 msgstr ""
 
-#: classes/class-logs.php:43
-#: classes/class-positionswidget.php:63
-#: blocks/list/build/index.js:316
-#: blocks/list/build/index.js:262
+#: app/Log_Table.php:34
+#: app/Widgets/Positions.php:75
+#: blocks/list/build/index.js:318
+#: blocks/list/build/index.js:263
 msgid "date"
 msgstr ""
 
-#: classes/class-logs.php:44
+#: app/Log_Table.php:35
 msgid "log"
 msgstr ""
 
-#. translators: %1$s is replaced with "string"
-#: classes/class-position.php:94
-msgid "Unknown property %s."
-msgstr ""
-
-#: classes/class-position.php:134
-msgid "Position could not be saved as the PersonioId is missing."
-msgstr ""
-
-#: classes/class-positionswidget.php:20
-msgid "Provides a Widget to show a list of positions provided by Personio."
-msgstr ""
-
-#: classes/class-positionswidget.php:24
-#: inc/init.php:298
-#: blocks/list/build/index.js:414
-#: blocks/list/build/index.js:356
-msgid "Personio Positions"
-msgstr ""
-
-#: classes/class-positionswidget.php:39
-#: blocks/description/build/index.js:234
-#: blocks/list/build/index.js:284
-#: blocks/description/build/index.js:158
-#: blocks/list/build/index.js:230
-msgid "Choose template"
-msgstr ""
-
-#: classes/class-positionswidget.php:45
-#: blocks/list/build/index.js:290
-#: blocks/list/build/index.js:239
-msgid "amount"
-msgstr ""
-
-#: classes/class-positionswidget.php:50
-msgid "Sort Direction"
-msgstr ""
-
-#: classes/class-positionswidget.php:53
-#: blocks/list/build/index.js:302
-#: blocks/list/build/index.js:252
-msgid "ascending"
-msgstr ""
-
-#: classes/class-positionswidget.php:54
-#: blocks/list/build/index.js:305
-#: blocks/list/build/index.js:253
-msgid "descending"
-msgstr ""
-
-#: classes/class-positionswidget.php:59
-#: blocks/list/build/index.js:310
-#: blocks/list/build/index.js:258
-msgid "Sort by"
-msgstr ""
-
-#: classes/class-positionswidget.php:62
-#: inc/init.php:361
-#: blocks/list/build/index.js:313
-#: blocks/list/build/index.js:261
-msgid "title"
-msgstr ""
-
-#: classes/class-positionswidget.php:68
-#: blocks/list/build/index.js:321
-#: blocks/list/build/index.js:267
-msgid "Group by"
-msgstr ""
-
-#: classes/class-positionswidget.php:70
-msgid "ungrouped"
-msgstr ""
-
-#: classes/class-positionswidget.php:74
-#: classes/class-positionwidget.php:53
-#: blocks/list/build/index.js:326
-#: blocks/list/build/index.js:273
-msgid "Show title"
-msgstr ""
-
-#: classes/class-positionswidget.php:77
-#: classes/class-positionswidget.php:86
-#: classes/class-positionswidget.php:95
-#: classes/class-positionswidget.php:111
-#: classes/class-positionswidget.php:120
-#: classes/class-positionwidget.php:56
-#: classes/class-positionwidget.php:65
-#: classes/class-positionwidget.php:74
-#: classes/class-positionwidget.php:90
-#: classes/class-positionwidget.php:99
-msgid "Show"
-msgstr ""
-
-#: classes/class-positionswidget.php:78
-#: classes/class-positionswidget.php:87
-#: classes/class-positionswidget.php:96
-#: classes/class-positionswidget.php:112
-#: classes/class-positionswidget.php:121
-#: classes/class-positionwidget.php:57
-#: classes/class-positionwidget.php:66
-#: classes/class-positionwidget.php:75
-#: classes/class-positionwidget.php:91
-#: classes/class-positionwidget.php:100
-msgid "Hide"
-msgstr ""
-
-#: classes/class-positionswidget.php:83
-#: classes/class-positionwidget.php:62
-#: blocks/show/build/index.js:267
-#: blocks/show/build/index.js:199
-msgid "link title"
-msgstr ""
-
-#: classes/class-positionswidget.php:92
-#: classes/class-positionwidget.php:71
-msgid "Show detail"
-msgstr ""
-
-#: classes/class-positionswidget.php:101
-#: classes/class-positionwidget.php:80
-msgid "Choose detail components"
-msgstr ""
-
-#: classes/class-positionswidget.php:108
-#: classes/class-positionwidget.php:87
-msgid "Show content"
-msgstr ""
-
-#: classes/class-positionswidget.php:117
-#: classes/class-positionwidget.php:96
-msgid "Show application link"
-msgstr ""
-
-#: classes/class-positionwidget.php:20
-msgid "Provides a Widget to show a single position provided by Personio."
-msgstr ""
-
-#: classes/class-positionwidget.php:24
-#: blocks/show/build/index.js:379
-#: blocks/show/build/index.js:290
-msgid "Personio Position"
-msgstr ""
-
-#: classes/class-positionwidget.php:47
-#: blocks/show/build/index.js:257
-#: blocks/show/build/index.js:187
-msgid "Select position"
-msgstr ""
-
-#: classes/class-updates.php:165
-msgid "Manage Personio-based Positions"
-msgstr ""
-
-#: classes/gutenberg/class-templates.php:221
+#: app/PageBuilder/Gutenberg/Templates.php:194
 msgid "Single Position"
 msgstr ""
 
-#: classes/gutenberg/class-templates.php:222
+#: app/PageBuilder/Gutenberg/Templates.php:195
 msgid "Displays a single position."
 msgstr ""
 
-#: classes/gutenberg/class-templates.php:226
+#: app/PageBuilder/Gutenberg/Templates.php:199
 msgid "Archive Positions"
 msgstr ""
 
-#: classes/gutenberg/class-templates.php:227
+#: app/PageBuilder/Gutenberg/Templates.php:200
 msgid "Displays your positions."
 msgstr ""
 
-#: inc/admin.php:47
-msgid "Get Personio Integration Pro"
+#: app/PersonioIntegration/Import.php:95
+msgid "Personio URL not configured."
 msgstr ""
 
-#: inc/admin.php:51
-msgid "Reset sorting"
+#: app/PersonioIntegration/Import.php:100
+#: app/Plugin/Installer.php:95
+msgid "The PHP extension simplexml is missing on the system. Please contact your hoster about this."
 msgstr ""
 
-#: inc/admin.php:53
-msgid "Import is running"
+#. translators: %1$s will be replaced by the language-name, %2$s by the error-message
+#: app/PersonioIntegration/Import.php:227
+msgid "XML file from Personio for language %1$s contains incorrect code and therefore cannot be read in. Technical Error: %2$s"
 msgstr ""
 
-#: inc/admin.php:54
-msgid "Please wait"
+#. translators: %1$s will be replaced by the language-name
+#: app/PersonioIntegration/Import.php:238
+msgid "XML file from Personio for language %1$s contains incorrect code and therefore cannot be read in."
 msgstr ""
 
-#: inc/admin.php:55
-#: inc/settings/import.php:203
-msgid "Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used."
+#. translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404)
+#: app/PersonioIntegration/Import.php:329
+msgid "Personio URL for language %1$s not available. Returned HTTP-Status %2$d. Please check the URL you configured and if it is available."
 msgstr ""
 
-#: inc/admin.php:70
-msgid "OK"
+#: app/PersonioIntegration/Import.php:452
+msgid "Error during Import of Personio Positions"
 msgstr ""
 
-#: inc/admin.php:105
-msgid "Positions imported from Personio"
+#: app/PersonioIntegration/Import.php:453
+msgid "The following error occurred when importing positions provided by Personio:"
 msgstr ""
 
-#: inc/admin.php:126
-msgid "Actually there are no positions imported from Personio."
+#: app/PersonioIntegration/Import.php:454
+msgid "Sent by the plugin Personio Integration"
 msgstr ""
 
-#. translators: %1$d will be replaced by the count of positions
-#: inc/admin.php:142
-msgid "Show all %1$d positions"
+#: app/PersonioIntegration/Position.php:106
+msgid "Position could not be saved as the PersonioId is missing."
 msgstr ""
 
-#: inc/admin.php:199
-msgid "Dismiss this notice."
+#: app/PersonioIntegration/Position.php:112
+msgid "Position could not be saved as the PersonioId does not have a language set."
 msgstr ""
 
-#: inc/admin.php:229
-#: inc/admin.php:815
-msgid "PersonioID"
-msgstr ""
-
-#: inc/admin.php:277
-#: inc/settings/settings.php:86
-#: blocks/details/build/index.js:235
-#: blocks/list/build/index.js:280
-#: blocks/show/build/index.js:255
-#: blocks/details/build/index.js:158
-#: blocks/list/build/index.js:226
-#: blocks/show/build/index.js:185
-msgid "Settings"
-msgstr ""
-
-#: inc/admin.php:364
-msgid "Edit"
-msgstr ""
-
-#: inc/admin.php:804
-msgid "Show Personio position data"
-msgstr ""
-
-#: inc/admin.php:816
-msgid "Title"
-msgstr ""
-
-#: inc/admin.php:817
-#: blocks/description/build/index.js:299
-#: blocks/description/build/index.js:213
-msgid "Description"
-msgstr ""
-
-#. translators: %1$s will be replaced by the URL for Personio
-#: inc/admin.php:837
-msgid "At this point we show you the imported data of your open position <i>%1$s</i>. Please edit the job details in your <a href=\"%2$s\" target=\"_blank\">Personio account (opens new window)</a>."
-msgstr ""
-
-#: inc/admin.php:888
-msgid "No data"
-msgstr ""
-
-#: inc/admin.php:915
-msgid "Personio"
-msgstr ""
-
-#: inc/admin.php:916
-msgid "Import positions from Personio"
-msgstr ""
-
-#: inc/admin.php:964
-#: inc/init.php:772
-msgid "Personio Integration Import Cron Check"
-msgstr ""
-
-#: inc/admin.php:969
-msgid "Personio Integration URL availability check"
-msgstr ""
-
-#: inc/frontend.php:57
-msgid "Detail-view called without the PersonioId of a position."
-msgstr ""
-
-#: inc/frontend.php:69
-msgid "Given Id is not a valid position-Id."
-msgstr ""
-
-#: inc/init.php:23
-#: inc/init.php:25
-#: templates/parts/archive/default.php:20
-#: templates/parts/archive/listing.php:22
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:120
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:122
+#: templates/parts/archive/default.php:21
+#: templates/parts/archive/listing.php:24
 msgid "Positions"
 msgstr ""
 
-#: inc/init.php:24
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:121
 #: templates/single-personioposition-shortcode.php:17
 msgid "Position"
 msgstr ""
 
-#: inc/init.php:26
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:123
 msgid "Parent Position"
 msgstr ""
 
-#: inc/init.php:27
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:124
 msgid "All Positions"
 msgstr ""
 
-#: inc/init.php:28
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:125
+#: app/Plugin/Init.php:194
 msgid "View Position in frontend"
 msgstr ""
 
-#: inc/init.php:29
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:126
 msgid "View Positions"
 msgstr ""
 
-#: inc/init.php:30
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:127
 msgid "View Position in backend"
 msgstr ""
 
-#: inc/init.php:31
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:128
 msgid "Search Position"
 msgstr ""
 
-#: inc/init.php:32
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:129
 msgid "Not Found"
 msgstr ""
 
-#: inc/init.php:33
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:130
 msgid "Not found in Trash"
 msgstr ""
 
-#: inc/init.php:263
-msgid "every 5th Minute"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:269
+msgid "Detail-view called without the PersonioId of a position."
 msgstr ""
 
-#: inc/init.php:339
-msgid "recruiting category"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:281
+msgid "Given Id is not a valid position-Id."
 msgstr ""
 
-#: inc/init.php:340
-msgid "schedule"
-msgstr ""
-
-#: inc/init.php:341
-msgid "office"
-msgstr ""
-
-#: inc/init.php:342
-msgid "department"
-msgstr ""
-
-#: inc/init.php:343
-msgid "employment types"
-msgstr ""
-
-#: inc/init.php:344
-msgid "seniority"
-msgstr ""
-
-#: inc/init.php:345
-msgid "experience"
-msgstr ""
-
-#: inc/init.php:346
-#: blocks/details/build/index.js:260
-#: blocks/show/build/index.js:300
-#: blocks/details/build/index.js:171
-#: blocks/show/build/index.js:222
-msgid "Job type"
-msgstr ""
-
-#: inc/init.php:362
-msgid "details"
-msgstr ""
-
-#: inc/init.php:363
-msgid "content"
-msgstr ""
-
-#: inc/init.php:364
-msgid "application link"
-msgstr ""
-
-#: inc/init.php:573
-#: templates/parts/term-filter-select.php:15
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:550
+#: templates/parts/term-filter-select.php:18
 #: blocks/show/build/index.js:229
 #: blocks/show/build/index.js:162
 msgid "Please choose"
 msgstr ""
 
-#: inc/init.php:608
-#: inc/init.php:629
-#: inc/init.php:648
-#: inc/init.php:661
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:587
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:617
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:647
+#: app/Plugin/Templates.php:97
+#: app/Plugin/Templates.php:256
+#: app/Plugin/Templates.php:278
 msgid "Default"
 msgstr ""
 
-#: inc/init.php:613
-#: inc/init.php:649
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:592
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:622
+#: app/Plugin/Templates.php:257
+#: app/Plugin/Templates.php:279
 msgid "As list"
 msgstr ""
 
-#: inc/init.php:634
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:652
 msgid "Listing"
 msgstr ""
 
-#: inc/init.php:662
-msgid "Listings"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:710
+msgid "Sorting"
 msgstr ""
 
-#: inc/init.php:778
-msgid "Running cronjobs help to import new positions from Personio automatically.<br><strong>All ok with the cronjob!</strong>"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:714
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:919
+msgid "PersonioID"
 msgstr ""
 
-#: inc/init.php:796
-msgid "Cronjob to import new Positions from Personio does not exist!"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:739
+msgid "Only in Pro"
 msgstr ""
 
-#. translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past)
-#: inc/init.php:808
-msgid "Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:765
+msgid "Edit"
 msgstr ""
 
-#: inc/init.php:827
-msgid "Personio Integration URL availability Check"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:912
+msgid "About this page"
 msgstr ""
 
-#. translators: %1$s and %2$s will be replaced by the Personio-URL
-#: inc/init.php:834
-msgid "The Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:926
+msgid "Title"
 msgstr ""
 
-#. translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio
-#: inc/init.php:858
-msgid "The Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href=\"%3$s\">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href=\"%4$s\" target=\"_blank\">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:933
+#: blocks/description/build/index.js:299
+#: blocks/description/build/index.js:213
+msgid "Description"
 msgstr ""
 
-#: inc/settings/advanced.php:19
-msgid "Advanced"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:956
+msgid "Subcompany"
 msgstr ""
 
-#: inc/settings/advanced.php:64
-msgid "Advanced Settings"
+#. translators: %1$s will be replaced by the URL for Personio
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:975
+msgid "These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the job details in your <a href=\"%2$s\" target=\"_blank\">Personio account (opens new window)</a>."
 msgstr ""
 
-#: inc/settings/advanced.php:87
-msgid "Note the position-keywords in search in frontend"
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:1026
+msgid "No data"
 msgstr ""
 
-#: inc/settings/advanced.php:102
-msgid "max. Age for log entries in days"
+#. translators: %1$s will be replaced with the plugin pro-name
+#: app/PersonioIntegration/PostTypes/PersonioPosition.php:1056
+msgid "Use this taxonomy with %1$s."
 msgstr ""
 
-#: inc/settings/advanced.php:117
-msgid "Timeout for URL-request in Seconds"
+#: app/PersonioIntegration/Taxonomies.php:302
+msgctxt "taxonomy general name"
+msgid "Categories"
 msgstr ""
 
-#: inc/settings/advanced.php:132
-msgid "Delete all imported data on uninstall"
+#: app/PersonioIntegration/Taxonomies.php:303
+msgctxt "taxonomy singular name"
+msgid "Category"
 msgstr ""
 
-#: inc/settings/advanced.php:147
-msgid "Debug-Mode"
+#: app/PersonioIntegration/Taxonomies.php:304
+msgid "Search category"
 msgstr ""
 
-#: inc/settings/advanced.php:154
-msgid "If activated, the import will be executed every time even if there are no changes."
+#: app/PersonioIntegration/Taxonomies.php:305
+msgid "Edit category"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:306
+msgid "Update category"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:307
+msgid "Categories"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:310
+msgctxt "taxonomy general name"
+msgid "Job types"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:311
+msgctxt "taxonomy singular name"
+msgid "Job type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:312
+msgid "Search Job type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:313
+msgid "Edit Job type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:314
+msgid "Update Job type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:315
+msgid "Job types"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:318
+msgctxt "taxonomy general name"
+msgid "Job type details"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:319
+msgctxt "taxonomy singular name"
+msgid "Job type detail"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:320
+msgid "Search Job type detail"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:321
+msgid "Edit Job type detail"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:322
+msgid "Update Job type detail"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:323
+#: app/PersonioIntegration/Taxonomies.php:456
+#: blocks/details/build/index.js:303
+#: blocks/details/build/index.js:213
+msgid "Job type details"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:326
+msgctxt "taxonomy general name"
+msgid "Locations"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:327
+msgctxt "taxonomy singular name"
+msgid "Location"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:328
+msgid "Search location"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:329
+msgid "Edit location"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:330
+msgid "Update location"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:331
+msgid "Locations"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:334
+msgctxt "taxonomy general name"
+msgid "Departments"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:335
+msgctxt "taxonomy singular name"
+msgid "Department"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:336
+msgid "Search department"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:337
+msgid "Edit department"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:338
+msgid "Update department"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:339
+msgid "Departments"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:342
+msgctxt "taxonomy general name"
+msgid "Employment types"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:343
+msgctxt "taxonomy singular name"
+msgid "Employment type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:344
+msgid "Search employment type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:345
+msgid "Edit employment type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:346
+msgid "Update employment type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:347
+msgid "Employment types"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:350
+msgctxt "taxonomy general name"
+msgid "Experiences"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:351
+msgctxt "taxonomy singular name"
+msgid "Experience"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:352
+msgid "Search Experience"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:353
+msgid "Edit Experience"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:354
+msgid "Update Experience"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:355
+msgid "Experiences"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:358
+msgctxt "taxonomy general name"
+msgid "Contract types"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:359
+msgctxt "taxonomy singular name"
+msgid "Contract type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:360
+msgid "Search Contract type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:361
+msgid "Edit Contract type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:362
+msgid "Update Contract type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:363
+msgid "Contract types"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:366
+msgctxt "taxonomy general name"
+msgid "Years of experiences"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:367
+msgctxt "taxonomy singular name"
+msgid "Years of experience"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:368
+msgid "Search years of experience"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:369
+msgid "Edit years of experience"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:370
+msgid "Update years of experience"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:371
+msgid "Years of experiences"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:374
+msgctxt "taxonomy general name"
+msgid "Languages"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:375
+msgctxt "taxonomy singular name"
+msgid "Language"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:376
+msgid "Search language"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:377
+msgid "Edit language"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:378
+msgid "Update language"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:379
+msgid "Languages"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:382
+msgctxt "taxonomy general name"
+msgid "Keywords"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:383
+msgctxt "taxonomy singular name"
+msgid "Keyword"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:384
+msgid "Search Keywords"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:385
+msgid "Edit Keyword"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:386
+msgid "Update keyword"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:387
+msgid "Keywords"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:448
+msgid "recruiting category"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:449
+msgid "schedule"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:450
+msgid "office"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:451
+msgid "department"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:452
+msgid "employment types"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:453
+msgid "seniority"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:454
+msgid "experience"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:455
+#: blocks/details/build/index.js:300
+#: blocks/show/build/index.js:300
+#: blocks/details/build/index.js:212
+#: blocks/show/build/index.js:222
+msgid "Job type"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:559
+msgid "Accounting/Finance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:560
+msgid "Administrative/Clerical"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:561
+msgid "Banking/Real Estate/Mortgage Professionals"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:562
+msgid "Building Construction/Skilled Trades"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:563
+msgid "Business/Strategic Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:564
+msgid "Creative/Design"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:565
+msgid "Customer Support/Client Care"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:566
+msgid "Editorial/Writing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:567
+msgid "Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:568
+msgid "Food Services/Hospitality"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:569
+msgid "Human Resources"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:570
+msgid "Installation/Maintenance/Repair"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:571
+msgid "IT/Software Development"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:572
+msgid "Legal"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:573
+msgid "Logistics/Transportation"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:574
+msgid "Marketing/Product"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:575
+msgid "Medical/Health"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:576
+#: app/PersonioIntegration/Taxonomies.php:792
+msgid "Other"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:577
+msgid "Production/Operations"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:578
+msgid "Project/Program Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:579
+msgid "Quality Assurance/Safety"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:580
+msgid "R&D/Science"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:581
+msgid "Sales/Business Development"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:582
+msgid "Security/Protective Services"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:583
+msgid "Training/Instruction"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:586
+msgid "Actuarial Analysis"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:587
+msgid "Bookkeeping/General Ledger"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:588
+msgid "Financial Control"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:589
+msgid "Corporate Finance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:590
+msgid "Accounts Payable/Receivable"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:591
+msgid "Financial Planning/Advising"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:592
+msgid "Financial Analysis/Research/Reporting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:593
+msgid "Corporate Accounting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:594
+msgid "Fund Accounting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:595
+msgid "Claims Review and Adjusting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:596
+msgid "Securities Analysis/Research"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:597
+msgid "Real Estate Appraisal"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:598
+msgid "Real Estate Leasing/Acquisition"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:599
+msgid "Collections"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:600
+msgid "Investment Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:601
+msgid "Credit Review/Analysis"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:602
+msgid "Risk Management/Compliance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:603
+msgid "Tax Assessment and Collections"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:604
+msgid "Tax Accounting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:605
+msgid "Policy Underwriting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:606
+#: app/PersonioIntegration/Taxonomies.php:842
+msgid "Financial Products Sales/Brokerage"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:607
+msgid "Audit"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:608
+msgid "General/Other: Accounting/Finance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:609
+msgid "Filing/Records Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:610
+msgid "Executive Support"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:611
+msgid "Data Entry/Order Processing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:612
+#: app/PersonioIntegration/Taxonomies.php:701
+msgid "Front Desk/Reception"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:613
+msgid "Property Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:614
+msgid "Office Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:615
+msgid "Administrative Support"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:616
+msgid "Claims Processing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:617
+msgid "Transcription"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:618
+#: app/PersonioIntegration/Taxonomies.php:740
+msgid "Paralegal & Legal Secretary"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:619
+msgid "General/Other: Administrative/Clerical"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:620
+msgid "Loan Officer/Originator"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:621
+msgid "Escrow Officer/Manager"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:622
+msgid "Store/Branch Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:623
+msgid "Mortgage Broker"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:624
+msgid "Real Estate Agent/Broker"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:625
+msgid "Real Estate Law"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:626
+msgid "Credit Manager"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:627
+msgid "Bank Teller"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:628
+msgid "Underwriter"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:629
+msgid "Title Officer/Closer"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:630
+msgid "Site Superintendent"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:631
+msgid "Concrete and Masonry"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:632
+msgid "Heavy Equipment Operation"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:633
+msgid "Roofing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:634
+msgid "Electrician"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:635
+msgid "Flooring/Tiling/Painting/Wallpapering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:636
+msgid "HVAC"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:637
+msgid "Plumbing/Pipefitting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:638
+msgid "Ironwork/Metal Fabrication"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:639
+msgid "CAD/Drafting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:640
+msgid "Surveying"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:641
+msgid "Sheetrock/Plastering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:642
+msgid "Carpentry/Framing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:643
+msgid "General/Other: Construction/Skilled Trades"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:644
+msgid "Business Analysis/Research"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:645
+msgid "Managerial Consulting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:646
+msgid "Franchise-Business Ownership"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:647
+msgid "Business Unit Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:648
+msgid "President/Top Executive"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:649
+msgid "Public Health Administration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:650
+msgid "Hotel/Lodging Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:651
+msgid "Hospital/Clinic Administration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:652
+msgid "Mergers and Acquisitions"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:653
+msgid "Restaurant Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:654
+msgid "School/College Administration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:655
+msgid "Town/City Planning"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:656
+msgid "Strategic Planning/Intelligence"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:657
+msgid "General/Other: Business/Strategic Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:658
+msgid "Architecture/Interior Design"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:659
+msgid "Computer Animation & Multimedia"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:660
+msgid "Creative Direction/Lead"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:661
+msgid "Graphic Arts/Illustration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:662
+msgid "Industrial Design"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:663
+msgid "Fashion & Accessories Design"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:664
+msgid "Photography and Videography"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:665
+msgid "Web/UI/UX Design"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:666
+msgid "Advertising Writing (Creative)"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:667
+msgid "General/Other: Creative/Design"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:668
+msgid "Call Center"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:669
+msgid "Flight Attendant"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:670
+msgid "Hair Cutting/Styling"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:671
+msgid "Retail Customer Service"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:672
+msgid "Account Management (Non-Commissioned)"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:673
+msgid "Customer Training"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:674
+msgid "Reservations/Ticketing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:675
+msgid "General/Other: Customer Support/Client Care"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:676
+msgid "Technical Customer Service"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:677
+msgid "Documentation/Technical Writing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:678
+msgid "Journalism"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:679
+msgid "Digital Content Development"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:680
+msgid "Editing & Proofreading"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:681
+msgid "General/Other: Editorial/Writing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:682
+msgid "Translation/Interpretation"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:683
+msgid "Civil & Structural Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:684
+msgid "Bio-Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:685
+msgid "Chemical Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:686
+msgid "Electrical/Electronics Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:687
+msgid "Energy/Nuclear Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:688
+msgid "RF/Wireless Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:689
+msgid "Aeronautic/Avionic Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:690
+msgid "Mechanical Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:691
+msgid "Systems/Process Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:692
+msgid "Industrial/Manufacturing Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:693
+msgid "Naval Architecture/Marine Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:694
+msgid "Environmental and Geological Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:695
+msgid "General/Other: Engineering"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:696
+msgid "Food & Beverage Serving"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:697
+msgid "Host/Hostess"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:698
+msgid "Guest Services/Concierge"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:699
+msgid "Food Preparation/Cooking"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:700
+msgid "Guide (Tour)"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:702
+msgid "Wine Steward (Sommelier)"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:703
+msgid "General/Other: Food Services"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:704
+#: app/PersonioIntegration/Taxonomies.php:854
+msgid "Corporate Development and Training"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:705
+msgid "Compensation/Benefits Policy"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:706
+msgid "Diversity Management/EEO/Compliance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:707
+msgid "Academic Admissions and Advising"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:708
+msgid "Payroll and Benefits Administration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:709
+msgid "Recruiting/Sourcing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:710
+msgid "HR Systems Administration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:711
+msgid "General/Other: Human Resources"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:712
+msgid "Computer/Electronics/Telecomm Install/Maintain/Repair"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:713
+msgid "Oil Rig & Pipeline Install/Maintain/Repair"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:714
+msgid "Facilities Maintenance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:715
+msgid "Janitorial & Cleaning"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:716
+msgid "Vehicle Repair and Maintenance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:717
+msgid "Wire and Cable Install/Maintain/Repair"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:718
+msgid "Landscaping"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:719
+msgid "Equipment Install/Maintain/Repair"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:720
+msgid "Locksmith"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:721
+msgid "General/Other: Installation/Maintenance/Repair"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:722
+msgid "Usability/Information Architecture"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:723
+msgid "Desktop Service and Support"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:724
+msgid "Computer/Network Security"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:725
+msgid "Database Development/Administration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:726
+msgid "Enterprise Software Implementation & Consulting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:727
+#: app/PersonioIntegration/Taxonomies.php:808
+msgid "IT Project Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:728
+msgid "Software/System Architecture"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:729
+msgid "Software/Web Development"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:730
+msgid "Network and Server Administration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:731
+msgid "Systems Analysis - IT"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:732
+msgid "Telecommunications Administration/Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:733
+msgid "General/Other: IT/Software Development"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:734
+msgid "Labor & Employment Law"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:735
+msgid "Patent/IP Law"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:736
+msgid "Regulatory/Compliance Law"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:737
+msgid "Tax Law"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:738
+msgid "Attorney"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:739
+msgid "Contracts Administration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:741
+msgid "General/Other: Legal"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:742
+msgid "Car, Van and Bus Driving"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:743
+msgid "Train or Rail Operator"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:744
+msgid "Purchasing Goods and Services"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:745
+msgid "Piloting: Air and Marine"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:746
+msgid "Cargo and Baggage Handling"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:747
+msgid "Hazardous Materials Handling"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:748
+msgid "Merchandise Planning and Buying"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:749
+msgid "Import/Export Administration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:750
+msgid "Cost Estimating"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:751
+msgid "Messenger/Courier"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:752
+msgid "Truck Driving"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:753
+msgid "Supplier Management/Vendor Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:754
+msgid "Equipment/Forklift/Crane Operation"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:755
+msgid "Inventory Planning and Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:756
+msgid "Vehicle Dispatch, Routing and Scheduling"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:757
+msgid "Shipping and Receiving/Warehousing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:758
+msgid "General/Other: Logistics/Transportation"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:759
+msgid "Visual/Display Merchandising"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:760
+msgid "Brand/Product Marketing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:761
+msgid "Direct Marketing (CRM)"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:762
+msgid "Events/Promotional Marketing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:763
+msgid "Investor and Public/Media Relations"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:764
+msgid "Marketing Communications"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:765
+msgid "Market Research"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:766
+msgid "Media Planning and Buying"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:767
+msgid "Marketing Production/Traffic"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:768
+msgid "Product Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:769
+msgid "Telemarketing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:770
+msgid "Copy Writing/Editing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:771
+msgid "General/Other: Marketing/Product"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:772
+msgid "Healthcare Aid"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:773
+msgid "Pharmacy"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:774
+msgid "Nutrition and Diet"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:775
+msgid "Nursing"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:776
+msgid "Laboratory/Pathology"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:777
+msgid "Physician Assistant/Nurse Practitioner"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:778
+msgid "Optical"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:779
+msgid "Medical Therapy/Rehab Services"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:780
+msgid "Medical Practitioner"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:781
+msgid "Mental Health"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:782
+msgid "Medical Imaging"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:783
+msgid "EMT/Paramedic"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:784
+msgid "Social Service"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:785
+msgid "Sports Medicine"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:786
+msgid "Veterinary/Animal Care"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:787
+msgid "Dental Assistant/Hygienist"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:788
+msgid "Dental Practitioner"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:789
+msgid "General/Other: Medical/Health"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:790
+msgid "Work at Home"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:791
+msgid "Career Fair"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:793
+msgid "Waste Pick-up and Removal"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:794
+msgid "Operations/Plant Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:795
+msgid "Equipment Operations"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:796
+msgid "Scientific/Technical Production"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:797
+msgid "Layout, Prepress, Printing, & Binding Operations"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:798
+msgid "Assembly/Assembly Line"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:799
+msgid "Moldmaking/Casting"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:800
+msgid "Metal Fabrication and Welding"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:801
+msgid "Audio/Video Broadcast & Postproduction"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:802
+msgid "Sewing and Tailoring"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:803
+msgid "Laundry and Dry-Cleaning Operations"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:804
+msgid "Machining/CNC"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:805
+msgid "General/Other: Production/Operations"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:806
+msgid "Event Planning/Coordination"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:807
+#: app/PersonioIntegration/Taxonomies.php:809
+msgid "General/Other: Project/Program Management"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:810
+msgid "Occupational Health and Safety"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:811
+msgid "Building/Construction Inspection"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:812
+msgid "Fraud Investigation"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:813
+msgid "ISO Certification"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:814
+msgid "Food Safety and Inspection"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:815
+msgid "Production Quality Assurance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:816
+msgid "Six Sigma/Black Belt/TQM"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:817
+msgid "Software Quality Assurance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:818
+msgid "Vehicle Inspection"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:819
+msgid "Environmental Protection/Conservation"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:820
+msgid "General/Other: Quality Assurance/Safety"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:821
+msgid "Biological/Chemical Research"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:822
+msgid "Materials/Physical Research"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:823
+msgid "Mathematical/Statistical Research"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:824
+msgid "Clinical Research"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:825
+msgid "New Product R&D"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:826
+msgid "Pharmaceutical Research"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:827
+msgid "Environmental/Geological Testing & Analysis"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:828
+msgid "General/Other: R&D/Science"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:829
+msgid "Account Management (Commissioned)"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:830
+msgid "Field Sales"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:831
+msgid "Business Development/New Accounts"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:832
+msgid "Retail/Counter Sales and Cashier"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:833
+msgid "Wholesale/Reselling Sales"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:834
+msgid "International Sales"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:835
+msgid "Fundraising"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:836
+msgid "Technical Presales Support & Technical Sales"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:837
+msgid "Telesales"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:838
+msgid "Travel Agent/Ticket Sales"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:839
+msgid "Media and Advertising Sales"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:840
+msgid "Insurance Agent/Broker"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:841
+msgid "Sales Support/Assistance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:843
+msgid "General/Other: Sales/Business Development"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:844
+msgid "Customs/Immigration"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:845
+msgid "Firefighting and Rescue"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:846
+msgid "Airport Security and Screening"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:847
+msgid "Store Security/Loss Prevention"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:848
+msgid "Security Intelligence & Analysis"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:849
+msgid "Police-Law Enforcement"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:850
+msgid "Security Guard"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:851
+msgid "Correctional Officer"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:852
+msgid "Military Combat"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:853
+msgid "General/Other: Security/Protective Services"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:855
+msgid "Continuing/Adult"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:856
+msgid "Elementary School"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:857
+msgid "Software/Web Training"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:858
+msgid "Early Childhood Care & Development"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:859
+msgid "University"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:860
+msgid "Junior/High School"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:861
+msgid "Classroom Teaching"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:862
+msgid "Special Education"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:863
+msgid "Fitness & Sports Training/Instruction"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:864
+msgid "General/Other: Training/Instruction"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:867
+msgid "Permanent employee"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:868
+msgid "Intern"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:869
+msgid "Trainee"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:870
+msgid "Freelance"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:871
+msgid "Temporary"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:872
+msgid "Working Student"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:875
+msgid "full-time"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:876
+msgid "part-time"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:877
+msgid "full- or part-time"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:880
+msgid "entry-level"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:881
+msgid "experienced"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:882
+msgid "executive"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:883
+msgid "student"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:886
+msgid "less than 1 year"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:887
+msgid "1-2 years"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:888
+msgid "2-5 years"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:889
+msgid "5-7 years"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:890
+msgid "7-10 years"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:891
+msgid "10-15 years"
+msgstr ""
+
+#: app/PersonioIntegration/Taxonomies.php:892
+msgid "more than 15 years"
+msgstr ""
+
+#: app/Plugin/Admin/Admin.php:134
+msgid "Import is running"
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: app/Plugin/Admin/Admin.php:229
+msgid "We realized that you are using Divi - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Divi."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: app/Plugin/Admin/Admin.php:244
+msgid "We realized that you are using Elementor - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Elementor."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: app/Plugin/Admin/Admin.php:259
+msgid "We realized that you are using WPBakery - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in WPBakery."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: app/Plugin/Admin/Admin.php:274
+msgid "We realized that you are using Beaver Builder - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Beaver Builder."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: app/Plugin/Admin/Admin.php:289
+msgid "We realized that you are using Site Origin - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Site Origin."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: app/Plugin/Admin/Admin.php:304
+msgid "We realized that you are using Themify - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Themify."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-version-info-page.
+#: app/Plugin/Admin/Admin.php:319
+msgid "We realized that you are using Avada - very nice! <a href=\"%s\" target=\"_blank\"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Avada."
+msgstr ""
+
+#: app/Plugin/Admin/Admin.php:336
+msgid "Personio"
+msgstr ""
+
+#: app/Plugin/Admin/Admin.php:337
+msgid "Import positions from Personio"
+msgstr ""
+
+#. translators: %1$s is replaced with "string", %2$s is replaced with "string"
+#: app/Plugin/Admin/Admin.php:365
+#: admin/js.js:188
+msgid "<strong>The import has been manually run.</strong> Please check the list of positions <a href=\"%1$s\">in backend</a> and <a href=\"%2$s\">frontend</a>."
+msgstr ""
+
+#: app/Plugin/Admin/Admin.php:398
+msgid "<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes to long please check your hosting logfiles for possible restrictions mentioned there."
+msgstr ""
+
+#: app/Plugin/Admin/Admin.php:398
+#: app/Plugin/Admin/SettingFields/ImportPositions.php:31
+#: admin/js.js:7
+msgid "Run import"
+msgstr ""
+
+#: app/Plugin/Admin/Admin.php:425
+msgid "<strong>The positions have been deleted.</strong> You can run the import anytime again to import positions."
+msgstr ""
+
+#: app/Plugin/Admin/Admin.php:428
+msgid "<strong>The positions could not been deleted.</strong> An import is actual running."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the settings-page.
+#: app/Plugin/Admin/Admin.php:454
+msgid "The specification of your Personio URL is still pending. <strong>Add it now on the <a href=\"%1$s\">settings page</a></strong>."
+msgstr ""
+
+#. translators: %1$s will be replaced by the URL to the Pro-information-page.
+#: app/Plugin/Admin/Admin.php:463
+msgid "The list of positions is limited to a maximum of 10 entries in the frontend. With <a href=\"%1$s\">Personio Integration Pro version</a>, any number of positions can be displayed."
+msgstr ""
+
+#. translators: %1$d is replaced with a day-count, %2$s will be replaced with the review-URL
+#: app/Plugin/Admin/Admin.php:491
+msgid "Your use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href=\"%2$s\" target=\"_blank\">leave us a review (opens new window)</a>."
+msgstr ""
+
+#: app/Plugin/Admin/Dashboard.php:73
+msgid "Positions imported from Personio"
+msgstr ""
+
+#: app/Plugin/Admin/Dashboard.php:104
+msgid "Actually there are no positions imported from Personio."
+msgstr ""
+
+#. translators: %1$d will be replaced by the count of positions
+#: app/Plugin/Admin/Dashboard.php:118
+msgid "Show all %1$d positions"
+msgstr ""
+
+#: app/Plugin/Admin/Logs.php:33
+#: app/Plugin/Settings.php:124
+msgid "Logs"
+msgstr ""
+
+#: app/Plugin/Admin/SettingFields/DeletePositions.php:30
+#: admin/js.js:79
+msgid "Delete all positions"
+msgstr ""
+
+#: app/Plugin/Admin/SettingFields/DeletePositions.php:31
+#: app/Plugin/Admin/SettingFields/ImportPositions.php:32
+msgid "Hint"
+msgstr ""
+
+#: app/Plugin/Admin/SettingFields/DeletePositions.php:31
+msgid "Removes all actual imported positions."
+msgstr ""
+
+#: app/Plugin/Admin/SettingFields/DeletePositions.php:35
+msgid "There are currently no imported positions."
+msgstr ""
+
+#: app/Plugin/Admin/SettingFields/ImportPositions.php:32
+msgid "Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used."
+msgstr ""
+
+#: app/Plugin/Admin/SettingFields/ImportPositions.php:36
+msgid "The import is already running. Please wait some moments."
+msgstr ""
+
+#: app/Plugin/Admin/SettingFields/ImportPositions.php:49
+msgid "Cancel running import"
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
-#: inc/settings/advanced.php:170
-msgid "With %s you get more advanced options, e.g. to change the URL of archives with positions."
-msgstr ""
-
-#: inc/settings/advanced.php:184
-msgid "A timeout must have a value greater than 0."
-msgstr ""
-
-#: inc/settings/applications.php:12
-#: inc/settings/forms.php:12
-#: inc/settings/permissions.php:17
-#: inc/settings/seo.php:17
-#: inc/settings/tracking.php:17
-msgid "Only in Pro."
-msgstr ""
-
-#: inc/settings/applications.php:12
-msgid "Applications"
-msgstr ""
-
-#: inc/settings/forms.php:12
-msgid "Application Forms"
-msgstr ""
-
-#: inc/settings/general.php:45
-#: inc/settings/settings.php:114
-msgid "General Settings"
-msgstr ""
-
-#: inc/settings/general.php:53
-msgid "Personio URL"
-msgstr ""
-
-#. translators: %1$s is replaced with the url to personio account, %2$s is replaced with the url to the personio support
-#: inc/settings/general.php:61
-msgid "You find this URL in your <a href=\"%1$s\" target=\"_blank\">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br>If you have any questions about the URL provided by Personio, please contact the <a href=\"%2$s\">Personio support</a>."
-msgstr ""
-
-#: inc/settings/general.php:74
-msgid "Used languages"
-msgstr ""
-
-#: inc/settings/general.php:89
-msgid "Main language"
-msgstr ""
-
-#. translators: %1$s is replaced with "string"
-#: inc/settings/general.php:120
+#: app/Plugin/Admin/SettingFields/Multiple_Checkboxes.php:35
 msgid "Mark to enable %1$s"
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
-#: inc/settings/general.php:143
-msgid "Use all languages supported by Personio with %s."
-msgstr ""
-
-#. translators: %1$s is replaced with "string"
-#: inc/settings/general.php:163
+#: app/Plugin/Admin/SettingFields/Multiple_Radios.php:35
 msgid "Mark to set %1$s as default language in the frontend."
 msgstr ""
 
-#: inc/settings/general.php:195
-msgid "German"
-msgstr ""
-
-#: inc/settings/general.php:196
-msgid "English"
-msgstr ""
-
-#: inc/settings/general.php:217
+#: app/Plugin/Admin/SettingsValidation/Languages.php:29
 msgid "You must enable one language. English will be set."
 msgstr ""
 
-#: inc/settings/general.php:250
+#: app/Plugin/Admin/SettingsValidation/MainLanguage.php:31
 msgid "No main language was specified. The specification of a main language is mandatory."
 msgstr ""
 
-#: inc/settings/general.php:255
+#: app/Plugin/Admin/SettingsValidation/MainLanguage.php:34
 msgid "The selected main language is not activated as a language."
 msgstr ""
 
-#: inc/settings/general.php:282
+#: app/Plugin/Admin/SettingsValidation/PersonioIntegrationUrl.php:47
 msgid "The specification of the Personio URL is mandatory."
 msgstr ""
 
-#: inc/settings/general.php:297
+#: app/Plugin/Admin/SettingsValidation/PersonioIntegrationUrl.php:56
 msgid "The Personio URL must end with \".jobs.personio.com\" or \".jobs.personio.de\"!"
 msgstr ""
 
-#: inc/settings/general.php:304
+#: app/Plugin/Admin/SettingsValidation/PersonioIntegrationUrl.php:60
 msgid "Please enter a valid URL."
 msgstr ""
 
-#: inc/settings/import.php:22
-msgid "Import"
+#. translators: %1$s is replaced with the entered Personio-URL
+#: app/Plugin/Admin/SettingsValidation/PersonioIntegrationUrl.php:68
+msgid "The specified Personio URL %1$s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there."
 msgstr ""
 
-#: inc/settings/import.php:67
-msgid "Import of positions from Personio"
+#: app/Plugin/Admin/SettingsValidation/PersonioIntegrationUrl.php:146
+msgid "Given URL is not valid."
 msgstr ""
 
-#: inc/settings/import.php:75
-msgid "Start import now"
+#: app/Plugin/Admin/SettingsValidation/PersonioIntegrationUrl.php:152
+msgid "The specified Personio URL is not a Personio-URL. It must end with <i>.jobs.personio.com</i> or <i>.jobs.personio.de</i>."
 msgstr ""
 
-#: inc/settings/import.php:88
-msgid "Delete positions"
+#: app/Plugin/Admin/SettingsValidation/PersonioIntegrationUrl.php:158
+msgid "The specified Personio URL is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there."
 msgstr ""
 
-#: inc/settings/import.php:101
-msgid "Enable automatic import"
+#: app/Plugin/Admin/SettingsValidation/UrlTimeout.php:28
+msgid "A timeout must have a value greater than 0."
 msgstr ""
 
-#: inc/settings/import.php:108
-msgid "If enabled, new positions stored in Personio will be retrieved automatically daily.<br>If disabled, new positions are retrieved manually only."
+#: app/Plugin/Admin/Site_Health.php:103
+#: app/Plugin/Admin/Site_Health.php:211
+msgid "Personio Integration Import Cron Check"
 msgstr ""
 
-#. translators: %1$s is replaced with "string"
-#: inc/settings/import.php:111
-msgid "Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists."
+#: app/Plugin/Admin/Site_Health.php:109
+msgid "Running cronjobs help to import new positions from Personio automatically.<br><strong>All ok with the cronjob!</strong>"
 msgstr ""
 
-#: inc/settings/import.php:203
-#: inc/settings/import.php:235
-msgid "Hint"
+#: app/Plugin/Admin/Site_Health.php:128
+msgid "Cronjob to import new Positions from Personio does not exist!"
 msgstr ""
 
-#: inc/settings/import.php:208
-msgid "The import is already running. Please wait some moments."
+#. translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past)
+#: app/Plugin/Admin/Site_Health.php:140
+msgid "Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>"
 msgstr ""
 
-#: inc/settings/import.php:220
-msgid "Cancel running import"
+#: app/Plugin/Admin/Site_Health.php:162
+msgid "Personio Integration URL availability Check"
 msgstr ""
 
-#: inc/settings/import.php:234
-msgid "Delete all positions"
+#. translators: %1$s and %2$s will be replaced by the Personio-URL
+#: app/Plugin/Admin/Site_Health.php:169
+msgid "The Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>"
 msgstr ""
 
-#: inc/settings/import.php:235
-msgid "Removes all actual imported positions."
+#. translators: %1$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio
+#: app/Plugin/Admin/Site_Health.php:178
+msgid "No Personio-URL set!<br><strong>Please enter the URL <a href=\"%1$s\">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href=\"%2$s\" target=\"_blank\">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>"
 msgstr ""
 
-#: inc/settings/import.php:239
-msgid "There are currently no imported positions."
+#. translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio
+#: app/Plugin/Admin/Site_Health.php:193
+msgid "The Personio-URL <a href=\"%1$s\" target=\"_blank\">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href=\"%3$s\">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href=\"%4$s\" target=\"_blank\">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>"
 msgstr ""
 
-#: inc/settings/permissions.php:17
-msgid "Permissions"
+#: app/Plugin/Admin/Site_Health.php:217
+msgid "Personio Integration URL availability check"
 msgstr ""
 
-#: inc/settings/seo.php:17
-msgid "SEO"
+#: app/Plugin/Init.php:178
+#: app/Widgets/Positions.php:37
+#: blocks/list/build/index.js:416
+#: blocks/list/build/index.js:357
+msgid "Personio Positions"
 msgstr ""
 
-#: inc/settings/settings.php:85
-msgid "Personio Integration Settings"
+#: app/Plugin/Init.php:207
+msgid "View Positions in frontend"
 msgstr ""
 
-#: inc/settings/settings.php:122
-msgid "Enter Personio URL to get more options"
+#: app/Plugin/Init.php:252
+#: app/Plugin/Settings.php:583
+#: app/Plugin/Settings.php:584
+#: app/Plugin/Settings.php:603
+#: admin/intro.js:43
+#: blocks/description/build/index.js:230
+#: blocks/details/build/index.js:267
+#: blocks/list/build/index.js:282
+#: blocks/show/build/index.js:255
+#: blocks/description/build/index.js:154
+#: blocks/details/build/index.js:188
+#: blocks/list/build/index.js:227
+#: blocks/show/build/index.js:185
+msgid "Settings"
 msgstr ""
 
-#: inc/settings/settings.php:153
-#: inc/settings/settings.php:176
-msgid "Logs"
+#: app/Plugin/Installer.php:95
+msgid "Plugin was not activated!"
 msgstr ""
 
-#: inc/settings/templates.php:24
+#: app/Plugin/Intro.php:182
+msgid "Rerun the intro"
+msgstr ""
+
+#: app/Plugin/Languages.php:64
+msgid "German"
+msgstr ""
+
+#: app/Plugin/Languages.php:65
+msgid "English"
+msgstr ""
+
+#: app/Plugin/Roles.php:66
+msgid "Manage Personio-based Positions"
+msgstr ""
+
+#: app/Plugin/Settings.php:100
+#: app/Plugin/Settings.php:140
+#: app/Plugin/Settings.php:180
+msgid "General Settings"
+msgstr ""
+
+#: app/Plugin/Settings.php:105
 msgid "Templates"
 msgstr ""
 
-#: inc/settings/templates.php:66
+#: app/Plugin/Settings.php:110
+msgid "Import"
+msgstr ""
+
+#: app/Plugin/Settings.php:115
+msgid "Applications, SEO & more"
+msgstr ""
+
+#: app/Plugin/Settings.php:119
+msgid "Advanced"
+msgstr ""
+
+#: app/Plugin/Settings.php:129
+msgid "Questions? Check our forum!"
+msgstr ""
+
+#: app/Plugin/Settings.php:145
+msgid "Enter Personio URL to get more options"
+msgstr ""
+
+#: app/Plugin/Settings.php:185
+msgid "Personio URL"
+msgstr ""
+
+#. translators: %1$s is replaced with the url to Personio login for account access, %2$s is replaced with the url to the Personio support
+#: app/Plugin/Settings.php:188
+msgid "You find this URL in your <a href=\"%1$s\" target=\"_blank\">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br><strong>Hint:</strong> You have to enable the XML-feed under Settings > Recruiting > Career in your Personio account.<br>If you have any questions about the URL provided by Personio, please contact the <a href=\"%2$s\" target=\"_blank\">Personio support (opens new window)</a>."
+msgstr ""
+
+#. translators: %1$s is replaced with the name of the Pro-plugin
+#: app/Plugin/Settings.php:190
+msgid "Use multiple Personio accounts in one website with %1$s."
+msgstr ""
+
+#: app/Plugin/Settings.php:202
+msgid "Used languages"
+msgstr ""
+
+#. translators: %1$s is replaced with the name of the Pro-plugin
+#: app/Plugin/Settings.php:211
+msgid "Use all languages supported by Personio with %s."
+msgstr ""
+
+#: app/Plugin/Settings.php:215
+msgid "Main language"
+msgstr ""
+
+#: app/Plugin/Settings.php:217
+msgid "Set the main language you will use for your open positions."
+msgstr ""
+
+#: app/Plugin/Settings.php:230
 msgid "List View"
 msgstr ""
 
-#: inc/settings/templates.php:74
+#. translators: %1$s will be replaced with the name of the theme, %2$s will be replaced by the URL for the editor
+#: app/Plugin/Settings.php:238
+msgid "You are using with <i>%1$s</i> a modern block theme. The settings here will therefore might not work. Edit the archive- and single-template under <a href=\"%2$s\">Appearance > Editor > Templates > Manage</a>."
+msgstr ""
+
+#: app/Plugin/Settings.php:242
 msgid "Enable filter on list-view"
 msgstr ""
 
-#: inc/settings/templates.php:89
+#: app/Plugin/Settings.php:251
 msgid "Available filter for details"
 msgstr ""
 
-#: inc/settings/templates.php:97
+#: app/Plugin/Settings.php:254
 msgid "Mark multiple default filter for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder."
 msgstr ""
 
 #. translators: %1$s is replaced with "string"
-#: inc/settings/templates.php:101
-#: inc/settings/templates.php:174
-#: inc/settings/templates.php:222
+#: app/Plugin/Settings.php:257
+#: app/Plugin/Settings.php:354
 msgid "Sort this list with %s."
 msgstr ""
 
-#: inc/settings/templates.php:109
+#: app/Plugin/Settings.php:264
 msgid "Choose filter-type"
 msgstr ""
 
-#: inc/settings/templates.php:117
+#: app/Plugin/Settings.php:267
 msgid "This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder."
 msgstr ""
 
-#: inc/settings/templates.php:126
+#: app/Plugin/Settings.php:272
 msgid "Choose template for listing"
 msgstr ""
 
-#: inc/settings/templates.php:134
-#: inc/settings/templates.php:152
-msgid "Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder."
+#. translators: %1$s will be replaced with the documentation-URL
+#: app/Plugin/Settings.php:275
+#: app/Plugin/Settings.php:292
+#: app/Plugin/Settings.php:309
+#: app/Plugin/Settings.php:342
+#: app/Plugin/Settings.php:362
+msgid "You could add own custom templates as described in the <a href=\"%1$s\" target=\"_blank\">documentation (opens new window)</a>."
 msgstr ""
 
-#: inc/settings/templates.php:144
+#: app/Plugin/Settings.php:281
 msgid "Choose templates for positions in list-view"
 msgstr ""
 
-#: inc/settings/templates.php:162
+#: app/Plugin/Settings.php:284
+#: app/Plugin/Settings.php:301
+msgid "Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder."
+msgstr ""
+
+#: app/Plugin/Settings.php:289
+msgid "Choose template for details in list-view"
+msgstr ""
+
+#: app/Plugin/Settings.php:298
 msgid "Choose details for positions in list-view"
 msgstr ""
 
-#: inc/settings/templates.php:170
-msgid "Mark multiple default detail-parts for each frontend-output. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder."
+#: app/Plugin/Settings.php:306
+msgid "Choose template for content in list-view"
 msgstr ""
 
-#: inc/settings/templates.php:184
+#: app/Plugin/Settings.php:315
+msgid "Enable link to single on list-view"
+msgstr ""
+
+#: app/Plugin/Settings.php:326
 msgid "Single View"
 msgstr ""
 
-#: inc/settings/templates.php:192
+#: app/Plugin/Settings.php:331
 msgid "Choose templates"
 msgstr ""
 
-#: inc/settings/templates.php:200
+#: app/Plugin/Settings.php:334
 msgid "Mark multiple default templates for each detail-view of single positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder."
 msgstr ""
 
-#: inc/settings/templates.php:210
-#: blocks/details/build/index.js:239
-#: blocks/list/build/index.js:340
+#: app/Plugin/Settings.php:339
+msgid "Choose template for details in details-view"
+msgstr ""
+
+#: app/Plugin/Settings.php:348
+#: blocks/details/build/index.js:279
+#: blocks/list/build/index.js:342
 #: blocks/show/build/index.js:279
-#: blocks/details/build/index.js:162
-#: blocks/list/build/index.js:290
+#: blocks/details/build/index.js:203
+#: blocks/list/build/index.js:291
 #: blocks/show/build/index.js:213
 msgid "Choose details"
 msgstr ""
 
-#: inc/settings/templates.php:218
+#: app/Plugin/Settings.php:351
 msgid "Mark multiple details for single-view of positions. Only used if template \"detail\" is enabled for detail-view. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder."
 msgstr ""
 
-#: inc/settings/templates.php:230
-msgid "Choose job description template"
+#: app/Plugin/Settings.php:358
+msgid "Choose job description template in details-view"
 msgstr ""
 
-#: inc/settings/templates.php:238
-msgid "Choose template to output each job description in detail view. You could add your own template as described in GitHub."
-msgstr ""
-
-#: inc/settings/templates.php:247
-msgid "Enable link to single on list-view"
-msgstr ""
-
-#: inc/settings/templates.php:262
+#: app/Plugin/Settings.php:367
 msgid "Enable back to list-link"
 msgstr ""
 
-#: inc/settings/templates.php:277
+#: app/Plugin/Settings.php:376
 msgid "URL for back to list-link"
 msgstr ""
 
 #. translators: %1$s will be replaced by the list-slug
-#: inc/settings/templates.php:285
+#: app/Plugin/Settings.php:379
 msgid "If empty the link will be set to list-slug <a href=\"%1$s\">%1$s</a>."
 msgstr ""
 
-#: inc/settings/templates.php:296
+#: app/Plugin/Settings.php:389
 msgid "Other settings"
 msgstr ""
 
-#: inc/settings/templates.php:304
+#: app/Plugin/Settings.php:394
 msgid "Separator for details-listing"
 msgstr ""
 
-#: inc/settings/tracking.php:17
-msgid "Tracking"
+#: app/Plugin/Settings.php:402
+msgid "Advanced settings"
+msgstr ""
+
+#. translators: %1$s will be replaced with the plugin Pro name
+#: app/Plugin/Settings.php:410
+msgid "With %1$s you get more advanced options, e.g. to change the URL of archives with positions."
+msgstr ""
+
+#: app/Plugin/Settings.php:413
+msgid "Note the position-keywords in search in frontend"
+msgstr ""
+
+#: app/Plugin/Settings.php:422
+msgid "max. Age for log entries in days"
+msgstr ""
+
+#: app/Plugin/Settings.php:428
+msgid "Timeout for URL-request in Seconds"
+msgstr ""
+
+#: app/Plugin/Settings.php:438
+msgid "Delete all imported data on uninstall"
+msgstr ""
+
+#: app/Plugin/Settings.php:447
+msgid "Reset intro"
+msgstr ""
+
+#: app/Plugin/Settings.php:451
+msgid "Debug-Mode"
+msgstr ""
+
+#: app/Plugin/Settings.php:462
+msgid "Import of positions from Personio"
+msgstr ""
+
+#: app/Plugin/Settings.php:467
+msgid "Start import now"
+msgstr ""
+
+#: app/Plugin/Settings.php:471
+msgid "Delete positions"
+msgstr ""
+
+#: app/Plugin/Settings.php:475
+msgid "Enable automatic import"
+msgstr ""
+
+#. translators: %1$s is replaced with "string"
+#: app/Plugin/Settings.php:479
+msgid "Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists."
+msgstr ""
+
+#: app/Plugin/Settings.php:604
+msgid "Applications"
+msgstr ""
+
+#: app/Plugin/Settings.php:678
+msgid "Only in Pro."
+msgstr ""
+
+#: app/Plugin/Setup.php:76
+msgid "Setup preparing your Personio data"
+msgstr ""
+
+#: app/Plugin/Setup.php:179
+msgid "<strong>You have installed Personio Integration Light - nice and thank you!</strong> Now run the setup to expand your website with the possibilities of this plugin."
+msgstr ""
+
+#: app/Plugin/Setup.php:179
+msgid "Start setup"
+msgstr ""
+
+#: app/Plugin/Setup.php:231
+#: app/Plugin/Setup.php:232
+#: app/Plugin/Setup.php:431
+msgid "Setup"
+msgstr ""
+
+#: app/Plugin/Setup.php:290
+msgid "Error"
+msgstr ""
+
+#: app/Plugin/Setup.php:291
+msgid "The following error occurred:"
+msgstr ""
+
+#. translators: %1$s will be replaced with the URL of the plugin-forum on wordpress.org
+#: app/Plugin/Setup.php:293
+msgid "<strong>If reason is unclear</strong> please contact our <a href=\"%1$s\" target=\"_blank\">support-forum (opens new window)</a> with as much detail as possible."
+msgstr ""
+
+#: app/Plugin/Setup.php:433
+#: admin/intro.js:11
+msgid "Back"
+msgstr ""
+
+#: app/Plugin/Setup.php:434
+msgid "Continue"
+msgstr ""
+
+#: app/Plugin/Setup.php:435
+msgid "Finish"
+msgstr ""
+
+#: app/Plugin/Setup.php:456
+msgid "Import Personio labels running."
+msgstr ""
+
+#: app/Plugin/Setup.php:460
+msgid "Import of your Personio positions running."
+msgstr ""
+
+#: app/Plugin/Setup.php:464
+msgid "Setup has been run."
+msgstr ""
+
+#: app/Plugin/Templates.php:98
+msgid "Listings"
+msgstr ""
+
+#: app/Plugin/Templates.php:218
+#: app/Widgets/Positions.php:74
+#: blocks/list/build/index.js:315
+#: blocks/list/build/index.js:262
+msgid "title"
+msgstr ""
+
+#: app/Plugin/Templates.php:219
+msgid "details"
+msgstr ""
+
+#: app/Plugin/Templates.php:220
+msgid "content"
+msgstr ""
+
+#: app/Plugin/Templates.php:221
+msgid "application link"
+msgstr ""
+
+#: app/Plugin/Templates.php:364
+msgid "<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:"
+msgstr ""
+
+#: app/Plugin/Templates.php:364
+msgid "<strong>Hint:</strong> the version-number in the header of the files must match."
+msgstr ""
+
+#. translators: %1$d will be replaced by the days this message will be hidden.
+#: app/Plugin/Transient.php:199
+msgid "Hide this message for %1$d days."
+msgstr ""
+
+#: app/Plugin/Transient.php:201
+msgid "Dismiss"
+msgstr ""
+
+#: app/Widgets/Position.php:32
+msgid "Provides a Widget to show a single position provided by Personio."
+msgstr ""
+
+#: app/Widgets/Position.php:36
+#: blocks/show/build/index.js:379
+#: blocks/show/build/index.js:290
+msgid "Personio Position"
+msgstr ""
+
+#. translators: %1$s will be replaced with the URL to start the import
+#: app/Widgets/Position.php:60
+msgid "No positions available. Start to import them <a href=\"%1$s\">here</a>."
+msgstr ""
+
+#: app/Widgets/Position.php:69
+#: blocks/show/build/index.js:257
+#: blocks/show/build/index.js:187
+msgid "Select position"
+msgstr ""
+
+#: app/Widgets/Position.php:75
+#: app/Widgets/Positions.php:86
+#: blocks/list/build/index.js:328
+#: blocks/list/build/index.js:274
+msgid "Show title"
+msgstr ""
+
+#: app/Widgets/Position.php:78
+#: app/Widgets/Position.php:87
+#: app/Widgets/Position.php:96
+#: app/Widgets/Position.php:112
+#: app/Widgets/Position.php:121
+#: app/Widgets/Positions.php:89
+#: app/Widgets/Positions.php:98
+#: app/Widgets/Positions.php:107
+#: app/Widgets/Positions.php:123
+#: app/Widgets/Positions.php:138
+msgid "Show"
+msgstr ""
+
+#: app/Widgets/Position.php:79
+#: app/Widgets/Position.php:88
+#: app/Widgets/Position.php:97
+#: app/Widgets/Position.php:113
+#: app/Widgets/Position.php:122
+#: app/Widgets/Positions.php:90
+#: app/Widgets/Positions.php:99
+#: app/Widgets/Positions.php:108
+#: app/Widgets/Positions.php:124
+#: app/Widgets/Positions.php:139
+msgid "Hide"
+msgstr ""
+
+#: app/Widgets/Position.php:84
+#: app/Widgets/Positions.php:95
+#: blocks/show/build/index.js:267
+#: blocks/show/build/index.js:199
+msgid "link title"
+msgstr ""
+
+#: app/Widgets/Position.php:93
+#: app/Widgets/Positions.php:104
+msgid "Show detail"
+msgstr ""
+
+#: app/Widgets/Position.php:102
+#: app/Widgets/Positions.php:113
+msgid "Choose detail components"
+msgstr ""
+
+#: app/Widgets/Position.php:109
+#: app/Widgets/Positions.php:120
+msgid "Show content"
+msgstr ""
+
+#: app/Widgets/Position.php:118
+#: app/Widgets/Positions.php:135
+msgid "Show application link"
+msgstr ""
+
+#: app/Widgets/Positions.php:33
+msgid "Provides a Widget to show a list of positions provided by Personio."
+msgstr ""
+
+#: app/Widgets/Positions.php:51
+#: blocks/description/build/index.js:234
+#: blocks/details/build/index.js:271
+#: blocks/list/build/index.js:286
+#: blocks/description/build/index.js:158
+#: blocks/details/build/index.js:192
+#: blocks/list/build/index.js:231
+msgid "Choose template"
+msgstr ""
+
+#: app/Widgets/Positions.php:57
+#: blocks/list/build/index.js:292
+#: blocks/list/build/index.js:240
+msgid "amount"
+msgstr ""
+
+#: app/Widgets/Positions.php:62
+msgid "Sort Direction"
+msgstr ""
+
+#: app/Widgets/Positions.php:65
+#: blocks/list/build/index.js:304
+#: blocks/list/build/index.js:253
+msgid "ascending"
+msgstr ""
+
+#: app/Widgets/Positions.php:66
+#: blocks/list/build/index.js:307
+#: blocks/list/build/index.js:254
+msgid "descending"
+msgstr ""
+
+#: app/Widgets/Positions.php:71
+#: blocks/list/build/index.js:312
+#: blocks/list/build/index.js:259
+msgid "Sort by"
+msgstr ""
+
+#: app/Widgets/Positions.php:80
+#: blocks/list/build/index.js:323
+#: blocks/list/build/index.js:268
+msgid "Group by"
+msgstr ""
+
+#: app/Widgets/Positions.php:82
+msgid "ungrouped"
+msgstr ""
+
+#: app/Widgets/Positions.php:129
+msgid "Choose content template"
 msgstr ""
 
 #: templates/archive-personioposition-shortcode.php:26
 msgid "There are currently no positions available."
 msgstr ""
 
-#: templates/parts/part-filter.php:19
+#: templates/parts/part-filter.php:20
 msgid "Filter for positions"
 msgstr ""
 
-#: templates/parts/part-filter.php:21
+#: templates/parts/part-filter.php:22
 #: blocks/filter-list/build/index.js:232
 #: blocks/filter-select/build/index.js:232
 #: blocks/list/build/index.js:259
@@ -2559,26 +2631,144 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: templates/parts/part-filter.php:33
+#: templates/parts/part-filter.php:34
 msgid "Search"
 msgstr ""
 
-#: templates/parts/part-filter.php:40
+#: templates/parts/part-filter.php:41
 msgid "Reset Filter"
 msgstr ""
 
-#: templates/parts/properties-application-button.php:22
+#: templates/parts/properties-application-button.php:34
 msgctxt "archive"
 msgid "Apply for this position"
 msgstr ""
 
-#: templates/parts/properties-application-button.php:25
+#: templates/parts/properties-application-button.php:36
 msgctxt "single"
 msgid "Apply for this position"
 msgstr ""
 
-#: templates/parts/properties-application-button.php:33
+#: templates/parts/properties-application-button.php:44
 msgid "back to list"
+msgstr ""
+
+#: admin/intro.js:10
+msgid "Next"
+msgstr ""
+
+#: admin/intro.js:12
+msgid "Done"
+msgstr ""
+
+#: admin/intro.js:18
+msgid "Intro"
+msgstr ""
+
+#: admin/intro.js:19
+msgid "Thank you for installing Personio Integration Light. We will show you some basics to use this plugin."
+msgstr ""
+
+#: admin/intro.js:23
+msgid "Your positions"
+msgstr ""
+
+#: admin/intro.js:24
+msgid "This is the list of your positions from Personio. This will be updated daily or if you run the import."
+msgstr ""
+
+#: admin/intro.js:28
+msgid "Change the view"
+msgstr ""
+
+#: admin/intro.js:29
+msgid "Choose the columns you need in you position list. Which columns are filled depends on the data in your Personio account."
+msgstr ""
+
+#: admin/intro.js:33
+msgid "Run the import"
+msgstr ""
+
+#: admin/intro.js:34
+msgid "On this button you could run the import of new Positions any time. They can be displayed immediately afterwards in the frontend to your visitors."
+msgstr ""
+
+#: admin/intro.js:38
+msgid "Frontend view"
+msgstr ""
+
+#: admin/intro.js:39
+msgid "Here you will find the link to the positions in your frontend. You can configured the view in the settings."
+msgstr ""
+
+#: admin/intro.js:44
+msgid "The settings of this plugin help you to individualize the use of your Personio positions on your website."
+msgstr ""
+
+#: admin/intro.js:47
+msgid "Thank you for using Personio Integration Light"
+msgstr ""
+
+#. translators: %1$s, %2$s and %3$s will be replaced by URLs
+#: admin/intro.js:49
+msgid "If you have any questions, please do not hesitate to ask them <a href=\"%1$s\" target=\"_blank\">in our forum (opens new window)</a>.<br>You are also welcome to <a href=\"%2$s\" target=\"_blank\">rate the plugin (opens new window)</a>.<br>If you also want to collect applications in your website, take a look at our <a href=\"%3$s\" target=\"_blank\">Personio Integration Pro (opens new window)</a>."
+msgstr ""
+
+#: admin/js.js:6
+msgid "Get Personio Integration Pro"
+msgstr ""
+
+#: admin/js.js:12
+msgid "Rate us"
+msgstr ""
+
+#: admin/js.js:57
+msgid "Import in progress"
+msgstr ""
+
+#: admin/js.js:81
+msgid "<strong>Are you sure you want to delete all positions in WordPress?</strong><br>Hint: the positions in Personio are not influenced."
+msgstr ""
+
+#: admin/js.js:87
+msgid "Yes"
+msgstr ""
+
+#: admin/js.js:92
+msgid "No"
+msgstr ""
+
+#: admin/js.js:108
+msgid "Use applications with Personio Integration Pro"
+msgstr ""
+
+#: admin/js.js:110
+msgid "With <strong>Personio Integration Pro</strong> you will be able to capture applications within your website.<br>Several form templates are available for this purpose, which you can also customize individually.<br>Incoming applications are automatically transferred to your Personio account via the Personio API."
+msgstr ""
+
+#: admin/js.js:116
+msgid "Get more information"
+msgstr ""
+
+#: admin/js.js:121
+msgid "I'll look later"
+msgstr ""
+
+#: admin/js.js:162
+msgid "<strong>Error during import of positions.</strong> The following error occurred:"
+msgstr ""
+
+#: admin/js.js:170
+msgid "Error during import of positions"
+msgstr ""
+
+#: admin/js.js:178
+#: admin/js.js:205
+msgid "OK"
+msgstr ""
+
+#: admin/js.js:197
+msgid "Positions has been imported"
 msgstr ""
 
 #: blocks/application-button/build/index.js:131
@@ -2591,84 +2781,84 @@ msgstr ""
 msgid "Provides a Gutenberg Block to show the application button for single position."
 msgstr ""
 
-#: blocks/description/build/index.js:230
-#: blocks/description/build/index.js:154
-msgid "Template"
-msgstr ""
-
 #: blocks/description/build/index.js:300
 #: blocks/description/build/index.js:214
 msgid "Provides a Gutenberg Block for the description of a single position managed by Personio."
 msgstr ""
 
-#: blocks/details/build/index.js:242
+#: blocks/details/build/index.js:282
 #: blocks/show/build/index.js:282
-#: blocks/details/build/index.js:165
+#: blocks/details/build/index.js:206
 #: blocks/show/build/index.js:216
 msgid "Category"
 msgstr ""
 
-#: blocks/details/build/index.js:245
+#: blocks/details/build/index.js:285
 #: blocks/show/build/index.js:285
-#: blocks/details/build/index.js:166
+#: blocks/details/build/index.js:207
 #: blocks/show/build/index.js:217
 msgid "Contract type"
 msgstr ""
 
-#: blocks/details/build/index.js:248
+#: blocks/details/build/index.js:288
 #: blocks/show/build/index.js:288
-#: blocks/details/build/index.js:167
+#: blocks/details/build/index.js:208
 #: blocks/show/build/index.js:218
 msgid "Location"
 msgstr ""
 
-#: blocks/details/build/index.js:251
+#: blocks/details/build/index.js:291
 #: blocks/show/build/index.js:291
-#: blocks/details/build/index.js:168
+#: blocks/details/build/index.js:209
 #: blocks/show/build/index.js:219
 msgid "Department"
 msgstr ""
 
-#: blocks/details/build/index.js:254
+#: blocks/details/build/index.js:294
 #: blocks/show/build/index.js:294
-#: blocks/details/build/index.js:169
+#: blocks/details/build/index.js:210
 #: blocks/show/build/index.js:220
 msgid "Experience"
 msgstr ""
 
-#: blocks/details/build/index.js:257
+#: blocks/details/build/index.js:297
 #: blocks/show/build/index.js:297
-#: blocks/details/build/index.js:170
+#: blocks/details/build/index.js:211
 #: blocks/show/build/index.js:221
 msgid "Years of experience"
 msgstr ""
 
-#: blocks/details/build/index.js:269
-#: blocks/details/build/index.js:180
+#: blocks/details/build/index.js:309
+#: blocks/details/build/index.js:222
 msgid "With colon"
 msgstr ""
 
-#: blocks/details/build/index.js:273
-#: blocks/details/build/index.js:185
+#: blocks/details/build/index.js:313
+#: blocks/details/build/index.js:227
 msgid "With line break"
 msgstr ""
 
-#: blocks/details/build/index.js:336
-#: blocks/details/build/index.js:236
+#: blocks/details/build/index.js:317
+#: blocks/details/build/index.js:235
+msgid "Separator"
+msgstr ""
+
+#: blocks/details/build/index.js:380
+#: blocks/details/build/index.js:288
 msgid "Details"
 msgstr ""
 
-#: blocks/details/build/index.js:337
-#: blocks/details/build/index.js:237
+#: blocks/details/build/index.js:381
+#: blocks/details/build/index.js:289
 msgid "Provides a Gutenberg Block to details of a single position managed by Personio."
 msgstr ""
 
 #: blocks/filter-list/build/index.js:236
 #: blocks/filter-select/build/index.js:236
-#: blocks/list/build/index.js:267
+#: blocks/list/build/index.js:269
 #: blocks/filter-list/build/index.js:165
 #: blocks/filter-select/build/index.js:164
-#: blocks/list/build/index.js:207
+#: blocks/list/build/index.js:208
 msgid "Choose filter"
 msgstr ""
 
@@ -2716,45 +2906,50 @@ msgstr ""
 msgid "Provides a Gutenberg block to show filter as dropdown-list for Personio Positions."
 msgstr ""
 
-#: blocks/list/build/index.js:261
-#: blocks/list/build/index.js:200
+#: blocks/list/build/index.js:262
+#: blocks/list/build/index.js:199
+msgid "Please use the Filter Block instead of this options."
+msgstr ""
+
+#: blocks/list/build/index.js:263
+#: blocks/list/build/index.js:201
 msgid "Show filter"
 msgstr ""
 
-#: blocks/list/build/index.js:274
-#: blocks/list/build/index.js:217
+#: blocks/list/build/index.js:276
+#: blocks/list/build/index.js:218
 msgid "Type of filter"
 msgstr ""
 
-#: blocks/list/build/index.js:299
-#: blocks/list/build/index.js:249
+#: blocks/list/build/index.js:301
+#: blocks/list/build/index.js:250
 msgid "Sort direction"
 msgstr ""
 
-#: blocks/list/build/index.js:330
-#: blocks/list/build/index.js:278
+#: blocks/list/build/index.js:332
+#: blocks/list/build/index.js:279
 msgid "Link title"
 msgstr ""
 
-#: blocks/list/build/index.js:334
+#: blocks/list/build/index.js:336
 #: blocks/show/build/index.js:272
-#: blocks/list/build/index.js:283
+#: blocks/list/build/index.js:284
 #: blocks/show/build/index.js:205
 msgid "show excerpt"
 msgstr ""
 
-#: blocks/list/build/index.js:347
-#: blocks/list/build/index.js:300
+#: blocks/list/build/index.js:349
+#: blocks/list/build/index.js:301
 msgid "View content"
 msgstr ""
 
-#: blocks/list/build/index.js:351
-#: blocks/list/build/index.js:305
+#: blocks/list/build/index.js:353
+#: blocks/list/build/index.js:306
 msgid "View application link"
 msgstr ""
 
-#: blocks/list/build/index.js:415
-#: blocks/list/build/index.js:357
+#: blocks/list/build/index.js:417
+#: blocks/list/build/index.js:358
 msgid "Provides a Gutenberg Block to show a list of positions provided by Personio."
 msgstr ""
 
