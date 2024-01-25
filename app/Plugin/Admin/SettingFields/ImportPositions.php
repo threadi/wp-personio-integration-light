@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Plugin\Schedules\Import;
 
 /**
  * Initialize the field.
@@ -28,8 +29,8 @@ class ImportPositions {
 		$import_is_running = absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) );
 		if ( 0 === $import_is_running ) {
 			?>
-			<p><a href="<?php echo esc_url( Helper::get_import_url() ); ?>" class="button button-primary personio-integration-import-hint"><?php echo esc_html__( 'Run import', 'personio-integration-light' ); ?></a></p>
-			<p><i><?php echo esc_html__( 'Hint', 'personio-integration-light' ); ?>:</i> <?php echo esc_html__( 'Performing the import could take a few minutes. If a timeout occurs, a manual import is not possible this way. Then the automatic import should be used.', 'personio-integration-light' ); ?></p>
+			<p><a href="<?php echo esc_url( Helper::get_import_url() ); ?>" class="button button-primary personio-integration-import-hint"><?php echo esc_html__( 'Run import of positions now', 'personio-integration-light' ); ?></a></p>
+			<p><i><?php echo esc_html__( 'Hint', 'personio-integration-light' ); ?>:</i> <?php echo esc_html__( 'This will import positions from your Personio account in your Wordpress-website.', 'personio-integration-light' ); ?></p>
 			<?php
 		} else {
 			?>

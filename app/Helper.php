@@ -535,7 +535,7 @@ class Helper {
 	}
 
 	/**
-	 * Return the plugin support url: the forum on wordpress.org.
+	 * Return the plugin support url: the forum on WordPress.org.
 	 *
 	 * @return string
 	 */

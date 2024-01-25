@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use WP_Post;
 use Yoast\WP\SEO\Presentations\Indexable_Presentation;
@@ -61,9 +62,11 @@ class Third_Party_Plugins {
 
 		// Plugin Yoast.
 		add_filter( 'wpseo_opengraph_desc', array( $this, 'yoast' ), 10, 2 );
+		add_filter( 'manage_edit-'.PersonioPosition::get_instance()->get_name().'_columns', array( $this, 'remove_yoast_columns' ) );
 
 		// Plugin Rank Math.
 		add_filter( 'rank_math/frontend/description', array( $this, 'rank_math' ) );
+		add_filter( 'manage_edit-'.PersonioPosition::get_instance()->get_name().'_columns', array( $this, 'remove_rank_math_columns' ) );
 
 		// Plugin OG.
 		add_filter( 'og_array', array( $this, 'og_optimizer' ) );
@@ -81,6 +84,9 @@ class Third_Party_Plugins {
 		// Plugin SEOPress.
 		add_filter( 'seopress_social_og_desc', array( $this, 'seopress_og_description' ) );
 		add_filter( 'seopress_titles_desc', array( $this, 'seopress_titles' ) );
+
+		// Plugin Simple Custom Post Order.
+		add_filter( 'admin_init', array($this, 'scpo_remove_filter' ), 11 );
 	}
 
 	/**
@@ -292,5 +298,62 @@ class Third_Party_Plugins {
 
 		// return resulting text.
 		return $description;
+	}
+
+	/**
+	 * Prevent usage of order our own ctp positions via plugin Simple Custom Order.
+	 *
+	 * @return void
+	 */
+	public function scpo_remove_filter(): void {
+		global $pagenow;
+		if( 'edit-'.WP_PERSONIO_INTEGRATION_MAIN_CPT.'.php' === $pagenow ) {
+			wp_dequeue_script( 'scporderjs' );
+		}
+	}
+
+	/**
+	 * Remove Yoast's columns from our own cpt.
+	 *
+	 * @param array $columns List of columns.
+	 *
+	 * @return array
+	 */
+	public function remove_yoast_columns( array $columns ): array {
+		if( isset( $columns['wpseo-score'] ) ) {
+			unset( $columns['wpseo-score'] );
+			unset( $columns['wpseo-score-readability'] );
+			unset( $columns['wpseo-title'] );
+			unset( $columns['wpseo-metadesc'] );
+			unset( $columns['wpseo-focuskw'] );
+			unset( $columns['wpseo-links'] );
+			unset( $columns['wpseo-linked'] );
+		}
+		return $columns;
+	}
+
+	/**
+	 * Remove Rank Math's columns from our own cpt.
+	 *
+	 * @param array $columns List of columns.
+	 *
+	 * @return array
+	 */
+	public function remove_rank_math_columns( array $columns ): array {
+		if( isset( $columns['rank_math_seo_details'] ) ) {
+			unset( $columns['rank_math_seo_details'] );
+			unset( $columns['rank_math_title'] );
+			unset( $columns['rank_math_description'] );
+		}
+		return $columns;
+	}
+
+	/**
+	 * Remove SEO Frameworks meta box from our own cpt as it could not be saved.
+	 *
+	 * @return void
+	 */
+	public function remove_seo_framework_meta_box(): void {
+		remove_meta_box('tsf-inpost-box', WP_PERSONIO_INTEGRATION_MAIN_CPT, 'normal' );
 	}
 }

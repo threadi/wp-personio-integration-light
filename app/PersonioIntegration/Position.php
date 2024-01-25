@@ -338,7 +338,10 @@ class Position {
 	 */
 	public function get_term_by_field( string $taxonomy, string $field ): string {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
-			$this->taxonomy_terms[ $taxonomy ] = get_the_terms( $this->data['ID'], $taxonomy );
+			$taxonomy_terms = get_the_terms( $this->data['ID'], $taxonomy );
+			if( ! is_wp_error( $taxonomy_terms ) ) {
+				$this->taxonomy_terms[ $taxonomy ] = $taxonomy_terms;
+			}
 		}
 		if ( ! empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$term_string = '';

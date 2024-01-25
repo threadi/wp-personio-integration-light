@@ -464,17 +464,18 @@ class Settings {
 				'callback' => '__return_true',
 				'fields'   => array(
 					'personioIntegrationImportNow' => array(
-						'label'    => __( 'Start import now', 'personio-integration-light' ),
+						'label'    => __( 'Get open positions from Personio', 'personio-integration-light' ),
 						'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\ImportPositions', 'get' ),
 					),
 					'personioIntegrationDeleteNow' => array(
-						'label'    => __( 'Delete positions', 'personio-integration-light' ),
+						'label'    => __( 'Delete local positions', 'personio-integration-light' ),
 						'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\DeletePositions', 'get' ),
 					),
 					'personioIntegrationEnablePositionSchedule' => array(
 						'label'               => __( 'Enable automatic import', 'personio-integration-light' ),
 						'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
+						'description' => __( 'The automatic import is run once per day. You don\'t have to worry about updating your jobs on the website yourself.', 'personio-integration-light' ),
 						/* translators: %1$s is replaced with "string" */
 						'pro_hint'            => __( 'Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' ),
 						'register_attributes' => array(

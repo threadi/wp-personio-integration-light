@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
@@ -101,13 +102,15 @@ class PersonioPosition extends Post_Type {
 		// edit positions.
 		add_action( 'admin_init', array( $this, 'remove_cpt_supports' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_filter_type' ) );
 
-		// search hooks.
+		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
+		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'add_sitemap_data' ), 10, 2 );
 	}
 
 	/**
@@ -292,7 +295,7 @@ class PersonioPosition extends Post_Type {
 		/**
 		 * Change settings for output.
 		 *
-		 * @since 2.0.0 Available since first release.
+		 * @since 2.0.0 Available since 2.0.0.
 		 *
 		 * @param array $personio_attributes The attributes used for this output.
 		 * @param array $default_attributes The default attributes.
@@ -908,28 +911,28 @@ class PersonioPosition extends Post_Type {
 	public function add_meta_box(): void {
 		// TODO für Pro ausblendbar machen.
 		add_meta_box(
-			'personio-edit-hints',
+			$this->get_name().'-edit-hints',
 			__( 'About this page', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_data_hint' ),
 			$this->get_name()
 		);
 
 		add_meta_box(
-			'personio-position-personio-id',
+			$this->get_name().'-id',
 			__( 'PersonioID', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_personio_id' ),
 			$this->get_name()
 		);
 
 		add_meta_box(
-			'personio-position-title',
+			$this->get_name().'-title',
 			__( 'Title', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_title' ),
 			$this->get_name()
 		);
 
 		add_meta_box(
-			'personio-position-text',
+			$this->get_name().'-text',
 			__( 'Description', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_description' ),
 			$this->get_name()
@@ -942,7 +945,7 @@ class PersonioPosition extends Post_Type {
 		foreach ( $taxonomies_obj->get_taxonomies() as $taxonomy_name => $settings ) {
 			$labels = $taxonomies_obj->get_taxonomy_label( $taxonomy_name );
 			add_meta_box(
-				'personio-position-taxonomy-' . $taxonomy_name,
+				$this->get_name().'-taxonomy-' . $taxonomy_name,
 				$labels['name'],
 				array( $this, 'get_meta_box_for_taxonomy' ),
 				$this->get_name(),
@@ -952,12 +955,63 @@ class PersonioPosition extends Post_Type {
 
 		// add meta box with Pro-hint for subcompany-field which is only in Pro.
 		add_meta_box(
-			'personio-position-taxonomy-subcompany',
+			$this->get_name().'-taxonomy-subcompany',
 			__( 'Subcompany', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_pro_taxonomy' ),
 			$this->get_name(),
 			'side'
 		);
+	}
+
+	/**
+	 * Remove all meta boxes which are not part of this post type.
+	 *
+	 * @return void
+	 */
+	public function remove_third_party_meta_boxes(): void {
+		global $wp_meta_boxes;
+
+		/**
+		 * Get the actual screen.
+		 */
+		if ( empty( $screen ) )
+			$screen = get_current_screen();
+		elseif ( is_string( $screen ) )
+			$screen = convert_to_screen( $screen );
+
+		$page = $screen->id;
+
+		// bail if this is not our own cpt.
+		if( WP_PERSONIO_INTEGRATION_MAIN_CPT !== $page ) {
+			return;
+		}
+
+		$false = false;
+		/**
+		 * Prevent removing of all meta boxes in cpt edit view.
+		 *
+		 * Caution: the boxes will not be able to be saved.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param bool $false Set true to prevent removing of each meta box.
+		 */
+		if( apply_filters( 'personio_integration_get_template', $false ) ) {
+			return;
+		}
+
+		/**
+		 * Loop through the boxes for this cpt and remove all which do not belong to our plugin.
+		 */
+		foreach( $wp_meta_boxes[$page] as $context => $priority_boxes ) {
+			foreach( $priority_boxes as $boxes ) {
+				foreach( $boxes as $box ) {
+					if ( false !== $box && false === str_contains( $box['id'], $this->get_name() ) ) {
+						remove_meta_box( $box['id'], $page, $context );
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -1020,7 +1074,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
 		$position_obj  = Positions::get_instance()->get_position( $post->ID );
-		$taxonomy_name = str_replace( 'personio-position-taxonomy-', '', $attr['id'] );
+		$taxonomy_name = str_replace( $this->get_name().'-taxonomy-', '', $attr['id'] );
 		$content       = $position_obj->get_term_by_field( $taxonomy_name, 'name' );
 		if ( empty( $content ) ) {
 			echo '<i>' . esc_html__( 'No data', 'personio-integration-light' ) . '</i>';
@@ -1199,5 +1253,34 @@ class PersonioPosition extends Post_Type {
 			),
 			( $without_admin_url ? '' : get_admin_url() ) . 'edit.php'
 		);
+	}
+
+	/**
+	 * Change sitemapXML-data for positions.
+	 *
+	 * Add last modification date and priority.
+	 *
+	 * @param array   $entry
+	 * @param WP_Post $post
+	 *
+	 * @return array
+	 */
+	public function add_sitemap_data( array $entry, WP_Post $post ): array {
+		if( $this->get_name() === get_post_type( $post ) ) {
+			$position = Positions::get_instance()->get_position( $post->ID );
+			$entry['lastmod'] = gmdate( 'Y-m-d', $position->get_created_at() );
+			$entry['priority'] = 0.8;
+
+			/**
+			 * Filter the data for the sitemap-entry for single position.
+			 *
+			 * @since 3.0.0 Available since 3.0.0.
+			 *
+			 * @param array $entry List of data for the sitemap.xml of this single position.
+			 * @param Personio $position The Personio-object.
+			 */
+			return apply_filters( 'personio_integration_sitemap_entry', $entry, $position );
+		}
+		return $entry;
 	}
 }

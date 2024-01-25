@@ -173,7 +173,7 @@ class Init {
 		if ( Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationDisableListSlug', 0 ) ) ) {
 			$admin_bar->add_menu(
 				array(
-					'id'     => 'personio-position-list',
+					'id'     => PersonioPosition::get_instance()->get_name().'-archive',
 					'parent' => 'site-name',
 					'title'  => __( 'Personio Positions', 'personio-integration-light' ),
 					'href'   => get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT ),
@@ -225,7 +225,7 @@ class Init {
 			'personio-integration-styles',
 			Helper::get_plugin_url() . 'css/styles.css',
 			array(),
-			filemtime( trailingslashit( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'css/styles.css' )
+			filemtime( Helper::get_plugin_path() . 'css/styles.css' )
 		);
 
 		/**
@@ -236,7 +236,7 @@ class Init {
 				'personio-integration-additional-styles',
 				Helper::get_plugin_url() . 'blocks/list/build/style-index.css',
 				array(),
-				filemtime( trailingslashit( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) ) . 'blocks/list/build/style-index.css' )
+				filemtime( Helper::get_plugin_path() . 'blocks/list/build/style-index.css' )
 			);
 		}
 	}
