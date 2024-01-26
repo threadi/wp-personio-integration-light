@@ -684,7 +684,7 @@ function personio_integration_extend_search( $search, $wp_query ): string {
                     ON ".$wpdb->term_relationships.".term_taxonomy_id = ".$wpdb->term_taxonomy.".term_taxonomy_id
                 WHERE taxonomy = 'personioKeywords'
                     AND object_id = ".$wpdb->posts.".ID
-                    AND ".$wpdb->terms.".name LIKE '%".$term."%'
+                    AND ".$wpdb->terms.".name LIKE '%".esc_sql( $term )."%'
             )
         )
     )";

@@ -2,11 +2,11 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
 Requires at least: 5.9.3
-Tested up to: 6.4.2
+Tested up to: 6.4.3
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.6.1
+Stable tag: 2.6.2
 
 == Description ==
 
@@ -348,3 +348,8 @@ Yes, it is without any further settings.
 * Better check for third party functions
 * Compatibility with WordPress 6.4.2
 * Fixed missing styles with some blocks in Block Editor
+
+= 2.6.2 =
+* Compatibility with WordPress 6.4.3
+* Updated dependencies for Gutenberg-scripts
+* Fix for possible code injection in search
