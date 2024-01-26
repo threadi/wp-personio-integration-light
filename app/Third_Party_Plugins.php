@@ -86,7 +86,10 @@ class Third_Party_Plugins {
 		add_filter( 'seopress_titles_desc', array( $this, 'seopress_titles' ) );
 
 		// Plugin Simple Custom Post Order.
-		add_filter( 'admin_init', array($this, 'scpo_remove_filter' ), 11 );
+		add_filter( 'admin_init', array( $this, 'scpo_remove_filter' ), 11 );
+
+		// Plugin TranslatePress.
+		add_filter( 'trp_translating_capability', array( $this, 'translatepress_hide_option' ) );
 	}
 
 	/**
@@ -355,5 +358,22 @@ class Third_Party_Plugins {
 	 */
 	public function remove_seo_framework_meta_box(): void {
 		remove_meta_box('tsf-inpost-box', WP_PERSONIO_INTEGRATION_MAIN_CPT, 'normal' );
+	}
+
+	/**
+	 * Hide translation-option on our own custom post type pages.
+	 *
+	 * @param string $capability The actual capability.
+	 *
+	 * @return string
+	 */
+	public function translatepress_hide_option( string $capability ): string {
+		if( !is_admin() ) {
+			$object_id = get_queried_object_id();
+			if( get_post_type($object_id) === PersonioPosition::get_instance()->get_name() ) {
+				return 'god';
+			}
+		}
+		return $capability;
 	}
 }

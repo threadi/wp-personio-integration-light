@@ -445,7 +445,17 @@ class PersonioPosition extends Post_Type {
 
 		// set limit.
 		$limit_by_wp                  = $personio_attributes['limit'] ? ( absint( get_option( 'posts_per_page' ) ) > 10 ? absint( get_option( 'posts_per_page' ) ) : 10 ) : 10;
-		$personio_attributes['limit'] = apply_filters( 'personio_integration_limit', $limit_by_wp, $personio_attributes['limit'] );
+		$limit_by_list = $personio_attributes['limit'];
+
+		/**
+		 * Change the limit for positions in frontend.
+		 *
+		 * @since 2.0.0 Available since 2.0.0.
+		 *
+		 * @param int $limit_by_wp The limit.
+		 * @param int $limit_by_list The limit for this list.
+		 */
+		$personio_attributes['limit'] = apply_filters( 'personio_integration_limit', $limit_by_wp, $limit_by_list );
 
 		// get the positions.
 		$positions                         = $positions_obj->get_positions( $personio_attributes['limit'], $personio_attributes );
@@ -454,7 +464,7 @@ class PersonioPosition extends Post_Type {
 		/**
 		 * Change settings for output.
 		 *
-		 * @since 2.0.0 Available since first release.
+		 * @since 1.2.0 Available since 1.2.0.
 		 *
 		 * @param array $personio_attributes The attributes used for this output.
 		 * @param array $attribute_defaults The default attributes.
@@ -1169,14 +1179,15 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Convert term-name to term-id if it is set in shortcode-attributes and configure shortcode-attribute.
+	 * Check for allowed filter-type.
 	 *
 	 * @param array $settings List of settings for a shortcode with 3 parts: defaults, settings & attributes.
 	 * @return array
 	 */
 	public function check_filter_type( array $settings ): array {
 		if ( ! empty( $settings['attributes']['filtertype'] ) ) {
-			if ( ! in_array( $settings['attributes']['filtertype'], array( 'linklist', 'select' ), true ) ) {
+			$filter_types = Helper::get_filter_types();
+			if ( ! empty( $filter_types[$settings['attributes']['filtertype']] ) ) {
 				$settings['attributes']['filtertype'] = 'linklist';
 			}
 		}
@@ -1233,7 +1244,7 @@ class PersonioPosition extends Post_Type {
                     ON ' . $wpdb->term_relationships . '.term_taxonomy_id = ' . $wpdb->term_taxonomy . ".term_taxonomy_id
                 WHERE taxonomy = 'personioKeywords'
                     AND object_id = " . $wpdb->posts . '.ID
-                    AND ' . $wpdb->terms . ".name LIKE '%" . $term . "%'
+                    AND ' . $wpdb->terms . ".name LIKE '%" . esc_sql( $term ) . "%'
             )
         )
     )";

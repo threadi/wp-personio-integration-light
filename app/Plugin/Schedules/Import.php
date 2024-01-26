@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Plugin\Schedules_Base;
+use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object for this schedule.
@@ -30,12 +31,14 @@ class Import extends Schedules_Base {
 	 * Initialize this schedule.
 	 */
 	public function __construct() {
-		// set interval from settings.
-		$this->interval = get_option( 'personioIntegrationPositionScheduleInterval' );
+		// get interval from settings.
+		$this->interval = Settings::get_instance()->get_setting( 'personioIntegrationPositionScheduleInterval' );
 	}
 
 	/**
 	 * Install this schedule, if it does not exist atm.
+	 *
+	 * TODO in base auslagern?
 	 *
 	 * @return void
 	 */

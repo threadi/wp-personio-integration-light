@@ -1,6 +1,6 @@
 {
     "name": "threadi/personio-integration-light",
-    "description": "This is a plugin which supports the embedding of Personio in WordPress",
+    "description": "This plugin supports the embedding of Personio in WordPress.",
     "authors": [
         {
             "name": "Thomas Zwirner",

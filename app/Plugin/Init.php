@@ -21,7 +21,6 @@ use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
 use PersonioIntegrationLight\Widgets\Widgets;
 use WP_Admin_Bar;
-use WP_Post;
 
 /**
  * Initialize this plugin.

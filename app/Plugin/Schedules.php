@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the import-schedule.
+ * File to handle every schedule in this plugin.
  *
  * @package personio-intregation.
  */

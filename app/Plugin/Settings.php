@@ -18,7 +18,7 @@ use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl;
 
 /**
- * Initialize this plugin.
+ * Object tot handle settings.
  */
 class Settings {
 	/**
@@ -476,7 +476,6 @@ class Settings {
 						'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'description' => __( 'The automatic import is run once per day. You don\'t have to worry about updating your jobs on the website yourself.', 'personio-integration-light' ),
-						/* translators: %1$s is replaced with "string" */
 						'pro_hint'            => __( 'Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' ),
 						'register_attributes' => array(
 							'type' => 'integer',
@@ -736,7 +735,7 @@ class Settings {
 	}
 
 	/**
-	 * Return a single actual setting.
+	 * Return the value of a single actual setting.
 	 *
 	 * @param string $setting The requested setting as string.
 	 *

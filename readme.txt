@@ -349,6 +349,11 @@ Yes, it is without any further settings.
 * Compatibility with WordPress 6.4.2
 * Fixed missing styles with some blocks in Block Editor
 
+= 2.6.2 =
+* Compatibility with WordPress 6.4.3
+* Updated dependencies for Gutenberg-scripts
+* Fix for possible code injection in search
+
 = 3.0.0 =
 * Completely revised plugin
 * Now only compatible with PHP 8.0 or newer
