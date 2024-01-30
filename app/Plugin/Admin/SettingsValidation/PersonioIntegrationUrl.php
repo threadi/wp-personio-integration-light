@@ -45,7 +45,6 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 			$error = false;
 			if ( 0 === strlen( $value ) ) {
 				add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'The specification of the Personio URL is mandatory.', 'personio-integration-light' ) );
-
 				$error = true;
 			}
 			if ( self::has_size( $value ) ) {
@@ -70,12 +69,6 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 						$transient_obj->save();
 						$error = true;
 						$value = '';
-					} else {
-						// reset options for the import.
-						foreach ( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_active_languages() as $language_name => $label ) {
-							delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $language_name );
-							delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $language_name );
-						}
 					}
 				}
 			}

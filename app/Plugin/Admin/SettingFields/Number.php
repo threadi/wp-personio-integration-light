@@ -27,7 +27,7 @@ class Number {
 	public static function get( array $attributes ): void {
 		if ( ! empty( $attributes['fieldId'] ) ) {
 			// get value from config.
-			$value = get_option( $attributes['fieldId'], '' );
+			$value = get_option( $attributes['fieldId'] );
 
 			// or get it from request.
 			$request_value = sanitize_text_field( wp_unslash( filter_input( INPUT_POST, $attributes['fieldId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );

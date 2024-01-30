@@ -13,7 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\Plugin\Schedules\Import;
 
 /**
  * Initialize the field.

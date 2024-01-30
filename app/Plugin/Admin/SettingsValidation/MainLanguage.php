@@ -28,10 +28,10 @@ class MainLanguage extends Settings_Validation_Base {
 	public static function validate( string $value ): string {
 		if ( ! Helper::is_admin_api_request() ) {
 			if ( ! self::has_size( $value ) ) {
-				add_settings_error( 'personioIntegrationMainLanguage', 'personioIntegrationMainLanguage', __( 'No main language was specified. The specification of a main language is mandatory.', 'personio-integration-light' ) );
+				add_settings_error( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, __( 'No main language was specified. The specification of a main language is mandatory.', 'personio-integration-light' ) );
 				$value = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language();
 			} elseif ( ! self::check_language( $value ) ) {
-				add_settings_error( 'personioIntegrationMainLanguage', 'personioIntegrationMainLanguage', __( 'The selected main language is not activated as a language.', 'personio-integration-light' ) );
+				add_settings_error( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, __( 'The selected main language is not activated as a language.', 'personio-integration-light' ) );
 				$value = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language();
 			}
 		}

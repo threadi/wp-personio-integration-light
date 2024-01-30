@@ -36,8 +36,8 @@ class MultiSelect {
 			$attributes = apply_filters( 'personio_integration_settings_multiselect_attr', $attributes );
 
 			// get value from config.
-			$actual_values = get_option( $attributes['fieldId'], array() );
-			if ( empty( $actual_values ) ) {
+			$actual_values = get_option( $attributes['fieldId'] );
+			if ( empty( $actual_values ) || ! is_array( $actual_values ) ) {
 				$actual_values = array();
 			}
 

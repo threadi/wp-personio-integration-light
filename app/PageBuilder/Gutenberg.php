@@ -757,7 +757,7 @@ class Gutenberg extends PageBuilder_Base {
 		}
 
 		// get separator.
-		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator', ', ' ) . ' ';
+		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator' ) . ' ';
 		if ( ! empty( $attributes['separator'] ) ) {
 			$separator = $attributes['separator'];
 		}
@@ -831,7 +831,7 @@ class Gutenberg extends PageBuilder_Base {
 
 		$attributes = array(
 			'personioid'              => absint( $position->get_personio_id() ),
-			'jobdescription_template' => empty( $attributes['template'] ) ? get_option( 'personioIntegrationTemplateJobDescription', 'default' ) : $attributes['template'],
+			'jobdescription_template' => empty( $attributes['template'] ) ? get_option( 'personioIntegrationTemplateJobDescription' ) : $attributes['template'],
 			'templates'               => array( 'content' ),
 			'styles'                  => implode( PHP_EOL, $styles_array ),
 			'classes'                 => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
@@ -874,8 +874,8 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return array
 	 */
 	public function remove_fse_hint( array $settings ): array {
-		if ( isset( $settings['settings_section_template_list']['fields']['fse_theme_hint'] ) ) {
-			unset( $settings['settings_section_template_list']['fields']['fse_theme_hint'] );
+		if ( isset( $settings['settings_section_template_list']['fields']['personio_integration_fse_theme_hint'] ) ) {
+			unset( $settings['settings_section_template_list']['fields']['personio_integration_fse_theme_hint'] );
 		}
 		return $settings;
 	}

@@ -19,10 +19,11 @@ class UrlTimeout {
 	/**
 	 * Validate the usage of languages.
 	 *
-	 * @param int $value Value of setting.
+	 * @param string|null $value Value of setting.
+	 *
 	 * @return int
 	 */
-	public static function validate( int $value ): int {
+	public static function validate( string|null $value ): int {
 		$value = absint( $value );
 		if ( 0 === $value ) {
 			add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'A timeout must have a value greater than 0.', 'personio-integration-light' ) );

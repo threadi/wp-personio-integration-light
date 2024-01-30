@@ -305,7 +305,7 @@ class Helper {
 	 * @return bool
 	 */
 	public static function is_personio_url_set(): bool {
-		$url = get_option( 'personioIntegrationUrl', '' );
+		$url = get_option( 'personioIntegrationUrl' );
 		return ! empty( $url );
 	}
 
@@ -456,7 +456,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_personio_url(): string {
-		return apply_filters( 'personio_integration_url', get_option( 'personioIntegrationUrl', '' ) );
+		return apply_filters( 'personio_integration_url', get_option( 'personioIntegrationUrl' ) );
 	}
 
 	/**

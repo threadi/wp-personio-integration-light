@@ -94,7 +94,7 @@ trait Helper {
 			delete_option( $taxonomy . '_children' );
 
 			// log in debug-mode.
-			if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
 				$log = new Log();
 				$log->add_log( 'Taxonomy ' . $taxonomy . ' has been deleted.', 'success' );
 			}

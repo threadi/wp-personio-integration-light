@@ -73,7 +73,7 @@ class Positions {
 	 */
 	public function get_position( int $post_id, string $language_code = '' ): Position {
 		if ( empty( $this->positions[ $post_id . $language_code ] ) ) {
-			$this->positions[ $post_id . $language_code ] = new Position( $post_id );
+			$this->positions[ $post_id . $language_code ] = apply_filters( 'personio_integration_get_position_obj', new Position( $post_id ) );
 			if ( ! empty( $language_code ) ) {
 				$this->positions[ $post_id . $language_code ]->set_lang( $language_code );
 			}

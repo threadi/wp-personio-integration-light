@@ -100,6 +100,11 @@ class Import {
 			$this->errors[] = __( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' );
 		}
 
+		// check if simpleXML exists.
+		if ( empty( $languages ) ) {
+			$this->errors[] = __( 'No active language configured. Please check your settings.', 'personio-integration-light' );
+		}
+
 		// marker if result should do nothing.
 		$do_nothing = false;
 
@@ -135,7 +140,7 @@ class Import {
 
 				// define settings for first request to get the last-modified-date.
 				$args     = array(
-					'timeout'     => get_option( 'personioIntegrationUrlTimeout', 30 ),
+					'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
 					'httpversion' => '1.1',
 					'redirection' => 0,
 				);
@@ -188,7 +193,7 @@ class Import {
 
 					// define settings for second request to get the contents.
 					$args     = array(
-						'timeout'     => get_option( 'personioIntegrationUrlTimeout', 30 ),
+						'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
 						'httpversion' => '1.1',
 						'redirection' => 0,
 					);

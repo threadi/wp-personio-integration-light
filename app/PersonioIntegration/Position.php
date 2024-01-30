@@ -31,7 +31,7 @@ class Position {
 	 *
 	 * @var array
 	 */
-	private array $data = array();
+	protected array $data = array();
 
 	/**
 	 * Marker for language this object is using for its texts.
@@ -71,7 +71,7 @@ class Position {
 		$this->log = new Log();
 
 		// get debug-mode.
-		$this->debug = 1 === absint( get_option( 'personioIntegration_debug', 0 ) );
+		$this->debug = 1 === absint( get_option( 'personioIntegration_debug' ) );
 
 		if ( $post_id > 0 ) {
 			// get the post as array to save it in this object.
@@ -520,7 +520,7 @@ class Position {
 	 */
 	public function get_excerpt(): false|string {
 		ob_start();
-		Templates::get_instance()->get_excerpt_template( $this, get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) );
+		Templates::get_instance()->get_excerpt_template( $this, get_option( 'personioIntegrationTemplateExcerptDefaults' ) );
 		return ob_get_clean();
 	}
 
@@ -554,19 +554,6 @@ class Position {
 			return get_permalink( $this->data['ID'] );
 		}
 		return '';
-	}
-
-	/**
-	 * Save sorting for this position.
-	 *
-	 * TODO move to pro.
-	 *
-	 * @param int $i The order to set.
-	 * @return void
-	 */
-	public function set_order( int $i ): void {
-		$this->data['menu_order'] = $i;
-		wp_insert_post( $this->data );
 	}
 
 	/**

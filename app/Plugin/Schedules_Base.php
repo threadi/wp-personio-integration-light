@@ -49,6 +49,17 @@ class Schedules_Base {
 	}
 
 	/**
+	 * Set the interval for this schedule.
+	 *
+	 * @param string $interval
+	 *
+	 * @return void
+	 */
+	public function set_interval( string $interval ): void {
+		$this->interval = $interval;
+	}
+
+	/**
 	 * Install this schedule, if it does not exist atm.
 	 *
 	 * @return void
@@ -78,5 +89,15 @@ class Schedules_Base {
 	 */
 	public function get_event(): false|object {
 		return wp_get_scheduled_event( $this->get_name() );
+	}
+
+	/**
+	 * Reset this schedule.
+	 *
+	 * @return void
+	 */
+	public function reset(): void {
+		$this->delete();
+		$this->install();
 	}
 }

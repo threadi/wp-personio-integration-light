@@ -169,7 +169,7 @@ class Init {
 	 * @return void
 	 */
 	public function add_custom_toolbar( WP_Admin_Bar $admin_bar ): void {
-		if ( Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationDisableListSlug', 0 ) ) ) {
+		if ( Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationDisableListSlug' ) ) ) {
 			$admin_bar->add_menu(
 				array(
 					'id'     => PersonioPosition::get_instance()->get_name().'-archive',

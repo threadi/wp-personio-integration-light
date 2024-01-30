@@ -268,7 +268,7 @@ class PersonioPosition extends Post_Type {
 
 		// do not output anything without ID.
 		if ( $personio_attributes['personioid'] <= 0 ) {
-			if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
 				return '<div><p>' . __( 'Detail-view called without the PersonioId of a position.', 'personio-integration-light' ) . '</p></div>';
 			}
 			return '';
@@ -280,7 +280,7 @@ class PersonioPosition extends Post_Type {
 
 		// do not show this position if it is not valid or could not be loaded.
 		if ( $position && ! $position->is_valid() || ! $position ) {
-			if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
 				return '<div><p>' . __( 'Given Id is not a valid position-Id.', 'personio-integration-light' ) . '</p></div>';
 			}
 			return '';
@@ -368,16 +368,16 @@ class PersonioPosition extends Post_Type {
 		// define the default values for each attribute.
 		$attribute_defaults = array(
 			'lang'                    => Languages::get_instance()->get_current_lang(),
-			'showfilter'              => ( 1 === absint( get_option( 'personioIntegrationEnableFilter', 0 ) ) ),
-			'filter'                  => implode( ',', get_option( 'personioIntegrationTemplateFilter', '' ) ),
-			'filtertype'              => get_option( 'personioIntegrationFilterType', 'select' ),
+			'showfilter'              => ( 1 === absint( get_option( 'personioIntegrationEnableFilter' ) ) ),
+			'filter'                  => implode( ',', get_option( 'personioIntegrationTemplateFilter' ) ),
+			'filtertype'              => get_option( 'personioIntegrationFilterType' ),
 			'template'                => '',
-			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentList', '' ) ),
-			'listing_template'        => get_option( 'personioIntegrationTemplateContentListingTemplate', 'default' ),
-			'jobdescription_template' => get_option( 'personioIntegrationTemplateListingContentTemplate', 'default' ),
-			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDefaults', '' ) ),
+			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentList' ) ),
+			'listing_template'        => get_option( 'personioIntegrationTemplateContentListingTemplate' ),
+			'jobdescription_template' => get_option( 'personioIntegrationTemplateListingContentTemplate' ),
+			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDefaults' ) ),
 			'ids'                     => '',
-			'donotlink'               => ( 0 === absint( get_option( 'personioIntegrationEnableLinkInList', 0 ) ) ),
+			'donotlink'               => ( 0 === absint( get_option( 'personioIntegrationEnableLinkInList' ) ) ),
 			'sort'                    => 'asc',
 			'sortby'                  => 'title',
 			'limit'                   => 0,
@@ -1169,9 +1169,9 @@ class PersonioPosition extends Post_Type {
 			'personioid'              => 0,
 			'lang'                    => Languages::get_instance()->get_main_language(),
 			'template'                => '',
-			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults', array() ) ),
-			'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription', 'default' ),
-			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDetail', array() ) ),
+			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults' ) ),
+			'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription' ),
+			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDetail' ) ),
 			'donotlink'               => 1,
 			'styles'                  => '',
 			'classes'                 => '',
@@ -1248,22 +1248,6 @@ class PersonioPosition extends Post_Type {
             )
         )
     )";
-	}
-
-	/**
-	 * Return the link to manage items of this cpt in backend.
-	 *
-	 * @param bool $without_admin_url True if the URL should contain get_admin_url().
-	 *
-	 * @return string
-	 */
-	public function get_link( bool $without_admin_url = false ): string {
-		return add_query_arg(
-			array(
-				'post_type' => self::get_instance()->get_name(),
-			),
-			( $without_admin_url ? '' : get_admin_url() ) . 'edit.php'
-		);
 	}
 
 	/**

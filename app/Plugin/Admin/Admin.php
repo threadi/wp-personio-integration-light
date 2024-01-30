@@ -14,6 +14,11 @@ use PersonioIntegrationLight\Plugin\Cli;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Transients;
 
+// prevent also other direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Helper-function for tasks in wp-admin.
  */
@@ -36,8 +41,7 @@ class Admin {
 	 *
 	 * @return void
 	 */
-	private function __clone() {
-	}
+	private function __clone() {}
 
 	/**
 	 * Return the instance of this Singleton object.

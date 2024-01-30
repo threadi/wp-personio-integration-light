@@ -71,12 +71,32 @@ class Cli {
 	/**
 	 * Resets all settings of this plugin.
 	 *
-	 * @param array $delete_data Marker to delete all data or not.
 	 * @since        1.0.0
+	 *
+	 * @param array $delete_data Marker to delete all data or not.
+	 *
 	 * @return void
-	 */
+	 * @noinspection PhpUnused
+	 **/
 	public function reset_plugin( array $delete_data = array() ): void {
 		Uninstaller::get_instance()->run( $delete_data );
+
+		/**
+		 * Run additional task for uninstallation.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $delete_data Marker to delete all data or not.
+		 */
+		do_action( 'personio_integration_uninstaller', $delete_data );
+
 		Installer::get_instance()->activation();
+
+		/**
+		 * Run additional task for installation.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 */
+		do_action( 'personio_integration_installer' );
 	}
 }

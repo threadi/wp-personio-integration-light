@@ -60,9 +60,6 @@ class Installer {
 	 */
 	public function activation(): void {
 		if ( is_multisite() ) {
-			// get original blog id.
-			$original_blog_id = get_current_blog_id();
-
 			// loop through the blogs.
 			foreach ( Helper::get_blogs() as $blog_id ) {
 				// switch to the blog.
@@ -73,7 +70,7 @@ class Installer {
 			}
 
 			// switch back to original blog.
-			switch_to_blog( $original_blog_id );
+			restore_current_blog();
 		} else {
 			// simply run the tasks on single-site-install.
 			$this->activation_tasks();
@@ -104,17 +101,16 @@ class Installer {
 				update_option( 'personioIntegrationPositionScheduleInterval', 'daily' );
 			}
 
-			// install import schedule.
-			$import_obj = new Import();
-			$import_obj->install();
+			// install schedules.
+			Schedules::get_instance()->create_schedules();
 
 			// set default settings.
 			$settings_obj = Settings::get_instance();
 			$settings_obj->set_settings();
 			foreach ( $settings_obj->get_settings() as $section_settings ) {
 				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-					if ( isset( $field_settings['default'] ) && ! get_option( $field_name ) ) {
-						add_option( $field_name, $field_settings['default'], '', true );
+					if ( isset( $field_settings['register_attributes']['default'] ) && ! get_option( $field_name ) ) {
+						add_option( $field_name, $field_settings['register_attributes']['default'], '', true );
 					}
 				}
 			}

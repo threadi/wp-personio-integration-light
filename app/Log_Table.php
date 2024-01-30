@@ -14,11 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use WP_List_Table;
 
-// prevent direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 /**
  * Handler for log-output in backend.
  */
@@ -30,9 +25,9 @@ class Log_Table extends WP_List_Table {
 	 */
 	public function get_columns(): array {
 		return array(
-			'state' => __( 'state', 'personio-integration-light' ),
-			'date'  => __( 'date', 'personio-integration-light' ),
-			'log'   => __( 'log', 'personio-integration-light' ),
+			'state' => __( 'State', 'personio-integration-light' ),
+			'date'  => __( 'Date', 'personio-integration-light' ),
+			'log'   => __( 'Log', 'personio-integration-light' ),
 		);
 	}
 
@@ -49,7 +44,13 @@ class Log_Table extends WP_List_Table {
 		if ( is_null( $order_by ) ) {
 			$order_by = 'date';
 		}
-		$order = sanitize_sql_orderby( filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
+		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if( ! is_null( $order ) ) {
+			$order = sanitize_sql_orderby( $order );
+		}
+		else {
+			$order = 'ASC';
+		}
 
 		// get results and return them.
 		if ( 'asc' === $order ) {

@@ -46,7 +46,7 @@ class Checkbox {
 					name="<?php echo esc_attr( $attributes['fieldId'] ); ?>"
 					value="1"
 				<?php
-				echo ( 1 === absint( get_option( $attributes['fieldId'], 0 ) ) || 1 === absint( filter_input( INPUT_GET, $attributes['fieldId'], FILTER_SANITIZE_NUMBER_INT ) ) ) ? ' checked="checked"' : '';
+				echo ( 1 === absint( get_option( $attributes['fieldId'] ) ) || 1 === absint( filter_input( INPUT_GET, $attributes['fieldId'], FILTER_SANITIZE_NUMBER_INT ) ) ) ? ' checked="checked"' : '';
 				?>
 				<?php echo esc_attr( $readonly ); ?>
 					class="personio-field-width"

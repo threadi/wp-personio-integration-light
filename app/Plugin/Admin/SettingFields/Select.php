@@ -27,7 +27,7 @@ class Select {
 	public static function get( array $attributes ): void {
 		if ( ! empty( $attributes['fieldId'] ) && ! empty( $attributes['options'] ) ) {
 			// get value from config.
-			$value = get_option( $attributes['fieldId'], '' );
+			$value = get_option( $attributes['fieldId'] );
 
 			// or get it from request.
 			$request_value = sanitize_text_field( wp_unslash( filter_input( INPUT_POST, $attributes['fieldId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
@@ -63,8 +63,8 @@ class Select {
 			if ( ! empty( $attributes['description'] ) ) {
 				echo '<p>' . wp_kses_post( $attributes['description'] ) . '</p>';
 			}
-		} elseif ( empty( $attributes['values'] ) && ! empty( $attributes['noValues'] ) ) {
-			echo '<p>' . esc_html( $attributes['noValues'] ) . '</p>';
+		} elseif ( empty( $attributes['options'] ) && ! empty( $attributes['no_values'] ) ) {
+			echo '<p>' . esc_html( $attributes['no_values'] ) . '</p>';
 		}
 
 		// show optional hint for our Pro-version.

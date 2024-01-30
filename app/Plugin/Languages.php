@@ -139,7 +139,7 @@ class Languages {
 	 */
 	public function get_active_languages(): array {
 		// get active languages from settings.
-		$active_languages = get_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION, array() );
+		$active_languages = get_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION );
 
 		// add active languages to returning list if they exist as language.
 		$languages = array();
@@ -213,7 +213,7 @@ class Languages {
 
 	/**
 	 * Return the current language in frontend and backend
-	 * depending on our own supported languages.
+	 * depending on our own supported languages as 2-char-string (e.g. "en").
 	 *
 	 * If detected language is not supported by our plugin, use the fallback language.
 	 *

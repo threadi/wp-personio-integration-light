@@ -28,7 +28,7 @@ class Multiple_Radios {
 		if ( ! empty( $attributes['fieldId'] ) ) {
 			foreach ( $attributes['options'] as $key => $language_name ) {
 				// get check state.
-				$checked = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, '' ) === $key ? ' checked="checked"' : '';
+				$checked = get_option( $attributes['fieldId'] ) === $key ? ' checked="checked"' : '';
 
 				// get title.
 				/* translators: %1$s is replaced with "string" */
