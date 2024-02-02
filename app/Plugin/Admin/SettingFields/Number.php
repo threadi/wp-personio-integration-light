@@ -42,7 +42,7 @@ class Number {
 			}
 
 			?>
-			<input type="number" id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" value="<?php echo esc_attr( $value ); ?>" class="personio-field-width"<?php echo isset( $attr['readonly'] ) && false !== $attr['readonly'] ? ' disabled="disabled"' : ''; ?> title="<?php echo esc_attr( $title ); ?>">
+			<input type="number" id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" value="<?php echo esc_attr( $value ); ?>" class="personio-field-width"<?php echo isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ? ' disabled="disabled"' : ''; ?> title="<?php echo esc_attr( $title ); ?>">
 			<?php
 			if ( ! empty( $attributes['description'] ) ) {
 				echo '<p>' . wp_kses_post( $attributes['description'] ) . '</p>';

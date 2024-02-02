@@ -206,7 +206,7 @@ class Admin {
 	 * @return void
 	 */
 	public function show_pro_hint( string $hint ): void {
-		echo '<p class="personio-pro-hint">' . sprintf( wp_kses_post( $hint ), '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">Personio Integration Pro (opens new window)</a>' ) . '</p>';
+		echo '<p class="personio-pro-hint">' . sprintf( wp_kses_post( $hint ), apply_filters( 'personio_integration_pro_hint_text', '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">Personio Integration Pro (opens new window)</a>' ) ) . '</p>';
 	}
 
 	/**

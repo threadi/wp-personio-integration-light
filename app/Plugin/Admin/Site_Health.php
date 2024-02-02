@@ -26,16 +26,14 @@ class Site_Health {
 	/**
 	 * Constructor for Init-Handler.
 	 */
-	private function __construct() {
-	}
+	private function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.
 	 *
 	 * @return void
 	 */
-	private function __clone() {
-	}
+	private function __clone() {}
 
 	/**
 	 * Return the instance of this Singleton object.
@@ -62,33 +60,45 @@ class Site_Health {
 	}
 
 	/**
+	 * Get list of endpoints the site health should use for our plugin.
+	 *
+	 * @return array
+	 */
+	private function get_endpoints(): array {
+		$list = array(
+			array(
+				'namespace' => 'personio/v1',
+				'route' => '/import_cron_checks/',
+				'callback' => array( $this, 'import_cron_checks' )
+			),
+			array(
+				'namespace' => 'personio/v1',
+				'route' => '/url_availability_checks/',
+				'callback' => array( $this, 'url_availability_checks' )
+			),
+		);
+		return apply_filters( 'personio_integration_site_health_endpoints', $list ); // TODO doku
+	}
+
+	/**
 	 * Add rest api endpoints.
 	 *
 	 * @return void
 	 */
 	public function add_rest_api(): void {
-		register_rest_route(
-			'personio/v1',
-			'/import_cron_checks/',
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'import_cron_checks' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'personio/v1',
-			'/url_availability_checks/',
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'url_availability_checks' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
+		foreach( $this->get_endpoints() as $check ) {
+			register_rest_route(
+				$check['namespace'],
+				$check['route'],
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => $check['callback'],
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+		}
 	}
 
 	/**

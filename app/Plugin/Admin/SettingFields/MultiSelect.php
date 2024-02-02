@@ -41,6 +41,11 @@ class MultiSelect {
 				$actual_values = array();
 			}
 
+			// if $actual_values is a string, convert it.
+			if ( ! is_array( $actual_values ) ) {
+				$actual_values = explode( ',', $actual_values );
+			}
+
 			// or get it from request.
 			$request_value = wp_unslash( filter_input( INPUT_POST, $attributes['fieldId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
 			if ( ! empty( $request_value ) ) {
@@ -48,11 +53,6 @@ class MultiSelect {
 				foreach ( $request_value as $key => $item ) {
 					$actual_values[ absint( $key ) ] = sanitize_text_field( $item );
 				}
-			}
-
-			// if $actual_values is a string, convert it.
-			if ( ! is_array( $actual_values ) ) {
-				$actual_values = explode( ',', $actual_values );
 			}
 
 			// use values as key if set.
@@ -90,7 +90,7 @@ class MultiSelect {
 			}
 
 			?>
-			<select id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>[]" multiple class="personio-field-width <?php echo esc_attr( implode( ' ', $classes ) ); ?>"<?php echo isset( $attr['readonly'] ) && false !== $attr['readonly'] ? ' disabled="disabled"' : ''; ?> title="<?php echo esc_attr( $title ); ?>">
+			<select id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>[]" multiple class="personio-field-width <?php echo esc_attr( implode( ' ', $classes ) ); ?>"<?php echo isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ? ' disabled="disabled"' : ''; ?> title="<?php echo esc_attr( $title ); ?>">
 				<?php
 				foreach ( $attributes['options'] as $key => $value ) {
 					?>

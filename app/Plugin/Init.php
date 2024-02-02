@@ -91,6 +91,7 @@ class Init {
 		// add our own Gutenberg-pagebuilder-support.
 		add_filter( 'personio_integration_pagebuilder', array( $this, 'add_pagebuilder_gutenberg' ) );
 
+		// list of page builder-objects.
 		$page_builder_objects = array();
 		/**
 		 * Register supported page builders.

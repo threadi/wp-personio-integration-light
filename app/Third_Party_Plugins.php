@@ -90,6 +90,12 @@ class Third_Party_Plugins {
 
 		// Plugin TranslatePress.
 		add_filter( 'trp_translating_capability', array( $this, 'translatepress_hide_option' ) );
+
+		// Plugin WPML.
+		add_filter( 'manage_'.PersonioPosition::get_instance()->get_name().'_posts_columns', array( $this, 'remove_wpml_column' ), 20 );
+
+		// Plugin Borlabs.
+		add_action( 'add_meta_boxes', array( $this, 'borlabs_meta_boxes' ), PHP_INT_MAX );
 	}
 
 	/**
@@ -375,5 +381,32 @@ class Third_Party_Plugins {
 			}
 		}
 		return $capability;
+	}
+
+	/**
+	 * Remove WPML translation columns.
+	 *
+	 * @param array $columns
+	 *
+	 * @return array
+	 */
+	public function remove_wpml_column( array $columns ): array {
+		if( isset($columns['icl_translations']) ) {
+			unset($columns['icl_translations']);
+		}
+
+		// return resulting list.
+		return $columns;
+	}
+
+	/**
+	 * Remove meta boxes added by Borlabs from our cpts.
+	 *
+	 * @return void
+	 */
+	public function borlabs_meta_boxes(): void {
+		foreach( Helper::get_list_of_our_cpts() as $cpt ) {
+			remove_meta_box( 'borlabs-cookie-meta-box', $cpt, 'normal' );
+		}
 	}
 }

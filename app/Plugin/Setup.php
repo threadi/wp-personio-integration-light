@@ -35,60 +35,12 @@ class Setup {
 	 *
 	 * @var array
 	 */
-	private array $setup;
+	private array $setup = array();
 
 	/**
 	 * Constructor for this handler.
 	 */
-	private function __construct() {
-		// get properties from settings.
-		$settings = Settings::get_instance();
-		$settings->set_settings();
-
-		// get URL-settings.
-		$url_settings = $settings->get_settings_for_field( 'personioIntegrationUrl' );
-
-		// get main language setting.
-		$language_setting = $settings->get_settings_for_field( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );
-
-		// define setup.
-		$this->setup = array(
-			1 => array(
-				'personioIntegrationUrl'              => array(
-					'type'                => 'TextControl',
-					'label'               => $url_settings['label'],
-					'help'                => $url_settings['description'],
-					'placeholder'         => $url_settings['placeholder'],
-					'required'            => true,
-					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::rest_validate',
-				),
-				WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
-					'type'                => 'RadioControl',
-					'label'               => $language_setting['label'],
-					'help'                => $language_setting['description'],
-					'options'             => $this->convert_options_for_react( $language_setting['options'] ),
-					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate',
-				),
-			),
-			2 => array(
-				'runSetup' => array(
-					'type'  => 'ProgressBar',
-					'label' => __( 'Setup preparing your Personio data', 'personio-integration-light' ),
-				),
-			),
-		);
-
-		// add hooks.
-		add_action( 'admin_action_personioIntegrationSetup', array( $this, 'display' ) );
-		add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
-		add_action( 'personio_integration_import_count', array( $this, 'update_process_step' ) );
-		add_action( 'personio_integration_import_finished', array( $this, 'update_process_step' ) );
-		add_action( 'personio_integration_import_max_steps', array( $this, 'update_process_max_steps' ) );
-
-		// register REST API.
-		add_action( 'rest_api_init', array( $this, 'add_rest_api' ) );
-	}
+	private function __construct() {}
 
 	/**
 	 * Return the setup-URL.
@@ -106,6 +58,18 @@ class Setup {
 	 */
 	public function init(): void {
 		$this->check();
+
+		// add hooks.
+		add_action( 'admin_init', array( $this, 'set_config' ) );
+		add_action( 'admin_action_personioIntegrationSetup', array( $this, 'display' ) );
+		add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+		add_action( 'personio_integration_import_count', array( $this, 'update_process_step' ) );
+		add_action( 'personio_integration_import_finished', array( $this, 'update_process_step' ) );
+		add_action( 'personio_integration_import_max_steps', array( $this, 'update_process_max_steps' ) );
+
+		// register REST API.
+		add_action( 'rest_api_init', array( $this, 'add_rest_api' ) );
 	}
 
 	/**
@@ -198,6 +162,10 @@ class Setup {
 	 */
 	private function get_setup(): array {
 		$setup = $this->setup;
+		if( empty($setup) ) {
+			$this->set_config();
+			$setup = $this->setup;
+		}
 
 		/**
 		 * Filter the configured setup for this plugin.
@@ -524,4 +492,49 @@ class Setup {
 		// Don't forget to stop execution afterward.
 		wp_die();
 	}
+
+	/**
+	 * Sets the setup configuration if it is not completed.
+	 *
+	 * @return void
+	 */
+	public function set_config(): void {
+		// get properties from settings.
+		$settings = Settings::get_instance();
+		$settings->set_settings();
+
+		// get URL-settings.
+		$url_settings = $settings->get_settings_for_field( 'personioIntegrationUrl' );
+
+		// get main language setting.
+		$language_setting = $settings->get_settings_for_field( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );
+
+		// define setup.
+		$this->setup = array(
+			1 => array(
+				'personioIntegrationUrl'              => array(
+					'type'                => 'TextControl',
+					'label'               => $url_settings['label'],
+					'help'                => $url_settings['description'],
+					'placeholder'         => $url_settings['placeholder'],
+					'required'            => true,
+					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::rest_validate',
+				),
+				WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
+					'type'                => 'RadioControl',
+					'label'               => $language_setting['label'],
+					'help'                => $language_setting['description'],
+					'options'             => $this->convert_options_for_react( $language_setting['options'] ),
+					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate',
+				),
+			),
+			2 => array(
+				'runSetup' => array(
+					'type'  => 'ProgressBar',
+					'label' => __( 'Setup preparing your Personio data', 'personio-integration-light' ),
+				),
+			),
+		);
+	}
+
 }

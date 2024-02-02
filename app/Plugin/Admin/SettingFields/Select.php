@@ -29,6 +29,12 @@ class Select {
 			// get value from config.
 			$value = get_option( $attributes['fieldId'] );
 
+			// convert type of value depending on setting for requested field.
+			$settings = get_registered_settings();
+			if( isset( $settings[$attributes['fieldId']]['type'] ) && 'integer' === $settings[$attributes['fieldId']]['type'] ) {
+				$value = absint( $value );
+			}
+
 			// or get it from request.
 			$request_value = sanitize_text_field( wp_unslash( filter_input( INPUT_POST, $attributes['fieldId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
 			if ( ! empty( $request_value ) ) {
@@ -49,14 +55,18 @@ class Select {
 			}
 
 			?>
-			<select id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" class="personio-field-width" title="<?php echo esc_attr( $title ); ?>"<?php echo isset( $attr['readonly'] ) && false !== $attr['readonly'] ? ' disabled="disabled"' : ''; ?>>
-				<option value=""></option>
+			<select id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" class="personio-field-width" title="<?php echo esc_attr( $title ); ?>"<?php echo isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ? ' disabled="disabled"' : ''; ?>>
 				<?php
-				foreach ( $attributes['options'] as $key => $label ) {
-					?>
-					<option value="<?php echo esc_attr( $key ); ?>"<?php echo ( $value === $key ? ' selected="selected"' : '' ); ?>><?php echo esc_html( $label ); ?></option>
-					<?php
-				}
+					if( false === $attributes['hide_empty_option'] ) {
+						?>
+						<option value=""></option>
+						<?php
+					}
+					foreach ( $attributes['options'] as $key => $label ) {
+						?>
+						<option value="<?php echo esc_attr( $key ); ?>"<?php echo ( $value === $key ? ' selected="selected"' : '' ); ?>><?php echo esc_html( $label ); ?></option>
+						<?php
+					}
 				?>
 			</select>
 			<?php

@@ -53,73 +53,37 @@ class Dashboard {
 	 * @return void
 	 */
 	public function init(): void {
-		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widget' ) );
+		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widgets' ) );
 	}
 
 	/**
-	 * Add the dashboard widget.
+	 * Add the dashboard widgets.
 	 *
 	 * @return void
 	 */
-	public function add_dashboard_widget(): void {
-		// only if Personio URL is available.
-		if ( ! Helper::is_personio_url_set() ) {
-			return;
+	public function add_dashboard_widgets(): void {
+		foreach( $this->get_dashboard_widgets() as $dashboard_widget ) {
+			// add dashboard widget to show the newest imported positions.
+			wp_add_dashboard_widget(
+				$dashboard_widget['id'],
+				$dashboard_widget['label'],
+				$dashboard_widget['callback'],
+				null,
+				array(),
+				'side',
+				'high'
+			);
 		}
-
-		// add dashboard widget to show the newest imported positions.
-		wp_add_dashboard_widget(
-			'dashboard_personio_integration_positions',
-			__( 'Positions imported from Personio', 'personio-integration-light' ),
-			array( $this, 'get_widget_content' ),
-			null,
-			array(),
-			'side',
-			'high'
-		);
 	}
 
 	/**
-	 * Output the contents of the dashboard widget
+	 * Get the dashboard-widgets.
 	 *
-	 * @param string $post The post as object.
-	 * @param array  $callback_args List of arguments.
+	 * @return array
 	 */
-	public function get_widget_content( string $post, array $callback_args ): void {
-		if ( empty( $post ) && ! empty( $callback_args ) ) {
-			$positions_obj = Positions::get_instance();
-			if ( function_exists( 'personio_integration_set_ordering' ) ) {
-				remove_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
-			}
-			$positions_list = $positions_obj->get_positions(
-				3,
-				array(
-					'sortby' => 'date',
-					'sort'   => 'DESC',
-				)
-			);
-			if ( function_exists( 'personio_integration_set_ordering' ) ) {
-				add_filter( 'pre_get_posts', 'personio_integration_set_ordering' ); }
-			if ( 0 === count( $positions_list ) ) {
-				echo '<p>' . esc_html__( 'Actually there are no positions imported from Personio.', 'personio-integration-light' ) . '</p>';
-			} else {
-				?><ul class="personio_positions">
-				<?php
-				foreach ( $positions_list as $position ) {
-					?>
-					<li><a href="<?php echo esc_url( get_permalink( $position->get_id() ) ); ?>"><?php echo esc_html( $position->get_title() ); ?></a></li>
-					<?php
-				}
-				?>
-				</ul>
-				<p><a href="<?php echo esc_url( PersonioPosition::get_instance()->get_link() ); ?>">
-						<?php
-						/* translators: %1$d will be replaced by the count of positions */
-						printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( Positions::get_instance()->get_positions_count() ) );
-						?>
-					</a></p>
-				<?php
-			}
-		}
+	private function get_dashboard_widgets(): array {
+		$dashboard_widgets = array();
+		// TODO doku
+		return apply_filters( 'personio_integration_dashboard_widgets', $dashboard_widgets );
 	}
 }

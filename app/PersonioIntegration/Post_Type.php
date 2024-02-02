@@ -8,6 +8,8 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -47,5 +49,25 @@ class Post_Type {
 			),
 			( $without_admin_url ? '' : get_admin_url() ) . 'edit.php'
 		);
+	}
+
+	/**
+	 * Mark active menu if one of our own cpt is called.
+	 *
+	 * @param bool $return Whether to use editor or not.
+	 *
+	 * @return bool
+	 */
+	public function mark_menu( bool $return ): bool {
+		global $parent_file, $submenu_file;
+
+		$post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
+		if( $post_id > 0 && get_post_type($post_id) === $this->get_name() ) {
+			$parent_file = 'edit.php?post_type='.PersonioPosition::get_instance()->get_name();
+			$submenu_file = get_post_type($post_id);
+		}
+
+		// return the initial value.
+		return $return;
 	}
 }

@@ -94,36 +94,37 @@ class Settings {
 	public function set_settings(): void {
 		// set tabs.
 		$this->tabs = array(
-			'general'   => array(
+			array(
 				'label' => __( 'General Settings', 'personio-integration-light' ),
 				'key'   => '',
 				'page'  => 'personioIntegrationPositions',
 			),
-			'templates' => array(
+			array(
 				'label' => __( 'Templates', 'personio-integration-light' ),
 				'key'   => 'templates',
 				'page'  => 'personioIntegrationPositionsTemplates',
 			),
-			'import'    => array(
+			array(
 				'label' => __( 'Import', 'personio-integration-light' ),
 				'key'   => 'import',
 				'page'  => 'personioIntegrationPositionsImport',
 			),
-			'pro_hint'  => array(
+			array(
 				'label'    => __( 'Applications, SEO & more', 'personio-integration-light' ),
+				'key' => 'use_pro',
 				'only_pro' => true,
 			),
-			'advanced'  => array(
+			array(
 				'label' => __( 'Advanced', 'personio-integration-light' ),
 				'key'   => 'advanced',
 				'page'  => 'personioIntegrationPositionsAdvanced',
 			),
-			'logs'      => array(
+			array(
 				'label'    => __( 'Logs', 'personio-integration-light' ),
 				'key'      => 'logs',
 				'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\Logs', 'show' ),
 			),
-			'help'      => array(
+			array(
 				'label' => __( 'Questions? Check our forum!', 'personio-integration-light' ),
 				'key'   => 'help',
 				'url'   => Helper::get_plugin_support_url(),
@@ -134,13 +135,14 @@ class Settings {
 		// reset tabs if Personio URL is not set.
 		if ( ! Helper::is_personio_url_set() ) {
 			$this->tabs = array(
-				'general' => array(
+				array(
 					'label' => __( 'General Settings', 'personio-integration-light' ),
 					'key'   => '',
 					'page'  => 'personioIntegrationPositions',
 				),
-				'go_pro'  => array(
+				array(
 					'label'       => __( 'Enter Personio URL to get more options', 'personio-integration-light' ),
+					'key' => 'enter_url',
 					'do_not_link' => true,
 				),
 			);
@@ -151,40 +153,9 @@ class Settings {
 		$language_name = $languages_obj->get_main_language();
 
 		// get taxonomies.
-		$labels         = Taxonomies::get_instance()->get_taxonomy_labels_for_settings();
-		$list_template_filter = get_option( 'personioIntegrationTemplateFilter', array() );
-		$list_excerpt = get_option( 'personioIntegrationTemplateExcerptDefaults', array() );
-		$detail_excerpt = get_option( 'personioIntegrationTemplateExcerptDetail', array() );
-
-		/**
-		 * Filter the taxonomy labels for template filter in listing before adding them to the settings.
-		 *
-		 * @since 2.3.0 Available since 2.3.0.
-		 *
-		 * @param array $labels List of labels.
-		 * @param array $list_template_filter List of default filters.
-		 */
-		$list_template_filter = apply_filters( 'personio_integration_settings_get_list', $labels, $list_template_filter );
-
-		/**
-		 * Filter the taxonomy labels for position details in listing before adding them to the settings.
-		 *
-		 * @since 2.3.0 Available since 2.3.0.
-		 *
-		 * @param array $labels List of labels.
-		 * @param array $list_excerpt List of default filters.
-		 */
-		$list_excerpt = apply_filters( 'personio_integration_settings_get_list', $labels, $list_excerpt );
-
-		/**
-		 * Filter the taxonomy labels for template filter in listing before adding them to the settings.
-		 *
-		 * @since 2.3.0 Available since 2.3.0.
-		 *
-		 * @param array $labels List of labels.
-		 * @param array $detail_excerpt List of default filters.
-		 */
-		$detail_excerpt = apply_filters( 'personio_integration_settings_get_list', $labels, $detail_excerpt );
+		$list_template_filter = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateFilter', array() ) );
+		$list_excerpt = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) );
+		$detail_excerpt = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateExcerptDetail', array() ) );
 
 		// get editor URL.
 		$editor_url = add_query_arg(
@@ -576,11 +547,13 @@ class Settings {
 		foreach ( $this->get_settings() as $section_settings ) {
 			if ( ! empty( $section_settings['page'] ) ) {
 				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-					register_setting(
-						$section_settings['page'],
-						$field_name,
-						! empty( $field_settings['register_attributes'] ) ? $field_settings['register_attributes'] : array()
-					);
+					if( ! isset($field_settings['do_not_register']) ) {
+						register_setting(
+							$section_settings['page'],
+							$field_name,
+							! empty( $field_settings['register_attributes'] ) ? $field_settings['register_attributes'] : array()
+						);
+					}
 				}
 			}
 		}
@@ -620,6 +593,7 @@ class Settings {
 								'pro_hint'    => ! empty( $field_settings['pro_hint'] ) ? $field_settings['pro_hint'] : '',
 								'highlight'   => ! empty( $field_settings['highlight'] ) ? $field_settings['highlight'] : false,
 								'readonly'    => ! empty( $field_settings['readonly'] ) ? $field_settings['readonly'] : false,
+								'hide_empty_option' => ! empty( $field_settings['hide_empty_option'] ) ? $field_settings['hide_empty_option'] : false,
 							)
 						);
 					}
@@ -702,9 +676,6 @@ class Settings {
 
 		// get the active tab from the request-param.
 		$tab = sanitize_text_field( wp_unslash( filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
-		if ( empty( $tab ) ) {
-			$tab = 'general';
-		}
 
 		// set page to show.
 		$page = 'personioIntegrationPositions';
@@ -718,16 +689,14 @@ class Settings {
 			<h1 class="wp-heading-inline"><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<nav class="nav-tab-wrapper">
 				<?php
-				foreach ( $this->get_tabs() as $tab_name => $tab_settings ) {
+				foreach ( $this->get_tabs() as $tab_settings ) {
+					// bail if settings are not an array.
+					if( ! is_array( $tab_settings ) ) {
+						continue;
+					}
+
 					// Set url.
-					$url    = add_query_arg(
-						array(
-							'post_type' => PersonioPosition::get_instance()->get_name(),
-							'page'      => 'personioPositions',
-							'tab'       => $tab_name,
-						),
-						'edit.php'
-					);
+					$url    = Helper::get_settings_url( $tab_settings['key'] );
 					$target = '_self';
 					if ( ! empty( $tab_settings['url'] ) ) {
 						$url    = $tab_settings['url'];
@@ -739,7 +708,7 @@ class Settings {
 					if ( ! empty( $tab_settings['class'] ) ) {
 						$class .= ' ' . $tab_settings['class'];
 					}
-					if ( $tab === $tab_name ) {
+					if ( $tab === $tab_settings['key'] ) {
 						$class .= ' nav-tab-active';
 						if ( ! empty( $tab_settings['page'] ) ) {
 							$page = $tab_settings['page'];

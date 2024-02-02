@@ -390,7 +390,7 @@ class Taxonomies {
 	}
 
 	/**
-	 * Get taxonomy-labels.
+	 * Get language-depending taxonomy-labels for frontend.
 	 *
 	 * @param string $taxonomy The requested taxonomy.
 	 * @param string $language_code The requested language (optional).
@@ -951,4 +951,27 @@ class Taxonomies {
 		}
 		return $hidden;
 	}
+
+	/**
+	 * Get list of taxonomy-labels for settings.
+	 *
+	 * @param array $list Given list of enabled taxonomies.
+	 *
+	 * @return array
+	 */
+	public function get_labels_for_settings( array $list ): array {
+		// get taxonomies.
+		$labels         = $this->get_taxonomy_labels_for_settings();
+
+		/**
+		 * Filter the taxonomy labels for template filter in listing before adding them to the settings.
+		 *
+		 * @since 2.3.0 Available since 2.3.0.
+		 *
+		 * @param array $labels List of labels.
+		 * @param array $list_template_filter List of default filters.
+		 */
+		return apply_filters( 'personio_integration_settings_get_list', $labels, $list );
+	}
+
 }

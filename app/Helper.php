@@ -432,7 +432,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_personio_login_url(): string {
-		if ( 'de' === Languages::get_instance()->get_current_lang() ) {
+		if ( Languages::get_instance()->is_german_language() ) {
 			return 'https://www.personio.de/login/';
 		}
 		return 'https://www.personio.com/login/';
@@ -444,7 +444,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_personio_support_url(): string {
-		if ( 'de' === Languages::get_instance()->get_current_lang() ) {
+		if ( Languages::get_instance()->is_german_language() ) {
 			return 'https://support.personio.de/';
 		}
 		return 'https://support.personio.de/hc/en-us/';
@@ -593,5 +593,17 @@ class Helper {
 	 */
 	public static function get_review_url(): string {
 		return 'https://wordpress.org/plugins/personio-integration-light/#reviews';
+	}
+
+	/**
+	 * Return list of our own cpts as names.
+	 *
+	 * @return array
+	 */
+	public static function get_list_of_our_cpts(): array {
+		$list = array(
+			PersonioPosition::get_instance()->get_name()
+		);
+		return apply_filters( 'personio_integration_list_of_cpts', $list ); // TODO doku
 	}
 }

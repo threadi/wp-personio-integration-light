@@ -146,18 +146,18 @@ class Positions {
 				$query['tax_query'] = $tax_query;
 			}
 		} elseif ( ! empty( $parameter_to_add['groupby'] ) ) {
-			$taxonomy = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
+			$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
 			if ( ! empty( $taxonomy ) ) {
 				$terms              = get_terms(
 					array(
-						'taxonomy'   => $taxonomy,
+						'taxonomy'   => $taxonomy_name,
 						'fields'     => 'ids',
 						'hide_empty' => true,
 					)
 				);
 				$query['tax_query'] = array(
 					array(
-						'taxonomy' => $taxonomy,
+						'taxonomy' => $taxonomy_name,
 						'field'    => 'term_id',
 						'terms'    => $terms,
 					),

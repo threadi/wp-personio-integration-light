@@ -79,7 +79,7 @@ class Templates {
 		add_action( 'personio_integration_get_title', array( $this, 'get_title_template' ), 10, 2 );
 		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt_template' ), 10, 2 );
 		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 );
-		add_action( 'personio_integration_get_formular', array( $this, 'get_formular_template' ), 10, 2 );
+		add_action( 'personio_integration_get_application_link', array( $this, 'get_application_link_template' ), 10, 2 );
 		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
 
@@ -215,10 +215,10 @@ class Templates {
 	 */
 	public function get_template_labels(): array {
 		$templates = array(
-			'title'    => esc_html__( 'title', 'personio-integration-light' ),
-			'excerpt'  => esc_html__( 'details', 'personio-integration-light' ),
-			'content'  => esc_html__( 'content', 'personio-integration-light' ),
-			'formular' => esc_html__( 'application link', 'personio-integration-light' ),
+			'title'    => esc_html__( 'Title', 'personio-integration-light' ),
+			'excerpt'  => esc_html__( 'Details', 'personio-integration-light' ),
+			'content'  => esc_html__( 'Content', 'personio-integration-light' ),
+			'application_link' => esc_html__( 'Application link', 'personio-integration-light' ),
 		);
 
 		/**
@@ -559,7 +559,7 @@ class Templates {
 	 * @return void
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function get_formular_template( Position $position, array $attributes ): void {
+	public function get_application_link_template( Position $position, array $attributes ): void {
 		// convert attributes.
 		$attributes = PersonioPosition::get_instance()->get_single_shortcode_attributes( $attributes );
 

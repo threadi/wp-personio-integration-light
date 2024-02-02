@@ -75,7 +75,9 @@ class Schedules {
 	public function delete_all(): void {
 		foreach ( $this->get_schedule_object_names() as $obj_name ) {
 			$schedule_obj = new $obj_name();
-			$schedule_obj->delete();
+			if( $schedule_obj instanceof Schedules_Base ) {
+				$schedule_obj->delete();
+			}
 		}
 	}
 
@@ -88,7 +90,9 @@ class Schedules {
 		// install the schedules if they do not exist atm.
 		foreach ( $this->get_schedule_object_names() as $obj_name ) {
 			$schedule_obj = new $obj_name();
-			$schedule_obj->install();
+			if( $schedule_obj instanceof Schedules_Base ) {
+				$schedule_obj->install();
+			}
 		}
 	}
 

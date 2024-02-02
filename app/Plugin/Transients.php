@@ -186,6 +186,7 @@ class Transients {
 	 * @return void
 	 */
 	public function check_transients(): void {
+		// TODO doku
 		foreach ( apply_filters( 'personio_integration_get_transients_for_display', $this->get_transients() ) as $transient_obj ) {
 			if ( $transient_obj->is_set() ) {
 				$transient_obj->display();

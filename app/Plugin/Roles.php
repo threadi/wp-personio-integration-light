@@ -8,6 +8,8 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent also other direct access.
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -67,15 +69,15 @@ class Roles {
 		}
 		if ( ! is_null( $personio_position_manager_role ) ) {
 			$personio_position_manager_role->add_cap( 'read' ); // to enter wp-admin.
-			$personio_position_manager_role->add_cap( 'read_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
-			$personio_position_manager_role->add_cap( 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
+			$personio_position_manager_role->add_cap( 'read_' . PersonioPosition::get_instance()->get_name() );
+			$personio_position_manager_role->add_cap( 'manage_' . PersonioPosition::get_instance()->get_name() );
 		}
 
 		// get admin-role.
 		$admin_role = get_role( 'administrator' );
 		if ( ! is_null( $admin_role ) ) {
-			$admin_role->add_cap( 'read_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
-			$admin_role->add_cap( 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
+			$admin_role->add_cap( 'read_' . PersonioPosition::get_instance()->get_name() );
+			$admin_role->add_cap( 'manage_' . PersonioPosition::get_instance()->get_name() );
 		}
 	}
 
@@ -96,13 +98,15 @@ class Roles {
 		global $wp_roles;
 		foreach ( $wp_roles->roles as $role_name => $settings ) {
 			$role = get_role( $role_name );
-			$role->remove_cap( 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
-			$role->remove_cap( 'read_' . WP_PERSONIO_INTEGRATION_MAIN_CPT );
+			$role->remove_cap( 'manage_' . PersonioPosition::get_instance()->get_name() );
+			$role->remove_cap( 'read_' . PersonioPosition::get_instance()->get_name() );
 		}
 	}
 
 	/**
 	 * Allow our own capability to save settings.
+	 *
+	 * @return void
 	 */
 	public function allow_save_settings(): void {
 		$settings_pages = array(
@@ -115,7 +119,7 @@ class Roles {
 			add_filter(
 				'option_page_capability_' . $settings_page,
 				function () {
-					return 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT;
+					return 'manage_' . PersonioPosition::get_instance()->get_name();
 				},
 				10,
 				0
