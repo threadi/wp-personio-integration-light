@@ -122,13 +122,7 @@ class Init {
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_frontend' ), PHP_INT_MAX );
 
 		// add action links on plugin-list.
-		add_filter(
-			'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ),
-			array(
-				$this,
-				'add_setting_link',
-			)
-		);
+		add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_setting_link' ) );
 
 		// request-hooks.
 		add_action( 'wp', array( $this, 'update_slugs' ) );
@@ -248,11 +242,13 @@ class Init {
 	 * @return array
 	 */
 	public function add_setting_link( array $links ): array {
-		// create the link.
-		$settings_link = "<a href='" . esc_url( Helper::get_settings_url() ) . "'>" . __( 'Settings', 'personio-integration-light' ) . '</a>';
+		// adds the link to for settings.
+		$links[] = "<a href='" . esc_url( Helper::get_settings_url() ) . "'>" . __( 'Settings', 'personio-integration-light' ) . '</a>';
 
-		// adds the link to the end of the array.
-		$links[] = $settings_link;
+		// if setup has not been completed, show link here.
+		if( ! Setup::get_instance()->is_completed() ) {
+			$links[] = "<a href='" . esc_url( Setup::get_instance()->get_setup_link() ) . "'>" . __( 'Setup', 'personio-integration-light' ) . '</a>';
+		}
 
 		return $links;
 	}

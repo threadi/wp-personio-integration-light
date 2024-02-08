@@ -11,7 +11,6 @@
  * @package personio-integration-light
  */
 
-use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Templates;
 
 defined( 'ABSPATH' ) || exit;
@@ -28,7 +27,7 @@ require Templates::get_instance()->get_template( 'parts/styling.php' );
 ?>
 <div class="entry-content">
 	<p class="personio-integration-application-button<?php echo esc_attr( $attributes['classes'] ); ?>">
-		<a class="personio-integration-application-button" href="<?php echo esc_url( $position->get_application_url() ); ?>" target="<?php echo esc_attr( $target ); ?>">
+		<a class="personio-integration-application-button" href="<?php echo esc_url( $link ); ?>" target="<?php echo esc_attr( $target ); ?>">
 			<?php
 			if ( 'archive' === $text_position ) {
 				echo esc_html_x( 'Apply for this position', 'archive', 'personio-integration-light' );

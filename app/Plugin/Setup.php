@@ -47,7 +47,7 @@ class Setup {
 	 *
 	 * @return string
 	 */
-	private function get_setup_link(): string {
+	public function get_setup_link(): string {
 		return Helper::get_settings_url();
 	}
 
@@ -193,7 +193,18 @@ class Setup {
 	 */
 	public function add_setup_menu(): void {
 		if ( ! $this->is_completed() ) {
-			// add setup menu entry.
+			// add main menu as setup entry.
+			add_menu_page(
+				__( 'Positions', 'personio-integration-light' ),
+				__( 'Positions', 'personio-integration-light' ),
+				'manage_options',
+				'edit.php?post_type=personioposition',
+				array( $this, 'display' ),
+				Helper::get_plugin_url() . 'gfx/personio_icon.png',
+				40
+			);
+
+			// add setup entry as sub-menu.
 			add_submenu_page(
 				PersonioPosition::get_instance()->get_link( true ),
 				__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
@@ -536,5 +547,4 @@ class Setup {
 			),
 		);
 	}
-
 }

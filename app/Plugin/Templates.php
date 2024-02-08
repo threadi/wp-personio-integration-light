@@ -583,6 +583,9 @@ class Templates {
 		// generate styling.
 		$styles = ! empty( $attributes['styles'] ) ? $attributes['styles'] : '';
 
+		// get application URL.
+		$link = $position->get_application_url();
+
 		/**
 		 * Set and filter the value for the target-attribute.
 		 *

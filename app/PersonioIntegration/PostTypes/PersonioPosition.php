@@ -21,6 +21,7 @@ use PersonioIntegrationLight\PersonioIntegration\Post_Type;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
 use WP_Post;
 use WP_Query;
@@ -146,7 +147,7 @@ class PersonioPosition extends Post_Type {
 			'supports'            => array( '' ),
 			'public'              => true,
 			'hierarchical'        => false,
-			'show_ui'             => true,
+			'show_ui'             => Setup::get_instance()->is_completed(),
 			'show_in_menu'        => true,
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
@@ -773,11 +774,14 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function remove_actions( array $actions, WP_Post $post ): array {
 		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type() ) {
-			$actions         = array(
-				'view' => $actions['view'],
-			);
-			$actions['edit'] = '<a href="' . esc_url( get_edit_post_link( $post->ID ) ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
-			return $actions;
+			$new_actions = array();
+			if( ! empty( $actions['view'] ) ) {
+				$new_actions = array(
+					'view' => $actions['view'],
+				);
+			}
+			$new_actions['edit'] = '<a href="' . esc_url( get_edit_post_link( $post->ID ) ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
+			return $new_actions;
 		}
 		return $actions;
 	}
@@ -1006,7 +1010,7 @@ class PersonioPosition extends Post_Type {
 		 *
 		 * @param bool $false Set true to prevent removing of each meta box.
 		 */
-		if( apply_filters( 'personio_integration_get_template', $false ) ) {
+		if( apply_filters( 'personio_integration_position_prevent_meta_box_remove', $false ) ) {
 			return;
 		}
 

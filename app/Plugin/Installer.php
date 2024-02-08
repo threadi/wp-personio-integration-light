@@ -104,16 +104,8 @@ class Installer {
 			// install schedules.
 			Schedules::get_instance()->create_schedules();
 
-			// set default settings.
-			$settings_obj = Settings::get_instance();
-			$settings_obj->set_settings();
-			foreach ( $settings_obj->get_settings() as $section_settings ) {
-				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-					if ( isset( $field_settings['register_attributes']['default'] ) && ! get_option( $field_name ) ) {
-						add_option( $field_name, $field_settings['register_attributes']['default'], '', true );
-					}
-				}
-			}
+			// initialize the default settings.
+			Settings::get_instance()->initialize_options();
 
 			// install the roles we use.
 			Roles::get_instance()->install();

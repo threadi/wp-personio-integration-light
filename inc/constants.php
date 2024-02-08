@@ -11,14 +11,14 @@
 const WP_PERSONIO_INTEGRATION_MAIN_CPT = 'personioposition';
 
 /**
- * Name of the prefix for any language-option.
- */
-const WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION = 'personioPositionLanguages';
-
-/**
  * Name of the option which holds the main language.
  */
 const WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE = 'personioIntegrationMainLanguage';
+
+/**
+ * Name of the prefix for any language-option.
+ */
+const WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION = 'personioPositionLanguages';
 
 /**
  * Name of the postmeta-field with the personioId.

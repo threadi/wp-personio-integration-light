@@ -727,7 +727,7 @@ class Gutenberg extends PageBuilder_Base {
 
 		// get the output.
 		ob_start();
-		\PersonioIntegrationLight\Plugin\Templates::get_instance()->get_formular_template( $position, $attributes );
+		\PersonioIntegrationLight\Plugin\Templates::get_instance()->get_application_link_template( $position, $attributes );
 		return ob_get_clean();
 	}
 

@@ -148,10 +148,6 @@ class Settings {
 			);
 		}
 
-		// get languages.
-		$languages_obj = Languages::get_instance();
-		$language_name = $languages_obj->get_main_language();
-
 		// get taxonomies.
 		$list_template_filter = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateFilter', array() ) );
 		$list_excerpt = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) );
@@ -189,19 +185,6 @@ class Settings {
 						),
 						'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\PersonioIntegrationUrl', 'save' )
 					),
-					WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION => array(
-						'label'               => __( 'Used languages', 'personio-integration-light' ),
-						'field'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Multiple_Checkboxes', 'get' ),
-						'options'             => Languages::get_instance()->get_languages(),
-						'readonly'            => ! Helper::is_personio_url_set(),
-						'register_attributes' => array(
-							'default'             => array( $language_name => 1 ),
-							'sanitize_callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\Languages', 'validate' ),
-							'type'              => 'array',
-						),
-						/* translators: %1$s is replaced with the name of the Pro-plugin */
-						'pro_hint'            => __( 'Use all languages supported by Personio with %s.', 'personio-integration-light' ),
-					),
 					WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
 						'label'               => __( 'Main language', 'personio-integration-light' ),
 						'field'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Multiple_Radios', 'get' ),
@@ -214,6 +197,19 @@ class Settings {
 							'type'              => 'string',
 							'default'             => Languages::get_instance()->get_current_lang(),
 						),
+					),
+					WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION => array(
+						'label'               => __( 'Used languages', 'personio-integration-light' ),
+						'field'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Multiple_Checkboxes', 'get' ),
+						'options'             => Languages::get_instance()->get_languages(),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'default'             => array( Languages::get_instance()->get_current_lang() => 1 ),
+							'sanitize_callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\Languages', 'validate' ),
+							'type'              => 'array',
+						),
+						/* translators: %1$s is replaced with the name of the Pro-plugin */
+						'pro_hint'            => __( 'Use all languages supported by Personio with %s.', 'personio-integration-light' ),
 					),
 				),
 			),
@@ -877,11 +873,30 @@ class Settings {
 	 * @return array
 	 */
 	public function remove_pro_hints_from_tabs( array $tabs ): array {
+		// loop through the tabs and remove the pro hints.
 		foreach( $tabs as $tab_name => $setting ) {
 			if( isset($setting['only_pro']) ) {
 				unset( $tabs[$tab_name]);
 			}
 		}
+
+		// return resulting list of tabs for settings.
 		return $tabs;
+	}
+
+	/**
+	 * Initialize the options of this plugin, set its default values.
+	 *
+	 * @return void
+	 */
+	public function initialize_options(): void {
+		$this->set_settings();
+		foreach ( $this->get_settings() as $section_settings ) {
+			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
+				if ( isset( $field_settings['register_attributes']['default'] ) && ! get_option( $field_name ) ) {
+					add_option( $field_name, $field_settings['register_attributes']['default'], '', true );
+				}
+			}
+		}
 	}
 }
