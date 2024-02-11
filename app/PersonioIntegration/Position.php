@@ -557,7 +557,7 @@ class Position {
 	}
 
 	/**
-	 * Return created at date.
+	 * Return created at date as timestamp.
 	 *
 	 * @return string
 	 * @noinspection PhpUnused

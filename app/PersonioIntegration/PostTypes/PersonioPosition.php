@@ -188,7 +188,7 @@ class PersonioPosition extends Post_Type {
 		);
 		register_post_type( $this->get_name(), $args );
 
-		// register personioId als postmeta to be published in rest-api,
+		// register personioId als post-meta to be published in rest-api,
 		// which is necessary for our Blocks.
 		register_post_meta(
 			WP_PERSONIO_INTEGRATION_MAIN_CPT,
@@ -728,11 +728,6 @@ class PersonioPosition extends Post_Type {
 		// add column for PersonioId.
 		$new_columns['id'] = __( 'PersonioID', 'personio-integration-light' );
 
-		// remove checkbox-column if pro is not active.
-		if ( false === Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
-			unset( $columns['cb'] );
-		}
-
 		// return results.
 		return array_merge( $new_columns, $columns );
 	}
@@ -1020,7 +1015,19 @@ class PersonioPosition extends Post_Type {
 		foreach( $wp_meta_boxes[$page] as $context => $priority_boxes ) {
 			foreach( $priority_boxes as $boxes ) {
 				foreach( $boxes as $box ) {
-					if ( false !== $box && false === str_contains( $box['id'], $this->get_name() ) ) {
+					// bail of box is not an array.
+					if( ! is_array( $box ) ) {
+						continue;
+					}
+
+					// bail if box is 'submitdiv'.
+					$false = false;
+					if( $box['id'] === 'submitdiv' && apply_filters( 'personio_integration_do_not_hide_submitdiv', $false ) ) {
+						continue;
+					}
+
+					// check if box is not from our own plugin.
+					if ( false === str_contains( $box['id'], $this->get_name() ) ) {
 						remove_meta_box( $box['id'], $page, $context );
 					}
 				}
@@ -1255,12 +1262,12 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Change sitemapXML-data for positions.
+	 * Change SitemapXML-data for positions.
 	 *
 	 * Add last modification date and priority.
 	 *
-	 * @param array   $entry
-	 * @param WP_Post $post
+	 * @param array   $entry The entry-data.
+	 * @param WP_Post $post The post-object.
 	 *
 	 * @return array
 	 */
@@ -1286,7 +1293,7 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Add dashboard-widget to show list of positions.
 	 *
-	 * @param array $dashboard_widgets
+	 * @param array $dashboard_widgets List of widgets on dashboard.
 	 *
 	 * @return array
 	 */

@@ -411,7 +411,7 @@ class Templates {
 	 */
 	public function prepare_content_template( string $content ): string {
 		// bail if this is not our own cpt.
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT !== get_post_type( get_the_ID() ) ) {
+		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( get_the_ID() ) ) {
 			return $content;
 		}
 

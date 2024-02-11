@@ -43,12 +43,21 @@ class Setup {
 	private function __construct() {}
 
 	/**
-	 * Return the setup-URL.
+	 * Prevent cloning of this object.
 	 *
-	 * @return string
+	 * @return void
 	 */
-	public function get_setup_link(): string {
-		return Helper::get_settings_url();
+	private function __clone() {}
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Setup {
+		if ( ! static::$instance instanceof static ) {
+			static::$instance = new static();
+		}
+
+		return static::$instance;
 	}
 
 	/**
@@ -73,21 +82,12 @@ class Setup {
 	}
 
 	/**
-	 * Prevent cloning of this object.
+	 * Return the setup-URL.
 	 *
-	 * @return void
+	 * @return string
 	 */
-	private function __clone() {}
-
-	/**
-	 * Return the instance of this Singleton object.
-	 */
-	public static function get_instance(): Setup {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
-		}
-
-		return static::$instance;
+	public function get_setup_link(): string {
+		return Helper::get_settings_url();
 	}
 
 	/**

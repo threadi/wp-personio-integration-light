@@ -245,6 +245,18 @@ class Languages {
 	 * @return string[]
 	 */
 	public function get_lang_mappings( string $language_name ): array {
-		return $this->language_to_wp_lang_mapping[ $language_name ];
+		$mapping_languages = $this->language_to_wp_lang_mapping;
+
+		/**
+		 * Filter the possible mapping languages.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $mapping_languages List of language mappings.
+		 */
+		$mapping_languages = apply_filters( 'personio_integration_language_mappings', $mapping_languages );
+
+		// return the mappings for the requested language.
+		return $mapping_languages[ $language_name ];
 	}
 }

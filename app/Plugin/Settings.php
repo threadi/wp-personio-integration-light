@@ -246,6 +246,9 @@ class Settings {
 							'type' => 'integer',
 							'default'             => array( 'recruitingCategory', 'schedule', 'office' ),
 						),
+						'depends' => array(
+							'personioIntegrationEnableFilter' => 1
+						)
 					),
 					'personioIntegrationFilterType'       => array(
 						'label'       => __( 'Choose filter-type', 'personio-integration-light' ),
@@ -256,6 +259,9 @@ class Settings {
 						'register_attributes' => array(
 							'type' => 'string',
 							'default'     => 'linklist',
+						),
+						'depends' => array(
+							'personioIntegrationEnableFilter' => 1
 						)
 					),
 					'personioIntegrationTemplateContentListingTemplate' => array(
@@ -400,6 +406,9 @@ class Settings {
 							'type' => 'string',
 							'default'             => '',
 						),
+						'depends' => array(
+							'personioIntegrationTemplateBackToListButton' => 1
+						)
 					),
 				),
 			),
@@ -590,6 +599,7 @@ class Settings {
 								'highlight'   => ! empty( $field_settings['highlight'] ) ? $field_settings['highlight'] : false,
 								'readonly'    => ! empty( $field_settings['readonly'] ) ? $field_settings['readonly'] : false,
 								'hide_empty_option' => ! empty( $field_settings['hide_empty_option'] ) ? $field_settings['hide_empty_option'] : false,
+								'depends' => ! empty( $field_settings['depends'] ) ? $field_settings['depends'] : array(),
 							)
 						);
 					}

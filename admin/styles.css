@@ -142,8 +142,6 @@ body.post-type-personioposition .tab-content {
     min-height: auto;
 }
 
-body.post-type-personioposition #submitdiv { display: none }
-
 body.post-type-personioposition #personio-edit-hints {
     background-color: var(--personio-pro-hint-bg);
     border: 0;
@@ -218,4 +216,33 @@ body .review-hint-button:after {
 	display: inline-block;
 	font-family: "dashicons", sans-serif;
 	margin-left: 8px;
+}
+
+body.personioposition_page_personioPositions tr.hide { display: none }
+
+body.personioposition_page_personioPositions tr.show_with_animation {
+	animation: show-animation 1s ease-in forwards;
+}
+
+@keyframes show-animation {
+	0% {
+		opacity: 0;
+		background-color: #fca15b00;
+	}
+	25% {
+		opacity: .25;
+		background-color: #fca15b20;
+	}
+	50% {
+		opacity: .5;
+		background-color: #fca15b40;
+	}
+	75% {
+		opacity: .75;
+		background-color: #fca15b60;
+	}
+	100% {
+		opacity: 1;
+		background-color: transparent;
+	}
 }

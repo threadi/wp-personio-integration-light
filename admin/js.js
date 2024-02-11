@@ -95,6 +95,49 @@ jQuery(document).ready(function($) {
     });
 
     /**
+     * Handle depending settings on settings page.
+     *
+     * Get all fields which depends from another.
+     * Hide fields where the dependends does not match.
+     * Set handler on depending fields to show or hide the dependend fields.
+     *
+     * Hint: hide the surrounding "tr"-element.
+     */
+    $('body.personioposition_page_personioPositions input[type="checkbox"]').each( function() {
+        let form_field = $(this);
+
+        // check on load to hide some fields.
+        $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
+          let depending_field = $(this);
+          $.each( $(this).data('depends'), function( i, v ) {
+               if( i === form_field.attr('name') && v === 1 && ! form_field.is(':checked') ) {
+                 depending_field.closest('tr').addClass('hide');
+                 depending_field.closest('tr').removeClass('show_with_animation');
+               }
+          });
+        });
+
+        // add event-listener to changed depending fields.
+        form_field.on('change', function() {
+          $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
+            let depending_field = $(this);
+            $.each( $(this).data('depends'), function( i, v ) {
+              if( i === form_field.attr('name') && v === 1 ) {
+                if( form_field.is(':checked') ) {
+                  depending_field.closest('tr').removeClass('hide');
+                  depending_field.closest( 'tr' ).addClass('show_with_animation')
+                }
+                else {
+                  depending_field.closest('tr').addClass('hide');
+                  depending_field.closest('tr').removeClass('show_with_animation');
+                }
+              }
+            });
+          });
+        })
+    });
+
+    /**
      * Add hint for applications in Pro-version in menu.
      */
     $("#menu-posts-personioposition a[href='#']").on( 'click', function(e) {

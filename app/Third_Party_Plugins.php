@@ -363,7 +363,7 @@ class Third_Party_Plugins {
 	 * @return void
 	 */
 	public function remove_seo_framework_meta_box(): void {
-		remove_meta_box('tsf-inpost-box', WP_PERSONIO_INTEGRATION_MAIN_CPT, 'normal' );
+		remove_meta_box( 'tsf-inpost-box', WP_PERSONIO_INTEGRATION_MAIN_CPT, 'normal' );
 	}
 
 	/**
