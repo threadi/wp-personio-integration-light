@@ -115,9 +115,6 @@ class Setup {
 					'forward' => Intro::get_instance()->get_start_url(),
 				)
 			);
-
-			// Don't forget to stop execution afterward.
-			wp_die();
 		}
 	}
 
@@ -341,9 +338,6 @@ class Setup {
 
 		// Return JSON with results.
 		wp_send_json( $validation_result );
-
-		// Don't forget to stop execution afterward.
-		wp_die();
 	}
 
 	/**
@@ -445,9 +439,6 @@ class Setup {
 
 		// return empty json.
 		wp_send_json( array() );
-
-		// Don't forget to stop execution afterward.
-		wp_die();
 	}
 
 	/**
@@ -499,9 +490,6 @@ class Setup {
 
 		// Return JSON with result.
 		wp_send_json( $return );
-
-		// Don't forget to stop execution afterward.
-		wp_die();
 	}
 
 	/**

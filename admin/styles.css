@@ -184,6 +184,15 @@ body.wp-easy-dialog-on-body.wp-core-ui .components-modal__header .components-mod
 	padding-right: 162px;
 }
 
+body.wp-easy-dialog-on-body.wp-core-ui .wp-easy-dialog-text label {
+	display: block;
+	font-weight: bold;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .wp-easy-dialog-text:last-of-type {
+	margin-bottom: 1em;
+}
+
 .nav-tab-help {
 	float: right;
 	margin-right: 4px;
@@ -245,4 +254,22 @@ body.personioposition_page_personioPositions tr.show_with_animation {
 		opacity: 1;
 		background-color: transparent;
 	}
+}
+
+.nav-tab.copyright { position: relative;z-index: 1 }
+
+.nav-tab.copyright:after {
+	content: '®';
+	font-size: 22px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	z-index: 1;
+	text-align: center;
+}
+
+.tab-content img.logo {
+	width: 120px;
 }

@@ -106,8 +106,8 @@ class Third_Party_Plugins {
 	 * @return array
 	 */
 	public function redirection( array $post_types ): array {
-		if ( ! empty( $post_types[ WP_PERSONIO_INTEGRATION_MAIN_CPT ] ) ) {
-			unset( $post_types[ WP_PERSONIO_INTEGRATION_MAIN_CPT ] );
+		if ( ! empty( $post_types[ PersonioPosition::get_instance()->get_name() ] ) ) {
+			unset( $post_types[ PersonioPosition::get_instance()->get_name() ] );
 		}
 		return $post_types;
 	}
@@ -121,9 +121,9 @@ class Third_Party_Plugins {
 	 * @return string
 	 */
 	public function yoast( string $meta_og_description, Indexable_Presentation $presentation ): string {
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $presentation->model->object_sub_type && absint( $presentation->model->object_id ) > 0 ) {
+		if ( PersonioPosition::get_instance()->get_name() === $presentation->model->object_sub_type && absint( $presentation->model->object_id ) > 0 ) {
 			// return resulting text without line breaks.
-			return $this->replace_linebreaks( $this->get_content( $presentation->model->object_id ) );
+			return Helper::replace_linebreaks( $this->get_content( $presentation->model->object_id ) );
 		}
 		return $meta_og_description;
 	}
@@ -138,9 +138,9 @@ class Third_Party_Plugins {
 	public function rank_math( string $description ): string {
 		if ( is_single() ) {
 			$object = get_queried_object();
-			if ( $object instanceof WP_Post && WP_PERSONIO_INTEGRATION_MAIN_CPT === $object->post_type ) {
+			if ( $object instanceof WP_Post && PersonioPosition::get_instance()->get_name() === $object->post_type ) {
 				// return resulting text without line breaks.
-				return $this->replace_linebreaks( $this->get_content( $object->ID ) );
+				return Helper::replace_linebreaks( $this->get_content( $object->ID ) );
 			}
 		}
 		return $description;
@@ -154,7 +154,7 @@ class Third_Party_Plugins {
 	 * @return array
 	 */
 	public function og_optimizer( array $og_array ): array {
-		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+		if ( is_singular( PersonioPosition::get_instance()->get_name() ) ) {
 			// get description.
 			$description = wp_strip_all_tags( $this->get_content( get_queried_object_id() ) );
 			$description = preg_replace( '/\s+/', ' ', $description );
@@ -181,8 +181,8 @@ class Third_Party_Plugins {
 	 * @return array
 	 */
 	public function remove_easy_language_support( array $post_types ): array {
-		if ( ! empty( $post_types[ WP_PERSONIO_INTEGRATION_MAIN_CPT ] ) ) {
-			unset( $post_types[ WP_PERSONIO_INTEGRATION_MAIN_CPT ] );
+		if ( ! empty( $post_types[ PersonioPosition::get_instance()->get_name() ] ) ) {
+			unset( $post_types[ PersonioPosition::get_instance()->get_name() ] );
 		}
 		return $post_types;
 	}
@@ -213,17 +213,6 @@ class Third_Party_Plugins {
 	}
 
 	/**
-	 * Replace all linebreaks in given string.
-	 *
-	 * @param string $text_to_parse The text where we replace the line breaks.
-	 *
-	 * @return string
-	 */
-	private function replace_linebreaks( string $text_to_parse ): string {
-		return preg_replace( '/\s+/', ' ', $text_to_parse );
-	}
-
-	/**
 	 * Optimize output for plugin Open Graph and Twitter Card Tags.
 	 *
 	 * @param string $description The string the plugin would use as description.
@@ -231,9 +220,9 @@ class Third_Party_Plugins {
 	 * @return string
 	 */
 	public function open_graph_optimizer( string $description ): string {
-		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+		if ( is_singular( PersonioPosition::get_instance()->get_name() ) ) {
 			// get description.
-			return $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
+			return Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
 		}
 
 		// return resulting text.
@@ -248,8 +237,8 @@ class Third_Party_Plugins {
 	 * @return array
 	 */
 	public function seoframework( array $fields ): array {
-		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
-			$description                                       = $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
+		if ( is_singular( PersonioPosition::get_instance()->get_name() ) ) {
+			$description                                       = Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
 			$fields['description']['attributes']['content']    = $description;
 			$fields['og:description']['attributes']['content'] = $description;
 			$fields['twitter:description']['attributes']['content'] = $description;
@@ -265,10 +254,10 @@ class Third_Party_Plugins {
 	 * @return array
 	 */
 	public function seoframework_schema( array $graph ): array {
-		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+		if ( is_singular( PersonioPosition::get_instance()->get_name() ) ) {
 			foreach ( $graph as $index => $entry ) {
 				if ( ! empty( $entry['description'] ) && 'WebPage' === $entry['@type'] ) {
-					$graph[ $index ]['description'] = $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
+					$graph[ $index ]['description'] = Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
 				}
 			}
 		}
@@ -283,9 +272,9 @@ class Third_Party_Plugins {
 	 * @return string
 	 */
 	public function seopress_og_description( string $meta_og_description ): string {
-		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+		if ( is_singular( PersonioPosition::get_instance()->get_name() ) ) {
 			// get og:description.
-			return '<meta property="og:description" content="' . wp_kses_post( $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) ) ) . '" />';
+			return '<meta property="og:description" content="' . wp_kses_post( Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) ) ) . '" />';
 		}
 
 		// return resulting text.
@@ -300,9 +289,9 @@ class Third_Party_Plugins {
 	 * @return string
 	 */
 	public function seopress_titles( string $description ): string {
-		if ( is_singular( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+		if ( is_singular( PersonioPosition::get_instance()->get_name() ) ) {
 			// get description.
-			return $this->replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
+			return Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
 		}
 
 		// return resulting text.
@@ -316,7 +305,7 @@ class Third_Party_Plugins {
 	 */
 	public function scpo_remove_filter(): void {
 		global $pagenow;
-		if( 'edit-'.WP_PERSONIO_INTEGRATION_MAIN_CPT.'.php' === $pagenow ) {
+		if( 'edit-'.PersonioPosition::get_instance()->get_name().'.php' === $pagenow ) {
 			wp_dequeue_script( 'scporderjs' );
 		}
 	}
@@ -363,7 +352,7 @@ class Third_Party_Plugins {
 	 * @return void
 	 */
 	public function remove_seo_framework_meta_box(): void {
-		remove_meta_box( 'tsf-inpost-box', WP_PERSONIO_INTEGRATION_MAIN_CPT, 'normal' );
+		remove_meta_box( 'tsf-inpost-box', PersonioPosition::get_instance()->get_name(), 'normal' );
 	}
 
 	/**

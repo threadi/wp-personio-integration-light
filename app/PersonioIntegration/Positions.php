@@ -166,6 +166,14 @@ class Positions {
 				add_filter( 'posts_orderby', array( $this, 'set_position_query_order_by_for_group' ) );
 			}
 		}
+
+		/**
+		 * Filter the custom query for positions just before it is used.
+		 *
+		 * @param array $query The configured query.
+		 */
+		$query = apply_filters( 'personio_integration_positions_query', $query );
+
 		// get the results.
 		$this->results = new WP_Query( $query );
 

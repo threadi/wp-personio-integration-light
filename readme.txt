@@ -51,15 +51,19 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - support for tracking of events with Google Analytics 4
 - text search in frontend for applicants
 - additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from job descriptions
-- RichSnippets for optimal findability via search engines like Google
+- RichSnippets for optimal findability via search engines like Google Jobs
+- Support for Open Graph (Facebook, LinkedIn, WhatsApp ..) and Twitter Cards
 - Customization of slugs (URLs) for list and detailed views of positions
 - Shortcode generator for individual views of lists and details
 - Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, WPBakery, Avada
 - support for subcompanies and additional offices in positions
+- .. and much more
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
 
 The development repository is on [GitHub](https://github.com/threadi/wp-personio-integration-light).
+
+The Personio logo as part of all distributed icons is a trademark of [Personio SE & Co. KG](https://www.personio.com).
 
 ---
 
@@ -365,6 +369,7 @@ Yes, it is without any further settings.
 * Added support for additional plugins: Open Graph and Twitter Tags, SEOFramework, SEOPress
 * Added link to switch between frontend- and backend-view of single position
 * Added new templates for position title and excerpts
+* Added possibility to export and import all settings
 * Advanced Blocks for Positions in Block Editor
 * Advanced classic widgets for Positions
 * Added more simple initial styling for more often used themes

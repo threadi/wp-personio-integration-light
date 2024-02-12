@@ -29,7 +29,6 @@ class Logs {
 			$log->prepare_items();
 			?>
 			<div class="wrap">
-				<div id="icon-users" class="icon32"></div>
 				<h2><?php echo esc_html__( 'Logs', 'personio-integration-light' ); ?></h2>
 				<?php $log->display(); ?>
 			</div>

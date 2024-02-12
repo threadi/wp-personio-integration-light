@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 use SimpleXMLElement;
@@ -121,9 +122,9 @@ class Position {
 		// search for the personioID to get an existing post-object.
 		if ( empty( $this->data['ID'] ) ) {
 			$query   = array(
-				'post_type'   => WP_PERSONIO_INTEGRATION_MAIN_CPT,
+				'post_type'   => PersonioPosition::get_instance()->get_name(),
 				'fields'      => 'ids',
-				'post_status' => 'publish',
+				'post_status' => 'any',
 				'meta_query'  => array(
 					array(
 						'key'     => WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID,
@@ -545,8 +546,6 @@ class Position {
 	/**
 	 * Return the permalink for this position.
 	 *
-	 * TODO move to pro.
-	 *
 	 * @return string
 	 */
 	public function get_link(): string {
@@ -748,7 +747,7 @@ class Position {
 	}
 
 	/**
-	 * Return the application-URL.
+	 * Return the application-URL (link to Personio).
 	 *
 	 * @param bool $without_application True if application-hash should NOT be added.
 	 *

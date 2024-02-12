@@ -27,10 +27,15 @@ class Helper {
 	/**
 	 * Return the logo as img
 	 *
+	 * @param bool $big_logo True to output the big logo.
+	 *
 	 * @return string
 	 */
-	public static function get_logo_img(): string {
-		return '<img src="' . self::get_plugin_url() . 'gfx/personio_icon.png" alt="">';
+	public static function get_logo_img( bool $big_logo = false ): string {
+		if( $big_logo ) {
+			return '<img src="' . self::get_plugin_url() . 'gfx/personio_logo_big.png" alt="Personio Logo" class="logo">';
+		}
+		return '<img src="' . self::get_plugin_url() . 'gfx/personio_icon.png" alt="Personio Logo" class="logo">';
 	}
 
 	/**
@@ -605,5 +610,16 @@ class Helper {
 			PersonioPosition::get_instance()->get_name()
 		);
 		return apply_filters( 'personio_integration_list_of_cpts', $list ); // TODO doku
+	}
+
+	/**
+	 * Replace all linebreaks in given string.
+	 *
+	 * @param string $text_to_parse The text where we replace the line breaks.
+	 *
+	 * @return string
+	 */
+	public static function replace_linebreaks( string $text_to_parse ): string {
+		return preg_replace( '/\s+/', ' ', $text_to_parse );
 	}
 }

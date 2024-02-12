@@ -191,7 +191,7 @@ class PersonioPosition extends Post_Type {
 		// register personioId als post-meta to be published in rest-api,
 		// which is necessary for our Blocks.
 		register_post_meta(
-			WP_PERSONIO_INTEGRATION_MAIN_CPT,
+			$this->get_name(),
 			WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID,
 			array(
 				'type'         => 'integer',
@@ -1020,9 +1020,13 @@ class PersonioPosition extends Post_Type {
 						continue;
 					}
 
-					// bail if box is 'submitdiv'.
-					$false = false;
-					if( $box['id'] === 'submitdiv' && apply_filters( 'personio_integration_do_not_hide_submitdiv', $false ) ) {
+					/**
+					 * Decide if we should not remove the support for this meta-box.
+					 *
+					 * @since 3.0.0 Available since 3.0.0.
+					 * @param array $box Settings of the meta-box.
+					 */
+					if( apply_filters( 'personio_integration_do_not_hide_meta_box', $box ) ) {
 						continue;
 					}
 

@@ -178,7 +178,7 @@ class Init {
 			if ( is_admin() ) {
 				// add link to view position in frontend if one is called in backend.
 				$post_id = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) );
-				if ( $post_id > 0 && WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( $post_id ) ) {
+				if ( $post_id > 0 && PersonioPosition::get_instance()->get_name() === get_post_type( $post_id ) ) {
 					$position_obj = Positions::get_instance()->get_position( $post_id );
 					$admin_bar->add_menu(
 						array(

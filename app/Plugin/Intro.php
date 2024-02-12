@@ -59,7 +59,7 @@ class Intro {
 		add_action( 'admin_action_personioPositionsIntroReset', array( $this, 'reset_intro' ) );
 
 		// bail if intro has been run.
-		if( 1 === absint(get_option( 'personio-integration-intro', 0 ) ) ) {
+		if( 1 === absint(get_option( 'personio-integration-intro' ) ) ) {
 			return;
 		}
 

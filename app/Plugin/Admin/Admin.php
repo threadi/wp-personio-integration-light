@@ -135,6 +135,7 @@ class Admin {
 				'dismiss_url_nonce'       => wp_create_nonce( 'personio-integration-dismiss-url' ),
 				'run_import_nonce'        => wp_create_nonce( 'personio-run-import' ),
 				'get_import_nonce'        => wp_create_nonce( 'personio-get-import-info' ),
+				'settings_import_file_nonce' => wp_create_nonce( 'personio-integration-settings-import-file' ),
 				'label_import_is_running' => __( 'Import is running', 'personio-integration-light' ),
 				'logo_img'                => Helper::get_logo_img(),
 				'url_example'             => Helper::get_personio_url_example(),
@@ -155,7 +156,10 @@ class Admin {
 				'lbl_ok' => __( 'OK', 'personio-integration-light' ),
 				'title_import_success' => __( 'Positions has been imported', 'personio-integration-light' ),
 				/* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
-				'txt_import_success' => sprintf( __( '<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.','personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ), esc_url( get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ) ) )
+				'txt_import_success' => sprintf( __( '<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.','personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ), esc_url( get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ) ) ),
+				'title_settings_import_file_missing' => __( 'Import file missing', 'personio-integration-light' ),
+				'title_settings_import_file_result' => __( 'Import file uploaded', 'personio-integration-light' ),
+				'text_settings_import_file_missing' => __( 'Please choose a file for the import.', 'personio-integration-light' ),
 			)
 		);
 	}

@@ -13,21 +13,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Object which saves the validated URL.
+ * Object which saves the import schedule.
  */
 class Import {
 	/**
 	 * Save the Personio-URL.
 	 *
-	 * @param string|null $old_value The old value of this field.
-	 * @param string|null $new_value The new value of this field.
+	 * @param string $value The value to save.
 	 *
 	 * @return string|null
-	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public static function save( string|null $old_value, string|null $new_value ): null|string {
+	public static function save( string $value ): null|string {
 		$import_schedule_obj = new \PersonioIntegrationLight\Plugin\Schedules\Import();
-		if( 1 === absint( $new_value ) ) {
+		if( 1 === absint( $value ) ) {
 			$import_schedule_obj->install();
 		}
 		else {
@@ -35,6 +33,6 @@ class Import {
 		}
 
 		// return the new value to save it via WP.
-		return $new_value;
+		return $value;
 	}
 }

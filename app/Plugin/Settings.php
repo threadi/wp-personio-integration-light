@@ -82,12 +82,16 @@ class Settings {
 		add_action( 'admin_init', array( $this, 'register_field_callbacks' ) );
 		add_action( 'rest_api_init', array( $this, 'register_field_callbacks' ) );
 
+		// register setting-actions.
+		add_action( 'admin_action_personio_integration_export_settings', array( $this, 'export_settings' ) );
+		add_action( 'wp_ajax_personio_integration_settings_import_file', array( $this, 'import_settings' ) );
+
 		// add admin-menu.
 		add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
 	}
 
 	/**
-	 * Define ALL settings.
+	 * Define ALL settings for this plugin.
 	 *
 	 * @return void
 	 */
@@ -95,7 +99,7 @@ class Settings {
 		// set tabs.
 		$this->tabs = array(
 			array(
-				'label' => __( 'General Settings', 'personio-integration-light' ),
+				'label' => __( 'Basic Settings', 'personio-integration-light' ),
 				'key'   => '',
 				'page'  => 'personioIntegrationPositions',
 			),
@@ -123,6 +127,12 @@ class Settings {
 				'label'    => __( 'Logs', 'personio-integration-light' ),
 				'key'      => 'logs',
 				'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\Logs', 'show' ),
+			),
+			array(
+				'label'    => '&nbsp;',
+				'key'      => 'copyright',
+				'callback' => array( $this, 'show_copyright' ),
+				'class' => 'copyright'
 			),
 			array(
 				'label' => __( 'Questions? Check our forum!', 'personio-integration-light' ),
@@ -480,6 +490,14 @@ class Settings {
 						'label'    => __( 'Reset intro', 'personio-integration-light' ),
 						'field' => array( 'PersonioIntegrationLight\Plugin\Intro', 'show_reset_button' ),
 					),
+					'personioIntegrationImportSettings' => array(
+						'label'    => __( 'Import settings', 'personio-integration-light' ),
+						'field' => array( $this, 'show_import_button' ),
+					),
+					'personioIntegrationExportSettings' => array(
+						'label'    => __( 'Export settings', 'personio-integration-light' ),
+						'field' => array( $this, 'show_export_button' ),
+					),
 					'personioIntegration_debug'            => array(
 						'label'               => __( 'Debug-Mode', 'personio-integration-light' ),
 						'field'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
@@ -531,6 +549,7 @@ class Settings {
 							'type' => 'integer',
 							'default'             => 0,
 						),
+						'do_not_export' => true
 					),
 					'personio-integration-intro' => array(
 						'register_attributes' => array(
@@ -614,7 +633,7 @@ class Settings {
 	 * @return void
 	 */
 	public function register_field_callbacks(): void {
-		foreach ( $this->get_settings() as $section_name => $section_settings ) {
+		foreach ( $this->get_settings() as $section_settings ) {
 			if ( ! empty( $section_settings ) && ! empty( $section_settings['page'] ) && ! empty( $section_settings['label'] ) && ! empty( $section_settings['callback'] ) ) {
 				// add fields in this section.
 				if ( ! empty( $section_settings['fields'] ) ) {
@@ -823,7 +842,6 @@ class Settings {
 	 */
 	public function change_settings(): void {
 		$false = false;
-
 		/**
 		 * Hide the additional buttons for reviews or pro-version.
 		 *
@@ -908,5 +926,186 @@ class Settings {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Show import button.
+	 *
+	 * @return void
+	 */
+	public function show_import_button(): void {
+		// define import-dialog.
+		$dialog = array(
+			'title' => __( 'Import settings', 'personio-integration-light' ),
+			'texts' => array(
+				'<p>' . __( 'Uploading a new configuration overwrites all current settings.<br>Imported positions are not affected by this.', 'personio-integration-light' ) . '</p>',
+				'<label for="import_settings_file">'.__( 'Choose file to import:', 'personio-integration-light' ).'</label>',
+				'<input type="file" id="import_settings_file" name="import_settings_file" accept="application/json">'
+			),
+			'buttons' => array(
+				array(
+					'action' => 'personio_integration_import_settings_file();',
+					'variant' => 'primary',
+					'text' => __( 'Import file', 'personio-integration-light' )
+				),
+				array(
+					'action' => 'closeDialog();',
+					'variant' => 'primary',
+					'text' => __( 'Cancel', 'personio-integration-light' )
+				),
+			),
+		);
+
+		// output button.
+		?><a href="" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode($dialog) ); ?>"><?php echo esc_html__( 'Import settings', 'personion-integration-light' ); ?></a><?php
+	}
+
+	/**
+	 * Show export button.
+	 *
+	 * @return void
+	 */
+	public function show_export_button(): void {
+		// define download-URL.
+		$download_url = add_query_arg(
+			array(
+				'action' => 'personio_integration_export_settings',
+				'nonce' => wp_create_nonce( 'personio-integration-export-settings' )
+			),
+			get_admin_url() . 'admin.php'
+		);
+
+		// define export-dialog.
+		$dialog = array(
+			'title' => __( 'Export settings', 'personio-integration-light' ),
+			'texts' => array(
+				'<p>'.__( 'Click on the button to download an export of all actual settings in this plugin.', 'personio-integration-light' ).'</p>'
+			),
+			'buttons' => array(
+				array(
+					'action' => 'location.href="'.$download_url.'";closeDialog();',
+					'variant' => 'primary',
+					'text' => __( 'Download', 'personio-integration-light' )
+				),
+				array(
+					'action' => 'closeDialog();',
+					'variant' => 'primary',
+					'text' => __( 'Cancel', 'personio-integration-light' )
+				),
+			),
+		);
+
+		// output button.
+		?><a href="" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode($dialog) ); ?>"><?php echo esc_html__( 'Export settings', 'personion-integration-light' ); ?></a><?php
+	}
+
+	/**
+	 * Export actual settings as JSON-file.
+	 *
+	 * @return void
+	 */
+	public function export_settings(): void {
+		// check for nonce.
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ) ), 'personio-integration-export-settings' ) ) {
+			return;
+		}
+
+		// get settings.
+		$settings_list = array();
+		foreach( $this->get_settings() as $section_settings ) {
+			foreach( $section_settings['fields'] as $field_name => $field_settings ) {
+				if( ! empty( $field_settings['register_attributes']) && empty( $field_settings['do_not_export'] ) )  {
+					$settings_list[ $field_name ] = get_option( $field_name );
+				}
+			}
+		}
+
+		// create filename for JSON-download-file.
+		$filename = gmdate( 'YmdHi' ) . '_' . get_option( 'blogname' ) . '_Personio_Integration_Light_Settings.json';
+		/**
+		 * File the filename for JSON-download of all settings.
+		 *
+		 * @param string $filename The generated filename.
+		 */
+		$filename = apply_filters( 'personio_integration_settings_export_filename', $filename );
+
+		// set header for response as JSON-download.
+		header( 'Content-type: application/json' );
+		header( 'Content-Disposition: attachment; filename=' . sanitize_file_name( $filename ) );
+		echo wp_json_encode( $settings_list );
+		exit;
+	}
+
+	/**
+	 * Import settings file via AJAX.
+	 *
+	 * @return void
+	 */
+	public function import_settings(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-integration-settings-import-file', 'nonce' );
+
+		// bail if file has no size.
+		if( 0 === $_FILES['file']['size'] ) {
+			wp_send_json( array( 'html' => __( 'The uploaded file is no size.', 'personio-integration-light' ) ) );
+		}
+
+		// bail if file type is not JSON.
+		if( 'application/json' !== $_FILES['file']['type'] ) {
+			wp_send_json( array( 'html' => __( 'The uploaded file is not a valid JSON-file.', 'personio-integration-light' ) ) );
+		}
+
+		// allow JSON-files.
+		add_filter('upload_mimes', array( $this, 'allow_json' ) );
+
+		// bail if file type is not JSON.
+		$filetype = wp_check_filetype( $_FILES['file']['name'] );
+		if( 'json' !== $filetype['ext'] ) {
+			wp_send_json( array( 'html' => __( 'The uploaded file does not have the file extension <i>.json</i>.', 'personio-integration-light' ) ) );
+		}
+
+		// bail if uploaded file is not readable.
+		if( ! file_exists( $_FILES['file']['tmp_name'] ) ) {
+			wp_send_json( array( 'html' => __( 'The uploaded file could not be saved. Contact your hoster about this problem.', 'personio-integration-light' ) ) );
+		}
+
+		// read the file.
+		$file_content = file_get_contents( $_FILES['file']['tmp_name'] );
+
+		// convert JSON to array.
+		$settings_array = json_decode( $file_content, ARRAY_A );
+
+		// import the settings.
+		foreach( $settings_array as $field_name => $field_value ) {
+			update_option( $field_name, $field_value );
+		}
+
+		// return "all ok".
+		wp_send_json( array( 'html' => __( 'Import has been successfully run.', 'personio-integration-light' ) ) );
+	}
+
+	/**
+	 * Allow SVG as file-type.
+	 *
+	 * @param array $file_types
+	 *
+	 * @return array
+	 */
+	public function allow_json( array $file_types ): array {
+		$new_filetypes = array();
+		$new_filetypes['json'] = 'application/json';
+		return array_merge( $file_types, $new_filetypes );
+	}
+
+	/**
+	 * Show copyright hints.
+	 *
+	 * @return void
+	 */
+	public function show_copyright(): void {
+		?><div class="wrap"><?php
+		echo Helper::get_logo_img( true );
+		?><p>The Personio logo as part of all distributed icons is a trademark of <a href="https://www.personio.de/">Personio SE & Co. KG</a>.</p><?php
+		?></div><?php
 	}
 }

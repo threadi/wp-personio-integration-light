@@ -107,7 +107,7 @@ jQuery(document).ready(function($) {
         let form_field = $(this);
 
         // check on load to hide some fields.
-        $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
+        $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions p, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
           let depending_field = $(this);
           $.each( $(this).data('depends'), function( i, v ) {
                if( i === form_field.attr('name') && v === 1 && ! form_field.is(':checked') ) {
@@ -119,7 +119,7 @@ jQuery(document).ready(function($) {
 
         // add event-listener to changed depending fields.
         form_field.on('change', function() {
-          $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
+          $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions p, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
             let depending_field = $(this);
             $.each( $(this).data('depends'), function( i, v ) {
               if( i === form_field.attr('name') && v === 1 ) {
@@ -250,4 +250,65 @@ function personio_get_import_info() {
  */
 function personio_integration_create_dialog( config ) {
   document.body.dispatchEvent(new CustomEvent("wp-easy-dialog", config));
+}
+
+/**
+ * Import given settings file via AJAX.
+ */
+function personio_integration_import_settings_file() {
+
+  let file = jQuery('#import_settings_file')[0].files[0];
+  if( undefined === file ) {
+    let dialog_config = {
+      detail: {
+        title: personioIntegrationLightJsVars.title_settings_import_file_missing,
+        texts: [
+          '<p>' + personioIntegrationLightJsVars.text_settings_import_file_missing + '</p>'
+        ],
+        buttons: [
+          {
+            'action': 'closeDialog();',
+            'variant': 'primary',
+            'text': personioIntegrationLightJsVars.lbl_ok
+          }
+        ]
+      }
+    }
+    personio_integration_create_dialog( dialog_config );
+    return;
+  }
+
+  let request = new FormData();
+  request.append('file', file);
+  request.append( 'action', 'personio_integration_settings_import_file' );
+  request.append( 'nonce', personioIntegrationLightJsVars.settings_import_file_nonce );
+
+  jQuery.ajax({
+    url: personioIntegrationLightJsVars.ajax_url,
+    type: "POST",
+    data: request,
+    contentType: false,
+    processData: false,
+    success: function( data ){
+      console.log(data);
+      if( data.html ) {
+        let dialog_config = {
+          detail: {
+            title: personioIntegrationLightJsVars.title_settings_import_file_result,
+            texts: [
+              '<p>' + data.html + '</p>'
+            ],
+            buttons: [
+              {
+                'action': 'closeDialog();',
+                'variant': 'primary',
+                'text': personioIntegrationLightJsVars.lbl_ok
+              }
+            ]
+          }
+        }
+        personio_integration_create_dialog( dialog_config );
+      }
+    },
+  });
 }
