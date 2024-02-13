@@ -219,7 +219,7 @@ class Init {
 			'personio-integration-styles',
 			Helper::get_plugin_url() . 'css/styles.css',
 			array(),
-			filemtime( Helper::get_plugin_path() . 'css/styles.css' )
+			Helper::get_file_version( Helper::get_plugin_path() . 'css/styles.css' )
 		);
 
 		/**
@@ -230,7 +230,7 @@ class Init {
 				'personio-integration-additional-styles',
 				Helper::get_plugin_url() . 'blocks/list/build/style-index.css',
 				array(),
-				filemtime( Helper::get_plugin_path() . 'blocks/list/build/style-index.css' )
+				Helper::get_file_version( Helper::get_plugin_path() . 'blocks/list/build/style-index.css' )
 			);
 		}
 	}

@@ -104,7 +104,7 @@ class Admin {
 			'personio_integration-admin-css',
 			Helper::get_plugin_url() . 'admin/styles.css',
 			array(),
-			filemtime( Helper::get_plugin_path() . '/admin/styles.css' ),
+			Helper::get_file_version( Helper::get_plugin_path() . 'admin/styles.css' ),
 		);
 
 		// admin- and backend-styles for attribute-type-output.
@@ -112,7 +112,7 @@ class Admin {
 			'personio_integration-styles',
 			Helper::get_plugin_url() . 'css/styles.css',
 			array(),
-			filemtime( Helper::get_plugin_path() . '/css/styles.css' )
+			Helper::get_file_version( Helper::get_plugin_path() . 'css/styles.css' )
 		);
 
 		// backend-JS.
@@ -120,7 +120,7 @@ class Admin {
 			'personio_integration-admin-js',
 			Helper::get_plugin_url() . 'admin/js.js',
 			array( 'jquery', 'wp-easy-dialog' ),
-			filemtime( Helper::get_plugin_path() . '/admin/js.js' ),
+			Helper::get_file_version( Helper::get_plugin_path() . 'admin/js.js' ),
 			true
 		);
 
@@ -197,7 +197,7 @@ class Admin {
 			'wp-easy-dialog',
 			$admin_css,
 			array( 'wp-components' ),
-			filemtime( $admin_css_path )
+			Helper::get_file_version( $admin_css_path )
 		);
 	}
 

@@ -250,7 +250,7 @@ class Setup {
 			'wp-easy-setup',
 			$admin_css,
 			array( 'wp-components' ),
-			filemtime( $admin_css_path )
+			Helper::get_file_version( $admin_css_path )
 		);
 
 		// localize the script.

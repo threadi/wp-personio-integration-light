@@ -273,3 +273,5 @@ body.personioposition_page_personioPositions tr.show_with_animation {
 .tab-content img.logo {
 	width: 120px;
 }
+
+body.post-type-personioposition #post-body-content { display: none }

@@ -53,6 +53,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from job descriptions
 - RichSnippets for optimal findability via search engines like Google Jobs
 - Support for Open Graph (Facebook, LinkedIn, WhatsApp ..) and Twitter Cards
+- Support to embed positions from your website in other website via oEmbed
 - Customization of slugs (URLs) for list and detailed views of positions
 - Shortcode generator for individual views of lists and details
 - Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, WPBakery, Avada

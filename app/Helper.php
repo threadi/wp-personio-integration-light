@@ -622,4 +622,36 @@ class Helper {
 	public static function replace_linebreaks( string $text_to_parse ): string {
 		return preg_replace( '/\s+/', ' ', $text_to_parse );
 	}
+
+	/**
+	 * Return the version of the given file.
+	 *
+	 * With WP_DEBUG or plugin-debug enabled its @filemtime().
+	 * Without this it's the plugin-version.
+	 *
+	 * @param string $filepath The absolute path to the requested file.
+	 *
+	 * @return string
+	 */
+	public static function get_file_version( string $filepath ): string {
+		// check for WP_DEBUG.
+		if( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			return filemtime( $filepath );
+		}
+
+		// check for own debug.
+		if( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+			return filemtime( $filepath );
+		}
+
+		$plugin_version = WP_PERSONIO_INTEGRATION_VERSION;
+
+		/**
+		 * File the used file version.
+		 *
+		 * @param string $plugin_version The plugin-version.
+		 * @param string $filepath The absolute path to the requested file.
+		 */
+		return apply_filters( 'personio_integration_file_version', $plugin_version, $filepath );
+	}
 }
