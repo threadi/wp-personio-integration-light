@@ -136,6 +136,39 @@ jQuery(document).ready(function($) {
           });
         })
     });
+    $('body.personioposition_page_personioPositions select').each( function() {
+      let form_field = $(this);
+
+      // check on load to hide some fields.
+      $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions p, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
+        let depending_field = $(this);
+        $.each( $(this).data('depends'), function( i, v ) {
+          if( i === form_field.attr('name') && v !== form_field.val() ) {
+            depending_field.closest('tr').addClass('hide');
+            depending_field.closest('tr').removeClass('show_with_animation');
+          }
+        });
+      });
+
+      // add event-listener to changed depending fields.
+      form_field.on('change', function() {
+        $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions p, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
+          let depending_field = $(this);
+          $.each( $(this).data('depends'), function( i, v ) {
+            if( i === form_field.attr('name') ) {
+              if( v === form_field.val() ) {
+                depending_field.closest('tr').removeClass('hide');
+                depending_field.closest( 'tr' ).addClass('show_with_animation')
+              }
+              else {
+                depending_field.closest('tr').addClass('hide');
+                depending_field.closest('tr').removeClass('show_with_animation');
+              }
+            }
+          });
+        });
+      })
+    });
 
     /**
      * Add hint for applications in Pro-version in menu.

@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle a single text field for classic settings.
+ * File to handle a single select field for classic settings.
  *
  * @package personio-integration-light
  */

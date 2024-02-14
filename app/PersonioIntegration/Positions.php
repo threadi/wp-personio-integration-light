@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use PersonioIntegrationLight\Helper;
 use WP_Query;
 
 /**
