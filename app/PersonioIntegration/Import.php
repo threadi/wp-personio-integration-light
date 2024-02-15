@@ -188,8 +188,7 @@ class Import {
 		$language_name = $this->get_language();
 
 		// get Personio-URL-object.
-		// TODO !!! object wird wiederverwendet - warum?
-		$personio_obj = new Personio( Helper::get_personio_url() );
+		$personio_obj = new Personio( $this->get_url() );
 
 		// get URL.
 		$url = $personio_obj->get_xml_url( $language_name );
