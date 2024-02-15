@@ -103,27 +103,27 @@ jQuery(document).ready(function($) {
      *
      * Hint: hide the surrounding "tr"-element.
      */
-    $('body.personioposition_page_personioPositions input[type="checkbox"]').each( function() {
+    $('body.personioposition_page_personioPositions input[type="checkbox"], body.personioposition_page_personioPositions select').each( function() {
         let form_field = $(this);
 
         // check on load to hide some fields.
-        $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions p, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
+        $('body.personioposition_page_personioPositions [data-depends]').each( function() {
           let depending_field = $(this);
           $.each( $(this).data('depends'), function( i, v ) {
-               if( i === form_field.attr('name') && v === 1 && ! form_field.is(':checked') ) {
-                 depending_field.closest('tr').addClass('hide');
-                 depending_field.closest('tr').removeClass('show_with_animation');
-               }
+             if( i === form_field.attr('name') && ( ( form_field.attr('type') === 'checkbox' && v.toString() === form_field.val() ) || ( form_field.attr('type') !== 'checkbox' && v.toString() !== form_field.val() ) ) ) {
+               depending_field.closest('tr').addClass('hide');
+               depending_field.closest('tr').removeClass('show_with_animation');
+             }
           });
         });
 
         // add event-listener to changed depending fields.
         form_field.on('change', function() {
-          $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions p, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
+          $('body.personioposition_page_personioPositions [data-depends]').each( function() {
             let depending_field = $(this);
             $.each( $(this).data('depends'), function( i, v ) {
-              if( i === form_field.attr('name') && v === 1 ) {
-                if( form_field.is(':checked') ) {
+              if( i === form_field.attr('name') ) {
+                if( (form_field.attr('type') !== 'checkbox' && v.toString() === form_field.val() ) || (form_field.attr('type') === 'checkbox' && form_field.is(':checked') ) ) {
                   depending_field.closest('tr').removeClass('hide');
                   depending_field.closest( 'tr' ).addClass('show_with_animation')
                 }
@@ -136,7 +136,7 @@ jQuery(document).ready(function($) {
           });
         })
     });
-    $('body.personioposition_page_personioPositions select').each( function() {
+    /*$('body.personioposition_page_personioPositions select').each( function() {
       let form_field = $(this);
 
       // check on load to hide some fields.
@@ -168,7 +168,7 @@ jQuery(document).ready(function($) {
           });
         });
       })
-    });
+    });*/
 
     /**
      * Add hint for applications in Pro-version in menu.

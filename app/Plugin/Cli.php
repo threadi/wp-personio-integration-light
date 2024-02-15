@@ -9,6 +9,7 @@ namespace PersonioIntegrationLight\Plugin;
 
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Import;
+use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\Plugin\Cli\Helper;
 
 /**
@@ -19,14 +20,15 @@ class Cli {
 	use Helper;
 
 	/**
-	 * Get actual open positions from Personio.
+	 * Import actual open positions from Personio.
 	 *
 	 * @since  1.0.0
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function get_positions(): void {
-		new Import();
+	public function import_positions(): void {
+		$imports_obj = Imports::get_instance();
+		$imports_obj->run();
 	}
 
 	/**

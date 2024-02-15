@@ -56,16 +56,6 @@ const WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE = 'personio_integration_positi
 const WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT = 'personio_integration_position_content';
 
 /**
- * Language-specific option name for MD5-Hash for import-string.
- */
-const WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 = 'personioIntegration_xml_hash_';
-
-/**
- * Language-specific option name for timestamp for import.
- */
-const WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP = 'personioIntegration_xml_lm_timestamp_';
-
-/**
  * Name for taxonomy-meta-field for language-specific titles.
  */
 const WP_PERSONIO_INTEGRATION_TAXONOMY_LANG_TITLE = 'langs';

@@ -654,10 +654,17 @@ class Settings {
 	 */
 	public function add_settings_menu(): void {
 		if ( Setup::get_instance()->is_completed() ) {
+			$title = __( 'Personio Integration Light', 'personio-integration-light' );
+
 			// add menu entry for settings page.
 			add_submenu_page(
 				PersonioPosition::get_instance()->get_link( true ),
-				__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Settings', 'personio-integration-light' ),
+				/**
+				 * Filter for settings title.
+				 *
+				 * @param string $title The title.
+				 */
+				apply_filters( 'personio_integration_settings_title', $title ) . ' ' . __( 'Settings', 'personio-integration-light' ),
 				__( 'Settings', 'personio-integration-light' ),
 				'manage_' . PersonioPosition::get_instance()->get_name(),
 				'personioPositions',

@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Imports;
+use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\Widgets\Widgets;
 
 /**
@@ -107,11 +109,13 @@ class Uninstaller {
 
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
-			// remove language-specific options.
-			foreach ( Languages::get_instance()->get_languages() as $key => $lang ) {
-				delete_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $key );
-				delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $key );
-				delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $key );
+			foreach( Imports::get_instance()->get_personio_urls() as $personio_url ) {
+				$personio_obj = new Personio( $personio_url );
+				foreach ( Languages::get_instance()->get_languages() as $language_name => $lang ) {
+					$personio_obj->remove_timestamp( $language_name );
+					delete_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $language_name );
+					$personio_obj->remove_md5( $language_name );
+				}
 			}
 
 			// delete all collected data.

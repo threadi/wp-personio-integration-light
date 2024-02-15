@@ -91,7 +91,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 *
 	 * @return bool
 	 */
-	private static function check_url( string $value ): bool {
+	public static function check_url( string $value ): bool {
 		$personio_obj = new Personio( $value );
 
 		// -> should return HTTP-Status 200
@@ -163,7 +163,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 *
 	 * @return bool
 	 */
-	private static function check_personio_in_url( string $value ): bool {
+	public static function check_personio_in_url( string $value ): bool {
 		return str_ends_with( $value, '.jobs.personio.com' ) || str_ends_with( $value, '.jobs.personio.de' );
 	}
 
@@ -174,7 +174,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 *
 	 * @return bool
 	 */
-	private static function validate_url( string $value ): bool {
+	public static function validate_url( string $value ): bool {
 		return wp_http_validate_url( $value );
 	}
 

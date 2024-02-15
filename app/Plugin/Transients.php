@@ -57,6 +57,9 @@ class Transients {
 		// enable our own notices.
 		add_action( 'admin_notices', array( $this, 'init_notices' ) );
 
+		// use our own hooks.
+		add_filter( 'personio_integration_transient_hide_on', array( $this, 'set_default_pages_where_transients_are_hidden' ) );
+
 		// process AJAX-requests to dismiss transient notices.
 		add_action( 'wp_ajax_dismiss_admin_notice', array( $this, 'dismiss_transient_via_ajax' ) );
 	}
@@ -240,5 +243,19 @@ class Transients {
 
 		// return nothing.
 		wp_die();
+	}
+
+	/**
+	 * Add URLs to the list where transients are hidden by default.
+	 *
+	 * @param array $list
+	 *
+	 * @return array
+	 */
+	public function set_default_pages_where_transients_are_hidden( array $list ): array {
+		$list[] = get_admin_url().'themes.php';
+		$list[] = get_admin_url().'update.php';
+		$list[] = get_admin_url().'update-core.php';
+		return $list;
 	}
 }

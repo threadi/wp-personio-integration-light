@@ -73,9 +73,6 @@ class Setup {
 		add_action( 'admin_action_personioIntegrationSetup', array( $this, 'display' ) );
 		add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
-		add_action( 'personio_integration_import_count', array( $this, 'update_process_step' ) );
-		add_action( 'personio_integration_import_finished', array( $this, 'update_process_step' ) );
-		add_action( 'personio_integration_import_max_steps', array( $this, 'update_process_max_steps' ) );
 
 		// register REST API.
 		add_action( 'rest_api_init', array( $this, 'add_rest_api' ) );

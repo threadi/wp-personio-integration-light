@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\Imports;
+use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\Plugin\Languages;
@@ -46,9 +48,12 @@ trait Helper {
 		delete_option( 'personioIntegrationPositionCount' );
 
 		// delete options regarding the import.
-		foreach ( Languages::get_instance()->get_languages() as $language_name => $lang ) {
-			delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $language_name );
-			delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $language_name );
+		foreach( Imports::get_instance()->get_personio_urls() as $personio_url ) {
+			$personio_obj = new Personio( $personio_url );
+			foreach ( Languages::get_instance()->get_languages() as $language_name => $lang ) {
+				$personio_obj->remove_timestamp( $language_name );
+				$personio_obj->remove_md5( $language_name );
+			}
 		}
 
 		// output success-message.

@@ -68,11 +68,81 @@ class Personio {
 	}
 
 	/**
-	 * Return the XML-URL.
+	 * Return the language-specific XML-URL.
+	 *
+	 * @param string $language_name The internal name of the language (e.g. "de").
 	 *
 	 * @return string
 	 */
-	public function get_xml_url(): string {
-		return $this->get_url() . '/xml';
+	public function get_xml_url( string $language_name ): string {
+		return $this->get_url() . '/xml?language=' . esc_attr( $language_name );
+	}
+
+	/**
+	 * Get languages-specific last modified timestamp from previous import.
+	 *
+	 * @param string $language_name The internal language-name (e.g. "de").
+	 *
+	 * @return int
+	 */
+	public function get_timestamp( string $language_name ): int {
+		return absint( get_option( 'personioIntegration_xml_lm_timestamp_' . md5( $this->get_url() ) . $language_name ) );
+	}
+
+	/**
+	 * Set or update languages-specific last modified timestamp.
+	 *
+	 * @param int $last_modified_timestamp The timestamp as unit-timestamp.
+	 * @param string   $language_name The internal language-name (e.g. "de").
+	 *
+	 * @return void
+	 */
+	public function set_timestamp( int $last_modified_timestamp, string $language_name ): void {
+		update_option( 'personioIntegration_xml_lm_timestamp_' . md5( $this->get_url() ) . $language_name, $last_modified_timestamp );
+	}
+
+	/**
+	 * Remove languages-specific last modified timestamp.
+	 *
+	 * @param string $language_name The internal language-name (e.g. "de").
+	 *
+	 * @return void
+	 */
+	public function remove_timestamp( string $language_name ): void {
+		delete_option( 'personioIntegration_xml_lm_timestamp_' . md5( $this->get_url() ) . $language_name );
+	}
+
+	/**
+	 * Return md5-hash of language-specific import content from this Personio-account.
+	 *
+	 * @param string $language_name
+	 *
+	 * @return string
+	 */
+	public function get_md5( string $language_name ): string {
+		return get_option( 'personioIntegration_xml_hash_' . md5( $this->get_url() ) . $language_name, '' );
+	}
+
+	/**
+	 * Set md5-hash of language-specific import content from this Personio-account.
+	 *
+	 * @param string $language_name
+	 * @param string $md5hash
+	 *
+	 * @return void
+	 */
+	public function set_md5( string $language_name, string $md5hash ): void {
+		update_option( 'personioIntegration_xml_hash_' . md5( $this->get_url() ). $language_name, $md5hash );
+	}
+
+	/**
+	 * Remove md5-hash for language-specific import content from this Personio-account.
+	 *
+	 * @param string $language_name
+	 *
+	 * @return void
+	 */
+	public function remove_md5( string $language_name ): void {
+		delete_option( 'personioIntegration_xml_hash_' . md5( $this->get_url() ). $language_name );
 	}
 }

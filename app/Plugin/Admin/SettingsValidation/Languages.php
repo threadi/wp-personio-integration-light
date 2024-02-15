@@ -8,6 +8,9 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 
 // prevent direct access.
+use PersonioIntegrationLight\PersonioIntegration\Imports;
+use PersonioIntegrationLight\PersonioIntegration\Personio;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -35,10 +38,13 @@ class Languages {
 		if ( $values !== $actual_languages ) {
 
 			// first remove all language-specific settings.
-			foreach ( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_languages() as $language_name => $label ) {
-				delete_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $language_name );
-				delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP . $language_name );
-				delete_option( WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 . $language_name );
+			foreach( Imports::get_instance()->get_personio_urls() as $personio_url ) {
+				$personio_obj = new Personio( $personio_url );
+				foreach ( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_languages() as $language_name => $label ) {
+					$personio_obj->remove_timestamp( $language_name );
+					delete_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $language_name );
+					$personio_obj->remove_md5( $language_name );
+				}
 			}
 
 			// then set the activated languages.
