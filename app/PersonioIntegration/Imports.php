@@ -141,6 +141,9 @@ class Imports {
 
 		// loop through the Personio URLs.
 		foreach( $personio_urls as $import_url ) {
+			// set marker that max-counter has been updated one time.
+			$max_count_updated = false;
+
 			// loop through the languages.
 			foreach ( $languages as $language_name => $label ) {
 				$import_obj = new Import();
@@ -150,7 +153,7 @@ class Imports {
 
 				// get count of positions during this import and update max-count.
 				if( false === $max_count_updated ) {
-					$this->set_import_max_count( count( $import_obj->get_xml_positions() ) * $language_count );
+					$this->set_import_max_count( $this->get_import_max_count() + count( $import_obj->get_xml_positions() ) * $language_count );
 					$max_count_updated = true;
 				}
 
@@ -350,6 +353,15 @@ class Imports {
 	 */
 	private function get_errors(): array {
 		return $this->errors;
+	}
+
+	/**
+	 * Return max count for import.
+	 *
+	 * @return void
+	 */
+	private function get_import_max_count(): int {
+		return absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) );
 	}
 
 	/**
