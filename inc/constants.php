@@ -18,7 +18,7 @@ const WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE = 'personioIntegrationMainLanguage';
 /**
  * Name of the prefix for any language-option.
  */
-const WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION = 'personioPositionLanguages';
+const WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION = 'personioPositionLanguages'; // TODO in Personio-object verschieben?
 
 /**
  * Name of the postmeta-field with the personioId.

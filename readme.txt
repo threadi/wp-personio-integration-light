@@ -44,20 +44,22 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 #### the Pro license includes:
 
-- application formulars incl. export of them via Personio API
-- manual sorting of open positions in list views via drag&drop
-- sorting of position details in frontend via drag&drop
-- supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese - compatible with translations via Polylang
-- support for tracking of events with Google Analytics 4
-- text search in frontend for applicants
-- additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from job descriptions
-- RichSnippets for optimal findability via search engines like Google Jobs
-- Support for Open Graph (Facebook, LinkedIn, WhatsApp ..) and Twitter Cards
-- Support to embed positions from your website in other website via oEmbed
 - Customization of slugs (URLs) for list and detailed views of positions
+- Multiple and customizable application formulars incl. export of them via Personio API
+- Multiple Personio-accounts per website
+- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese - compatible with translations via Polylang
+- Support for subcompanies and additional offices in positions
+- Add unlimited custom files for download on each single position
+- Manual sorting of open positions in list views via drag&drop
+- Sorting of position details in frontend via drag&drop
+- Support for tracking of events with Google Analytics 4
+- Text search in frontend for applicants
+- Additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from job descriptions
+- RichSnippets for optimal findability via search engines like Google Jobs
+- Support for Open Graph (Facebook, LinkedIn, WhatsApp ..), Twitter Cards and Dublin Core (optionally configurable for all or single positions)
+- Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)
 - Shortcode generator for individual views of lists and details
 - Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, WPBakery, Avada
-- support for subcompanies and additional offices in positions
 - .. and much more
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)

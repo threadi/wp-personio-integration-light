@@ -18,7 +18,6 @@ use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 use SimpleXMLElement;
-use WP_Post;
 use WP_Query;
 use WP_Term;
 
@@ -94,6 +93,9 @@ class Position {
 			// set the main language for this position.
 			$this->set_lang( Languages::get_instance()->get_main_language() );
 		}
+		else {
+			$this->data['ID'] = 0;
+		}
 	}
 
 	/**
@@ -110,7 +112,18 @@ class Position {
 
 		// do not save anything without language setting.
 		if ( empty( $this->data['lang'] ) ) {
-			$this->log->add_log( __( 'Position could not be saved as the PersonioId does not have a language set.', 'personio-integration-light' ), 'error' );
+			$this->log->add_log( sprintf( __( 'Position with PersonioId %1$s could not be saved as the PersonioId does not have a language set.', 'personio-integration-light' ), esc_html( $this->data['personioId'] ) ), 'error' );
+			return;
+		}
+
+		$false = false;
+		/**
+		 * Filter if position could be imported.
+		 *
+		 * @param bool $false Return false to import this position.
+		 * @param Position $this The object of the position.
+		 */
+		if( apply_filters( 'personio_integration_check_requirement_to_import_single_position', $false, $this ) ) {
 			return;
 		}
 
@@ -747,15 +760,22 @@ class Position {
 	}
 
 	/**
-	 * Return the application-URL (link to Personio).
+	 * Return the application-URL (link to Personio career portal).
 	 *
 	 * @param bool $without_application True if application-hash should NOT be added.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
 	public function get_application_url( bool $without_application = false ): string {
-		$personio_obj = new Personio( Helper::get_personio_url() );
-		return $personio_obj->get_application_url( $this, $without_application );
+		return $this->get_personio_account()->get_application_url( $this, $without_application );
+	}
+
+	/**
+	 * Return the Personio object for this position.
+	 *
+	 * @return Personio
+	 */
+	public function get_personio_account(): Personio {
+		return new Personio( Helper::get_personio_url() );
 	}
 }

@@ -309,7 +309,7 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-		include Templates::get_instance()->get_template( 'single-' . WP_PERSONIO_INTEGRATION_MAIN_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
+		include Templates::get_instance()->get_template( 'single-' . PersonioPosition::$instance->get_name() . '-shortcode' . $personio_attributes['template'] . '.php' );
 		return ob_get_clean();
 	}
 
@@ -481,7 +481,7 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-		include Templates::get_instance()->get_template( 'archive-' . WP_PERSONIO_INTEGRATION_MAIN_CPT . '-shortcode' . $personio_attributes['template'] . '.php' );
+		include Templates::get_instance()->get_template( 'archive-' . PersonioPosition::$instance->get_name() . '-shortcode' . $personio_attributes['template'] . '.php' );
 		return ob_get_clean();
 	}
 
@@ -792,7 +792,7 @@ class PersonioPosition extends Post_Type {
 			$post_type = '';
 		}
 
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $post_type ) {
+		if ( PersonioPosition::get_instance()->get_name() === $post_type ) {
 			// add filter for each taxonomy.
 			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 				// show only taxonomies which are visible in filter.
@@ -833,6 +833,7 @@ class PersonioPosition extends Post_Type {
 	 * Use filter in admin on edit-page for filtering the cpt-items.
 	 *
 	 * @param WP_Query $query The WP_Query-object.
+	 *
 	 * @return void
 	 */
 	public function use_filter( WP_Query $query ): void {
@@ -842,7 +843,7 @@ class PersonioPosition extends Post_Type {
 			$post_type = 'post';
 		}
 
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $post_type && 'edit.php' === $pagenow ) {
+		if ( PersonioPosition::get_instance()->get_name() === $post_type && 'edit.php' === $pagenow ) {
 			// add filter for each taxonomy.
 			$tax_query = array();
 			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {

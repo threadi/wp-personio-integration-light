@@ -110,7 +110,11 @@ jQuery(document).ready(function($) {
         $('body.personioposition_page_personioPositions [data-depends]').each( function() {
           let depending_field = $(this);
           $.each( $(this).data('depends'), function( i, v ) {
-             if( i === form_field.attr('name') && ( ( form_field.attr('type') === 'checkbox' && v.toString() === form_field.val() ) || ( form_field.attr('type') !== 'checkbox' && v.toString() !== form_field.val() ) ) ) {
+             if( i === form_field.attr('name')
+               && (
+                 ( form_field.attr('type') === 'checkbox' && ! form_field.is(':checked') )
+                 || ( form_field.attr('type') !== 'checkbox' && v.toString() !== form_field.val() )
+               ) ) {
                depending_field.closest('tr').addClass('hide');
                depending_field.closest('tr').removeClass('show_with_animation');
              }
@@ -123,7 +127,10 @@ jQuery(document).ready(function($) {
             let depending_field = $(this);
             $.each( $(this).data('depends'), function( i, v ) {
               if( i === form_field.attr('name') ) {
-                if( (form_field.attr('type') !== 'checkbox' && v.toString() === form_field.val() ) || (form_field.attr('type') === 'checkbox' && form_field.is(':checked') ) ) {
+                if(
+                  (form_field.attr('type') !== 'checkbox' && v.toString() === form_field.val() )
+                  || (form_field.attr('type') === 'checkbox' && form_field.is(':checked') )
+                ) {
                   depending_field.closest('tr').removeClass('hide');
                   depending_field.closest( 'tr' ).addClass('show_with_animation')
                 }
@@ -136,39 +143,6 @@ jQuery(document).ready(function($) {
           });
         })
     });
-    /*$('body.personioposition_page_personioPositions select').each( function() {
-      let form_field = $(this);
-
-      // check on load to hide some fields.
-      $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions p, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
-        let depending_field = $(this);
-        $.each( $(this).data('depends'), function( i, v ) {
-          if( i === form_field.attr('name') && v !== form_field.val() ) {
-            depending_field.closest('tr').addClass('hide');
-            depending_field.closest('tr').removeClass('show_with_animation');
-          }
-        });
-      });
-
-      // add event-listener to changed depending fields.
-      form_field.on('change', function() {
-        $('body.personioposition_page_personioPositions ul, body.personioposition_page_personioPositions p, body.personioposition_page_personioPositions select, body.personioposition_page_personioPositions input, body.personioposition_page_personioPositions textarea').each( function() {
-          let depending_field = $(this);
-          $.each( $(this).data('depends'), function( i, v ) {
-            if( i === form_field.attr('name') ) {
-              if( v === form_field.val() ) {
-                depending_field.closest('tr').removeClass('hide');
-                depending_field.closest( 'tr' ).addClass('show_with_animation')
-              }
-              else {
-                depending_field.closest('tr').addClass('hide');
-                depending_field.closest('tr').removeClass('show_with_animation');
-              }
-            }
-          });
-        });
-      })
-    });*/
 
     /**
      * Add hint for applications in Pro-version in menu.
@@ -213,12 +187,12 @@ function personio_get_import_info() {
             'nonce': personioIntegrationLightJsVars.get_import_nonce
         },
         success: function(data) {
-            let stepData = data.split(";");
-            let count = parseInt(stepData[0]);
-            let max = parseInt(stepData[1]);
-            let running = parseInt(stepData[2]);
-            let errors = JSON.parse(stepData[3]);
+            let count = parseInt(data[0]);
+            let max = parseInt(data[1]);
+            let running = parseInt(data[2]);
+            let errors = JSON.parse(data[3]);
 
+            // show progress.
             jQuery("#progress").attr('value', (count / max) * 100);
 
             /**

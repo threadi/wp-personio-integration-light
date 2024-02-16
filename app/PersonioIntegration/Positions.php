@@ -271,4 +271,15 @@ class Positions {
 	public function get_positions_count(): int {
 		return count( $this->get_positions() );
 	}
+
+	/**
+	 * Check if given URL is the main Personio URL in this project.
+	 *
+	 * @param string $url The URL to check.
+	 *
+	 * @return bool
+	 */
+	public function is_main_personio_url( string $url ): bool {
+		return $url === get_option( 'personioIntegrationUrl' );
+	}
 }

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin;
 
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\Import;
+use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Cli;
 use PersonioIntegrationLight\Plugin\Setup;
@@ -381,7 +381,8 @@ class Admin {
 		check_ajax_referer( 'wp-personio-integration-import', 'nonce' );
 
 		// run import.
-		new Import();
+		$imports_obj = Imports::get_instance();
+		$imports_obj->run();
 
 		// add hint.
 		$message = sprintf(
@@ -419,7 +420,7 @@ class Admin {
 			// add hint.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_import_canceled' );
-			$transient_obj->set_message( __( '<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes to long please check your hosting logfiles for possible restrictions mentioned there.', 'personio-integration-light' ) . ' <br><br><a href="' . self::get_import_url() . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>' );
+			$transient_obj->set_message( __( '<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes to long please check your hosting logfiles for possible restrictions mentioned there.', 'personio-integration-light' ) . ' <br><br><a href="' . esc_url( Helper::get_import_url() ) . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>' );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->save();
 		}
@@ -534,7 +535,8 @@ class Admin {
 		check_ajax_referer( 'personio-run-import', 'nonce' );
 
 		// run import.
-		new Import();
+		$imports_obj = Imports::get_instance();
+		$imports_obj->run();
 
 		// return nothing.
 		wp_die();
@@ -546,7 +548,6 @@ class Admin {
 	 * Format: Step;MaxSteps;Running;Errors
 	 *
 	 * @return void
-	 * @noinspection PhpUnused
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function get_import_info(): void {
@@ -554,10 +555,12 @@ class Admin {
 		check_ajax_referer( 'personio-get-import-info', 'nonce' );
 
 		// return actual and max count of import steps.
-		echo absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ) . ';' . absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ) . ';' . absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) . ';' . wp_json_encode( get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) );
-
-		// return nothing else.
-		wp_die();
+		wp_send_json( array(
+			absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ),
+			absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ),
+			absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ),
+			wp_json_encode( get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) )
+		));
 	}
 
 	/**

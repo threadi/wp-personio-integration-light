@@ -44,6 +44,13 @@ class Imports {
 	protected static ?Imports $instance = null;
 
 	/**
+	 * WP CLI object.
+	 *
+	 * @var bool|\cli\progress\Bar
+	 */
+	private bool|\cli\progress\Bar $cli_progress = false;
+
+	/**
 	 * Constructor, not used as this a Singleton object.
 	 */
 	private function __construct() {
@@ -108,7 +115,6 @@ class Imports {
 
 		// set max counter.
 		$language_count = count( $languages );
-		$max_count = $language_count*count($personio_urls);
 
 		// mark import as running with its start-time.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
@@ -116,16 +122,10 @@ class Imports {
 		// reset list of errors during import.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() );
 
-		// set counter for progressbar in backend.
-		$this->set_import_max_count( 0 );
-
 		// set some counter.
-		$import_count = 0;
 		$imported_positions = 0;
-		$this->set_import_count( $import_count );
-
-		// set marker that max-counter has been updated one time.
-		$max_count_updated = false;
+		$this->set_import_count( 0 );
+		$this->set_import_max_count( 0 );
 
 		/**
 		 * Set max steps in external objects.
@@ -136,49 +136,33 @@ class Imports {
 		 */
 		do_action( 'personio_integration_import_max_steps', $language_count );
 
-		// CLI-Output.
-		$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Get positions from Personio by language', $max_count ) : false;
-
 		// loop through the Personio URLs.
 		foreach( $personio_urls as $import_url ) {
-			// set marker that max-counter has been updated one time.
-			$max_count_updated = false;
-
 			// loop through the languages.
 			foreach ( $languages as $language_name => $label ) {
+				// run the import for this language on this Personio URL.
 				$import_obj = new Import();
+				$import_obj->set_imports_object( $this );
 				$import_obj->set_url( $import_url );
 				$import_obj->set_language( $language_name );
 				$import_obj->run();
 
-				// get count of positions during this import and update max-count.
-				if( false === $max_count_updated ) {
-					$this->set_import_max_count( $this->get_import_max_count() + count( $import_obj->get_xml_positions() ) * $language_count );
-					$max_count_updated = true;
-				}
-
 				// add errors from import to global list.
 				$this->add_errors( $import_obj->get_errors() );
 
-				// update import count.
-				$this->set_import_count( ++$import_count );
-
 				// update counter for imported positions.
 				$imported_positions = $imported_positions + count( $import_obj->get_imported_positions() );
-
-				// show progress.
-				$progress ? $progress->tick() : false;
 			}
 		}
 
-		// finalize progress.
-		$progress ? $progress->finish() : false;
+		// finalize progress for WP CLI.
+		$this->cli_progress ? $this->cli_progress->finish() : false;
 
 		// clean-up the database if no errors occurred.
 		if ( ! $this->has_errors() ) {
 			if( 0 === $imported_positions ) {
 				// output success-message.
-				Helper::is_cli() ? \WP_CLI::success( 'Import has been successful run but no changes are importe.' ) : false;
+				Helper::is_cli() ? \WP_CLI::success( 'Import has been successful run but no changes has been imported.' ) : false;
 				return;
 			}
 
@@ -316,6 +300,15 @@ class Imports {
 	}
 
 	/**
+	 * Return actual import count.
+	 *
+	 * @return int
+	 */
+	public function get_import_count(): int {
+		return absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT ) );
+	}
+
+	/**
 	 * Set the import count.
 	 *
 	 * @param int $import_count The new count value.
@@ -323,7 +316,10 @@ class Imports {
 	 * @return void
 	 */
 	public function set_import_count( int $import_count ): void {
+		// update for frontend.
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, $import_count );
+		// update for WP CLI.
+		$this->cli_progress ? $this->cli_progress->tick() : false;
 	}
 
 	/**
@@ -358,20 +354,23 @@ class Imports {
 	/**
 	 * Return max count for import.
 	 *
-	 * @return void
+	 * @return int
 	 */
-	private function get_import_max_count(): int {
+	public function get_import_max_count(): int {
 		return absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) );
 	}
 
 	/**
 	 * Set max count for import.
 	 *
-	 * @param int $max_count New value.
+	 * @param int $max_count New count value.
 	 *
 	 * @return void
 	 */
-	private function set_import_max_count( int $max_count ): void {
+	public function set_import_max_count( int $max_count ): void {
+		// set it in DB for frontend.
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_MAX, $max_count );
+		// set it in object for WP CLI.
+		$this->cli_progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Get positions from Personio by language', $this->get_import_max_count() ) : false;
 	}
 }

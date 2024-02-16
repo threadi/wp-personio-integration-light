@@ -72,6 +72,13 @@ class Import {
 	private SimpleXMLElement|array $xml_positions = array();
 
 	/**
+	 * The Imports object.
+	 *
+	 * @var Imports
+	 */
+	private Imports $imports_obj;
+
+	/**
 	 * Constructor which runs the import of position for single Personio-account.
 	 */
 	public function __construct() {
@@ -91,8 +98,7 @@ class Import {
 	 */
 	private function import_position( ?SimpleXMLElement $position, string $language_name ): void {
 		// create position object to handle all values and save them to database.
-		$position_object = new Position( 0 );
-		$position_object->set_lang( $language_name );
+		$position_object = Positions::get_instance()->get_position( 0, $language_name );
 		$position_object->set_title( (string) $position->name );
 		$position_object->set_content( $position->jobDescriptions );
 		if ( ! empty( $position->department ) ) {
@@ -118,14 +124,13 @@ class Import {
 		 *
 		 * @param Position $position_object The object of this position.
 		 * @param object $position The XML-object with the data from Personio.
+		 * @param Import $import The Import-object.
 		 */
-		$position_object = apply_filters( 'personio_integration_import_single_position_xml', $position_object, $position );
+		$position_object = apply_filters( 'personio_integration_import_single_position_xml', $position_object, $position, $this );
 		$position_object->save();
 
 		// add position to list.
 		$this->imported_postions[] = $position_object;
-
-		sleep(2);
 	}
 
 	/**
@@ -244,7 +249,6 @@ class Import {
 		$http_status = apply_filters( 'personio_integration_import_header_status', $http_status );
 		if ( 200 === $http_status ) {
 			// check if last modified timestamp has been changed.
-			var_dump( $personio_obj->get_url(), $personio_obj->get_timestamp( $this->get_language() ),  $last_modified_timestamp);
 			if ( false !== $last_modified_timestamp && $personio_obj->get_timestamp( $this->get_language() ) === $last_modified_timestamp && ! $this->debug ) {
 				// timestamp did not change -> do nothing if we already have positions in the DB.
 				if ( $positions_count > 0 ) {
@@ -336,6 +340,9 @@ class Import {
 						} elseif ( false !== $this->debug ) {
 							$this->log->add_log( sprintf( 'Position %1$s has not been imported.', esc_html( $position->id ) ), 'success' );
 						}
+
+						// update progress.
+						$this->get_imports_object()->set_import_count( $this->get_imports_object()->get_import_count() + 1 );
 					}
 
 					// save the md5-hash of this import-file to prevent reimport.
@@ -394,7 +401,7 @@ class Import {
 	}
 
 	/**
-	 * Return list of positions from XML.
+	 * Set list of positions from XML.
 	 *
 	 * @param SimpleXMLElement $xml_positions List of positions from XML.
 	 *
@@ -402,6 +409,9 @@ class Import {
 	 */
 	public function set_xml_positions( SimpleXMLElement $xml_positions ): void {
 		$this->xml_positions = $xml_positions;
+
+		// update max counter.
+		$this->get_imports_object()->set_import_max_count( $this->get_imports_object()->get_import_max_count() + count( $this->get_xml_positions() ) );
 	}
 
 	/**
@@ -411,5 +421,25 @@ class Import {
 	 */
 	private function has_xml_positions(): bool {
 		return ! empty( $this->get_xml_positions() );
+	}
+
+	/**
+	 * Return the Imports-object for this import of positions.
+	 *
+	 * @return Imports
+	 */
+	private function get_imports_object(): Imports {
+		return $this->imports_obj;
+	}
+
+	/**
+	 * Set Imports-object to update counter on it.
+	 *
+	 * @param Imports $imports_obj The object for the imports.
+	 *
+	 * @return void
+	 */
+	public function set_imports_object( Imports $imports_obj ): void {
+		$this->imports_obj = $imports_obj;
 	}
 }

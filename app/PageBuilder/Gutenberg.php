@@ -690,8 +690,8 @@ class Gutenberg extends PageBuilder_Base {
 	 * Return application-button.
 	 *
 	 * @param array $attributes List of attributes.
+	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
 	public function get_application_button( array $attributes ): string {
 		$position = $this->get_position_by_request();
@@ -848,7 +848,7 @@ class Gutenberg extends PageBuilder_Base {
 	 *
 	 * @return Position|false
 	 */
-	private function get_position_by_request(): Position|false {
+	public function get_position_by_request(): Position|false {
 		// get positions object.
 		$positions = Positions::get_instance();
 

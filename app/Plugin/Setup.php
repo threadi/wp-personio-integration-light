@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Import;
+use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use WP_REST_Request;
@@ -410,7 +411,6 @@ class Setup {
 	 * Run the setup-progress via REST API.
 	 *
 	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function process_init(): void {
 		// set marker that setup is running.
@@ -428,7 +428,8 @@ class Setup {
 
 		// 2. Run import positions.
 		$this->set_process_label( __( 'Import of your Personio positions running.', 'personio-integration-light' ) );
-		new Import();
+		$imports_obj = Imports::get_instance();
+		$imports_obj->run();
 
 		// cleanup.
 		update_option( 'wp_easy_setup_pi_step_label', __( 'Setup has been run.', 'personio-integration-light' ) );

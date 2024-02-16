@@ -639,7 +639,7 @@ class Settings {
 				if ( ! empty( $section_settings['fields'] ) ) {
 					foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 						if( !empty( $field_settings['callback'] ) ) {
-							add_filter( 'pre_update_option_'.$field_name, $field_settings['callback'] );
+							add_filter( 'pre_update_option_'.$field_name, $field_settings['callback'], 10, 2 );
 						}
 					}
 				}

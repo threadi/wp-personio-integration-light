@@ -70,11 +70,14 @@ class Personio {
 	/**
 	 * Return the language-specific XML-URL.
 	 *
-	 * @param string $language_name The internal name of the language (e.g. "de").
+	 * @param string $language_name The internal name of the language (e.g. "de"), optional.
 	 *
 	 * @return string
 	 */
-	public function get_xml_url( string $language_name ): string {
+	public function get_xml_url( string $language_name = '' ): string {
+		if( empty( $language_name ) ) {
+			return $this->get_url() . '/xml';
+		}
 		return $this->get_url() . '/xml?language=' . esc_attr( $language_name );
 	}
 
