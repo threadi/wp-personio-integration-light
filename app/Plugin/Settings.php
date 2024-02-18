@@ -626,24 +626,37 @@ class Settings {
 				// add fields in this section.
 				if ( ! empty( $section_settings['fields'] ) ) {
 					foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
+						// get arguments for this field.
+						$arguments = array(
+							'label_for'   => $field_name,
+							'fieldId'     => $field_name,
+							'options'     => ! empty( $field_settings['options'] ) ? $field_settings['options'] : array(),
+							'description' => ! empty( $field_settings['description'] ) ? $field_settings['description'] : '',
+							'placeholder' => ! empty( $field_settings['placeholder'] ) ? $field_settings['placeholder'] : '',
+							'pro_hint'    => ! empty( $field_settings['pro_hint'] ) ? $field_settings['pro_hint'] : '',
+							'highlight'   => ! empty( $field_settings['highlight'] ) ? $field_settings['highlight'] : false,
+							'readonly'    => ! empty( $field_settings['readonly'] ) ? $field_settings['readonly'] : false,
+							'hide_empty_option' => ! empty( $field_settings['hide_empty_option'] ) ? $field_settings['hide_empty_option'] : false,
+							'depends' => ! empty( $field_settings['depends'] ) ? $field_settings['depends'] : array(),
+						);
+
+						/**
+						 * Filter the arguments for this field.
+						 *
+						 * @param array $arguments List of arguments.
+						 * @param array $field_settings Setting for this field.
+						 * @param string $field_name Internal name of the field.
+						 */
+						$arguments = apply_filters( 'personio_integration_setting_field_arguments', $arguments, $field_settings, $field_name );
+
+						// add the field.
 						add_settings_field(
 							$field_name,
 							$field_settings['label'],
 							$field_settings['field'],
 							$section_settings['page'],
 							$section_name,
-							array(
-								'label_for'   => $field_name,
-								'fieldId'     => $field_name,
-								'options'     => ! empty( $field_settings['options'] ) ? $field_settings['options'] : array(),
-								'description' => ! empty( $field_settings['description'] ) ? $field_settings['description'] : '',
-								'placeholder' => ! empty( $field_settings['placeholder'] ) ? $field_settings['placeholder'] : '',
-								'pro_hint'    => ! empty( $field_settings['pro_hint'] ) ? $field_settings['pro_hint'] : '',
-								'highlight'   => ! empty( $field_settings['highlight'] ) ? $field_settings['highlight'] : false,
-								'readonly'    => ! empty( $field_settings['readonly'] ) ? $field_settings['readonly'] : false,
-								'hide_empty_option' => ! empty( $field_settings['hide_empty_option'] ) ? $field_settings['hide_empty_option'] : false,
-								'depends' => ! empty( $field_settings['depends'] ) ? $field_settings['depends'] : array(),
-							)
+							$arguments
 						);
 					}
 				}

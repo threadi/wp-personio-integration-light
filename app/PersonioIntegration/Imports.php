@@ -215,7 +215,7 @@ class Imports {
 			do_action( 'personio_integration_import_ended' );
 
 			// output success-message.
-			Helper::is_cli() ? \WP_CLI::success( $language_count . ' languages grabbed, ' . $imported_positions . ' positions imported.' ) : false;
+			Helper::is_cli() ? WP_CLI::success( $language_count . ' languages grabbed, ' . $imported_positions . ' positions imported.' ) : false;
 
 			// save actual position count.
 			update_option( 'personioIntegrationPositionCount', $positions_object->get_positions_count() );

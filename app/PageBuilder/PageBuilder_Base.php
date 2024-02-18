@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-namespace PersonioIntegrationLight;
+namespace PersonioIntegrationLight\PageBuilder;
 
 // prevent also other direct access.
 if ( ! defined( 'ABSPATH' ) ) {

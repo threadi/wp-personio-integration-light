@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Templates;
-use PersonioIntegrationLight\PageBuilder_Base;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;

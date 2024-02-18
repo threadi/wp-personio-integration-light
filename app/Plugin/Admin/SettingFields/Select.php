@@ -25,7 +25,7 @@ class Select {
 	 * @return void
 	 */
 	public static function get( array $attributes ): void {
-		if ( ! empty( $attributes['fieldId'] ) && ! empty( $attributes['options'] ) ) {
+		if ( ! empty( $attributes['fieldId'] ) ) {
 			// get value from config.
 			$value = get_option( $attributes['fieldId'] );
 

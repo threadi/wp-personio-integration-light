@@ -472,7 +472,7 @@ class Position {
 	 *
 	 * @return string
 	 */
-	private function get_lang(): string {
+	protected function get_lang(): string {
 		return $this->data['personioLanguages'];
 	}
 
@@ -678,5 +678,14 @@ class Position {
 		 * @param Position $this The object of the requested position.
 		 */
 		return new Personio( apply_filters( 'personio_integration_get_personio_url', $url, $this ) );
+	}
+
+	/**
+	 * Return all settings.
+	 *
+	 * @return array
+	 */
+	public function get_settings(): array {
+		return $this->data;
 	}
 }

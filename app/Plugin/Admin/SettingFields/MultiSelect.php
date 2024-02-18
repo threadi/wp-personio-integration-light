@@ -70,17 +70,18 @@ class MultiSelect {
 				$title = $attributes['title'];
 			}
 
-			$css_classes = array();
+			// define css class array.
+			$classes = array();
 
 			/**
 			 * Get additional CSS-classes for multiselect-field.
 			 *
 			 * @since 2.0.0 Available since 2.0.0.
 			 *
-			 * @param array $css_classes List of additional CSS-classes.
+			 * @param array $classes List of additional CSS-classes.
 			 * @param array $attributes List of attributes.
 			 */
-			$classes = apply_filters( 'personio_integration_settings_multiselect_classes', $css_classes, $attributes );
+			$classes = apply_filters( 'personio_integration_settings_multiselect_classes', $classes, $attributes );
 
 			// set readonly attribute.
 			if ( isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ) {
@@ -93,8 +94,21 @@ class MultiSelect {
 			<select id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>[]" multiple class="personio-field-width <?php echo esc_attr( implode( ' ', $classes ) ); ?>"<?php echo isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ? ' disabled="disabled"' : ''; ?> title="<?php echo esc_attr( $title ); ?>" data-depends="<?php echo esc_attr( wp_json_encode( $attributes['depends'] ) ); ?>">
 				<?php
 				foreach ( $attributes['options'] as $key => $value ) {
+					// set selected attribute.
+					$selected = '';
+					if( in_array( $key, $actual_values, true ) ) {
+						$selected = ' selected';
+					}
+
+					// set disabled attribute if set.
+					$disabled = '';
+					if( ! empty( $attributes['options_disabled'][$key] ) ) {
+						$disabled = ' disabled';
+					}
+
+					// output.
 					?>
-					<option value="<?php echo esc_attr( $key ); ?>"<?php echo in_array( $key, $actual_values, true ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( $value ); ?></option>
+					<option value="<?php echo esc_attr( $key ); ?>"<?php echo esc_attr( $selected );echo esc_attr($disabled); ?>><?php echo esc_html( $value ); ?></option>
 					<?php
 				}
 				?>

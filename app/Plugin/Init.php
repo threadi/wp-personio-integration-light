@@ -14,12 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg;
-use PersonioIntegrationLight\PageBuilder_Base;
+use PersonioIntegrationLight\PageBuilder\Page_Builders;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
 use PersonioIntegrationLight\Widgets\Widgets;
-use WP_Admin_Bar;
 
 /**
  * Initialize this plugin.
@@ -87,23 +86,8 @@ class Init {
 		// init roles.
 		Roles::get_instance()->init();
 
-		// add our own Gutenberg-pagebuilder-support.
-		add_filter( 'personio_integration_pagebuilder', array( $this, 'add_pagebuilder_gutenberg' ) );
-
-		// list of page builder-objects.
-		$page_builder_objects = array();
-		/**
-		 * Register supported page builders.
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 *
-		 * @param array $page_builder_objects The list of page builders.
-		 */
-		foreach ( apply_filters( 'personio_integration_pagebuilder', $page_builder_objects ) as $page_builder_obj ) {
-			if ( $page_builder_obj instanceof PageBuilder_Base ) {
-				$page_builder_obj->init();
-			}
-		}
+		// init page builder.
+		Page_Builders::get_instance()->init();
 
 		// init third-party-support.
 		Third_Party_Plugins::get_instance()->init();

@@ -488,6 +488,8 @@ class Admin {
 			return;
 		}
 
+		$false = false;
+
 		$transients_obj = Transients::get_instance();
 		if ( ! Helper::is_personio_url_set() ) {
 			$transient_obj = $transients_obj->add();
@@ -498,7 +500,14 @@ class Admin {
 			$transient_obj->set_type( 'hint' );
 			$transient_obj->set_hide_on( array( Helper::get_settings_url() ) );
 			$transient_obj->save();
-		} elseif ( absint( get_option( 'personioIntegrationPositionCount', 0 ) ) > 0 ) {
+			/**
+			 * Hide the additional buttons for reviews or pro-version.
+			 *
+			 * @since 3.0.0 Available since 3.0.0
+			 *
+			 * @param array $false Set true to hide the buttons.
+			 */
+		} elseif ( absint( get_option( 'personioIntegrationPositionCount', 0 ) ) > 0 && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_limit_hint' );
