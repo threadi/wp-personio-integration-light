@@ -36,19 +36,6 @@ class Import extends Schedules_Base {
 	}
 
 	/**
-	 * Install this schedule, if it does not exist atm.
-	 *
-	 * TODO in base auslagern?
-	 *
-	 * @return void
-	 */
-	public function install(): void {
-		if ( ! wp_next_scheduled( $this->get_name() ) ) {
-			wp_schedule_event( time(), $this->get_interval(), $this->get_name() );
-		}
-	}
-
-	/**
 	 * Run this schedule.
 	 *
 	 * @return void

@@ -13,7 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\Import;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
@@ -101,7 +100,6 @@ class Setup {
 	 * Set setup as completed.
 	 *
 	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function set_completed(): void {
 		update_option( 'wp_easy_setup_completed', true );
@@ -127,6 +125,11 @@ class Setup {
 
 		// check if setup should be run.
 		if ( ! $this->is_completed() ) {
+			// bail if hint is already set.
+			if( $transients_obj->get_transient_by_name( 'personio_integration_start_setup_hint' )->is_set() ) {
+				return;
+			}
+
 			// delete all other transients.
 			foreach ( $transients_obj->get_transients() as $transient_obj ) {
 				$transient_obj->delete();
@@ -137,6 +140,7 @@ class Setup {
 			$transient_obj->set_name( 'personio_integration_start_setup_hint' );
 			$transient_obj->set_message( __( '<strong>You have installed Personio Integration Light - nice and thank you!</strong> Now run the setup to expand your website with the possibilities of this plugin.', 'personio-integration-light' ) . '<br><br>' . sprintf( '<a href="%1$s" class="button button-primary">' . __( 'Start setup', 'personio-integration-light' ) . '</a>', esc_url( $this->get_setup_link() ) ) );
 			$transient_obj->set_type( 'error' );
+			$transient_obj->set_dismissible_days( 2 );
 			$transient_obj->set_hide_on(
 				array(
 					Helper::get_settings_url(),

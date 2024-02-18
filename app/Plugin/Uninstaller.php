@@ -100,13 +100,6 @@ class Uninstaller {
 			$transient_obj->delete();
 		}
 
-		/**
-		 * Delete manuel transients.
-		 */
-		foreach ( WP_PERSONIO_INTEGRATION_TRANSIENTS as $transient_name => $settings ) {
-			delete_transient( $transient_name );
-		}
-
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
 			foreach( Imports::get_instance()->get_personio_urls() as $personio_url ) {

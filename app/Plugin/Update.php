@@ -133,10 +133,5 @@ class Update {
 			Setup::get_instance()->set_completed();
 			Intro::get_instance()->set_closed();
 		}
-
-		// set install-date if not set.
-		if ( ! get_option( 'personioIntegrationLightInstallDate' ) ) {
-			update_option( 'personioIntegrationLightInstallDate', time() );
-		}
 	}
 }

@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use WP_Query;
 
 /**
@@ -72,7 +73,15 @@ class Positions {
 	 */
 	public function get_position( int $post_id, string $language_code = '' ): Position {
 		if ( empty( $this->positions[ $post_id . $language_code ] ) ) {
-			$this->positions[ $post_id . $language_code ] = apply_filters( 'personio_integration_get_position_obj', new Position( $post_id ) );
+			$postion_obj = new Position( $post_id );
+			/**
+			 * Filter the requested position object.
+			 *
+			 * @since 3.0.0 Available since 3.0.0.
+			 *
+			 * @param Position $position_obj The object of the position.
+			 */
+			$this->positions[ $post_id . $language_code ] = apply_filters( 'personio_integration_get_position_obj', $postion_obj );
 			if ( ! empty( $language_code ) ) {
 				$this->positions[ $post_id . $language_code ]->set_lang( $language_code );
 			}
@@ -90,7 +99,7 @@ class Positions {
 	 */
 	public function get_positions( int $limit = -1, array $parameter_to_add = array() ): array {
 		$query = array(
-			'post_type'      => WP_PERSONIO_INTEGRATION_MAIN_CPT,
+			'post_type'      => PersonioPosition::get_instance()->get_name(),
 			'post_status'    => 'publish',
 			'posts_per_page' => $limit,
 			'no_found_rows'  => empty( $parameter_to_add['nopagination'] ) ? false : $parameter_to_add['nopagination'],
@@ -168,6 +177,8 @@ class Positions {
 
 		/**
 		 * Filter the custom query for positions just before it is used.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param array $query The configured query.
 		 */
@@ -270,16 +281,5 @@ class Positions {
 	 */
 	public function get_positions_count(): int {
 		return count( $this->get_positions() );
-	}
-
-	/**
-	 * Check if given URL is the main Personio URL in this project.
-	 *
-	 * @param string $url The URL to check.
-	 *
-	 * @return bool
-	 */
-	public function is_main_personio_url( string $url ): bool {
-		return $url === get_option( 'personioIntegrationUrl' );
 	}
 }

@@ -12,16 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use PersonioIntegrationLight\Plugin\Languages;
-
 /**
  * Object which saves the validated URL.
  */
 class PersonioIntegrationUrl {
 	/**
 	 * Save the Personio-URL.
-	 *
-	 * TODO noch relevant?
 	 *
 	 * @param string $value The new value of this field.
 	 *

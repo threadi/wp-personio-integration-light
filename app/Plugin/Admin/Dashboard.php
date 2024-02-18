@@ -83,7 +83,13 @@ class Dashboard {
 	 */
 	private function get_dashboard_widgets(): array {
 		$dashboard_widgets = array();
-		// TODO doku
+
+		/**
+		 * Filter the dashboard-widgets used by this plugin.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 * @param array $dashboard_widgets List of widgets.
+		 */
 		return apply_filters( 'personio_integration_dashboard_widgets', $dashboard_widgets );
 	}
 }

@@ -98,7 +98,8 @@ class Import {
 	 */
 	private function import_position( ?SimpleXMLElement $position, string $language_name ): void {
 		// create position object to handle all values and save them to database.
-		$position_object = Positions::get_instance()->get_position( 0, $language_name );
+		$position_object = new Position( 0 );
+		$position_object->set_lang( $language_name );
 		$position_object->set_title( (string) $position->name );
 		$position_object->set_content( $position->jobDescriptions );
 		if ( ! empty( $position->department ) ) {
@@ -189,7 +190,7 @@ class Import {
 		// enable xml-error-handling.
 		libxml_use_internal_errors( true );
 
-		// get language name.
+		// get language name (e.g. "en").
 		$language_name = $this->get_language();
 
 		// get Personio-URL-object.

@@ -8,7 +8,6 @@
 namespace PersonioIntegrationLight\Plugin;
 
 use PersonioIntegrationLight\Log;
-use PersonioIntegrationLight\PersonioIntegration\Import;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\Plugin\Cli\Helper;
 

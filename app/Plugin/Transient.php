@@ -371,6 +371,7 @@ class Transient {
 		 * Filter where a single transient should be hidden.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
+		 *
 		 * @param array $hide_on List of absolute URLs.
 		 */
 		return apply_filters( 'personio_integration_transient_hide_on', $hide_on, $this );

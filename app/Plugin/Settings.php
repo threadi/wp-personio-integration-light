@@ -159,9 +159,14 @@ class Settings {
 		}
 
 		// get taxonomies.
-		$list_template_filter = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateFilter', array() ) );
-		$list_excerpt = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateExcerptDefaults', array() ) );
-		$detail_excerpt = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateExcerptDetail', array() ) );
+		$list_template_filter = array();
+		$list_excerpt = array();
+		$detail_excerpt = array();
+		if ( Helper::is_personio_url_set() ) {
+			$list_template_filter = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateFilter' ) );
+			$list_excerpt         = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateExcerptDefaults' ) );
+			$detail_excerpt       = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateExcerptDetail' ) );
+		}
 
 		// get editor URL.
 		$editor_url = add_query_arg(
@@ -253,7 +258,7 @@ class Settings {
 						/* translators: %1$s is replaced with "string" */
 						'pro_hint'            => __( 'Sort this list with %s.', 'personio-integration-light' ),
 						'register_attributes' => array(
-							'type' => 'integer',
+							'type' => 'array',
 							'default'             => array( 'recruitingCategory', 'schedule', 'office' ),
 						),
 						'depends' => array(
@@ -557,6 +562,20 @@ class Settings {
 							'default'             => 0,
 						),
 					),
+					'personio_integration_update_slugs' => array(
+						'register_attributes' => array(
+							'type' => 'integer',
+							'default'             => 0,
+						),
+						'do_not_export' => true
+					),
+					'personioIntegrationLightInstallDate' => array(
+						'register_attributes' => array(
+							'type' => 'integer',
+							'default'             => time(),
+						),
+						'do_not_export' => true
+					)
 				),
 			),
 		);
@@ -572,10 +591,15 @@ class Settings {
 			if ( ! empty( $section_settings['page'] ) ) {
 				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 					if( ! isset($field_settings['do_not_register']) ) {
+						$args = array();
+						if( ! empty( $field_settings['register_attributes'] ) ) {
+							unset($field_settings['register_attributes']['default']);
+							$args = $field_settings['register_attributes'];
+						}
 						register_setting(
 							$section_settings['page'],
 							$field_name,
-							! empty( $field_settings['register_attributes'] ) ? $field_settings['register_attributes'] : array()
+							$args
 						);
 					}
 				}
@@ -661,6 +685,8 @@ class Settings {
 				PersonioPosition::get_instance()->get_link( true ),
 				/**
 				 * Filter for settings title.
+				 *
+				 * @since 3.0.0 Available since 3.0.0.
 				 *
 				 * @param string $title The title.
 				 */
@@ -1031,6 +1057,8 @@ class Settings {
 		$filename = gmdate( 'YmdHi' ) . '_' . get_option( 'blogname' ) . '_Personio_Integration_Light_Settings.json';
 		/**
 		 * File the filename for JSON-download of all settings.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param string $filename The generated filename.
 		 */

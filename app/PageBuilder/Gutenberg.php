@@ -293,6 +293,11 @@ class Gutenberg extends PageBuilder_Base {
 					'default' => '',
 				),
 			);
+			/**
+			 * Filter the attributes for the List Block.
+			 *
+			 * @param array $list_attributes List of attributes.
+			 */
 			$list_attributes = apply_filters( 'personio_integration_gutenberg_block_list_attributes', $list_attributes );
 
 			// register list block.
@@ -331,6 +336,11 @@ class Gutenberg extends PageBuilder_Base {
 					'default' => 0,
 				),
 			);
+			/**
+			 * Filter the attributes for the Filter List Block.
+			 *
+			 * @param array $list_attributes List of attributes.
+			 */
 			$list_attributes = apply_filters( 'personio_integration_gutenberg_block_filter_list_attributes', $list_attributes );
 
 			// register filter-list block.
@@ -369,6 +379,11 @@ class Gutenberg extends PageBuilder_Base {
 					'default' => false,
 				),
 			);
+			/**
+			 * Filter the attributes for the Filter Select Block.
+			 *
+			 * @param array $list_attributes List of attributes.
+			 */
 			$list_attributes = apply_filters( 'personio_integration_gutenberg_block_filter_select_attributes', $list_attributes );
 
 			// register filter-list block.
@@ -391,6 +406,11 @@ class Gutenberg extends PageBuilder_Base {
 					'default' => '',
 				),
 			);
+			/**
+			 * Filter the attributes for the Application Button Block.
+			 *
+			 * @param array $list_attributes List of attributes.
+			 */
 			$list_attributes = apply_filters( 'personio_integration_gutenberg_block_application_button_select_attributes', $list_attributes );
 
 			// register application-button block.
@@ -433,6 +453,11 @@ class Gutenberg extends PageBuilder_Base {
 					'default' => ', ',
 				),
 			);
+			/**
+			 * Filter the attributes for the Detail Block.
+			 *
+			 * @param array $list_attributes List of attributes.
+			 */
 			$list_attributes = apply_filters( 'personio_integration_gutenberg_block_detail_attributes', $list_attributes );
 
 			// register details block.
@@ -459,6 +484,11 @@ class Gutenberg extends PageBuilder_Base {
 					'default' => '',
 				),
 			);
+			/**
+			 * Filter the attributes for the Description Block.
+			 *
+			 * @param array $list_attributes List of attributes.
+			 */
 			$list_attributes = apply_filters( 'personio_integration_gutenberg_block_description_attributes', $list_attributes );
 
 			// register details block.
@@ -523,7 +553,11 @@ class Gutenberg extends PageBuilder_Base {
 			'classes'    => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 		);
 
-		// get the output.
+		/**
+		 * Filter the attributes for the single template.
+		 *
+		 * @param array $list_attributes List of attributes.
+		 */
 		return PersonioPosition::get_instance()->shortcode_single( apply_filters( 'personio_integration_get_gutenberg_single_attributes', $attribute_defaults ) );
 	}
 
@@ -582,7 +616,11 @@ class Gutenberg extends PageBuilder_Base {
 			'listing_template'  => $attributes['template'],
 		);
 
-		// get the output.
+		/**
+		 * Filter the attributes for the archive template.
+		 *
+		 * @param array $list_attributes List of attributes.
+		 */
 		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_gutenberg_list_attributes', $attribute_defaults, $attributes ) );
 	}
 
@@ -632,7 +670,11 @@ class Gutenberg extends PageBuilder_Base {
 			'classes'    => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 		);
 
-		// get the output.
+		/**
+		 * Filter the attributes for the Filter List template.
+		 *
+		 * @param array $list_attributes List of attributes.
+		 */
 		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_gutenberg_filter_list_attributes', $attributes ) );
 	}
 
@@ -682,7 +724,11 @@ class Gutenberg extends PageBuilder_Base {
 			'classes'    => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 		);
 
-		// get the output.
+		/**
+		 * Filter the attributes for the Filter Select template.
+		 *
+		 * @param array $list_attributes List of attributes.
+		 */
 		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_gutenberg_filter_select_attributes', $attributes ) );
 	}
 

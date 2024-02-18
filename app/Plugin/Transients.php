@@ -8,6 +8,8 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -72,7 +74,7 @@ class Transients {
 	 * @return void
 	 */
 	public function init_notices(): void {
-		if ( current_user_can( 'manage_' . WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+		if ( current_user_can( 'manage_' . PersonioPosition::get_instance()->get_name() ) ) {
 			$transients_obj = self::get_instance();
 			$transients_obj->check_transients();
 		}
@@ -189,8 +191,17 @@ class Transients {
 	 * @return void
 	 */
 	public function check_transients(): void {
-		// TODO doku
-		foreach ( apply_filters( 'personio_integration_get_transients_for_display', $this->get_transients() ) as $transient_obj ) {
+		$transients = $this->get_transients();
+		/**
+		 * Filter the transients used and managed by this plugin.
+		 *
+		 * Hint: with help of this hook you could hide all transients this plugin is using. Simple return an empty array.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $transients List of transients.
+		 */
+		foreach ( apply_filters( 'personio_integration_get_transients_for_display', $transients ) as $transient_obj ) {
 			if ( $transient_obj->is_set() ) {
 				$transient_obj->display();
 			}
@@ -236,7 +247,8 @@ class Transients {
 		}
 
 		// save value.
-		update_option( 'pi-dismissed-' . md5( $option_name ), $dismissible_length, true );
+		delete_option( 'pi-dismissed-' . md5( $option_name ) );
+		add_option( 'pi-dismissed-' . md5( $option_name ), $dismissible_length, '', true );
 
 		// remove transient.
 		self::get_instance()->get_transient_by_name( $option_name )->delete();

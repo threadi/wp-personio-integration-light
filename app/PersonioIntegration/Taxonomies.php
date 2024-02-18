@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use WP_Screen;
 use WP_Term;
@@ -39,7 +40,7 @@ class Taxonomies {
 	 *
 	 * @return void
 	 */
-	private function __clone() { }
+	private function __clone() {}
 
 	/**
 	 * Return the instance of this Singleton object.
@@ -126,7 +127,14 @@ class Taxonomies {
 				$taxonomy_array['rewrite'] = false;
 			}
 
-			// apply additional settings for taxonomy.
+			/**
+			 * Filter the taxonomy array just before it is registered.
+			 *
+			 * @since 3.0.0 Available since 3.0.0.
+			 *
+			 * @param array $taxonomy_array List of settings for the taxonomy.
+			 * @param string $taxonomy_name Name of the taxonomy.
+			 */
 			$taxonomy_array = apply_filters( 'get_' . $taxonomy_name . '_translate_taxonomy', $taxonomy_array, $taxonomy_name );
 
 			// do not show any taxonomy in menu if Personio URL is not available.
@@ -135,7 +143,7 @@ class Taxonomies {
 			}
 
 			// register taxonomy.
-			register_taxonomy( $taxonomy_name, array( WP_PERSONIO_INTEGRATION_MAIN_CPT ), $taxonomy_array );
+			register_taxonomy( $taxonomy_name, array( PersonioPosition::get_instance()->get_name() ), $taxonomy_array );
 
 			// filter for translations of entries in this taxonomy.
 			add_filter( 'get_' . $taxonomy_name, array( $this, 'translate' ), 10, 2 );
@@ -150,86 +158,98 @@ class Taxonomies {
 	public function get_taxonomies(): array {
 		$taxonomies = array(
 			WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+				'attr'        => array(
 					'rewrite' => array( 'slug' => 'recruitingCategory' ),
 				),
 				'slug'        => 'recruitingCategory',
 				'useInFilter' => 1,
+				'append' => false
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+				'attr'        => array(
 					'rewrite' => array( 'slug' => 'occupationCategory' ),
 				),
 				'slug'        => 'occupation',
 				'useInFilter' => 1,
+				'append' => false
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+				'attr'        => array(
 					'rewrite' => array( 'slug' => 'occupation' ),
 				),
 				'slug'        => 'occupation_detail',
 				'useInFilter' => 1,
+				'append' => false
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE     => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+				'attr'        => array(
 					'rewrite' => array( 'slug' => 'office' ),
 				),
 				'slug'        => 'office',
 				'useInFilter' => 1,
+				'append' => true
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+				'attr'        => array(
 					'rewrite' => array( 'slug' => 'department' ),
 				),
 				'slug'        => 'department',
 				'useInFilter' => 1,
+				'append' => false
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE => array(
-				'attr'                 => array( // taxonomy settings deviating from default.
+				'attr'                 => array(
 					'rewrite' => array( 'slug' => 'employmenttype' ),
 				),
 				'slug'                 => 'employmenttype',
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
+				'append' => false
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY  => array(
-				'attr'                 => array( // taxonomy settings deviating from default.
+				'attr'                 => array(
 					'rewrite' => array( 'slug' => 'seniority' ),
 				),
 				'slug'                 => 'seniority',
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
+				'append' => false
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE   => array(
-				'attr'                 => array( // taxonomy settings deviating from default.
+				'attr'                 => array(
 					'rewrite' => array( 'slug' => 'schedule' ),
 				),
 				'slug'                 => 'schedule',
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
+				'append' => false
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE => array(
-				'attr'                 => array( // taxonomy settings deviating from default.
+				'attr'                 => array(
 					'rewrite' => array( 'slug' => 'experience' ),
 				),
 				'slug'                 => 'experience',
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
+				'append' => false
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES  => array(
-				'attr'        => array( // taxonomy settings deviating from default.
+				'attr'        => array(
+					'rewrite' => array( 'slug' => 'language' ),
 					'show_ui' => false,
 				),
 				'slug'        => 'language',
 				'useInFilter' => 0,
+				'append' => true
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS   => array(
-				'attr'                 => array( // taxonomy settings deviating from default.
+				'attr'                 => array(
 					'rewrite' => array( 'slug' => 'keyword' ),
 				),
 				'slug'                 => 'keyword',
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
+				'append' => true
 			),
 		);
 
@@ -271,7 +291,7 @@ class Taxonomies {
 	 */
 	private function get_default_settings(): array {
 		return array(
-			'hierarchical'       => true,
+			'hierarchical'       => false,
 			'labels'             => '',
 			'public'             => false,
 			'show_ui'            => true,
@@ -283,10 +303,10 @@ class Taxonomies {
 			'show_in_rest'       => true,
 			'query_var'          => true,
 			'capabilities'       => array(
-				'manage_terms' => 'read_' . WP_PERSONIO_INTEGRATION_MAIN_CPT,
-				'edit_terms'   => 'read_' . WP_PERSONIO_INTEGRATION_MAIN_CPT,
+				'manage_terms' => 'read_' . PersonioPosition::get_instance()->get_name(),
+				'edit_terms'   => 'read_' . PersonioPosition::get_instance()->get_name(),
 				'delete_terms' => 'do_not_allow',
-				'assign_terms' => 'read_' . WP_PERSONIO_INTEGRATION_MAIN_CPT,
+				'assign_terms' => 'read_' . PersonioPosition::get_instance()->get_name(),
 			),
 		);
 	}
@@ -942,7 +962,7 @@ class Taxonomies {
 	 * @return mixed
 	 */
 	public function hide_columns( array $hidden, WP_Screen $screen, bool $use_defaults ): array {
-		if ( $use_defaults && WP_PERSONIO_INTEGRATION_MAIN_CPT === $screen->post_type ) {
+		if ( $use_defaults && PersonioPosition::get_instance()->get_name() === $screen->post_type ) {
 			foreach ( $this->get_taxonomies() as $taxonomy_name => $settings ) {
 				if ( ! empty( $settings['initiallyHideInTable'] ) && 1 === absint( $settings['initiallyHideInTable'] ) ) {
 					$hidden[] = 'taxonomy-' . $taxonomy_name;
@@ -955,11 +975,15 @@ class Taxonomies {
 	/**
 	 * Get list of taxonomy-labels for settings.
 	 *
-	 * @param array $list Given list of enabled taxonomies.
+	 * @param array|bool $list Given list of enabled taxonomies.
 	 *
 	 * @return array
 	 */
-	public function get_labels_for_settings( array $list ): array {
+	public function get_labels_for_settings( array|bool $list ): array {
+		if( is_bool( $list ) ) {
+			$list = array();
+		}
+
 		// get taxonomies.
 		$labels         = $this->get_taxonomy_labels_for_settings();
 

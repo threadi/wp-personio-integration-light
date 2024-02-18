@@ -310,8 +310,7 @@ class Helper {
 	 * @return bool
 	 */
 	public static function is_personio_url_set(): bool {
-		$url = get_option( 'personioIntegrationUrl' );
-		return ! empty( $url );
+		return ! empty( self::get_personio_url() );
 	}
 
 	/**
@@ -461,7 +460,16 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_personio_url(): string {
-		return apply_filters( 'personio_integration_url', get_option( 'personioIntegrationUrl' ) );
+		$url = get_option( 'personioIntegrationUrl' );
+
+		/**
+		 * Filter the Personio URL.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param string $url The configured Personio URL.
+		 */
+		return apply_filters( 'personio_integration_url', $url );
 	}
 
 	/**
@@ -609,7 +617,15 @@ class Helper {
 		$list = array(
 			PersonioPosition::get_instance()->get_name()
 		);
-		return apply_filters( 'personio_integration_list_of_cpts', $list ); // TODO doku
+
+		/**
+		 * Filter the list of custom post types this plugin is using.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $list The list of post types.
+		 */
+		return apply_filters( 'personio_integration_list_of_cpts', $list );
 	}
 
 	/**
@@ -647,11 +663,26 @@ class Helper {
 		$plugin_version = WP_PERSONIO_INTEGRATION_VERSION;
 
 		/**
-		 * File the used file version.
+		 * Filter the used file version (for JS- and CSS-files which get enqueued).
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param string $plugin_version The plugin-version.
 		 * @param string $filepath The absolute path to the requested file.
 		 */
 		return apply_filters( 'personio_integration_file_version', $plugin_version, $filepath );
+	}
+
+	/**
+	 * Add new entry with its key on specific position in array.
+	 *
+	 * @param array $fields The array we want to change.
+	 * @param int $position The position where the new array should be added.
+	 * @param array $array_to_add The new array which should be added.
+	 *
+	 * @return array
+	 */
+	public static function add_array_in_array_on_position(array $fields, int $position, array $array_to_add ): array {
+		return array_slice( $fields, 0, $position, true ) +$array_to_add + array_slice( $fields, $position, null, true );
 	}
 }

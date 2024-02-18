@@ -81,15 +81,6 @@ const WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS            = 'personioKeywords';
 const WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST = 'personio_integration_transients';
 
 /**
- * Set list of manuel transients which are not managed via Transients-object.
- */
-const WP_PERSONIO_INTEGRATION_TRANSIENTS = array(
-	'personio_integration_update_slugs' => array(
-		'type' => 'success',
-	),
-);
-
-/**
  * Define names for progressbar during import.
  */
 const WP_PERSONIO_INTEGRATION_OPTION_COUNT = 'piImportCount';

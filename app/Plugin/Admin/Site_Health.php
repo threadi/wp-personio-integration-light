@@ -77,7 +77,15 @@ class Site_Health {
 				'callback' => array( $this, 'url_availability_checks' )
 			),
 		);
-		return apply_filters( 'personio_integration_site_health_endpoints', $list ); // TODO doku
+
+		/**
+		 * Filter the endpoints for Site Health this plugin is using.
+		 *
+		 * Hint: these are just arrays which define the endpoints.
+		 *
+		 * @param array $list List of endpoints.
+		 */
+		return apply_filters( 'personio_integration_site_health_endpoints', $list );
 	}
 
 	/**

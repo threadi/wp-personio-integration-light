@@ -117,13 +117,14 @@ class Installer {
 			update_option( 'personioIntegrationVersion', WP_PERSONIO_INTEGRATION_VERSION );
 
 			// refresh permalinks.
-			set_transient( 'personio_integration_update_slugs', 1 );
+			update_option( 'personio_integration_update_slugs', 1 );
 
 			// initialize Log-database-table.
 			$log = new Log();
 			$log->create_table();
 
-			\PersonioIntegrationLight\Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin.' ) : false;
+			// show success message on cli.
+			Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin.' ) : false;
 		}
 	}
 }

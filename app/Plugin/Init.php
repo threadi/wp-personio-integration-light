@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg;
 use PersonioIntegrationLight\PageBuilder_Base;
-use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
@@ -73,7 +72,7 @@ class Init {
 		// check intro state.
 		Intro::get_instance()->init();
 
-		// register our post-types and taxonomies.
+		// register our post-type and dependent taxonomies.
 		PersonioPosition::get_instance()->init();
 
 		// init classic widget support.
@@ -115,9 +114,6 @@ class Init {
 		// register cli.
 		add_action( 'cli_init', array( $this, 'cli' ) );
 
-		// register admin bar customizations.
-		add_action( 'admin_bar_menu', array( $this, 'add_custom_toolbar' ), 100 );
-
 		// register frontend scripts.
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_frontend' ), PHP_INT_MAX );
 
@@ -154,58 +150,6 @@ class Init {
 	 */
 	public function cli(): void {
 		\WP_CLI::add_command( 'personio', 'PersonioIntegrationLight\Plugin\Cli' );
-	}
-
-	/**
-	 * Add link in toolbar to list of positions.
-	 * Only if Personio URL is given and list-view is not disabled.
-	 *
-	 * @param WP_Admin_Bar $admin_bar The object of the Admin-Bar.
-	 * @return void
-	 */
-	public function add_custom_toolbar( WP_Admin_Bar $admin_bar ): void {
-		if ( Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationDisableListSlug' ) ) ) {
-			$admin_bar->add_menu(
-				array(
-					'id'     => PersonioPosition::get_instance()->get_name().'-archive',
-					'parent' => 'site-name',
-					'title'  => __( 'Personio Positions', 'personio-integration-light' ),
-					'href'   => get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT ),
-				)
-			);
-
-			// add links in admin-bar in backend.
-			if ( is_admin() ) {
-				// add link to view position in frontend if one is called in backend.
-				$post_id = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) );
-				if ( $post_id > 0 && PersonioPosition::get_instance()->get_name() === get_post_type( $post_id ) ) {
-					$position_obj = Positions::get_instance()->get_position( $post_id );
-					$admin_bar->add_menu(
-						array(
-							'id'     => 'personio-integration-detail',
-							'parent' => null,
-							'group'  => null,
-							'title'  => __( 'View Position in frontend', 'personio-integration-light' ),
-							'href'   => $position_obj->get_link(),
-						)
-					);
-				}
-				else {
-					$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-					if( ! empty( $post_type) && WP_PERSONIO_INTEGRATION_MAIN_CPT === $post_type ) {
-						$admin_bar->add_menu(
-							array(
-								'id'     => 'personio-integration-list',
-								'parent' => null,
-								'group'  => null,
-								'title'  => __( 'View Positions in frontend', 'personio-integration-light' ),
-								'href'   => get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT ),
-							)
-						);
-					}
-				}
-			}
-		}
 	}
 
 	/**
@@ -260,9 +204,9 @@ class Init {
 	 * @noinspection PhpUnused
 	 */
 	public function update_slugs(): void {
-		if ( false !== get_transient( 'personio_integration_update_slugs' ) ) {
+		if ( 1 !== absint( get_option( 'personio_integration_update_slugs' ) ) ) {
 			flush_rewrite_rules();
-			delete_transient( 'personio_integration_update_slugs' );
+			update_option( 'personio_integration_update_slugs', 0 );
 		}
 	}
 

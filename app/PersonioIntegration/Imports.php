@@ -233,9 +233,9 @@ class Imports {
 		/**
 		 * Run custom actions after finished import of single Personio-URL.
 		 *
-		 * @param int $step The step to add.
-		 *
 		 * @since 3.0.0 Available since release 3.0.0.
+		 *
+		 * @param int $step The step to add.
 		 */
 		do_action( 'personio_integration_import_finished', $step );
 
@@ -251,11 +251,13 @@ class Imports {
 	 */
 	public function get_personio_urls(): array {
 		$personio_urls = array(
-			get_option( 'personioIntegrationUrl' )
+			Helper::get_personio_url()
 		);
 
 		/**
 		 * Filter the list of Personio URLs used to import positions.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param array $personio_urls List of Personio URLs.
 		 */
@@ -303,6 +305,7 @@ class Imports {
 	 * Return actual import count.
 	 *
 	 * @return int
+	 * @noinspection PhpUnused
 	 */
 	public function get_import_count(): int {
 		return absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT ) );

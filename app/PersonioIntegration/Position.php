@@ -23,6 +23,13 @@ use WP_Term;
 
 /**
  * Represents a single position.
+ *
+ * $data is an array which holds all contents for a position:
+ * - post-data-rows (saved by their post-table-row-names)
+ * - values for taxonomy-terms (saved by their taxonomy-names)
+ * - custom Personio-settings (like personioId)
+ *
+ * Hint: personioId is a string.
  */
 class Position {
 
@@ -32,13 +39,6 @@ class Position {
 	 * @var array
 	 */
 	protected array $data = array();
-
-	/**
-	 * Marker for language this object is using for its texts.
-	 *
-	 * @var string
-	 */
-	public string $lang = '';
 
 	/**
 	 * List of all taxonomy-terms of this object.
@@ -83,7 +83,7 @@ class Position {
 			}
 
 			// if result is not our post-type, create an empty array.
-			if ( ! empty( $post_array['post_type'] ) && WP_PERSONIO_INTEGRATION_MAIN_CPT !== $post_array['post_type'] ) {
+			if ( ! empty( $post_array['post_type'] ) && PersonioPosition::get_instance()->get_name() !== $post_array['post_type'] ) {
 				$post_array = array();
 			}
 
@@ -105,13 +105,13 @@ class Position {
 	 */
 	public function save(): void {
 		// do not save anything without personioId.
-		if ( empty( $this->data['personioId'] ) ) {
+		if ( empty( $this->get_personio_id() ) ) {
 			$this->log->add_log( __( 'Position could not be saved as the PersonioId is missing.', 'personio-integration-light' ), 'error' );
 			return;
 		}
 
 		// do not save anything without language setting.
-		if ( empty( $this->data['lang'] ) ) {
+		if ( empty( $this->get_lang() ) ) {
 			$this->log->add_log( sprintf( __( 'Position with PersonioId %1$s could not be saved as the PersonioId does not have a language set.', 'personio-integration-light' ), esc_html( $this->data['personioId'] ) ), 'error' );
 			return;
 		}
@@ -119,6 +119,8 @@ class Position {
 		$false = false;
 		/**
 		 * Filter if position could be imported.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param bool $false Return false to import this position.
 		 * @param Position $this The object of the position.
@@ -128,12 +130,12 @@ class Position {
 		}
 
 		// set ordering if not set atm.
-		if ( empty( $this->data['menu_order'] ) ) { // TODO nur pro?
+		if ( empty( $this->data['menu_order'] ) ) {
 			$this->data['menu_order'] = 0;
 		}
 
 		// search for the personioID to get an existing post-object.
-		if ( empty( $this->data['ID'] ) ) {
+		if ( 0 === $this->get_id() ) {
 			$query   = array(
 				'post_type'   => PersonioPosition::get_instance()->get_name(),
 				'fields'      => 'ids',
@@ -195,9 +197,9 @@ class Position {
 		// prepare data to be saved
 		// -> overwrite title and content only for the main language.
 		$array = array(
-			'ID'          => $this->data['ID'],
+			'ID'          => $this->get_id(),
 			'post_status' => 'publish',
-			'post_type'   => WP_PERSONIO_INTEGRATION_MAIN_CPT,
+			'post_type'   => PersonioPosition::get_instance()->get_name(),
 			'menu_order'  => absint( $this->data['menu_order'] ),
 		);
 		if ( Languages::get_instance()->get_main_language() === $this->get_lang() ) {
@@ -229,7 +231,7 @@ class Position {
 			// log this event.
 			$this->log->add_log( 'Position with personioId ' . $this->data['personioId'] . ' could not be saved! Got no error from WordPress.', 'error' );
 		} elseif ( absint( $result ) > 0 ) {
-			// save the post-ID.
+			// save the post-ID in the object.
 			$this->data['ID'] = absint( $result );
 
 			/**
@@ -245,35 +247,9 @@ class Position {
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, $this->data['personioId'] );
 
 			// assign the position to its terms.
-			$this->update_term( 'recruitingCategory', 'personioRecruitingCategory', false );
-			$this->update_term( 'occupationCategory', 'personioOccupationCategory', false );
-			$this->update_term( 'occupation', 'personioOccupation', false );
-			$this->update_term( 'office', 'personioOffice', true );
-			$this->update_term( 'department', 'personioDepartment', false );
-			$this->update_term( 'lang', 'personioLanguages', true );
-			$this->update_term( 'employmentType', 'personioEmploymentType', false );
-			$this->update_term( 'seniority', 'personioSeniority', false );
-			$this->update_term( 'schedule', 'personioSchedule', false );
-			$this->update_term( 'yearsOfExperience', 'personioExperience', false );
-
-			// import keywords as single terms if set.
-			if ( ! empty( $this->data['keywords'] ) ) {
-				$keywords = explode( ',', $this->data['keywords'] );
-				foreach ( $keywords as $keyword ) {
-					// get the term-object.
-					$term = get_term_by( 'name', $keyword, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS );
-					// if no term is found add it.
-					if ( ! $term ) {
-						$term_array = wp_insert_term( $keyword, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS );
-						if ( ! is_wp_error( $term_array ) ) {
-							$term = get_term( $term_array['term_id'], WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS );
-						} elseif ( false !== $this->debug ) {
-							$this->log->add_log( 'Keyword-Term ' . $keyword . ' could not be imported in ' . WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS . '.', 'error' );
-						}
-					}
-					if ( $term instanceof WP_Term ) {
-						wp_set_post_terms( $this->get_id(), $term->term_id, WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS, true );
-					}
+			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
+				if( ! empty( $taxonomy['attr']['rewrite']['slug'] ) ) {
+					$this->update_terms( $taxonomy_name, $taxonomy_name, $taxonomy['append'] );
 				}
 			}
 
@@ -316,43 +292,67 @@ class Position {
 	}
 
 	/**
-	 * Update a single term for this position.
+	 * Update terms of single taxonomy for this position.
 	 *
 	 * @param string $value The value of the term.
 	 * @param string $taxonomy The taxonom the term is assigned to.
 	 * @param bool   $append If we add the value or override existing values.
-	 * @param bool   $do_not_add Prevent adding this term.
+	 *
 	 * @return void
 	 */
-	public function update_term( string $value, string $taxonomy, bool $append, bool $do_not_add = false ): void {
+	public function update_terms( string $value, string $taxonomy, bool $append ): void {
 		if ( ! empty( $this->data[ $value ] ) ) {
-			// get the term-object.
-			$term = get_term_by( 'name', $this->data[ $value ], $taxonomy );
-			// if no term is found add it.
-			if ( ! $term && ! $do_not_add ) {
-				$term_array = wp_insert_term( $this->data[ $value ], $taxonomy );
-				if ( ! is_wp_error( $term_array ) ) {
-					$term = get_term( $term_array['term_id'], $taxonomy );
-				} elseif ( false !== $this->debug ) {
-					$this->log->add_log( 'Term ' . $this->data[ $value ] . ' could not be imported in ' . $taxonomy, 'error' );
+			if( is_array( $this->data[ $value ] ) ) {
+				foreach( $this->data[ $value ] as $value ) {
+					$this->update_term( $value, $taxonomy, $append );
 				}
 			}
-			if ( $term instanceof WP_Term ) {
-				wp_set_post_terms( $this->data['ID'], $term->term_id, $taxonomy, $append );
+			else {
+				$this->update_term( $this->data[ $value ], $taxonomy, $append );
 			}
 		}
 	}
 
 	/**
-	 * Get a term field of a given taxonomy.
+	 * Update single term of single taxonomy for this position.
+	 *
+	 * @param string $value    The value of the term.
+	 * @param string $taxonomy The taxonom the term is assigned to.
+	 * @param bool   $append   If we add the value or override existing values.
+	 *
+	 * @return void
+	 */
+	private function update_term( string $value, string $taxonomy, bool $append ): void {
+		// get the term-object.
+		$term = get_term_by( 'name', $value, $taxonomy );
+
+		// if no term is found add it.
+		if ( ! $term ) {
+			$term_array = wp_insert_term( $value, $taxonomy );
+			if ( ! is_wp_error( $term_array ) ) {
+				$term = get_term( $term_array['term_id'], $taxonomy );
+			} elseif ( false !== $this->debug ) {
+				$this->log->add_log( 'Term ' . $value . ' could not be imported in ' . $taxonomy, 'error' );
+			}
+		}
+
+		// assign the position to this term.
+		if ( $term instanceof WP_Term ) {
+			wp_set_post_terms( $this->data['ID'], array( $term->term_id ), $taxonomy, $append );
+		}
+	}
+
+	/**
+	 * Get a term field by a given taxonomy for this single position.
 	 *
 	 * @param string $taxonomy The taxonomy.
 	 * @param string $field The field.
+	 *
 	 * @return string
 	 */
 	public function get_term_by_field( string $taxonomy, string $field ): string {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
-			$taxonomy_terms = get_the_terms( $this->data['ID'], $taxonomy );
+			$taxonomy_terms = get_the_terms( $this->get_id(), $taxonomy );
 			if( ! is_wp_error( $taxonomy_terms ) ) {
 				$this->taxonomy_terms[ $taxonomy ] = $taxonomy_terms;
 			}
@@ -371,123 +371,15 @@ class Position {
 	}
 
 	/**
-	 * Get the term of the employment type.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function get_employment_type_name(): string {
-		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE, 'name' );
-	}
-
-	/**
-	 * Get the term of the recruiting category.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function get_recruiting_category_name(): string {
-		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY, 'name' );
-	}
-
-	/**
-	 * Get the term of the schedule.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function get_schedule_name(): string {
-		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE, 'name' );
-	}
-
-	/**
-	 * Get the term of the office category.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function get_office_name(): string {
-		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE, 'name' );
-	}
-
-	/**
-	 * Get office term id.
-	 *
-	 * @return int
-	 * @noinspection PhpUnused
-	 */
-	public function get_office_term_id(): int {
-		return absint( $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE, 'term_id' ) );
-	}
-
-	/**
-	 * Get the term of the department category.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function get_department_name(): string {
-		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT, 'name' );
-	}
-
-	/**
-	 * Get the term of the seniority category.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function get_seniority_name(): string {
-		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY, 'name' );
-	}
-
-	/**
-	 * Get the term of the experience category.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function get_experience_name(): string {
-		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE, 'name' );
-	}
-
-	/**
-	 * Get the term of the keyword category.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function get_keywords_type_name(): string {
-		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS, 'name' );
-	}
-
-	/**
-	 * Get the term of the occupation category.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function get_occupation_category_name(): string {
-		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY, 'name' );
-	}
-
-	/**
-	 * Get the term of the occupation category detail.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public function get_occupation_name(): string {
-		return $this->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION, 'name' );
-	}
-
-	/**
 	 * Get the language-specific title of this position.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
 	public function get_title(): string {
-		return get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), true );
+		if( empty($this->data['post_title']) ) {
+			$this->set_title( get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), true ) );
+		}
+		return $this->data['post_title'];
 	}
 
 	/**
@@ -502,29 +394,26 @@ class Position {
 	}
 
 	/**
-	 * Get the language-specific content of this position (aka jobDescriptions).
-	 *
-	 * @return array
-	 * @noinspection PhpUnused
-	 */
-	public function get_content_as_array(): array {
-		$content = get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
-		if ( ! empty( $content['jobDescription'] ) ) {
-			return $content['jobDescription'];
-		}
-		return array();
-	}
-
-	/**
 	 * Get the PersonioId of this position.
 	 *
 	 * @return string
 	 */
 	public function get_personio_id(): string {
-		if ( ! empty( $this->data['ID'] ) ) {
-			return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, true );
+		if ( empty( $this->data['personioId'] ) ) {
+			$this->set_personio_id( get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, true ) );
 		}
-		return '0';
+		return $this->data['personioId'];
+	}
+
+	/**
+	 * Set Personio ID.
+	 *
+	 * @param string $personio_id The Personio ID.
+	 *
+	 * @return void
+	 */
+	public function set_personio_id( string $personio_id ): void {
+		$this->data['personioId'] = $personio_id;
 	}
 
 	/**
@@ -584,7 +473,7 @@ class Position {
 	 * @return string
 	 */
 	private function get_lang(): string {
-		return $this->data['lang'];
+		return $this->data['personioLanguages'];
 	}
 
 	/**
@@ -595,7 +484,7 @@ class Position {
 	 * @return void
 	 */
 	public function set_lang( string $lang ): void {
-		$this->data['lang'] = $lang;
+		$this->data['personioLanguages'] = $lang;
 	}
 
 	/**
@@ -605,6 +494,19 @@ class Position {
 	 */
 	public function get_content(): array {
 		return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
+	}
+
+	/**
+	 * Get the language-specific content of this position (aka jobDescriptions).
+	 *
+	 * @return array
+	 */
+	public function get_content_as_array(): array {
+		$content = $this->get_content();
+		if ( ! empty( $content['jobDescription'] ) ) {
+			return $content['jobDescription'];
+		}
+		return array();
 	}
 
 	/**
@@ -635,18 +537,18 @@ class Position {
 	 * @return void
 	 */
 	public function set_department( string $department ): void {
-		$this->data['department'] = $department;
+		$this->data['personioDepartment'] = $department;
 	}
 
 	/**
-	 * Set keywords.
+	 * Set keywords. We save them as array.
 	 *
 	 * @param string $keywords List of keywords, separated by ','.
 	 *
 	 * @return void
 	 */
 	public function set_keywords( string $keywords ): void {
-		$this->data['keywords'] = $keywords;
+		$this->data['personioKeywords'] = explode( ',', $keywords );
 	}
 
 	/**
@@ -657,18 +559,7 @@ class Position {
 	 * @return void
 	 */
 	public function set_office( string $office ): void {
-		$this->data['office'] = $office;
-	}
-
-	/**
-	 * Set Personio ID.
-	 *
-	 * @param int $personio_id The Personio Id.
-	 *
-	 * @return void
-	 */
-	public function set_personio_id( int $personio_id ): void {
-		$this->data['personioId'] = $personio_id;
+		$this->data['personioOffice'] = $office;
 	}
 
 	/**
@@ -679,7 +570,7 @@ class Position {
 	 * @return void
 	 */
 	public function set_recruiting_category( string $recruiting_category ): void {
-		$this->data['recruitingCategory'] = $recruiting_category;
+		$this->data['personioRecruitingCategory'] = $recruiting_category;
 	}
 
 	/**
@@ -690,7 +581,7 @@ class Position {
 	 * @return void
 	 */
 	public function set_employment_type( string $employment_type ): void {
-		$this->data['employmentType'] = $employment_type;
+		$this->data['personioEmploymentType'] = $employment_type;
 	}
 
 	/**
@@ -701,7 +592,7 @@ class Position {
 	 * @return void
 	 */
 	public function set_seniority( string $seniority ): void {
-		$this->data['seniority'] = $seniority;
+		$this->data['personioSeniority'] = $seniority;
 	}
 
 	/**
@@ -712,7 +603,7 @@ class Position {
 	 * @return void
 	 */
 	public function set_schedule( string $schedule ): void {
-		$this->data['schedule'] = $schedule;
+		$this->data['personioSchedule'] = $schedule;
 	}
 
 	/**
@@ -723,7 +614,7 @@ class Position {
 	 * @return void
 	 */
 	public function set_years_of_experience( string $years_of_experience ): void {
-		$this->data['yearsOfExperience'] = $years_of_experience;
+		$this->data['personioExperience'] = $years_of_experience;
 	}
 
 	/**
@@ -734,7 +625,7 @@ class Position {
 	 * @return void
 	 */
 	public function set_occupation( string $occupation ): void {
-		$this->data['occupation'] = $occupation;
+		$this->data['personioOccupation'] = $occupation;
 	}
 
 	/**
@@ -745,7 +636,7 @@ class Position {
 	 * @return void
 	 */
 	public function set_occupation_category( string $occupation_category ): void {
-		$this->data['occupationCategory'] = $occupation_category;
+		$this->data['personioOccupationCategory'] = $occupation_category;
 	}
 
 	/**
@@ -775,7 +666,17 @@ class Position {
 	 *
 	 * @return Personio
 	 */
-	public function get_personio_account(): Personio {
-		return new Personio( Helper::get_personio_url() );
+	private function get_personio_account(): Personio {
+		$url = Helper::get_personio_url();
+
+		/**
+		 * Filter the Personio account URL to use for the Personio object.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param string $url The main URL.
+		 * @param Position $this The object of the requested position.
+		 */
+		return new Personio( apply_filters( 'personio_integration_get_personio_url', $url, $this ) );
 	}
 }

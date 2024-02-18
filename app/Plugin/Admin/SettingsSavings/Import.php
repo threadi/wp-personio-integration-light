@@ -19,11 +19,11 @@ class Import {
 	/**
 	 * Save the Personio-URL.
 	 *
-	 * @param string $value The value to save.
+	 * @param ?string $value The value to save.
 	 *
 	 * @return string|null
 	 */
-	public static function save( string $value ): null|string {
+	public static function save( ?string $value ): null|string {
 		$import_schedule_obj = new \PersonioIntegrationLight\Plugin\Schedules\Import();
 		if( 1 === absint( $value ) ) {
 			$import_schedule_obj->install();

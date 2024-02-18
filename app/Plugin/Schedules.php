@@ -58,13 +58,40 @@ class Schedules {
 	 * @return void
 	 */
 	public function init(): void {
-		foreach ( $this->get_schedule_object_names() as $obj_name ) {
-			$schedule_obj = new $obj_name();
-			add_action( $schedule_obj->get_name(), array( $schedule_obj, 'run' ), 10, 0 );
+		// loop through our own events.
+		foreach ( $this->get_events() as $event ) {
+			// get the schedule object.
+			$schedule_obj = $this->get_schedule_object_by_name( $event['name'] );
+			if( $schedule_obj instanceof Schedules_Base ) {
+				// set attributes in object, if available.
+				if( ! empty($event['settings'][array_key_first( $event['settings'])]['args']) ) {
+					$schedule_obj->set_args( $event['settings'][ array_key_first( $event['settings'] ) ]['args'] );
+				}
+
+				// define action hook to run the schedule.
+				add_action( $schedule_obj->get_name(), array( $schedule_obj, 'run' ), 10, 0 );
+			}
 		}
 
 		// action to create all registered schedules.
 		add_action( 'admin_action_personioPositionsCreateSchedules', array( $this, 'create_schedules_per_request' ) );
+	}
+
+	/**
+	 * Get our own active events from WP-list.
+	 *
+	 * @return array
+	 */
+	private function get_events(): array {
+		$our_events = array();
+		foreach( _get_cron_array() as $events ) {
+			foreach( $events as $event_name => $event_settings ) {
+				if( str_contains( $event_name, 'personio_integration' ) ) {
+					$our_events[] = array( 'name' => $event_name, 'settings' => $event_settings );
+				}
+			}
+		}
+		return $our_events;
 	}
 
 	/**
@@ -132,5 +159,22 @@ class Schedules {
 		 * @param array $list_of_schedules List of additional schedules.
 		 */
 		return apply_filters( 'personio_integration_schedules', $list_of_schedules );
+	}
+
+	/**
+	 * Get schedule object by its name.
+	 *
+	 * @param string $name The name of the object.
+	 *
+	 * @return false|Schedules_Base
+	 */
+	private function get_schedule_object_by_name( string $name ): false|Schedules_Base {
+		foreach( $this->get_schedule_object_names() as $object_name ) {
+			$obj = new $object_name();
+			if( $obj instanceof Schedules_Base && $name === $obj->get_name() ) {
+				return $obj;
+			}
+		}
+		return false;
 	}
 }

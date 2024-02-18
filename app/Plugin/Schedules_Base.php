@@ -31,6 +31,13 @@ class Schedules_Base {
 	protected string $interval;
 
 	/**
+	 * Arguments for the schedule-event.
+	 *
+	 * @var array
+	 */
+	private array $args = array();
+
+	/**
 	 * Return the name of this schedule.
 	 *
 	 * @return string
@@ -60,13 +67,6 @@ class Schedules_Base {
 	}
 
 	/**
-	 * Install this schedule, if it does not exist atm.
-	 *
-	 * @return void
-	 */
-	public function install(): void {}
-
-	/**
 	 * Run a single schedule.
 	 *
 	 * @return void
@@ -74,12 +74,23 @@ class Schedules_Base {
 	public function run(): void {}
 
 	/**
+	 * Install this schedule, if it does not exist atm.
+	 *
+	 * @return void
+	 */
+	public function install(): void {
+		if ( ! wp_next_scheduled( $this->get_name() ) ) {
+			wp_schedule_event( time(), $this->get_interval(), $this->get_name() );
+		}
+	}
+
+	/**
 	 * Delete a single schedule.
 	 *
 	 * @return void
 	 */
 	public function delete(): void {
-		wp_clear_scheduled_hook( $this->get_name() );
+		wp_clear_scheduled_hook( $this->get_name(), $this->get_args() );
 	}
 
 	/**
@@ -88,7 +99,7 @@ class Schedules_Base {
 	 * @return false|object
 	 */
 	public function get_event(): false|object {
-		return wp_get_scheduled_event( $this->get_name() );
+		return wp_get_scheduled_event( $this->get_name(), $this->get_args() );
 	}
 
 	/**
@@ -99,5 +110,24 @@ class Schedules_Base {
 	public function reset(): void {
 		$this->delete();
 		$this->install();
+	}
+
+	/**
+	 * Return the arguments for the schedule-event.
+	 *
+	 * @return array
+	 */
+	public function get_args(): array {
+		return $this->args;
+	}
+
+	/**
+	 * Set the arguments for the schedule-event.
+	 *
+	 * @param array $args
+	 * @return void
+	 */
+	public function set_args( array $args ): void {
+		$this->args = $args;
 	}
 }

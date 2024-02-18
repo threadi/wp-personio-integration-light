@@ -189,7 +189,7 @@ class Templates {
 	 * @return string
 	 */
 	public function get_cpt_template( string $template ): string {
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( get_the_ID() ) ) {
+		if ( PersonioPosition::get_instance()->get_name() === get_post_type( get_the_ID() ) ) {
 			// if the theme is a fse-theme.
 			if ( Helper::theme_is_fse_theme() ) {
 				return ABSPATH . WPINC . '/template-canvas.php';
@@ -377,7 +377,7 @@ class Templates {
 	 * @return string
 	 */
 	public function get_single_template( string $single_template ): string {
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( get_the_ID() ) ) {
+		if ( PersonioPosition::get_instance()->get_name() === get_post_type( get_the_ID() ) ) {
 			$path = $this->get_template( 'single-personioposition.php' );
 			if ( file_exists( $path ) ) {
 				$single_template = $path;
@@ -393,7 +393,7 @@ class Templates {
 	 * @return string
 	 */
 	public function get_archive_template( string $archive_template ): string {
-		if ( is_post_type_archive( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) {
+		if ( is_post_type_archive( PersonioPosition::get_instance()->get_name() ) ) {
 			$path = $this->get_template( 'archive-personioposition.php' );
 			if ( file_exists( $path ) ) {
 				$archive_template = $path;
@@ -431,7 +431,7 @@ class Templates {
 	 */
 	public function prepare_excerpt_template( string $content ): string {
 		// bail if this is not our own cpt.
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT !== get_post_type( get_the_ID() ) ) {
+		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( get_the_ID() ) ) {
 			return $content;
 		}
 
@@ -572,7 +572,7 @@ class Templates {
 		// set back to list-link.
 		$back_to_list_url = get_option( 'personioIntegrationTemplateBackToListUrl', '' );
 		if ( empty( $back_to_list_url ) ) {
-			$back_to_list_url = get_post_type_archive_link( WP_PERSONIO_INTEGRATION_MAIN_CPT );
+			$back_to_list_url = get_post_type_archive_link( PersonioPosition::get_instance()->get_name() );
 		}
 
 		// reset back to list-link.
@@ -608,7 +608,7 @@ class Templates {
 	 * @noinspection PhpUnused
 	 */
 	public function update_post_object( WP_Post $post ): void {
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === $post->post_type ) {
+		if ( PersonioPosition::get_instance()->get_name() === $post->post_type ) {
 			// get positions object.
 			$positions_object = Positions::get_instance();
 
@@ -630,9 +630,9 @@ class Templates {
 	 *
 	 * @return string
 	 */
-	public function update_post_title( string $post_title, int|string|WP_Post $post_id ): string {
+	public function update_post_title( string $post_title, int|string|WP_Post $post_id = 0 ): string {
 		// change the title only for our own cpt.
-		if ( WP_PERSONIO_INTEGRATION_MAIN_CPT === get_post_type( $post_id ) ) {
+		if ( PersonioPosition::get_instance()->get_name() === get_post_type( $post_id ) ) {
 			if ( $post_id instanceof WP_Post ) {
 				$post_id = $post_id->ID;
 			}
