@@ -289,7 +289,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// set language.
-		$position->lang = $personio_attributes['lang'];
+		$position->set_lang( $personio_attributes['lang'] );
 
 		// get the attributes defaults.
 		$default_attributes = $this->get_single_shortcode_attributes_defaults();
