@@ -109,7 +109,7 @@ class Templates {
 	}
 
 	/**
-	 * Load a template if it exists.
+	 * Return path to a requested template if it exists.
 	 *
 	 * Also load the requested file if it is located in the /wp-content/themes/xy/personio-integration-light/ directory.
 	 *

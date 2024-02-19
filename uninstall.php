@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-namespace App;
+namespace PersonioIntegrationLight;
 
 use PersonioIntegrationLight\Plugin\Uninstaller;
 

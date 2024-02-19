@@ -26,6 +26,15 @@ class Multiple_Radios {
 	 */
 	public static function get( array $attributes ): void {
 		if ( ! empty( $attributes['fieldId'] ) ) {
+			/**
+			 * Change Radio-field-attributes.
+			 *
+			 * @since 3.0.0 Available since 3.0.0.
+			 *
+			 * @param array $attributes List of attributes of this Radio-field.
+			 */
+			$attributes = apply_filters( 'personio_integration_settings_radio_attr', $attributes );
+
 			foreach ( $attributes['options'] as $key => $language_name ) {
 				// get check state.
 				$checked = get_option( $attributes['fieldId'] ) === $key ? ' checked="checked"' : '';
@@ -45,10 +54,16 @@ class Multiple_Radios {
 					}
 				}
 
+				// set disabled attribute if set.
+				$disabled = '';
+				if( ! empty( $attributes['options_disabled'][$key] ) ) {
+					$disabled = ' disabled';
+				}
+
 				// output.
 				?>
 				<div>
-					<input type="radio" id="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" value="<?php echo esc_attr( $key ); ?>"<?php echo esc_attr( $checked ) . esc_attr( $readonly ); ?> title="<?php echo esc_attr( $title ); ?>">
+					<input type="radio" id="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" value="<?php echo esc_attr( $key ); ?>"<?php echo esc_attr( $checked ) . esc_attr( $readonly ); ?> title="<?php echo esc_attr( $title ); ?>"<?php echo esc_attr($disabled);?>>
 					<label for="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>"><?php echo esc_html( $language_name ); ?></label>
 				</div>
 				<?php
