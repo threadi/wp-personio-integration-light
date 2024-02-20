@@ -200,7 +200,7 @@ class Positions {
 
 			// set used language on position-object.
 			if ( ! empty( $parameter_to_add['lang'] ) ) {
-				$position_object->lang = $parameter_to_add['lang'];
+				$position_object->set_lang( $parameter_to_add['lang'] );
 			}
 
 			// consider grouping of entries in list.

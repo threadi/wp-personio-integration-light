@@ -19,6 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// do nothing if PHP-version is not 8.0 or newer.
+if ( version_compare( PHP_VERSION, '8.0', '<' ) ) {
+	return;
+}
+
+
 // set version number.
 define( 'WP_PERSONIO_INTEGRATION_VERSION', '@@VersionNumber@@' );
 
