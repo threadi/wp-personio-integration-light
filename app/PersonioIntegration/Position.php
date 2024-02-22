@@ -688,4 +688,21 @@ class Position {
 	public function get_settings(): array {
 		return $this->data;
 	}
+
+	/**
+	 * Return a registered extension for this position.
+	 *
+	 * @param string $name Class-name of extension based on Position_Extends_Base.
+	 *
+	 * @return false|Position_Extensions_Base
+	 */
+	public function get_extension( string $name ): false|Position_Extensions_Base {
+		// bail if name does not exist.
+		if( ! class_exists( $name ) ) {
+			return false;
+		}
+
+		// return the object.
+		return new $name( $this->get_id() );
+	}
 }

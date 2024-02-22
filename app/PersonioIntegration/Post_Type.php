@@ -8,6 +8,8 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
+use PersonioIntegration\Plugin\License;
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 if ( ! defined( 'ABSPATH' ) ) {

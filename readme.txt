@@ -20,27 +20,26 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 #### Features
 
-- manual or automatic import of open positions
-- import of positions in German and English
-- output via 7 blocks for Block Editor, 2 classic widgets or via individual [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
-- search engine indexable output (SEO) of list views and open positions
-- open position (job description) under website's own URL
+- manual or automatic import of open positions in German and English
+- positions are indexable by search engines (SEO)
+- each open position (job description) under own URL on your website
 - data protection friendly, as no applicant data is collected and stored
+- 7 Blocks for Block Editor, 2 classic widgets and [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
 - support for classic as well as block themes
 - optionally group the lists by categories, departments, offices etc.
 - some [WP CLI commands](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/cli.md) for simplified handling of data
-- WCAG-compatible
+- compatible with WCAG
 
 #### Requirements
 
-- Personio account with XML interface enabled
-- PHP module simpleXML
+- Personio account with enabled XML interface
+- PHP module SimpleXML
 
-#### Compatibility tested with
+#### Compatibility tested with // TODO aktualisieren für Light
 
 - WPML and Polylang for language-detection
 - Post Types Order
-- Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, Divi
+- Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), Divi
 
 #### the Pro license includes:
 
@@ -49,18 +48,20 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Multiple Personio-accounts per website
 - Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese - compatible with translations via Polylang
 - Support for subcompanies and additional offices in positions
+- Support for multiple form handler like Contact Form 7, Forminator, NinjaForms and WPForms
 - Add unlimited custom files for download on each single position
+- Use a custom feature image on each position
 - Manual sorting of open positions in list views via drag&drop
-- Sorting of position details in frontend via drag&drop
-- Support for tracking of events with Google Analytics 4
-- Text search in frontend for applicants
+- Sorting of position details visible in frontend via drag&drop
+- Support for tracking of events with Google Analytics 4 // TODO andere zähler?
+- Support full text search for positions in frontend
 - Additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from job descriptions
 - RichSnippets for optimal findability via search engines like Google Jobs
-- Support for Open Graph (Facebook, LinkedIn, WhatsApp ..), Twitter Cards and Dublin Core (optionally configurable for all or single positions)
+- Support for Open Graph (Facebook, LinkedIn, WhatsApp ...), Twitter Cards and Dublin Core (optionally configurable for all or single positions)
 - Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)
 - Shortcode generator for individual views of lists and details
-- Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, WPBakery, Avada
-- .. and much more
+- Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery, Avada
+- ... and much more
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
 
@@ -373,6 +374,7 @@ Yes, it is without any further settings.
 * Added link to switch between frontend- and backend-view of single position
 * Added new templates for position title and excerpts
 * Added possibility to export and import all settings
+* Added daily checks for availability of the Personio-page of your positions
 * Advanced Blocks for Positions in Block Editor
 * Advanced classic widgets for Positions
 * Added more simple initial styling for more often used themes

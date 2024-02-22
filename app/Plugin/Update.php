@@ -115,6 +115,21 @@ class Update {
 		// delete old wrong names interval.
 		wp_clear_scheduled_hook( 'personio_integration_schudule_events' );
 
+		// delete old transients.
+		$old_transients = array(
+			'personio_integration_elementor',
+			'personio_integration_divi',
+			'personio_integration_elementor',
+			'personio_integration_wpbakery',
+			'personio_integration_beaver',
+			'personio_integration_siteorigin',
+			'personio_integration_themify',
+			'personio_integration_avada'
+		);
+		foreach( $old_transients as $transient ) {
+			delete_transient( $transient );
+		}
+
 		// install new one.
 		$schedule_obj = new Import();
 		$schedule_obj->install();

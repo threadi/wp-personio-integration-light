@@ -297,7 +297,6 @@ function personio_integration_import_settings_file() {
     contentType: false,
     processData: false,
     success: function( data ){
-      console.log(data);
       if( data.html ) {
         let dialog_config = {
           detail: {

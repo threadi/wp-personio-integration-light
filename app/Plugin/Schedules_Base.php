@@ -21,7 +21,7 @@ class Schedules_Base {
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_schedule_events';
+	protected string $name = '';
 
 	/**
 	 * Interval of this event.

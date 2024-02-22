@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Initialize the field.
  */
-class Multiple_Radios {
+class Radios {
 
 	/**
 	 * Get the output.

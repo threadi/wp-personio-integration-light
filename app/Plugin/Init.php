@@ -95,6 +95,9 @@ class Init {
 		// init schedules.
 		Schedules::get_instance()->init();
 
+		// init compatibility-checks.
+		Compatibilities::get_instance()->init();
+
 		// register cli.
 		add_action( 'cli_init', array( $this, 'cli' ) );
 
@@ -103,6 +106,7 @@ class Init {
 
 		// add action links on plugin-list.
 		add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_setting_link' ) );
+		add_action( 'in_plugin_update_message-' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_plugin_update_hints' ) );
 
 		// request-hooks.
 		add_action( 'wp', array( $this, 'update_slugs' ) );
@@ -217,5 +221,21 @@ class Init {
 	public function add_pagebuilder_gutenberg( array $pagebuilder_objects ): array {
 		$pagebuilder_objects[] = Gutenberg::get_instance();
 		return $pagebuilder_objects;
+	}
+
+	/**
+	 * Show info from update_notice-section in readme.txt in the WordPress-repository.
+	 *
+	 * @param array $data List of plugin-infos.
+	 *
+	 * @return void
+	 */
+	public function add_plugin_update_hints( array $data ): void {
+		if( isset( $data['upgrade_notice'] ) ) {
+			printf(
+				'<div class="update-message">%s</div>',
+				wpautop( $data['upgrade_notice'] )
+			);
+		}
 	}
 }

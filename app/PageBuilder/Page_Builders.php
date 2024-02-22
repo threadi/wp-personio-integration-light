@@ -2,7 +2,7 @@
 /**
  * File to handle our page builder support.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 namespace PersonioIntegrationLight\PageBuilder;

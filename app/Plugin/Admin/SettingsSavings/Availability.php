@@ -1,6 +1,6 @@
 <?php
 /**
- * File to enable or disable the import of positions depending on new setting.
+ * File to enable or disable the availability check for positions depending on new setting.
  *
  * @package personio-integration-light
  */
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Object which saves the import schedule.
  */
-class Import {
+class Availability {
 	/**
 	 * Save the new setting.
 	 *
@@ -24,7 +24,7 @@ class Import {
 	 * @return string|null
 	 */
 	public static function save( ?string $value ): null|string {
-		$import_schedule_obj = new \PersonioIntegrationLight\Plugin\Schedules\Import();
+		$import_schedule_obj = new \PersonioIntegrationLight\Plugin\Schedules\Availability();
 		if( 1 === absint( $value ) ) {
 			$import_schedule_obj->install();
 		}

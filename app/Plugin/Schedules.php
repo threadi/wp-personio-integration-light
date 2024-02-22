@@ -2,7 +2,7 @@
 /**
  * File to handle every schedule in this plugin.
  *
- * @package personio-intregation.
+ * @package personio-intregation-light
  */
 
 namespace PersonioIntegrationLight\Plugin;
@@ -16,13 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The object which handles schedules.
  */
 class Schedules {
-	/**
-	 * List of schedules.
-	 *
-	 * @var array
-	 */
-	private array $schedules;
-
 	/**
 	 * Instance of this object.
 	 *
@@ -143,7 +136,7 @@ class Schedules {
 	 *
 	 * @return array
 	 */
-	private function get_schedule_object_names(): array {
+	public function get_schedule_object_names(): array {
 		// list of schedules: free version supports only one import-schedule.
 		$list_of_schedules = array(
 			'PersonioIntegrationLight\Plugin\Schedules\Import'

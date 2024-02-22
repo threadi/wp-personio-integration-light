@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the import-schedule.
+ * File to handle the availability-schedule.
  *
  * @package personio-integration-light
  */
@@ -13,26 +13,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Plugin\Schedules_Base;
-use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object for this schedule.
  */
-class Import extends Schedules_Base {
+class Availability extends Schedules_Base {
 
 	/**
 	 * Name of this event.
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_schedule_events';
+	protected string $name = 'personio_integration_schedule_availability';
 
 	/**
 	 * Initialize this schedule.
 	 */
 	public function __construct() {
 		// get interval from settings.
-		$this->interval = Settings::get_instance()->get_setting( 'personioIntegrationPositionScheduleInterval' ); // TODO gibt es nicht in light?
+		$this->interval = 'daily';
 	}
 
 	/**
@@ -41,8 +40,8 @@ class Import extends Schedules_Base {
 	 * @return void
 	 */
 	public function run(): void {
-		if ( 1 === absint( get_option( 'personioIntegrationEnablePositionSchedule', 0 ) ) ) {
-			new \PersonioIntegrationLight\PersonioIntegration\Import();
+		if ( 1 === absint( get_option( 'personioIntegrationEnableAvailabilityCheck', 0 ) ) ) {
+			\PersonioIntegrationLight\PersonioIntegration\Availability::get_instance()->run();
 		}
 	}
 }

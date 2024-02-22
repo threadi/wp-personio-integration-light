@@ -109,10 +109,19 @@ class PersonioPosition extends Post_Type {
 		// use our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_filter_type' ) );
 		add_filter( 'personio_integration_dashboard_widgets', array( $this, 'add_dashboard_widget' ) );
+		add_filter( 'personio_integration_extend_position_object', array( $this, 'get_extensions_list' ) );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
 		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'add_sitemap_data' ), 10, 2 );
+
+		// initialize extension for the position object.
+		foreach( apply_filters( 'personio_integration_extend_position_object', array() ) as $extension_name ) {
+			if( method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name.'::get_instance' ) ) {
+				$obj = call_user_func( $extension_name . '::get_instance' );
+				$obj->init();
+			}
+		}
 	}
 
 	/**
@@ -234,6 +243,18 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
+	 * Set list of extension we use for our position object.
+	 *
+	 * @param array $extension_list List of extensions for the Position-object.
+	 *
+	 * @return array
+	 */
+	public function get_extensions_list( array $extension_list ): array {
+		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Availability';
+		return $extension_list;
+	}
+
+	/**
 	 * Define our 2 shortcodes.
 	 *
 	 * @return void
@@ -271,7 +292,7 @@ class PersonioPosition extends Post_Type {
 		// do not output anything without ID.
 		if ( $personio_attributes['personioid'] <= 0 ) {
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-				return '<div><p>' . __( 'Detail-view called without the PersonioId of a position.', 'personio-integration-light' ) . '</p></div>';
+				return '<div><p>' . __( 'Single-view called without the PersonioId for a position.', 'personio-integration-light' ) . '</p></div>';
 			}
 			return '';
 		}
@@ -734,6 +755,9 @@ class PersonioPosition extends Post_Type {
 		// add column for PersonioId.
 		$new_columns['id'] = __( 'PersonioID', 'personio-integration-light' );
 
+		// remove checkbox.
+		unset($columns['cb']);
+
 		// return results.
 		return array_merge( $new_columns, $columns );
 	}
@@ -1056,9 +1080,10 @@ class PersonioPosition extends Post_Type {
 					 *
 					 * @since 3.0.0 Available since 3.0.0.
 					 *
+					 * @param bool $false Return true to ignore this box.
 					 * @param array $box Settings of the meta-box.
 					 */
-					if( apply_filters( 'personio_integration_do_not_hide_meta_box', $box ) ) {
+					if( apply_filters( 'personio_integration_do_not_hide_meta_box', $false, $box ) ) {
 						continue;
 					}
 
@@ -1386,5 +1411,20 @@ class PersonioPosition extends Post_Type {
 				<?php
 			}
 		}
+	}
+
+	/**
+	 * Return whether a single page of our own custom post type is called.
+	 *
+	 * @return bool
+	 */
+	public function is_single_page_called(): bool {
+		if ( is_single() ) {
+			$object = get_queried_object();
+			return ( $object instanceof WP_Post && $this->get_name() === $object->post_type );
+		}
+
+		// return false if not.
+		return false;
 	}
 }

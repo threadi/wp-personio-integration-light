@@ -566,40 +566,6 @@ class Helper {
 	}
 
 	/**
-	 * Check if Avada is active.
-	 *
-	 * @return bool
-	 */
-	public static function is_avada_active(): bool {
-		$is_avada = false;
-		$theme   = wp_get_theme();
-		if ( 'Avada' === $theme->get( 'Name' ) ) {
-			$is_avada = true;
-		}
-		if ( $theme->parent() && 'Avada' === $theme->parent()->get( 'Name' ) ) {
-			$is_avada = true;
-		}
-		return $is_avada;
-	}
-
-	/**
-	 * Check if Divi is active.
-	 *
-	 * @return bool
-	 */
-	public static function is_divi_active(): bool {
-		$is_divi = self::is_plugin_active( 'divi-builder/divi-builder.php' );
-		$theme   = wp_get_theme();
-		if ( 'Divi' === $theme->get( 'Name' ) ) {
-			$is_divi = true;
-		}
-		if ( $theme->parent() && 'Divi' === $theme->parent()->get( 'Name' ) ) {
-			$is_divi = true;
-		}
-		return $is_divi;
-	}
-
-	/**
 	 * Return the review-URL.
 	 *
 	 * @return string

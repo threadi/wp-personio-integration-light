@@ -202,7 +202,7 @@ class Settings {
 					),
 					WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
 						'label'               => __( 'Main language', 'personio-integration-light' ),
-						'field'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Multiple_Radios', 'get' ),
+						'field'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Radios', 'get' ),
 						'description'         => __( 'Set the main language you will use for your open positions.', 'personio-integration-light' ),
 						'options'             => Languages::get_instance()->get_languages(),
 						'readonly'            => ! Helper::is_personio_url_set(),
@@ -251,7 +251,7 @@ class Settings {
 					),
 					'personioIntegrationTemplateFilter'   => array(
 						'label'               => __( 'Available filter for details', 'personio-integration-light' ),
-						'field'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
+						'field'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Multiple_Select', 'get' ),
 						'options'             => $list_template_filter,
 						'description'         => __( 'Mark multiple default filter for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
@@ -293,7 +293,7 @@ class Settings {
 					),
 					'personioIntegrationTemplateContentList' => array(
 						'label'       => __( 'Choose templates for positions in list-view', 'personio-integration-light' ),
-						'field'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
+						'field'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Multiple_Select', 'get' ),
 						'options'     => Templates::get_instance()->get_template_labels(),
 						'description' => __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'    => ! Helper::is_personio_url_set(),
@@ -316,7 +316,7 @@ class Settings {
 					),
 					'personioIntegrationTemplateExcerptDefaults' => array(
 						'label'       => __( 'Choose details for positions in list-view', 'personio-integration-light' ),
-						'field'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
+						'field'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Multiple_Select', 'get' ),
 						'options'     => $list_excerpt,
 						'description' => __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'    => ! Helper::is_personio_url_set(),
@@ -356,7 +356,7 @@ class Settings {
 				'fields'   => array(
 					'personioIntegrationTemplateContentDefaults' => array(
 						'label'       => __( 'Choose templates', 'personio-integration-light' ),
-						'field'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
+						'field'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Multiple_Select', 'get' ),
 						'options'     => Templates::get_instance()->get_template_labels(),
 						'description' => __( 'Mark multiple default templates for each detail-view of single positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'    => ! Helper::is_personio_url_set(),
@@ -379,7 +379,7 @@ class Settings {
 					),
 					'personioIntegrationTemplateExcerptDetail' => array(
 						'label'       => __( 'Choose details', 'personio-integration-light' ),
-						'field'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\MultiSelect', 'get' ),
+						'field'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Multiple_Select', 'get' ),
 						'options'     => $detail_excerpt,
 						'description' => __( 'Mark multiple details for single-view of positions. Only used if template "detail" is enabled for detail-view. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'    => ! Helper::is_personio_url_set(),
@@ -615,12 +615,21 @@ class Settings {
 	public function register_fields(): void {
 		foreach ( $this->get_settings() as $section_name => $section_settings ) {
 			if ( ! empty( $section_settings ) && ! empty( $section_settings['page'] ) && ! empty( $section_settings['label'] ) && ! empty( $section_settings['callback'] ) ) {
+				$args = array();
+				if( isset( $section_settings['before_section'] ) ) {
+					$args['before_section'] = $section_settings['before_section'];
+				}
+				if( isset( $section_settings['after_section'] ) ) {
+					$args['after_section'] = $section_settings['after_section'];
+				}
+
 				// add section.
 				add_settings_section(
 					$section_name,
 					$section_settings['label'],
 					$section_settings['callback'],
-					$section_settings['page']
+					$section_settings['page'],
+					$args
 				);
 
 				// add fields in this section.

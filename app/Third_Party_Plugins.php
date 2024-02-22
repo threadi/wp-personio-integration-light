@@ -136,12 +136,9 @@ class Third_Party_Plugins {
 	 * @return string
 	 */
 	public function rank_math( string $description ): string {
-		if ( is_single() ) {
-			$object = get_queried_object();
-			if ( $object instanceof WP_Post && PersonioPosition::get_instance()->get_name() === $object->post_type ) {
-				// return resulting text without line breaks.
-				return Helper::replace_linebreaks( $this->get_content( $object->ID ) );
-			}
+		if( PersonioPosition::get_instance()->is_single_page_called() ) {
+			// return resulting text without line breaks.
+			return Helper::replace_linebreaks( $this->get_content( get_queried_object_id() ) );
 		}
 		return $description;
 	}

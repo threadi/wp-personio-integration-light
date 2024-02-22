@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Initialize the field.
  */
-class MultiSelect {
+class Multiple_Select {
 
 	/**
 	 * Get the output.

@@ -155,7 +155,7 @@ class Positions {
 			}
 		} elseif ( ! empty( $parameter_to_add['groupby'] ) ) {
 			$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
-			if ( ! empty( $taxonomy ) ) {
+			if ( ! empty( $taxonomy_name ) ) {
 				$terms              = get_terms(
 					array(
 						'taxonomy'   => $taxonomy_name,
@@ -163,15 +163,17 @@ class Positions {
 						'hide_empty' => true,
 					)
 				);
-				$query['tax_query'] = array(
-					array(
-						'taxonomy' => $taxonomy_name,
-						'field'    => 'term_id',
-						'terms'    => $terms,
-					),
-				);
-				add_filter( 'posts_join', array( $this, 'add_taxonomy_table_to_position_query' ) );
-				add_filter( 'posts_orderby', array( $this, 'set_position_query_order_by_for_group' ) );
+				if( is_array( $terms ) ) {
+					$query['tax_query'] = array(
+						array(
+							'taxonomy' => $taxonomy_name,
+							'field'    => 'term_id',
+							'terms'    => $terms,
+						),
+					);
+					add_filter( 'posts_join', array( $this, 'add_taxonomy_table_to_position_query' ) );
+					add_filter( 'posts_orderby', array( $this, 'set_position_query_order_by_for_group' ) );
+				}
 			}
 		}
 
@@ -266,6 +268,7 @@ class Positions {
 	 * via 'posts_join'-filter.
 	 *
 	 * @param string $join The join statement.
+	 *
 	 * @return string
 	 */
 	public function add_taxonomy_table_to_position_query( string $join ): string {
@@ -277,7 +280,6 @@ class Positions {
 	 * Return count of positions in db.
 	 *
 	 * @return int
-	 * @noinspection PhpUnused
 	 */
 	public function get_positions_count(): int {
 		return count( $this->get_positions() );
