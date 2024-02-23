@@ -140,8 +140,8 @@ class Availability {
 						continue;
 					}
 
-					// if http-status is not 200 or 301, mark the position as not available.
-					$availability_extension->set_availability( in_array( $http_status, array( 200, 301), true ) );
+					// if http-status is not 200, mark the position as not available.
+					$availability_extension->set_availability( 200 === $http_status );
 				}
 			}
 		}
@@ -188,10 +188,26 @@ class Availability {
 		// show ID-column.
 		if ( 'personio_integration_position_availability' === $column ) {
 			if( $position_obj->get_extension( 'PersonioIntegrationLight\PersonioIntegration\Extensions\Availability' )->get_availability() ) {
-				echo '<span class="dashicons dashicons-yes"></span>';
+				$html = '<span class="dashicons dashicons-yes"></span>';
+				/**
+				 * Filter the availability "yes"-output.
+				 *
+				 * @since 3.0.0 Available since 3.0.0.
+				 *
+				 * @param string $html The output.
+				 */
+				echo apply_filters( 'personio_integration_light_position_availability_yes', $html );
 			}
 			else {
-				echo '<span class="dashicons dashicons-no"></span><span class="pro-marker">'.__( 'Use your own application form with Pro', 'personio-integration-light' ).'</span>';
+				$html = '<span class="dashicons dashicons-no"></span><span class="pro-marker">'.__( 'Use your own application form with Pro', 'personio-integration-light' ).'</span>';
+				/**
+				 * Filter the availability "no"-output.
+				 *
+				 * @since 3.0.0 Available since 3.0.0.
+				 *
+				 * @param string $html The output.
+				 */
+				echo apply_filters( 'personio_integration_light_position_availability_no', $html );
 			}
 		}
 	}

@@ -119,7 +119,6 @@ class Update {
 		$old_transients = array(
 			'personio_integration_elementor',
 			'personio_integration_divi',
-			'personio_integration_elementor',
 			'personio_integration_wpbakery',
 			'personio_integration_beaver',
 			'personio_integration_siteorigin',

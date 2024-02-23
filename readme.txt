@@ -385,7 +385,8 @@ Yes, it is without any further settings.
 * New WCS3.0 compatible WP CLI commands (old ones does not exist anymore)
 * New WP- and react-driven dialogs for each interaction with the plugin
 * New check for configured Personio-URL in Site Health
-* Now fully compatible with AMP
+* Now compatible with the WordPress-plugin AMP
+* And now compatibly with the WordPress-plugin PDF Generator for WP to print your positions as PDF in frontend
 * Removed 5 minutes cronjob as it is discouraged by WordPress (TODO Migrate)
 * Removed support for multilingual-plugins to detect the actual language (this is now only in Pro-plugin)
 * Removed usage of filter in classic widgets

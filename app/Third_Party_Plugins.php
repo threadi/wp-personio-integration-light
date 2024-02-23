@@ -13,8 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Templates;
 use WP_Post;
 use Yoast\WP\SEO\Presentations\Indexable_Presentation;
 
@@ -96,6 +98,9 @@ class Third_Party_Plugins {
 
 		// Plugin Borlabs.
 		add_action( 'add_meta_boxes', array( $this, 'borlabs_meta_boxes' ), PHP_INT_MAX );
+
+		// Plugin PDF Generator for WP.
+		add_filter( 'wps_wpg_customize_template_post_content', array( $this, 'pdf_generator_get_content' ), 10, 2 );
 	}
 
 	/**
@@ -394,5 +399,26 @@ class Third_Party_Plugins {
 		foreach( Helper::get_list_of_our_cpts() as $cpt ) {
 			remove_meta_box( 'borlabs-cookie-meta-box', $cpt, 'normal' );
 		}
+	}
+
+	/**
+	 * Get content for PDF print via PDF Generator for WP.
+	 *
+	 * @param string  $content
+	 * @param WP_Post $post
+	 *
+	 * @return string
+	 */
+	public function pdf_generator_get_content( string $content, WP_Post $post ): string {
+		// bail if this is not our cpt.
+		if( PersonioPosition::get_instance()->get_name() !== $post->post_type ) {
+			return $content;
+		}
+
+		// get the requested position.
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+
+		// return our compiled content.
+		return Templates::get_instance()->get_content_template( $position_obj, array(), true );
 	}
 }

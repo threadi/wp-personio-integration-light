@@ -415,11 +415,13 @@ class Templates {
 			return $content;
 		}
 
-		// get position as object.
-		$position_obj = Positions::get_instance()->get_position( get_the_ID() );
-
-		// return the content of the content-template.
-		return $this->get_content_template( $position_obj, array(), true );
+		/**
+		 * Set arguments to load content of this position via shortcode-function
+		 */
+		$arguments = array(
+			'personioid' => get_post_meta( get_the_ID(), WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, true ),
+		);
+		return wp_kses_post( PersonioPosition::get_instance()->shortcode_single( $arguments ) );
 	}
 
 	/**

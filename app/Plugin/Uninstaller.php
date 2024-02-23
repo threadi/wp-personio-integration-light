@@ -100,6 +100,10 @@ class Uninstaller {
 			$transient_obj->delete();
 		}
 
+		// remove plugin update transient.
+		// TODO auch über transients-object handhaben (muss dafür auch mit werte statt nachrichten umgehen können).
+		delete_transient( 'personio_integration_light_plugin_update_notices' );
+
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
 			foreach( Imports::get_instance()->get_personio_urls() as $personio_url ) {

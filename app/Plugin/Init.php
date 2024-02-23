@@ -212,18 +212,6 @@ class Init {
 	}
 
 	/**
-	 * Add the pagebuilder Gutenberg as object to the list.
-	 *
-	 * @param array $pagebuilder_objects List of pagebuilder as objects.
-	 *
-	 * @return array
-	 */
-	public function add_pagebuilder_gutenberg( array $pagebuilder_objects ): array {
-		$pagebuilder_objects[] = Gutenberg::get_instance();
-		return $pagebuilder_objects;
-	}
-
-	/**
 	 * Show info from update_notice-section in readme.txt in the WordPress-repository.
 	 *
 	 * @param array $data List of plugin-infos.
@@ -231,11 +219,65 @@ class Init {
 	 * @return void
 	 */
 	public function add_plugin_update_hints( array $data ): void {
-		if( isset( $data['upgrade_notice'] ) ) {
-			printf(
-				'<div class="update-message">%s</div>',
-				wpautop( $data['upgrade_notice'] )
-			);
+		// bail if plugin_data is empty.
+		if( empty( $plugin_data) ) {
+			return;
 		}
+
+		// bail if response has no new version.
+		if( ! isset($response->new_version) ) {
+			return;
+		}
+
+		// get transient with notice hints and check if actual version has one.
+		$notice_hints = get_transient( 'personio_integration_light_plugin_update_notices' );
+		$notice_hint = '';
+		if( ! empty( $notice_hints[$response->new_version]) ) {
+			$notice_hint = $notice_hints[$response->new_version];
+		}
+
+		// if no notices is set, try to get one.
+		if( empty($notice_hint) ) {
+			// get actual readme.txt from repository.
+			$readme_response = wp_safe_remote_get('https://plugins.svn.wordpress.org/personio-integration-light/trunk/readme.txt');
+			if (!is_wp_error($readme_response) && !empty($readme_response['body'])) {
+				$notice_hint = $this->parse_plugin_update_notice($readme_response['body'], $response->new_version);
+				if (!empty($notice_hint)) {
+					// save the response as notice.
+					$transient_value = array(
+						$response->new_version => $notice_hint
+					);
+					set_transient('personio_integration_light_plugin_update_notices', $transient_value, 86400 );
+				}
+			}
+		}
+
+		// show hint, if set.
+		if( ! empty( $notice_hint ) ) {
+			echo '<div class="personio-integration-plugin-update-notice">' . wp_kses_post($notice_hint) . '</div>';
+		}
+	}
+
+	/**
+	 * Parse update notice from readme file.
+	 *
+	 * @param  string $content WooCommerce readme file content.
+	 * @param  string $new_version WooCommerce new version.
+	 * @return string
+	 */
+	private function parse_plugin_update_notice( string $content, string $new_version ): string {
+		$upgrade_notice = '';
+
+		// get upgrade notice section.
+		if( preg_match( '/(?<===) Upgrade Notice ==(.*?)(?===)/ms', $content, $section ) ) {
+			$upgrade_section_content = $section[0];
+			if( preg_match( '/(?<==) '.preg_quote($new_version).' =(.*?)(?==)/ms', $upgrade_section_content, $version_notes ) ) {
+				$upgrade_notice = $version_notes[1];
+			}
+			elseif( preg_match( '/(?<==) '.preg_quote($new_version).' =(.*)(?==|$)/ms', $upgrade_section_content, $version_notes ) ) {
+				$upgrade_notice = $version_notes[1];
+			}
+		}
+		return $upgrade_notice;
 	}
 }

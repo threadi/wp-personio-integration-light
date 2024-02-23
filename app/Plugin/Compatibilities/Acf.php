@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the compatibility-check for Avada.
+ * File to handle the compatibility-check for ACF.
  *
  * @package personio-integration-light
  */
