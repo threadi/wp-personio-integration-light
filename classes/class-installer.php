@@ -159,6 +159,9 @@ class installer
             delete_transient('pi-dismissed-'.md5($transient));
         }
 
+		// delete plugin notice transient.
+		delete_transient( 'personio_integration_light_plugin_update_notices' );
+
         // delete all plugin-data
         if( !empty($deleteData[0]) && absint($deleteData[0]) == 1 ) {
             // remove options

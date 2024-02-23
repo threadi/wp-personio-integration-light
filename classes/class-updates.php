@@ -62,8 +62,11 @@ class Updates {
 		self::version255();
 		self::version260();
 
-        // reset import-flag
+        // reset import-flag.
         delete_option(WP_PERSONIO_INTEGRATION_IMPORT_RUNNING);
+
+		// delete plugin notice transient.
+		delete_transient( 'personio_integration_light_plugin_update_notices' );
     }
 
     /**

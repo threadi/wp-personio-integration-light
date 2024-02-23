@@ -9,6 +9,7 @@ use personioIntegration\helper;
 use personioIntegration\Import;
 use personioIntegration\Position;
 use personioIntegration\Positions;
+use personioIntegration\Updates;
 
 /**
  * Add own CSS and JS for backend.
@@ -284,10 +285,83 @@ function personio_integration_admin_add_setting_link( $links ): array
 add_filter( 'plugin_action_links_'.plugin_basename(WP_PERSONIO_INTEGRATION_PLUGIN), 'personio_integration_admin_add_setting_link' );
 
 /**
+ * Show update hints for our plugin in plugin list.
+ *
+ * @param array $plugin_data Data of the active plugin.
+ * @param object $response Data of the last responsive for update-check.
+ *
+ * @return void
+ *
+ * @noinspection PhpUnusedParameterInspection
+ */
+function personio_integration_add_plugin_update_hints( array $plugin_data, object $response ): void {
+	// bail if plugin_data is empty.
+	if( empty( $plugin_data) ) {
+		return;
+	}
+
+	// bail if response has no new version.
+	if( ! isset($response->new_version) ) {
+		return;
+	}
+
+	// get transient with notice hints and check if actual version has one.
+	$notice_hints = get_transient( 'personio_integration_light_plugin_update_notices' );
+	$notice_hint = '';
+	if( ! empty( $notice_hints[$response->new_version]) ) {
+		$notice_hint = $notice_hints[$response->new_version];
+	}
+
+	// if no notices is set, try to get one.
+	if( empty($notice_hint) ) {
+		// get actual readme.txt from repository.
+		$readme_response = wp_safe_remote_get('https://plugins.svn.wordpress.org/personio-integration-light/trunk/readme.txt');
+		if (!is_wp_error($readme_response) && !empty($readme_response['body'])) {
+			$notice_hint = personio_integration_light_parse_update_notice($readme_response['body'], $response->new_version);
+			if (!empty($notice_hint)) {
+				// save the response as notice.
+				$transient_value = array(
+					$response->new_version => $notice_hint
+				);
+				set_transient('personio_integration_light_plugin_update_notices', $transient_value, 86400 );
+			}
+		}
+	}
+
+	// show hint, if set.
+	if( ! empty( $notice_hint ) ) {
+		echo '<div class="personio-integration-plugin-update-notice">' . wp_kses_post($notice_hint) . '</div>';
+	}
+}
+add_action( 'in_plugin_update_message-' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), 'personio_integration_add_plugin_update_hints', 10, 2 );
+
+/**
+ * Parse update notice from readme file.
+ *
+ * @param  string $content WooCommerce readme file content.
+ * @param  string $new_version WooCommerce new version.
+ * @return string
+ */
+function personio_integration_light_parse_update_notice( string $content, string $new_version ): string {
+	$upgrade_notice = '';
+
+	// get upgrade notice section.
+	if( preg_match( '/(?<===) Upgrade Notice ==(.*?)(?===)/ms', $content, $section ) ) {
+		$upgrade_section_content = $section[0];
+		if( preg_match( '/(?<==) '.preg_quote($new_version).' =(.*?)(?==)/ms', $upgrade_section_content, $version_notes ) ) {
+			$upgrade_notice = $version_notes[1];
+		}
+		elseif( preg_match( '/(?<==) '.preg_quote($new_version).' =(.*)(?==|$)/ms', $upgrade_section_content, $version_notes ) ) {
+			$upgrade_notice = $version_notes[1];
+		}
+	}
+	return $upgrade_notice;
+}
+
+/**
  * Activate transient-based hint if configuration does not contain the necessary URL.
  *
  * @return void
- * @noinspection PhpUnused
  */
 function personio_integration_admin_checkConfig(): void
 {
