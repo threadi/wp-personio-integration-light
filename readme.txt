@@ -353,3 +353,6 @@ Yes, it is without any further settings.
 * Compatibility with WordPress 6.4.3
 * Updated dependencies for Gutenberg-scripts
 * Fix for possible code injection in search
+
+= 2.6.3 =
+* Added plugin-update hints in plugin-list
