@@ -123,9 +123,9 @@ class Update {
 			'personio_integration_beaver',
 			'personio_integration_siteorigin',
 			'personio_integration_themify',
-			'personio_integration_avada'
+			'personio_integration_avada',
 		);
-		foreach( $old_transients as $transient ) {
+		foreach ( $old_transients as $transient ) {
 			delete_transient( $transient );
 		}
 

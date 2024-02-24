@@ -45,7 +45,7 @@ class Position_Extensions_Base {
 	 * @return string
 	 */
 	public function get_title(): string {
-		return get_post_meta( $this->get_id(), 'pi_'.$this->get_name().'_title', true );
+		return get_post_meta( $this->get_id(), 'pi_' . $this->get_name() . '_title', true );
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Position_Extensions_Base {
 	 * @return void
 	 */
 	public function set_title( string $title ): void {
-		update_post_meta( $this->get_id(), 'pi_'.$this->get_name().'_title', $title );
+		update_post_meta( $this->get_id(), 'pi_' . $this->get_name() . '_title', $title );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class Position_Extensions_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return get_post_meta( $this->get_id(), 'pi_'.$this->get_name().'_description', true );
+		return get_post_meta( $this->get_id(), 'pi_' . $this->get_name() . '_description', true );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class Position_Extensions_Base {
 	 * @return void
 	 */
 	public function set_description( string $description ): void {
-		update_post_meta( $this->get_id(), 'pi_'.$this->get_name().'_description', $description );
+		update_post_meta( $this->get_id(), 'pi_' . $this->get_name() . '_description', $description );
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Position_Extensions_Base {
 	 * @return int
 	 */
 	public function get_image_id(): int {
-		return absint( get_post_meta( $this->get_id(), 'pi_'.$this->get_name().'_image', true ) );
+		return absint( get_post_meta( $this->get_id(), 'pi_' . $this->get_name() . '_image', true ) );
 	}
 
 	/**
@@ -94,7 +94,7 @@ class Position_Extensions_Base {
 	 * @return void
 	 */
 	public function set_image_id( int $attachment_id ): void {
-		update_post_meta( $this->get_id(), 'pi_'.$this->get_name().'_image', $attachment_id );
+		update_post_meta( $this->get_id(), 'pi_' . $this->get_name() . '_image', $attachment_id );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class Position_Extensions_Base {
 	 *
 	 * @return int
 	 */
-	protected function get_id(): int{
+	protected function get_id(): int {
 		return $this->id;
 	}
 

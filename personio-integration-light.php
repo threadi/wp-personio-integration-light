@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Personio Integration Light
  * Description:       Provides recruiting handling for Personio.
- * Requires at least: 6.2
+ * Requires at least: 4.9.24
  * Requires PHP:      8.0
  * Version:           @@VersionNumber@@
  * Author:            laOlaWeb
@@ -41,16 +41,9 @@ register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_insta
 // on deactivation.
 register_deactivation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_instance(), 'deactivation' ) );
 
-// Start the 'foo' timer:
 add_action(
 	'plugins_loaded',
 	function () {
 		Init::get_instance()->init();
 	}
 );
-
-add_action( 'personio_integration_installer', function() {
-	update_option( 'personioIntegrationUrl', 'https://dev-partner-laolaweb-gmbh.jobs.personio.de' );
-	update_option( 'wp_easy_setup_completed', 1 );
-	update_option( 'personioIntegration_debug', 1 );
-});

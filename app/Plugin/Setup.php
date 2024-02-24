@@ -70,12 +70,15 @@ class Setup {
 
 		// add hooks.
 		add_action( 'admin_init', array( $this, 'set_config' ) );
-		add_action( 'admin_action_personioIntegrationSetup', array( $this, 'display' ) );
 		add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 
 		// register REST API.
 		add_action( 'rest_api_init', array( $this, 'add_rest_api' ) );
+
+		// use own hooks.
+		add_action( 'personio_integration_import_max_count', array( $this, 'update_max_step' ) );
+		add_action( 'personio_integration_import_count', array( $this, 'update_step' ) );
 	}
 
 	/**
@@ -93,6 +96,12 @@ class Setup {
 	 * @return bool
 	 */
 	public function is_completed(): bool {
+		// return true if main block functions are not available.
+		if ( ! has_action( 'enqueue_block_assets' ) ) {
+			return true;
+		}
+
+		// return depending on own setting.
 		return (bool) get_option( 'wp_easy_setup_completed', false );
 	}
 
@@ -126,7 +135,7 @@ class Setup {
 		// check if setup should be run.
 		if ( ! $this->is_completed() ) {
 			// bail if hint is already set.
-			if( $transients_obj->get_transient_by_name( 'personio_integration_start_setup_hint' )->is_set() ) {
+			if ( $transients_obj->get_transient_by_name( 'personio_integration_start_setup_hint' )->is_set() ) {
 				return;
 			}
 
@@ -161,7 +170,7 @@ class Setup {
 	 */
 	private function get_setup(): array {
 		$setup = $this->setup;
-		if( empty($setup) ) {
+		if ( empty( $setup ) ) {
 			$this->set_config();
 			$setup = $this->setup;
 		}
@@ -191,13 +200,14 @@ class Setup {
 	 * @return void
 	 */
 	public function add_setup_menu(): void {
+		global $submenu;
 		if ( ! $this->is_completed() ) {
 			// add main menu as setup entry.
 			add_menu_page(
 				__( 'Positions', 'personio-integration-light' ),
 				__( 'Positions', 'personio-integration-light' ),
 				'manage_options',
-				'edit.php?post_type=personioposition',
+				PersonioPosition::get_instance()->get_name(),
 				array( $this, 'display' ),
 				Helper::get_plugin_url() . 'gfx/personio_icon.png',
 				40
@@ -205,7 +215,7 @@ class Setup {
 
 			// add setup entry as sub-menu.
 			add_submenu_page(
-				PersonioPosition::get_instance()->get_link( true ),
+				PersonioPosition::get_instance()->get_name(),
 				__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
 				__( 'Setup', 'personio-integration-light' ),
 				'manage_' . PersonioPosition::get_instance()->get_name(),
@@ -215,7 +225,7 @@ class Setup {
 			);
 
 			// remove menu page of our own cpt.
-			remove_submenu_page( 'edit.php?post_type=' . PersonioPosition::get_instance()->get_name(), 'edit.php?post_type=' . PersonioPosition::get_instance()->get_name() );
+			remove_submenu_page( PersonioPosition::get_instance()->get_name(), PersonioPosition::get_instance()->get_name() );
 		}
 	}
 
@@ -267,7 +277,7 @@ class Setup {
 				'completed_url'    => rest_url( 'wp-easy-setup/v1/completed' ),
 				'title_error'      => __( 'Error', 'personio-integration-light' ),
 				'txt_error_1'      => __( 'The following error occurred:', 'personio-integration-light' ),
-				/* translators: %1$s will be replaced with the URL of the plugin-forum on wordpress.org */
+				/* translators: %1$s will be replaced with the URL of the plugin-forum on wp.org */
 				'txt_error_2'      => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
 			)
 		);
@@ -302,7 +312,6 @@ class Setup {
 	 * @param WP_REST_Request $request The REST API request object.
 	 *
 	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function validate_field( WP_REST_Request $request ): void {
 		$validation_result = array(
@@ -404,10 +413,10 @@ class Setup {
 	private function get_config(): array {
 		return array(
 			'title'                 => __( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
-			'steps'                 => count($this->get_setup()),
+			'steps'                 => count( $this->get_setup() ),
 			'back_button_label'     => __( 'Back', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-undo"></span>',
 			'continue_button_label' => __( 'Continue', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-play"></span>',
-			'finish_button_label'   => __( 'Finish', 'personio-integration-light' ) . '<span class="dashicons dashicons-saved"></span>',
+			'finish_button_label'   => __( 'Completed', 'personio-integration-light' ) . '<span class="dashicons dashicons-saved"></span>',
 		);
 	}
 
@@ -421,22 +430,22 @@ class Setup {
 		update_option( 'wp_easy_setup_pi_running', 1 );
 
 		// set max step count (taxonomy-labels + Personio-accounts).
-		update_option( 'wp_easy_setup_pi_max_steps', Taxonomies::get_instance()->get_taxonomy_defaults_count() + 1 );
+		update_option( 'wp_easy_setup_pi_max_steps', Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Imports::get_instance()->get_personio_urls() ) );
 
 		// set actual steps to 0.
 		update_option( 'wp_easy_setup_pi_step', 0 );
 
-		// 1. Run import taxonomies.
-		$this->set_process_label( __( 'Import Personio labels running.', 'personio-integration-light' ) );
+		// 1. Run import of taxonomies.
+		$this->set_process_label( __( 'Import of Personio labels running.', 'personio-integration-light' ) );
 		Taxonomies::get_instance()->create_defaults( array( $this, 'update_process_step' ) );
 
-		// 2. Run import positions.
+		// 2. Run import of positions.
 		$this->set_process_label( __( 'Import of your Personio positions running.', 'personio-integration-light' ) );
 		$imports_obj = Imports::get_instance();
 		$imports_obj->run();
 
 		// cleanup.
-		update_option( 'wp_easy_setup_pi_step_label', __( 'Setup has been run.', 'personio-integration-light' ) );
+		update_option( 'wp_easy_setup_pi_step_label', __( 'Setup has been run. Your positions from Personio has been imported. Click on "Completed" to view them in an intro.', 'personio-integration-light' ) );
 		delete_option( 'wp_easy_setup_pi_running' );
 
 		// return empty json.
@@ -466,21 +475,9 @@ class Setup {
 	}
 
 	/**
-	 * Updates the max steps for processing.
-	 *
-	 * @param int $max_steps Steps to add to max steps.
-	 *
-	 * @return void
-	 */
-	public function update_process_max_steps( int $max_steps = 1 ): void {
-		update_option( 'wp_easy_setup_pi_max_steps', absint( get_option( 'wp_easy_setup_pi_max_steps', 0 ) + $max_steps ) );
-	}
-
-	/**
 	 * Get progress info via REST API.
 	 *
 	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function get_process_info(): void {
 		$return = array(
@@ -495,7 +492,7 @@ class Setup {
 	}
 
 	/**
-	 * Sets the setup configuration if it is not completed.
+	 * Sets the setup configuration.
 	 *
 	 * @return void
 	 */
@@ -528,6 +525,10 @@ class Setup {
 					'options'             => $this->convert_options_for_react( $language_setting['options'] ),
 					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate',
 				),
+				'help' => array(
+					'type' => 'Text',
+					'text' => '<p>'.sprintf( __( '<span class="dashicons dashicons-editor-help"></span> <strong>Need help?</strong> Ask in <a href="%1$s" target="_blank">our forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ).'</p>'
+				)
 			),
 			2 => array(
 				'runSetup' => array(
@@ -536,5 +537,27 @@ class Setup {
 				),
 			),
 		);
+	}
+
+	/**
+	 * Update max count.
+	 *
+	 * @param int $max_count The value to add.
+	 *
+	 * @return void
+	 */
+	public function update_max_step( int $max_count ): void {
+		update_option( 'wp_easy_setup_pi_max_steps', absint( get_option( 'wp_easy_setup_pi_max_steps' ) ) + $max_count );
+	}
+
+	/**
+	 * Update count.
+	 *
+	 * @param int $count The value to add.
+	 *
+	 * @return void
+	 */
+	public function update_step( int $count ): void {
+		update_option( 'wp_easy_setup_pi_step', absint( get_option( 'wp_easy_setup_pi_step' ) ) + $count );
 	}
 }

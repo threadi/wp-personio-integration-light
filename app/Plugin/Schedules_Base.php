@@ -58,7 +58,7 @@ class Schedules_Base {
 	/**
 	 * Set the interval for this schedule.
 	 *
-	 * @param string $interval
+	 * @param string $interval The interval to set (e.g. "daily").
 	 *
 	 * @return void
 	 */
@@ -124,7 +124,8 @@ class Schedules_Base {
 	/**
 	 * Set the arguments for the schedule-event.
 	 *
-	 * @param array $args
+	 * @param array $args The args to set for the hook-event of this schedule.
+	 *
 	 * @return void
 	 */
 	public function set_args( array $args ): void {

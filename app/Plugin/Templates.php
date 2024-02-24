@@ -215,9 +215,9 @@ class Templates {
 	 */
 	public function get_template_labels(): array {
 		$templates = array(
-			'title'    => esc_html__( 'Title', 'personio-integration-light' ),
-			'excerpt'  => esc_html__( 'Details', 'personio-integration-light' ),
-			'content'  => esc_html__( 'Content', 'personio-integration-light' ),
+			'title'            => esc_html__( 'Title', 'personio-integration-light' ),
+			'excerpt'          => esc_html__( 'Details', 'personio-integration-light' ),
+			'content'          => esc_html__( 'Content', 'personio-integration-light' ),
 			'application_link' => esc_html__( 'Application link', 'personio-integration-light' ),
 		);
 
@@ -562,6 +562,11 @@ class Templates {
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function get_application_link_template( Position $position, array $attributes ): void {
+		// bail if we are in admin.
+		if( is_admin() ) {
+			return;
+		}
+
 		// convert attributes.
 		$attributes = PersonioPosition::get_instance()->get_single_shortcode_attributes( $attributes );
 

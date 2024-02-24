@@ -28,3 +28,9 @@ body.single-personioposition #main-container article.type-personioposition, body
 	margin: 0 auto;
 	width: var(--theme-container-width);
 }
+
+/* Theme TwentySixteen */
+.post-type-archive-personioposition .site-content.content-area {
+	margin: 0;
+	float: none;
+}

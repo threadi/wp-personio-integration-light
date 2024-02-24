@@ -25,10 +25,9 @@ class Availability {
 	 */
 	public static function save( ?string $value ): null|string {
 		$import_schedule_obj = new \PersonioIntegrationLight\Plugin\Schedules\Availability();
-		if( 1 === absint( $value ) ) {
+		if ( 1 === absint( $value ) ) {
 			$import_schedule_obj->install();
-		}
-		else {
+		} else {
 			$import_schedule_obj->delete();
 		}
 

@@ -159,7 +159,7 @@ jQuery(document).ready(function($) {
           ],
           buttons: [
             {
-              'action': 'window.open( "' + personioIntegrationLightJsVars.pro_url + '", "_blank" )',
+              'action': 'window.open( "' + personioIntegrationLightJsVars.pro_url + '", "_blank" );closeDialog();',
               'variant': 'primary',
               'text': personioIntegrationLightJsVars.lbl_get_more_information
             },

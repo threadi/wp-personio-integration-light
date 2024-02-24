@@ -64,11 +64,11 @@ class Third_Party_Plugins {
 
 		// Plugin Yoast.
 		add_filter( 'wpseo_opengraph_desc', array( $this, 'yoast' ), 10, 2 );
-		add_filter( 'manage_edit-'.PersonioPosition::get_instance()->get_name().'_columns', array( $this, 'remove_yoast_columns' ) );
+		add_filter( 'manage_edit-' . PersonioPosition::get_instance()->get_name() . '_columns', array( $this, 'remove_yoast_columns' ) );
 
 		// Plugin Rank Math.
 		add_filter( 'rank_math/frontend/description', array( $this, 'rank_math' ) );
-		add_filter( 'manage_edit-'.PersonioPosition::get_instance()->get_name().'_columns', array( $this, 'remove_rank_math_columns' ) );
+		add_filter( 'manage_edit-' . PersonioPosition::get_instance()->get_name() . '_columns', array( $this, 'remove_rank_math_columns' ) );
 
 		// Plugin OG.
 		add_filter( 'og_array', array( $this, 'og_optimizer' ) );
@@ -94,7 +94,7 @@ class Third_Party_Plugins {
 		add_filter( 'trp_translating_capability', array( $this, 'translatepress_hide_option' ) );
 
 		// Plugin WPML.
-		add_filter( 'manage_'.PersonioPosition::get_instance()->get_name().'_posts_columns', array( $this, 'remove_wpml_column' ), 20 );
+		add_filter( 'manage_' . PersonioPosition::get_instance()->get_name() . '_posts_columns', array( $this, 'remove_wpml_column' ), 20 );
 
 		// Plugin Borlabs.
 		add_action( 'add_meta_boxes', array( $this, 'borlabs_meta_boxes' ), PHP_INT_MAX );
@@ -141,7 +141,7 @@ class Third_Party_Plugins {
 	 * @return string
 	 */
 	public function rank_math( string $description ): string {
-		if( PersonioPosition::get_instance()->is_single_page_called() ) {
+		if ( PersonioPosition::get_instance()->is_single_page_called() ) {
 			// return resulting text without line breaks.
 			return Helper::replace_linebreaks( $this->get_content( get_queried_object_id() ) );
 		}
@@ -307,7 +307,7 @@ class Third_Party_Plugins {
 	 */
 	public function scpo_remove_filter(): void {
 		global $pagenow;
-		if( 'edit-'.PersonioPosition::get_instance()->get_name().'.php' === $pagenow ) {
+		if ( 'edit-' . PersonioPosition::get_instance()->get_name() . '.php' === $pagenow ) {
 			wp_dequeue_script( 'scporderjs' );
 		}
 	}
@@ -320,7 +320,7 @@ class Third_Party_Plugins {
 	 * @return array
 	 */
 	public function remove_yoast_columns( array $columns ): array {
-		if( isset( $columns['wpseo-score'] ) ) {
+		if ( isset( $columns['wpseo-score'] ) ) {
 			unset( $columns['wpseo-score'] );
 			unset( $columns['wpseo-score-readability'] );
 			unset( $columns['wpseo-title'] );
@@ -340,7 +340,7 @@ class Third_Party_Plugins {
 	 * @return array
 	 */
 	public function remove_rank_math_columns( array $columns ): array {
-		if( isset( $columns['rank_math_seo_details'] ) ) {
+		if ( isset( $columns['rank_math_seo_details'] ) ) {
 			unset( $columns['rank_math_seo_details'] );
 			unset( $columns['rank_math_title'] );
 			unset( $columns['rank_math_description'] );
@@ -365,9 +365,9 @@ class Third_Party_Plugins {
 	 * @return string
 	 */
 	public function translatepress_hide_option( string $capability ): string {
-		if( !is_admin() ) {
+		if ( ! is_admin() ) {
 			$object_id = get_queried_object_id();
-			if( get_post_type($object_id) === PersonioPosition::get_instance()->get_name() ) {
+			if ( get_post_type( $object_id ) === PersonioPosition::get_instance()->get_name() ) {
 				return 'god';
 			}
 		}
@@ -377,13 +377,13 @@ class Third_Party_Plugins {
 	/**
 	 * Remove WPML translation columns.
 	 *
-	 * @param array $columns
+	 * @param array $columns List of columns.
 	 *
 	 * @return array
 	 */
 	public function remove_wpml_column( array $columns ): array {
-		if( isset($columns['icl_translations']) ) {
-			unset($columns['icl_translations']);
+		if ( isset( $columns['icl_translations'] ) ) {
+			unset( $columns['icl_translations'] );
 		}
 
 		// return resulting list.
@@ -396,7 +396,7 @@ class Third_Party_Plugins {
 	 * @return void
 	 */
 	public function borlabs_meta_boxes(): void {
-		foreach( Helper::get_list_of_our_cpts() as $cpt ) {
+		foreach ( Helper::get_list_of_our_cpts() as $cpt ) {
 			remove_meta_box( 'borlabs-cookie-meta-box', $cpt, 'normal' );
 		}
 	}
@@ -404,14 +404,14 @@ class Third_Party_Plugins {
 	/**
 	 * Get content for PDF print via PDF Generator for WP.
 	 *
-	 * @param string  $content
-	 * @param WP_Post $post
+	 * @param string  $content Content to output.
+	 * @param WP_Post $post The post-object which is used for the output.
 	 *
 	 * @return string
 	 */
 	public function pdf_generator_get_content( string $content, WP_Post $post ): string {
 		// bail if this is not our cpt.
-		if( PersonioPosition::get_instance()->get_name() !== $post->post_type ) {
+		if ( PersonioPosition::get_instance()->get_name() !== $post->post_type ) {
 			return $content;
 		}
 

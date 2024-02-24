@@ -45,10 +45,9 @@ class Log_Table extends WP_List_Table {
 			$order_by = 'date';
 		}
 		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if( ! is_null( $order ) ) {
+		if ( ! is_null( $order ) ) {
 			$order = sanitize_sql_orderby( $order );
-		}
-		else {
+		} else {
 			$order = 'ASC';
 		}
 
@@ -59,11 +58,8 @@ class Log_Table extends WP_List_Table {
 					'SELECT `state`, `time` AS `date`, `log`
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
                         WHERE 1 = %d
-                        ORDER BY %i ASC',
-					array(
-						1,
-						$order_by,
-					)
+                        ORDER BY ' . esc_sql( $order_by ) . ' ASC',
+					array( 1 )
 				),
 				ARRAY_A
 			);
@@ -73,11 +69,8 @@ class Log_Table extends WP_List_Table {
 				'SELECT `state`, `time` AS `date`, `log`
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
                         WHERE 1 = %d
-                        ORDER BY %i DESC',
-				array(
-					1,
-					$order_by,
-				)
+                        ORDER BY ' . esc_sql( $order_by ) . ' DESC',
+				array( 1 )
 			),
 			ARRAY_A
 		);

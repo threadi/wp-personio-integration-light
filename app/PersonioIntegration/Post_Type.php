@@ -8,13 +8,11 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-use PersonioIntegration\Plugin\License;
-use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
  * Base Object for each post-type.
@@ -56,20 +54,31 @@ class Post_Type {
 	/**
 	 * Mark active menu if one of our own cpt is called.
 	 *
-	 * @param bool $return Whether to use editor or not.
+	 * @param bool $use_editor Whether to use editor (true) or not (false).
 	 *
 	 * @return bool
 	 */
-	public function mark_menu( bool $return ): bool {
+	public function mark_menu( bool $use_editor ): bool {
 		global $parent_file, $submenu_file;
 
-		$post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
-		if( $post_id > 0 && get_post_type($post_id) === $this->get_name() ) {
-			$parent_file = 'edit.php?post_type='.PersonioPosition::get_instance()->get_name();
-			$submenu_file = get_post_type($post_id);
+		$post_id = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) );
+		if ( $post_id > 0 && get_post_type( $post_id ) === $this->get_name() ) {
+			$parent_file  = 'edit.php?post_type=' . PersonioPosition::get_instance()->get_name();
+			$submenu_file = get_post_type( $post_id );
 		}
 
 		// return the initial value.
-		return $return;
+		return $use_editor;
+	}
+
+	/**
+	 * Return whether this cpt is assigned to given plugin.
+	 *
+	 * @param string $cpt Plugin-path.
+	 *
+	 * @return bool
+	 */
+	public function is_from_plugin( string $cpt ): bool {
+		return $cpt === WP_PERSONIO_INTEGRATION_PLUGIN;
 	}
 }

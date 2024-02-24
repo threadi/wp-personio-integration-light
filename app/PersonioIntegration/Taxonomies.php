@@ -163,7 +163,7 @@ class Taxonomies {
 				),
 				'slug'        => 'recruitingCategory',
 				'useInFilter' => 1,
-				'append' => false
+				'append'      => false,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY => array(
 				'attr'        => array(
@@ -171,7 +171,7 @@ class Taxonomies {
 				),
 				'slug'        => 'occupation',
 				'useInFilter' => 1,
-				'append' => false
+				'append'      => false,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION => array(
 				'attr'        => array(
@@ -179,7 +179,7 @@ class Taxonomies {
 				),
 				'slug'        => 'occupation_detail',
 				'useInFilter' => 1,
-				'append' => false
+				'append'      => false,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE     => array(
 				'attr'        => array(
@@ -187,7 +187,7 @@ class Taxonomies {
 				),
 				'slug'        => 'office',
 				'useInFilter' => 1,
-				'append' => true
+				'append'      => true,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT => array(
 				'attr'        => array(
@@ -195,7 +195,7 @@ class Taxonomies {
 				),
 				'slug'        => 'department',
 				'useInFilter' => 1,
-				'append' => false
+				'append'      => false,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE => array(
 				'attr'                 => array(
@@ -204,7 +204,7 @@ class Taxonomies {
 				'slug'                 => 'employmenttype',
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
-				'append' => false
+				'append'               => false,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY  => array(
 				'attr'                 => array(
@@ -213,7 +213,7 @@ class Taxonomies {
 				'slug'                 => 'seniority',
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
-				'append' => false
+				'append'               => false,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE   => array(
 				'attr'                 => array(
@@ -222,7 +222,7 @@ class Taxonomies {
 				'slug'                 => 'schedule',
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
-				'append' => false
+				'append'               => false,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE => array(
 				'attr'                 => array(
@@ -231,7 +231,7 @@ class Taxonomies {
 				'slug'                 => 'experience',
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
-				'append' => false
+				'append'               => false,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES  => array(
 				'attr'        => array(
@@ -240,7 +240,7 @@ class Taxonomies {
 				),
 				'slug'        => 'language',
 				'useInFilter' => 0,
-				'append' => true
+				'append'      => true,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS   => array(
 				'attr'                 => array(
@@ -249,7 +249,7 @@ class Taxonomies {
 				'slug'                 => 'keyword',
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
-				'append' => true
+				'append'               => true,
 			),
 		);
 
@@ -975,17 +975,17 @@ class Taxonomies {
 	/**
 	 * Get list of taxonomy-labels for settings.
 	 *
-	 * @param array|bool $list Given list of enabled taxonomies.
+	 * @param array|bool $taxonomies Given list of enabled taxonomies.
 	 *
 	 * @return array
 	 */
-	public function get_labels_for_settings( array|bool $list ): array {
-		if( is_bool( $list ) ) {
-			$list = array();
+	public function get_labels_for_settings( array|bool $taxonomies ): array {
+		if ( is_bool( $taxonomies ) ) {
+			$taxonomies = array();
 		}
 
 		// get taxonomies.
-		$labels         = $this->get_taxonomy_labels_for_settings();
+		$labels = $this->get_taxonomy_labels_for_settings();
 
 		/**
 		 * Filter the taxonomy labels for template filter in listing before adding them to the settings.
@@ -993,9 +993,8 @@ class Taxonomies {
 		 * @since 2.3.0 Available since 2.3.0.
 		 *
 		 * @param array $labels List of labels.
-		 * @param array $list_template_filter List of default filters.
+		 * @param array $taxonomies List of taxonomies.
 		 */
-		return apply_filters( 'personio_integration_settings_get_list', $labels, $list );
+		return apply_filters( 'personio_integration_settings_get_list', $labels, $taxonomies );
 	}
-
 }

@@ -37,7 +37,7 @@ class Availability extends Position_Extensions_Base {
 	/**
 	 * Set the availability of the Personio page of this position.
 	 *
-	 * @param bool $availability
+	 * @param bool $availability Must be true if page is available and false if not.
 	 *
 	 * @return void
 	 */

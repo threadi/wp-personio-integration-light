@@ -25,10 +25,9 @@ class Import {
 	 */
 	public static function save( ?string $value ): null|string {
 		$import_schedule_obj = new \PersonioIntegrationLight\Plugin\Schedules\Import();
-		if( 1 === absint( $value ) ) {
+		if ( 1 === absint( $value ) ) {
 			$import_schedule_obj->install();
-		}
-		else {
+		} else {
 			$import_schedule_obj->delete();
 		}
 

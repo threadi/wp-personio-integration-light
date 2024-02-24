@@ -68,13 +68,13 @@ class Site_Health {
 		$list = array(
 			array(
 				'namespace' => 'personio/v1',
-				'route' => '/import_cron_checks/',
-				'callback' => array( $this, 'import_cron_checks' )
+				'route'     => '/import_cron_checks/',
+				'callback'  => array( $this, 'import_cron_checks' ),
 			),
 			array(
 				'namespace' => 'personio/v1',
-				'route' => '/url_availability_checks/',
-				'callback' => array( $this, 'url_availability_checks' )
+				'route'     => '/url_availability_checks/',
+				'callback'  => array( $this, 'url_availability_checks' ),
 			),
 		);
 
@@ -94,7 +94,7 @@ class Site_Health {
 	 * @return void
 	 */
 	public function add_rest_api(): void {
-		foreach( $this->get_endpoints() as $check ) {
+		foreach ( $this->get_endpoints() as $check ) {
 			register_rest_route(
 				$check['namespace'],
 				$check['route'],

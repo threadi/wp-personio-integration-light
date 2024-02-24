@@ -56,14 +56,14 @@ class Radios {
 
 				// set disabled attribute if set.
 				$disabled = '';
-				if( ! empty( $attributes['options_disabled'][$key] ) ) {
+				if ( ! empty( $attributes['options_disabled'][ $key ] ) ) {
 					$disabled = ' disabled';
 				}
 
 				// output.
 				?>
 				<div>
-					<input type="radio" id="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" value="<?php echo esc_attr( $key ); ?>"<?php echo esc_attr( $checked ) . esc_attr( $readonly ); ?> title="<?php echo esc_attr( $title ); ?>"<?php echo esc_attr($disabled);?>>
+					<input type="radio" id="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" value="<?php echo esc_attr( $key ); ?>"<?php echo esc_attr( $checked ) . esc_attr( $readonly ); ?> title="<?php echo esc_attr( $title ); ?>"<?php echo esc_attr( $disabled ); ?>>
 					<label for="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>"><?php echo esc_html( $language_name ); ?></label>
 				</div>
 				<?php

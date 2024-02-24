@@ -96,19 +96,24 @@ class Multiple_Select {
 				foreach ( $attributes['options'] as $key => $value ) {
 					// set selected attribute.
 					$selected = '';
-					if( in_array( $key, $actual_values, true ) ) {
+					if ( in_array( $key, $actual_values, true ) ) {
 						$selected = ' selected';
 					}
 
 					// set disabled attribute if set.
 					$disabled = '';
-					if( ! empty( $attributes['options_disabled'][$key] ) ) {
+					if ( ! empty( $attributes['options_disabled'][ $key ] ) ) {
 						$disabled = ' disabled';
 					}
 
 					// output.
 					?>
-					<option value="<?php echo esc_attr( $key ); ?>"<?php echo esc_attr( $selected );echo esc_attr($disabled); ?>><?php echo esc_html( $value ); ?></option>
+					<option value="<?php echo esc_attr( $key ); ?>"
+												<?php
+												echo esc_attr( $selected );
+												echo esc_attr( $disabled );
+												?>
+					><?php echo esc_html( $value ); ?></option>
 					<?php
 				}
 				?>

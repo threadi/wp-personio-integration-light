@@ -62,12 +62,12 @@ class Compatibilities {
 		 *
 		 * @param bool $false True to prevent compatibility-checks.
 		 */
-		if( apply_filters( 'personio_integration_run_compatibility_checks', $false ) ) {
+		if ( apply_filters( 'personio_integration_run_compatibility_checks', $false ) ) {
 			// loop through our compatibility-objects and remove their transients.
 			$transients_obj = Transients::get_instance();
-			foreach( $this->get_compatibility_checks() as $compatibility_check ) {
+			foreach ( $this->get_compatibility_checks() as $compatibility_check ) {
 				$obj = call_user_func( $compatibility_check . '::get_instance' );
-				if( $obj instanceof Compatibilities_Base ) {
+				if ( $obj instanceof Compatibilities_Base ) {
 					$transients_obj->get_transient_by_name( $obj->get_name() )->delete();
 				}
 			}
@@ -75,9 +75,9 @@ class Compatibilities {
 		}
 
 		// loop through our compatibility-checks.
-		foreach( $this->get_compatibility_checks() as $compatibility_check ) {
+		foreach ( $this->get_compatibility_checks() as $compatibility_check ) {
 			$obj = call_user_func( $compatibility_check . '::get_instance' );
-			if( $obj instanceof Compatibilities_Base ) {
+			if ( $obj instanceof Compatibilities_Base ) {
 				$obj->check();
 			}
 		}
@@ -114,16 +114,16 @@ class Compatibilities {
 	/**
 	 * Prevent checks outside of admin.
 	 *
-	 * @param bool $return
+	 * @param bool $prevent_checks Must be true to prevent the checks.
 	 *
 	 * @return bool
 	 */
-	public function prevent_checks_outside_of_admin( bool $return ): bool {
-		if( ! is_admin() ) {
+	public function prevent_checks_outside_of_admin( bool $prevent_checks ): bool {
+		if ( ! is_admin() ) {
 			return true;
 		}
 
 		// return initial value.
-		return $return;
+		return $prevent_checks;
 	}
 }

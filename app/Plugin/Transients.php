@@ -260,14 +260,17 @@ class Transients {
 	/**
 	 * Add URLs to the list where transients are hidden by default.
 	 *
-	 * @param array $list
+	 * @param array $urls List of URLs where the transients are hidden.
 	 *
 	 * @return array
 	 */
-	public function set_default_pages_where_transients_are_hidden( array $list ): array {
-		$list[] = get_admin_url().'themes.php';
-		$list[] = get_admin_url().'update.php';
-		$list[] = get_admin_url().'update-core.php';
-		return $list;
+	public function set_default_pages_where_transients_are_hidden( array $urls ): array {
+		// add some URLs to the list.
+		$urls[] = get_admin_url() . 'themes.php';
+		$urls[] = get_admin_url() . 'update.php';
+		$urls[] = get_admin_url() . 'update-core.php';
+
+		// return resulting URL-list.
+		return $urls;
 	}
 }

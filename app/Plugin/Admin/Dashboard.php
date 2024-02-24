@@ -62,7 +62,7 @@ class Dashboard {
 	 * @return void
 	 */
 	public function add_dashboard_widgets(): void {
-		foreach( $this->get_dashboard_widgets() as $dashboard_widget ) {
+		foreach ( $this->get_dashboard_widgets() as $dashboard_widget ) {
 			// add dashboard widget to show the newest imported positions.
 			wp_add_dashboard_widget(
 				$dashboard_widget['id'],

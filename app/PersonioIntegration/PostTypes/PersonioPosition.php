@@ -27,6 +27,7 @@ use WP_Post;
 use WP_Query;
 use WP_REST_Response;
 use WP_REST_Server;
+use WP_Term;
 
 /**
  * Object of this custom post type.
@@ -116,8 +117,8 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'add_sitemap_data' ), 10, 2 );
 
 		// initialize extension for the position object.
-		foreach( apply_filters( 'personio_integration_extend_position_object', array() ) as $extension_name ) {
-			if( method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name.'::get_instance' ) ) {
+		foreach ( apply_filters( 'personio_integration_extend_position_object', array() ) as $extension_name ) {
+			if ( method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
 				$obj->init();
 			}
@@ -163,19 +164,7 @@ class PersonioPosition extends Post_Type {
 			'has_archive'         => $archive_slug,
 			'can_export'          => false,
 			'exclude_from_search' => false,
-			'taxonomies'          => array( // TODO ersetzen durch ein Taxonomies-array
-				WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY,
-				WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY,
-				WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION,
-				WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE,
-				WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT,
-				WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES,
-				WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE,
-				WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY,
-				WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE,
-				WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE,
-				WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS,
-			),
+			'taxonomies'          => array_keys( Taxonomies::get_instance()->get_taxonomies() ),
 			'publicly_queryable'  => (bool) $single_slug,
 			'show_in_rest'        => true,
 			'capability_type'     => 'post',
@@ -330,7 +319,7 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-		include Templates::get_instance()->get_template( 'single-' . PersonioPosition::$instance->get_name() . '-shortcode' . $personio_attributes['template'] . '.php' );
+		include Templates::get_instance()->get_template( 'single-' . self::$instance->get_name() . '-shortcode' . $personio_attributes['template'] . '.php' );
 		return ob_get_clean();
 	}
 
@@ -467,7 +456,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// set limit.
-		$limit_by_wp                  = $personio_attributes['limit'] ? ( absint( get_option( 'posts_per_page' ) ) > 10 ? absint( get_option( 'posts_per_page' ) ) : 10 ) : 10;
+		$limit_by_wp   = $personio_attributes['limit'] ? ( absint( get_option( 'posts_per_page' ) ) > 10 ? absint( get_option( 'posts_per_page' ) ) : 10 ) : 10;
 		$limit_by_list = $personio_attributes['limit'];
 
 		/**
@@ -505,21 +494,21 @@ class PersonioPosition extends Post_Type {
 		if ( ! empty( $form_id ) ) {
 			$url .= '#' . $form_id;
 		}
-		$query = array(
+		$query           = array(
 			'base'    => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ) . $url,
 			'format'  => '?paged=%#%',
 			'current' => max( 1, get_query_var( 'paged' ) ),
 			'total'   => $positions_obj->get_results()->max_num_pages,
 		);
 		$pagination_link = paginate_links( $query );
-		$pagination = '';
-		if( ! is_null( $pagination_link ) ) {
+		$pagination      = '';
+		if ( ! is_null( $pagination_link ) ) {
 			$pagination = wp_kses_post( paginate_links( $query ) );
 		}
 
 		// collect the output.
 		ob_start();
-		include Templates::get_instance()->get_template( 'archive-' . PersonioPosition::$instance->get_name() . '-shortcode' . $personio_attributes['template'] . '.php' );
+		include Templates::get_instance()->get_template( 'archive-' . self::$instance->get_name() . '-shortcode' . $personio_attributes['template'] . '.php' );
 		return ob_get_clean();
 	}
 
@@ -733,9 +722,25 @@ class PersonioPosition extends Post_Type {
 		$positions_obj = Positions::get_instance();
 		$position_obj  = $positions_obj->get_position( $post_id );
 
-		// log deletion.
+		// bail if object is not valid.
+		if( ! $position_obj->is_valid() ) {
+			return;
+		}
+
+		// get active user.
+		$user = wp_get_current_user();
+
+		// if no user could be found, check if we are running on WP CLI.
+		if( is_null( $user) ) {
+			$username = 'WP CLI';
+		}
+		else {
+			$username = $user->display_name;
+		}
+
+		// log the deletion.
 		$log = new Log();
-		$log->add_log( 'Position ' . $position_obj->get_personio_id() . ' has been deleted.', 'success' );
+		$log->add_log( sprintf( 'Position %1$s has been deleted by %2$s.', esc_html( $position_obj->get_personio_id() ), esc_html( $username ) ), 'success' );
 	}
 
 	/**
@@ -759,21 +764,21 @@ class PersonioPosition extends Post_Type {
 		 *
 		 * @param array $false Set true to hide the buttons.
 		 */
-		if( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			$new_columns['sort'] = __( 'Sorting', 'personio-integration-light' );
 		}
 
 		// replace language-column with our own.
-		if( ! empty( $columns['taxonomy-'.WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES] ) ) {
-			unset( $columns['taxonomy-'.WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES] );
-			$columns = Helper::add_array_in_array_on_position( $columns, count($columns)-1, array( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES => __( 'Languages', 'personio-integration-light' ) ) );
+		if ( ! empty( $columns[ 'taxonomy-' . WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES ] ) ) {
+			unset( $columns[ 'taxonomy-' . WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES ] );
+			$columns = Helper::add_array_in_array_on_position( $columns, count( $columns ) - 1, array( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES => __( 'Languages', 'personio-integration-light' ) ) );
 		}
 
 		// add column for PersonioId.
 		$new_columns['id'] = __( 'PersonioID', 'personio-integration-light' );
 
 		// remove checkbox.
-		unset($columns['cb']);
+		unset( $columns['cb'] );
 
 		// return results.
 		return array_merge( $new_columns, $columns );
@@ -803,25 +808,25 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// show languages with its names.
-		if( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $column ) {
+		if ( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $column ) {
 			// get main-url.
-			$url = add_query_arg($_SERVER['QUERY_STRING'], '', home_url( $wp->request ));
+			$url = add_query_arg( filter_input( INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_FULL_SPECIAL_CHARS ), '', home_url( $wp->request ) );
 
 			// get languages in the project.
 			$languages = Languages::get_instance()->get_languages();
 
 			// loop through the languages of this position and show each of them.
-			foreach( explode( ', ', $position_obj->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES, 'name' ) ) as $index => $language_name ) {
+			foreach ( explode( ', ', $position_obj->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES, 'name' ) ) as $index => $language_name ) {
 				// create filter-url for this language.
 				$lang_url = add_query_arg( array( 'language' => $language_name ), $url );
 
 				// show comma-separator.
-				if( $index > 0 ) {
-					echo ", ";
+				if ( $index > 0 ) {
+					echo ', ';
 				}
 
 				// show link and name of the language.
-				echo '<a href="'.esc_url( $lang_url ).'">'.esc_html( $languages[$language_name] ).'</a>';
+				echo '<a href="' . esc_url( $lang_url ) . '">' . esc_html( $languages[ $language_name ] ) . '</a>';
 			}
 		}
 	}
@@ -844,9 +849,9 @@ class PersonioPosition extends Post_Type {
 	 * @noinspection PhpUnused
 	 */
 	public function remove_actions( array $actions, WP_Post $post ): array {
-		if ( PersonioPosition::get_instance()->get_name() === get_post_type() ) {
+		if ( self::get_instance()->get_name() === get_post_type() ) {
 			$new_actions = array();
-			if( ! empty( $actions['view'] ) ) {
+			if ( ! empty( $actions['view'] ) ) {
 				$new_actions = array(
 					'view' => $actions['view'],
 				);
@@ -868,7 +873,7 @@ class PersonioPosition extends Post_Type {
 			$post_type = '';
 		}
 
-		if ( PersonioPosition::get_instance()->get_name() === $post_type ) {
+		if ( self::get_instance()->get_name() === $post_type ) {
 			// add filter for each taxonomy.
 			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 				// show only taxonomies which are visible in filter.
@@ -877,7 +882,7 @@ class PersonioPosition extends Post_Type {
 					$taxonomy = get_taxonomy( $taxonomy_name );
 
 					// get its terms.
-					$terms = get_terms(	array( 'taxonomy' => $taxonomy_name ) );
+					$terms = get_terms( array( 'taxonomy' => $taxonomy_name ) );
 
 					// list terms only if they are available.
 					if ( ! empty( $terms ) ) {
@@ -914,7 +919,7 @@ class PersonioPosition extends Post_Type {
 			$post_type = 'post';
 		}
 
-		if ( PersonioPosition::get_instance()->get_name() === $post_type && 'edit.php' === $pagenow ) {
+		if ( self::get_instance()->get_name() === $post_type && 'edit.php' === $pagenow ) {
 			// add filter for each taxonomy.
 			$tax_query = array();
 			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
@@ -992,28 +997,28 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function add_meta_box(): void {
 		add_meta_box(
-			$this->get_name().'-edit-hints',
+			$this->get_name() . '-edit-hints',
 			__( 'About this page', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_data_hint' ),
 			$this->get_name()
 		);
 
 		add_meta_box(
-			$this->get_name().'-id',
+			$this->get_name() . '-id',
 			__( 'PersonioID', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_personio_id' ),
 			$this->get_name()
 		);
 
 		add_meta_box(
-			$this->get_name().'-title',
+			$this->get_name() . '-title',
 			__( 'Title', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_title' ),
 			$this->get_name()
 		);
 
 		add_meta_box(
-			$this->get_name().'-text',
+			$this->get_name() . '-text',
 			__( 'Description', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_description' ),
 			$this->get_name()
@@ -1024,9 +1029,12 @@ class PersonioPosition extends Post_Type {
 
 		// add meta box for each supported taxonomy.
 		foreach ( $taxonomies_obj->get_taxonomies() as $taxonomy_name => $settings ) {
+			// get label.
 			$labels = $taxonomies_obj->get_taxonomy_label( $taxonomy_name );
+
+			// add box.
 			add_meta_box(
-				$this->get_name().'-taxonomy-' . $taxonomy_name,
+				$this->get_name() . '-taxonomy-' . $taxonomy_name,
 				$labels['name'],
 				array( $this, 'get_meta_box_for_taxonomy' ),
 				$this->get_name(),
@@ -1036,7 +1044,7 @@ class PersonioPosition extends Post_Type {
 
 		// add meta box with Pro-hint for subcompany-field which is only in Pro.
 		add_meta_box(
-			$this->get_name().'-taxonomy-subcompany',
+			$this->get_name() . '-taxonomy-subcompany',
 			__( 'Subcompany', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_pro_taxonomy' ),
 			$this->get_name(),
@@ -1055,15 +1063,16 @@ class PersonioPosition extends Post_Type {
 		/**
 		 * Get the actual screen.
 		 */
-		if ( empty( $screen ) )
+		if ( empty( $screen ) ) {
 			$screen = get_current_screen();
-		elseif ( is_string( $screen ) )
+		} elseif ( is_string( $screen ) ) {
 			$screen = convert_to_screen( $screen );
+		}
 
 		$page = $screen->id;
 
 		// bail if this is not our own cpt.
-		if( PersonioPosition::get_instance()->get_name() !== $page ) {
+		if ( self::get_instance()->get_name() !== $page ) {
 			return;
 		}
 
@@ -1077,18 +1086,18 @@ class PersonioPosition extends Post_Type {
 		 *
 		 * @param bool $false Set true to prevent removing of each meta box.
 		 */
-		if( apply_filters( 'personio_integration_position_prevent_meta_box_remove', $false ) ) {
+		if ( apply_filters( 'personio_integration_position_prevent_meta_box_remove', $false ) ) {
 			return;
 		}
 
 		/**
 		 * Loop through the boxes for this cpt and remove all which do not belong to our plugin.
 		 */
-		foreach( $wp_meta_boxes[$page] as $context => $priority_boxes ) {
-			foreach( $priority_boxes as $boxes ) {
-				foreach( $boxes as $box ) {
+		foreach ( $wp_meta_boxes[ $page ] as $context => $priority_boxes ) {
+			foreach ( $priority_boxes as $boxes ) {
+				foreach ( $boxes as $box ) {
 					// bail of box is not an array.
-					if( ! is_array( $box ) ) {
+					if ( ! is_array( $box ) ) {
 						continue;
 					}
 
@@ -1100,7 +1109,7 @@ class PersonioPosition extends Post_Type {
 					 * @param bool $false Return true to ignore this box.
 					 * @param array $box Settings of the meta-box.
 					 */
-					if( apply_filters( 'personio_integration_do_not_hide_meta_box', $false, $box ) ) {
+					if ( apply_filters( 'personio_integration_do_not_hide_meta_box', $false, $box ) ) {
 						continue;
 					}
 
@@ -1173,24 +1182,32 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
 		$position_obj  = Positions::get_instance()->get_position( $post->ID );
-		$taxonomy_name = str_replace( $this->get_name().'-taxonomy-', '', $attr['id'] );
+		$taxonomy_name = str_replace( $this->get_name() . '-taxonomy-', '', $attr['id'] );
 		$content       = $position_obj->get_term_by_field( $taxonomy_name, 'name' );
 		if ( empty( $content ) ) {
 			echo '<i>' . esc_html__( 'No data', 'personio-integration-light' ) . '</i>';
 		} else {
+			// get term.
+			$term = get_term( $position_obj->get_term_by_field( $taxonomy_name, 'term_id' ), $taxonomy_name );
+
+			// bail if term could not be loaded.
+			if( ! ( $term instanceof WP_Term ) ) {
+				return;
+			}
+
 			// create filter url.
 			$filter_url = add_query_arg(
 				array(
 					's'                              => '',
 					'post_type'                      => $this->get_name(),
-					'admin_filter_' . $taxonomy_name => $position_obj->get_term_by_field( $taxonomy_name, 'term_id' ),
+					'admin_filter_' . $taxonomy_name => $term->term_id,
 					'paged'                          => 1,
 				),
 				admin_url() . 'edit.php'
 			);
 
 			// output.
-			echo '<a href="' . esc_url( $filter_url ) . '">' . wp_kses_post( $content ) . '</a>';
+			echo '<a href="' . esc_url( $filter_url ) . '">' . wp_kses_post( $content ) . '</a> ('. absint( $term->count ).')';
 		}
 	}
 
@@ -1276,7 +1293,7 @@ class PersonioPosition extends Post_Type {
 	public function check_filter_type( array $settings ): array {
 		if ( ! empty( $settings['attributes']['filtertype'] ) ) {
 			$filter_types = Helper::get_filter_types();
-			if ( ! empty( $filter_types[$settings['attributes']['filtertype']] ) ) {
+			if ( ! empty( $filter_types[ $settings['attributes']['filtertype'] ] ) ) {
 				$settings['attributes']['filtertype'] = 'linklist';
 			}
 		}
@@ -1324,7 +1341,7 @@ class PersonioPosition extends Post_Type {
             1 = 1 ' . $search . '
         )
         OR (
-            ' . $wpdb->posts . ".post_type = '" . PersonioPosition::get_instance()->get_name() . "'
+            ' . $wpdb->posts . ".post_type = '" . self::get_instance()->get_name() . "'
             AND EXISTS(
                 SELECT * FROM " . $wpdb->terms . '
                 INNER JOIN ' . $wpdb->term_taxonomy . '
@@ -1350,9 +1367,9 @@ class PersonioPosition extends Post_Type {
 	 * @return array
 	 */
 	public function add_sitemap_data( array $entry, WP_Post $post ): array {
-		if( $this->get_name() === get_post_type( $post ) ) {
-			$position = Positions::get_instance()->get_position( $post->ID );
-			$entry['lastmod'] = gmdate( 'Y-m-d', $position->get_created_at() );
+		if ( $this->get_name() === get_post_type( $post ) ) {
+			$position          = Positions::get_instance()->get_position( $post->ID );
+			$entry['lastmod']  = gmdate( 'Y-m-d', $position->get_created_at() );
 			$entry['priority'] = 0.8;
 
 			/**
@@ -1377,9 +1394,9 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function add_dashboard_widget( array $dashboard_widgets ): array {
 		$dashboard_widgets[] = array(
-			'id' => 'dashboard_personio_integration_positions',
-			'label' => __( 'Positions imported from Personio', 'personio-integration-light' ),
-			'callback' => array( $this, 'get_dashboard_widget_content' )
+			'id'       => 'dashboard_personio_integration_positions',
+			'label'    => __( 'Positions imported from Personio', 'personio-integration-light' ),
+			'callback' => array( $this, 'get_dashboard_widget_content' ),
 		);
 
 		// return resulting list.
@@ -1410,7 +1427,8 @@ class PersonioPosition extends Post_Type {
 			if ( 0 === count( $positions_list ) ) {
 				echo '<p>' . esc_html__( 'Actually there are no positions imported from Personio.', 'personio-integration-light' ) . '</p>';
 			} else {
-				?><ul class="personio_positions">
+				?>
+				<ul class="personio_positions">
 				<?php
 				foreach ( $positions_list as $position ) {
 					?>
@@ -1419,7 +1437,7 @@ class PersonioPosition extends Post_Type {
 				}
 				?>
 				</ul>
-				<p><a href="<?php echo esc_url( PersonioPosition::get_instance()->get_link() ); ?>">
+				<p><a href="<?php echo esc_url( self::get_instance()->get_link() ); ?>">
 						<?php
 						/* translators: %1$d will be replaced by the count of positions */
 						printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( Positions::get_instance()->get_positions_count() ) );

@@ -32,7 +32,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_logo_img( bool $big_logo = false ): string {
-		if( $big_logo ) {
+		if ( $big_logo ) {
 			return '<img src="' . self::get_plugin_url() . 'gfx/personio_logo_big.png" alt="Personio Logo" class="logo">';
 		}
 		return '<img src="' . self::get_plugin_url() . 'gfx/personio_icon.png" alt="Personio Logo" class="logo">';
@@ -581,7 +581,7 @@ class Helper {
 	 */
 	public static function get_list_of_our_cpts(): array {
 		$list = array(
-			PersonioPosition::get_instance()->get_name()
+			PersonioPosition::get_instance()->get_name(),
 		);
 
 		/**
@@ -617,12 +617,12 @@ class Helper {
 	 */
 	public static function get_file_version( string $filepath ): string {
 		// check for WP_DEBUG.
-		if( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			return filemtime( $filepath );
 		}
 
 		// check for own debug.
-		if( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 			return filemtime( $filepath );
 		}
 
@@ -643,12 +643,12 @@ class Helper {
 	 * Add new entry with its key on specific position in array.
 	 *
 	 * @param array $fields The array we want to change.
-	 * @param int $position The position where the new array should be added.
+	 * @param int   $position The position where the new array should be added.
 	 * @param array $array_to_add The new array which should be added.
 	 *
 	 * @return array
 	 */
-	public static function add_array_in_array_on_position(array $fields, int $position, array $array_to_add ): array {
-		return array_slice( $fields, 0, $position, true ) +$array_to_add + array_slice( $fields, $position, null, true );
+	public static function add_array_in_array_on_position( array $fields, int $position, array $array_to_add ): array {
+		return array_slice( $fields, 0, $position, true ) + $array_to_add + array_slice( $fields, $position, null, true );
 	}
 }

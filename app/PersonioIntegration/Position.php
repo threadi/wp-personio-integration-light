@@ -92,8 +92,7 @@ class Position {
 
 			// set the main language for this position.
 			$this->set_lang( Languages::get_instance()->get_main_language() );
-		}
-		else {
+		} else {
 			$this->data['ID'] = 0;
 		}
 	}
@@ -112,6 +111,7 @@ class Position {
 
 		// do not save anything without language setting.
 		if ( empty( $this->get_lang() ) ) {
+			/* translators: %1$s will be replaced by the Personio ID. */
 			$this->log->add_log( sprintf( __( 'Position with PersonioId %1$s could not be saved as the PersonioId does not have a language set.', 'personio-integration-light' ), esc_html( $this->data['personioId'] ) ), 'error' );
 			return;
 		}
@@ -125,7 +125,7 @@ class Position {
 		 * @param bool $false Return false to import this position.
 		 * @param Position $this The object of the position.
 		 */
-		if( apply_filters( 'personio_integration_check_requirement_to_import_single_position', $false, $this ) ) {
+		if ( apply_filters( 'personio_integration_check_requirement_to_import_single_position', $false, $this ) ) {
 			return;
 		}
 
@@ -248,7 +248,7 @@ class Position {
 
 			// assign the position to its terms.
 			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
-				if( ! empty( $taxonomy['attr']['rewrite']['slug'] ) ) {
+				if ( ! empty( $taxonomy['attr']['rewrite']['slug'] ) ) {
 					$this->update_terms( $taxonomy_name, $taxonomy_name, $taxonomy['append'] );
 				}
 			}
@@ -302,12 +302,11 @@ class Position {
 	 */
 	public function update_terms( string $value, string $taxonomy, bool $append ): void {
 		if ( ! empty( $this->data[ $value ] ) ) {
-			if( is_array( $this->data[ $value ] ) ) {
-				foreach( $this->data[ $value ] as $value ) {
+			if ( is_array( $this->data[ $value ] ) ) {
+				foreach ( $this->data[ $value ] as $value ) {
 					$this->update_term( $value, $taxonomy, $append );
 				}
-			}
-			else {
+			} else {
 				$this->update_term( $this->data[ $value ], $taxonomy, $append );
 			}
 		}
@@ -353,7 +352,7 @@ class Position {
 	public function get_term_by_field( string $taxonomy, string $field ): string {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$taxonomy_terms = get_the_terms( $this->get_id(), $taxonomy );
-			if( ! is_wp_error( $taxonomy_terms ) ) {
+			if ( ! is_wp_error( $taxonomy_terms ) ) {
 				$this->taxonomy_terms[ $taxonomy ] = $taxonomy_terms;
 			}
 		}
@@ -376,7 +375,7 @@ class Position {
 	 * @return string
 	 */
 	public function get_title(): string {
-		if( empty($this->data['post_title']) ) {
+		if ( empty( $this->data['post_title'] ) ) {
 			$this->set_title( get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), true ) );
 		}
 		return $this->data['post_title'];
@@ -698,7 +697,7 @@ class Position {
 	 */
 	public function get_extension( string $name ): false|Position_Extensions_Base {
 		// bail if name does not exist.
-		if( ! class_exists( $name ) ) {
+		if ( ! class_exists( $name ) ) {
 			return false;
 		}
 

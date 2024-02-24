@@ -156,14 +156,14 @@ class Positions {
 		} elseif ( ! empty( $parameter_to_add['groupby'] ) ) {
 			$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
 			if ( ! empty( $taxonomy_name ) ) {
-				$terms              = get_terms(
+				$terms = get_terms(
 					array(
 						'taxonomy'   => $taxonomy_name,
 						'fields'     => 'ids',
 						'hide_empty' => true,
 					)
 				);
-				if( is_array( $terms ) ) {
+				if ( is_array( $terms ) ) {
 					$query['tax_query'] = array(
 						array(
 							'taxonomy' => $taxonomy_name,

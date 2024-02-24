@@ -39,15 +39,16 @@ class Pdf_Generator_For_Wp extends Compatibilities_Base {
 		if ( Helper::is_plugin_active( 'pdf-generator-for-wp/pdf-generator-for-wp.php' ) ) {
 			// if post-type is set, to nothing more.
 			$pdf_generator_advanced_settings = get_option( 'pgfw_advanced_save_settings' );
-			if( ! empty( $pdf_generator_advanced_settings ) && ! empty( $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'] ) && in_array( PersonioPosition::get_instance()->get_name(), $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'], true ) ) {
+			if ( ! empty( $pdf_generator_advanced_settings ) && ! empty( $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'] ) && in_array( PersonioPosition::get_instance()->get_name(), $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'], true ) ) {
 				$transients_obj->get_transient_by_name( $this->get_name() )->delete();
 				return;
 			}
 
 			// create URL for advanced settings.
-			$url = add_query_arg( array(
-					'page' => 'pdf_generator_for_wp_menu',
-					'pgfw_tab' => 'pdf-generator-for-wp-advanced'
+			$url = add_query_arg(
+				array(
+					'page'     => 'pdf_generator_for_wp_menu',
+					'pgfw_tab' => 'pdf-generator-for-wp-advanced',
 				),
 				get_admin_url()
 			);

@@ -48,7 +48,7 @@ trait Helper {
 		delete_option( 'personioIntegrationPositionCount' );
 
 		// delete options regarding the import.
-		foreach( Imports::get_instance()->get_personio_urls() as $personio_url ) {
+		foreach ( Imports::get_instance()->get_personio_urls() as $personio_url ) {
 			$personio_obj = new Personio( $personio_url );
 			foreach ( Languages::get_instance()->get_languages() as $language_name => $lang ) {
 				$personio_obj->remove_timestamp( $language_name );

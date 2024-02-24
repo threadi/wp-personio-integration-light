@@ -13,8 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PageBuilder\Gutenberg;
 use PersonioIntegrationLight\PageBuilder\Page_Builders;
+use PersonioIntegrationLight\PersonioIntegration\Post_Type;
+use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
@@ -72,7 +73,7 @@ class Init {
 		Intro::get_instance()->init();
 
 		// register our post-type and dependent taxonomies.
-		PersonioPosition::get_instance()->init();
+		Post_Types::get_instance()->init();
 
 		// init classic widget support.
 		Widgets::get_instance()->init();
@@ -106,7 +107,7 @@ class Init {
 
 		// add action links on plugin-list.
 		add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_setting_link' ) );
-		add_action( 'in_plugin_update_message-' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_plugin_update_hints' ) );
+		add_action( 'in_plugin_update_message-' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_plugin_update_hints' ), 10, 2 );
 
 		// request-hooks.
 		add_action( 'wp', array( $this, 'update_slugs' ) );
@@ -178,7 +179,7 @@ class Init {
 		$links[] = "<a href='" . esc_url( Helper::get_settings_url() ) . "'>" . __( 'Settings', 'personio-integration-light' ) . '</a>';
 
 		// if setup has not been completed, show link here.
-		if( ! Setup::get_instance()->is_completed() ) {
+		if ( ! Setup::get_instance()->is_completed() ) {
 			$links[] = "<a href='" . esc_url( Setup::get_instance()->get_setup_link() ) . "'>" . __( 'Setup', 'personio-integration-light' ) . '</a>';
 		}
 
@@ -214,47 +215,48 @@ class Init {
 	/**
 	 * Show info from update_notice-section in readme.txt in the WordPress-repository.
 	 *
-	 * @param array $data List of plugin-infos.
+	 * @param array  $data List of plugin-infos.
+	 * @param object $response The response-data.
 	 *
 	 * @return void
 	 */
-	public function add_plugin_update_hints( array $data ): void {
+	public function add_plugin_update_hints( array $data, object $response ): void {
 		// bail if plugin_data is empty.
-		if( empty( $plugin_data) ) {
+		if ( empty( $plugin_data ) ) {
 			return;
 		}
 
 		// bail if response has no new version.
-		if( ! isset($response->new_version) ) {
+		if ( ! isset( $response->new_version ) ) {
 			return;
 		}
 
 		// get transient with notice hints and check if actual version has one.
 		$notice_hints = get_transient( 'personio_integration_light_plugin_update_notices' );
-		$notice_hint = '';
-		if( ! empty( $notice_hints[$response->new_version]) ) {
-			$notice_hint = $notice_hints[$response->new_version];
+		$notice_hint  = '';
+		if ( ! empty( $notice_hints[ $response->new_version ] ) ) {
+			$notice_hint = $notice_hints[ $response->new_version ];
 		}
 
 		// if no notices is set, try to get one.
-		if( empty($notice_hint) ) {
+		if ( empty( $notice_hint ) ) {
 			// get actual readme.txt from repository.
-			$readme_response = wp_safe_remote_get('https://plugins.svn.wordpress.org/personio-integration-light/trunk/readme.txt');
-			if (!is_wp_error($readme_response) && !empty($readme_response['body'])) {
-				$notice_hint = $this->parse_plugin_update_notice($readme_response['body'], $response->new_version);
-				if (!empty($notice_hint)) {
+			$readme_response = wp_safe_remote_get( 'https://plugins.svn.wordpress.org/personio-integration-light/trunk/readme.txt' );
+			if ( ! is_wp_error( $readme_response ) && ! empty( $readme_response['body'] ) ) {
+				$notice_hint = $this->parse_plugin_update_notice( $readme_response['body'], $response->new_version );
+				if ( ! empty( $notice_hint ) ) {
 					// save the response as notice.
 					$transient_value = array(
-						$response->new_version => $notice_hint
+						$response->new_version => $notice_hint,
 					);
-					set_transient('personio_integration_light_plugin_update_notices', $transient_value, 86400 );
+					set_transient( 'personio_integration_light_plugin_update_notices', $transient_value, 86400 );
 				}
 			}
 		}
 
 		// show hint, if set.
-		if( ! empty( $notice_hint ) ) {
-			echo '<div class="personio-integration-plugin-update-notice">' . wp_kses_post($notice_hint) . '</div>';
+		if ( ! empty( $notice_hint ) ) {
+			echo '<div class="personio-integration-plugin-update-notice">' . wp_kses_post( $notice_hint ) . '</div>';
 		}
 	}
 
@@ -269,12 +271,11 @@ class Init {
 		$upgrade_notice = '';
 
 		// get upgrade notice section.
-		if( preg_match( '/(?<===) Upgrade Notice ==(.*?)(?===)/ms', $content, $section ) ) {
+		if ( preg_match( '/(?<===) Upgrade Notice ==(.*?)(?===)/ms', $content, $section ) ) {
 			$upgrade_section_content = $section[0];
-			if( preg_match( '/(?<==) '.preg_quote($new_version).' =(.*?)(?==)/ms', $upgrade_section_content, $version_notes ) ) {
+			if ( preg_match( '/(?<==) ' . preg_quote( $new_version, null ) . ' =(.*?)(?==)/ms', $upgrade_section_content, $version_notes ) ) {
 				$upgrade_notice = $version_notes[1];
-			}
-			elseif( preg_match( '/(?<==) '.preg_quote($new_version).' =(.*)(?==|$)/ms', $upgrade_section_content, $version_notes ) ) {
+			} elseif ( preg_match( '/(?<==) ' . preg_quote( $new_version, null ) . ' =(.*)(?==|$)/ms', $upgrade_section_content, $version_notes ) ) {
 				$upgrade_notice = $version_notes[1];
 			}
 		}

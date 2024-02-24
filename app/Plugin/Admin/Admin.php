@@ -74,10 +74,9 @@ class Admin {
 
 		// show hint for Pro-version.
 		add_action( 'personio_integration_admin_show_pro_hint', array( $this, 'show_pro_hint' ) );
-		add_filter( 'admin_body_class', array( $this, 'add_body_classes' ));
+		add_filter( 'admin_body_class', array( $this, 'add_body_classes' ) );
 
 		// add our own checks in wp-admin.
-		add_action( 'admin_init', array( $this, 'check_for_pagebuilder' ) );
 		add_action( 'admin_init', array( $this, 'check_config' ) );
 		add_action( 'admin_init', array( $this, 'show_review_hint' ) );
 		add_action( 'admin_bar_menu', array( $this, 'add_custom_toolbar' ), 100 );
@@ -132,37 +131,37 @@ class Admin {
 			'personio_integration-admin-js',
 			'personioIntegrationLightJsVars',
 			array(
-				'ajax_url'                => admin_url( 'admin-ajax.php' ),
-				'pro_url'                 => Helper::get_pro_url(),
-				'dismiss_nonce'           => wp_create_nonce( 'personio-integration-dismiss-nonce' ),
-				'dismiss_url_nonce'       => wp_create_nonce( 'personio-integration-dismiss-url' ),
-				'run_import_nonce'        => wp_create_nonce( 'personio-run-import' ),
-				'get_import_nonce'        => wp_create_nonce( 'personio-get-import-info' ),
-				'settings_import_file_nonce' => wp_create_nonce( 'personio-integration-settings-import-file' ),
-				'label_import_is_running' => __( 'Import is running', 'personio-integration-light' ),
-				'logo_img'                => Helper::get_logo_img(),
-				'url_example'             => Helper::get_personio_url_example(),
-				'title_rate_us' => __( 'Rate us', 'personio-integration-light' ),
-				'title_run_import' => __( 'Run import', 'personio-integration-light' ),
-				'title_get_pro' => __( 'Get Personio Integration Pro', 'personio-integration-light' ),
-				'title_import_progress' => __('Import in progress', 'personio-integration-light' ),
-				'title_delete_positions' => __( 'Delete all positions', 'personio-integration-light' ),
-				'txt_delete_positions' => __( '<strong>Are you sure you want to delete all positions in WordPress?</strong><br>Hint: the positions in Personio are not influenced.', 'personio-integration-light' ),
-				'lbl_yes' => __( 'Yes', 'personio-integration-light' ),
-				'lbl_no' => __( 'No', 'personio-integration-light' ),
-				'title_pro_hint' => __( 'Use applications with Personio Integration Pro', 'personio-integration-light' ),
-				'txt_pro_hint' => __( 'With <strong>Personio Integration Pro</strong> you will be able to capture applications within your website.<br>Several form templates are available for this purpose, which you can also customize individually.<br>Incoming applications are automatically transferred to your Personio account via the Personio API.', 'personio-integration-light' ),
-				'lbl_get_more_information' => __( 'Get more information', 'personio-integration-light' ),
-				'lbl_look_later' => __( 'I\'ll look later', 'personio-integration-light' ),
-				'title_error' => __( 'Error during import of positions', 'personio-integration-light' ),
-				'txt_error' => __( '<strong>Error during import of positions.</strong> The following error occurred:', 'personio-integration-light' ),
-				'lbl_ok' => __( 'OK', 'personio-integration-light' ),
-				'title_import_success' => __( 'Positions has been imported', 'personio-integration-light' ),
+				'ajax_url'                           => admin_url( 'admin-ajax.php' ),
+				'pro_url'                            => Helper::get_pro_url(),
+				'dismiss_nonce'                      => wp_create_nonce( 'personio-integration-dismiss-nonce' ),
+				'dismiss_url_nonce'                  => wp_create_nonce( 'personio-integration-dismiss-url' ),
+				'run_import_nonce'                   => wp_create_nonce( 'personio-run-import' ),
+				'get_import_nonce'                   => wp_create_nonce( 'personio-get-import-info' ),
+				'settings_import_file_nonce'         => wp_create_nonce( 'personio-integration-settings-import-file' ),
+				'label_import_is_running'            => __( 'Import is running', 'personio-integration-light' ),
+				'logo_img'                           => Helper::get_logo_img(),
+				'url_example'                        => Helper::get_personio_url_example(),
+				'title_rate_us'                      => __( 'Rate us', 'personio-integration-light' ),
+				'title_run_import'                   => __( 'Run import', 'personio-integration-light' ),
+				'title_get_pro'                      => __( 'Get Personio Integration Pro', 'personio-integration-light' ),
+				'title_import_progress'              => __( 'Import in progress', 'personio-integration-light' ),
+				'title_delete_positions'             => __( 'Delete all positions', 'personio-integration-light' ),
+				'txt_delete_positions'               => __( '<strong>Are you sure you want to delete all positions in WordPress?</strong><br>Hint: the positions in Personio are not influenced.', 'personio-integration-light' ),
+				'lbl_yes'                            => __( 'Yes', 'personio-integration-light' ),
+				'lbl_no'                             => __( 'No', 'personio-integration-light' ),
+				'title_pro_hint'                     => __( 'Use applications with Personio Integration Pro', 'personio-integration-light' ),
+				'txt_pro_hint'                       => __( 'With <strong>Personio Integration Pro</strong> you will be able to capture applications within your website.<br>Several form templates are available for this purpose, which you can also customize individually.<br>Incoming applications are automatically transferred to your Personio account via the Personio API.', 'personio-integration-light' ),
+				'lbl_get_more_information'           => __( 'Get more information', 'personio-integration-light' ),
+				'lbl_look_later'                     => __( 'I\'ll look later', 'personio-integration-light' ),
+				'title_error'                        => __( 'Error during import of positions', 'personio-integration-light' ),
+				'txt_error'                          => __( '<strong>Error during import of positions.</strong> The following error occurred:', 'personio-integration-light' ),
+				'lbl_ok'                             => __( 'OK', 'personio-integration-light' ),
+				'title_import_success'               => __( 'Positions has been imported', 'personio-integration-light' ),
 				/* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
-				'txt_import_success' => sprintf( __( '<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.','personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ), esc_url( get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ) ) ),
+				'txt_import_success'                 => sprintf( __( '<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ), esc_url( get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ) ) ),
 				'title_settings_import_file_missing' => __( 'Import file missing', 'personio-integration-light' ),
-				'title_settings_import_file_result' => __( 'Import file uploaded', 'personio-integration-light' ),
-				'text_settings_import_file_missing' => __( 'Please choose a file for the import.', 'personio-integration-light' ),
+				'title_settings_import_file_result'  => __( 'Import file uploaded', 'personio-integration-light' ),
+				'text_settings_import_file_missing'  => __( 'Please choose a file for the import.', 'personio-integration-light' ),
 			)
 		);
 	}
@@ -186,12 +185,12 @@ class Admin {
 		$script_asset_path = $path . 'build/index.asset.php';
 
 		// bail if script does not exist.
-		if( !file_exists($script_asset_path) ) {
+		if ( ! file_exists( $script_asset_path ) ) {
 			return;
 		}
 
 		// embed script.
-		$script_asset      = require $script_asset_path;
+		$script_asset = require $script_asset_path;
 		wp_enqueue_script(
 			'wp-easy-dialog',
 			$url . 'build/index.js',
@@ -228,23 +227,7 @@ class Admin {
 		 *
 		 * @param string $text The text.
 		 */
-		echo '<p class="personio-pro-hint">' . sprintf( wp_kses_post( $hint ), apply_filters( 'personio_integration_pro_hint_text', $text ) ) . '</p>';
-	}
-
-	/**
-	 * Check for supported PageBuilder and show hint if Pro-version would support it.
-	 *
-	 * @return void
-	 */
-	public function check_for_pagebuilder(): void {
-		// get transients object.
-		$transients_obj = Transients::get_instance();
-
-
-		/**
-		 * Check for Avada with Fusion Builder.
-		 */
-
+		echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( $hint, apply_filters( 'personio_integration_pro_hint_text', $text ) ) ) . '</p>';
 	}
 
 	/**
@@ -392,7 +375,7 @@ class Admin {
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_limit_hint' );
 			/* translators: %1$s will be replaced by the URL to the Pro-information-page. */
-			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro version</a>, any number of positions can be displayed.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro</a> any number of positions can be displayed - and you get a large number of additional features.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->save();
 		} else {
@@ -462,12 +445,14 @@ class Admin {
 		check_ajax_referer( 'personio-get-import-info', 'nonce' );
 
 		// return actual and max count of import steps.
-		wp_send_json( array(
-			absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ),
-			absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ),
-			absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ),
-			wp_json_encode( get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) )
-		));
+		wp_send_json(
+			array(
+				absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ),
+				absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ),
+				absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ),
+				wp_json_encode( get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) ),
+			)
+		);
 	}
 
 	/**
@@ -487,7 +472,7 @@ class Admin {
 		 *
 		 * @param array $false Set true to hide the buttons.
 		 */
-		if( apply_filters( 'personio_integration_hide_pro_hints', $false ) || ! Helper::is_personio_url_set() ) {
+		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) || ! Helper::is_personio_url_set() ) {
 			$classes .= ' personio-integration-hide-buttons';
 		}
 		return $classes;
@@ -504,7 +489,7 @@ class Admin {
 		if ( Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationDisableListSlug' ) ) ) {
 			$admin_bar->add_menu(
 				array(
-					'id'     => PersonioPosition::get_instance()->get_name().'-archive',
+					'id'     => PersonioPosition::get_instance()->get_name() . '-archive',
 					'parent' => 'site-name',
 					'title'  => __( 'Personio Positions', 'personio-integration-light' ),
 					'href'   => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ),
@@ -526,10 +511,9 @@ class Admin {
 							'href'   => $position_obj->get_link(),
 						)
 					);
-				}
-				else {
+				} else {
 					$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-					if( ! empty( $post_type) && PersonioPosition::get_instance()->get_name() === $post_type ) {
+					if ( ! empty( $post_type ) && PersonioPosition::get_instance()->get_name() === $post_type ) {
 						$admin_bar->add_menu(
 							array(
 								'id'     => 'personio-integration-list',

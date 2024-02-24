@@ -75,7 +75,7 @@ class Personio {
 	 * @return string
 	 */
 	public function get_xml_url( string $language_name = '' ): string {
-		if( empty( $language_name ) ) {
+		if ( empty( $language_name ) ) {
 			return $this->get_url() . '/xml';
 		}
 		return $this->get_url() . '/xml?language=' . esc_attr( $language_name );
@@ -95,8 +95,8 @@ class Personio {
 	/**
 	 * Set or update languages-specific last modified timestamp.
 	 *
-	 * @param int $last_modified_timestamp The timestamp as unit-timestamp.
-	 * @param string   $language_name The internal language-name (e.g. "de").
+	 * @param int    $last_modified_timestamp The timestamp as unit-timestamp.
+	 * @param string $language_name The internal language-name (e.g. "de").
 	 *
 	 * @return void
 	 */
@@ -118,7 +118,7 @@ class Personio {
 	/**
 	 * Return md5-hash of language-specific import content from this Personio-account.
 	 *
-	 * @param string $language_name
+	 * @param string $language_name The internal language-name (e.g. "de").
 	 *
 	 * @return string
 	 */
@@ -129,23 +129,23 @@ class Personio {
 	/**
 	 * Set md5-hash of language-specific import content from this Personio-account.
 	 *
-	 * @param string $language_name
-	 * @param string $md5hash
+	 * @param string $language_name The internal language-name (e.g. "de").
+	 * @param string $md5hash The md5-hash to use.
 	 *
 	 * @return void
 	 */
 	public function set_md5( string $language_name, string $md5hash ): void {
-		update_option( 'personioIntegration_xml_hash_' . md5( $this->get_url() ). $language_name, $md5hash );
+		update_option( 'personioIntegration_xml_hash_' . md5( $this->get_url() ) . $language_name, $md5hash );
 	}
 
 	/**
 	 * Remove md5-hash for language-specific import content from this Personio-account.
 	 *
-	 * @param string $language_name
+	 * @param string $language_name The internal language-name (e.g. "de").
 	 *
 	 * @return void
 	 */
 	public function remove_md5( string $language_name ): void {
-		delete_option( 'personioIntegration_xml_hash_' . md5( $this->get_url() ). $language_name );
+		delete_option( 'personioIntegration_xml_hash_' . md5( $this->get_url() ) . $language_name );
 	}
 }

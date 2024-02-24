@@ -7,6 +7,10 @@
     --personio-pro-hint-font: #000;
 }
 
+body.post-type-personioposition {
+	overflow-y: scroll;
+}
+
 #dashboard_personio_integration_positions .inside {
     margin: 0;
     padding: 0

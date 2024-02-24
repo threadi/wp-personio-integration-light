@@ -55,7 +55,7 @@ class Avada extends Compatibilities_Base {
 	 */
 	private static function is_avada_active(): bool {
 		$is_avada = false;
-		$theme   = wp_get_theme();
+		$theme    = wp_get_theme();
 		if ( 'Avada' === $theme->get( 'Name' ) ) {
 			$is_avada = true;
 		}

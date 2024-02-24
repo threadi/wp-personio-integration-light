@@ -15,6 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
+use PersonioIntegrationLight\PersonioIntegration\Post_Type;
+use PersonioIntegrationLight\PersonioIntegration\Post_Types;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\Widgets\Widgets;
 
 /**
@@ -89,6 +92,8 @@ class Uninstaller {
 	 * @return void
 	 */
 	private function deactivation_tasks( array $delete_data ): void {
+		global $wpdb;
+
 		// remove schedules.
 		Schedules::get_instance()->delete_all();
 
@@ -106,7 +111,7 @@ class Uninstaller {
 
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
-			foreach( Imports::get_instance()->get_personio_urls() as $personio_url ) {
+			foreach ( Imports::get_instance()->get_personio_urls() as $personio_url ) {
 				$personio_obj = new Personio( $personio_url );
 				foreach ( Languages::get_instance()->get_languages() as $language_name => $lang ) {
 					$personio_obj->remove_timestamp( $language_name );
@@ -131,13 +136,20 @@ class Uninstaller {
 			foreach ( $this->get_options() as $option ) {
 				delete_option( $option );
 			}
+
+			// remove user meta for each cpt we provide.
+			foreach( Post_Types::get_instance()->get_post_types() as $post_type ) {
+				$obj = call_user_func( $post_type . '::get_instance' );
+				if( $obj instanceof Post_Type && $obj->is_from_plugin( WP_PERSONIO_INTEGRATION_PLUGIN ) ) {
+					$wpdb->query( $wpdb->prepare( 'DELETE FROM `'.$wpdb->usermeta.'` WHERE `meta_key` like %s', '%'. esc_sql( $obj->get_name() ). '%' ) );
+				}
+			}
 		}
 
 		// remove roles from our plugin.
 		Roles::get_instance()->uninstall();
 
 		// delete our custom database-tables.
-		global $wpdb;
 		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) );
 	}
 
@@ -162,7 +174,7 @@ class Uninstaller {
 			'wp_easy_setup_pi_step_label',
 			'wp_easy_setup_pi_running',
 			'wp_easy_setup_completed',
-			'personio-integration-intro'
+			'personio-integration-intro',
 		);
 	}
 }

@@ -268,6 +268,9 @@ export function setButtonDisabledState( object ) {
     if( object.state[field_name] && object.state.results[field_name] && object.state.results[field_name].result.length === 0 ) {
       fields_filled_count++;
     }
+    else if( object.props.fields[object.state.step][field_name].type === 'Text' ) {
+      fields_filled_count++;
+    }
   })}
   object.state.button_disabled = fields_count !== fields_filled_count;
 }

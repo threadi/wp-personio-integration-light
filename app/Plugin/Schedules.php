@@ -55,9 +55,9 @@ class Schedules {
 		foreach ( $this->get_events() as $event ) {
 			// get the schedule object.
 			$schedule_obj = $this->get_schedule_object_by_name( $event['name'] );
-			if( $schedule_obj instanceof Schedules_Base ) {
+			if ( $schedule_obj instanceof Schedules_Base ) {
 				// set attributes in object, if available.
-				if( ! empty($event['settings'][array_key_first( $event['settings'])]['args']) ) {
+				if ( ! empty( $event['settings'][ array_key_first( $event['settings'] ) ]['args'] ) ) {
 					$schedule_obj->set_args( $event['settings'][ array_key_first( $event['settings'] ) ]['args'] );
 				}
 
@@ -77,10 +77,13 @@ class Schedules {
 	 */
 	private function get_events(): array {
 		$our_events = array();
-		foreach( _get_cron_array() as $events ) {
-			foreach( $events as $event_name => $event_settings ) {
-				if( str_contains( $event_name, 'personio_integration' ) ) {
-					$our_events[] = array( 'name' => $event_name, 'settings' => $event_settings );
+		foreach ( _get_cron_array() as $events ) {
+			foreach ( $events as $event_name => $event_settings ) {
+				if ( str_contains( $event_name, 'personio_integration' ) ) {
+					$our_events[] = array(
+						'name'     => $event_name,
+						'settings' => $event_settings,
+					);
 				}
 			}
 		}
@@ -95,7 +98,7 @@ class Schedules {
 	public function delete_all(): void {
 		foreach ( $this->get_schedule_object_names() as $obj_name ) {
 			$schedule_obj = new $obj_name();
-			if( $schedule_obj instanceof Schedules_Base ) {
+			if ( $schedule_obj instanceof Schedules_Base ) {
 				$schedule_obj->delete();
 			}
 		}
@@ -110,7 +113,7 @@ class Schedules {
 		// install the schedules if they do not exist atm.
 		foreach ( $this->get_schedule_object_names() as $obj_name ) {
 			$schedule_obj = new $obj_name();
-			if( $schedule_obj instanceof Schedules_Base ) {
+			if ( $schedule_obj instanceof Schedules_Base ) {
 				$schedule_obj->install();
 			}
 		}
@@ -139,7 +142,7 @@ class Schedules {
 	public function get_schedule_object_names(): array {
 		// list of schedules: free version supports only one import-schedule.
 		$list_of_schedules = array(
-			'PersonioIntegrationLight\Plugin\Schedules\Import'
+			'PersonioIntegrationLight\Plugin\Schedules\Import',
 		);
 
 		/**
@@ -162,9 +165,9 @@ class Schedules {
 	 * @return false|Schedules_Base
 	 */
 	private function get_schedule_object_by_name( string $name ): false|Schedules_Base {
-		foreach( $this->get_schedule_object_names() as $object_name ) {
+		foreach ( $this->get_schedule_object_names() as $object_name ) {
 			$obj = new $object_name();
-			if( $obj instanceof Schedules_Base && $name === $obj->get_name() ) {
+			if ( $obj instanceof Schedules_Base && $name === $obj->get_name() ) {
 				return $obj;
 			}
 		}

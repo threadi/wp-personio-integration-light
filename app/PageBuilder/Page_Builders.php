@@ -48,9 +48,9 @@ class Page_Builders {
 	 * @return void
 	 */
 	public function init(): void {
-		foreach( $this->get_page_builder() as $page_builder ) {
+		foreach ( $this->get_page_builder() as $page_builder ) {
 			$obj = call_user_func( $page_builder . '::get_instance' );
-			if( $obj instanceof PageBuilder_Base ) {
+			if ( $obj instanceof PageBuilder_Base ) {
 				$obj->init();
 			}
 		}
@@ -63,7 +63,7 @@ class Page_Builders {
 	 */
 	private function get_page_builder(): array {
 		$list = array(
-			'\PersonioIntegrationLight\PageBuilder\Gutenberg'
+			'\PersonioIntegrationLight\PageBuilder\Gutenberg',
 		);
 
 		/**

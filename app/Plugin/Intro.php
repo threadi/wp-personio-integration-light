@@ -55,11 +55,19 @@ class Intro {
 	 * @return void
 	 */
 	public function init(): void {
+		// bail if main block editor functions are not available.
+		if ( ! has_action( 'enqueue_block_assets' ) ) {
+			return;
+		}
+
 		// add admin-actions.
 		add_action( 'admin_action_personioPositionsIntroReset', array( $this, 'reset_intro' ) );
 
+		// use our own hooks.
+		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
+
 		// bail if intro has been run.
-		if( 1 === absint(get_option( 'personio-integration-intro' ) ) ) {
+		if ( 1 === absint( get_option( 'personio-integration-intro' ) ) ) {
 			return;
 		}
 
@@ -71,7 +79,7 @@ class Intro {
 		 *
 		 * @param bool $false Return true to hide the intro.
 		 */
-		if( apply_filters( 'personio_integration_templates_archive', $false ) ) {
+		if ( apply_filters( 'personio_integration_templates_archive', $false ) ) {
 			return;
 		}
 
@@ -131,7 +139,7 @@ class Intro {
 			'personio-integration-intro-js',
 			$url . 'intro.min.js',
 			array(),
-			Helper::get_file_version( trailingslashit($path) . 'intro.min.js' ),
+			Helper::get_file_version( trailingslashit( $path ) . 'intro.min.js' ),
 			true
 		);
 
@@ -147,9 +155,9 @@ class Intro {
 		// embed the CSS-file.
 		wp_enqueue_style(
 			'personio-integration-intro-js',
-			$url. 'introjs.min.css',
+			$url . 'introjs.min.css',
 			array(),
-			Helper::get_file_version( trailingslashit($path) . 'introjs.min.css' ),
+			Helper::get_file_version( trailingslashit( $path ) . 'introjs.min.css' ),
 		);
 
 		// embed the CSS-file.
@@ -165,26 +173,26 @@ class Intro {
 			'personio-integration-intro-custom-js',
 			'personioIntegrationLightIntroJsVars',
 			array(
-				'ajax_url'                => admin_url( 'admin-ajax.php' ),
-				'intro_closed_nonce'      => wp_create_nonce( 'personio-intro-closed' ),
-				'button_title_next'       => __( 'Next', 'personio-integration-light' ),
-				'button_title_back'       => __( 'Back', 'personio-integration-light' ),
-				'button_title_done'       => __( 'Done', 'personio-integration-light' ),
-				'step_1_title' => __( 'Intro', 'personio-integration-light' ),
-				'step_1_intro' => __( 'Thank you for installing Personio Integration Light. We will show you some basics to use this plugin.', 'personio-integration-light' ),
-				'step_2_title' => __( 'Your positions', 'personio-integration-light' ),
-				'step_2_intro' => __( 'This is the list of your positions from Personio. This will be updated daily or if you run the import.', 'personio-integration-light' ),
-				'step_3_title' => __( 'Change the view', 'personio-integration-light' ),
-				'step_3_intro' => __( 'Choose the columns you need in you position list. Which columns are filled depends on the data in your Personio account.', 'personio-integration-light' ),
-				'step_4_title' => __( 'Run the import', 'personio-integration-light' ),
-				'step_4_intro' => __( 'On this button you could run the import of new Positions any time. They can be displayed immediately afterwards in the frontend to your visitors.', 'personio-integration-light' ),
-				'step_5_title' => __( 'Frontend view', 'personio-integration-light' ),
-				'step_5_intro' => __( 'Here you will find the link to the positions in your frontend. You can configured the view in the settings.', 'personio-integration-light' ),
-				'step_6_title' => __( 'Settings', 'personio-integration-light' ),
-				'step_6_intro' => __( 'The settings of this plugin help you to individualize the use of your Personio positions on your website.', 'personio-integration-light' ),
-				'step_7_title' => __( 'Thank you for using Personio Integration Light', 'personio-integration-light' ),
+				'ajax_url'           => admin_url( 'admin-ajax.php' ),
+				'intro_closed_nonce' => wp_create_nonce( 'personio-intro-closed' ),
+				'button_title_next'  => __( 'Next', 'personio-integration-light' ),
+				'button_title_back'  => __( 'Back', 'personio-integration-light' ),
+				'button_title_done'  => __( 'Done', 'personio-integration-light' ),
+				'step_1_title'       => __( 'Intro', 'personio-integration-light' ),
+				'step_1_intro'       => __( 'Thank you for installing Personio Integration Light. We will show you some basics to use this plugin.', 'personio-integration-light' ),
+				'step_2_title'       => __( 'Your positions', 'personio-integration-light' ),
+				'step_2_intro'       => __( 'This is the list of your positions from Personio. This will be updated daily or if you run the import.', 'personio-integration-light' ),
+				'step_3_title'       => __( 'Change the view', 'personio-integration-light' ),
+				'step_3_intro'       => __( 'Choose the columns you need in you position list. Which columns are filled depends on the data in your Personio account.', 'personio-integration-light' ),
+				'step_4_title'       => __( 'Run the import', 'personio-integration-light' ),
+				'step_4_intro'       => __( 'On this button you could run the import of new Positions any time. They can be displayed immediately afterwards in the frontend to your visitors.', 'personio-integration-light' ),
+				'step_5_title'       => __( 'Frontend view', 'personio-integration-light' ),
+				'step_5_intro'       => __( 'Here you will find the link to the positions in your frontend. You can configured the view in the settings.', 'personio-integration-light' ),
+				'step_6_title'       => __( 'Settings', 'personio-integration-light' ),
+				'step_6_intro'       => __( 'The settings of this plugin help you to individualize the use of your Personio positions on your website.', 'personio-integration-light' ),
+				'step_7_title'       => __( 'Thank you for using Personio Integration Light', 'personio-integration-light' ),
 				/* translators: %1$s, %2$s and %3$s will be replaced by URLs */
-                'step_7_intro' =>  sprintf( __( 'If you have any questions, please do not hesitate to ask them <a href="%1$s" target="_blank">in our forum (opens new window)</a>.<br>You are also welcome to <a href="%2$s" target="_blank">rate the plugin (opens new window)</a>.<br>If you also want to collect applications in your website, take a look at our <a href="%3$s" target="_blank">Personio Integration Pro (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ), esc_url( Helper::get_review_url() ), esc_url( Helper::get_pro_url() ) ),
+				'step_7_intro'       => sprintf( __( 'If you have any questions, please do not hesitate to ask them <a href="%1$s" target="_blank">in our forum (opens new window)</a>.<br>You are also welcome to <a href="%2$s" target="_blank">rate the plugin (opens new window)</a>.<br>If you also want to collect applications in your website, take a look at our <a href="%3$s" target="_blank">Personio Integration Pro (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ), esc_url( Helper::get_review_url() ), esc_url( Helper::get_pro_url() ) ),
 
 			)
 		);
@@ -204,10 +212,9 @@ class Intro {
 		 *
 		 * @param bool $false Return true to hide the intro.
 		 */
-		if( apply_filters( 'personio_integration_templates_archive', $false ) ) {
+		if ( apply_filters( 'personio_integration_templates_archive', $false ) ) {
 			echo esc_html__( 'Intro is disabled via custom hook.', 'personio-integration-light' );
-		}
-		else {
+		} else {
 			$url = add_query_arg(
 				array(
 					'action' => 'personioPositionsIntroReset',
@@ -215,7 +222,8 @@ class Intro {
 				),
 				get_admin_url() . 'admin.php'
 			);
-			?><p><a href="<?php echo esc_url( $url ); ?>" class="button button-primary personio-integration-reset-intro"><?php echo esc_html__( 'Rerun the intro', 'personio-integration-light' ); ?></a></p><?php
+			?><p><a href="<?php echo esc_url( $url ); ?>" class="button button-primary personio-integration-reset-intro"><?php echo esc_html__( 'Rerun the intro', 'personio-integration-light' ); ?></a></p>
+			<?php
 		}
 	}
 
@@ -242,5 +250,34 @@ class Intro {
 	 */
 	public function get_start_url(): string {
 		return PersonioPosition::get_instance()->get_link();
+	}
+
+	/**
+	 * Add settings for the intro.
+	 *
+	 * @param array $settings List of settings.
+	 *
+	 * @return array
+	 */
+	public function add_settings( array $settings ): array {
+		$settings['settings_section_advanced']['fields']                    = Helper::add_array_in_array_on_position(
+			$settings['settings_section_advanced']['fields'],
+			5,
+			array(
+				'personioIntegrationResetIntro' => array(
+					'label' => __( 'Reset intro', 'personio-integration-light' ),
+					'field' => array( 'PersonioIntegrationLight\Plugin\Intro', 'show_reset_button' ),
+				),
+			)
+		);
+		$settings['hidden_section']['fields']['personio-integration-intro'] = array(
+			'register_attributes' => array(
+				'type'    => 'integer',
+				'default' => 0,
+			),
+		);
+
+		// return resulting list.
+		return $settings;
 	}
 }

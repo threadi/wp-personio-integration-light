@@ -31,7 +31,7 @@ class Select {
 
 			// convert type of value depending on setting for requested field.
 			$settings = get_registered_settings();
-			if( isset( $settings[$attributes['fieldId']]['type'] ) && 'integer' === $settings[$attributes['fieldId']]['type'] ) {
+			if ( isset( $settings[ $attributes['fieldId'] ]['type'] ) && 'integer' === $settings[ $attributes['fieldId'] ]['type'] ) {
 				$value = absint( $value );
 			}
 
@@ -57,16 +57,16 @@ class Select {
 			?>
 			<select id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" class="personio-field-width" title="<?php echo esc_attr( $title ); ?>"<?php echo isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ? ' disabled="disabled"' : ''; ?> data-depends="<?php echo esc_attr( wp_json_encode( $attributes['depends'] ) ); ?>">
 				<?php
-					if( false === $attributes['hide_empty_option'] ) {
-						?>
+				if ( false === $attributes['hide_empty_option'] ) {
+					?>
 						<option value=""></option>
-						<?php
-					}
-					foreach ( $attributes['options'] as $key => $label ) {
-						?>
+					<?php
+				}
+				foreach ( $attributes['options'] as $key => $label ) {
+					?>
 						<option value="<?php echo esc_attr( $key ); ?>"<?php echo ( $value === $key ? ' selected="selected"' : '' ); ?>><?php echo esc_html( $label ); ?></option>
 						<?php
-					}
+				}
 				?>
 			</select>
 			<?php
