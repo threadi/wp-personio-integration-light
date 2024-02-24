@@ -3,8 +3,6 @@
 
 	<description>Personio Coding Standards</description>
 
-    <config name="minimum_wp_version" value="6.2"/>
-
 	<!--
 	Included via WordPress-Extra.
 	<rule ref="WordPress-Core"/>
