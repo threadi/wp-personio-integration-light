@@ -164,9 +164,7 @@ class Uninstaller {
 			WP_PERSONIO_INTEGRATION_IMPORT_ERRORS,
 			WP_PERSONIO_INTEGRATION_OPTION_COUNT,
 			WP_PERSONIO_INTEGRATION_OPTION_MAX,
-			'personioIntegrationPositionScheduleInterval',
-			'personioIntegrationVersion',
-			'personioTaxonomyDefaults',
+			WP_PERSONIO_INTEGRATION_IMPORT_STATUS,
 			'personio_integration_transients',
 			'personioIntegrationLightInstallDate',
 			'wp_easy_setup_pi_max_steps',
@@ -174,7 +172,6 @@ class Uninstaller {
 			'wp_easy_setup_pi_step_label',
 			'wp_easy_setup_pi_running',
 			'wp_easy_setup_completed',
-			'personio-integration-intro',
 		);
 	}
 }

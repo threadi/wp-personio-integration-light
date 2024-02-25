@@ -87,7 +87,7 @@ class Setup {
 	 * @return string
 	 */
 	public function get_setup_link(): string {
-		return Helper::get_settings_url();
+		return add_query_arg( array( 'page' => 'personioPositions' ), admin_url() . 'admin.php' );
 	}
 
 	/**

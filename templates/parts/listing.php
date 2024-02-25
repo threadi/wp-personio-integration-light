@@ -1,20 +1,14 @@
 <?php
 /**
- * Template for output of a list of positions via shortcode.
+ * Template for output of a list of positions.
  *
- * @version: 3.0.0
  * @package personio-integration-light
+ * @version: 3.0.0
  */
 
 use PersonioIntegrationLight\Plugin\Templates;
 
 defined( 'ABSPATH' ) || exit;
-
-// embed block-specific styling.
-require Templates::get_instance()->get_template( 'parts/styling.php' );
-
-// embed filter.
-require Templates::get_instance()->get_template( 'parts/part-filter.php' );
 
 if ( ! empty( $personio_attributes['listing_template'] ) && ! empty( $personio_attributes['templates'] ) ) {
 
@@ -24,7 +18,7 @@ if ( ! empty( $personio_attributes['listing_template'] ) && ! empty( $personio_a
 		include Templates::get_instance()->get_template( 'parts/part-pagination.php' );
 	else :
 		?><article class="site-main entry inside-article container qodef-container-inner site-content site-container content-bg content-area ht-container ht-container"><div class="entry-content"><p><?php echo esc_html__( 'There are currently no positions available.', 'personio-integration-light' ); ?></p></div></article>
-		<?php
+	<?php
 	endif;
 }
 wp_reset_postdata();

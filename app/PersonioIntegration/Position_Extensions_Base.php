@@ -40,7 +40,7 @@ class Position_Extensions_Base {
 	}
 
 	/**
-	 * Return OpenGraph-title.
+	 * Return the title.
 	 *
 	 * @return string
 	 */
@@ -49,7 +49,7 @@ class Position_Extensions_Base {
 	}
 
 	/**
-	 * Save OpenGraph-title.
+	 * Save the title.
 	 *
 	 * @param string $title The title.
 	 * @return void

@@ -175,12 +175,13 @@ class Init {
 	 * @return array
 	 */
 	public function add_setting_link( array $links ): array {
-		// adds the link to for settings.
-		$links[] = "<a href='" . esc_url( Helper::get_settings_url() ) . "'>" . __( 'Settings', 'personio-integration-light' ) . '</a>';
-
 		// if setup has not been completed, show link here.
 		if ( ! Setup::get_instance()->is_completed() ) {
 			$links[] = "<a href='" . esc_url( Setup::get_instance()->get_setup_link() ) . "'>" . __( 'Setup', 'personio-integration-light' ) . '</a>';
+		}
+		else {
+			// adds the link to for settings.
+			$links[] = "<a href='" . esc_url( Helper::get_settings_url() ) . "'>" . __( 'Settings', 'personio-integration-light' ) . '</a>';
 		}
 
 		return $links;

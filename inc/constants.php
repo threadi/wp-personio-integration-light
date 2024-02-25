@@ -41,6 +41,26 @@ const WP_PERSONIO_INTEGRATION_IMPORT_RUNNING = 'personioIntegrationImportRunning
 const WP_PERSONIO_INTEGRATION_IMPORT_ERRORS = 'personioIntegrationImportErrors';
 
 /**
+ * Marker for import status.
+ */
+const WP_PERSONIO_INTEGRATION_IMPORT_STATUS = 'personioIntegrationImportStatus';
+
+/**
+ * Marker for running deletion.
+ */
+const WP_PERSONIO_INTEGRATION_DELETE_RUNNING = 'personioIntegrationDeleteRunning';
+
+/**
+ * List of possible errors during deletion.
+ */
+const WP_PERSONIO_INTEGRATION_DELETE_ERRORS = 'personioIntegrationDeleteErrors';
+
+/**
+ * Marker for deletion status.
+ */
+const WP_PERSONIO_INTEGRATION_DELETE_STATUS = 'personioIntegrationDeleteStatus';
+
+/**
  * Update-Flag.
  */
 const WP_PERSONIO_INTEGRATION_UPDATED = 'personio_integration_updateflag';
@@ -85,6 +105,12 @@ const WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST = 'personio_integration_transients
  */
 const WP_PERSONIO_INTEGRATION_OPTION_COUNT = 'piImportCount';
 const WP_PERSONIO_INTEGRATION_OPTION_MAX   = 'piImportMax';
+
+/**
+ * Define names for progressbar during deletion.
+ */
+const WP_PERSONIO_INTEGRATION_DELETE_COUNT = 'piDeleteCount';
+const WP_PERSONIO_INTEGRATION_DELETE_MAX   = 'piDeleteMax';
 
 /**
  * Define the Gutenberg-template-parent-ID which should reflect the plugin-directory.

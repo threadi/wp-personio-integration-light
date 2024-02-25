@@ -13,7 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PageBuilder\Gutenberg\Patterns;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Templates;
+use PersonioIntegrationLight\PageBuilder\Gutenberg\Variations;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -71,6 +73,12 @@ class Gutenberg extends PageBuilder_Base {
 
 		// add our custom blocks.
 		add_action( 'init', array( $this, 'add_blocks' ) );
+
+		// add our custom pattern.
+		add_action( 'init', array( $this, 'add_pattern' ) );
+
+		// add our custom variations.
+		add_action( 'init', array( $this, 'add_variations' ) );
 	}
 
 	/**
@@ -79,8 +87,7 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return void
 	 */
 	public function add_templates(): void {
-		$templates_obj = Templates::get_instance();
-		$templates_obj->init();
+		Templates::get_instance()->init();
 	}
 
 	/**
@@ -740,7 +747,7 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function get_application_button( array $attributes ): string {
 		$position = $this->get_position_by_request();
-		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! ( $position instanceof Position ) ) {
+		if ( ! ( $position instanceof Position ) || ! $position->is_valid() ) {
 			return '';
 		}
 
@@ -785,7 +792,7 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function get_details( array $attributes ): string {
 		$position = $this->get_position_by_request();
-		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! ( $position instanceof Position ) ) {
+		if ( ! ( $position instanceof Position ) || ! $position->is_valid() ) {
 			return '';
 		}
 
@@ -891,6 +898,9 @@ class Gutenberg extends PageBuilder_Base {
 	/**
 	 * Get Position as object by request.
 	 *
+	 * Hints:
+	 * - Bug https://github.com/WordPress/gutenberg/issues/40714 prevents clean usage in Query Loop (backend bad, frontend ok)
+	 *
 	 * @return Position|false
 	 */
 	public function get_position_by_request(): Position|false {
@@ -900,15 +910,27 @@ class Gutenberg extends PageBuilder_Base {
 		// get the position as object.
 		// -> is no id is available choose a random one (e.g. for preview in Gutenberg).
 		$post_id = get_the_ID();
-		if ( empty( $post_id ) ) {
+		$position_obj = false;
+		if( $post_id > 0 ) {
+			$position_obj = $positions->get_position( $post_id );
+			if( ! $position_obj->is_valid() ) {
+				$position_obj = false;
+			}
+		}
+
+		// fallback: get a random position.
+		if ( ! $position_obj ) {
 			$position_array = $positions->get_positions( 1 );
-			$position       = $position_array[0];
-		} else {
-			$position = $positions->get_position( $post_id );
+			$position_obj       = $position_array[0];
+		}
+
+		// bail if no valid position object could be loaded.
+		if( ! $position_obj->is_valid() ) {
+			return false;
 		}
 
 		// return the object.
-		return $position;
+		return $position_obj;
 	}
 
 	/**
@@ -923,5 +945,23 @@ class Gutenberg extends PageBuilder_Base {
 			unset( $settings['settings_section_template_list']['fields']['personio_integration_fse_theme_hint'] );
 		}
 		return $settings;
+	}
+
+	/**
+	 * Initialize the pattern-object to register them.
+	 *
+	 * @return void
+	 */
+	public function add_pattern(): void {
+		Patterns::get_instance()->init();
+	}
+
+	/**
+	 * Initialize the variations-object to register them.
+	 *
+	 * @return void
+	 */
+	public function add_variations(): void {
+		Variations::get_instance()->init();
 	}
 }

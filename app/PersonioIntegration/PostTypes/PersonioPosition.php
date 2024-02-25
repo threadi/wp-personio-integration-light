@@ -14,11 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\PersonioIntegration\Themes;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Setup;
@@ -78,6 +80,9 @@ class PersonioPosition extends Post_Type {
 		// register taxonomies for this cpt.
 		Taxonomies::get_instance()->init();
 
+		// enable theme-support.
+		Themes::get_instance()->init();
+
 		// register this cpt.
 		add_action( 'init', array( $this, 'register' ) );
 
@@ -107,10 +112,17 @@ class PersonioPosition extends Post_Type {
 		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
 
+		// add ajax-hooks.
+		add_action( 'wp_ajax_personio_get_deletion_info', array( $this, 'get_deletion_info' ) );
+		add_action( 'wp_ajax_personio_run_import', array( $this, 'run_import' ) );
+		add_action( 'wp_ajax_personio_get_import_info', array( $this, 'get_import_info' ) );
+
 		// use our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_filter_type' ) );
 		add_filter( 'personio_integration_dashboard_widgets', array( $this, 'add_dashboard_widget' ) );
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'get_extensions_list' ) );
+		add_action( 'personio_integration_import_max_count', array( $this, 'update_import_max_step' ) );
+		add_action( 'personio_integration_import_count', array( $this, 'update_import_step' ) );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
@@ -202,8 +214,12 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Change the REST API-response for own cpt.
 	 *
+	 * In this way we add fields which are missing through the supports-setting during registering the cpt.
+	 * And we format the content, which comes from Personio as array.
+	 *
 	 * @param WP_REST_Response $data The response object.
 	 * @param WP_Post          $post The requested object.
+	 *
 	 * @return WP_REST_Response
 	 */
 	public function rest_prepare( WP_REST_Response $data, WP_Post $post ): WP_REST_Response {
@@ -211,13 +227,13 @@ class PersonioPosition extends Post_Type {
 		$positions = Positions::get_instance();
 
 		// get the position as object.
-		$position = $positions->get_position( $post->ID );
+		$position_obj = $positions->get_position( $post->ID );
 
-		// generate content.
-		$content = $position->get_content();
+		// get content of the position.
+		$content = Templates::get_instance()->get_content_template( $position_obj, array(), true );
 
 		// generate except.
-		$excerpt = $position->get_excerpt();
+		$excerpt = $position_obj->get_excerpt();
 
 		// add result to response.
 		$data->data['excerpt'] = array(
@@ -225,7 +241,8 @@ class PersonioPosition extends Post_Type {
 			'raw'       => '',
 			'protected' => false,
 		);
-		$data->data['content'] = $content;
+		$data->data['title'] = array( 'rendered' => $position_obj->get_title() );
+		$data->data['content'] = array( 'rendered' => $content );
 
 		// set response.
 		return $data;
@@ -319,7 +336,14 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-		include Templates::get_instance()->get_template( 'single-' . self::$instance->get_name() . '-shortcode' . $personio_attributes['template'] . '.php' );
+
+		// embed block-specific styling.
+		require Templates::get_instance()->get_template( 'parts/styling.php' );
+
+		// embed content.
+		include Templates::get_instance()->get_template( 'parts/content.php' );
+
+		// return resulting code.
 		return ob_get_clean();
 	}
 
@@ -508,7 +532,17 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-		include Templates::get_instance()->get_template( 'archive-' . self::$instance->get_name() . '-shortcode' . $personio_attributes['template'] . '.php' );
+
+		// embed block-specific styling.
+		require Templates::get_instance()->get_template( 'parts/styling.php' );
+
+		// embed filter.
+		require Templates::get_instance()->get_template( 'parts/part-filter.php' );
+
+		// embed the listing content.
+		include Templates::get_instance()->get_template( 'parts/listing.php' );
+
+		// return resulting code.
 		return ob_get_clean();
 	}
 
@@ -518,19 +552,6 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function rest_api_init(): void {
-		// return possible taxonomies.
-		register_rest_route(
-			'personio/v1',
-			'/taxonomies/',
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_taxonomies_via_rest_api' ),
-				'permission_callback' => function () {
-					return current_user_can( 'edit_posts' );
-				},
-			)
-		);
-
 		// return possible details templates.
 		register_rest_route(
 			'personio/v1',
@@ -569,51 +590,19 @@ class PersonioPosition extends Post_Type {
 				},
 			)
 		);
-	}
 
-	/**
-	 * Return list of available taxonomies for REST-API.
-	 *
-	 * @return array
-	 * @noinspection PhpUnused
-	 */
-	public function get_taxonomies_via_rest_api(): array {
-		$taxonomies_labels_array = Taxonomies::get_instance()->get_taxonomy_labels_for_settings();
-		$taxonomies              = array();
-		$count                   = 0;
-		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
-			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
-				++$count;
-				$terms_as_objects = get_terms( array( 'taxonomy' => $taxonomy_name ) );
-				$term_count       = 0;
-				$terms            = array(
-					array(
-						'id'    => $term_count,
-						'label' => __( 'Please choose', 'personio-integration-light' ),
-						'value' => 0,
-					),
-				);
-				foreach ( $terms_as_objects as $term ) {
-					++$term_count;
-					$terms[] = array(
-						'id'    => $term_count,
-						'label' => $term->name,
-						'value' => $term->term_id,
-					);
-				}
-				if ( ! empty( $taxonomies_labels_array[ $taxonomy['slug'] ] ) ) {
-					$taxonomies[] = array(
-						'id'      => $count,
-						'label'   => $taxonomies_labels_array[ $taxonomy['slug'] ],
-						'value'   => $taxonomy['slug'],
-						'entries' => $terms,
-					);
-				}
-			}
-		}
-
-		// return resulting list of taxonomies.
-		return $taxonomies;
+		// extend our own cpt with delete method to delete all positions in one rush.
+		register_rest_route(
+			'wp/v2',
+			$this->get_name(),
+			array(
+				'methods' => WP_REST_Server::DELETABLE,
+				'callback' => array( $this, 'delete_positions' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
 	}
 
 	/**
@@ -1461,5 +1450,196 @@ class PersonioPosition extends Post_Type {
 
 		// return false if not.
 		return false;
+	}
+
+	/**
+	 * Delete ALL positions via REST API request, WP CLI or direct call.
+	 *
+	 * This is the main function to deletion every position.
+	 *
+	 * Taxonomies are not deleted in this step.
+	 *
+	 * @return void
+	 */
+	public function delete_positions(): void {
+		// bail if deletion is actual running.
+		if( absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING ) ) > 0 ) {
+			return;
+		}
+
+		// bail if import is running.
+		if ( absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) > 0 ) {
+			return;
+		}
+
+		// reset info values.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_COUNT, 0 );
+
+		// mark as running.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, time() );
+
+		// set label.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, __( 'Deleting of positions is running ..', 'personio-integration-light' ) );
+
+		/**
+		 * Run custom actions before deleting of all positions is running.
+		 *
+		 * @since 3.0.0 Available since release 3.0.0.
+		 */
+		do_action( 'personio_integration_deletion_starting' );
+
+		// get positions
+		$positions      = Positions::get_instance()->get_positions();
+		$position_count = count( $positions );
+
+		// get Personio URLs and languages.
+		$personio_urls = Imports::get_instance()->get_personio_urls();
+		$languages = Languages::get_instance()->get_languages();
+
+		// set max count.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_MAX, $position_count + ( count( $personio_urls) * count( $languages ) ) );
+
+		// show cli hint.
+		$progress       = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Deleting all local positions', $position_count ) : false;
+
+		// loop through all positions to delete them.
+		foreach ( $positions as $position ) {
+			// delete it.
+			wp_delete_post( $position->get_id(), true );
+
+			// show progress.
+			$progress ? $progress->tick() : false;
+
+			// update counter.
+			update_option( WP_PERSONIO_INTEGRATION_DELETE_COUNT, absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_COUNT ) ) + 1 );
+		}
+		// finalize progress.
+		$progress ? $progress->finish() : false;
+
+		// delete position count.
+		delete_option( 'personioIntegrationPositionCount' );
+
+		// set label.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, __( 'Cleanup database ..', 'personio-integration-light' ) );
+
+		// delete options regarding the import.
+		foreach ( $personio_urls as $personio_url ) {
+			$personio_obj = new Personio( $personio_url );
+			foreach ( $languages as $language_name => $lang ) {
+				$personio_obj->remove_timestamp( $language_name );
+				$personio_obj->remove_md5( $language_name );
+
+				// update counter.
+				update_option( WP_PERSONIO_INTEGRATION_DELETE_COUNT, absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_COUNT ) ) + 1 );
+			}
+
+			// update counter.
+			update_option( WP_PERSONIO_INTEGRATION_DELETE_COUNT, absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_COUNT ) ) + 1 );
+		}
+
+		// output success-message.
+		Helper::is_cli() ? \WP_CLI::success( $position_count . ' positions from local database deleted.' ) : false;
+
+		// get current user for logging.
+		$user = wp_get_current_user();
+
+		// log this event.
+		$logs = new Log();
+		$logs->add_log( sprintf( 'Positions has been deleted by %1$s.', esc_html( $user->display_name )), 'success' );
+
+		/**
+		 * Run custom actions after deletion of all positions has been done.
+		 *
+		 * @since 3.0.0 Available since release 3.0.0.
+		 */
+		do_action( 'personio_integration_deletion_ended' );
+
+		// update label.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, __( 'Deleting of positions has been run.', 'personio-integration-light' ) );
+
+		// mark as not running.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 );
+	}
+
+	/**
+	 * Return info about deletion progress.
+	 *
+	 * @return void
+	 */
+	public function get_deletion_info(): void {
+		// return actual and max count of import steps.
+		wp_send_json(
+			array(
+				absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_COUNT, 0 ) ),
+				absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_MAX ) ),
+				absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 ) ),
+				wp_kses_post( get_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, '' ) ),
+				wp_json_encode( get_option( WP_PERSONIO_INTEGRATION_DELETE_ERRORS, array() ) ),
+			)
+		);
+	}
+
+	/**
+	 * Start Import via AJAX.
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function run_import(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-run-import', 'nonce' );
+
+		// run import.
+		$imports_obj = Imports::get_instance();
+		$imports_obj->run();
+
+		// return nothing.
+		wp_die();
+	}
+
+	/**
+	 * Return state of the actual running import.
+	 *
+	 * Format: Step;MaxSteps;Running;StatusLabel;Errors
+	 *
+	 * @return void
+	 */
+	public function get_import_info(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-get-import-info', 'nonce' );
+
+		// return actual and max count of import steps.
+		wp_send_json(
+			array(
+				absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ),
+				absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ),
+				absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ),
+				wp_kses_post( get_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, '' ) ),
+				wp_json_encode( get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) ),
+			)
+		);
+	}
+
+	/**
+	 * Update max count.
+	 *
+	 * @param int $max_count The value to add.
+	 *
+	 * @return void
+	 */
+	public function update_import_max_step( int $max_count ): void {
+		update_option( WP_PERSONIO_INTEGRATION_OPTION_MAX, absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ) + $max_count );
+	}
+
+	/**
+	 * Update count.
+	 *
+	 * @param int $count The value to add.
+	 *
+	 * @return void
+	 */
+	public function update_import_step( int $count ): void {
+		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT ) ) + $count );
 	}
 }

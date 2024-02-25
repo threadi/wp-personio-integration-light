@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
-use PersonioIntegrationLight\Plugin\Schedules\Import;
 
 /**
  * Helper-function for plugin-activation and -deactivation.
@@ -96,25 +95,17 @@ class Installer {
 		}
 
 		if ( false === $error ) {
-			// set interval to daily if it is not set atm.
-			if ( ! get_option( 'personioIntegrationPositionScheduleInterval' ) ) {
-				update_option( 'personioIntegrationPositionScheduleInterval', 'daily' );
-			}
+			// initialize the default settings.
+			Settings::get_instance()->initialize_options();
 
 			// install schedules.
 			Schedules::get_instance()->create_schedules();
-
-			// initialize the default settings.
-			Settings::get_instance()->initialize_options();
 
 			// install the roles we use.
 			Roles::get_instance()->install();
 
 			// run all updates.
 			Update::run_all_updates();
-
-			// save the current DB-version of this plugin.
-			update_option( 'personioIntegrationVersion', WP_PERSONIO_INTEGRATION_VERSION );
 
 			// refresh permalinks.
 			update_option( 'personio_integration_update_slugs', 1 );

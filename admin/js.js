@@ -39,32 +39,27 @@ jQuery(document).ready(function($) {
     $('a.personio-integration-import-hint').on('click', function (e) {
         e.preventDefault();
 
-        // start import.
-        $.ajax({
-          type: "POST",
-          url: personioIntegrationLightJsVars.ajax_url,
-          data: {
-            'action': 'personio_run_import',
-            'nonce': personioIntegrationLightJsVars.run_import_nonce
-          },
-          beforeSend: function() {
-            // show progress.
-            let dialog_config = {
-              detail: {
-                title: personioIntegrationLightJsVars.title_import_progress,
-                progressbar: {
-                  active: true,
-                  progress: 0,
-                  id: 'progress'
-                },
-              }
+      let dialog_config = {
+        detail: {
+          title: personioIntegrationLightJsVars.title_start_import,
+          texts: [
+            '<p>' + personioIntegrationLightJsVars.txt_start_import + '</p>'
+          ],
+          buttons: [
+            {
+              'action': 'personio_start_import();',
+              'variant': 'primary',
+              'text': personioIntegrationLightJsVars.lbl_yes
+            },
+            {
+              'action': 'closeDialog();',
+              'variant': 'secondary',
+              'text': personioIntegrationLightJsVars.lbl_no
             }
-            personio_integration_create_dialog( dialog_config );
-
-            // get info about progress.
-            setTimeout(function() { personio_get_import_info() }, 1000);
-          }
-        });
+          ]
+        }
+      }
+      personio_integration_create_dialog( dialog_config );
     });
 
     // create confirm dialog for deletion of all positions.
@@ -79,7 +74,7 @@ jQuery(document).ready(function($) {
           ],
           buttons: [
             {
-              'action': 'location.href="' + $(this).attr('href') +  '"',
+              'action': 'personio_delete_positions();',
               'variant': 'primary',
               'text': personioIntegrationLightJsVars.lbl_yes
             },
@@ -175,8 +170,38 @@ jQuery(document).ready(function($) {
     });
 });
 
+function personio_start_import() {
+  // start import.
+  jQuery.ajax({
+    type: "POST",
+    url: personioIntegrationLightJsVars.ajax_url,
+    data: {
+      'action': 'personio_run_import',
+      'nonce': personioIntegrationLightJsVars.run_import_nonce
+    },
+    beforeSend: function() {
+      // show progress.
+      let dialog_config = {
+        detail: {
+          title: personioIntegrationLightJsVars.title_import_progress,
+          progressbar: {
+            active: true,
+            progress: 0,
+            id: 'progress',
+            label_id: 'progress_status'
+          },
+        }
+      }
+      personio_integration_create_dialog( dialog_config );
+
+      // get info about progress.
+      setTimeout(function() { personio_get_import_info() }, 1000);
+    }
+  });
+}
+
 /**
- * Get import info until import is done.
+ * Get info until import is done.
  */
 function personio_get_import_info() {
     jQuery.ajax({
@@ -190,10 +215,12 @@ function personio_get_import_info() {
             let count = parseInt(data[0]);
             let max = parseInt(data[1]);
             let running = parseInt(data[2]);
-            let errors = JSON.parse(data[3]);
+            let status = data[3];
+            let errors = JSON.parse(data[4]);
 
             // show progress.
-            jQuery("#progress").attr('value', (count / max) * 100);
+            jQuery('#progress').attr('value', (count / max) * 100);
+            jQuery('#progress_status').html(status);
 
             /**
              * If import is still running, get next info in 500ms.
@@ -251,6 +278,117 @@ function personio_get_import_info() {
 }
 
 /**
+ * Delete all positions.
+ */
+function personio_delete_positions() {
+  // start deletion.
+  jQuery.ajax({
+    type: "POST",
+    url: personioIntegrationLightJsVars.rest_personioposition_delete,
+    dataType: 'json',
+    method: 'DELETE',
+    beforeSend: function( xhr ) {
+      // set header for authentication.
+      xhr.setRequestHeader( 'X-WP-Nonce', personioIntegrationLightJsVars.rest_nonce );
+
+      // show progress.
+      let dialog_config = {
+        detail: {
+          title: personioIntegrationLightJsVars.title_delete_progress,
+          progressbar: {
+            active: true,
+            progress: 0,
+            id: 'progress',
+            label_id: 'progress_status'
+          },
+        }
+      }
+      personio_integration_create_dialog( dialog_config );
+
+      // get info about progress.
+      setTimeout(function() { personio_get_delete_info() }, 1000);
+    }
+  });
+}
+
+/**
+ * Get info until deletion is done.
+ */
+function personio_get_delete_info() {
+  jQuery.ajax({
+    type: "POST",
+    url: personioIntegrationLightJsVars.ajax_url,
+    data: {
+      'action': 'personio_get_deletion_info',
+      'nonce': personioIntegrationLightJsVars.get_deletion_nonce
+    },
+    success: function(data) {
+      let count = parseInt(data[0]);
+      let max = parseInt(data[1]);
+      let running = parseInt(data[2]);
+      let status = data[3];
+      let errors = JSON.parse(data[4]);
+
+      // show progress.
+      jQuery('#progress').attr('value', (count / max) * 100);
+      jQuery('#progress_status').html(status);
+
+      /**
+       * If deletion is still running, get next info in 500ms.
+       * If deletion is not running and error occurred, show the error.
+       * If deletion is not running and no error occurred, show ok-message.
+       */
+      if( running >= 1 ) {
+        setTimeout(function() { personio_get_delete_info() }, 500);
+      }
+      else if( errors.length > 0 ) {
+        let message = '<p>' + personioIntegrationLightJsVars.txt_error + '</p>';
+        message = message + '<ul>';
+        for( error of errors ) {
+          message = message + '<li>' + error + '</li>';
+        }
+        message = message + '</ul>';
+        let dialog_config = {
+          detail: {
+            title: personioIntegrationLightJsVars.title_error,
+            texts: [
+              message
+            ],
+            buttons: [
+              {
+                'action': 'location.reload();',
+                'variant': 'primary',
+                'text': personioIntegrationLightJsVars.lbl_ok
+              }
+            ]
+          }
+        }
+        personio_integration_create_dialog( dialog_config );
+      }
+      else {
+        let message = '<p>' + personioIntegrationLightJsVars.txt_deletion_success + '</p>';
+        let dialog_config = {
+          detail: {
+            title: personioIntegrationLightJsVars.title_deletion_success,
+            texts: [
+              message
+            ],
+            buttons: [
+              {
+                'action': 'location.reload();',
+                'variant': 'primary',
+                'text': personioIntegrationLightJsVars.lbl_ok
+              }
+            ]
+          }
+        }
+        personio_integration_create_dialog( dialog_config );
+      }
+    }
+  })
+}
+
+/**
  * Helper to create a new dialog with given config.
  *
  * @param config
@@ -300,13 +438,14 @@ function personio_integration_import_settings_file() {
       if( data.html ) {
         let dialog_config = {
           detail: {
+            className: data.success ? 'personio-integration-dialog-success' : 'personio-integration-dialog-error',
             title: personioIntegrationLightJsVars.title_settings_import_file_result,
             texts: [
               '<p>' + data.html + '</p>'
             ],
             buttons: [
               {
-                'action': 'closeDialog();',
+                'action': data.success ? 'location.reload();' : 'closeDialog();',
                 'variant': 'primary',
                 'text': personioIntegrationLightJsVars.lbl_ok
               }

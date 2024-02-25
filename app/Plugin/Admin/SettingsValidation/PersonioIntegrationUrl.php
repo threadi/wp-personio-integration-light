@@ -92,13 +92,14 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function check_url( string $value ): bool {
+		// get Personio-object of the given URL.
 		$personio_obj = new Personio( $value );
 
-		// -> should return HTTP-Status 200
+		// should return HTTP-Status 200.
 		$response = wp_remote_get(
 			$personio_obj->get_xml_url(),
 			array(
-				'timeout'     => 30,
+				'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
 				'redirection' => 0,
 			)
 		);

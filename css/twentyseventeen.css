@@ -1,0 +1,5 @@
+body.post-type-archive-personioposition .site-content { display: block; }
+.post-type-archive-personioposition .site-content.content-area {
+	margin: 0;
+	float: none;
+}

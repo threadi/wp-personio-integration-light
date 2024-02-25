@@ -28,11 +28,18 @@ class Import extends Schedules_Base {
 	protected string $name = 'personio_integration_schedule_events';
 
 	/**
+	 * Name of the option used to enable this event.
+	 *
+	 * @var string
+	 */
+	protected string $option_name = 'personioIntegrationEnablePositionSchedule';
+
+	/**
 	 * Initialize this schedule.
 	 */
 	public function __construct() {
 		// get interval from settings.
-		$this->interval = Settings::get_instance()->get_setting( 'personioIntegrationPositionScheduleInterval' ); // TODO gibt es nicht in light?
+		$this->interval = Settings::get_instance()->get_setting( 'personioIntegrationPositionScheduleInterval' );
 	}
 
 	/**
@@ -41,7 +48,7 @@ class Import extends Schedules_Base {
 	 * @return void
 	 */
 	public function run(): void {
-		if ( 1 === absint( get_option( 'personioIntegrationEnablePositionSchedule', 0 ) ) ) {
+		if ( $this->is_enabled() ) {
 			new \PersonioIntegrationLight\PersonioIntegration\Import();
 		}
 	}

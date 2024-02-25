@@ -279,3 +279,13 @@ body.personioposition_page_personioPositions tr.show_with_animation {
 }
 
 body.post-type-personioposition #post-body-content { display: none }
+
+.personio-integration-dialog-error .wp-easy-dialog-text p:before {
+	content: "\f14c";
+	display: inline-block;
+	font-family: "dashicons", sans-serif;
+	vertical-align: middle;
+	color: red;
+	font-size: 1.6em;
+	margin-right: 8px;
+}

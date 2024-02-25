@@ -379,6 +379,7 @@ Yes, it is without any further settings.
 * Added new templates for position title and excerpts
 * Added possibility to export and import all settings
 * Added daily checks for availability of the Personio-page of your positions
+* Added new pattern in Block Editor for fast implementing custom views of positions
 * Advanced Blocks for Positions in Block Editor
 * Advanced classic widgets for Positions
 * Added more simple initial styling for more often used themes
@@ -391,6 +392,7 @@ Yes, it is without any further settings.
 * New check for configured Personio-URL in Site Health
 * Now compatible with the WordPress-plugin AMP
 * And now compatibly with the WordPress-plugin PDF Generator for WP to print your positions as PDF in frontend
+* Check for and re-install missing cron-events (e.g. for automatically import positions) if they are missing
 * Removed 5 minutes cronjob as it is discouraged by WordPress (TODO Migrate)
 * Removed support for multilingual-plugins to detect the actual language (this is now only in Pro-plugin)
 * Removed usage of filter in classic widgets

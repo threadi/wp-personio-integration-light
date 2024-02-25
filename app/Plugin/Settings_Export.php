@@ -109,7 +109,7 @@ class Settings_Export {
 		$dialog = array(
 			'title'   => __( 'Export settings', 'personio-integration-light' ),
 			'texts'   => array(
-				'<p>' . __( 'Click on the button to download an export of all actual settings in this plugin.', 'personio-integration-light' ) . '</p>',
+				'<p>' . __( 'Click on the button to download an export of all actual settings in this plugin.<br>No positions will be exported.', 'personio-integration-light' ) . '</p>',
 			),
 			'buttons' => array(
 				array(
@@ -119,7 +119,7 @@ class Settings_Export {
 				),
 				array(
 					'action'  => 'closeDialog();',
-					'variant' => 'primary',
+					'variant' => 'secondary',
 					'text'    => __( 'Cancel', 'personio-integration-light' ),
 				),
 			),

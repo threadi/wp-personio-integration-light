@@ -7,10 +7,13 @@
  */
 
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Themes;
 
 defined( 'ABSPATH' ) || exit;
 
 get_header();
+
+?><div class="<?php echo esc_attr( Themes::get_instance()->get_theme_wrapper_classes() ); ?>"><?php
 
 $description = get_the_archive_description();
 
@@ -25,5 +28,7 @@ $description = get_the_archive_description();
 
 // use shortcode-functions to display the list.
 echo wp_kses_post( PersonioPosition::get_instance()->shortcode_archive() );
+
+?></div><?php
 
 get_footer();

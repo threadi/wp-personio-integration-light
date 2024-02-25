@@ -9,6 +9,8 @@ namespace PersonioIntegrationLight\Plugin;
 
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\Plugin\Cli\Helper;
 
 /**
@@ -39,34 +41,24 @@ class Cli {
 	public function delete_all(): void {
 		// log this event.
 		$logs = new Log();
-		$logs->add_log( 'WP CLI-command deleteAll has been used.', 'success' );
+		$logs->add_log( 'WP CLI-command delete_all has been used.', 'success' );
 
 		// delete taxonomies.
-		$this->delete_taxonomies();
+		Taxonomies::get_instance()->delete_all();
 
 		// delete position.
-		$this->delete_positions_from_db();
+		PersonioPosition::get_instance()->delete_positions();
 	}
 
 	/**
 	 * Remove all position from local database.
 	 *
-	 * @param array $args Argument to delete positions.
 	 * @since  1.0.0
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
-	public function delete_positions( array $args ): void {
-		// set arguments if empty.
-		if ( empty( $args ) ) {
-			$args = array( 'WP CLI-command deletePositions', '' );
-		}
-
-		// log this event.
-		$logs = new Log();
-		$logs->add_log( sprintf( '%s has been used%s.', $args[0], $args[1] ), 'success' );
-
-		// delete them.
-		$this->delete_positions_from_db();
+	public function delete_positions(): void {
+		PersonioPosition::get_instance()->delete_positions();
 	}
 
 	/**
@@ -80,6 +72,7 @@ class Cli {
 	 * @noinspection PhpUnused
 	 **/
 	public function reset_plugin( array $delete_data = array() ): void {
+		// run uninstaller tasks.
 		Uninstaller::get_instance()->run( $delete_data );
 
 		/**
@@ -91,6 +84,7 @@ class Cli {
 		 */
 		do_action( 'personio_integration_uninstaller', $delete_data );
 
+		// run installer tasks.
 		Installer::get_instance()->activation();
 
 		/**

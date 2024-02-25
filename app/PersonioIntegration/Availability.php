@@ -129,6 +129,9 @@ class Availability {
 		// set setup-label.
 		update_option( 'wp_easy_setup_pi_step_label', __( 'Setup is checking the availability of each position.', 'personio-integration-light' ) );
 
+		// set import-label.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'We check the availability of each position.', 'personio-integration-light' ) );
+
 		// get log object.
 		$log = new Log();
 
@@ -138,7 +141,6 @@ class Availability {
 				// define settings for second request to get the contents.
 				$args     = array(
 					'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
-					'httpversion' => '1.1',
 					'redirection' => 0,
 				);
 				$response = wp_remote_head( $position_obj->get_application_url(), $args );

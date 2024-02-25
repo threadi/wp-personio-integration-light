@@ -362,7 +362,7 @@ class Settings {
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
 							'type'    => 'array',
-							'default' => array( 'title', 'content', 'application_link' ), // TODO genaue Werte nochmal abgleichen mit 2.6.2.
+							'default' => array( 'title', 'content', 'formular' ),
 						),
 					),
 					'personioIntegrationTemplateDetailsExcerptsTemplate' => array(
@@ -559,6 +559,18 @@ class Settings {
 						),
 						'do_not_export'       => true,
 					),
+					'personioIntegrationPositionScheduleInterval' => array(
+						'register_attributes' => array(
+							'type'    => 'string',
+							'default' => 'daily'
+						),
+					),
+					'personioIntegrationVersion' => array(
+						'register_attributes' => array(
+							'type'    => 'string',
+							'default' => WP_PERSONIO_INTEGRATION_VERSION
+						),
+					)
 				),
 			),
 		);
@@ -975,7 +987,7 @@ class Settings {
 		?>
 		<div class="wrap">
 		<?php echo wp_kses_post( Helper::get_logo_img( true ) ); ?>
-		<p>The Personio logo as part of all distributed icons is a trademark of <a href="https://www.personio.de/">Personio SE & Co. KG</a>.</p></div>
+		<p><?php echo sprintf( esc_html__( 'The Personio logo as part of all distributed icons is a trademark of <a href="%1$s" target="_blank">Personio SE & Co. KG (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_url() )  ); ?></p></div>
 		<?php
 	}
 }

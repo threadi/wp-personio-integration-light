@@ -27,6 +27,13 @@ class Availability extends Schedules_Base {
 	protected string $name = 'personio_integration_schedule_availability';
 
 	/**
+	 * Name of the option used to enable this event.
+	 *
+	 * @var string
+	 */
+	protected string $option_name = 'personioIntegrationEnableAvailabilityCheck';
+
+	/**
 	 * Initialize this schedule.
 	 */
 	public function __construct() {
@@ -40,7 +47,7 @@ class Availability extends Schedules_Base {
 	 * @return void
 	 */
 	public function run(): void {
-		if ( 1 === absint( get_option( 'personioIntegrationEnableAvailabilityCheck', 0 ) ) ) {
+		if ( $this->is_enabled() ) {
 			\PersonioIntegrationLight\PersonioIntegration\Availability::get_instance()->run();
 		}
 	}

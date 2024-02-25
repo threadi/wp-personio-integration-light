@@ -21,7 +21,7 @@ class ImportPositions {
 
 	/**
 	 * Get the output.
-	 *
+
 	 * @return void
 	 */
 	public static function get(): void {

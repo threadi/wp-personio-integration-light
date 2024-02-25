@@ -1,0 +1,5 @@
+body.single-personioposition #main-container article.type-personioposition, body.post-type-archive-personioposition #main-container #main {
+	max-width: var(--theme-normal-container-max-width);
+	margin: 0 auto;
+	width: var(--theme-container-width);
+}

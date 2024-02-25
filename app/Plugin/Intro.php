@@ -67,7 +67,7 @@ class Intro {
 		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
 
 		// bail if intro has been run.
-		if ( 1 === absint( get_option( 'personio-integration-intro' ) ) ) {
+		if ( 1 === absint( get_option( 'personio_integration_intro' ) ) ) {
 			return;
 		}
 
@@ -96,7 +96,7 @@ class Intro {
 	 * @return void
 	 */
 	public function set_closed(): void {
-		update_option( 'personio-integration-intro', 1 );
+		update_option( 'personio_integration_intro', 1 );
 	}
 
 	/**
@@ -237,7 +237,7 @@ class Intro {
 		check_ajax_referer( 'personio-integration-intro-reset', 'nonce' );
 
 		// delete the actual setting.
-		delete_option( 'personio-integration-intro' );
+		delete_option( 'personio_integration_intro' );
 
 		// redirect user to intro-start.
 		wp_safe_redirect( $this->get_start_url() );
@@ -270,7 +270,7 @@ class Intro {
 				),
 			)
 		);
-		$settings['hidden_section']['fields']['personio-integration-intro'] = array(
+		$settings['hidden_section']['fields']['personio_integration_intro'] = array(
 			'register_attributes' => array(
 				'type'    => 'integer',
 				'default' => 0,

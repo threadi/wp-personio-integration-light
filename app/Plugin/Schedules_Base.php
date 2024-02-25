@@ -24,6 +24,13 @@ class Schedules_Base {
 	protected string $name = '';
 
 	/**
+	 * Name of the option used to enable this event.
+	 *
+	 * @var string
+	 */
+	protected string $option_name = '';
+
+	/**
 	 * Interval of this event.
 	 *
 	 * @var string
@@ -130,5 +137,38 @@ class Schedules_Base {
 	 */
 	public function set_args( array $args ): void {
 		$this->args = $args;
+	}
+
+	/**
+	 * Return the option name which enabled this schedule.
+	 *
+	 * @return string
+	 */
+	protected function get_option_name(): string {
+		return $this->option_name;
+	}
+
+	/**
+	 * Return whether the schedule has an option name configured.
+	 *
+	 * @return bool
+	 */
+	private function has_option_name(): bool {
+		return ! empty( $this->get_option_name() );
+	}
+
+	/**
+	 * Return whether this schedule should be enabled and active according to configuration.
+	 *
+	 * @return bool
+	 */
+	public function is_enabled(): bool {
+		// bail with true if no setting is configured.
+		if( ! $this->has_option_name() ) {
+			return true;
+		}
+
+		// return the state of this schedule according to configuration.
+		return 1 === absint( get_option( $this->get_option_name() ) );
 	}
 }

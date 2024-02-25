@@ -8,6 +8,8 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent also other direct access.
+use PersonioIntegrationLight\Log;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -51,6 +53,9 @@ class Schedules {
 	 * @return void
 	 */
 	public function init(): void {
+		// use our own hooks.
+		add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
+
 		// loop through our own events.
 		foreach ( $this->get_events() as $event ) {
 			// get the schedule object.
@@ -76,17 +81,53 @@ class Schedules {
 	 * @return array
 	 */
 	private function get_events(): array {
-		$our_events = array();
-		foreach ( _get_cron_array() as $events ) {
-			foreach ( $events as $event_name => $event_settings ) {
-				if ( str_contains( $event_name, 'personio_integration' ) ) {
-					$our_events[] = array(
-						'name'     => $event_name,
-						'settings' => $event_settings,
-					);
+		// get our own events from events list in WordPress.
+		$our_events = $this->get_wp_events();
+
+		/**
+		 * Filter the list of our own events,
+		 * e.g. to check if all which are enabled in setting are active.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $our_events List of our own events in WP-cron.
+		 */
+		return apply_filters( 'personio_integration_schedule_our_events', $our_events );
+	}
+
+	/**
+	 * Check the available events with the ones which should be active.
+	 *
+	 * Re-installs missing events. Log this event.
+	 *
+	 * Does only run in wp-admin, not frontend.
+	 *
+	 * @param array $our_events
+	 *
+	 * @return array
+	 */
+	public function check_events( array $our_events ): array {
+		if( is_admin() ) {
+			foreach( $this->get_schedule_object_names() as $object_name ) {
+				$obj = new $object_name();
+				if( $obj instanceof Schedules_Base ) {
+					if ( $obj->is_enabled() && ! isset( $our_events[$obj->get_name()] ) ) {
+
+						// reinstall the missing event.
+						$obj->install();
+
+						// log this event.
+						$log = new Log();
+						$log->add_log( sprintf( __( 'Missing cron event %1$s automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success' );
+
+						// re-run the check for WP-cron-events.
+						$our_events = $this->get_wp_events();
+					}
 				}
 			}
 		}
+
+		// return resulting list.
 		return $our_events;
 	}
 
@@ -172,5 +213,27 @@ class Schedules {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Get our own events from WP-cron-event-list.
+	 *
+	 * @return array
+	 */
+	private function get_wp_events(): array {
+		$our_events = array();
+		foreach ( _get_cron_array() as $events ) {
+			foreach ( $events as $event_name => $event_settings ) {
+				if ( str_contains( $event_name, 'personio_integration' ) ) {
+					$our_events[$event_name] = array(
+						'name'     => $event_name,
+						'settings' => $event_settings,
+					);
+				}
+			}
+		}
+
+		// return resulting list.
+		return $our_events;
 	}
 }

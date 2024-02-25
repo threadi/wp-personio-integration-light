@@ -245,7 +245,6 @@ class Import {
 		// define settings for first request to get the last-modified-date.
 		$args     = array(
 			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
-			'httpversion' => '1.1',
 			'redirection' => 0,
 		);
 		$response = wp_remote_head( $url, $args );
@@ -286,7 +285,7 @@ class Import {
 			if ( false !== $last_modified_timestamp && $personio_obj->get_timestamp( $this->get_language_name() ) === $last_modified_timestamp && ! $this->debug ) {
 				// timestamp did not change -> do nothing if we already have positions in the DB.
 				if ( $positions_count > 0 ) {
-					// update progress.
+					// set import count to actual max to show that it has been run.
 					$imports_obj->set_import_count( $imports_obj->get_import_max_count() );
 					// log event
 					$this->log->add_log( sprintf( 'No changes in positions for language %1$s according to the timestamp we got from Personio account %2$s. No import run.', esc_html( $this->get_language_title() ), wp_kses_post( $this->get_link() ) ), 'success' );
@@ -297,7 +296,6 @@ class Import {
 			// define settings for second request to get the contents.
 			$args     = array(
 				'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
-				'httpversion' => '1.1',
 				'redirection' => 0,
 			);
 			$response = wp_remote_get( $url, $args );
@@ -388,8 +386,8 @@ class Import {
 					// save the last-modified-timestamp.
 					$personio_obj->set_timestamp( $last_modified_timestamp, $this->get_language_name() );
 
-					// wait 1 second for consistent log-view on fast runs.
-					sleep( 1 );
+					// wait 1 second for consistent log-view on fast runs with just a view positions.
+					if( count($this->get_xml_positions()) < apply_filters( 'personio_integration_import_sleep_positions_limit', 20 ) ) { sleep( 1 ); }
 
 					// log event.
 					$this->log->add_log( sprintf( 'Import of positions from Personio account %1$s for language %2$s ended.', wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ) ), 'success' );

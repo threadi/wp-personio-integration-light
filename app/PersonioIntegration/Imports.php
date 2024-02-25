@@ -119,8 +119,21 @@ class Imports {
 		// mark import as running with its start-time.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
 
+		// set status.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import starting ..', 'personio-integration-light' ) );
+
 		// reset list of errors during import.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() );
+
+		// reset import counter.
+		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 );
+
+		/**
+		 * Run custom actions before import of positions is running.
+		 *
+		 * @since 3.0.0 Available since release 3.0.0.
+		 */
+		do_action( 'personio_integration_import_starting' );
 
 		// set some counter.
 		$imported_positions = 0;
@@ -157,6 +170,9 @@ class Imports {
 
 				// mark import as not running anymore.
 				update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+
+				// set status.
+				update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import completed.', 'personio-integration-light' ) );
 
 				// do nothing more.
 				return;
@@ -204,7 +220,7 @@ class Imports {
 			}
 
 			/**
-			 * Run custom actions after import of single Personio-URL has been done without errors.
+			 * Run custom actions after import of positions has been done without errors.
 			 *
 			 * @since 2.0.0 Available since release 2.0.0.
 			 */
@@ -237,10 +253,15 @@ class Imports {
 
 		// mark import as not running anymore.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+
+		// set status.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import completed.', 'personio-integration-light' ) );
 	}
 
 	/**
 	 * Return list of Personio URLs which should be used to import positions.
+	 *
+	 * The array contains the URLs as strings.
 	 *
 	 * @return array
 	 */
@@ -304,7 +325,7 @@ class Imports {
 	}
 
 	/**
-	 * Set the import count.
+	 * Add up the import count.
 	 *
 	 * @param int $count The value to add.
 	 *
@@ -313,6 +334,9 @@ class Imports {
 	public function set_import_count( int $count ): void {
 		// update for frontend.
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, $this->get_import_count() + $count );
+
+		// set status.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Positions are importing ..', 'personio-integration-light' ) );
 
 		// update for WP CLI.
 		$this->cli_progress ? $this->cli_progress->tick() : false;
@@ -339,7 +363,7 @@ class Imports {
 	}
 
 	/**
-	 * Return whether errors occurred during import (true) or not (false).
+	 * Return whether errors occurred during the running import (true) or not (false).
 	 *
 	 * @return bool
 	 */
@@ -348,7 +372,7 @@ class Imports {
 	}
 
 	/**
-	 * Return errors during imports.
+	 * Return errors that happened during imports.
 	 *
 	 * @return array
 	 */
@@ -357,7 +381,7 @@ class Imports {
 	}
 
 	/**
-	 * Return max count for import.
+	 * Return max count for the running import.
 	 *
 	 * @return int
 	 */
@@ -366,7 +390,7 @@ class Imports {
 	}
 
 	/**
-	 * Set max count for import.
+	 * Set max count for the running import.
 	 *
 	 * @param int $max_count New count value.
 	 *

@@ -79,7 +79,7 @@ class Templates {
 		add_action( 'personio_integration_get_title', array( $this, 'get_title_template' ), 10, 2 );
 		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt_template' ), 10, 2 );
 		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 );
-		add_action( 'personio_integration_get_application_link', array( $this, 'get_application_link_template' ), 10, 2 );
+		add_action( 'personio_integration_get_formular', array( $this, 'get_application_link_template' ), 10, 2 );
 		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
 
@@ -218,7 +218,7 @@ class Templates {
 			'title'            => esc_html__( 'Title', 'personio-integration-light' ),
 			'excerpt'          => esc_html__( 'Details', 'personio-integration-light' ),
 			'content'          => esc_html__( 'Content', 'personio-integration-light' ),
-			'application_link' => esc_html__( 'Application link', 'personio-integration-light' ),
+			'formular'         => esc_html__( 'Application link', 'personio-integration-light' ),
 		);
 
 		/**
@@ -394,7 +394,7 @@ class Templates {
 	 */
 	public function get_archive_template( string $archive_template ): string {
 		if ( is_post_type_archive( PersonioPosition::get_instance()->get_name() ) ) {
-			$path = $this->get_template( 'archive-personioposition.php' );
+			$path = $this->get_template( 'archive-'.PersonioPosition::get_instance()->get_name().'.php' );
 			if ( file_exists( $path ) ) {
 				$archive_template = $path;
 			}
@@ -486,7 +486,7 @@ class Templates {
 		$details = array();
 
 		// get the configured separator.
-		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator', ', ' ) . ' ';
+		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator' ) . ' ';
 
 		// get colon setting.
 		$colon = ':';
@@ -583,7 +583,7 @@ class Templates {
 		}
 
 		// reset back to list-link.
-		if ( 0 === absint( get_option( 'personioIntegrationTemplateBackToListButton', 0 ) ) || 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) ) {
+		if ( 0 === absint( get_option( 'personioIntegrationTemplateBackToListButton' ) ) || 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) ) {
 			$back_to_list_url = '';
 		}
 

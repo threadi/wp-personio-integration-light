@@ -1,36 +1,4 @@
 /* General styles */
-.post-type-archive-personioposition .site-content { display: block; }
 .personio-integration-back-button { margin-left: 1em }
 .personio-integration-archive-listing { padding: 0; }
 .personio-integration-archive-listing li { list-style: none }
-
-/* Theme Astra */
-body.post-type-archive-personioposition .ast-container { display: block; }
-body.post-type-archive-personioposition .ast-container .type-personioposition { margin-bottom: 1em; }
-
-/* Theme Avada */
-body.fusion-body article.container { overflow: visible }
-
-/* Theme GeneratePress */
-body.separate-containers .site-content .content-area.personio-position-filter { width: 100% }
-body.separate-containers .type-personioposition { display: block }
-
-/* Theme Hestia */
-body .wrapper .content-area.personio-position-filter { display: block }
-
-/* Theme Kadence */
-body.post-type-archive-personioposition .wp-site-blocks article.site-content { margin-left: auto;margin-right: auto; }
-body.single-personioposition .kt-clear h1 { margin-bottom: 1em }
-
-/* Theme Blocksy */
-body.single-personioposition #main-container article.type-personioposition, body.post-type-archive-personioposition #main-container #main {
-	max-width: var(--theme-normal-container-max-width);
-	margin: 0 auto;
-	width: var(--theme-container-width);
-}
-
-/* Theme TwentySixteen */
-.post-type-archive-personioposition .site-content.content-area {
-	margin: 0;
-	float: none;
-}

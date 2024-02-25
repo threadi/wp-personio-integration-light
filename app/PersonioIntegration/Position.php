@@ -427,12 +427,12 @@ class Position {
 	}
 
 	/**
-	 * Check if the position-object is valid. It checks if it contains data.
+	 * Check if the position-object is valid. It checks if it contains data and if the ID is set.
 	 *
 	 * @return bool
 	 */
 	public function is_valid(): bool {
-		return ! empty( $this->data );
+		return ! empty( $this->data ) && ! empty( $this->data['ID'] );
 	}
 
 	/**

@@ -13,8 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
+use WP_REST_Server;
 use WP_Screen;
 use WP_Term;
 
@@ -61,6 +63,9 @@ class Taxonomies {
 		// register taxonomies.
 		add_action( 'init', array( $this, 'register' ), 0 );
 
+		// use REST hooks
+		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
+
 		// our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_taxonomies' ) );
 
@@ -105,9 +110,6 @@ class Taxonomies {
 
 		// re-enable taxonomy-counting.
 		wp_defer_term_counting( false );
-
-		// Add or update the wp_option.
-		update_option( 'personioTaxonomyDefaults', 1 );
 	}
 
 	/**
@@ -996,5 +998,137 @@ class Taxonomies {
 		 * @param array $taxonomies List of taxonomies.
 		 */
 		return apply_filters( 'personio_integration_settings_get_list', $labels, $taxonomies );
+	}
+
+	/**
+	 * Initialize additional REST API endpoints.
+	 *
+	 * @return void
+	 */
+	public function rest_api_init(): void {
+		// return possible taxonomies.
+		register_rest_route(
+			'personio/v1',
+			'/taxonomies/',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_taxonomies_via_rest_api' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
+
+		// delete all taxonomies.
+		register_rest_route(
+			'personio/v1',
+			'/taxonomies/',
+			array(
+				'methods'             => WP_REST_Server::DELETABLE,
+				'callback'            => array( $this, 'delete_all' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
+	}
+
+	/**
+	 * Return list of available taxonomies for REST-API.
+	 *
+	 * @return array
+	 * @noinspection PhpUnused
+	 */
+	public function get_taxonomies_via_rest_api(): array {
+		$taxonomies_labels_array = Taxonomies::get_instance()->get_taxonomy_labels_for_settings();
+		$taxonomies              = array();
+		$count                   = 0;
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
+			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
+				++$count;
+				$terms_as_objects = get_terms( array( 'taxonomy' => $taxonomy_name ) );
+				$term_count       = 0;
+				$terms            = array(
+					array(
+						'id'    => $term_count,
+						'label' => __( 'Please choose', 'personio-integration-light' ),
+						'value' => 0,
+					),
+				);
+				foreach ( $terms_as_objects as $term ) {
+					++$term_count;
+					$terms[] = array(
+						'id'    => $term_count,
+						'label' => $term->name,
+						'value' => $term->term_id,
+					);
+				}
+				if ( ! empty( $taxonomies_labels_array[ $taxonomy['slug'] ] ) ) {
+					$taxonomies[] = array(
+						'id'      => $count,
+						'label'   => $taxonomies_labels_array[ $taxonomy['slug'] ],
+						'value'   => $taxonomy['slug'],
+						'entries' => $terms,
+					);
+				}
+			}
+		}
+
+		// return resulting list of taxonomies.
+		return $taxonomies;
+	}
+
+	/**
+	 * Delete all taxonomies which depends on our own custom post type.
+	 *
+	 * @return void
+	 * @noinspection SqlResolve
+	 */
+	public function delete_all(): void {
+		global $wpdb;
+
+		// delete the content of all taxonomies.
+		// -> hint: some will be newly insert after next wp-init.
+		$taxonomies = Taxonomies::get_instance()->get_taxonomies();
+		$progress   = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
+		foreach ( $taxonomies as $taxonomy => $settings ) {
+			// delete all terms of this taxonomy.
+			$wpdb->query(
+				$wpdb->prepare(
+					'DELETE FROM ' . $wpdb->terms . '
+                WHERE term_id IN
+                (
+                    SELECT ' . $wpdb->terms . '.term_id
+                    FROM ' . $wpdb->terms . '
+                    JOIN ' . $wpdb->term_taxonomy . '
+                    ON ' . $wpdb->term_taxonomy . '.term_id = ' . $wpdb->terms . '.term_id
+                    WHERE taxonomy = %s
+                )',
+					array(
+						$taxonomy,
+					)
+				)
+			);
+
+			// delete all taxonomy-entries.
+			$wpdb->query( $wpdb->prepare( 'DELETE FROM ' . $wpdb->term_taxonomy . ' WHERE taxonomy = %s', array( $taxonomy ) ) );
+
+			// cleanup options.
+			delete_option( $taxonomy . '_children' );
+
+			// log in debug-mode.
+			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+				$log = new Log();
+				$log->add_log( 'Taxonomy ' . $taxonomy . ' has been deleted.', 'success' );
+			}
+
+			// show progress.
+			$progress ? $progress->tick() : false;
+		}
+		// finalize progress.
+		$progress ? $progress->finish() : false;
+
+		// output success-message.
+		Helper::is_cli() ? \WP_CLI::success( count( $taxonomies ) . ' taxonomies from local database has been cleaned.' ) : false;
 	}
 }

@@ -7,19 +7,18 @@
 
 namespace PersonioIntegrationLight\Plugin\Admin;
 
-use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\Imports;
-use PersonioIntegrationLight\PersonioIntegration\Positions;
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-use PersonioIntegrationLight\Plugin\Cli;
-use PersonioIntegrationLight\Plugin\Setup;
-use PersonioIntegrationLight\Plugin\Transients;
-use WP_Admin_Bar;
-
 // prevent also other direct access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Imports;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Setup;
+use PersonioIntegrationLight\Plugin\Transients;
+use WP_Admin_Bar;
 
 /**
  * Helper-function for tasks in wp-admin.
@@ -89,10 +88,6 @@ class Admin {
 		add_action( 'admin_action_personioPositionsImport', array( $this, 'import_positions' ) );
 		add_action( 'admin_action_personioPositionsCancelImport', array( $this, 'cancel_import' ) );
 		add_action( 'admin_action_personioPositionsDelete', array( $this, 'delete_positions' ) );
-
-		// add AJAX-actions.
-		add_action( 'wp_ajax_personio_run_import', array( $this, 'run_import' ) );
-		add_action( 'wp_ajax_personio_get_import_info', array( $this, 'get_import_info' ) );
 	}
 
 	/**
@@ -103,7 +98,7 @@ class Admin {
 	public function add_styles_and_js(): void {
 		// admin-specific styles.
 		wp_enqueue_style(
-			'personio_integration-admin-css',
+			'personio-integration-admin-css',
 			Helper::get_plugin_url() . 'admin/styles.css',
 			array(),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/styles.css' ),
@@ -111,7 +106,7 @@ class Admin {
 
 		// admin- and backend-styles for attribute-type-output.
 		wp_enqueue_style(
-			'personio_integration-styles',
+			'personio-integration-styles',
 			Helper::get_plugin_url() . 'css/styles.css',
 			array(),
 			Helper::get_file_version( Helper::get_plugin_path() . 'css/styles.css' )
@@ -119,7 +114,7 @@ class Admin {
 
 		// backend-JS.
 		wp_enqueue_script(
-			'personio_integration-admin-js',
+			'personio-integration-admin-js',
 			Helper::get_plugin_url() . 'admin/js.js',
 			array( 'jquery', 'wp-easy-dialog' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/js.js' ),
@@ -128,16 +123,19 @@ class Admin {
 
 		// add php-vars to our js-script.
 		wp_localize_script(
-			'personio_integration-admin-js',
+			'personio-integration-admin-js',
 			'personioIntegrationLightJsVars',
 			array(
 				'ajax_url'                           => admin_url( 'admin-ajax.php' ),
+				'rest_personioposition_delete'       => rest_url( 'wp/v2/personioposition' ),
 				'pro_url'                            => Helper::get_pro_url(),
 				'dismiss_nonce'                      => wp_create_nonce( 'personio-integration-dismiss-nonce' ),
 				'dismiss_url_nonce'                  => wp_create_nonce( 'personio-integration-dismiss-url' ),
 				'run_import_nonce'                   => wp_create_nonce( 'personio-run-import' ),
 				'get_import_nonce'                   => wp_create_nonce( 'personio-get-import-info' ),
+				'get_deletion_nonce'                 => wp_create_nonce( 'personio-get-deletion-info' ),
 				'settings_import_file_nonce'         => wp_create_nonce( 'personio-integration-settings-import-file' ),
+				'rest_nonce'                     => wp_create_nonce( 'wp_rest' ),
 				'label_import_is_running'            => __( 'Import is running', 'personio-integration-light' ),
 				'logo_img'                           => Helper::get_logo_img(),
 				'url_example'                        => Helper::get_personio_url_example(),
@@ -162,6 +160,12 @@ class Admin {
 				'title_settings_import_file_missing' => __( 'Import file missing', 'personio-integration-light' ),
 				'title_settings_import_file_result'  => __( 'Import file uploaded', 'personio-integration-light' ),
 				'text_settings_import_file_missing'  => __( 'Please choose a file for the import.', 'personio-integration-light' ),
+				'title_start_import' => __( 'Run import', 'personio-integration-light' ),
+				/* translators: %1$s will be replaced by the sued Personio URL */
+				'txt_start_import' => sprintf( __( '<strong>Do you really want to import positions from %1$s?</strong>', 'personio-integration-light' ), '<a href="" target="_blank">'.esc_url( Helper::get_personio_url() ).'</a>' ),
+				'title_delete_progress' => __( 'Deletion in progress', 'personio-integration_light' ),
+				'title_deletion_success' => __( 'Deletion endet', 'personio-integration-light' ),
+				'txt_deletion_success' => __( '<strong>All positions have been deleted.</strong><br>You can re-import the jobs at any time.', 'personio-integration-light' ),
 			)
 		);
 	}
@@ -318,23 +322,8 @@ class Admin {
 	public function delete_positions(): void {
 		check_ajax_referer( 'wp-personio-integration-delete', 'nonce' );
 
-		$transient_obj = Transients::get_instance()->add();
-
-		// do not delete positions if import is running atm.
-		if ( 0 === absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) ) {
-			// delete positions.
-			$user = wp_get_current_user();
-			( new cli() )->delete_positions( array( 'Delete all positions button', ' by ' . esc_html( $user->display_name ) ) );
-
-			// add hint..
-			$transient_obj->set_name( 'personio_integration_delete_run' );
-			$transient_obj->set_message( __( '<strong>The positions have been deleted.</strong> You can run the import anytime again to import positions.', 'personio-integration-light' ) );
-		} else {
-			$transient_obj->set_name( 'personio_integration_could_not_delete' );
-			$transient_obj->set_message( __( '<strong>The positions could not been deleted.</strong> An import is actual running.', 'personio-integration-light' ) );
-		}
-		$transient_obj->set_type( 'success' );
-		$transient_obj->save();
+		// delete positions.
+		PersonioPosition::get_instance()->delete_positions();
 
 		// redirect user.
 		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
@@ -375,7 +364,7 @@ class Admin {
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_limit_hint' );
 			/* translators: %1$s will be replaced by the URL to the Pro-information-page. */
-			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro</a> any number of positions can be displayed - and you get a large number of additional features.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro (opens new window)</a> any number of positions can be displayed - and you get a large number of additional features.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->save();
 		} else {
@@ -390,7 +379,7 @@ class Admin {
 	 * @return void
 	 */
 	public function show_review_hint(): void {
-		$install_date = absint( get_option( 'personioIntegrationLightInstallDate', 0 ) );
+		$install_date = absint( get_option( 'personioIntegrationLightInstallDate' ) );
 		if ( $install_date > 0 ) {
 			if ( time() > strtotime( '+90 days', $install_date ) ) {
 				for ( $d = 2;$d < 10;$d++ ) {
@@ -411,48 +400,6 @@ class Admin {
 				Transients::get_instance()->get_transient_by_name( 'personio_integration_admin_show_review_hint' )->delete();
 			}
 		}
-	}
-
-	/**
-	 * Start Import via AJAX.
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
-	 */
-	public function run_import(): void {
-		// check nonce.
-		check_ajax_referer( 'personio-run-import', 'nonce' );
-
-		// run import.
-		$imports_obj = Imports::get_instance();
-		$imports_obj->run();
-
-		// return nothing.
-		wp_die();
-	}
-
-	/**
-	 * Return state of the actual running import.
-	 *
-	 * Format: Step;MaxSteps;Running;Errors
-	 *
-	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
-	 */
-	public function get_import_info(): void {
-		// check nonce.
-		check_ajax_referer( 'personio-get-import-info', 'nonce' );
-
-		// return actual and max count of import steps.
-		wp_send_json(
-			array(
-				absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ),
-				absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ),
-				absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ),
-				wp_json_encode( get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) ),
-			)
-		);
 	}
 
 	/**
