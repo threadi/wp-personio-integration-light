@@ -203,7 +203,7 @@ class Availability {
 	 * @return array
 	 */
 	public function add_column( array $columns ): array {
-		return Helper::add_array_in_array_on_position( $columns, 2, array( 'personio_integration_position_availability' => __( 'Available on Personio', 'personio-integration-light' ) ) );
+		return Helper::add_array_in_array_on_position( $columns, 2, array( 'personio_integration_position_availability' => __( 'Personio-page available', 'personio-integration-light' ) ) );
 	}
 
 	/**

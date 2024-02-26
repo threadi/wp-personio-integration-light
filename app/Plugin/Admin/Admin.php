@@ -98,23 +98,15 @@ class Admin {
 	public function add_styles_and_js(): void {
 		// admin-specific styles.
 		wp_enqueue_style(
-			'personio-integration-admin-css',
+			'personio-integration-admin',
 			Helper::get_plugin_url() . 'admin/styles.css',
 			array(),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/styles.css' ),
 		);
 
-		// admin- and backend-styles for attribute-type-output.
-		wp_enqueue_style(
-			'personio-integration-styles',
-			Helper::get_plugin_url() . 'css/styles.css',
-			array(),
-			Helper::get_file_version( Helper::get_plugin_path() . 'css/styles.css' )
-		);
-
 		// backend-JS.
 		wp_enqueue_script(
-			'personio-integration-admin-js',
+			'personio-integration-admin',
 			Helper::get_plugin_url() . 'admin/js.js',
 			array( 'jquery', 'wp-easy-dialog' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/js.js' ),
@@ -123,7 +115,7 @@ class Admin {
 
 		// add php-vars to our js-script.
 		wp_localize_script(
-			'personio-integration-admin-js',
+			'personio-integration-admin',
 			'personioIntegrationLightJsVars',
 			array(
 				'ajax_url'                           => admin_url( 'admin-ajax.php' ),

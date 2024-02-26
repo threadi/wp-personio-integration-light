@@ -106,7 +106,6 @@ class Uninstaller {
 		}
 
 		// remove plugin update transient.
-		// TODO auch über transients-object handhaben (muss dafür auch mit werte statt nachrichten umgehen können).
 		delete_transient( 'personio_integration_light_plugin_update_notices' );
 
 		// delete all plugin-data.

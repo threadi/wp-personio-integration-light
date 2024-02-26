@@ -68,17 +68,19 @@ class Setup {
 	public function init(): void {
 		$this->check();
 
-		// add hooks.
-		add_action( 'admin_init', array( $this, 'set_config' ) );
-		add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+		if ( ! $this->is_completed() ) {
+			// add hooks.
+			add_action( 'admin_init', array( $this, 'set_config' ) );
+			add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 
-		// register REST API.
-		add_action( 'rest_api_init', array( $this, 'add_rest_api' ) );
+			// register REST API.
+			add_action( 'rest_api_init', array( $this, 'add_rest_api' ) );
 
-		// use own hooks.
-		add_action( 'personio_integration_import_max_count', array( $this, 'update_max_step' ) );
-		add_action( 'personio_integration_import_count', array( $this, 'update_step' ) );
+			// use own hooks.
+			add_action( 'personio_integration_import_max_count', array( $this, 'update_max_step' ) );
+			add_action( 'personio_integration_import_count', array( $this, 'update_step' ) );
+		}
 	}
 
 	/**

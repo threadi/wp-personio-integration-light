@@ -84,7 +84,7 @@ class Intro {
 		}
 
 		// add our script.
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_js' ), PHP_INT_MAX );
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_js' ) );
 
 		// add AJAX-actions.
 		add_action( 'wp_ajax_personio_intro_closed', array( $this, 'closed' ) );
@@ -136,7 +136,7 @@ class Intro {
 
 		// embed the JS-script from intro.js.
 		wp_enqueue_script(
-			'personio-integration-intro-js',
+			'personio-integration-intro',
 			$url . 'intro.min.js',
 			array(),
 			Helper::get_file_version( trailingslashit( $path ) . 'intro.min.js' ),
@@ -145,16 +145,16 @@ class Intro {
 
 		// embed our own JS-script.
 		wp_enqueue_script(
-			'personio-integration-intro-custom-js',
+			'personio-integration-intro-custom',
 			Helper::get_plugin_url() . 'admin/intro.js',
-			array( 'personio-integration-intro-js', 'personio_integration-admin-js' ),
+			array( 'personio-integration-intro', 'personio-integration-admin' ),
 			Helper::get_file_version( Helper::get_plugin_path() . '/admin/intro.js' ),
 			true
 		);
 
 		// embed the CSS-file.
 		wp_enqueue_style(
-			'personio-integration-intro-js',
+			'personio-integration-intro',
 			$url . 'introjs.min.css',
 			array(),
 			Helper::get_file_version( trailingslashit( $path ) . 'introjs.min.css' ),
@@ -162,7 +162,7 @@ class Intro {
 
 		// embed the CSS-file.
 		wp_enqueue_style(
-			'personio-integration-intro-custom-js',
+			'personio-integration-intro-custom',
 			Helper::get_plugin_url() . 'admin/intro.css',
 			array(),
 			Helper::get_file_version( Helper::get_plugin_path() . '/admin/intro.css' ),
@@ -170,7 +170,7 @@ class Intro {
 
 		// add php-vars to our js-script.
 		wp_localize_script(
-			'personio-integration-intro-custom-js',
+			'personio-integration-intro-custom',
 			'personioIntegrationLightIntroJsVars',
 			array(
 				'ajax_url'           => admin_url( 'admin-ajax.php' ),

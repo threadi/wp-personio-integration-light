@@ -183,6 +183,13 @@ class Settings_Import {
 			wp_send_json( array( 'success' => false, 'html' => __( 'The uploaded file is not a valid JSON-file with settings for this plugin.', 'personio-integration-light' ) ) );
 		}
 
+		/**
+		 * Run additional task before running the import of settings.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 */
+		do_action( 'personio_integration_light_settings_import' );
+
 		// import the settings.
 		foreach ( $settings_array as $field_name => $field_value ) {
 			update_option( $field_name, $field_value );

@@ -109,6 +109,17 @@ class Site_Health {
 	 */
 	public function add_rest_api(): void {
 		foreach ( $this->get_endpoints() as $check ) {
+			// bail if no callback is set.
+			if( empty( $check['callback'] ) ) {
+				continue;
+			}
+
+			// check if args are set.
+			if( ! isset( $check['args'] ) ) {
+				$check['args'] = array();
+			}
+
+			// register the route.
 			register_rest_route(
 				$check['namespace'],
 				$check['route'],

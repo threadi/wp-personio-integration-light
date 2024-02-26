@@ -3,6 +3,8 @@
 !/build/build.properties.dist
 !/build/build.xml
 !/build/languages
+!/build/minify_css.php
+!/build/libs
 /blocks/application-button/build/
 /blocks/description/build/
 /blocks/details/build/
@@ -15,3 +17,4 @@
 *.zip
 languages/*.json
 /lib/
+*.min.css

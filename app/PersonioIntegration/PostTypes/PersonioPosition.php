@@ -27,6 +27,7 @@ use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
 use WP_Post;
 use WP_Query;
+use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 use WP_Term;
@@ -585,6 +586,24 @@ class PersonioPosition extends Post_Type {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_archive_templates_via_rest_api' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
+
+		// bail if user is not logged in.
+		if( ! is_user_logged_in() ) {
+			return;
+		}
+
+		// extend our own cpt with methods to change the positions.
+		register_rest_route(
+			'wp/v2',
+			$this->get_name(),
+			array(
+				'methods' => WP_REST_Server::EDITABLE,
+				'callback' => array( $this, 'change_positions' ),
 				'permission_callback' => function () {
 					return current_user_can( 'edit_posts' );
 				},
@@ -1559,6 +1578,47 @@ class PersonioPosition extends Post_Type {
 
 		// mark as not running.
 		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 );
+	}
+
+	/**
+	 * Change settings on single position.
+	 *
+	 * @param WP_REST_Request $data The data of the REST request.
+	 *
+	 * @return void
+	 */
+	public function change_positions( WP_REST_Request $data ): void {
+		$params = $data->get_params();
+
+		// bail if no params are set.
+		if( empty( $params ) ) {
+			return;
+		}
+
+		// bail if no task is set.
+		if( empty( $params['task'] ) ) {
+			return;
+		}
+
+		// bail if no post id is set.
+		if( empty( $params['post'] ) ) {
+			return;
+		}
+
+		// on action "reset_application_count" run exakt this.
+		if( 'reset_application_count' === $params['task'] ) {
+			// get position as object.
+			$position_obj = Positions::get_instance()->get_position( $params['post'] );
+			if( $position_obj->is_valid() ) {
+				delete_post_meta( $position_obj->get_id(), 'application_limit' );
+
+				// answer with true success.
+				wp_send_json( array( 'success' => true ) );
+			}
+		}
+
+		// answer with error.
+		wp_send_json( array( 'success' => false ) );
 	}
 
 	/**

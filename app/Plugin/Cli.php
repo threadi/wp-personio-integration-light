@@ -11,15 +11,11 @@ use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
-use PersonioIntegrationLight\Plugin\Cli\Helper;
 
 /**
  * Handler for recruitment from HR Personio
  */
 class Cli {
-
-	use Helper;
-
 	/**
 	 * Import actual open positions from Personio.
 	 *

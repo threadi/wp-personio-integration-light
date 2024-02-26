@@ -77,7 +77,15 @@ class Themes_Base {
 	 * @return string
 	 */
 	private function get_css_file(): string {
+		// get the file name.
 		$css_file = $this->css_file;
+
+		// if debug-mode is not enabled, use minified file.
+		if( ! defined( 'WP_DEBUG' ) || ( defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
+			$css_file = str_replace( '.css', '.min.css', $css_file );
+		}
+
+		// get the name of the used theme.
 		$theme_name = $this->get_name();
 
 		/**

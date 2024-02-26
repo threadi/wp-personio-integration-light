@@ -142,7 +142,14 @@ class Settings_Export {
 			return;
 		}
 
-		// get settings.
+		/**
+		 * Run additional task before running the export of all settings.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 */
+		do_action( 'personio_integration_light_settings_export' );
+
+		// get settings and their values for export.
 		$settings_list = array();
 		foreach ( Settings::get_instance()->get_settings() as $section_settings ) {
 			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {

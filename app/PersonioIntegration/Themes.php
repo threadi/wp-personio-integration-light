@@ -70,8 +70,6 @@ class Themes {
 	/**
 	 * Check if we support this theme and if yes, activate the additions.
 	 *
-	 * TODO save active theme object on switch_theme and use this only as fallback.
-	 *
 	 * @return void
 	 */
 	public function get_theme_support(): void {

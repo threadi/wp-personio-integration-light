@@ -559,11 +559,22 @@ class Templates {
 	 * @param array    $attributes The attributes.
 	 *
 	 * @return void
-	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function get_application_link_template( Position $position, array $attributes ): void {
 		// bail if we are in admin.
 		if( is_admin() ) {
+			return;
+		}
+
+		$false = false;
+		/**
+		 * Bail if no button should be visible.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param bool $false Return true to prevent button-output.
+		 */
+		if( apply_filters( 'personio_integration_hide_button', $false ) ) {
 			return;
 		}
 
