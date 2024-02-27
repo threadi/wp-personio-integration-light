@@ -168,8 +168,126 @@ jQuery(document).ready(function($) {
       }
       personio_integration_create_dialog( dialog_config );
     });
+
+    /**
+     * Import intro.
+     */
+    $("body.personio-integration-import-intro").each( function() {
+        introJs().setOptions( {
+          nextLabel: personioIntegrationLightIntroJsVars.button_title_next,
+          prevLabel: personioIntegrationLightIntroJsVars.button_title_back,
+          doneLabel: personioIntegrationLightIntroJsVars.button_title_done,
+          exitOnEsc: false,
+          exitOnOverlayClick: false,
+          disableInteraction: true,
+          steps: [
+            {
+              title: personioIntegrationLightIntroJsVars.import_intro_step_1_title,
+              intro: personioIntegrationLightIntroJsVars.import_intro_step_1_intro,
+            },
+            {
+              element: document.querySelector('tr.personio-integration-import-now'),
+              title: personioIntegrationLightIntroJsVars.import_intro_step_2_title,
+              intro: personioIntegrationLightIntroJsVars.import_intro_step_2_intro,
+            },
+            {
+              element: document.querySelector('tr.personio-integration-delete-now'),
+              title: personioIntegrationLightIntroJsVars.import_intro_step_3_title,
+              intro: personioIntegrationLightIntroJsVars.import_intro_step_3_intro,
+            },
+            {
+              element: document.querySelector('tr.personio-integration-automatic-import'),
+              title: personioIntegrationLightIntroJsVars.import_intro_step_4_title,
+              intro: personioIntegrationLightIntroJsVars.import_intro_step_4_intro,
+            },
+            {
+              title: personioIntegrationLightIntroJsVars.import_intro_step_5_title,
+              intro: personioIntegrationLightIntroJsVars.import_intro_step_5_intro,
+              tooltipClass: 'intro-width'
+            }
+          ]
+        } ).onexit( function() {
+          location.href=window.location.href.replace( /import_intro=1/, '' )
+        } ).start();
+    });
+
+    /**
+     * Templates intro
+     */
+    $("body.personio-integration-template-intro").each( function() {
+      introJs().setOptions( {
+        nextLabel: personioIntegrationLightIntroJsVars.button_title_next,
+        prevLabel: personioIntegrationLightIntroJsVars.button_title_back,
+        doneLabel: personioIntegrationLightIntroJsVars.button_title_done,
+        exitOnEsc: false,
+        exitOnOverlayClick: false,
+        disableInteraction: true,
+        steps: [
+          {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_1_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_1_intro,
+            tooltipClass: 'intro-width'
+          },
+          {
+            element: document.querySelector('tr.personio-integration-template-filter'),
+            title: personioIntegrationLightIntroJsVars.template_intro_step_2_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_2_intro,
+          },
+          {
+            element: document.querySelector('tr.personio-integration-template-listing-template'),
+            title: personioIntegrationLightIntroJsVars.template_intro_step_3_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_3_intro,
+          },
+          {
+            element: document.querySelector('tr.personio-integration-template-content-list'),
+            title: personioIntegrationLightIntroJsVars.template_intro_step_4_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_4_intro,
+          },
+          {
+            element: document.querySelector('tr.personio-integration-template-excerpts-template'),
+            title: personioIntegrationLightIntroJsVars.template_intro_step_5_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_5_intro,
+          },
+          {
+            element: document.querySelector('tr.personio-integration-template-excerpts-defaults'),
+            title: personioIntegrationLightIntroJsVars.template_intro_step_6_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_6_intro,
+          },
+          {
+            element: document.querySelector('tr.personio-integration-template-content-template'),
+            title: personioIntegrationLightIntroJsVars.template_intro_step_7_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_7_intro,
+          },
+          {
+            element: document.querySelector('tr.personio-integration-template-content-template-2'),
+            title: personioIntegrationLightIntroJsVars.template_intro_step_8_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_8_intro,
+          },
+          {
+            element: document.querySelector('tr.personio-integration-template-excerpts-template-2'),
+            title: personioIntegrationLightIntroJsVars.template_intro_step_9_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_9_intro,
+          },
+          {
+            element: document.querySelector('tr.personio-integration-template-excerpt-detail-2'),
+            title: personioIntegrationLightIntroJsVars.template_intro_step_10_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_10_intro,
+          },
+          {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_11_title,
+            intro: personioIntegrationLightIntroJsVars.template_intro_step_11_intro,
+            tooltipClass: 'intro-width'
+          }
+        ]
+      } ).onexit( function() {
+        location.href=window.location.href.replace( /template_intro=1/, '' )
+      } ).start();
+    });
 });
 
+/**
+ * Start import of positions.
+ */
 function personio_start_import() {
   // start import.
   jQuery.ajax({
@@ -401,7 +519,6 @@ function personio_integration_create_dialog( config ) {
  * Import given settings file via AJAX.
  */
 function personio_integration_import_settings_file() {
-
   let file = jQuery('#import_settings_file')[0].files[0];
   if( undefined === file ) {
     let dialog_config = {

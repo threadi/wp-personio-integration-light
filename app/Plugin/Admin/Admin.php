@@ -16,6 +16,7 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Intro;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Transients;
 use WP_Admin_Bar;
@@ -78,6 +79,7 @@ class Admin {
 		// add our own checks in wp-admin.
 		add_action( 'admin_init', array( $this, 'check_config' ) );
 		add_action( 'admin_init', array( $this, 'show_review_hint' ) );
+		add_action( 'admin_menu', array( $this, 'add_menu' ) );
 		add_action( 'admin_bar_menu', array( $this, 'add_custom_toolbar' ), 100 );
 
 		// register our own importer in backend.
@@ -403,7 +405,6 @@ class Admin {
 	 */
 	public function add_body_classes( string $classes ): string {
 		$false = false;
-
 		/**
 		 * Hide the additional buttons for reviews or pro-version.
 		 *
@@ -414,6 +415,19 @@ class Admin {
 		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) || ! Helper::is_personio_url_set() ) {
 			$classes .= ' personio-integration-hide-buttons';
 		}
+
+		// enable intros if set as parameter.
+		if( isset( $_GET['import_intro'] ) ) {
+			Intro::get_instance()->add_js();
+			$classes .= ' personio-integration-import-intro';
+		}
+		// enable intros if set as parameter.
+		if( isset( $_GET['template_intro'] ) ) {
+			Intro::get_instance()->add_js();
+			$classes .= ' personio-integration-template-intro';
+		}
+
+		// return resulting classes.
 		return $classes;
 	}
 
@@ -466,5 +480,177 @@ class Admin {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Show help page for Pro-plugin.
+	 *
+	 * It is also visible before license is validated.
+	 *
+	 * @return void
+	 */
+	public function show_help_page(): void {
+		// add the boxes.
+		$this->add_meta_boxes_for_help();
+
+		// output.
+		?>
+		<div class="wrap">
+			<h1 class="wp-heading-inline"><?php echo esc_html( get_admin_page_title() ); ?></h1>
+		</div>
+		<div id="poststuff">
+			<?php
+			do_meta_boxes( get_current_screen(), 'normal', null );
+			?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Add settings-page for the plugin if setup has been completed.
+	 *
+	 * @return void
+	 */
+	public function add_menu(): void {
+		if ( Setup::get_instance()->is_completed() ) {
+			// add menu entry for applications (with hint to pro).
+			$false = false;
+			/**
+			 * Hide the additional the sort column which is only filled in Pro.
+			 *
+			 * @since 3.0.0 Available since 3.0.0
+			 *
+			 * @param array $false Set true to hide the buttons.
+			 */
+			if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+				add_submenu_page(
+					PersonioPosition::get_instance()->get_link( true ),
+					__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Settings', 'personio-integration-light' ),
+					__( 'Applications', 'personio-integration-light' ),
+					'manage_' . PersonioPosition::get_instance()->get_name(),
+					'#',
+					false,
+					2
+				);
+			}
+
+			// add help link.
+			add_submenu_page(
+				'edit.php?post_type=' . PersonioPosition::get_instance()->get_name(),
+				__( 'Need help with Personio Integration?', 'personio-integration-light' ),
+				'<span class="disable">' . __('Help', 'personio-integration-light') . '</span>',
+				'read_'.PersonioPosition::get_instance()->get_name(),
+				'personioPositionsHelp',
+				array( $this, 'show_help_page' ),
+				9
+			);
+		}
+	}
+
+	/**
+	 * Define not post-type- or taxonomy-assigned boxes in wp-admin for our plugin.
+	 *
+	 * @return void
+	 */
+	public function add_meta_boxes_for_help(): void {
+		// box for tasks in help.
+		add_meta_box(
+			Helper::get_plugin_name().'-tasks',
+			__( 'Tasks', 'personio-integration-light' ),
+			array( $this, 'help_page_tasks_box' ),
+			get_current_screen(),
+			'normal'
+		);
+
+		// box for links in help.
+		add_meta_box(
+			Helper::get_plugin_name().'-links',
+			__( 'More information', 'personio-integration-light' ),
+			array( $this, 'help_page_link_box' ),
+			get_current_screen(),
+			'normal'
+		);
+
+		/**
+		 * Add additional boxes for help page.
+		 */
+		do_action( 'personio_integration_help_page' );
+	}
+
+	/**
+	 * Show tasks the user could use.
+	 *
+	 * @return void
+	 */
+	public function help_page_tasks_box(): void {
+		// button to show import options as intro.
+		$dialog_import = array(
+			'title' => __( 'How to change the import of positions?', 'personio-integration-light' ),
+			'texts' => array(
+				'<p>'.__( 'Click on the button bellow to start a journey through the settings to import positions.', 'personio-integration-light' ).'</p>'
+			),
+			'buttons' => array(
+				array(
+					'action'  => 'location.href="' . esc_url( add_query_arg( array( 'import_intro' => 1 ) , Helper::get_settings_url( 'import' ) ) ) . '";',
+					'variant' => 'primary',
+					'text'    => __( 'Start', 'personio-integration-light' ),
+				),
+				array(
+					'action'  => 'closeDialog();',
+					'variant' => 'secondary',
+					'text'    => __( 'Cancel', 'personio-integration-light' ),
+				)
+			)
+		);
+		?><p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_import ) ); ?>"><?php echo esc_html__( 'How to change the import of positions?', 'personio-integration-light' ); ?></a></p><?php
+
+		// button to show template options as intro.
+		$dialog_templates = array(
+			'title' => __( 'How to configure templates?', 'personio-integration-light' ),
+			'texts' => array(
+				'<p>'.__( 'Click on the button bellow to start a journey through the settings for templates.', 'personio-integration-light' ).'</p>'
+			),
+			'buttons' => array(
+				array(
+					'action'  => 'location.href="' . esc_url( add_query_arg( array( 'template_intro' => 1 ) , Helper::get_settings_url( 'templates' ) ) ) . '";',
+					'variant' => 'primary',
+					'text'    => __( 'Start', 'personio-integration-light' ),
+				),
+				array(
+					'action'  => 'closeDialog();',
+					'variant' => 'secondary',
+					'text'    => __( 'Cancel', 'personio-integration-light' ),
+				)
+			)
+		);
+		?><p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to configure templates?', 'personio-integration-light' ); ?></a></p><?php
+
+		// button to show template options as intro.
+		$dialog_templates = array(
+			'title' => __( 'How to get the Pro-version?', 'personio-integration-light' ),
+			'texts' => array(
+				'<p>'.sprintf( __( 'If you want to use the Pro-version of our plugin, check out <a href="%1$s" target="_blank">our website (opens new window)</a> and fill out the order form there.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ).'</p>'
+			),
+			'buttons' => array(
+				array(
+					'action'  => 'closeDialog();',
+					'variant' => 'primary',
+					'text'    => __( 'OK', 'personio-integration-light' ),
+				),
+			)
+		);
+		?><p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p><?php
+	}
+
+	/**
+	 * Show links for help and more information.
+	 *
+	 * @return void
+	 */
+	public function help_page_link_box(): void {
+		?>
+		<p><?php echo wp_kses_post( sprintf( __( 'If you have any questions do not hesitate to ask them in our <a href="%1$s" target="_blank">forum</a>', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) ); ?></p>
+		<p><?php echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">github</a>. There you will also find <a href="%2$s" target="_blank">some documentations</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light/tree/master/doc' ) ) ); ?></p>
+		<?php
 	}
 }

@@ -248,6 +248,7 @@ class Settings {
 							'type'    => 'integer',
 							'default' => 0,
 						),
+						'class' => 'personio-integration-template-filter'
 					),
 					'personioIntegrationTemplateFilter'   => array(
 						'label'               => __( 'Available filter for details', 'personio-integration-light' ),
@@ -290,6 +291,7 @@ class Settings {
 							'type'    => 'string',
 							'default' => 'default',
 						),
+						'class' => 'personio-integration-template-listing-template'
 					),
 					'personioIntegrationTemplateContentList' => array(
 						'label'               => __( 'Choose templates for positions in list-view', 'personio-integration-light' ),
@@ -301,6 +303,7 @@ class Settings {
 							'type'    => 'array',
 							'default' => array( 'title', 'excerpt' ),
 						),
+						'class' => 'personio-integration-template-content-list'
 					),
 					'personioIntegrationTemplateListingExcerptsTemplate' => array(
 						'label'               => __( 'Choose template for details in list-view', 'personio-integration-light' ),
@@ -313,6 +316,7 @@ class Settings {
 							'type'    => 'string',
 							'default' => 'default',
 						),
+						'class' => 'personio-integration-template-excerpts-template'
 					),
 					'personioIntegrationTemplateExcerptDefaults' => array(
 						'label'               => __( 'Choose details for positions in list-view', 'personio-integration-light' ),
@@ -324,6 +328,7 @@ class Settings {
 							'type'    => 'array',
 							'default' => array( 'recruitingCategory', 'schedule', 'office' ),
 						),
+						'class' => 'personio-integration-template-excerpts-defaults'
 					),
 					'personioIntegrationTemplateListingContentTemplate' => array(
 						'label'               => __( 'Choose template for content in list-view', 'personio-integration-light' ),
@@ -337,6 +342,7 @@ class Settings {
 							'type'    => 'string',
 							'default' => 'default',
 						),
+						'class' => 'personio-integration-template-content-template'
 					),
 					'personioIntegrationEnableLinkInList' => array(
 						'label'               => __( 'Enable link to single on list-view', 'personio-integration-light' ),
@@ -364,6 +370,7 @@ class Settings {
 							'type'    => 'array',
 							'default' => array( 'title', 'content', 'formular' ),
 						),
+						'class' => 'personio-integration-template-content-template-2'
 					),
 					'personioIntegrationTemplateDetailsExcerptsTemplate' => array(
 						'label'               => __( 'Choose template for details in details-view', 'personio-integration-light' ),
@@ -376,6 +383,7 @@ class Settings {
 							'type'    => 'string',
 							'default' => 'default',
 						),
+						'class' => 'personio-integration-template-excerpts-template-2'
 					),
 					'personioIntegrationTemplateExcerptDetail' => array(
 						'label'               => __( 'Choose details', 'personio-integration-light' ),
@@ -389,6 +397,7 @@ class Settings {
 							'type'    => 'array',
 							'default' => array( 'recruitingCategory', 'schedule', 'office' ),
 						),
+						'class' => 'personio-integration-template-excerpt-detail-2'
 					),
 					'personioIntegrationTemplateJobDescription' => array(
 						'label'               => __( 'Choose job description template in details-view', 'personio-integration-light' ),
@@ -510,10 +519,12 @@ class Settings {
 					'personioIntegrationImportNow' => array(
 						'label' => __( 'Get open positions from Personio', 'personio-integration-light' ),
 						'field' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\ImportPositions', 'get' ),
+						'class' => 'personio-integration-import-now'
 					),
 					'personioIntegrationDeleteNow' => array(
 						'label' => __( 'Delete local positions', 'personio-integration-light' ),
 						'field' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\DeletePositions', 'get' ),
+						'class' => 'personio-integration-delete-now'
 					),
 					'personioIntegrationEnablePositionSchedule' => array(
 						'label'               => __( 'Enable automatic import', 'personio-integration-light' ),
@@ -527,6 +538,7 @@ class Settings {
 							'default' => 1,
 						),
 						'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Import', 'save' ),
+						'class' => 'personio-integration-automatic-import'
 					),
 				),
 			),
@@ -642,6 +654,7 @@ class Settings {
 							'readonly'          => ! empty( $field_settings['readonly'] ) ? $field_settings['readonly'] : false,
 							'hide_empty_option' => ! empty( $field_settings['hide_empty_option'] ) ? $field_settings['hide_empty_option'] : false,
 							'depends'           => ! empty( $field_settings['depends'] ) ? $field_settings['depends'] : array(),
+							'class'             => ! empty( $field_settings['class'] ) ? $field_settings['class'] : array(),
 						);
 
 						/**
@@ -713,27 +726,6 @@ class Settings {
 				array( $this, 'add_settings_content' ),
 				1
 			);
-
-			// add menu entry for applications (with hint to pro).
-			$false = false;
-			/**
-			 * Hide the additional the sort column which is only filled in Pro.
-			 *
-			 * @since 3.0.0 Available since 3.0.0
-			 *
-			 * @param array $false Set true to hide the buttons.
-			 */
-			if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
-				add_submenu_page(
-					PersonioPosition::get_instance()->get_link( true ),
-					__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Settings', 'personio-integration-light' ),
-					__( 'Applications', 'personio-integration-light' ),
-					'manage_' . PersonioPosition::get_instance()->get_name(),
-					'#',
-					false,
-					2
-				);
-			}
 		}
 	}
 
