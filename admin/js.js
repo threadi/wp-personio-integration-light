@@ -280,7 +280,7 @@ jQuery(document).ready(function($) {
           }
         ]
       } ).onexit( function() {
-        location.href=window.location.href.replace( /template_intro=1/, '' )
+        location.href=window.location.href.replace( /template_intro=2/, '' )
       } ).start();
     });
 });

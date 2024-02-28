@@ -53,7 +53,13 @@ class Avada extends Compatibilities_Base {
 	 *
 	 * @return bool
 	 */
-	private static function is_avada_active(): bool {
+	public static function is_avada_active(): bool {
+		// return true if necessary functions are available.
+		if( function_exists( 'awb_get_fusion_settings' ) && function_exists( 'fusion_builder_map' ) && function_exists( 'fusion_builder_frontend_data' ) ) {
+			return  true;
+		}
+
+		// otherwise check for the theme.
 		$is_avada = false;
 		$theme    = wp_get_theme();
 		if ( 'Avada' === $theme->get( 'Name' ) ) {
@@ -62,6 +68,8 @@ class Avada extends Compatibilities_Base {
 		if ( $theme->parent() && 'Avada' === $theme->parent()->get( 'Name' ) ) {
 			$is_avada = true;
 		}
+
+		// return resulting value.
 		return $is_avada;
 	}
 }

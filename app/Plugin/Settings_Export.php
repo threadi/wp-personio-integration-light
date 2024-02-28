@@ -134,7 +134,7 @@ class Settings_Export {
 	/**
 	 * Export actual settings as JSON-file.
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function export_settings(): void {
 		// check for nonce.
@@ -142,6 +142,30 @@ class Settings_Export {
 			return;
 		}
 
+		// create filename for JSON-download-file.
+		$filename = gmdate( 'YmdHi' ) . '_' . get_option( 'blogname' ) . '_Personio_Integration_Light_Settings.json';
+		/**
+		 * File the filename for JSON-download of all settings.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param string $filename The generated filename.
+		 */
+		$filename = apply_filters( 'personio_integration_settings_export_filename', $filename );
+
+		// set header for response as JSON-download.
+		header( 'Content-type: application/json' );
+		header( 'Content-Disposition: attachment; filename=' . sanitize_file_name( $filename ) );
+		echo wp_json_encode( $this->get_settings() );
+		exit;
+	}
+
+	/**
+	 * Return the array with settings to export.
+	 *
+	 * @return array
+	 */
+	public function get_settings(): array {
 		/**
 		 * Run additional task before running the export of all settings.
 		 *
@@ -159,21 +183,7 @@ class Settings_Export {
 			}
 		}
 
-		// create filename for JSON-download-file.
-		$filename = gmdate( 'YmdHi' ) . '_' . get_option( 'blogname' ) . '_Personio_Integration_Light_Settings.json';
-		/**
-		 * File the filename for JSON-download of all settings.
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 *
-		 * @param string $filename The generated filename.
-		 */
-		$filename = apply_filters( 'personio_integration_settings_export_filename', $filename );
-
-		// set header for response as JSON-download.
-		header( 'Content-type: application/json' );
-		header( 'Content-Disposition: attachment; filename=' . sanitize_file_name( $filename ) );
-		echo wp_json_encode( $settings_list );
-		exit;
+		// return the resulting list.
+		return $settings_list;
 	}
 }

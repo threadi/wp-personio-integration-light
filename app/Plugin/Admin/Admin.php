@@ -553,11 +553,11 @@ class Admin {
 	 * @return void
 	 */
 	public function add_meta_boxes_for_help(): void {
-		// box for tasks in help.
+		// box for tours in help.
 		add_meta_box(
-			Helper::get_plugin_name().'-tasks',
-			__( 'Tasks', 'personio-integration-light' ),
-			array( $this, 'help_page_tasks_box' ),
+			Helper::get_plugin_name().'-tours',
+			__( 'Tours', 'personio-integration-light' ),
+			array( $this, 'help_page_tours_box' ),
 			get_current_screen(),
 			'normal'
 		);
@@ -582,7 +582,7 @@ class Admin {
 	 *
 	 * @return void
 	 */
-	public function help_page_tasks_box(): void {
+	public function help_page_tours_box(): void {
 		// button to show import options as intro.
 		$dialog_import = array(
 			'title' => __( 'How to change the import of positions?', 'personio-integration-light' ),
@@ -625,21 +625,38 @@ class Admin {
 		);
 		?><p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to configure templates?', 'personio-integration-light' ); ?></a></p><?php
 
-		// button to show template options as intro.
-		$dialog_templates = array(
-			'title' => __( 'How to get the Pro-version?', 'personio-integration-light' ),
-			'texts' => array(
-				'<p>'.sprintf( __( 'If you want to use the Pro-version of our plugin, check out <a href="%1$s" target="_blank">our website (opens new window)</a> and fill out the order form there.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ).'</p>'
-			),
-			'buttons' => array(
-				array(
-					'action'  => 'closeDialog();',
-					'variant' => 'primary',
-					'text'    => __( 'OK', 'personio-integration-light' ),
+		// button to show how to get the pro-version.
+		$false = false;
+		/**
+		 * Hide the additional the sort column which is only filled in Pro.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			$dialog_templates = array(
+				'title' => __( 'How to get the Pro-version?', 'personio-integration-light' ),
+				'texts' => array(
+					'<p>'.sprintf( __( 'If you want to use the Pro-version of our plugin, check out <a href="%1$s" target="_blank">our website (opens new window)</a> and fill out the order form there.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ).'</p>'
 				),
-			)
-		);
-		?><p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p><?php
+				'buttons' => array(
+					array(
+						'action'  => 'closeDialog();',
+						'variant' => 'primary',
+						'text'    => __( 'OK', 'personio-integration-light' ),
+					),
+				)
+			);
+			?><p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p><?php
+		}
+
+		/**
+		 * Add additional helper tasks via hook.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 */
+		do_action( 'personio_integration_help_tours' );
 	}
 
 	/**

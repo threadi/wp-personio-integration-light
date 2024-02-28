@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
   /**
    * Set intro after initial set up of the plugin on list view in backend.
    */
-  $('body.post-type-personioposition .table-view-list').each(function() {
+  $('body.post-type-personioposition.edit-personioposition-php .table-view-list').each(function() {
     introJs().setOptions( {
       nextLabel: personioIntegrationLightIntroJsVars.button_title_next,
       prevLabel: personioIntegrationLightIntroJsVars.button_title_back,
