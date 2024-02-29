@@ -35,7 +35,7 @@ class Acf extends Compatibilities_Base {
 	 */
 	public function check(): void {
 		$transients_obj = Transients::get_instance();
-		if ( Helper::is_plugin_active( 'advanced-custom-fields/acf.php' ) ) {
+		if ( $this->is_active() ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
@@ -46,5 +46,14 @@ class Acf extends Compatibilities_Base {
 		} else {
 			$transients_obj->get_transient_by_name( $this->get_name() )->delete();
 		}
+	}
+
+	/**
+	 * Return whether this component is active (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	public function is_active(): bool {
+		return Helper::is_plugin_active( 'advanced-custom-fields/acf.php' );
 	}
 }

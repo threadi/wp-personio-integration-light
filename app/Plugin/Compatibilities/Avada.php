@@ -35,7 +35,7 @@ class Avada extends Compatibilities_Base {
 	 */
 	public function check(): void {
 		$transients_obj = Transients::get_instance();
-		if ( $this->is_avada_active() ) {
+		if ( $this->is_active() ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
@@ -53,7 +53,7 @@ class Avada extends Compatibilities_Base {
 	 *
 	 * @return bool
 	 */
-	public static function is_avada_active(): bool {
+	public function is_active(): bool {
 		// return true if necessary functions are available.
 		if( function_exists( 'awb_get_fusion_settings' ) && function_exists( 'fusion_builder_map' ) && function_exists( 'fusion_builder_frontend_data' ) ) {
 			return  true;

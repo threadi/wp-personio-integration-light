@@ -35,7 +35,7 @@ class Beaver extends Compatibilities_Base {
 	 */
 	public function check(): void {
 		$transients_obj = Transients::get_instance();
-		if ( class_exists( 'FLBuilder' ) ) {
+		if ( $this->is_active() ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
@@ -46,5 +46,14 @@ class Beaver extends Compatibilities_Base {
 		} else {
 			$transients_obj->get_transient_by_name( $this->get_name() )->delete();
 		}
+	}
+
+	/**
+	 * Return whether this component is active (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	public function is_active(): bool {
+		return class_exists( 'FLBuilder' );
 	}
 }

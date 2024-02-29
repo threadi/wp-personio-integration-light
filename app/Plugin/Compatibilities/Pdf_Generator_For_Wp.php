@@ -36,7 +36,7 @@ class Pdf_Generator_For_Wp extends Compatibilities_Base {
 	 */
 	public function check(): void {
 		$transients_obj = Transients::get_instance();
-		if ( Helper::is_plugin_active( 'pdf-generator-for-wp/pdf-generator-for-wp.php' ) ) {
+		if ( $this->is_active() ) {
 			// if post-type is set, to nothing more.
 			$pdf_generator_advanced_settings = get_option( 'pgfw_advanced_save_settings' );
 			if ( ! empty( $pdf_generator_advanced_settings ) && ! empty( $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'] ) && in_array( PersonioPosition::get_instance()->get_name(), $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'], true ) ) {
@@ -64,5 +64,14 @@ class Pdf_Generator_For_Wp extends Compatibilities_Base {
 		} else {
 			$transients_obj->get_transient_by_name( $this->get_name() )->delete();
 		}
+	}
+
+	/**
+	 * Return whether this component is active (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	public function is_active(): bool {
+		return Helper::is_plugin_active( 'pdf-generator-for-wp/pdf-generator-for-wp.php' );
 	}
 }

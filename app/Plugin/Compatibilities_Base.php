@@ -69,4 +69,13 @@ class Compatibilities_Base {
 	public function get_name(): string {
 		return $this->name;
 	}
+
+	/**
+	 * Return whether this component is active (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	public function is_active(): bool {
+		return false;
+	}
 }

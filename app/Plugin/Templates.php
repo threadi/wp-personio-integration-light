@@ -393,12 +393,18 @@ class Templates {
 	 * @return string
 	 */
 	public function get_archive_template( string $archive_template ): string {
-		if ( is_post_type_archive( PersonioPosition::get_instance()->get_name() ) ) {
-			$path = $this->get_template( 'archive-'.PersonioPosition::get_instance()->get_name().'.php' );
-			if ( file_exists( $path ) ) {
-				$archive_template = $path;
-			}
+		// bail if it is not our post type.
+		if( ! is_post_type_archive( PersonioPosition::get_instance()->get_name() ) ) {
+			return $archive_template;
 		}
+
+		// get our own archive template.
+		$path = $this->get_template( 'archive-'.PersonioPosition::get_instance()->get_name().'.php' );
+		if ( file_exists( $path ) ) {
+			$archive_template = $path;
+		}
+
+		// return the template.
 		return $archive_template;
 	}
 
@@ -412,6 +418,16 @@ class Templates {
 	public function prepare_content_template( string $content ): string {
 		// bail if this is not our own cpt.
 		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( get_the_ID() ) ) {
+			return $content;
+		}
+
+		$true = false;
+		/**
+		 * Filter whether the content template should be used (false) or not (true).
+		 *
+		 * @param bool $true False if content template should not be used.
+		 */
+		if( ! apply_filters( 'personio_integration_show_content', $true ) ) {
 			return $content;
 		}
 

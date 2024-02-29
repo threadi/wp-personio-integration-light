@@ -35,7 +35,7 @@ class Divi extends Compatibilities_Base {
 	 */
 	public function check(): void {
 		$transients_obj = Transients::get_instance();
-		if ( false === Helper::is_plugin_active( 'personio-integration-divi/personio-integration-divi.php' ) && $this->is_divi_active() ) {
+		if ( $this->is_active() ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
@@ -53,7 +53,7 @@ class Divi extends Compatibilities_Base {
 	 *
 	 * @return bool
 	 */
-	private function is_divi_active(): bool {
+	public function is_active(): bool {
 		$is_divi = Helper::is_plugin_active( 'divi-builder/divi-builder.php' );
 		$theme   = wp_get_theme();
 		if ( 'Divi' === $theme->get( 'Name' ) ) {
