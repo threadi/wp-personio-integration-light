@@ -82,40 +82,36 @@ class Installer {
 	 * @return void
 	 */
 	private function activation_tasks(): void {
-		$error = false;
-
-		// check if simplexml is available on this system.
+		// bail if SimpleXML is not available on this system.
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_no_simplexml' );
-			$transient_obj->set_message( '<strong>' . __( 'Plugin was not activated!', 'personio-integration-light' ) . '</strong><br>' . __( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' ) );
+			$transient_obj->set_message( '<strong>' . __( 'Plugin was not activated!', 'personio-integration-light' ) . '</strong><br>' . __( 'The PHP extension simplexml is missing on you hosting. Please contact your hoster about this.', 'personio-integration-light' ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->save();
-			$error = true;
+			return;
 		}
 
-		if ( false === $error ) {
-			// initialize the default settings.
-			Settings::get_instance()->initialize_options();
+		// initialize the default settings.
+		Settings::get_instance()->initialize_options();
 
-			// install schedules.
-			Schedules::get_instance()->create_schedules();
+		// install schedules.
+		Schedules::get_instance()->create_schedules();
 
-			// install the roles we use.
-			Roles::get_instance()->install();
+		// install the roles we use.
+		Roles::get_instance()->install();
 
-			// run all updates.
-			Update::run_all_updates();
+		// run all updates.
+		Update::run_all_updates();
 
-			// refresh permalinks.
-			update_option( 'personio_integration_update_slugs', 1 );
+		// refresh permalinks.
+		update_option( 'personio_integration_update_slugs', 1 );
 
-			// initialize Log-database-table.
-			$log = new Log();
-			$log->create_table();
+		// initialize Log-database-table.
+		$log = new Log();
+		$log->create_table();
 
-			// show success message on cli.
-			Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin.' ) : false;
-		}
+		// show success message on cli.
+		Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin.' ) : false;
 	}
 }

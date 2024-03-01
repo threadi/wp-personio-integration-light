@@ -542,7 +542,7 @@ class Taxonomies {
 	}
 
 	/**
-	 * Return taxonomy by given slug.
+	 * Return internal taxonomy name by given slug.
 	 *
 	 * @param string $slug The requested slug.
 	 *

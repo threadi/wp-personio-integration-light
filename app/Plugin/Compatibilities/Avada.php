@@ -49,14 +49,14 @@ class Avada extends Compatibilities_Base {
 	}
 
 	/**
-	 * Check if Avada is active.
+	 * Check if Avada and its necessary plugins are active.
 	 *
 	 * @return bool
 	 */
 	public function is_active(): bool {
-		// return true if necessary functions are available.
-		if( function_exists( 'awb_get_fusion_settings' ) && function_exists( 'fusion_builder_map' ) && function_exists( 'fusion_builder_frontend_data' ) ) {
-			return  true;
+		// bail if fusion-builder-plugin is not available.
+		if( ! Helper::is_plugin_active( 'fusion-builder/fusion-builder.php' ) ) {
+			return false;
 		}
 
 		// otherwise check for the theme.

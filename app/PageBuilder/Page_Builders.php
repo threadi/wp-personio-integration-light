@@ -48,6 +48,7 @@ class Page_Builders {
 	 * @return void
 	 */
 	public function init(): void {
+		// register the known pagebuilder.
 		foreach ( $this->get_page_builder() as $page_builder ) {
 			$obj = call_user_func( $page_builder . '::get_instance' );
 			if ( $obj instanceof PageBuilder_Base ) {

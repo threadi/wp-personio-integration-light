@@ -242,8 +242,15 @@ class PersonioPosition extends Post_Type {
 			'raw'       => '',
 			'protected' => false,
 		);
-		$data->data['title'] = array( 'rendered' => $position_obj->get_title() );
+		$data->data['title'] = array(
+			'rendered' => $position_obj->get_title(),
+			'raw' => $position_obj->get_title(),
+		);
 		$data->data['content'] = array( 'rendered' => $content );
+
+		$data->data['meta'] = array(
+			'personioId' => absint( $position_obj->get_personio_id() )
+		);
 
 		// set response.
 		return $data;
@@ -1301,7 +1308,7 @@ class PersonioPosition extends Post_Type {
 	public function check_filter_type( array $settings ): array {
 		if ( ! empty( $settings['attributes']['filtertype'] ) ) {
 			$filter_types = Helper::get_filter_types();
-			if ( ! empty( $filter_types[ $settings['attributes']['filtertype'] ] ) ) {
+			if ( empty( $filter_types[ $settings['attributes']['filtertype'] ] ) ) {
 				$settings['attributes']['filtertype'] = 'linklist';
 			}
 		}

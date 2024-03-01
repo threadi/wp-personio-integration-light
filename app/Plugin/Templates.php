@@ -58,8 +58,6 @@ class Templates {
 	 * @return void
 	 */
 	public function init(): void {
-		add_filter( 'template_include', array( $this, 'get_cpt_template' ) );
-
 		// check for changed templates.
 		add_action( 'admin_init', array( $this, 'check_child_theme_templates' ) );
 
@@ -70,7 +68,6 @@ class Templates {
 		// support content hooks.
 		add_filter( 'the_content', array( $this, 'prepare_content_template' ) );
 		add_filter( 'the_excerpt', array( $this, 'prepare_excerpt_template' ) );
-		add_filter( 'get_the_excerpt', array( $this, 'prepare_excerpt_template' ) );
 		add_action( 'the_post', array( $this, 'update_post_object' ) );
 		add_filter( 'the_title', array( $this, 'update_post_title' ), 10, 2 );
 		add_filter( 'single_post_title', array( $this, 'update_post_title' ), 10, 2 );
@@ -180,30 +177,6 @@ class Templates {
 
 		// return template from light-plugin.
 		return file_exists( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) . 'templates/' . $template );
-	}
-
-	/**
-	 * Get template for archive or single view.
-	 *
-	 * @param string $template The requested template.
-	 * @return string
-	 */
-	public function get_cpt_template( string $template ): string {
-		if ( PersonioPosition::get_instance()->get_name() === get_post_type( get_the_ID() ) ) {
-			// if the theme is a fse-theme.
-			if ( Helper::theme_is_fse_theme() ) {
-				return ABSPATH . WPINC . '/template-canvas.php';
-			}
-
-			// single-view for classic themes.
-			if ( is_single() ) {
-				return $this->get_single_template( $template );
-			}
-
-			// archive-view for classic themes.
-			return $this->get_archive_template( $template );
-		}
-		return $template;
 	}
 
 	/**
@@ -350,6 +323,9 @@ class Templates {
 			}
 		}
 
+		// get transients-object.
+		$transients_obj = Transients::get_instance();
+
 		if ( ! empty( $warnings ) ) {
 			// generate html-list of the files.
 			$html_list = '<ul>';
@@ -359,37 +335,50 @@ class Templates {
 			$html_list .= '</ul>';
 
 			// show a transient.
-			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_name( 'personio_integration_no_simplexml' );
+			$transient_obj = $transients_obj->add();
+			$transient_obj->set_name( 'personio_integration_old_templates' );
 			$transient_obj->set_message( __( '<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'personio-integration-light' ) . $html_list . __( '<strong>Hint:</strong> the version-number in the header of the files must match.', 'personio-integration-light' ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->save();
 		} else {
-			Transients::get_instance()->get_transient_by_name( 'personio_integration_old_templates' )->delete();
+			$transients_obj->get_transient_by_name( 'personio_integration_old_templates' )->delete();
 		}
 	}
 
 	/**
-	 * Get single template.
+	 * Get the path to the single template.
 	 *
-	 * @param string $single_template The template.
+	 * @param string $single_template The path to the single template.
 	 * @return string
 	 */
 	public function get_single_template( string $single_template ): string {
-		if ( PersonioPosition::get_instance()->get_name() === get_post_type( get_the_ID() ) ) {
-			$path = $this->get_template( 'single-personioposition.php' );
-			if ( file_exists( $path ) ) {
-				$single_template = $path;
-			}
+		// bail if this is not our cpt.
+		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( get_the_ID() ) ) {
+			return $single_template;
 		}
-		return $single_template;
+
+		$false = false;
+		/**
+		 * Decide whether to use our own template (false) or not (true).
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param bool $false Return true if our own single template should not be used.
+		 * @param string $single_template The single template which will be used instead.
+		 */
+		if( apply_filters( 'personio_integration_load_single_template', $false, $single_template ) ) {
+			return $single_template;
+		}
+
+		// return single template of our own plugin.
+		return $this->get_template( 'single-personioposition.php' );
 	}
 
 	/**
-	 * Get archive template.
+	 * Get the path to the archive template.
 	 *
-	 * @param string $archive_template The template.
+	 * @param string $archive_template The path to the archive template.
 	 * @return string
 	 */
 	public function get_archive_template( string $archive_template ): string {
@@ -398,14 +387,21 @@ class Templates {
 			return $archive_template;
 		}
 
-		// get our own archive template.
-		$path = $this->get_template( 'archive-'.PersonioPosition::get_instance()->get_name().'.php' );
-		if ( file_exists( $path ) ) {
-			$archive_template = $path;
+		$false = false;
+		/**
+		 * Decide whether to use our own archive template (false) or not (true).
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param bool $false Return true if our own archive template should not be used.
+		 * @param string $archive_template The archive template which will be used instead.
+		 */
+		if( apply_filters( 'personio_integration_load_archive_template', $false, $archive_template ) ) {
+			return $archive_template;
 		}
 
-		// return the template.
-		return $archive_template;
+		// return our own archive template.
+		return $this->get_template( 'archive-'.PersonioPosition::get_instance()->get_name().'.php' );
 	}
 
 	/**
@@ -421,7 +417,7 @@ class Templates {
 			return $content;
 		}
 
-		$true = false;
+		$true = true;
 		/**
 		 * Filter whether the content template should be used (false) or not (true).
 		 *
@@ -457,7 +453,7 @@ class Templates {
 		$position_obj = Positions::get_instance()->get_position( get_the_ID() );
 
 		// return the excerpt-template.
-		return $this->get_excerpt_template( $position_obj, array() );
+		return $this->get_excerpt_template( $position_obj, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ) );
 	}
 
 	/**
@@ -472,7 +468,8 @@ class Templates {
 	public function get_title_template( Position $position, array $attributes ): void {
 		// set the header-size (h1 for single, h2 for list).
 		$heading_size = '2';
-		if ( ! did_action( 'elementor/loaded' ) && is_single() ) {
+
+		if ( is_single() ) {
 			$heading_size = '1';
 		}
 		// and h3 if list is grouped.

@@ -422,7 +422,7 @@ class Position {
 	 */
 	public function get_excerpt(): false|string {
 		ob_start();
-		Templates::get_instance()->get_excerpt_template( $this, get_option( 'personioIntegrationTemplateExcerptDefaults' ) );
+		Templates::get_instance()->get_excerpt_template( $this, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ) );
 		return ob_get_clean();
 	}
 
@@ -441,7 +441,7 @@ class Position {
 	 * @return int
 	 */
 	public function get_id(): int {
-		return $this->data['ID'];
+		return absint( $this->data['ID'] );
 	}
 
 	/**
