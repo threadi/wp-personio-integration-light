@@ -44,6 +44,16 @@ class Log {
 	}
 
 	/**
+	 * Delete the logging-table in the database.
+	 *
+	 * @return void
+	 */
+	public function delete_table(): void {
+		global $wpdb;
+		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) );
+	}
+
+	/**
 	 * Add a single log-entry.
 	 *
 	 * @param string $log The text to log.

@@ -22,7 +22,7 @@ use PersonioIntegrationLight\Plugin\Transients;
 class Avada extends Compatibilities_Base {
 
 	/**
-	 * Name of this event.
+	 * Name of this object.
 	 *
 	 * @var string
 	 */

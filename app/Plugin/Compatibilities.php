@@ -93,12 +93,14 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Acf',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Avada',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Beaver',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Brizy',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Divi',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Elementor',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Pdf_Generator_For_Wp',
 			'PersonioIntegrationLight\Plugin\Compatibilities\SiteOrigin',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Themify',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpBakery',
+			'PersonioIntegrationLight\Plugin\Compatibilities\WpPageBuilder',
 		);
 
 		/**

@@ -17,7 +17,6 @@ use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
-use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\Widgets\Widgets;
 
 /**
@@ -110,14 +109,8 @@ class Uninstaller {
 
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
-			foreach ( Imports::get_instance()->get_personio_urls() as $personio_url ) {
-				$personio_obj = new Personio( $personio_url );
-				foreach ( Languages::get_instance()->get_languages() as $language_name => $lang ) {
-					$personio_obj->remove_timestamp( $language_name );
-					delete_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION . $language_name );
-					$personio_obj->remove_md5( $language_name );
-				}
-			}
+			// reset Personio- and language-specific settings.
+			Imports::get_instance()-reset_personio_settings();
 
 			// delete all collected data.
 			( new Cli() )->delete_all();
@@ -149,7 +142,7 @@ class Uninstaller {
 		Roles::get_instance()->uninstall();
 
 		// delete our custom database-tables.
-		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) );
+		Init::get_instance()->delete_db_tables();
 	}
 
 	/**

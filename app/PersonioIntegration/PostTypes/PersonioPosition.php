@@ -117,6 +117,7 @@ class PersonioPosition extends Post_Type {
 		add_action( 'wp_ajax_personio_get_deletion_info', array( $this, 'get_deletion_info' ) );
 		add_action( 'wp_ajax_personio_run_import', array( $this, 'run_import' ) );
 		add_action( 'wp_ajax_personio_get_import_info', array( $this, 'get_import_info' ) );
+		add_action( 'wp_ajax_personio_get_import_dialog', array( $this, 'get_import_dialog' ) );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_filter_type' ) );
@@ -124,13 +125,31 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'get_extensions_list' ) );
 		add_action( 'personio_integration_import_max_count', array( $this, 'update_import_max_step' ) );
 		add_action( 'personio_integration_import_count', array( $this, 'update_import_step' ) );
+		add_action( 'personio_integration_import_ended', array( $this, 'import_ended' ) );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
 		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'add_sitemap_data' ), 10, 2 );
 
-		// initialize extension for the position object.
-		foreach ( apply_filters( 'personio_integration_extend_position_object', array() ) as $extension_name ) {
+		// initialize the extensions.
+		$this->initialize_extensions();
+	}
+
+	/**
+	 * Initialize extensions for this object.
+	 *
+	 * @return void
+	 */
+	private function initialize_extensions(): void {
+		$list = array();
+		/**
+		 * Filter the possible extensions for the Personio-object.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $list List of extensions.
+		 */
+		foreach ( apply_filters( 'personio_integration_extend_position_object', $list ) as $extension_name ) {
 			if ( method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
 				$obj->init();
@@ -773,7 +792,9 @@ class PersonioPosition extends Post_Type {
 		$false = false;
 
 		/**
-		 * Hide the additional the sort column which is only filled in Pro.
+		 * Hide the additional sort column which is only filled in Pro.
+		 *
+		 * TODO ersetzen durch allgemeinen column-filter den die pro dann nutzt.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
@@ -811,6 +832,11 @@ class PersonioPosition extends Post_Type {
 
 		// get position as object.
 		$position_obj = Positions::get_instance()->get_position( $post_id );
+
+		// bail if position is not valid.
+		if( ! $position_obj->is_valid() ) {
+			return;
+		}
 
 		// show ID-column.
 		if ( 'id' === $column ) {
@@ -871,7 +897,16 @@ class PersonioPosition extends Post_Type {
 					'view' => $actions['view'],
 				);
 			}
-			$new_actions['edit'] = '<a href="' . esc_url( get_edit_post_link( $post->ID ) ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
+
+			// get edit-URL.
+			$edit_url = get_edit_post_link( $post->ID );
+
+			// add the edit-URL to the action-list if it is set.
+			if( ! is_null( $edit_url ) ) {
+				$new_actions['edit'] = '<a href="' . esc_url( $edit_url ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
+			}
+
+			// return resulting list.
 			return $new_actions;
 		}
 		return $actions;
@@ -1047,7 +1082,7 @@ class PersonioPosition extends Post_Type {
 			// get label.
 			$labels = $taxonomies_obj->get_taxonomy_label( $taxonomy_name );
 
-			// add box.
+			// add a box for single taxonomy.
 			add_meta_box(
 				$this->get_name() . '-taxonomy-' . $taxonomy_name,
 				$labels['name'],
@@ -1198,31 +1233,29 @@ class PersonioPosition extends Post_Type {
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
 		$position_obj  = Positions::get_instance()->get_position( $post->ID );
 		$taxonomy_name = str_replace( $this->get_name() . '-taxonomy-', '', $attr['id'] );
-		$content       = $position_obj->get_term_by_field( $taxonomy_name, 'name' );
-		if ( empty( $content ) ) {
-			echo '<i>' . esc_html__( 'No data', 'personio-integration-light' ) . '</i>';
+		$terms       = $position_obj->get_terms_by_field( $taxonomy_name );
+		if ( empty( $terms ) ) {
+			echo '<i>' . esc_html__( 'No data available.', 'personio-integration-light' ) . '</i>';
 		} else {
-			// get term.
-			$term = get_term( $position_obj->get_term_by_field( $taxonomy_name, 'term_id' ), $taxonomy_name );
+			foreach( $terms as $index => $term ) {
+				if( $index > 0 ) {
+					echo ", ";
+				}
 
-			// bail if term could not be loaded.
-			if( ! ( $term instanceof WP_Term ) ) {
-				return;
+				// create filter url.
+				$filter_url = add_query_arg(
+					array(
+						's'                              => '',
+						'post_type'                      => $this->get_name(),
+						'admin_filter_' . $taxonomy_name => $term->term_id,
+						'paged'                          => 1,
+					),
+					admin_url() . 'edit.php'
+				);
+
+				// output.
+				echo '<a href="' . esc_url( $filter_url ) . '">' . wp_kses_post( $term->name ) . '</a> (' . absint( $term->count ) . ')';
 			}
-
-			// create filter url.
-			$filter_url = add_query_arg(
-				array(
-					's'                              => '',
-					'post_type'                      => $this->get_name(),
-					'admin_filter_' . $taxonomy_name => $term->term_id,
-					'paged'                          => 1,
-				),
-				admin_url() . 'edit.php'
-			);
-
-			// output.
-			echo '<a href="' . esc_url( $filter_url ) . '">' . wp_kses_post( $content ) . '</a> ('. absint( $term->count ).')';
 		}
 	}
 
@@ -1689,6 +1722,50 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
+	 * Return the import dialog where user could decide to start des import of positions..
+	 *
+	 * @return void
+	 */
+	public function get_import_dialog(): void {
+		check_ajax_referer( 'personio-import-dialog', 'nonce' );
+
+		// define dialog.
+		$dialog = array(
+			'detail' => array(
+				'title' => __( 'Run import', 'personio-integration-light' ),
+                'texts' => array(
+	                /* translators: %1$s will be replaced by the sued Personio URL */
+	                '<p>'.sprintf( __( '<strong>Do you really want to import positions from %1$s?</strong>', 'personio-integration-light' ), '<a href="" target="_blank">'.esc_url( Helper::get_personio_url() ).'</a>' ).'</p>',
+                ),
+				'buttons' => array(
+                    array(
+	                    'action' => 'personio_start_import();',
+                        'variant' => 'primary',
+                        'text' => __( 'Yes', 'personio-integration-light' )
+                    ),
+                    array(
+	                    'action' => 'closeDialog();',
+                        'variant' => 'secondary',
+                        'text' => __( 'No', 'personio-integration-light' )
+                    )
+                )
+			)
+		);
+
+		/**
+		 * Filter the initial import dialog.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $dialog The dialog to send.
+		 */
+		$dialog = apply_filters( 'personio_integration_import_dialog', $dialog );
+
+		// send response as JSON.
+		wp_send_json( $dialog );
+	}
+
+	/**
 	 * Update max count.
 	 *
 	 * @param int $max_count The value to add.
@@ -1708,5 +1785,15 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function update_import_step( int $count ): void {
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT ) ) + $count );
+	}
+
+	/**
+	 * Run this if import of positions has been ended.
+	 *
+	 * @return void
+	 */
+	public function import_ended(): void {
+		// save actual position count.
+		update_option( 'personioIntegrationPositionCount', Positions::get_instance()->get_positions_count() );
 	}
 }

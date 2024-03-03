@@ -8,11 +8,11 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
  * Initialize the transients-object.

@@ -370,6 +370,26 @@ class Position {
 	}
 
 	/**
+	 * Get a list of terms by a given taxonomy for this single position.
+	 *
+	 * @param string $taxonomy The taxonomy.
+	 *
+	 * @return array
+	 */
+	public function get_terms_by_field( string $taxonomy ): array {
+		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
+			$this->taxonomy_terms[ $taxonomy ] = array();
+			$taxonomy_terms = get_the_terms( $this->get_id(), $taxonomy );
+			if ( is_array( $taxonomy_terms ) ) {
+				$this->taxonomy_terms[ $taxonomy ] = $taxonomy_terms;
+			}
+		}
+
+		// return list of terms.
+		return $this->taxonomy_terms[ $taxonomy ];
+	}
+
+	/**
 	 * Get the language-specific title of this position.
 	 *
 	 * @return string

@@ -163,6 +163,19 @@ class Schedules_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
+		$false = false;
+		/**
+		 * Filter whether to activate this schedule.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param bool $false True if this object should NOT be enabled.
+		 * @param Schedules_Base $this Actual object.
+		 */
+		if( apply_filters( 'personio_integration_schedule_enabling', $false, $this ) ) {
+			return false;
+		}
+
 		// bail with true if no setting is configured.
 		if( ! $this->has_option_name() ) {
 			return true;

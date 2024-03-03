@@ -287,7 +287,7 @@ class Helper {
 	}
 
 	/**
-	 * Return the absolute URL to the plugin.
+	 * Return the absolute URL to the plugin (already trailed with slash).
 	 *
 	 * @return string
 	 */
@@ -296,7 +296,7 @@ class Helper {
 	}
 
 	/**
-	 * Return the absolute local filesystem-path to the plugin.
+	 * Return the absolute local filesystem-path (already trailed with slash) to the plugin.
 	 *
 	 * @return string
 	 */
@@ -650,5 +650,19 @@ class Helper {
 	 */
 	public static function add_array_in_array_on_position( array $fields, int $position, array $array_to_add ): array {
 		return array_slice( $fields, 0, $position, true ) + $array_to_add + array_slice( $fields, $position, null, true );
+	}
+
+	/**
+	 * Update list of used page builder.
+	 *
+	 * @param string $page_builder_name The name of the page builder to add to the list.
+	 * @return void
+	 */
+	public static function update_page_builder_list( string $page_builder_name ): void {
+		$page_builder_list = get_option( 'personioIntegrationPageBuilder' );
+		if( ! in_array( $page_builder_name, $page_builder_list, true ) ) {
+			$page_builder_list[] = $page_builder_name;
+			update_option( 'personioIntegrationPageBuilder', $page_builder_list );
+		}
 	}
 }

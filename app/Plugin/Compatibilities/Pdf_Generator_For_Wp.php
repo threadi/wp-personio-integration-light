@@ -23,7 +23,7 @@ use PersonioIntegrationLight\Plugin\Transients;
 class Pdf_Generator_For_Wp extends Compatibilities_Base {
 
 	/**
-	 * Name of this event.
+	 * Name of this object.
 	 *
 	 * @var string
 	 */

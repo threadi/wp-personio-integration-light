@@ -91,51 +91,6 @@ class Import {
 	}
 
 	/**
-	 * Import single position.
-	 *
-	 * @param SimpleXMLElement|null $position The XML-object of a single position.
-	 * @param string                $language_name The language-name.
-	 * @return void
-	 */
-	private function import_position( ?SimpleXMLElement $position, string $language_name ): void {
-		// create position object to handle all values and save them to database.
-		$position_object = new Position( 0 );
-		$position_object->set_lang( $language_name );
-		$position_object->set_title( (string) $position->name );
-		$position_object->set_content( $position->jobDescriptions );
-		if ( ! empty( $position->department ) ) {
-			$position_object->set_department( (string) $position->department );
-		}
-		if ( ! empty( $position->keywords ) ) {
-			$position_object->set_keywords( (string) $position->keywords );
-		}
-		$position_object->set_office( (string) $position->office );
-		$position_object->set_personio_id( (int) $position->id );
-		$position_object->set_recruiting_category( (string) $position->recruitingCategory );
-		$position_object->set_employment_type( (string) $position->employmentType );
-		$position_object->set_seniority( (string) $position->seniority );
-		$position_object->set_schedule( (string) $position->schedule );
-		$position_object->set_years_of_experience( (string) $position->yearsOfExperience );
-		$position_object->set_occupation( (string) $position->occupation );
-		$position_object->set_occupation_category( (string) $position->occupationCategory );
-		$position_object->set_created_at( (string) $position->createdAt );
-		/**
-		 * Change the XML-object before saving the position.
-		 *
-		 * @since 1.0.0 Available since first release.
-		 *
-		 * @param Position $position_object The object of this position.
-		 * @param object $position The XML-object with the data from Personio.
-		 * @param Import $import The Import-object.
-		 */
-		$position_object = apply_filters( 'personio_integration_import_single_position_xml', $position_object, $position, $this );
-		$position_object->save();
-
-		// add position to list.
-		$this->imported_postions[] = $position_object;
-	}
-
-	/**
 	 * Get the URL the import should use for positions.
 	 *
 	 * @return string
@@ -365,15 +320,13 @@ class Import {
 						 * @param bool $run_import The individual text.
 						 * @param object $position The XML-object of the Position.
 						 * @param string $language_name The language-marker.
+						 * @param Personio $personio_obj The used Personio-account-object.
 						 */
-						$run_import = apply_filters( 'personio_integration_import_single_position', $run_import, $position, $language_name );
-
-						// run import of position if it is allowed.
-						if ( false !== $run_import ) {
-							// import the position.
-							$this->import_position( $position, $language_name );
+						if ( false !== apply_filters( 'personio_integration_import_single_position', $run_import, $position, $language_name, $personio_obj ) ) {
+							// import the position and add it to the list.
+							$this->imported_postions[] = $this->get_imports_object()->import_single_position( $position, $language_name, $personio_obj->get_url() );
 						} elseif ( false !== $this->debug ) {
-							$this->log->add_log( sprintf( 'Position %1$s could not been imported from %2$s.', esc_html( $position->id ), wp_kses_post( $this->get_link() ) ), 'success' );
+							$this->log->add_log( sprintf( 'Position %1$s has not been imported from %2$s.', esc_html( $position->id ), wp_kses_post( $this->get_link() ) ), 'success' );
 						}
 
 						// update progress.

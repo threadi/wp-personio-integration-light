@@ -14,9 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Page_Builders;
-use PersonioIntegrationLight\PersonioIntegration\Post_Type;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
 use PersonioIntegrationLight\Widgets\Widgets;
@@ -99,6 +97,9 @@ class Init {
 		// init compatibility-checks.
 		Compatibilities::get_instance()->init();
 
+		// install db tables on plugin-installation.
+		add_action( 'personio_integration_install_db_tables', array( $this, 'install_db_tables' ) );
+
 		// register cli.
 		add_action( 'cli_init', array( $this, 'cli' ) );
 
@@ -107,6 +108,8 @@ class Init {
 
 		// add action links on plugin-list.
 		add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_setting_link' ) );
+
+		// add update message in plugin list.
 		add_action( 'in_plugin_update_message-' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_plugin_update_hints' ), 10, 2 );
 
 		// request-hooks.
@@ -281,5 +284,35 @@ class Init {
 			}
 		}
 		return $upgrade_notice;
+	}
+
+	/**
+	 * Install db-table of registered objects.
+	 *
+	 * @return void
+	 */
+	public function install_db_tables(): void {
+		foreach( apply_filters( 'personio_integration_objects_with_db_tables', array( 'PersonioIntegrationLight\Log' ) ) as $obj_name ) {
+			$obj = new $obj_name();
+			if( method_exists( $obj, 'create_table' ) ) {
+				$obj->create_table();
+			}
+		}
+	}
+
+	/**
+	 * Delete db-tables of registered objects.
+	 *
+	 * @return void
+	 */
+	public function delete_db_tables(): void {
+		foreach( apply_filters( 'personio_integration_objects_with_db_tables', array( 'PersonioIntegrationLight\Log' ) ) as $obj_name ) {
+			if( str_contains( $obj_name, 'PersonioIntegrationLight\\' ) ) {
+				$obj = new $obj_name();
+				if ( method_exists( $obj, 'delete_table' ) ) {
+					$obj->delete_table();
+				}
+			}
+		}
 	}
 }

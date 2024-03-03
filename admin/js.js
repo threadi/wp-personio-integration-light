@@ -35,31 +35,28 @@ jQuery(document).ready(function($) {
         }
     );
 
-    // create import-flyout with progressbar.
+    /**
+     * Create dialog before import is running.
+     * Get the content for the dialog via AJAX for dynamic content-changes.
+     */
     $('a.personio-integration-import-hint').on('click', function (e) {
-        e.preventDefault();
+      e.preventDefault();
 
-      let dialog_config = {
-        detail: {
-          title: personioIntegrationLightJsVars.title_start_import,
-          texts: [
-            '<p>' + personioIntegrationLightJsVars.txt_start_import + '</p>'
-          ],
-          buttons: [
-            {
-              'action': 'personio_start_import();',
-              'variant': 'primary',
-              'text': personioIntegrationLightJsVars.lbl_yes
-            },
-            {
-              'action': 'closeDialog();',
-              'variant': 'secondary',
-              'text': personioIntegrationLightJsVars.lbl_no
-            }
-          ]
+      // get the dialog via AJAX.
+      jQuery.ajax({
+        type: "POST",
+        url: personioIntegrationLightJsVars.ajax_url,
+        data: {
+          'action': 'personio_get_import_dialog',
+          'nonce': personioIntegrationLightJsVars.get_import_dialog_nonce
+        },
+        error: function() {
+          personio_integration_ajax_error_dialog()
+        },
+        success: function( result ) {
+          personio_integration_create_dialog(result);
         }
-      }
-      personio_integration_create_dialog( dialog_config );
+      });
     });
 
     // create confirm dialog for deletion of all positions.
@@ -573,4 +570,26 @@ function personio_integration_import_settings_file() {
       }
     },
   });
+}
+
+/**
+ * Define dialog for AJAX-errors.
+ */
+function personio_integration_ajax_error_dialog() {
+  let dialog_config = {
+    detail: {
+      title: personioIntegrationJsVars.title_error,
+      texts: [
+        '<p>' + personioIntegrationJsVars.txt_error + '</p>'
+      ],
+      buttons: [
+        {
+          'action': 'location.reload();',
+          'variant': 'primary',
+          'text': personioIntegrationJsVars.label_ok
+        }
+      ]
+    }
+  }
+  personio_integration_create_dialog( dialog_config );
 }

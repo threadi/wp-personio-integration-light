@@ -127,6 +127,7 @@ class Admin {
 				'dismiss_url_nonce'                  => wp_create_nonce( 'personio-integration-dismiss-url' ),
 				'run_import_nonce'                   => wp_create_nonce( 'personio-run-import' ),
 				'get_import_nonce'                   => wp_create_nonce( 'personio-get-import-info' ),
+				'get_import_dialog_nonce'            => wp_create_nonce( 'personio-import-dialog' ),
 				'get_deletion_nonce'                 => wp_create_nonce( 'personio-get-deletion-info' ),
 				'settings_import_file_nonce'         => wp_create_nonce( 'personio-integration-settings-import-file' ),
 				'rest_nonce'                     => wp_create_nonce( 'wp_rest' ),
@@ -154,12 +155,11 @@ class Admin {
 				'title_settings_import_file_missing' => __( 'Import file missing', 'personio-integration-light' ),
 				'title_settings_import_file_result'  => __( 'Import file uploaded', 'personio-integration-light' ),
 				'text_settings_import_file_missing'  => __( 'Please choose a file for the import.', 'personio-integration-light' ),
-				'title_start_import' => __( 'Run import', 'personio-integration-light' ),
-				/* translators: %1$s will be replaced by the sued Personio URL */
-				'txt_start_import' => sprintf( __( '<strong>Do you really want to import positions from %1$s?</strong>', 'personio-integration-light' ), '<a href="" target="_blank">'.esc_url( Helper::get_personio_url() ).'</a>' ),
 				'title_delete_progress' => __( 'Deletion in progress', 'personio-integration_light' ),
 				'title_deletion_success' => __( 'Deletion endet', 'personio-integration-light' ),
 				'txt_deletion_success' => __( '<strong>All positions have been deleted.</strong><br>You can re-import the jobs at any time.', 'personio-integration-light' ),
+				'title_error' => __( 'Error', 'wp-personio-integration' ),
+				'txt_error' => __( 'An unexpected error occurred. Please try it later again.', 'wp-personio-integration' ),
 			)
 		);
 	}
@@ -252,7 +252,7 @@ class Admin {
 	}
 
 	/**
-	 * Start import manually.
+	 * Start import manually via request.
 	 *
 	 * @return void
 	 */
@@ -565,7 +565,7 @@ class Admin {
 		// box for links in help.
 		add_meta_box(
 			Helper::get_plugin_name().'-links',
-			__( 'More information', 'personio-integration-light' ),
+			__( 'Get help', 'personio-integration-light' ),
 			array( $this, 'help_page_link_box' ),
 			get_current_screen(),
 			'normal'
@@ -666,8 +666,8 @@ class Admin {
 	 */
 	public function help_page_link_box(): void {
 		?>
-		<p><?php echo wp_kses_post( sprintf( __( 'If you have any questions do not hesitate to ask them in our <a href="%1$s" target="_blank">forum</a>', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) ); ?></p>
-		<p><?php echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">github</a>. There you will also find <a href="%2$s" target="_blank">some documentations</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light/tree/master/doc' ) ) ); ?></p>
+		<p><?php echo wp_kses_post( sprintf( __( 'If you have any questions do not hesitate to ask them in our <a href="%1$s" target="_blank">forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) ); ?></p>
+		<p><?php echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">github</a>. There you will also find <a href="%2$s" target="_blank">some documentations (opens new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light/tree/master/doc' ) ) ); ?></p>
 		<?php
 	}
 }

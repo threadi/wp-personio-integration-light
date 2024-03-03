@@ -582,6 +582,13 @@ class Settings {
 							'type'    => 'string',
 							'default' => WP_PERSONIO_INTEGRATION_VERSION
 						),
+					),
+					'personioIntegrationPageBuilder' => array(
+						'register_attributes' => array(
+							'type' => 'array',
+							'default'             => array(),
+						),
+						'do_not_export'       => true,
 					)
 				),
 			),

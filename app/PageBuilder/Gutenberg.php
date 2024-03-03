@@ -21,6 +21,12 @@ use PersonioIntegrationLight\PageBuilder\Gutenberg\Variations;
  * Object to handle the Gutenberg support.
  */
 class Gutenberg extends PageBuilder_Base {
+	/**
+	 * Internal name of the page builder.
+	 *
+	 * @var string
+	 */
+	protected string $name = 'gutenberg';
 
 	/**
 	 * Instance of this object.
@@ -80,6 +86,9 @@ class Gutenberg extends PageBuilder_Base {
 
 		// add our custom templates.
 		add_action( 'init', array( $this, 'add_templates' ) );
+
+		// call parent init.
+		parent::init();
 	}
 
 	/**
@@ -129,7 +138,7 @@ class Gutenberg extends PageBuilder_Base {
 	 *
 	 * @return array
 	 */
-	private function get_blocks(): array {
+	public function get_widgets(): array {
 		$list = array(
 			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Application_Button',
 			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Archive',
@@ -150,7 +159,7 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return void
 	 */
 	public function register_blocks(): void {
-		foreach( $this->get_blocks() as $block_class_name ) {
+		foreach( $this->get_widgets() as $block_class_name ) {
 			$obj = call_user_func( $block_class_name.'::get_instance' );
 			if( $obj instanceof Blocks_Basis ) {
 				$obj->register();

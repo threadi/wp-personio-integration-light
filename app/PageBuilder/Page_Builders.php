@@ -62,7 +62,7 @@ class Page_Builders {
 	 *
 	 * @return array
 	 */
-	private function get_page_builder(): array {
+	public function get_page_builder(): array {
 		$list = array(
 			'\PersonioIntegrationLight\PageBuilder\Gutenberg',
 		);

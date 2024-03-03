@@ -92,6 +92,9 @@ class Installer {
 			return;
 		}
 
+		// install tables.
+		Init::get_instance()->install_db_tables();
+
 		// initialize the default settings.
 		Settings::get_instance()->initialize_options();
 
@@ -106,10 +109,6 @@ class Installer {
 
 		// refresh permalinks.
 		update_option( 'personio_integration_update_slugs', 1 );
-
-		// initialize Log-database-table.
-		$log = new Log();
-		$log->create_table();
 
 		// show success message on cli.
 		Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin.' ) : false;

@@ -102,7 +102,7 @@ class Schedules {
 	 *
 	 * Does only run in wp-admin, not frontend.
 	 *
-	 * @param array $our_events
+	 * @param array $our_events List of our own events.
 	 *
 	 * @return array
 	 */
@@ -111,6 +111,7 @@ class Schedules {
 			foreach( $this->get_schedule_object_names() as $object_name ) {
 				$obj = new $object_name();
 				if( $obj instanceof Schedules_Base ) {
+					// install if schedule is enabled and not in list of our schedules.
 					if ( $obj->is_enabled() && ! isset( $our_events[$obj->get_name()] ) ) {
 
 						// reinstall the missing event.
@@ -122,6 +123,11 @@ class Schedules {
 
 						// re-run the check for WP-cron-events.
 						$our_events = $this->get_wp_events();
+					}
+
+					// delete if schedule is in list of our events and not enabled.
+					if ( ! $obj->is_enabled() && isset( $our_events[$obj->get_name()] ) ) {
+						$obj->delete();
 					}
 				}
 			}
