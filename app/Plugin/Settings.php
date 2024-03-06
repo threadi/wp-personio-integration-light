@@ -101,7 +101,7 @@ class Settings {
 			array(
 				'label' => __( 'Basic Settings', 'personio-integration-light' ),
 				'key'   => '',
-				'page'  => 'personioIntegrationPositions',
+				'page'  => 'personioIntegrationMainSettings',
 			),
 			array(
 				'label' => __( 'Templates', 'personio-integration-light' ),
@@ -148,7 +148,7 @@ class Settings {
 				array(
 					'label' => __( 'General Settings', 'personio-integration-light' ),
 					'key'   => '',
-					'page'  => 'personioIntegrationPositions',
+					'page'  => 'personioIntegrationMainSettings',
 				),
 				array(
 					'label'       => __( 'Enter Personio URL to get more options', 'personio-integration-light' ),
@@ -180,7 +180,7 @@ class Settings {
 		$this->settings = array(
 			'settings_section_main'            => array(
 				'label'    => __( 'General Settings', 'personio-integration-light' ),
-				'page'     => 'personioIntegrationPositions',
+				'page'     => 'personioIntegrationMainSettings',
 				'callback' => '__return_true',
 				'fields'   => array(
 					'personioIntegrationUrl'              => array(
@@ -248,7 +248,7 @@ class Settings {
 							'type'    => 'integer',
 							'default' => 0,
 						),
-						'class' => 'personio-integration-template-filter'
+						'class'               => 'personio-integration-template-filter',
 					),
 					'personioIntegrationTemplateFilter'   => array(
 						'label'               => __( 'Available filter for details', 'personio-integration-light' ),
@@ -291,7 +291,7 @@ class Settings {
 							'type'    => 'string',
 							'default' => 'default',
 						),
-						'class' => 'personio-integration-template-listing-template'
+						'class'               => 'personio-integration-template-listing-template',
 					),
 					'personioIntegrationTemplateContentList' => array(
 						'label'               => __( 'Choose templates for positions in list-view', 'personio-integration-light' ),
@@ -303,7 +303,7 @@ class Settings {
 							'type'    => 'array',
 							'default' => array( 'title', 'excerpt' ),
 						),
-						'class' => 'personio-integration-template-content-list'
+						'class'               => 'personio-integration-template-content-list',
 					),
 					'personioIntegrationTemplateListingExcerptsTemplate' => array(
 						'label'               => __( 'Choose template for details in list-view', 'personio-integration-light' ),
@@ -316,7 +316,7 @@ class Settings {
 							'type'    => 'string',
 							'default' => 'default',
 						),
-						'class' => 'personio-integration-template-excerpts-template'
+						'class'               => 'personio-integration-template-excerpts-template',
 					),
 					'personioIntegrationTemplateExcerptDefaults' => array(
 						'label'               => __( 'Choose details for positions in list-view', 'personio-integration-light' ),
@@ -328,7 +328,7 @@ class Settings {
 							'type'    => 'array',
 							'default' => array( 'recruitingCategory', 'schedule', 'office' ),
 						),
-						'class' => 'personio-integration-template-excerpts-defaults'
+						'class'               => 'personio-integration-template-excerpts-defaults',
 					),
 					'personioIntegrationTemplateListingContentTemplate' => array(
 						'label'               => __( 'Choose template for content in list-view', 'personio-integration-light' ),
@@ -342,7 +342,7 @@ class Settings {
 							'type'    => 'string',
 							'default' => 'default',
 						),
-						'class' => 'personio-integration-template-content-template'
+						'class'               => 'personio-integration-template-content-template',
 					),
 					'personioIntegrationEnableLinkInList' => array(
 						'label'               => __( 'Enable link to single on list-view', 'personio-integration-light' ),
@@ -370,7 +370,7 @@ class Settings {
 							'type'    => 'array',
 							'default' => array( 'title', 'content', 'formular' ),
 						),
-						'class' => 'personio-integration-template-content-template-2'
+						'class'               => 'personio-integration-template-content-template-2',
 					),
 					'personioIntegrationTemplateDetailsExcerptsTemplate' => array(
 						'label'               => __( 'Choose template for details in details-view', 'personio-integration-light' ),
@@ -383,7 +383,7 @@ class Settings {
 							'type'    => 'string',
 							'default' => 'default',
 						),
-						'class' => 'personio-integration-template-excerpts-template-2'
+						'class'               => 'personio-integration-template-excerpts-template-2',
 					),
 					'personioIntegrationTemplateExcerptDetail' => array(
 						'label'               => __( 'Choose details', 'personio-integration-light' ),
@@ -397,7 +397,7 @@ class Settings {
 							'type'    => 'array',
 							'default' => array( 'recruitingCategory', 'schedule', 'office' ),
 						),
-						'class' => 'personio-integration-template-excerpt-detail-2'
+						'class'               => 'personio-integration-template-excerpt-detail-2',
 					),
 					'personioIntegrationTemplateJobDescription' => array(
 						'label'               => __( 'Choose job description template in details-view', 'personio-integration-light' ),
@@ -519,12 +519,12 @@ class Settings {
 					'personioIntegrationImportNow' => array(
 						'label' => __( 'Get open positions from Personio', 'personio-integration-light' ),
 						'field' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\ImportPositions', 'get' ),
-						'class' => 'personio-integration-import-now'
+						'class' => 'personio-integration-import-now',
 					),
 					'personioIntegrationDeleteNow' => array(
 						'label' => __( 'Delete local positions', 'personio-integration-light' ),
 						'field' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\DeletePositions', 'get' ),
-						'class' => 'personio-integration-delete-now'
+						'class' => 'personio-integration-delete-now',
 					),
 					'personioIntegrationEnablePositionSchedule' => array(
 						'label'               => __( 'Enable automatic import', 'personio-integration-light' ),
@@ -538,7 +538,7 @@ class Settings {
 							'default' => 1,
 						),
 						'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Import', 'save' ),
-						'class' => 'personio-integration-automatic-import'
+						'class'               => 'personio-integration-automatic-import',
 					),
 				),
 			),
@@ -574,22 +574,22 @@ class Settings {
 					'personioIntegrationPositionScheduleInterval' => array(
 						'register_attributes' => array(
 							'type'    => 'string',
-							'default' => 'daily'
+							'default' => 'daily',
 						),
 					),
-					'personioIntegrationVersion' => array(
+					'personioIntegrationVersion'          => array(
 						'register_attributes' => array(
 							'type'    => 'string',
-							'default' => WP_PERSONIO_INTEGRATION_VERSION
+							'default' => WP_PERSONIO_INTEGRATION_VERSION,
 						),
 					),
-					'personioIntegrationPageBuilder' => array(
+					'personioIntegrationPageBuilder'      => array(
 						'register_attributes' => array(
-							'type' => 'array',
-							'default'             => array(),
+							'type'    => 'array',
+							'default' => array(),
 						),
 						'do_not_export'       => true,
-					)
+					),
 				),
 			),
 		);
@@ -751,7 +751,7 @@ class Settings {
 		$tab = sanitize_text_field( wp_unslash( filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
 
 		// set page to show.
-		$page = 'personioIntegrationPositions';
+		$page = 'personioIntegrationMainSettings';
 
 		// set callback to use.
 		$callback = '';
@@ -985,7 +985,32 @@ class Settings {
 		?>
 		<div class="wrap">
 		<?php echo wp_kses_post( Helper::get_logo_img( true ) ); ?>
-		<p><?php echo sprintf( esc_html__( 'The Personio logo as part of all distributed icons is a trademark of <a href="%1$s" target="_blank">Personio SE & Co. KG (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_url() )  ); ?></p></div>
+		<p>
+			<?php
+			/* translators: %1$s will be replaced by the URL for Personio */
+			printf( esc_html__( 'The Personio logo as part of all distributed icons is a trademark of <a href="%1$s" target="_blank">Personio SE & Co. KG (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ) );
+			?>
+		</p>
+		</div>
 		<?php
+	}
+
+	/**
+	 * Return whether a specific settings page is called.
+	 *
+	 * @param string $settings_page The requested settings page.
+	 *
+	 * @return bool
+	 */
+	public static function is_settings_page( string $settings_page ): bool {
+		$tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// bail if no value is set.
+		if( is_null( $tab ) ) {
+			return false;
+		}
+
+		// compare the values.
+		return $tab === $settings_page;
 	}
 }

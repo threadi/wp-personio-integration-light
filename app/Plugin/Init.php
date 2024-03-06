@@ -181,8 +181,7 @@ class Init {
 		// if setup has not been completed, show link here.
 		if ( ! Setup::get_instance()->is_completed() ) {
 			$links[] = "<a href='" . esc_url( Setup::get_instance()->get_setup_link() ) . "'>" . __( 'Setup', 'personio-integration-light' ) . '</a>';
-		}
-		else {
+		} else {
 			// adds the link to for settings.
 			$links[] = "<a href='" . esc_url( Helper::get_settings_url() ) . "'>" . __( 'Settings', 'personio-integration-light' ) . '</a>';
 		}
@@ -292,9 +291,9 @@ class Init {
 	 * @return void
 	 */
 	public function install_db_tables(): void {
-		foreach( apply_filters( 'personio_integration_objects_with_db_tables', array( 'PersonioIntegrationLight\Log' ) ) as $obj_name ) {
+		foreach ( apply_filters( 'personio_integration_objects_with_db_tables', array( 'PersonioIntegrationLight\Log' ) ) as $obj_name ) {
 			$obj = new $obj_name();
-			if( method_exists( $obj, 'create_table' ) ) {
+			if ( method_exists( $obj, 'create_table' ) ) {
 				$obj->create_table();
 			}
 		}
@@ -306,8 +305,8 @@ class Init {
 	 * @return void
 	 */
 	public function delete_db_tables(): void {
-		foreach( apply_filters( 'personio_integration_objects_with_db_tables', array( 'PersonioIntegrationLight\Log' ) ) as $obj_name ) {
-			if( str_contains( $obj_name, 'PersonioIntegrationLight\\' ) ) {
+		foreach ( apply_filters( 'personio_integration_objects_with_db_tables', array( 'PersonioIntegrationLight\Log' ) ) as $obj_name ) {
+			if ( str_contains( $obj_name, 'PersonioIntegrationLight\\' ) ) {
 				$obj = new $obj_name();
 				if ( method_exists( $obj, 'delete_table' ) ) {
 					$obj->delete_table();

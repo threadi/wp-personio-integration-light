@@ -527,10 +527,11 @@ class Setup {
 					'options'             => $this->convert_options_for_react( $language_setting['options'] ),
 					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate',
 				),
-				'help' => array(
+				'help'                                => array(
 					'type' => 'Text',
-					'text' => '<p>'.sprintf( __( '<span class="dashicons dashicons-editor-help"></span> <strong>Need help?</strong> Ask in <a href="%1$s" target="_blank">our forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ).'</p>'
-				)
+					/* translators: %1$s will be replaced by our support-forum-URL. */
+					'text' => '<p>' . sprintf( __( '<span class="dashicons dashicons-editor-help"></span> <strong>Need help?</strong> Ask in <a href="%1$s" target="_blank">our forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) . '</p>',
+				),
 			),
 			2 => array(
 				'runSetup' => array(

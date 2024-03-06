@@ -79,6 +79,6 @@ class Post_Type {
 	 * @return bool
 	 */
 	public function is_from_plugin( string $cpt ): bool {
-		return $cpt === WP_PERSONIO_INTEGRATION_PLUGIN;
+		return WP_PERSONIO_INTEGRATION_PLUGIN === $cpt;
 	}
 }

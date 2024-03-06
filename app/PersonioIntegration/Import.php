@@ -105,7 +105,7 @@ class Import {
 	 * @return string
 	 */
 	private function get_link(): string {
-		return '<a href="'.esc_html( $this->get_url() ) . '" target="_blank">'.esc_html( $this->get_url() ) . '</a>';
+		return '<a href="' . esc_html( $this->get_url() ) . '" target="_blank">' . esc_html( $this->get_url() ) . '</a>';
 	}
 
 	/**
@@ -137,12 +137,12 @@ class Import {
 		$languages = Languages::get_instance()->get_languages();
 
 		// return 'Fallback English' if language could not be detected.
-		if( empty( $languages[$this->get_language_name()]) ) {
+		if ( empty( $languages[ $this->get_language_name() ] ) ) {
 			return 'Fallback English';
 		}
 
 		// return the title of the language.
-		return $languages[$this->get_language_name()];
+		return $languages[ $this->get_language_name() ];
 	}
 
 	/**
@@ -167,7 +167,7 @@ class Import {
 
 		// get imports-object to update stats during import.
 		$imports_obj = $this->get_imports_object();
-		if( !( $imports_obj instanceof Imports ) ) {
+		if ( ! ( $imports_obj instanceof Imports ) ) {
 			$this->log->add_log( 'Imports-object could not be loaded.', 'error' );
 		}
 
@@ -242,7 +242,7 @@ class Import {
 				if ( $positions_count > 0 ) {
 					// set import count to actual max to show that it has been run.
 					$imports_obj->set_import_count( $imports_obj->get_import_max_count() );
-					// log event
+					// log event.
 					$this->log->add_log( sprintf( 'No changes in positions for language %1$s according to the timestamp we got from Personio account %2$s. No import run.', esc_html( $this->get_language_title() ), wp_kses_post( $this->get_link() ) ), 'success' );
 					return;
 				}
@@ -340,7 +340,8 @@ class Import {
 					$personio_obj->set_timestamp( $last_modified_timestamp, $this->get_language_name() );
 
 					// wait 1 second for consistent log-view on fast runs with just a view positions.
-					if( count($this->get_xml_positions()) < apply_filters( 'personio_integration_import_sleep_positions_limit', 20 ) ) { sleep( 1 ); }
+					if ( count( $this->get_xml_positions() ) < apply_filters( 'personio_integration_import_sleep_positions_limit', 20 ) ) {
+						sleep( 1 ); }
 
 					// log event.
 					$this->log->add_log( sprintf( 'Import of positions from Personio account %1$s for language %2$s ended.', wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ) ), 'success' );
@@ -354,7 +355,7 @@ class Import {
 			}
 		} else {
 			/* translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404) */
-			$this->errors[] = sprintf( __( 'Personio URL from Personio account %1$s for language %2$s not available. Returned HTTP-Status %3$d. Please check the URL you configured and if it is available.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ), absint( $http_status ) );
+			$this->errors[] = sprintf( __( 'Personio URL from Personio account %1$s for language %2$s not available.<br>Returned HTTP-Status %3$d.<br>Please check the configured URL and if it is available.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ), absint( $http_status ) );
 		}
 
 		// disable xml-error-handling.
@@ -400,7 +401,7 @@ class Import {
 
 		// update max counter.
 		$imports_obj = $this->get_imports_object();
-		if( $imports_obj instanceof Imports ) {
+		if ( $imports_obj instanceof Imports ) {
 			$imports_obj->set_import_max_count( $imports_obj->get_import_max_count() + count( $this->get_xml_positions() ) );
 		}
 	}

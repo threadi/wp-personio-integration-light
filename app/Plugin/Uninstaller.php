@@ -110,7 +110,7 @@ class Uninstaller {
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
 			// reset Personio- and language-specific settings.
-			Imports::get_instance()-reset_personio_settings();
+			Imports::get_instance() - reset_personio_settings();
 
 			// delete all collected data.
 			( new Cli() )->delete_all();
@@ -130,10 +130,10 @@ class Uninstaller {
 			}
 
 			// remove user meta for each cpt we provide.
-			foreach( Post_Types::get_instance()->get_post_types() as $post_type ) {
+			foreach ( Post_Types::get_instance()->get_post_types() as $post_type ) {
 				$obj = call_user_func( $post_type . '::get_instance' );
-				if( $obj instanceof Post_Type && $obj->is_from_plugin( WP_PERSONIO_INTEGRATION_PLUGIN ) ) {
-					$wpdb->query( $wpdb->prepare( 'DELETE FROM `'.$wpdb->usermeta.'` WHERE `meta_key` like %s', '%'. esc_sql( $obj->get_name() ). '%' ) );
+				if ( $obj instanceof Post_Type && $obj->is_from_plugin( WP_PERSONIO_INTEGRATION_PLUGIN ) ) {
+					$wpdb->query( $wpdb->prepare( 'DELETE FROM `' . $wpdb->usermeta . '` WHERE `meta_key` like %s', '%' . esc_sql( $obj->get_name() ) . '%' ) );
 				}
 			}
 		}

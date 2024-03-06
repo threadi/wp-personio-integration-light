@@ -135,17 +135,32 @@ class Settings_Import {
 
 		// bail if no file is given.
 		if ( ! isset( $_FILES ) ) {
-			wp_send_json( array( 'success' => false, 'html' => __( 'No file uploaded.', 'personio-integration-light' ) ) );
+			wp_send_json(
+				array(
+					'success' => false,
+					'html'    => __( 'No file uploaded.', 'personio-integration-light' ),
+				)
+			);
 		}
 
 		// bail if file has no size.
 		if ( isset( $_FILES['file']['size'] ) && 0 === $_FILES['file']['size'] ) {
-			wp_send_json( array( 'success' => false, 'html' => __( 'The uploaded file is no size.', 'personio-integration-light' ) ) );
+			wp_send_json(
+				array(
+					'success' => false,
+					'html'    => __( 'The uploaded file is no size.', 'personio-integration-light' ),
+				)
+			);
 		}
 
 		// bail if file type is not JSON.
 		if ( isset( $_FILES['file']['type'] ) && 'application/json' !== $_FILES['file']['type'] ) {
-			wp_send_json( array( 'success' => false, 'html' => __( 'The uploaded file is not a valid JSON-file.', 'personio-integration-light' ) ) );
+			wp_send_json(
+				array(
+					'success' => false,
+					'html'    => __( 'The uploaded file is not a valid JSON-file.', 'personio-integration-light' ),
+				)
+			);
 		}
 
 		// allow JSON-files.
@@ -155,18 +170,33 @@ class Settings_Import {
 		if ( isset( $_FILES['file']['name'] ) ) {
 			$filetype = wp_check_filetype( sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ) );
 			if ( 'json' !== $filetype['ext'] ) {
-				wp_send_json( array( 'success' => false, 'html' => __( 'The uploaded file does not have the file extension <i>.json</i>.', 'personio-integration-light' ) ) );
+				wp_send_json(
+					array(
+						'success' => false,
+						'html'    => __( 'The uploaded file does not have the file extension <i>.json</i>.', 'personio-integration-light' ),
+					)
+				);
 			}
 		}
 
 		// bail if no tmp_name is available.
 		if ( ! isset( $_FILES['file']['tmp_name'] ) ) {
-			wp_send_json( array( 'success' => false, 'html' => __( 'The uploaded file could not be saved. Contact your hoster about this problem.', 'personio-integration-light' ) ) );
+			wp_send_json(
+				array(
+					'success' => false,
+					'html'    => __( 'The uploaded file could not be saved. Contact your hoster about this problem.', 'personio-integration-light' ),
+				)
+			);
 		}
 
 		// bail if uploaded file is not readable.
 		if ( isset( $_FILES['file']['tmp_name'] ) && ! file_exists( sanitize_text_field( $_FILES['file']['tmp_name'] ) ) ) {
-			wp_send_json( array( 'success' => false, 'html' => __( 'The uploaded file could not be saved. Contact your hoster about this problem.', 'personio-integration-light' ) ) );
+			wp_send_json(
+				array(
+					'success' => false,
+					'html'    => __( 'The uploaded file could not be saved. Contact your hoster about this problem.', 'personio-integration-light' ),
+				)
+			);
 		}
 
 		// get WP Filesystem-handler for read the file.
@@ -179,8 +209,13 @@ class Settings_Import {
 		$settings_array = json_decode( $file_content, ARRAY_A );
 
 		// bail if JSON-code does not contain a setting for the Personio URL.
-		if( ! isset( $settings_array['personioIntegrationUrl'] ) ) {
-			wp_send_json( array( 'success' => false, 'html' => __( 'The uploaded file is not a valid JSON-file with settings for this plugin.', 'personio-integration-light' ) ) );
+		if ( ! isset( $settings_array['personioIntegrationUrl'] ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'html'    => __( 'The uploaded file is not a valid JSON-file with settings for this plugin.', 'personio-integration-light' ),
+				)
+			);
 		}
 
 		/**
@@ -196,7 +231,12 @@ class Settings_Import {
 		}
 
 		// return that import was successfully.
-		wp_send_json( array( 'success' => true, 'html' => __( 'Import has been run successfully.', 'personio-integration-light' ) ) );
+		wp_send_json(
+			array(
+				'success' => true,
+				'html'    => __( 'Import has been run successfully.', 'personio-integration-light' ),
+			)
+		);
 	}
 
 	/**

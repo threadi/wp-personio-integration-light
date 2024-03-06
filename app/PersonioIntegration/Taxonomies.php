@@ -63,7 +63,7 @@ class Taxonomies {
 		// register taxonomies.
 		add_action( 'init', array( $this, 'register' ), 0 );
 
-		// use REST hooks
+		// use REST hooks.
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
 
 		// our own hooks.
@@ -1040,10 +1040,10 @@ class Taxonomies {
 	 * @noinspection PhpUnused
 	 */
 	public function get_taxonomies_via_rest_api(): array {
-		$taxonomies_labels_array = Taxonomies::get_instance()->get_taxonomy_labels_for_settings();
+		$taxonomies_labels_array = self::get_instance()->get_taxonomy_labels_for_settings();
 		$taxonomies              = array();
 		$count                   = 0;
-		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
+		foreach ( self::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
 				++$count;
 				$terms_as_objects = get_terms( array( 'taxonomy' => $taxonomy_name ) );
@@ -1089,7 +1089,7 @@ class Taxonomies {
 
 		// delete the content of all taxonomies.
 		// -> hint: some will be newly insert after next wp-init.
-		$taxonomies = Taxonomies::get_instance()->get_taxonomies();
+		$taxonomies = self::get_instance()->get_taxonomies();
 		$progress   = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy => $settings ) {
 			// delete all terms of this taxonomy.

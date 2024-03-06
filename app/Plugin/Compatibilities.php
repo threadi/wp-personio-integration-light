@@ -63,14 +63,6 @@ class Compatibilities {
 		 * @param bool $false True to prevent compatibility-checks.
 		 */
 		if ( apply_filters( 'personio_integration_run_compatibility_checks', $false ) ) {
-			// loop through our compatibility-objects and remove their transients.
-			$transients_obj = Transients::get_instance();
-			foreach ( $this->get_compatibility_checks() as $compatibility_check ) {
-				$obj = call_user_func( $compatibility_check . '::get_instance' );
-				if ( $obj instanceof Compatibilities_Base ) {
-					$transients_obj->get_transient_by_name( $obj->get_name() )->delete();
-				}
-			}
 			return;
 		}
 
@@ -93,12 +85,16 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Acf',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Avada',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Beaver',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Bold_Page_Builder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Brizy',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Divi',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Elementor',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Nimble_Builder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Pdf_Generator_For_Wp',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Seed_Prod',
 			'PersonioIntegrationLight\Plugin\Compatibilities\SiteOrigin',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Themify',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Visual_Composer',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpBakery',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpPageBuilder',
 		);

@@ -8,11 +8,11 @@
 namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 
 // prevent direct access.
-use PersonioIntegrationLight\Helper;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use PersonioIntegrationLight\Helper;
 
 /**
  * Object to handle Gutenberg-variations of this plugin.
@@ -35,7 +35,7 @@ class Variations {
 	 *
 	 * @return void
 	 */
-	private function __clone() { }
+	private function __clone() {}
 
 	/**
 	 * Return the instance of this Singleton object.
@@ -67,6 +67,7 @@ class Variations {
 			Helper::get_plugin_url() . 'blocks/variations.js',
 			array( 'wp-blocks' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'blocks/variations.js' ),
+			true
 		);
 	}
 }

@@ -5,6 +5,7 @@
 !/build/languages
 !/build/minify_css.php
 !/build/libs
+!/build/index.php
 /blocks/application-button/build/
 /blocks/description/build/
 /blocks/details/build/

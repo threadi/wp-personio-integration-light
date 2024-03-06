@@ -50,7 +50,7 @@ class Checkbox {
 				?>
 				<?php echo esc_attr( $readonly ); ?>
 					class="personio-field-width"
-					title="<?php echo esc_attr( $title ); ?>"
+					title="<?php echo esc_attr( $title ); ?>" data-depends="<?php echo esc_attr( wp_json_encode( $attributes['depends'] ) ); ?>"
 			>
 			<?php
 

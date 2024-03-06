@@ -78,17 +78,17 @@ class Site_Health {
 				'namespace' => 'personio/v1',
 				'route'     => '/import_cron_checks/',
 				'callback'  => array( $this, 'import_cron_checks' ),
-				'args' => array()
-			)
+				'args'      => array(),
+			),
 		);
 
 		// add one check for each Personio URL.
-		foreach( Imports::get_instance()->get_personio_urls() as $personio_url ) {
+		foreach ( Imports::get_instance()->get_personio_urls() as $personio_url ) {
 			$list[] = array(
 				'namespace' => 'personio/v1',
-				'route'     => '/url_availability_checks_'.md5($personio_url).'/',
+				'route'     => '/url_availability_checks_' . md5( $personio_url ) . '/',
 				'callback'  => array( $this, 'url_availability_checks' ),
-				'args' => array( array( 'personio_url' => $personio_url ) )
+				'args'      => array( array( 'personio_url' => $personio_url ) ),
 			);
 		}
 
@@ -110,12 +110,12 @@ class Site_Health {
 	public function add_rest_api(): void {
 		foreach ( $this->get_endpoints() as $check ) {
 			// bail if no callback is set.
-			if( empty( $check['callback'] ) ) {
+			if ( empty( $check['callback'] ) ) {
 				continue;
 			}
 
 			// check if args are set.
-			if( ! isset( $check['args'] ) ) {
+			if ( ! isset( $check['args'] ) ) {
 				$check['args'] = array();
 			}
 
@@ -126,7 +126,7 @@ class Site_Health {
 				array(
 					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => $check['callback'],
-					'args' => $check['args'],
+					'args'                => $check['args'],
 					'permission_callback' => function () {
 						return current_user_can( 'manage_options' );
 					},
@@ -194,7 +194,7 @@ class Site_Health {
 	/**
 	 * Check the Personio-URL availability.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param WP_REST_Request $request The request-object.
 	 *
 	 * @return array
 	 */
@@ -203,7 +203,7 @@ class Site_Health {
 		$args = $request->get_attributes();
 
 		// bail with error if no settings found.
-		if( empty( $args ) || empty( $args['args']) || empty( $args['args'][0]['personio_url'] ) ) {
+		if ( empty( $args ) || empty( $args['args'] ) || empty( $args['args'][0]['personio_url'] ) ) {
 			return array(
 				'label'       => __( 'Personio URL availability check', 'personio-integration-light' ),
 				'status'      => 'recommended',
@@ -212,8 +212,8 @@ class Site_Health {
 					'color' => 'gray',
 				),
 				'description' => __( 'Missing Personio URL for check. Something is wrong with your plugin configuration.', 'personio-integration-light' ),
-				'action' => '',
-				'test' => 'personio_integration_rest_api_url_availability_check'
+				'action'      => '',
+				'test'        => 'personio_integration_rest_api_url_availability_check',
 			);
 		}
 
@@ -235,7 +235,7 @@ class Site_Health {
 		);
 
 		// request the HTTP-header of XML-API for the given Personio URL.
-		if( ! PersonioIntegrationUrl::check_url( $personio_obj->get_url() ) ) {
+		if ( ! PersonioIntegrationUrl::check_url( $personio_obj->get_url() ) ) {
 			$result['status'] = 'recommended';
 			/* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
 			$result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ), esc_url( Helper::get_settings_url() ), esc_url( Helper::get_personio_login_url() ) );
@@ -262,10 +262,10 @@ class Site_Health {
 		}
 
 		// one check for each Personio URL.
-		foreach( Imports::get_instance()->get_personio_urls() as $personio_url ) {
-			$statuses['async']['personio_integration_url_availability_check_'.md5($personio_url)] = array(
+		foreach ( Imports::get_instance()->get_personio_urls() as $personio_url ) {
+			$statuses['async'][ 'personio_integration_url_availability_check_' . md5( $personio_url ) ] = array(
 				'label'    => __( 'Personio Integration URL availability check', 'personio-integration-light' ),
-				'test'     => rest_url( 'personio/v1/url_availability_checks_'.md5($personio_url) ),
+				'test'     => rest_url( 'personio/v1/url_availability_checks_' . md5( $personio_url ) ),
 				'has_rest' => true,
 			);
 		}

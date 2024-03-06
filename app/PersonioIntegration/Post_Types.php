@@ -62,9 +62,9 @@ class Post_Types {
 	 * @return void
 	 */
 	public function register_post_type(): void {
-		foreach( $this->get_post_types() as $post_type ) {
+		foreach ( $this->get_post_types() as $post_type ) {
 			$obj = call_user_func( $post_type . '::get_instance' );
-			if( $obj instanceof Post_Type ) {
+			if ( $obj instanceof Post_Type ) {
 				$obj->init();
 			}
 		}
@@ -77,7 +77,7 @@ class Post_Types {
 	 */
 	public function get_post_types(): array {
 		$post_types = array(
-			'\PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition'
+			'\PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition',
 		);
 		/**
 		 * Filter the post-types.

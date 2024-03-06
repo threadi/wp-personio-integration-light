@@ -66,11 +66,11 @@ OR use ant in build/-directory: `ant json-translations`
 
 ### Run
 
-`lib/bin/phpcs --extensions=php --ignore=*/lib/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/* --standard=ruleset.xml .`
+`lib/bin/phpcs --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/* --standard=ruleset.xml .`
 
 ### Repair
 
-`lib/bin/phpcbf --extensions=php --ignore=*/lib/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/* --standard=ruleset.xml .`
+`lib/bin/phpcbf --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/* --standard=ruleset.xml .`
 
 ### Notes for Build
 TODO

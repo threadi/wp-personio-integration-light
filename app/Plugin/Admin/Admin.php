@@ -130,7 +130,7 @@ class Admin {
 				'get_import_dialog_nonce'            => wp_create_nonce( 'personio-import-dialog' ),
 				'get_deletion_nonce'                 => wp_create_nonce( 'personio-get-deletion-info' ),
 				'settings_import_file_nonce'         => wp_create_nonce( 'personio-integration-settings-import-file' ),
-				'rest_nonce'                     => wp_create_nonce( 'wp_rest' ),
+				'rest_nonce'                         => wp_create_nonce( 'wp_rest' ),
 				'label_import_is_running'            => __( 'Import is running', 'personio-integration-light' ),
 				'logo_img'                           => Helper::get_logo_img(),
 				'url_example'                        => Helper::get_personio_url_example(),
@@ -146,8 +146,8 @@ class Admin {
 				'txt_pro_hint'                       => __( 'With <strong>Personio Integration Pro</strong> you will be able to capture applications within your website.<br>Several form templates are available for this purpose, which you can also customize individually.<br>Incoming applications are automatically transferred to your Personio account via the Personio API.', 'personio-integration-light' ),
 				'lbl_get_more_information'           => __( 'Get more information', 'personio-integration-light' ),
 				'lbl_look_later'                     => __( 'I\'ll look later', 'personio-integration-light' ),
-				'title_error'                        => __( 'Error during import of positions', 'personio-integration-light' ),
-				'txt_error'                          => __( '<strong>Error during import of positions.</strong> The following error occurred:', 'personio-integration-light' ),
+				'import_title_error'                 => __( 'Error during import of positions', 'personio-integration-light' ),
+				'import_txt_error'                   => __( '<strong>Error during import of positions.</strong> The following error occurred:', 'personio-integration-light' ),
 				'lbl_ok'                             => __( 'OK', 'personio-integration-light' ),
 				'title_import_success'               => __( 'Positions has been imported', 'personio-integration-light' ),
 				/* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
@@ -155,11 +155,21 @@ class Admin {
 				'title_settings_import_file_missing' => __( 'Import file missing', 'personio-integration-light' ),
 				'title_settings_import_file_result'  => __( 'Import file uploaded', 'personio-integration-light' ),
 				'text_settings_import_file_missing'  => __( 'Please choose a file for the import.', 'personio-integration-light' ),
-				'title_delete_progress' => __( 'Deletion in progress', 'personio-integration_light' ),
-				'title_deletion_success' => __( 'Deletion endet', 'personio-integration-light' ),
-				'txt_deletion_success' => __( '<strong>All positions have been deleted.</strong><br>You can re-import the jobs at any time.', 'personio-integration-light' ),
-				'title_error' => __( 'Error', 'wp-personio-integration' ),
-				'txt_error' => __( 'An unexpected error occurred. Please try it later again.', 'wp-personio-integration' ),
+				'title_delete_progress'              => __( 'Deletion in progress', 'personio-integration_light' ),
+				'title_deletion_success'             => __( 'Deletion endet', 'personio-integration-light' ),
+				'txt_deletion_success'               => __( '<strong>All positions have been deleted.</strong><br>You can re-import the jobs at any time.', 'personio-integration-light' ),
+				'title_error'                        => __( 'Error', 'wp-personio-integration' ),
+				'txt_error'                          => __( '<strong>An unexpected error occurred.</strong> The error was:', 'wp-personio-integration' ),
+			)
+		);
+
+		// add php-vars to our js-script for possible import-errors.
+		wp_localize_script(
+			'personio-integration-admin',
+			'personioIntegrationLightJsImportErrors',
+			array(
+				/* translators: %1$s will be replaced by the URL for the Pro-plugin */
+				'Request Timeout' => sprintf( __( '<u>Request Timeout</u> - The import apparently took too long to be completed.<br>Use <a href="%1$s">Personio Integration Pro</a> to use partial imports without timeouts.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ),
 			)
 		);
 	}
@@ -417,12 +427,14 @@ class Admin {
 		}
 
 		// enable intros if set as parameter.
-		if( isset( $_GET['import_intro'] ) ) {
+		$import_intro = filter_input( INPUT_GET, 'import_intro', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( ! empty( $import_intro ) ) {
 			Intro::get_instance()->add_js();
 			$classes .= ' personio-integration-import-intro';
 		}
 		// enable intros if set as parameter.
-		if( isset( $_GET['template_intro'] ) ) {
+		$template_intro = filter_input( INPUT_GET, 'template_intro', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( ! empty( $template_intro ) ) {
 			Intro::get_instance()->add_js();
 			$classes .= ' personio-integration-template-intro';
 		}
@@ -538,8 +550,8 @@ class Admin {
 			add_submenu_page(
 				'edit.php?post_type=' . PersonioPosition::get_instance()->get_name(),
 				__( 'Need help with Personio Integration?', 'personio-integration-light' ),
-				'<span class="disable">' . __('Help', 'personio-integration-light') . '</span>',
-				'read_'.PersonioPosition::get_instance()->get_name(),
+				'<span class="disable">' . __( 'Help', 'personio-integration-light' ) . '</span>',
+				'read_' . PersonioPosition::get_instance()->get_name(),
 				'personioPositionsHelp',
 				array( $this, 'show_help_page' ),
 				9
@@ -555,7 +567,7 @@ class Admin {
 	public function add_meta_boxes_for_help(): void {
 		// box for tours in help.
 		add_meta_box(
-			Helper::get_plugin_name().'-tours',
+			Helper::get_plugin_name() . '-tours',
 			__( 'Tours', 'personio-integration-light' ),
 			array( $this, 'help_page_tours_box' ),
 			get_current_screen(),
@@ -564,7 +576,7 @@ class Admin {
 
 		// box for links in help.
 		add_meta_box(
-			Helper::get_plugin_name().'-links',
+			Helper::get_plugin_name() . '-links',
 			__( 'Get help', 'personio-integration-light' ),
 			array( $this, 'help_page_link_box' ),
 			get_current_screen(),
@@ -585,13 +597,13 @@ class Admin {
 	public function help_page_tours_box(): void {
 		// button to show import options as intro.
 		$dialog_import = array(
-			'title' => __( 'How to change the import of positions?', 'personio-integration-light' ),
-			'texts' => array(
-				'<p>'.__( 'Click on the button bellow to start a journey through the settings to import positions.', 'personio-integration-light' ).'</p>'
+			'title'   => __( 'How to change the import of positions?', 'personio-integration-light' ),
+			'texts'   => array(
+				'<p>' . __( 'Click on the button bellow to start a journey through the settings to import positions.', 'personio-integration-light' ) . '</p>',
 			),
 			'buttons' => array(
 				array(
-					'action'  => 'location.href="' . esc_url( add_query_arg( array( 'import_intro' => 1 ) , Helper::get_settings_url( 'import' ) ) ) . '";',
+					'action'  => 'location.href="' . esc_url( add_query_arg( array( 'import_intro' => 1 ), Helper::get_settings_url( 'import' ) ) ) . '";',
 					'variant' => 'primary',
 					'text'    => __( 'Start', 'personio-integration-light' ),
 				),
@@ -599,64 +611,71 @@ class Admin {
 					'action'  => 'closeDialog();',
 					'variant' => 'secondary',
 					'text'    => __( 'Cancel', 'personio-integration-light' ),
-				)
-			)
-		);
-		?><p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_import ) ); ?>"><?php echo esc_html__( 'How to change the import of positions?', 'personio-integration-light' ); ?></a></p><?php
-
-		// button to show template options as intro.
-		$dialog_templates = array(
-			'title' => __( 'How to configure templates?', 'personio-integration-light' ),
-			'texts' => array(
-				'<p>'.__( 'Click on the button bellow to start a journey through the settings for templates.', 'personio-integration-light' ).'</p>'
+				),
 			),
-			'buttons' => array(
-				array(
-					'action'  => 'location.href="' . esc_url( add_query_arg( array( 'template_intro' => 1 ) , Helper::get_settings_url( 'templates' ) ) ) . '";',
-					'variant' => 'primary',
-					'text'    => __( 'Start', 'personio-integration-light' ),
-				),
-				array(
-					'action'  => 'closeDialog();',
-					'variant' => 'secondary',
-					'text'    => __( 'Cancel', 'personio-integration-light' ),
-				)
-			)
 		);
-		?><p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to configure templates?', 'personio-integration-light' ); ?></a></p><?php
+		?>
+		<p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_import ) ); ?>"><?php echo esc_html__( 'How to change the import of positions?', 'personio-integration-light' ); ?></a></p>
+																							<?php
 
-		// button to show how to get the pro-version.
-		$false = false;
-		/**
-		 * Hide the additional the sort column which is only filled in Pro.
-		 *
-		 * @since 3.0.0 Available since 3.0.0
-		 *
-		 * @param array $false Set true to hide the buttons.
-		 */
-		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
-			$dialog_templates = array(
-				'title' => __( 'How to get the Pro-version?', 'personio-integration-light' ),
-				'texts' => array(
-					'<p>'.sprintf( __( 'If you want to use the Pro-version of our plugin, check out <a href="%1$s" target="_blank">our website (opens new window)</a> and fill out the order form there.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ).'</p>'
-				),
-				'buttons' => array(
-					array(
-						'action'  => 'closeDialog();',
-						'variant' => 'primary',
-						'text'    => __( 'OK', 'personio-integration-light' ),
-					),
-				)
-			);
-			?><p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p><?php
-		}
+																							// button to show template options as intro.
+																							$dialog_templates = array(
+																								'title'   => __( 'How to configure templates?', 'personio-integration-light' ),
+																								'texts'   => array(
+																									'<p>' . __( 'Click on the button bellow to start a journey through the settings for templates.', 'personio-integration-light' ) . '</p>',
+																								),
+																								'buttons' => array(
+																									array(
+																										'action'  => 'location.href="' . esc_url( add_query_arg( array( 'template_intro' => 1 ), Helper::get_settings_url( 'templates' ) ) ) . '";',
+																										'variant' => 'primary',
+																										'text'    => __( 'Start', 'personio-integration-light' ),
+																									),
+																									array(
+																										'action'  => 'closeDialog();',
+																										'variant' => 'secondary',
+																										'text'    => __( 'Cancel', 'personio-integration-light' ),
+																									),
+																								),
+																							);
+																							?>
+		<p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to configure templates?', 'personio-integration-light' ); ?></a></p>
+																							<?php
 
-		/**
-		 * Add additional helper tasks via hook.
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 */
-		do_action( 'personio_integration_help_tours' );
+																							// button to show how to get the pro-version.
+																							$false = false;
+																							/**
+																							 * Hide the additional the sort column which is only filled in Pro.
+																							 *
+																							 * @since 3.0.0 Available since 3.0.0
+																							 *
+																							 * @param array $false Set true to hide the buttons.
+																							 */
+																							if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+																								$dialog_templates = array(
+																									'title'   => __( 'How to get the Pro-version?', 'personio-integration-light' ),
+																									'texts'   => array(
+																										/* translators: %1$s will be replaced by the Pro-plugin-URL */
+																										'<p>' . sprintf( __( 'If you want to use the Pro-version of our plugin, check out <a href="%1$s" target="_blank">our website (opens new window)</a> and fill out the order form there.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</p>',
+																									),
+																									'buttons' => array(
+																										array(
+																											'action'  => 'closeDialog();',
+																											'variant' => 'primary',
+																											'text'    => __( 'OK', 'personio-integration-light' ),
+																										),
+																									),
+																								);
+																								?>
+			<p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p>
+																								<?php
+																							}
+
+																							/**
+																							 * Add additional helper tasks via hook.
+																							 *
+																							 * @since 3.0.0 Available since 3.0.0.
+																							 */
+																							do_action( 'personio_integration_help_tours' );
 	}
 
 	/**
@@ -666,8 +685,18 @@ class Admin {
 	 */
 	public function help_page_link_box(): void {
 		?>
-		<p><?php echo wp_kses_post( sprintf( __( 'If you have any questions do not hesitate to ask them in our <a href="%1$s" target="_blank">forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) ); ?></p>
-		<p><?php echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">github</a>. There you will also find <a href="%2$s" target="_blank">some documentations (opens new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light/tree/master/doc' ) ) ); ?></p>
+		<p>
+			<?php
+			/* translators: %1$s will be replaced by the support-forum-URL. */
+			echo wp_kses_post( sprintf( __( 'If you have any questions do not hesitate to ask them in our <a href="%1$s" target="_blank">forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) );
+			?>
+		</p>
+		<p>
+			<?php
+			/* translators: %1$s and %2$s will be replaced by external URLs. */
+			echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">github</a>. There you will also find <a href="%2$s" target="_blank">some documentations (opens new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light/tree/master/doc' ) ) );
+			?>
+			</p>
 		<?php
 	}
 }

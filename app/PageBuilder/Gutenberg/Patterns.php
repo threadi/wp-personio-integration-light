@@ -64,18 +64,18 @@ class Patterns {
 	private function get_patterns(): array {
 		$patterns = array(
 			'personio-integration-light/single-position' => array(
-				'title' => __( 'Personio Integration Single View', 'personio-integration-light' ),
+				'title'       => __( 'Personio Integration Single View', 'personio-integration-light' ),
 				'description' => __( 'Display single position.', 'personio-integration-light' ),
-				'template' => 'gutenberg/pattern-single.html'
+				'template'    => 'gutenberg/pattern-single.html',
 			),
-			'personio-integration-light/query-loop' => array(
-				'title' => __( 'Personio Integration Query Loop', 'personio-integration-light' ),
+			'personio-integration-light/query-loop'      => array(
+				'title'       => __( 'Personio Integration Query Loop', 'personio-integration-light' ),
 				'description' => __( 'Predefined layout for query loop.', 'personio-integration-light' ),
-				'template' => 'gutenberg/query-loop.html',
-				'args' => array(
-					'blockTypes' => array( 'core/query' )
-				)
-			)
+				'template'    => 'gutenberg/query-loop.html',
+				'args'        => array(
+					'blockTypes' => array( 'core/query' ),
+				),
+			),
 		);
 
 		/**
@@ -95,7 +95,7 @@ class Patterns {
 	 */
 	private function register_patterns(): void {
 		// bail if needed function is not available.
-		if( ! function_exists( 'register_block_pattern' ) ) {
+		if ( ! function_exists( 'register_block_pattern' ) ) {
 			return;
 		}
 
@@ -105,17 +105,17 @@ class Patterns {
 		global $wp_filesystem;
 
 		// loop through the patterns and add them.
-		foreach( $this->get_patterns() as $pattern_name => $pattern ) {
+		foreach ( $this->get_patterns() as $pattern_name => $pattern ) {
 			// bail if no template is given.
-			if( empty( $pattern['template'] ) ) {
+			if ( empty( $pattern['template'] ) ) {
 				continue;
 			}
 
-			// get path of templates
+			// get path of templates.
 			$template_path = \PersonioIntegrationLight\Plugin\Templates::get_instance()->get_template( $pattern['template'] );
 
 			// bail if file does not exist.
-			if( ! file_exists( $template_path ) ) {
+			if ( ! file_exists( $template_path ) ) {
 				continue;
 			}
 
@@ -123,7 +123,7 @@ class Patterns {
 			$content = $wp_filesystem->get_contents( $template_path );
 
 			// bail if no content could be loaded.
-			if( empty( $content ) ) {
+			if ( empty( $content ) ) {
 				continue;
 			}
 
@@ -138,12 +138,12 @@ class Patterns {
 			);
 
 			// add custom args, if set.
-			if( isset( $pattern['args'] ) ) {
+			if ( isset( $pattern['args'] ) ) {
 				$args = array_merge( $args, $pattern['args'] );
 			}
 
 			// register pattern.
-			register_block_pattern(	$pattern_name, $args );
+			register_block_pattern( $pattern_name, $args );
 		}
 	}
 

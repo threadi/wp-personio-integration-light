@@ -74,7 +74,7 @@ class Themes {
 	 */
 	public function get_theme_support(): void {
 		// bail if theme-support is already known.
-		if( ! is_null( $this->theme ) ) {
+		if ( ! is_null( $this->theme ) ) {
 			return;
 		}
 
@@ -82,9 +82,9 @@ class Themes {
 		$theme = wp_get_theme();
 
 		// search for the active theme in the list of supported themes.
-		foreach( $this->get_themes() as $theme_class_name ) {
+		foreach ( $this->get_themes() as $theme_class_name ) {
 			$obj = new $theme_class_name();
-			if( $obj instanceof Themes_Base && $obj->get_name() === $theme->get_template() ) {
+			if ( $obj instanceof Themes_Base && $obj->get_name() === $theme->get_template() ) {
 				// set theme as active-theme support.
 				$this->set_theme_support( $obj );
 
@@ -111,7 +111,7 @@ class Themes {
 			'\PersonioIntegrationLight\PersonioIntegration\Themes\Hitchcock',
 			'\PersonioIntegrationLight\PersonioIntegration\Themes\OceanWp',
 			'\PersonioIntegrationLight\PersonioIntegration\Themes\OpenShop',
-			'\PersonioIntegrationLight\PersonioIntegration\Themes\TwentySeventeen'
+			'\PersonioIntegrationLight\PersonioIntegration\Themes\TwentySeventeen',
 		);
 
 		/**
@@ -126,7 +126,7 @@ class Themes {
 	/**
 	 * Set the theme-support.
 	 *
-	 * @param Themes_Base $obj
+	 * @param Themes_Base $obj The theme-object based on Themes_Base.
 	 *
 	 * @return void
 	 */
@@ -141,7 +141,7 @@ class Themes {
 	 */
 	public function get_theme_wrapper_classes(): string {
 		// bail if no theme is set.
-		if( is_null( $this->theme ) ) {
+		if ( is_null( $this->theme ) ) {
 			return '';
 		}
 

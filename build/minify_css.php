@@ -7,7 +7,7 @@
 
 require '../lib/autoload.php';
 
-use MatthiasMullie\Minify;
+use MatthiasMullie\Minify\CSS;
 
 // bail if no arguments given.
 if( empty( $argv ) ) {
@@ -28,5 +28,5 @@ if( ! file_exists( $argv[1] ) ) {
 $target_filename = str_replace( '.css', '.min.css', $argv[1] );
 
 // run minification.
-$minifier = new Minify\CSS($argv[1]);
+$minifier = new CSS($argv[1]);
 $minifier->minify($target_filename);

@@ -114,7 +114,7 @@ class Availability {
 		}
 
 		// get list of positions.
-		$positions = Positions::get_instance()->get_positions();
+		$positions      = Positions::get_instance()->get_positions();
 		$position_count = count( $positions );
 
 		/**
@@ -234,14 +234,14 @@ class Availability {
 				// create dialog.
 				$dialog = array(
 					'className' => 'personio-integration-applications-hint',
-					'title' => __( 'Personio page not available', 'personio-integration-light' ),
-					'texts' => array(
-						'<p>'.__( 'If the Personio page for this position is not available, no one will be able to apply for it directly.', 'personio-integration-light' ).'</p>',
-						/* translator: %1$s will be replaced by the link to the Personio account */
-						'<p>'.sprintf( __( 'Check in your <a href="%1$s" target="_blank">Personio account (opens new window)</a> why the page is not available.<br>You may have only deactivated the career page.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ) ).'</p>',
-						'<p>'.__( 'With <strong>Personio Integration Pro</strong>, you can also enter applications directly in the WordPress website and transfer them to Personio.<br>The career page of a job in Personio does not need to be activated for this.', 'personio-integration-light' ).'</p>'
+					'title'     => __( 'Personio page not available', 'personio-integration-light' ),
+					'texts'     => array(
+						'<p>' . __( 'If the Personio page for this position is not available, no one will be able to apply for it directly.', 'personio-integration-light' ) . '</p>',
+						/* translators: %1$s will be replaced by the link to the Personio account */
+						'<p>' . sprintf( __( 'Check in your <a href="%1$s" target="_blank">Personio account (opens new window)</a> why the page is not available.<br>You may have only deactivated the career page.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ) ) . '</p>',
+						'<p>' . __( 'With <strong>Personio Integration Pro</strong>, you can also enter applications directly in the WordPress website and transfer them to Personio.<br>The career page of a job in Personio does not need to be activated for this.', 'personio-integration-light' ) . '</p>',
 					),
-					'buttons' => array(
+					'buttons'   => array(
 						array(
 							'action'  => 'window.open( "' . esc_url( Helper::get_pro_url() ) . '" );closeDialog();',
 							'variant' => 'primary',
@@ -251,12 +251,12 @@ class Availability {
 							'action'  => 'closeDialog();',
 							'variant' => 'secondary',
 							'text'    => __( 'OK', 'personio-integration-light' ),
-						)
+						),
 					),
 				);
 
 				// show icon with helper.
-				$html = '<span class="dashicons dashicons-no"></span><a class="pro-marker wp-easy-dialog" data-dialog="'.esc_attr( wp_json_encode( $dialog ) ).'"><span class="dashicons dashicons-editor-help"></span></a>';
+				$html = '<span class="dashicons dashicons-no"></span><a class="pro-marker wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
 				/**
 				 * Filter the availability "no"-output.
 				 *

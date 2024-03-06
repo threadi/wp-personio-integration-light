@@ -261,14 +261,14 @@ class PersonioPosition extends Post_Type {
 			'raw'       => '',
 			'protected' => false,
 		);
-		$data->data['title'] = array(
+		$data->data['title']   = array(
 			'rendered' => $position_obj->get_title(),
-			'raw' => $position_obj->get_title(),
+			'raw'      => $position_obj->get_title(),
 		);
 		$data->data['content'] = array( 'rendered' => $content );
 
 		$data->data['meta'] = array(
-			'personioId' => absint( $position_obj->get_personio_id() )
+			'personioId' => absint( $position_obj->get_personio_id() ),
 		);
 
 		// set response.
@@ -619,7 +619,7 @@ class PersonioPosition extends Post_Type {
 		);
 
 		// bail if user is not logged in.
-		if( ! is_user_logged_in() ) {
+		if ( ! is_user_logged_in() ) {
 			return;
 		}
 
@@ -628,8 +628,8 @@ class PersonioPosition extends Post_Type {
 			'wp/v2',
 			$this->get_name(),
 			array(
-				'methods' => WP_REST_Server::EDITABLE,
-				'callback' => array( $this, 'change_positions' ),
+				'methods'             => WP_REST_Server::EDITABLE,
+				'callback'            => array( $this, 'change_positions' ),
 				'permission_callback' => function () {
 					return current_user_can( 'edit_posts' );
 				},
@@ -641,8 +641,8 @@ class PersonioPosition extends Post_Type {
 			'wp/v2',
 			$this->get_name(),
 			array(
-				'methods' => WP_REST_Server::DELETABLE,
-				'callback' => array( $this, 'delete_positions' ),
+				'methods'             => WP_REST_Server::DELETABLE,
+				'callback'            => array( $this, 'delete_positions' ),
 				'permission_callback' => function () {
 					return current_user_can( 'edit_posts' );
 				},
@@ -757,7 +757,7 @@ class PersonioPosition extends Post_Type {
 		$position_obj  = $positions_obj->get_position( $post_id );
 
 		// bail if object is not valid.
-		if( ! $position_obj->is_valid() ) {
+		if ( ! $position_obj->is_valid() ) {
 			return;
 		}
 
@@ -765,10 +765,9 @@ class PersonioPosition extends Post_Type {
 		$user = wp_get_current_user();
 
 		// if no user could be found, check if we are running on WP CLI.
-		if( is_null( $user) ) {
+		if ( is_null( $user ) ) {
 			$username = 'WP CLI';
-		}
-		else {
+		} else {
 			$username = $user->display_name;
 		}
 
@@ -834,7 +833,7 @@ class PersonioPosition extends Post_Type {
 		$position_obj = Positions::get_instance()->get_position( $post_id );
 
 		// bail if position is not valid.
-		if( ! $position_obj->is_valid() ) {
+		if ( ! $position_obj->is_valid() ) {
 			return;
 		}
 
@@ -902,7 +901,7 @@ class PersonioPosition extends Post_Type {
 			$edit_url = get_edit_post_link( $post->ID );
 
 			// add the edit-URL to the action-list if it is set.
-			if( ! is_null( $edit_url ) ) {
+			if ( ! is_null( $edit_url ) ) {
 				$new_actions['edit'] = '<a href="' . esc_url( $edit_url ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
 			}
 
@@ -1233,13 +1232,13 @@ class PersonioPosition extends Post_Type {
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
 		$position_obj  = Positions::get_instance()->get_position( $post->ID );
 		$taxonomy_name = str_replace( $this->get_name() . '-taxonomy-', '', $attr['id'] );
-		$terms       = $position_obj->get_terms_by_field( $taxonomy_name );
+		$terms         = $position_obj->get_terms_by_field( $taxonomy_name );
 		if ( empty( $terms ) ) {
 			echo '<i>' . esc_html__( 'No data available.', 'personio-integration-light' ) . '</i>';
 		} else {
-			foreach( $terms as $index => $term ) {
-				if( $index > 0 ) {
-					echo ", ";
+			foreach ( $terms as $index => $term ) {
+				if ( $index > 0 ) {
+					echo ', ';
 				}
 
 				// create filter url.
@@ -1522,7 +1521,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function delete_positions(): void {
 		// bail if deletion is actual running.
-		if( absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING ) ) > 0 ) {
+		if ( absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING ) ) > 0 ) {
 			return;
 		}
 
@@ -1547,19 +1546,19 @@ class PersonioPosition extends Post_Type {
 		 */
 		do_action( 'personio_integration_deletion_starting' );
 
-		// get positions
+		// get positions.
 		$positions      = Positions::get_instance()->get_positions();
 		$position_count = count( $positions );
 
 		// get Personio URLs and languages.
 		$personio_urls = Imports::get_instance()->get_personio_urls();
-		$languages = Languages::get_instance()->get_languages();
+		$languages     = Languages::get_instance()->get_languages();
 
 		// set max count.
-		update_option( WP_PERSONIO_INTEGRATION_DELETE_MAX, $position_count + ( count( $personio_urls) * count( $languages ) ) );
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_MAX, $position_count + ( count( $personio_urls ) * count( $languages ) ) );
 
 		// show cli hint.
-		$progress       = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Deleting all local positions', $position_count ) : false;
+		$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Deleting all local positions', $position_count ) : false;
 
 		// loop through all positions to delete them.
 		foreach ( $positions as $position ) {
@@ -1604,7 +1603,7 @@ class PersonioPosition extends Post_Type {
 
 		// log this event.
 		$logs = new Log();
-		$logs->add_log( sprintf( 'Positions has been deleted by %1$s.', esc_html( $user->display_name )), 'success' );
+		$logs->add_log( sprintf( 'Positions has been deleted by %1$s.', esc_html( $user->display_name ) ), 'success' );
 
 		/**
 		 * Run custom actions after deletion of all positions has been done.
@@ -1631,25 +1630,25 @@ class PersonioPosition extends Post_Type {
 		$params = $data->get_params();
 
 		// bail if no params are set.
-		if( empty( $params ) ) {
+		if ( empty( $params ) ) {
 			return;
 		}
 
 		// bail if no task is set.
-		if( empty( $params['task'] ) ) {
+		if ( empty( $params['task'] ) ) {
 			return;
 		}
 
 		// bail if no post id is set.
-		if( empty( $params['post'] ) ) {
+		if ( empty( $params['post'] ) ) {
 			return;
 		}
 
 		// on action "reset_application_count" run exakt this.
-		if( 'reset_application_count' === $params['task'] ) {
+		if ( 'reset_application_count' === $params['task'] ) {
 			// get position as object.
 			$position_obj = Positions::get_instance()->get_position( $params['post'] );
-			if( $position_obj->is_valid() ) {
+			if ( $position_obj->is_valid() ) {
 				delete_post_meta( $position_obj->get_id(), 'application_limit' );
 
 				// answer with true success.
@@ -1722,7 +1721,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Return the import dialog where user could decide to start des import of positions..
+	 * Return the import dialog where user could decide to start the import of positions.
 	 *
 	 * @return void
 	 */
@@ -1732,24 +1731,24 @@ class PersonioPosition extends Post_Type {
 		// define dialog.
 		$dialog = array(
 			'detail' => array(
-				'title' => __( 'Run import', 'personio-integration-light' ),
-                'texts' => array(
-	                /* translators: %1$s will be replaced by the sued Personio URL */
-	                '<p>'.sprintf( __( '<strong>Do you really want to import positions from %1$s?</strong>', 'personio-integration-light' ), '<a href="" target="_blank">'.esc_url( Helper::get_personio_url() ).'</a>' ).'</p>',
-                ),
+				'title'   => __( 'Run import', 'personio-integration-light' ),
+				'texts'   => array(
+					/* translators: %1$s will be replaced by the Personio URL */
+					'<p>' . sprintf( __( '<strong>Do you really want to import open positions from<br>%1$s ?</strong>', 'personio-integration-light' ), '<a href="" target="_blank">' . esc_url( Helper::get_personio_url() ) . '</a>' ) . '</p>',
+				),
 				'buttons' => array(
-                    array(
-	                    'action' => 'personio_start_import();',
-                        'variant' => 'primary',
-                        'text' => __( 'Yes', 'personio-integration-light' )
-                    ),
-                    array(
-	                    'action' => 'closeDialog();',
-                        'variant' => 'secondary',
-                        'text' => __( 'No', 'personio-integration-light' )
-                    )
-                )
-			)
+					array(
+						'action'  => 'personio_start_import();',
+						'variant' => 'primary',
+						'text'    => __( 'Yes', 'personio-integration-light' ),
+					),
+					array(
+						'action'  => 'closeDialog();',
+						'variant' => 'secondary',
+						'text'    => __( 'No', 'personio-integration-light' ),
+					),
+				),
+			),
 		);
 
 		/**

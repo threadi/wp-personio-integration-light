@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the compatibility-check for Avada.
+ * File to handle the compatibility-check for Nimble Builder.
  *
  * @package personio-integration-light
  */
@@ -19,14 +19,14 @@ use PersonioIntegrationLight\Plugin\Transients;
 /**
  * Object for this check.
  */
-class Avada extends Compatibilities_Base {
+class Nimble_Builder extends Compatibilities_Base {
 
 	/**
 	 * Name of this object.
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_avada';
+	protected string $name = 'personio_integration_compatibility_bold_page_builder';
 
 	/**
 	 * Run the check.
@@ -39,7 +39,7 @@ class Avada extends Compatibilities_Base {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-			$transient_obj->set_message( sprintf( __( 'We realized that you are using Avada - very nice! <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Avada.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Nimble Builder - very nice!</strong> Unfortunately, we do not yet offer native support for this page builder. Please <a href="%1$s">contact us</a> if you would like an addition. However, you will also be able to insert the posts into your pages <a href="%2$s">using shortcodes</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ), esc_url( Helper::get_shortcode_documentation_url() ) ) );
 			$transient_obj->set_type( 'success' );
 			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
@@ -49,27 +49,11 @@ class Avada extends Compatibilities_Base {
 	}
 
 	/**
-	 * Check if Avada and its necessary plugins are active.
+	 * Return whether this component is active (true) or not (false).
 	 *
 	 * @return bool
 	 */
 	public function is_active(): bool {
-		// bail if fusion-builder-plugin is not available.
-		if ( ! Helper::is_plugin_active( 'fusion-builder/fusion-builder.php' ) ) {
-			return false;
-		}
-
-		// otherwise check for the theme.
-		$is_avada = false;
-		$theme    = wp_get_theme();
-		if ( 'Avada' === $theme->get( 'Name' ) ) {
-			$is_avada = true;
-		}
-		if ( $theme->parent() && 'Avada' === $theme->parent()->get( 'Name' ) ) {
-			$is_avada = true;
-		}
-
-		// return resulting value.
-		return $is_avada;
+		return Helper::is_plugin_active( 'nimble-builder/nimble-builder.php' );
 	}
 }

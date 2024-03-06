@@ -84,8 +84,10 @@ class Gutenberg extends PageBuilder_Base {
 			return;
 		}
 
-		// add our custom templates.
+		// add our custom templates and set to use them.
 		add_action( 'init', array( $this, 'add_templates' ) );
+		add_filter( 'personio_integration_load_single_template', '__return_true' );
+		add_filter( 'personio_integration_load_archive_template', '__return_true' );
 
 		// call parent init.
 		parent::init();
@@ -159,9 +161,9 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return void
 	 */
 	public function register_blocks(): void {
-		foreach( $this->get_widgets() as $block_class_name ) {
-			$obj = call_user_func( $block_class_name.'::get_instance' );
-			if( $obj instanceof Blocks_Basis ) {
+		foreach ( $this->get_widgets() as $block_class_name ) {
+			$obj = call_user_func( $block_class_name . '::get_instance' );
+			if ( $obj instanceof Blocks_Basis ) {
 				$obj->register();
 			}
 		}

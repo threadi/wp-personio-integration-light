@@ -8,11 +8,11 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent also other direct access.
-use PersonioIntegrationLight\Log;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use PersonioIntegrationLight\Log;
 
 /**
  * The object which handles schedules.
@@ -107,27 +107,36 @@ class Schedules {
 	 * @return array
 	 */
 	public function check_events( array $our_events ): array {
-		if( is_admin() ) {
-			foreach( $this->get_schedule_object_names() as $object_name ) {
+		if ( is_admin() ) {
+			foreach ( $this->get_schedule_object_names() as $object_name ) {
 				$obj = new $object_name();
-				if( $obj instanceof Schedules_Base ) {
+				if ( $obj instanceof Schedules_Base ) {
 					// install if schedule is enabled and not in list of our schedules.
-					if ( $obj->is_enabled() && ! isset( $our_events[$obj->get_name()] ) ) {
+					if ( $obj->is_enabled() && ! isset( $our_events[ $obj->get_name() ] ) ) {
 
 						// reinstall the missing event.
 						$obj->install();
 
 						// log this event.
 						$log = new Log();
-						$log->add_log( sprintf( __( 'Missing cron event %1$s automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success' );
+						/* translators: %1$s will be replaced by the event name. */
+						$log->add_log( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success' );
 
 						// re-run the check for WP-cron-events.
 						$our_events = $this->get_wp_events();
 					}
 
 					// delete if schedule is in list of our events and not enabled.
-					if ( ! $obj->is_enabled() && isset( $our_events[$obj->get_name()] ) ) {
+					if ( ! $obj->is_enabled() && isset( $our_events[ $obj->get_name() ] ) ) {
 						$obj->delete();
+
+						// log this event.
+						$log = new Log();
+						/* translators: %1$s will be replaced by the event name. */
+						$log->add_log( sprintf( __( 'Not enabled cron event <i>%1$s</i> remove.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success' );
+
+						// re-run the check for WP-cron-events.
+						$our_events = $this->get_wp_events();
 					}
 				}
 			}
@@ -231,7 +240,7 @@ class Schedules {
 		foreach ( _get_cron_array() as $events ) {
 			foreach ( $events as $event_name => $event_settings ) {
 				if ( str_contains( $event_name, 'personio_integration' ) ) {
-					$our_events[$event_name] = array(
+					$our_events[ $event_name ] = array(
 						'name'     => $event_name,
 						'settings' => $event_settings,
 					);

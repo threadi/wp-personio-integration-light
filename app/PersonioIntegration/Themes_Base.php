@@ -64,10 +64,10 @@ class Themes_Base {
 	 */
 	public function add_styles(): void {
 		wp_enqueue_style(
-			'personio-integration-'.$this->get_name(),
-			Helper::get_plugin_url() . 'css/'.$this->get_css_file(),
+			'personio-integration-' . $this->get_name(),
+			Helper::get_plugin_url() . 'css/' . $this->get_css_file(),
 			array( 'personio-integration-styles', 'personio-integration-additional-styles' ),
-			Helper::get_file_version( Helper::get_plugin_path() . 'css/'.$this->get_css_file() ),
+			Helper::get_file_version( Helper::get_plugin_path() . 'css/' . $this->get_css_file() ),
 		);
 	}
 
@@ -81,7 +81,7 @@ class Themes_Base {
 		$css_file = $this->css_file;
 
 		// if debug-mode is not enabled, use minified file.
-		if( ! defined( 'WP_DEBUG' ) || ( defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
+		if ( ! defined( 'WP_DEBUG' ) || ( defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
 			$css_file = str_replace( '.css', '.min.css', $css_file );
 		}
 
@@ -106,7 +106,7 @@ class Themes_Base {
 	 */
 	public function get_wrapper_classes(): string {
 		$wrapper_classes = $this->wrapper_classes;
-		$theme_name = $this->get_name();
+		$theme_name      = $this->get_name();
 
 		/**
 		 * Filter the used CSS wrapper classes for this theme.

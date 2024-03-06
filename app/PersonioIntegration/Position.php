@@ -379,7 +379,7 @@ class Position {
 	public function get_terms_by_field( string $taxonomy ): array {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$this->taxonomy_terms[ $taxonomy ] = array();
-			$taxonomy_terms = get_the_terms( $this->get_id(), $taxonomy );
+			$taxonomy_terms                    = get_the_terms( $this->get_id(), $taxonomy );
 			if ( is_array( $taxonomy_terms ) ) {
 				$this->taxonomy_terms[ $taxonomy ] = $taxonomy_terms;
 			}
@@ -441,9 +441,7 @@ class Position {
 	 * @return false|string
 	 */
 	public function get_excerpt(): false|string {
-		ob_start();
-		Templates::get_instance()->get_excerpt_template( $this, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ) );
-		return ob_get_clean();
+		return Templates::get_instance()->get_excerpt_template( $this, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ), true );
 	}
 
 	/**

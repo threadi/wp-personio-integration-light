@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle main functions for each block.
+ * File to handle main functions for single block.
  *
  * @package personio-integration-light
  */
@@ -8,16 +8,16 @@
 namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 
 // prevent direct access.
-use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\Position;
-use PersonioIntegrationLight\PersonioIntegration\Positions;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
+
 /**
- * Object to handle main functions for each block.
+ * Object to handle main functions for single block.
  */
 class Blocks_Basis {
 	/**
@@ -87,7 +87,7 @@ class Blocks_Basis {
 
 		// embed translation if available.
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'wp-personio-integration-'.$this->get_name().'-editor-script', 'personio-integration-light', Helper::get_plugin_path() . 'languages/' );
+			wp_set_script_translations( 'wp-personio-integration-' . $this->get_name() . '-editor-script', 'personio-integration-light', Helper::get_plugin_path() . 'languages/' );
 		}
 	}
 
@@ -155,7 +155,7 @@ class Blocks_Basis {
 		 *
 		 * @param array $single_attributes The settings as array.
 		 */
-		return apply_filters( 'personio_integration_gutenberg_block_'.$this->get_name().'_attributes', $single_attributes );
+		return apply_filters( 'personio_integration_gutenberg_block_' . $this->get_name() . '_attributes', $single_attributes );
 	}
 
 	/**
@@ -172,7 +172,7 @@ class Blocks_Basis {
 		 *
 		 * @param string $path The absolute path to the block.json.
 		 */
-		return apply_filters( 'personio_integration_gutenberg_block_'.$this->get_name().'_path', $path );
+		return apply_filters( 'personio_integration_gutenberg_block_' . $this->get_name() . '_path', $path );
 	}
 
 	/**
@@ -192,33 +192,26 @@ class Blocks_Basis {
 	 *
 	 * @return Position|false
 	 */
-	protected function get_position_by_request(): Position|false {
+	public function get_position_by_request(): Position|false {
 		// get positions object.
 		$positions = Positions::get_instance();
 
-		// get the position as object.
-		// -> is no id is available choose a random one (e.g. for preview in Gutenberg).
-		$post_id = get_the_ID();
-		$position_obj = false;
-		if( $post_id > 0 ) {
+		// return the position as object if the called ID is valid.
+		$post_id      = get_the_ID();
+		if ( $post_id > 0 ) {
 			$position_obj = $positions->get_position( $post_id );
-			if( ! $position_obj->is_valid() ) {
-				$position_obj = false;
+			if ( $position_obj->is_valid() ) {
+				return $position_obj;
 			}
 		}
 
-		// fallback: get a random position.
-		if ( ! $position_obj ) {
+		// fallback: get a random position, only during AJAX-request (e.g. in Gutenberg).
+		if ( Helper::is_admin_api_request() ) {
 			$position_array = $positions->get_positions( 1 );
-			$position_obj       = $position_array[0];
-		}
-
-		// bail if no valid position object could be loaded.
-		if( ! $position_obj->is_valid() ) {
-			return false;
+			return $position_array[0];
 		}
 
 		// return the object.
-		return $position_obj;
+		return false;
 	}
 }

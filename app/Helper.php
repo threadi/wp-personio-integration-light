@@ -660,9 +660,18 @@ class Helper {
 	 */
 	public static function update_page_builder_list( string $page_builder_name ): void {
 		$page_builder_list = get_option( 'personioIntegrationPageBuilder' );
-		if( ! in_array( $page_builder_name, $page_builder_list, true ) ) {
+		if ( ! in_array( $page_builder_name, $page_builder_list, true ) ) {
 			$page_builder_list[] = $page_builder_name;
 			update_option( 'personioIntegrationPageBuilder', $page_builder_list );
 		}
+	}
+
+	/**
+	 * Return URL for shortcode documentation.
+	 *
+	 * @return string
+	 */
+	public static function get_shortcode_documentation_url(): string {
+		return Languages::get_instance()->is_german_language() ? 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes_de.md' : 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md';
 	}
 }

@@ -110,7 +110,7 @@ class Roles {
 	 */
 	public function allow_save_settings(): void {
 		$settings_pages = array(
-			'personioIntegrationPositions',
+			'personioIntegrationMainSettings',
 			'personioIntegrationPositionsTemplates',
 			'personioIntegrationPositionsImportExport',
 			'personioIntegrationPositionsAdvanced',

@@ -188,10 +188,10 @@ class Templates {
 	 */
 	public function get_template_labels(): array {
 		$templates = array(
-			'title'            => esc_html__( 'Title', 'personio-integration-light' ),
-			'excerpt'          => esc_html__( 'Details', 'personio-integration-light' ),
-			'content'          => esc_html__( 'Content', 'personio-integration-light' ),
-			'formular'         => esc_html__( 'Application link', 'personio-integration-light' ),
+			'title'    => esc_html__( 'Title', 'personio-integration-light' ),
+			'excerpt'  => esc_html__( 'Details', 'personio-integration-light' ),
+			'content'  => esc_html__( 'Content', 'personio-integration-light' ),
+			'formular' => esc_html__( 'Application link', 'personio-integration-light' ),
 		);
 
 		/**
@@ -367,7 +367,7 @@ class Templates {
 		 * @param bool $false Return true if our own single template should not be used.
 		 * @param string $single_template The single template which will be used instead.
 		 */
-		if( apply_filters( 'personio_integration_load_single_template', $false, $single_template ) ) {
+		if ( apply_filters( 'personio_integration_load_single_template', $false, $single_template ) ) {
 			return $single_template;
 		}
 
@@ -383,7 +383,7 @@ class Templates {
 	 */
 	public function get_archive_template( string $archive_template ): string {
 		// bail if it is not our post type.
-		if( ! is_post_type_archive( PersonioPosition::get_instance()->get_name() ) ) {
+		if ( ! is_post_type_archive( PersonioPosition::get_instance()->get_name() ) ) {
 			return $archive_template;
 		}
 
@@ -396,12 +396,12 @@ class Templates {
 		 * @param bool $false Return true if our own archive template should not be used.
 		 * @param string $archive_template The archive template which will be used instead.
 		 */
-		if( apply_filters( 'personio_integration_load_archive_template', $false, $archive_template ) ) {
+		if ( apply_filters( 'personio_integration_load_archive_template', $false, $archive_template ) ) {
 			return $archive_template;
 		}
 
 		// return our own archive template.
-		return $this->get_template( 'archive-'.PersonioPosition::get_instance()->get_name().'.php' );
+		return $this->get_template( 'archive-' . PersonioPosition::get_instance()->get_name() . '.php' );
 	}
 
 	/**
@@ -423,7 +423,7 @@ class Templates {
 		 *
 		 * @param bool $true False if content template should not be used.
 		 */
-		if( ! apply_filters( 'personio_integration_show_content', $true ) ) {
+		if ( ! apply_filters( 'personio_integration_show_content', $true ) ) {
 			return $content;
 		}
 
@@ -453,7 +453,7 @@ class Templates {
 		$position_obj = Positions::get_instance()->get_position( get_the_ID() );
 
 		// return the excerpt-template.
-		return $this->get_excerpt_template( $position_obj, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ) );
+		return $this->get_excerpt_template( $position_obj, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ), true );
 	}
 
 	/**
@@ -575,7 +575,7 @@ class Templates {
 	 */
 	public function get_application_link_template( Position $position, array $attributes ): void {
 		// bail if we are in admin.
-		if( is_admin() ) {
+		if ( is_admin() ) {
 			return;
 		}
 
@@ -587,7 +587,7 @@ class Templates {
 		 *
 		 * @param bool $false Return true to prevent button-output.
 		 */
-		if( apply_filters( 'personio_integration_hide_button', $false ) ) {
+		if ( apply_filters( 'personio_integration_hide_button', $false ) ) {
 			return;
 		}
 
