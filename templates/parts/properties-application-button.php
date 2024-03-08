@@ -22,8 +22,7 @@ defined( 'ABSPATH' ) || exit;
 // embed block-specific styling.
 require Templates::get_instance()->get_template( 'parts/styling.php' );
 
-// TODO blank auch abschaltbar machen.
-
+// output.
 ?>
 <div class="entry-content">
 	<p class="personio-integration-application-button<?php echo esc_attr( $attributes['classes'] ); ?>">

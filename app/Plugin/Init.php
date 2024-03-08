@@ -15,8 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Page_Builders;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
+use PersonioIntegrationLight\Widgets\Positions;
 use PersonioIntegrationLight\Widgets\Widgets;
 
 /**

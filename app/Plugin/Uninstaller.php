@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
-use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\Widgets\Widgets;
@@ -110,7 +109,7 @@ class Uninstaller {
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
 			// reset Personio- and language-specific settings.
-			Imports::get_instance() - reset_personio_settings();
+			Imports::get_instance()->reset_personio_settings();
 
 			// delete all collected data.
 			( new Cli() )->delete_all();

@@ -30,7 +30,6 @@ use WP_Query;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-use WP_Term;
 
 /**
  * Object of this custom post type.
@@ -325,19 +324,28 @@ class PersonioPosition extends Post_Type {
 		// do not output anything without ID.
 		if ( $personio_attributes['personioid'] <= 0 ) {
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-				return '<div><p>' . __( 'Single-view called without the PersonioId for a position.', 'personio-integration-light' ) . '</p></div>';
+				$message = __( 'Single-view called without the PersonioId for a position.', 'personio-integration-light' );
+				$wrapper_id = 'position'.$personio_attributes['personioid'];
+				$type = '';
+				ob_start();
+				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
+				return ob_get_clean();
 			}
 			return '';
 		}
 
 		// get the position by its PersonioId.
-		$positions = Positions::get_instance();
-		$position  = $positions->get_position_by_personio_id( $personio_attributes['personioid'] );
+		$position  = Positions::get_instance()->get_position_by_personio_id( $personio_attributes['personioid'] );
 
 		// do not show this position if it is not valid or could not be loaded.
 		if ( $position && ! $position->is_valid() || ! $position ) {
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-				return '<div><p>' . __( 'Given Id is not a valid position-Id.', 'personio-integration-light' ) . '</p></div>';
+				$message = __( 'Given Id is not a valid position-Id.', 'personio-integration-light' );
+				$wrapper_id = 'position'.$personio_attributes['personioid'];
+				$type = '';
+				ob_start();
+				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
+				return ob_get_clean();
 			}
 			return '';
 		}
@@ -1241,6 +1249,14 @@ class PersonioPosition extends Post_Type {
 					echo ', ';
 				}
 
+				// get label.
+				$label = $term->name;
+				if( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $taxonomy_name ) {
+					// get languages in the project.
+					$languages = Languages::get_instance()->get_languages();
+					$label = $languages[ $term->name ];
+				}
+
 				// create filter url.
 				$filter_url = add_query_arg(
 					array(
@@ -1253,7 +1269,7 @@ class PersonioPosition extends Post_Type {
 				);
 
 				// output.
-				echo '<a href="' . esc_url( $filter_url ) . '">' . wp_kses_post( $term->name ) . '</a> (' . absint( $term->count ) . ')';
+				echo '<a href="' . esc_url( $filter_url ) . '">' . esc_html( $label ) . '</a> (' . absint( $term->count ) . ')';
 			}
 		}
 	}
@@ -1318,7 +1334,7 @@ class PersonioPosition extends Post_Type {
 	 * @return array
 	 */
 	private function get_single_shortcode_attributes_defaults(): array {
-		return array(
+		$default_values = array(
 			'personioid'              => 0,
 			'lang'                    => Languages::get_instance()->get_main_language(),
 			'template'                => '',
@@ -1329,6 +1345,16 @@ class PersonioPosition extends Post_Type {
 			'styles'                  => '',
 			'classes'                 => '',
 		);
+
+		/**
+		 * Filter the attribute-defaults.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $default_values The list of default values for each attribute used to display positions in frontend.
+		 *
+		 */
+		return apply_filters( 'personio_integration_position_attribute_defaults', $default_values );
 	}
 
 	/**

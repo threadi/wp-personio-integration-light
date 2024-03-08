@@ -91,6 +91,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Elementor',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Nimble_Builder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Pdf_Generator_For_Wp',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Polylang',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Seed_Prod',
 			'PersonioIntegrationLight\Plugin\Compatibilities\SiteOrigin',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Themify',

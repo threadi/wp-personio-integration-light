@@ -58,6 +58,9 @@ class Installer {
 	 * @return void
 	 */
 	public function activation(): void {
+		// set activation runner to enable.
+		define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 1 );
+
 		if ( is_multisite() ) {
 			// loop through the blogs.
 			foreach ( Helper::get_blogs() as $blog_id ) {
@@ -74,6 +77,9 @@ class Installer {
 			// simply run the tasks on single-site-install.
 			$this->activation_tasks();
 		}
+
+		// set activation runner to disable.
+		define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 0 );
 	}
 
 	/**

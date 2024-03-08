@@ -183,8 +183,9 @@ class Positions {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param array $query The configured query.
+		 * @param array $parameter_to_add The parameter to filter for.
 		 */
-		$query = apply_filters( 'personio_integration_positions_query', $query );
+		$query = apply_filters( 'personio_integration_positions_query', $query, $parameter_to_add );
 
 		// get the results.
 		$this->results = new WP_Query( $query );

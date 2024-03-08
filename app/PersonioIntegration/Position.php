@@ -398,7 +398,17 @@ class Position {
 		if ( empty( $this->data['post_title'] ) ) {
 			$this->set_title( get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), true ) );
 		}
-		return $this->data['post_title'];
+
+		$title =  $this->data['post_title'];
+		/**
+		 * Filter the title of the position.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param string $title The title.
+		 * @param Position $this The position object.
+		 */
+		return apply_filters( 'position_integration_position_title', $title, $this );
 	}
 
 	/**
@@ -510,7 +520,7 @@ class Position {
 	 * @return array
 	 */
 	public function get_content(): array {
-		return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
+		return (array)get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
 	}
 
 	/**
