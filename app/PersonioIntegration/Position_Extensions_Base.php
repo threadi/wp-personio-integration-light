@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Object to handle extension of Positions in Pro-plugin.
+ * Object to handle extension of positions in Pro-plugin.
  */
 class Position_Extensions_Base {
 	/**

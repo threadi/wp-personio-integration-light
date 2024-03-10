@@ -20,36 +20,20 @@ use PersonioIntegrationLight\Plugin\Settings;
 /**
  * Object to handle availability-checks for positions.
  */
-class Availability {
+class Availability extends Extensions_Base {
 	/**
-	 * Instance of this object.
+	 * The internal name of this extension.
 	 *
-	 * @var ?Availability
+	 * @var string
 	 */
-	private static ?Availability $instance = null;
+	protected string $name = 'availability';
 
 	/**
-	 * Constructor for Init-Handler.
-	 */
-	private function __construct() {}
-
-	/**
-	 * Prevent cloning of this object.
+	 * Name if the setting field which defines its state.
 	 *
-	 * @return void
+	 * @var string
 	 */
-	private function __clone() {}
-
-	/**
-	 * Return the instance of this Singleton object.
-	 */
-	public static function get_instance(): Availability {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
-		}
-
-		return static::$instance;
-	}
+	protected string $setting_field = 'personioIntegrationEnableAvailabilityCheck';
 
 	/**
 	 * Initialize this plugin.
@@ -61,9 +45,10 @@ class Availability {
 		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'run' ) );
+		add_filter( 'personio_integration_extensions_table_extension', array( $this, 'add_extension' ) );
 
 		// bail if settings is not enabled.
-		if ( 1 !== absint( Settings::get_instance()->get_setting( 'personioIntegrationEnableAvailabilityCheck' ) ) ) {
+		if ( $this->is_enabled() ) {
 			return;
 		}
 
@@ -84,7 +69,7 @@ class Availability {
 			$settings['settings_section_import']['fields'],
 			3,
 			array(
-				'personioIntegrationEnableAvailabilityCheck' => array(
+				$this->get_settings_field_name() => array(
 					'label'               => __( 'Enable availability checks', 'wp-personio-integration' ),
 					'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
 					'description'         => __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'wp-personio-integration' ),
@@ -135,8 +120,11 @@ class Availability {
 		// get log object.
 		$log = new Log();
 
+		// show cli hint.
+		$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar('Run availability checks', count($positions)) : false;
+
 		// loop through the positions and check each.
-		foreach ( Positions::get_instance()->get_positions() as $position_obj ) {
+		foreach ( $positions as $position_obj ) {
 			if ( $position_obj instanceof Position ) {
 				// define settings for second request to get the contents.
 				$args     = array(
@@ -177,7 +165,13 @@ class Availability {
 				 */
 				do_action( 'personio_integration_import_count', $count );
 			}
+
+			// show progress.
+			$progress ? $progress->tick() : false;
 		}
+
+		// show progress.
+		$progress ? $progress->finish() : false;
 	}
 
 	/**
@@ -267,5 +261,49 @@ class Availability {
 				echo wp_kses_post( apply_filters( 'personio_integration_light_position_availability_no', $html ) );
 			}
 		}
+	}
+
+	/**
+	 * Add this extension to the list of extensions.
+	 *
+	 * @param array $extensions List of extensions.
+	 *
+	 * @return array
+	 */
+	public function add_extension( array $extensions ): array {
+		$extensions[] = array(
+			'state' => false,
+			'name' => 'Availability',
+			'description' => __( 'Check each position for availability on your Personio career page.', 'personio-integration-light' )
+		);
+
+		return $extensions;
+	}
+
+	/**
+	 * Return label of this extension.
+	 *
+	 * @return string
+	 */
+	public function get_label(): string {
+		return __( 'Availability', 'personio-integration-light' );
+	}
+
+	/**
+	 * Return whether this extension is enabled (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	public function is_enabled(): bool {
+		return 1 === absint( Settings::get_instance()->get_setting( 'personioIntegrationEnableAvailabilityCheck' ) );
+	}
+
+	/**
+	 * Return the description for this extension.
+	 *
+	 * @return string
+	 */
+	public function get_description(): string {
+		return sprintf( __( 'Checks your positions for availability on your Personio career page. This ensures that applicants can reach the application form there. If a position is not available, you will be informed of this in the list of positions.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) );
 	}
 }

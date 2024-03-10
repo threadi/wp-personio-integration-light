@@ -134,7 +134,7 @@ class Settings_Export {
 	/**
 	 * Export actual settings as JSON-file.
 	 *
-	 * @return array
+	 * @return void
 	 */
 	public function export_settings(): void {
 		// check for nonce.

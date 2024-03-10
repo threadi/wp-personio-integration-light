@@ -67,7 +67,7 @@ class Positions {
 	 * Return Position object of given id.
 	 *
 	 * @param int    $post_id The ID of the post object.
-	 * @param string $language_code The language-code to use for contents of the requested position.
+	 * @param string $language_code The language-code to use for contents of the requested position (optional).
 	 *
 	 * @return Position
 	 */
@@ -80,8 +80,9 @@ class Positions {
 			 * @since 3.0.0 Available since 3.0.0.
 			 *
 			 * @param Position $position_obj The object of the position.
+			 * @param string $language_code The requested language.
 			 */
-			$this->positions[ $post_id . $language_code ] = apply_filters( 'personio_integration_get_position_obj', $postion_obj );
+			$this->positions[ $post_id . $language_code ] = apply_filters( 'personio_integration_get_position_obj', $postion_obj, $language_code );
 			if ( ! empty( $language_code ) ) {
 				$this->positions[ $post_id . $language_code ]->set_lang( $language_code );
 			}
@@ -95,6 +96,7 @@ class Positions {
 	 *
 	 * @param int   $limit The limit, defaults to -1 for default-limiting.
 	 * @param array $parameter_to_add The parameter to add.
+	 *
 	 * @return array
 	 */
 	public function get_positions( int $limit = -1, array $parameter_to_add = array() ): array {

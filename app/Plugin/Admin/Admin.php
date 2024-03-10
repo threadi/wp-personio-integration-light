@@ -90,6 +90,8 @@ class Admin {
 		add_action( 'admin_action_personioPositionsImport', array( $this, 'import_positions' ) );
 		add_action( 'admin_action_personioPositionsCancelImport', array( $this, 'cancel_import' ) );
 		add_action( 'admin_action_personioPositionsDelete', array( $this, 'delete_positions' ) );
+		add_action( 'admin_action_personio_integration_log_export', array( $this, 'export_log' ) );
+		add_action( 'personio_integration_log_empty', array( $this, 'empty_log' ) );
 	}
 
 	/**
@@ -130,6 +132,7 @@ class Admin {
 				'get_import_dialog_nonce'            => wp_create_nonce( 'personio-import-dialog' ),
 				'get_deletion_nonce'                 => wp_create_nonce( 'personio-get-deletion-info' ),
 				'settings_import_file_nonce'         => wp_create_nonce( 'personio-integration-settings-import-file' ),
+				'extension_state_nonce'              => wp_create_nonce( 'personio-integration-extension-state' ),
 				'rest_nonce'                         => wp_create_nonce( 'wp_rest' ),
 				'label_import_is_running'            => __( 'Import is running', 'personio-integration-light' ),
 				'logo_img'                           => Helper::get_logo_img(),
@@ -548,7 +551,7 @@ class Admin {
 
 			// add help link.
 			add_submenu_page(
-				'edit.php?post_type=' . PersonioPosition::get_instance()->get_name(),
+				PersonioPosition::get_instance()->get_link( true ),
 				__( 'Need help with Personio Integration?', 'personio-integration-light' ),
 				'<span class="disable">' . __( 'Help', 'personio-integration-light' ) . '</span>',
 				'read_' . PersonioPosition::get_instance()->get_name(),
@@ -698,5 +701,75 @@ class Admin {
 			?>
 			</p>
 		<?php
+	}
+
+	/**
+	 * Export log as CSV.
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function export_log(): void {
+		global $wpdb;
+
+		// check the nonce.
+		check_admin_referer( 'personio-integration-log-export', 'nonce' );
+
+		// get entries.
+		$entries = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT `state`, `time` AS `date`, `log`
+            			FROM `' . $wpdb->prefix . 'personio_import_logs`
+                        WHERE 1 = %d
+                        ORDER BY `date` DESC',
+				array( 1 )
+			),
+			ARRAY_A
+		);
+
+		// create filename for JSON-download-file.
+		$filename = gmdate( 'YmdHi' ) . '_' . get_option( 'blogname' ) . '_Personio_Integration_Light_Logs.csv';
+		/**
+		 * File the filename for CSV-download.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param string $filename The generated filename.
+		 */
+		$filename = apply_filters( 'personio_integration_log_export_filename', $filename );
+
+		// set header for response as JSON-download.
+		header( 'Content-Type: text/csv' );
+		header( 'Content-Disposition: attachment; filename=' . sanitize_file_name( $filename ) );
+
+		// generate CSV-output.
+		$fp = fopen('php://output', 'w');
+		$headrow = $entries[0];
+		fputcsv($fp, array_keys($headrow));
+		foreach ($entries as $data) {
+			fputcsv($fp, $data);
+		}
+		fclose($fp);
+
+		// do nothing more.
+		exit;
+	}
+
+	/**
+	 * Empty the log per request.
+	 *
+	 * @return void
+	 */
+	public function empty_log(): void {
+		global $wpdb;
+
+		// check the nonce.
+		check_admin_referer( 'personio-integration-log-empty', 'nonce' );
+
+		// empty the table.
+		$wpdb->query( 'TRUNCATE TABLE `' . $wpdb->prefix . 'personio_import_logs`' );
+
+		// redirect user.
+		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
 	}
 }

@@ -62,6 +62,15 @@ class Position {
 	private bool $debug;
 
 	/**
+	 * The post ID of this position.
+	 *
+	 * @depecated Please use get_id() instead.
+	 *
+	 * @var string
+	 */
+	public string $ID;
+
+	/**
 	 * Constructor for this position.
 	 *
 	 * @param int $post_id The post_id of this position.
@@ -89,6 +98,9 @@ class Position {
 
 			// set the WP_Post-settings in this object.
 			$this->data = $post_array;
+
+			// set deprecated ID.
+			$this->ID = $this->get_id();
 
 			// set the main language for this position.
 			$this->set_lang( Languages::get_instance()->get_main_language() );
@@ -118,7 +130,7 @@ class Position {
 
 		$false = false;
 		/**
-		 * Filter if position could be imported.
+		 * Filter if position should be imported.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
@@ -136,23 +148,16 @@ class Position {
 
 		// search for the personioID to get an existing post-object.
 		if ( 0 === $this->get_id() ) {
-			$query   = array(
-				'post_type'   => PersonioPosition::get_instance()->get_name(),
-				'fields'      => 'ids',
-				'post_status' => 'any',
-				'meta_query'  => array(
-					array(
-						'key'     => WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID,
-						'value'   => $this->data['personioId'],
-						'compare' => '=',
-					),
-				),
-			);
-			$results = new WP_Query( $query );
-			$posts   = array();
-			foreach ( $results->posts as $post_id ) {
-				$lang = $this->get_lang();
+			// set ID to 0.
+			$this->data['ID'] = 0;
 
+			// collect all posts.
+			$posts   = array();
+
+			// get all positions with the given Personio ID.
+			foreach ( Positions::get_instance()->get_positions( -1, array( 'personioid' => $this->data['personioId'] ) ) as $position_obj ) {
+				$lang = $this->get_lang();
+				$post_id = $position_obj->get_id();
 				/**
 				 * Filter the post_id.
 				 *
@@ -164,34 +169,41 @@ class Position {
 				 * @param string $lang The used language.
 				 */
 				if ( apply_filters( 'personio_integration_import_single_position_filter_existing', $post_id, $lang ) ) {
-					$posts[] = $post_id;
+					$posts[] = $position_obj->get_id();
 				}
 			}
 			if ( 1 === count( $posts ) ) {
 				// get the post-id to update its data.
-				$this->data['ID'] = $results->posts[0];
+				$this->data['ID'] = $posts[0];
 				// get the menu_order to obtain its value during update.
-				$this->data['menu_order'] = get_post_field( 'menu_order', $results->posts[0] );
+				$this->data['menu_order'] = get_post_field( 'menu_order', $posts[0] );
 			} elseif ( 1 < count( $posts ) ) {
 				// something is wrong.
-				// -> delete all entries with this personioId.
+				// -> delete all entries with this personioId without trash.
 				// -> it will be saved as new entry after this.
 				foreach ( $posts as $post_id ) {
-					wp_delete_post( $post_id );
+					wp_delete_post( $post_id, true );
 				}
-
-				// set ID to 0.
-				$this->data['ID'] = 0;
 
 				// log this event.
 				$this->log->add_log( 'PersonioId ' . $this->data['personioId'] . ' existed in database multiple times. Cleanup done.', 'error' );
-			} else {
-				// set ID to 0.
-				$this->data['ID'] = 0;
 			}
 		} else {
 			// set ID to 0.
 			$this->data['ID'] = 0;
+		}
+
+		$false = false;
+		/**
+		 * Filter if position should be imported after we get an ID.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param bool $false Return false to import this position.
+		 * @param Position $this The object of the position.
+		 */
+		if ( apply_filters( 'personio_integration_prevent_import_of_single_position', $false, $this ) ) {
+			return;
 		}
 
 		// prepare data to be saved
@@ -511,6 +523,12 @@ class Position {
 	 * @return void
 	 */
 	public function set_lang( string $lang ): void {
+		// reset title if language will be changed.
+		if( ! empty( $this->data['personioLanguages'] ) && $lang !== $this->data['personioLanguages'] ) {
+			$this->set_title( '' );
+		}
+
+		// set new language.
 		$this->data['personioLanguages'] = $lang;
 	}
 

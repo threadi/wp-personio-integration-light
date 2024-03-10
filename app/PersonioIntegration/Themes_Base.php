@@ -8,11 +8,11 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent also other direct access.
-use PersonioIntegrationLight\Helper;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use PersonioIntegrationLight\Helper;
 
 /**
  * Object to handle extension of Positions in Pro-plugin.

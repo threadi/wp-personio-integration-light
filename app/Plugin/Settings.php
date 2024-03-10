@@ -837,7 +837,7 @@ class Settings {
 	}
 
 	/**
-	 * Return the settings.
+	 * Return the settings and save them on the object.
 	 *
 	 * @return array
 	 */
@@ -851,7 +851,10 @@ class Settings {
 		 *
 		 * @param array $settings The settings as array.
 		 */
-		return apply_filters( 'personio_integration_settings', $settings );
+		$this->settings = apply_filters( 'personio_integration_settings', $settings );
+
+		// return the resulting settings.
+		return $this->settings;
 	}
 
 	/**
@@ -962,6 +965,8 @@ class Settings {
 
 	/**
 	 * Initialize the options of this plugin, set its default values.
+	 *
+	 * Only used during installation.
 	 *
 	 * @return void
 	 */

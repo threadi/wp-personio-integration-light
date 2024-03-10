@@ -179,11 +179,15 @@ class Imports {
 				return;
 			}
 
-			// get Positions-object.
-			$positions_object = Positions::get_instance();
+			/**
+			 * Run custom actions before cleanup of positions after import.
+			 *
+			 * @since 3.0.0 Available since release 3.0.0.
+			 */
+			do_action( 'personio_integration_import_before_cleanup' );
 
 			// delete all not updated positions.
-			foreach ( $positions_object->get_positions() as $position_obj ) {
+			foreach ( Positions::get_instance()->get_positions() as $position_obj ) {
 				$do_delete = true;
 				/**
 				 * Check if this position should be deleted.
@@ -192,12 +196,10 @@ class Imports {
 				 *
 				 * @since 1.0.0 Available since first release.
 				 *
-				 * @param bool $do_delete Marker to delete the position.
+				 * @param bool $do_delete Marker to delete the position (must be true to check for deletion).
 				 * @param Position $position_obj The position as object.
 				 */
-				$do_delete = apply_filters( 'personio_integration_delete_single_position', $do_delete, $position_obj );
-
-				if ( false !== $do_delete ) {
+				if ( false !== apply_filters( 'personio_integration_delete_single_position', $do_delete, $position_obj ) ) {
 					// get Personio ID.
 					$personio_id = $position_obj->get_personio_id();
 					if ( 1 === absint( get_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, true ) ) ) {
@@ -206,7 +208,7 @@ class Imports {
 							$this->log->add_log( sprintf( 'Removing updated flag for %1$s failed.', esc_html( $personio_id ) ), 'error' );
 						}
 					} else {
-						// delete this position from database.
+						// delete this position from database without using trash.
 						$result = wp_delete_post( $position_obj->get_id(), true );
 
 						if ( $result instanceof WP_Post ) {
@@ -422,6 +424,7 @@ class Imports {
 	 * @param string                $personio_url The used Personio URL.
 	 *
 	 * @return Position
+	 * @noinspection PhpUnused
 	 */
 	public function import_single_position( ?SimpleXMLElement $position, string $language_name, string $personio_url ): Position {
 		// create position object to handle all values and save them to database.

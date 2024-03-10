@@ -104,13 +104,11 @@ jQuery(document).ready(function($) {
         $('body.personioposition_page_personioPositions [data-depends]').each( function() {
           let depending_field = $(this);
           $.each( $(this).data('depends'), function( i, v ) {
-            console.log( i, v, form_field.attr('name'), v.toString(), form_field.val() )
              if( i === form_field.attr('name')
                && (
                  ( form_field.attr('type') === 'checkbox' && ! form_field.is(':checked') )
                  || ( form_field.attr('type') !== 'checkbox' && v.toString() !== form_field.val() )
                ) ) {
-               console.log("aaaa");
                depending_field.closest('tr').addClass('hide');
                depending_field.closest('tr').removeClass('show_with_animation');
              }
@@ -284,6 +282,9 @@ jQuery(document).ready(function($) {
         location.href=window.location.href.replace( /template_intro=2/, '' )
       } ).start();
     });
+
+    personio_integration_extension_state_button();
+
 });
 
 /**
@@ -616,4 +617,42 @@ function personio_integration_ajax_error_dialog( errortext, texts ) {
     }
   }
   personio_integration_create_dialog( dialog_config );
+}
+
+/**
+ * Change extension state via button click.
+ */
+function personio_integration_extension_state_button() {
+  // create confirm dialog for deletion of all positions.
+  jQuery('.personioposition_page_personiopositionextensions .button-state').on('click', function (e) {
+    e.preventDefault();
+
+    let button = jQuery(this);
+
+    jQuery.ajax( {
+      type: "POST",
+      url: personioIntegrationLightJsVars.ajax_url,
+      data: {
+        'action': 'personio_extension_state',
+        'extension': button.data( 'extension' ),
+        'nonce': personioIntegrationLightJsVars.extension_state_nonce
+      },
+      success: function (data) {
+        if( data.success ) {
+          if( data.enabled ) {
+            button.removeClass( 'button-state-disabled' );
+            button.addClass( 'button-state-enabled' );
+          }
+          else {
+            button.removeClass( 'button-state-enabled' );
+            button.addClass( 'button-state-disabled' );
+          }
+          button.html( data.title );
+        }
+        else {
+          // TODO error anzeigen.
+        }
+      }
+    } )
+  });
 }

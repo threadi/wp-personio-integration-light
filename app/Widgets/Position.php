@@ -47,7 +47,7 @@ class Position extends WP_Widget {
 		// get the actual positions.
 		$positions_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance();
 		$positions     = array();
-		foreach ( $positions_obj->get_positions( 0 ) as $position ) {
+		foreach ( $positions_obj->get_positions() as $position ) {
 			$positions[ $position->get_id() ] = $position->get_title();
 		}
 

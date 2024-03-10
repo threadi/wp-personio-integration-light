@@ -289,3 +289,14 @@ body.post-type-personioposition #post-body-content { display: none }
 	font-size: 1.6em;
 	margin-right: 8px;
 }
+
+.personioposition_page_personiopositionextensions .button-state-enabled {
+	background-color: green;
+	color: #fff;
+}
+
+.personioposition_page_personiopositionextensions .button-state-disabled {
+	background-color: grey;
+	color: #fff;
+}
+

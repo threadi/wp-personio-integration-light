@@ -8,11 +8,11 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent also other direct access.
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
  * Object to handle roles.

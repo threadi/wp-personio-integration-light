@@ -77,9 +77,6 @@ class Installer {
 			// simply run the tasks on single-site-install.
 			$this->activation_tasks();
 		}
-
-		// set activation runner to disable.
-		define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 0 );
 	}
 
 	/**

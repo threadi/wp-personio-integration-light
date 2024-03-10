@@ -259,4 +259,32 @@ class Languages {
 		// return the mappings for the requested language.
 		return $mapping_languages[ $language_name ];
 	}
+
+	/**
+	 * Return mapping language-name (e.g. 'en') for given WP-language (e.g. 'en_US').
+	 *
+	 * @param string $language_name The requested language name (e.g. 'en_US').
+	 *
+	 * @return string
+	 */
+	public function get_mapping_lang( string $language_name ): string {
+		$mapping_languages = $this->language_to_wp_lang_mapping;
+
+		/**
+		 * Filter the possible mapping languages.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $mapping_languages List of language mappings.
+		 */
+		$mapping_languages = apply_filters( 'personio_integration_language_mappings', $mapping_languages );
+
+		// return the mapping for the requested language.
+		foreach( $mapping_languages as $language => $shortcodes ) {
+			if( in_array( $language_name, $shortcodes, true ) ) {
+				return $language;
+			}
+		}
+		return '';
+	}
 }

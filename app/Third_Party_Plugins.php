@@ -365,13 +365,21 @@ class Third_Party_Plugins {
 	 * @return string
 	 */
 	public function translatepress_hide_option( string $capability ): string {
-		if ( ! is_admin() ) {
-			$object_id = get_queried_object_id();
-			if ( get_post_type( $object_id ) === PersonioPosition::get_instance()->get_name() ) {
-				return 'god';
-			}
+		// bail if this is admin.
+		if( is_admin() ) {
+			return $capability;
 		}
-		return $capability;
+
+		// get actual object.
+		$object_id = get_queried_object_id();
+
+		// bail if this is not our cpt.
+		if ( get_post_type( $object_id ) !== PersonioPosition::get_instance()->get_name() ) {
+			return $capability;
+		}
+
+		// return 'god' to disable any translation-options on our cpt.
+		return 'god';
 	}
 
 	/**

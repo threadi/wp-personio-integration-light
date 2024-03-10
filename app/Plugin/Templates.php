@@ -662,17 +662,21 @@ class Templates {
 	 * @return string
 	 */
 	public function update_post_title( string $post_title, int|string|WP_Post $post_id = 0 ): string {
-		// change the title only for our own cpt.
-		if ( PersonioPosition::get_instance()->get_name() === get_post_type( $post_id ) ) {
-			if ( $post_id instanceof WP_Post ) {
-				$post_id = $post_id->ID;
-			}
-			$position_obj = Positions::get_instance()->get_position( absint( $post_id ) );
-			return $position_obj->get_title();
+		// bail if this is not our cpt.
+		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( $post_id ) ) {
+			return $post_title;
 		}
 
-		// return the title.
-		return $post_title;
+		// get the post id from object.
+		if ( $post_id instanceof WP_Post ) {
+			$post_id = $post_id->ID;
+		}
+
+		// get the position object.
+		$position_obj = Positions::get_instance()->get_position( absint( $post_id ) );
+
+		// return resulting title.
+		return $position_obj->get_title();
 	}
 
 	/**

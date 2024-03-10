@@ -1,6 +1,6 @@
 <wpml-config>
     <custom-types>
-        <custom-type translate="0">personioposition</custom-type>
+        <custom-type translate="1">personioposition</custom-type>
     </custom-types>
     <taxonomies>
         <taxonomy translate="0">personioRecruitingCategory</taxonomy>

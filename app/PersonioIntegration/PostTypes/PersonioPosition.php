@@ -19,6 +19,7 @@ use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
+use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Themes;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
@@ -83,6 +84,9 @@ class PersonioPosition extends Post_Type {
 		// enable theme-support.
 		Themes::get_instance()->init();
 
+		// enable extensions.
+		Extensions::get_instance()->init();
+
 		// register this cpt.
 		add_action( 'init', array( $this, 'register' ) );
 
@@ -121,7 +125,6 @@ class PersonioPosition extends Post_Type {
 		// use our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_filter_type' ) );
 		add_filter( 'personio_integration_dashboard_widgets', array( $this, 'add_dashboard_widget' ) );
-		add_filter( 'personio_integration_extend_position_object', array( $this, 'get_extensions_list' ) );
 		add_action( 'personio_integration_import_max_count', array( $this, 'update_import_max_step' ) );
 		add_action( 'personio_integration_import_count', array( $this, 'update_import_step' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'import_ended' ) );
@@ -129,31 +132,6 @@ class PersonioPosition extends Post_Type {
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
 		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'add_sitemap_data' ), 10, 2 );
-
-		// initialize the extensions.
-		$this->initialize_extensions();
-	}
-
-	/**
-	 * Initialize extensions for this object.
-	 *
-	 * @return void
-	 */
-	private function initialize_extensions(): void {
-		$list = array();
-		/**
-		 * Filter the possible extensions for the Personio-object.
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 *
-		 * @param array $list List of extensions.
-		 */
-		foreach ( apply_filters( 'personio_integration_extend_position_object', $list ) as $extension_name ) {
-			if ( method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				$obj->init();
-			}
-		}
 	}
 
 	/**
@@ -275,18 +253,6 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Set list of extension we use for our position object.
-	 *
-	 * @param array $extension_list List of extensions for the Position-object.
-	 *
-	 * @return array
-	 */
-	public function get_extensions_list( array $extension_list ): array {
-		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Availability';
-		return $extension_list;
-	}
-
-	/**
 	 * Define our 2 shortcodes.
 	 *
 	 * @return void
@@ -350,9 +316,6 @@ class PersonioPosition extends Post_Type {
 			return '';
 		}
 
-		// set language.
-		$position->set_lang( $personio_attributes['lang'] );
-
 		// get the attributes defaults.
 		$default_attributes = $this->get_single_shortcode_attributes_defaults();
 
@@ -365,6 +328,10 @@ class PersonioPosition extends Post_Type {
 		 * @param array $default_attributes The default attributes.
 		 */
 		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $default_attributes );
+
+		// set language.
+		$position->set_lang( $personio_attributes['lang'] );
+		$position->set_title( '' );
 
 		// generate styling.
 		$styles = ! empty( $personio_attributes['styles'] ) ? $personio_attributes['styles'] : '';
@@ -773,7 +740,7 @@ class PersonioPosition extends Post_Type {
 		$user = wp_get_current_user();
 
 		// if no user could be found, check if we are running on WP CLI.
-		if ( is_null( $user ) ) {
+		if ( empty( $user ) ) {
 			$username = 'WP CLI';
 		} else {
 			$username = $user->display_name;
@@ -865,6 +832,11 @@ class PersonioPosition extends Post_Type {
 
 			// loop through the languages of this position and show each of them.
 			foreach ( explode( ', ', $position_obj->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES, 'name' ) ) as $index => $language_name ) {
+				// bail if languages is not available.
+				if( empty( $languages[ $language_name ] ) ) {
+					continue;
+				}
+
 				// create filter-url for this language.
 				$lang_url = add_query_arg( array( 'language' => $language_name ), $url );
 

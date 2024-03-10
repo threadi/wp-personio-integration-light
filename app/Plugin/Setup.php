@@ -217,7 +217,7 @@ class Setup {
 
 			// add setup entry as sub-menu.
 			add_submenu_page(
-				PersonioPosition::get_instance()->get_name(),
+				PersonioPosition::get_instance()->get_link( true ),
 				__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
 				__( 'Setup', 'personio-integration-light' ),
 				'manage_' . PersonioPosition::get_instance()->get_name(),

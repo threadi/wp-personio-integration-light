@@ -30,7 +30,10 @@ class Logs {
 			?>
 			<div class="wrap">
 				<h2><?php echo esc_html__( 'Logs', 'personio-integration-light' ); ?></h2>
-				<?php $log->display(); ?>
+				<?php
+				$log->views();
+				$log->display();
+				?>
 			</div>
 			<?php
 		}

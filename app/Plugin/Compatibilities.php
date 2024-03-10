@@ -80,7 +80,7 @@ class Compatibilities {
 	 *
 	 * @return array
 	 */
-	private function get_compatibility_checks(): array {
+	public function get_compatibility_checks(): array {
 		$list = array(
 			'PersonioIntegrationLight\Plugin\Compatibilities\Acf',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Avada',
@@ -95,8 +95,10 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Seed_Prod',
 			'PersonioIntegrationLight\Plugin\Compatibilities\SiteOrigin',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Themify',
+			'PersonioIntegrationLight\Plugin\Compatibilities\TranslatePress',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Visual_Composer',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpBakery',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Wpml',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpPageBuilder',
 		);
 
