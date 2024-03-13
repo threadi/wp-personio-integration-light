@@ -29,7 +29,7 @@
     "make-json": "wp i18n make-json languages"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^26.16.0",
+    "@wordpress/scripts": "^27.4.0",
     "npm-pack-zip": "^1.3.0"
   },
   "dependencies": {
