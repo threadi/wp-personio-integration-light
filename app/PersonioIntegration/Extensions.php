@@ -8,11 +8,12 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Setup;
 
 /**
  * Object to handle different themes to output templates of our plugin.
@@ -52,16 +53,24 @@ class Extensions {
 	}
 
 	/**
-	 * Initialize the theme-handler.
+	 * Initialize the extensions.
 	 *
 	 * @return void
 	 */
 	public function init(): void {
+		if( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+			return;
+		}
+
 		// use our own hooks.
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_extensions' ) );
 
-		// add admin-actions.
+		// add AJAX-actions.
 		add_action( 'wp_ajax_personio_extension_state', array( $this, 'change_extension_state' ) );
+
+		// add admin-actions.
+		add_action( 'admin_action_personio_integration_extension_disable_all', array( $this, 'disable_all' ) );
+		add_action( 'admin_action_personio_integration_extension_enable_all', array( $this, 'enable_all' ) );
 
 		// misc.
 		add_action( 'admin_menu', array( $this, 'add_extension_menu' ) );
@@ -72,7 +81,7 @@ class Extensions {
 		 * @return void
 		 */
 		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
+			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
 				$obj->init();
 			}
@@ -183,6 +192,30 @@ class Extensions {
 	}
 
 	/**
+	 * Get URL for backend list of extensions.
+	 *
+	 * @param string $category The category (optional).
+	 *
+	 * @return string
+	 */
+	public function get_link( string $category = '' ): string {
+		$query = array(
+			'post_type' => PersonioPosition::get_instance()->get_name(),
+			'page' => 'personioPositionExtensions'
+		);
+
+		if( ! empty( $category ) ) {
+			$query['category'] = $category;
+		}
+
+		// return resulting URL.
+		return add_query_arg(
+			$query,
+			get_admin_url() . 'edit.php'
+		);
+	}
+
+	/**
 	 * Show list of extensions to manage for
 	 *
 	 * @return void
@@ -195,8 +228,63 @@ class Extensions {
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php echo esc_html__( 'Extensions for Personio Integration', 'personio-integration-light' ); ?></h1>
-			<?php $extensions_table->display(); ?>
+			<div>
+				<?php
+				$extensions_table->views();
+				$extensions_table->display();
+				?>
+			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Disable all extensions via request.
+	 *
+	 * @return void
+	 */
+	public function disable_all(): void {
+		check_admin_referer( 'personio-integration-extension-disable-all', 'nonce' );
+
+		// loop through all extensions and enable them.
+		foreach( $this->get_extensions() as $extension_name ) {
+			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
+				$obj = call_user_func( $extension_name . '::get_instance' );
+				if ( $obj instanceof Extensions_Base ) {
+					$obj->set_disabled();
+				}
+			}
+			elseif( $extension_name instanceof Extensions_Base) {
+				$extension_name->set_disabled();
+			}
+		}
+
+		// redirect user.
+		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+	}
+
+	/**
+	 * Disable all extensions via request.
+	 *
+	 * @return void
+	 */
+	public function enable_all(): void {
+		check_admin_referer( 'personio-integration-extension-enable-all', 'nonce' );
+
+		// loop through all extensions and enable them.
+		foreach( $this->get_extensions() as $extension_name ) {
+			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
+				$obj = call_user_func( $extension_name . '::get_instance' );
+				if ( $obj instanceof Extensions_Base ) {
+					$obj->set_enabled();
+				}
+			}
+			elseif( $extension_name instanceof Extensions_Base) {
+				$extension_name->set_enabled();
+			}
+		}
+
+		// redirect user.
+		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
 	}
 }

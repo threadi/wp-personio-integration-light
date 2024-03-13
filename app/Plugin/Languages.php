@@ -103,7 +103,7 @@ class Languages {
 	}
 
 	/**
-	 * Return the value of the main language from plugin settings.
+	 * Return the internal name of the main language from plugin settings.
 	 *
 	 * Defaults to ISO-639 language-names (e.g. "de").
 	 * Optional uses the WP-language-names (e.g. "de_DE" but also "af").
@@ -133,7 +133,7 @@ class Languages {
 	}
 
 	/**
-	 * Return only the active languages.
+	 * Return only the active languages with the main language as first entry.
 	 *
 	 * @return array
 	 */
@@ -141,10 +141,15 @@ class Languages {
 		// get active languages from settings.
 		$active_languages = get_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION );
 
+		// get all languages.
+		$all_languages = $this->get_languages();
+
 		// add active languages to returning list if they exist as language.
-		$languages = array();
+		$languages = array(
+			$this->get_main_language() => $all_languages[ $this->get_main_language() ]
+		);
 		foreach ( $this->get_languages() as $language_name => $label ) {
-			if ( ! empty( $active_languages[ $language_name ] ) ) {
+			if ( ! empty( $active_languages[ $language_name ] ) && empty( $languages[ $language_name ] ) ) {
 				$languages[ $language_name ] = $label;
 			}
 		}
@@ -255,6 +260,11 @@ class Languages {
 		 * @param array $mapping_languages List of language mappings.
 		 */
 		$mapping_languages = apply_filters( 'personio_integration_language_mappings', $mapping_languages );
+
+		// return empty array is entry does not exist.
+		if( empty( $mapping_languages[ $language_name ] ) ) {
+			return array();
+		}
 
 		// return the mappings for the requested language.
 		return $mapping_languages[ $language_name ];

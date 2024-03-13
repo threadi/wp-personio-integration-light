@@ -341,14 +341,15 @@ class Import {
 
 					// wait 1 second for consistent log-view on fast runs with just a view positions.
 					if ( count( $this->get_xml_positions() ) < apply_filters( 'personio_integration_import_sleep_positions_limit', 20 ) ) {
-						sleep( 1 ); }
+						sleep( 1 );
+					}
 
 					// log event.
 					$this->log->add_log( sprintf( 'Import of positions from Personio account %1$s for language %2$s ended.', wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ) ), 'success' );
 				}
 
 				// log ok.
-				$this->log->add_log( sprintf( '%1$d positions from Personio account %2$s in language %3$s imported.', count( $imported_positions ), wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ) ), 'success' );
+				$this->log->add_log( sprintf( '%1$d positions from Personio account %2$s in language %3$s imported.', count( $this->imported_postions ), wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ) ), 'success' );
 
 				// re-enable taxonomy-counting.
 				wp_defer_term_counting( false );

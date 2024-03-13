@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Position;
@@ -128,6 +129,7 @@ class PersonioPosition extends Post_Type {
 		add_action( 'personio_integration_import_max_count', array( $this, 'update_import_max_step' ) );
 		add_action( 'personio_integration_import_count', array( $this, 'update_import_step' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'import_ended' ) );
+		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_pro_extensions' ) );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
@@ -756,27 +758,13 @@ class PersonioPosition extends Post_Type {
 	 *
 	 * @param array $columns List of columns.
 	 * @return array
-	 * @noinspection PhpUnused
 	 */
 	public function add_column( array $columns ): array {
 		// create new column-array.
 		$new_columns = array();
 
-		// add column for Pro-hint with sorting.
-		$false = false;
-
-		/**
-		 * Hide the additional sort column which is only filled in Pro.
-		 *
-		 * TODO ersetzen durch allgemeinen column-filter den die pro dann nutzt.
-		 *
-		 * @since 3.0.0 Available since 3.0.0
-		 *
-		 * @param array $false Set true to hide the buttons.
-		 */
-		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
-			$new_columns['sort'] = __( 'Sorting', 'personio-integration-light' );
-		}
+		// add sort column for pro-hint.
+		$new_columns['sort'] = __( 'Sorting', 'personio-integration-light' );
 
 		// replace language-column with our own.
 		if ( ! empty( $columns[ 'taxonomy-' . WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES ] ) ) {
@@ -790,8 +778,16 @@ class PersonioPosition extends Post_Type {
 		// remove checkbox.
 		unset( $columns['cb'] );
 
-		// return results.
-		return array_merge( $new_columns, $columns );
+		// merge the lists.
+		$columns = array_merge( $new_columns, $columns );
+
+		/**
+		 * Filter the resulting columns.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 * @param array $columns List of columns.
+		 */
+		return apply_filters( 'personio_integration_personioposition_columns', $columns );
 	}
 
 	/**
@@ -866,29 +862,30 @@ class PersonioPosition extends Post_Type {
 	 * @param array   $actions List of actions.
 	 * @param WP_Post $post Object of the post.
 	 * @return array
-	 * @noinspection PhpUnused
 	 */
 	public function remove_actions( array $actions, WP_Post $post ): array {
-		if ( self::get_instance()->get_name() === get_post_type() ) {
-			$new_actions = array();
-			if ( ! empty( $actions['view'] ) ) {
-				$new_actions = array(
-					'view' => $actions['view'],
-				);
-			}
-
-			// get edit-URL.
-			$edit_url = get_edit_post_link( $post->ID );
-
-			// add the edit-URL to the action-list if it is set.
-			if ( ! is_null( $edit_url ) ) {
-				$new_actions['edit'] = '<a href="' . esc_url( $edit_url ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
-			}
-
-			// return resulting list.
-			return $new_actions;
+		// bail if this is not our cpt.
+		if ( self::get_instance()->get_name() !== get_post_type() ) {
+			return $actions;
 		}
-		return $actions;
+
+		$new_actions = array();
+		if ( ! empty( $actions['view'] ) ) {
+			$new_actions = array(
+				'view' => $actions['view'],
+			);
+		}
+
+		// get edit-URL.
+		$edit_url = get_edit_post_link( $post->ID );
+
+		// add the edit-URL to the action-list if it is set.
+		if ( ! is_null( $edit_url ) ) {
+			$new_actions['edit'] = '<a href="' . esc_url( $edit_url ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
+		}
+
+		// return resulting list.
+		return $new_actions;
 	}
 
 	/**
@@ -979,7 +976,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Hide cpt filter-view.
+	 * Hide cpt filter-view. Simply return empty array.
 	 *
 	 * @return array
 	 */
@@ -1114,6 +1111,8 @@ class PersonioPosition extends Post_Type {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param bool $false Set true to prevent removing of each meta box.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_position_prevent_meta_box_remove', $false ) ) {
 			return;
@@ -1137,6 +1136,8 @@ class PersonioPosition extends Post_Type {
 					 *
 					 * @param bool $false Return true to ignore this box.
 					 * @param array $box Settings of the meta-box.
+					 *
+					 * @noinspection PhpConditionAlreadyCheckedInspection
 					 */
 					if ( apply_filters( 'personio_integration_do_not_hide_meta_box', $false, $box ) ) {
 						continue;
@@ -1792,5 +1793,93 @@ class PersonioPosition extends Post_Type {
 	public function import_ended(): void {
 		// save actual position count.
 		update_option( 'personioIntegrationPositionCount', Positions::get_instance()->get_positions_count() );
+	}
+
+	/**
+	 * Return list of pro-extension we should on extensions table.
+	 *
+	 * @return array
+	 */
+	private function get_pro_extensions(): array {
+		$false = false;
+		/**
+		 * Hide the extensions for pro-version.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the extensions.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			return array();
+		}
+
+		return array(
+			array(
+				'name' => 'personio_forms',
+				'label' => __( 'Application forms', 'personio-integration-light' ),
+				'description' => __( 'Use application forms directly on your website. Use our own form handler, WPForms, Contact Form 7 or Ninja Forms.', 'personio-integration-light' ),
+				'category' => 'forms'
+			),
+			array(
+				'name' => 'feature_image',
+				'label' => __( 'Feature Image', 'personio-integration-light' ),
+				'description' => __( 'Add a feature image to each position on your website. Or one image for all positions.', 'personio-integration-light' ),
+				'category' => 'positions'
+			),
+			array(
+				'name' => 'files',
+				'label' => __( 'Files', 'personio-integration-light' ),
+				'description' => __( 'Add an unlimited list of files to each position on your website.', 'personio-integration-light' ),
+				'category' => 'positions'
+			),
+			array(
+				'name' => 'multilingual',
+				'label' => __( 'Multilingual', 'personio-integration-light' ),
+				'description' => __( 'Use Polylang, TranslatePress or WPML for optimal multilingual presentation of your positions.', 'personio-integration-light' ),
+				'category' => 'multilingual'
+			),
+			array(
+				'name' => 'personio_accounts',
+				'label' => __( 'Multiple Personio Accounts', 'personio-integration-light' ),
+				'description' => __( 'Use positions from multiple Personio accounts in your website.', 'personio-integration-light' ),
+				'category' => 'positions'
+			),
+			array(
+				'name' => 'social_media',
+				'label' => __( 'Social Media', 'personio-integration-light' ),
+				'description' => __( 'Add features to your jobs to advertise them optimally on social media platforms such as Fediverse (e.g. Mastodon), X (aka twitter), WhatsApp, Telegram or Facebook. Google Jobs is also supported.', 'personio-integration-light' ),
+				'category' => 'seo'
+			),
+			array(
+				'name' => 'tracking',
+				'label' => __( 'Tracking', 'personio-integration-light' ),
+				'description' => __( 'Measure the success of advertising your vacancies on your website, for example with Google Analytics and Matomo.', 'personio-integration-light' ),
+				'category' => 'tracking'
+			),
+		);
+	}
+
+	/**
+	 * Add extension objects for pro-extensions to the table of extensions.
+	 *
+	 * @param array $extensions The list of extensions.
+	 *
+	 * @return array
+	 */
+	public function add_pro_extensions( array $extensions ): array {
+		foreach( $this->get_pro_extensions() as $extension ) {
+			$obj = new Extensions_Base();
+			$obj->set_name( $extension['name'] );
+			$obj->set_label( $extension['label'] );
+			$obj->set_description( $extension['description'] );
+			$obj->set_pro( true );
+			$obj->set_category( $extension['category'] );
+			$extensions[] = $obj;
+		}
+
+		// return resulting list.
+		return $extensions;
 	}
 }

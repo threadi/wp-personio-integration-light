@@ -124,7 +124,7 @@ class Position {
 		// do not save anything without language setting.
 		if ( empty( $this->get_lang() ) ) {
 			/* translators: %1$s will be replaced by the Personio ID. */
-			$this->log->add_log( sprintf( __( 'Position with PersonioId %1$s could not be saved as the PersonioId does not have a language set.', 'personio-integration-light' ), esc_html( $this->data['personioId'] ) ), 'error' );
+			$this->log->add_log( sprintf( __( 'Position with PersonioId %1$s could not be saved as the position does not have a language set.', 'personio-integration-light' ), esc_html( $this->data['personioId'] ) ), 'error' );
 			return;
 		}
 
@@ -255,7 +255,7 @@ class Position {
 			 */
 			do_action( 'personio_integration_import_single_position_save', $this );
 
-			// add personioId.
+			// add the Personio ID.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, $this->data['personioId'] );
 
 			// assign the position to its terms.
@@ -511,7 +511,7 @@ class Position {
 	 *
 	 * @return string
 	 */
-	protected function get_lang(): string {
+	public function get_lang(): string {
 		return $this->data['personioLanguages'];
 	}
 

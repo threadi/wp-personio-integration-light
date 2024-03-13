@@ -101,44 +101,53 @@ class Settings {
 			array(
 				'label' => __( 'Basic Settings', 'personio-integration-light' ),
 				'key'   => '',
-				'page'  => 'personioIntegrationMainSettings',
+				'settings_page'  => 'personioIntegrationMainSettings',
+				'page' => 'personioPositions'
 			),
 			array(
 				'label' => __( 'Templates', 'personio-integration-light' ),
 				'key'   => 'templates',
-				'page'  => 'personioIntegrationPositionsTemplates',
+				'settings_page'  => 'personioIntegrationPositionsTemplates',
+				'page' => 'personioPositions'
 			),
 			array(
 				'label' => __( 'Import', 'personio-integration-light' ),
 				'key'   => 'import',
-				'page'  => 'personioIntegrationPositionsImport',
+				'settings_page'  => 'personioIntegrationPositionsImport',
+				'page' => 'personioPositions'
 			),
 			array(
 				'label'    => __( 'Applications, SEO & more', 'personio-integration-light' ),
 				'key'      => 'use_pro',
 				'only_pro' => true,
+				'page' => 'personioPositions'
 			),
 			array(
 				'label' => __( 'Advanced', 'personio-integration-light' ),
 				'key'   => 'advanced',
-				'page'  => 'personioIntegrationPositionsAdvanced',
+				'settings_page'  => 'personioIntegrationPositionsAdvanced',
+				'page' => 'personioPositions'
 			),
 			array(
 				'label'    => __( 'Logs', 'personio-integration-light' ),
 				'key'      => 'logs',
 				'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\Logs', 'show' ),
+				'page' => 'personioPositions'
 			),
 			array(
 				'label'    => '&nbsp;',
 				'key'      => 'copyright',
 				'callback' => array( $this, 'show_copyright' ),
 				'class'    => 'copyright',
+				'page' => 'personioPositions'
 			),
 			array(
 				'label' => __( 'Questions? Check our forum!', 'personio-integration-light' ),
 				'key'   => 'help',
 				'url'   => Helper::get_plugin_support_url(),
+				'url_target' => '_blank',
 				'class' => 'nav-tab-help nav-tab-active',
+				'page' => 'personioPositions'
 			),
 		);
 
@@ -148,12 +157,14 @@ class Settings {
 				array(
 					'label' => __( 'General Settings', 'personio-integration-light' ),
 					'key'   => '',
-					'page'  => 'personioIntegrationMainSettings',
+					'settings_page'  => 'personioIntegrationMainSettings',
+					'page' => 'personioPositions'
 				),
 				array(
 					'label'       => __( 'Enter Personio URL to get more options', 'personio-integration-light' ),
 					'key'         => 'enter_url',
 					'do_not_link' => true,
+					'page' => 'personioPositions'
 				),
 			);
 		}
@@ -180,7 +191,7 @@ class Settings {
 		$this->settings = array(
 			'settings_section_main'            => array(
 				'label'    => __( 'General Settings', 'personio-integration-light' ),
-				'page'     => 'personioIntegrationMainSettings',
+				'settings_page'     => 'personioIntegrationMainSettings',
 				'callback' => '__return_true',
 				'fields'   => array(
 					'personioIntegrationUrl'              => array(
@@ -230,7 +241,7 @@ class Settings {
 			),
 			'settings_section_template_list'   => array(
 				'label'    => __( 'List View', 'personio-integration-light' ),
-				'page'     => 'personioIntegrationPositionsTemplates',
+				'settings_page'     => 'personioIntegrationPositionsTemplates',
 				'callback' => '__return_true',
 				'fields'   => array(
 					'personio_integration_fse_theme_hint' => array(
@@ -357,7 +368,7 @@ class Settings {
 			),
 			'settings_section_template_detail' => array(
 				'label'    => __( 'Single View', 'personio-integration-light' ),
-				'page'     => 'personioIntegrationPositionsTemplates',
+				'settings_page'     => 'personioIntegrationPositionsTemplates',
 				'callback' => '__return_true',
 				'fields'   => array(
 					'personioIntegrationTemplateContentDefaults' => array(
@@ -438,7 +449,7 @@ class Settings {
 			),
 			'settings_section_template_other'  => array(
 				'label'    => __( 'Other settings', 'personio-integration-light' ),
-				'page'     => 'personioIntegrationPositionsTemplates',
+				'settings_page'     => 'personioIntegrationPositionsTemplates',
 				'callback' => '__return_true',
 				'fields'   => array(
 					'personioIntegrationTemplateExcerptSeparator' => array(
@@ -454,7 +465,7 @@ class Settings {
 			),
 			'settings_section_advanced'        => array(
 				'label'    => __( 'Advanced settings', 'personio-integration-light' ),
-				'page'     => 'personioIntegrationPositionsAdvanced',
+				'settings_page'     => 'personioIntegrationPositionsAdvanced',
 				'callback' => '__return_true',
 				'fields'   => array(
 					'personioIntegration_advanced_pro_hint' => array(
@@ -513,7 +524,7 @@ class Settings {
 			),
 			'settings_section_import'          => array(
 				'label'    => __( 'Import of positions from Personio', 'personio-integration-light' ),
-				'page'     => 'personioIntegrationPositionsImport',
+				'settings_page'     => 'personioIntegrationPositionsImport',
 				'callback' => '__return_true',
 				'fields'   => array(
 					'personioIntegrationImportNow' => array(
@@ -602,7 +613,7 @@ class Settings {
 	 */
 	public function register_settings(): void {
 		foreach ( $this->get_settings() as $section_settings ) {
-			if ( ! empty( $section_settings['page'] ) ) {
+			if ( ! empty( $section_settings['settings_page'] ) ) {
 				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 					if ( ! isset( $field_settings['do_not_register'] ) ) {
 						$args = array();
@@ -611,7 +622,7 @@ class Settings {
 							$args = $field_settings['register_attributes'];
 						}
 						register_setting(
-							$section_settings['page'],
+							$section_settings['settings_page'],
 							$field_name,
 							$args
 						);
@@ -628,7 +639,7 @@ class Settings {
 	 */
 	public function register_fields(): void {
 		foreach ( $this->get_settings() as $section_name => $section_settings ) {
-			if ( ! empty( $section_settings ) && ! empty( $section_settings['page'] ) && ! empty( $section_settings['label'] ) && ! empty( $section_settings['callback'] ) ) {
+			if ( ! empty( $section_settings ) && ! empty( $section_settings['settings_page'] ) && ! empty( $section_settings['label'] ) && ! empty( $section_settings['callback'] ) ) {
 				$args = array();
 				if ( isset( $section_settings['before_section'] ) ) {
 					$args['before_section'] = $section_settings['before_section'];
@@ -642,7 +653,7 @@ class Settings {
 					$section_name,
 					$section_settings['label'],
 					$section_settings['callback'],
-					$section_settings['page'],
+					$section_settings['settings_page'],
 					$args
 				);
 
@@ -678,7 +689,7 @@ class Settings {
 							$field_name,
 							$field_settings['label'],
 							$field_settings['field'],
-							$section_settings['page'],
+							$section_settings['settings_page'],
 							$section_name,
 							$arguments
 						);
@@ -695,7 +706,7 @@ class Settings {
 	 */
 	public function register_field_callbacks(): void {
 		foreach ( $this->get_settings() as $section_settings ) {
-			if ( ! empty( $section_settings ) && ! empty( $section_settings['page'] ) && ! empty( $section_settings['label'] ) && ! empty( $section_settings['callback'] ) ) {
+			if ( ! empty( $section_settings ) && ! empty( $section_settings['settings_page'] ) && ! empty( $section_settings['label'] ) && ! empty( $section_settings['callback'] ) ) {
 				if ( ! empty( $section_settings['fields'] ) ) {
 					foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 						if ( ! empty( $field_settings['callback'] ) ) {
@@ -763,17 +774,22 @@ class Settings {
 			<nav class="nav-tab-wrapper">
 				<?php
 				foreach ( $this->get_tabs() as $tab_settings ) {
-					// bail if settings are not an array.
+					// bail if tab-settings are not an array.
 					if ( ! is_array( $tab_settings ) ) {
 						continue;
 					}
 
+					// bail if tab-settings are not for the settings-page.
+					if( $tab_settings['page'] !== 'personioPositions' ) {
+						continue;
+					}
+
 					// Set url.
-					$url    = Helper::get_settings_url( $tab_settings['key'] );
+					$url    = Helper::get_settings_url('personioPositions', $tab_settings['key'] );
 					$target = '_self';
 					if ( ! empty( $tab_settings['url'] ) ) {
 						$url    = $tab_settings['url'];
-						$target = '_blank';
+						$target = $tab_settings['url_target'];
 					}
 
 					// Set class for tab and page for form-view.
@@ -783,8 +799,8 @@ class Settings {
 					}
 					if ( $tab === $tab_settings['key'] ) {
 						$class .= ' nav-tab-active';
-						if ( ! empty( $tab_settings['page'] ) ) {
-							$page = $tab_settings['page'];
+						if ( ! empty( $tab_settings['settings_page'] ) ) {
+							$page = $tab_settings['settings_page'];
 						}
 						if ( ! empty( $tab_settings['callback'] ) ) {
 							$callback = $tab_settings['callback'];
@@ -903,6 +919,7 @@ class Settings {
 		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			add_filter( 'personio_integration_settings', array( $this, 'remove_pro_hints_from_settings' ) );
 			add_filter( 'personio_integration_settings_tabs', array( $this, 'remove_pro_hints_from_tabs' ) );
+			add_filter( 'personio_integration_personioposition_columns', array( $this, 'remove_pro_hints_from_columns' ) );
 		}
 	}
 
@@ -915,7 +932,7 @@ class Settings {
 	 */
 	public function remove_pro_hints_from_settings( array $settings ): array {
 		foreach ( $settings as $section_name => $section_settings ) {
-			if ( ! empty( $section_settings['page'] ) ) {
+			if ( ! empty( $section_settings['settings_page'] ) ) {
 				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 					if ( isset( $settings[ $section_name ]['fields'][ $field_name ]['pro_hint'] ) ) {
 						unset( $settings[ $section_name ]['fields'][ $field_name ]['pro_hint'] );
@@ -931,7 +948,7 @@ class Settings {
 	 *
 	 * @return array
 	 */
-	private function get_tabs(): array {
+	public function get_tabs(): array {
 		$tabs = $this->tabs;
 
 		/**
@@ -1017,5 +1034,17 @@ class Settings {
 
 		// compare the values.
 		return $tab === $settings_page;
+	}
+
+	/**
+	 * Remove the sort column from positions table.
+	 *
+	 * @param array $columns List of columns.
+	 *
+	 * @return array
+	 */
+	public function remove_pro_hints_from_columns( array $columns ): array {
+		unset( $columns['sort'] );
+		return $columns;
 	}
 }

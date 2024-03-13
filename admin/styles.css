@@ -231,9 +231,9 @@ body .review-hint-button:after {
 	margin-left: 8px;
 }
 
-body.personioposition_page_personioPositions tr.hide { display: none }
+body.post-type-personioposition tr.hide { display: none }
 
-body.personioposition_page_personioPositions tr.show_with_animation {
+body.post-type-personioposition tr.show_with_animation {
 	animation: show-animation 1s ease-in forwards;
 }
 
@@ -296,7 +296,18 @@ body.post-type-personioposition #post-body-content { display: none }
 }
 
 .personioposition_page_personiopositionextensions .button-state-disabled {
-	background-color: grey;
-	color: #fff;
+	background-color: #eee;
+	color: #000;
 }
 
+.personioposition_page_personiopositionextensions #category {
+	width: 128px;
+}
+
+.personioposition_page_personiopositionextensions #state {
+	width: 128px;
+}
+
+.personioposition_page_personiopositionextensions #name {
+	width: 160px;
+}

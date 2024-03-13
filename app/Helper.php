@@ -501,14 +501,15 @@ class Helper {
 	/**
 	 * Return the settings-URL.
 	 *
+	 * @param string $page The page to call (e.g. "personioPositions").
 	 * @param string $tab String which represents the tab to link to.
 	 *
 	 * @return string
 	 */
-	public static function get_settings_url( string $tab = '' ): string {
+	public static function get_settings_url( string $page = 'personioPositions', string $tab = '' ): string {
 		$params = array(
 			'post_type' => PersonioPosition::get_instance()->get_name(),
-			'page'      => 'personioPositions',
+			'page'      => $page
 		);
 		if ( ! empty( $tab ) ) {
 			$params['tab'] = $tab;

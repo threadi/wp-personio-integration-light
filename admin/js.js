@@ -97,11 +97,11 @@ jQuery(document).ready(function($) {
      *
      * Hint: hide the surrounding "tr"-element.
      */
-    $('body.personioposition_page_personioPositions input[type="checkbox"], body.personioposition_page_personioPositions input[type="hidden"], body.personioposition_page_personioPositions select').each( function() {
+    $('body.post-type-personioposition input[type="checkbox"], body.post-type-personioposition input[type="hidden"], body.post-type-personioposition select').each( function() {
         let form_field = $(this);
 
         // check on load to hide some fields.
-        $('body.personioposition_page_personioPositions [data-depends]').each( function() {
+        $('body.post-type-personioposition [data-depends]').each( function() {
           let depending_field = $(this);
           $.each( $(this).data('depends'), function( i, v ) {
              if( i === form_field.attr('name')
@@ -117,7 +117,7 @@ jQuery(document).ready(function($) {
 
         // add event-listener to changed depending fields.
         form_field.on('change', function() {
-          $('body.personioposition_page_personioPositions [data-depends]').each( function() {
+          $('body.post-type-personioposition [data-depends]').each( function() {
             let depending_field = $(this);
             $.each( $(this).data('depends'), function( i, v ) {
               if( i === form_field.attr('name') ) {
@@ -642,10 +642,12 @@ function personio_integration_extension_state_button() {
           if( data.enabled ) {
             button.removeClass( 'button-state-disabled' );
             button.addClass( 'button-state-enabled' );
+            button.parents('tr').find('.row-actions-wrapper').show();
           }
           else {
             button.removeClass( 'button-state-enabled' );
             button.addClass( 'button-state-disabled' );
+            button.parents('tr').find('.row-actions-wrapper').hide();
           }
           button.html( data.title );
         }

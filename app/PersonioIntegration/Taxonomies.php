@@ -423,17 +423,29 @@ class Taxonomies {
 		// get actual locale.
 		$locale = get_locale();
 
-		// switch to main language.
+		// switch to requested language.
 		if ( ! is_admin() ) {
+			// if no language is requested, use the current language.
 			if ( empty( $language_code ) ) {
-				$language_code = Languages::get_instance()->get_main_language( true );
-			} else {
-				$language_code = Languages::get_instance()->get_lang_mappings( $language_code )[0];
+				$language_code = Languages::get_instance()->get_current_lang();
 			}
+
+			// get mappings
+			$language_mappings = Languages::get_instance()->get_lang_mappings( $language_code );
+
+			// get WP-lang-compatible language-code.
+			if( empty( $language_code ) && ! empty($language_mappings) ) {
+				$language_code = $language_mappings[0];
+			}
+			else {
+				$language_code = Languages::get_instance()->get_fallback_language_name();
+			}
+
+			// switch the language.
 			switch_to_locale( $language_code );
 		}
 
-		// get ALL taxonomy labels.
+		// get ALL taxonomy labels in the requested language.
 		$array = $this->get_taxonomy_labels();
 
 		// revert the locale-setting.
@@ -928,12 +940,25 @@ class Taxonomies {
 	public function get_default_terms_for_taxonomy( string $taxonomy, string $language_code = '' ): array {
 		// set language in frontend to read the texts depending on main-language.
 		$locale = get_locale();
+		// switch to requested language.
 		if ( ! is_admin() ) {
+			// if no language is requested, use the current language.
 			if ( empty( $language_code ) ) {
-				$language_code = Languages::get_instance()->get_main_language( true );
-			} else {
-				$language_code = Languages::get_instance()->get_lang_mappings( $language_code )[0];
+				$language_code = Languages::get_instance()->get_current_lang();
 			}
+
+			// get mappings
+			$language_mappings = Languages::get_instance()->get_lang_mappings( $language_code );
+
+			// get WP-lang-compatible language-code.
+			if( empty( $language_code ) && ! empty($language_mappings) ) {
+				$language_code = $language_mappings[0];
+			}
+			else {
+				$language_code = Languages::get_instance()->get_fallback_language_name();
+			}
+
+			// switch the language.
 			switch_to_locale( $language_code );
 		}
 

@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
@@ -61,6 +62,9 @@ class Uninstaller {
 	 * @return void
 	 */
 	public function run( array $delete_data = array() ): void {
+		// set deactivation runner to enable.
+		define( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING', 1 );
+
 		if ( is_multisite() ) {
 			// get original blog id.
 			$original_blog_id = get_current_blog_id();
@@ -108,6 +112,9 @@ class Uninstaller {
 
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
+			// get extensions.
+			Extensions::get_instance()->init();
+
 			// reset Personio- and language-specific settings.
 			Imports::get_instance()->reset_personio_settings();
 

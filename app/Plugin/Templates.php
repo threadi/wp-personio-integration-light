@@ -546,11 +546,10 @@ class Templates {
 			} else {
 				$template = $attributes['excerpt_template'];
 			}
-			$template_file = 'parts/details/' . $template . '.php';
 
 			// get template and return it.
 			ob_start();
-			include $this->get_template( $template_file );
+			include $this->get_template( 'parts/details/' . $template . '.php' );
 			$content = ob_get_clean();
 
 			// return content depending on setting.

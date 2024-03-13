@@ -91,7 +91,7 @@ class Admin {
 		add_action( 'admin_action_personioPositionsCancelImport', array( $this, 'cancel_import' ) );
 		add_action( 'admin_action_personioPositionsDelete', array( $this, 'delete_positions' ) );
 		add_action( 'admin_action_personio_integration_log_export', array( $this, 'export_log' ) );
-		add_action( 'personio_integration_log_empty', array( $this, 'empty_log' ) );
+		add_action( 'admin_action_personio_integration_log_empty', array( $this, 'empty_log' ) );
 	}
 
 	/**
@@ -261,7 +261,7 @@ class Admin {
 	 * @return void
 	 */
 	public function forward_importer_to_settings(): void {
-		wp_safe_redirect( Helper::get_settings_url( 'import' ) );
+		wp_safe_redirect( Helper::get_settings_url( 'personioPositions', 'import' ) );
 	}
 
 	/**
@@ -606,7 +606,7 @@ class Admin {
 			),
 			'buttons' => array(
 				array(
-					'action'  => 'location.href="' . esc_url( add_query_arg( array( 'import_intro' => 1 ), Helper::get_settings_url( 'import' ) ) ) . '";',
+					'action'  => 'location.href="' . esc_url( add_query_arg( array( 'import_intro' => 1 ), Helper::get_settings_url( 'personioPositions','import' ) ) ) . '";',
 					'variant' => 'primary',
 					'text'    => __( 'Start', 'personio-integration-light' ),
 				),
@@ -629,7 +629,7 @@ class Admin {
 																								),
 																								'buttons' => array(
 																									array(
-																										'action'  => 'location.href="' . esc_url( add_query_arg( array( 'template_intro' => 1 ), Helper::get_settings_url( 'templates' ) ) ) . '";',
+																										'action'  => 'location.href="' . esc_url( add_query_arg( array( 'template_intro' => 1 ), Helper::get_settings_url( 'personioPositions','templates' ) ) ) . '";',
 																										'variant' => 'primary',
 																										'text'    => __( 'Start', 'personio-integration-light' ),
 																									),

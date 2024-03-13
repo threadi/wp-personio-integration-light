@@ -69,7 +69,7 @@ class Setup {
 		$this->check();
 
 		if ( ! $this->is_completed() ) {
-			// add hooks.
+			// add hooks to enable the setup of this plugin.
 			add_action( 'admin_init', array( $this, 'set_config' ) );
 			add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
@@ -202,33 +202,30 @@ class Setup {
 	 * @return void
 	 */
 	public function add_setup_menu(): void {
-		global $submenu;
-		if ( ! $this->is_completed() ) {
-			// add main menu as setup entry.
-			add_menu_page(
-				__( 'Positions', 'personio-integration-light' ),
-				__( 'Positions', 'personio-integration-light' ),
-				'manage_options',
-				PersonioPosition::get_instance()->get_name(),
-				array( $this, 'display' ),
-				Helper::get_plugin_url() . 'gfx/personio_icon.png',
-				40
-			);
+		// add main menu as setup entry.
+		add_menu_page(
+			__( 'Positions', 'personio-integration-light' ),
+			__( 'Positions', 'personio-integration-light' ),
+			'manage_options',
+			PersonioPosition::get_instance()->get_name(),
+			array( $this, 'display' ),
+			Helper::get_plugin_url() . 'gfx/personio_icon.png',
+			40
+		);
 
-			// add setup entry as sub-menu.
-			add_submenu_page(
-				PersonioPosition::get_instance()->get_link( true ),
-				__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
-				__( 'Setup', 'personio-integration-light' ),
-				'manage_' . PersonioPosition::get_instance()->get_name(),
-				'personioPositions',
-				array( $this, 'display' ),
-				1
-			);
+		// add setup entry as sub-menu.
+		add_submenu_page(
+			PersonioPosition::get_instance()->get_name(),
+			__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
+			__( 'Setup', 'personio-integration-light' ),
+			'manage_' . PersonioPosition::get_instance()->get_name(),
+			'personioPositions',
+			array( $this, 'display' ),
+			1
+		);
 
-			// remove menu page of our own cpt.
-			remove_submenu_page( PersonioPosition::get_instance()->get_name(), PersonioPosition::get_instance()->get_name() );
-		}
+		// remove menu page of our own cpt.
+		remove_submenu_page( PersonioPosition::get_instance()->get_name(), PersonioPosition::get_instance()->get_name() );
 	}
 
 	/**

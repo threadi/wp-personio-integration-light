@@ -36,21 +36,36 @@ class Availability extends Extensions_Base {
 	protected string $setting_field = 'personioIntegrationEnableAvailabilityCheck';
 
 	/**
+	 * Name if the setting tab where the setting field is visible.
+	 *
+	 * @var string
+	 */
+	protected string $setting_tab = 'import';
+
+	/**
+	 * Internal name of the used category.
+	 *
+	 * @var string
+	 */
+	protected string $extension_category = 'positions';
+
+	/**
 	 * Initialize this plugin.
 	 *
 	 * @return void
 	 */
 	public function init(): void {
+		add_filter( 'personio_integration_extensions_table_extension', array( $this, 'add_extension' ) );
+
+		// bail if settings is not enabled.
+		if ( ! $this->is_enabled() && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+			return;
+		}
+
 		// use our own hooks.
 		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'run' ) );
-		add_filter( 'personio_integration_extensions_table_extension', array( $this, 'add_extension' ) );
-
-		// bail if settings is not enabled.
-		if ( $this->is_enabled() ) {
-			return;
-		}
 
 		// extend the position table.
 		add_filter( 'manage_' . PersonioPosition::get_instance()->get_name() . '_posts_columns', array( $this, 'add_column' ) );
@@ -295,7 +310,7 @@ class Availability extends Extensions_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		return 1 === absint( Settings::get_instance()->get_setting( 'personioIntegrationEnableAvailabilityCheck' ) );
+		return 1 === absint( Settings::get_instance()->get_setting( $this->get_settings_field_name() ) );
 	}
 
 	/**
@@ -304,6 +319,6 @@ class Availability extends Extensions_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return sprintf( __( 'Checks your positions for availability on your Personio career page. This ensures that applicants can reach the application form there. If a position is not available, you will be informed of this in the list of positions.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) );
+		return sprintf( __( 'Checks your positions for availability on your Personio career page. This ensures that applicants can reach the application form there. If a position is not available, you will be informed of this in the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) );
 	}
 }
