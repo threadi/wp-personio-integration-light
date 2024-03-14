@@ -155,7 +155,8 @@ class Blocks_Basis {
 		 *
 		 * @param array $single_attributes The settings as array.
 		 */
-		return apply_filters( 'personio_integration_gutenberg_block_' . $this->get_name() . '_attributes', $single_attributes );
+		$filtername = 'personio_integration_gutenberg_block_' . $this->get_name() . '_attributes';
+		return apply_filters( $filtername, $single_attributes );
 	}
 
 	/**
@@ -172,7 +173,8 @@ class Blocks_Basis {
 		 *
 		 * @param string $path The absolute path to the block.json.
 		 */
-		return apply_filters( 'personio_integration_gutenberg_block_' . $this->get_name() . '_path', $path );
+		$filtername = 'personio_integration_gutenberg_block_' . $this->get_name() . '_path';
+		return apply_filters( $filtername, $path );
 	}
 
 	/**
