@@ -68,6 +68,7 @@ class Taxonomies {
 
 		// our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_taxonomies' ) );
+		add_filter( 'personio_integration_get_list_attributes', array( $this, 'filter_by_attributes' ), 10, 2 );
 
 		// hide some taxonomies in columns.
 		add_filter( 'hidden_columns', array( $this, 'hide_columns' ), 10, 3 );
@@ -1155,5 +1156,22 @@ class Taxonomies {
 
 		// output success-message.
 		Helper::is_cli() ? \WP_CLI::success( count( $taxonomies ) . ' taxonomies from local database has been cleaned.' ) : false;
+	}
+
+	/**
+	 * Set filter for taxonomies through attributes from the used PageBuilder.
+	 *
+	 * @param array $attributes List of pre-filtered attributes.
+	 * @param array $attributes_set_by_pagebuilder List of unfiltered attributes, set by used pagebuilder.
+	 *
+	 * @return array
+	 */
+	public function filter_by_attributes( array $attributes, array $attributes_set_by_pagebuilder ): array {
+		foreach ( $this->get_taxonomies() as $taxonomy ) {
+			if ( ! empty( $attributes_set_by_pagebuilder[ $taxonomy['slug'] ] ) ) {
+				$attributes[ $taxonomy['slug'] ] = absint( $attributes_set_by_pagebuilder[ $taxonomy['slug'] ] );
+			}
+		}
+		return $attributes;
 	}
 }

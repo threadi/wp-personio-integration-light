@@ -114,10 +114,13 @@ class Single extends Blocks_Basis {
 		);
 
 		/**
-		 * Filter the attributes for the single template.
+		 * Filter the attributes for this template.
 		 *
-		 * @param array $list_attributes List of attributes.
+		 * @since 2.5.0 Available since 2.5.0
+		 *
+		 * @param array $attribute_defaults List of attributes to use.
+		 * @param array $attributes List of attributes vom PageBuilder.
 		 */
-		return PersonioPosition::get_instance()->shortcode_single( apply_filters( 'personio_integration_get_gutenberg_single_attributes', $attribute_defaults ) );
+		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
 	}
 }

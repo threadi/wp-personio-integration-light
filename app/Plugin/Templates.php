@@ -79,6 +79,7 @@ class Templates {
 		add_action( 'personio_integration_get_formular', array( $this, 'get_application_link_template' ), 10, 2 );
 		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
+		add_filter( 'personio_integration_get_list_attributes', array( $this, 'filter_attributes_for_templates' ), 10, 2 );
 
 		// expand kses-filter.
 		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
@@ -690,6 +691,7 @@ class Templates {
 		$taxonomy_to_use = '';
 		$term_ids        = array();
 
+		// get the terms we want to use in filter-output.
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			if ( $filter === $taxonomy['slug'] && 1 === absint( $taxonomy['useInFilter'] ) ) {
 				$taxonomy_to_use = $taxonomy_name;
@@ -717,18 +719,13 @@ class Templates {
 			if ( ! empty( $terms ) ) {
 				// get the value.
 				$value = 0;
-				// -> if filter is set by editor.
-				if ( ! empty( $attributes['office'] ) ) {
-					$value = $attributes['office'];
-				}
 				// -> if filter is set by user in frontend.
 				if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ) {
 					$value = absint( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] );
 				}
 
-				// set name.
-				$taxonomy   = get_taxonomy( $taxonomy_to_use );
-				$filtername = $taxonomy->labels->singular_name;
+				// get name.
+				$filtername = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_to_use );
 
 				// get url.
 				$page_url = Helper::get_current_url();
@@ -812,5 +809,20 @@ class Templates {
 			);
 		}
 		return $allowed_tags;
+	}
+
+	/**
+	 * Set attributes for output with help of attributes from the used PageBuilder.
+	 *
+	 * @param array $attributes List of pre-filtered attributes.
+	 * @param array $attributes_set_by_pagebuilder List of unfiltered attributes, set by used pagebuilder.
+	 *
+	 * @return array
+	 */
+	public function filter_attributes_for_templates( array $attributes, array $attributes_set_by_pagebuilder ): array {
+		if( isset( $attributes_set_by_pagebuilder['jobdescription_template'] ) ) {
+			$attributes['jobdescription_template'] = $attributes_set_by_pagebuilder['jobdescription_template'];
+		}
+		return $attributes;
 	}
 }

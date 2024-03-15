@@ -162,10 +162,13 @@ class Archive extends Blocks_Basis {
 		);
 
 		/**
-		 * Filter the attributes for the archive template.
+		 * Filter the attributes for this template.
 		 *
-		 * @param array $list_attributes List of attributes.
+		 * @since 2.5.0 Available since 2.5.0
+		 *
+		 * @param array $attribute_defaults List of attributes to use.
+		 * @param array $attributes List of attributes vom PageBuilder.
 		 */
-		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_gutenberg_list_attributes', $attribute_defaults, $attributes ) );
+		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
 	}
 }

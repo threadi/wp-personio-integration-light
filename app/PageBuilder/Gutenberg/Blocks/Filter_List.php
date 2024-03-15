@@ -103,7 +103,7 @@ class Filter_List extends Blocks_Basis {
 		}
 
 		// collect all settings for this block.
-		$attributes = array(
+		$attribute_defaults = array(
 			'templates'  => '',
 			'filter'     => implode( ',', $attributes['filter'] ),
 			'filtertype' => 'linklist',
@@ -113,10 +113,13 @@ class Filter_List extends Blocks_Basis {
 		);
 
 		/**
-		 * Filter the attributes for the Filter List template.
+		 * Filter the attributes for this template.
 		 *
-		 * @param array $list_attributes List of attributes.
+		 * @since 2.5.0 Available since 2.5.0
+		 *
+		 * @param array $attribute_defaults List of attributes to use.
+		 * @param array $attributes List of attributes vom PageBuilder.
 		 */
-		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_gutenberg_filter_list_attributes', $attributes ) );
+		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
 	}
 }
