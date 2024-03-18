@@ -35,18 +35,13 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Personio account with enabled XML interface
 - PHP module SimpleXML
 
-#### Compatibility tested with // TODO aktualisieren für Light
-
-- WPML and Polylang for language-detection
-- Post Types Order
-- Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), Divi
-
 #### the Pro license includes:
 
 - Customization of slugs (URLs) for list and detailed views of positions
 - Multiple and customizable application formulars incl. export of them via Personio API
 - Multiple Personio-accounts per website
-- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Schwedish, Finnish - compatible with translations via Polylang
+- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Schwedish, Finnish
+- Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
 - Support for subcompanies and additional offices in positions
 - Support for multiple form handler like Contact Form 7, Forminator, NinjaForms and WPForms
 - Add unlimited custom files for download on each single position

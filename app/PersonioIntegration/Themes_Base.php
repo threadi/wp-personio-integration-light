@@ -7,10 +7,8 @@
 
 namespace PersonioIntegrationLight\PersonioIntegration;
 
-// prevent also other direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+// prevent direct access.
+defined( 'ABSPATH' ) or exit;
 
 use PersonioIntegrationLight\Helper;
 

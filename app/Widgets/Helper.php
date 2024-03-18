@@ -8,9 +8,7 @@
 namespace PersonioIntegrationLight\Widgets;
 
 // prevent direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) or exit;
 
 use const WP_CLI;
 

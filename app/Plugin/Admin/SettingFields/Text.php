@@ -8,9 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingFields;
 
 // prevent direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Initialize the field.

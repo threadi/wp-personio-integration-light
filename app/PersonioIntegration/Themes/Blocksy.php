@@ -8,9 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\Themes;
 
 // prevent direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) or exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Themes_Base;
 

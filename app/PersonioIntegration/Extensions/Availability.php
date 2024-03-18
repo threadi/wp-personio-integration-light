@@ -8,9 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\Extensions;
 
 // prevent direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) or exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Position_Extensions_Base;
 

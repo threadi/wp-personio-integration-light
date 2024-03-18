@@ -7,10 +7,8 @@
 
 namespace PersonioIntegrationLight\Plugin;
 
-// prevent also other direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+// prevent direct access.
+defined( 'ABSPATH' ) or exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
@@ -725,7 +723,7 @@ class Templates {
 				}
 
 				// get name.
-				$filtername = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_to_use );
+				$filtername = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_to_use )['name'];
 
 				// get url.
 				$page_url = Helper::get_current_url();

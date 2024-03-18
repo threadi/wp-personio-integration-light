@@ -14,7 +14,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-// prevent also other direct access.
+// prevent direct access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

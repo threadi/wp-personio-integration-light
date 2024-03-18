@@ -7,10 +7,8 @@
 
 namespace PersonioIntegrationLight\Plugin;
 
-// prevent also other direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+// prevent direct access.
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Handler for any language-tasks.

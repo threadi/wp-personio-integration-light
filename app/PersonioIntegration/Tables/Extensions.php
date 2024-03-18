@@ -7,9 +7,7 @@
 
 namespace PersonioIntegrationLight\PersonioIntegration\Tables;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) or exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;

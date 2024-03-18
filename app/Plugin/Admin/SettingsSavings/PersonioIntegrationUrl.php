@@ -8,9 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsSavings;
 
 // prevent direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Object which saves the validated URL.

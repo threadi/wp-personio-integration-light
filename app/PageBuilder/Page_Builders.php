@@ -8,9 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder;
 
 // prevent direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Object to handle page builder support.
