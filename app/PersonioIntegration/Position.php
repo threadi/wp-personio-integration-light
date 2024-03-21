@@ -16,7 +16,6 @@ use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 use SimpleXMLElement;
-use WP_Query;
 use WP_Term;
 
 /**
@@ -92,12 +91,14 @@ class Position {
 			// if result is not our post-type, create an empty array.
 			if ( ! empty( $post_array['post_type'] ) && PersonioPosition::get_instance()->get_name() !== $post_array['post_type'] ) {
 				$post_array = array();
+				$this->data['ID'] = 0;
+				return;
 			}
 
 			// set the WP_Post-settings in this object.
 			$this->data = $post_array;
 
-			// set deprecated ID.
+			// set deprecated ID param on object.
 			$this->ID = $this->get_id();
 
 			// set the main language for this position.
@@ -461,7 +462,7 @@ class Position {
 	 * @return false|string
 	 */
 	public function get_excerpt(): false|string {
-		return Templates::get_instance()->get_excerpt_template( $this, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ), true );
+		return Templates::get_instance()->get_excerpt( $this, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ), true );
 	}
 
 	/**

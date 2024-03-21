@@ -55,7 +55,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Support for Open Graph (Facebook, LinkedIn, WhatsApp ...), Twitter Cards and Dublin Core (optionally configurable for all or single positions)
 - Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)
 - Shortcode generator for individual views of lists and details
-- Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery, Avada
+- Extensions for the following PageBuilders: Avada, Elementor, Divi, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery
 - ... and much more
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)

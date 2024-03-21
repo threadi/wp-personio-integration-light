@@ -762,6 +762,9 @@ class Settings {
 		// set page to show.
 		$page = 'personioIntegrationMainSettings';
 
+		// hide the save button.
+		$hide_save_button = false;
+
 		// set callback to use.
 		$callback = '';
 
@@ -804,6 +807,9 @@ class Settings {
 							$callback = $tab_settings['callback'];
 							$page     = '';
 						}
+						if ( isset( $tab_settings['do_not_save'] ) ) {
+							$hide_save_button = $tab_settings['do_not_save'];
+						}
 					}
 
 					// decide which tab-type we want to output.
@@ -835,7 +841,7 @@ class Settings {
 					<?php
 					settings_fields( $page );
 					do_settings_sections( $page );
-					submit_button();
+					$hide_save_button ? '' : submit_button();
 					?>
 					</form>
 					<?php

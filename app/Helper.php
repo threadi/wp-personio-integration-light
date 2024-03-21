@@ -254,6 +254,12 @@ class Helper {
 						$attributes[ $name ] = 'default';
 					}
 				}
+				if ( 'excerpt_template' === $attribute_settings[ $name ] ) {
+					$attributes[ $name ] = $attribute;
+					if ( false === Templates::get_instance()->has_template( 'parts/details/' . $attribute . '.php' ) ) {
+						$attributes[ $name ] = 'default';
+					}
+				}
 			}
 		}
 

@@ -270,8 +270,9 @@ class PersonioPosition extends Post_Type {
 	 * - personioid => PersonioId of the position (required)
 	 * - lang => sets the language for the output, defaults to default-language from plugin-settings
 	 * - templates => comma-separated list of template to use, defaults to title and excerpt
-	 * - excerpt => comma-separated list of details to display, defaults to recruitingCategory, schedule, office
+	 * - excerpt => comma-separated list of details to display, defaults to "recruitingCategory, schedule, office"
 	 * - donotlink => if position-title should be linked (0) or not (1), defaults to link (0)
+	 * - excerpt_template => define specific template for details (defaults to "default")
 	 * - jobdescription_template => define specific template for job description (defaults to setting under positions > settings > templates)
 	 *
 	 * Templates:
@@ -360,7 +361,8 @@ class PersonioPosition extends Post_Type {
 	 * - filtertype => sets the type of filter to use (select or linklist), default: select
 	 * - template => set the main template to use for listing
 	 * - templates => comma-separated list of template to use, defaults to title and excerpt
-	 *  - jobdescription_template => define specific template for job description (defaults to setting under positions > settings > templates)
+	 * - excerpt_template => define specific template for details (defaults to 'default')
+	 * - jobdescription_template => define specific template for job description (defaults to setting under positions > settings > templates)
 	 * - excerpt => comma-separated list of details to display, defaults to recruitingCategory, schedule, office
 	 * - ids => comma-separated list of PositionIDs to display, default: empty
 	 * - sort => direction for sorting the resulting list (asc or desc), default: asc
@@ -412,6 +414,7 @@ class PersonioPosition extends Post_Type {
 			'template'                => '',
 			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentList' ) ),
 			'listing_template'        => get_option( 'personioIntegrationTemplateContentListingTemplate' ),
+			'excerpt_template' => get_option( 'personioIntegrationTemplateListingExcerptsTemplate' ),
 			'jobdescription_template' => get_option( 'personioIntegrationTemplateListingContentTemplate' ),
 			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDefaults' ) ),
 			'ids'                     => '',
@@ -433,6 +436,7 @@ class PersonioPosition extends Post_Type {
 			'filter'                  => 'array',
 			'template'                => 'string',
 			'listing_template'        => 'listing_template',
+			'excerpt_template' => 'excerpt_template',
 			'jobdescription_template' => 'jobdescription_template',
 			'templates'               => 'array',
 			'excerpt'                 => 'array',
@@ -1294,6 +1298,7 @@ class PersonioPosition extends Post_Type {
 			'donotlink'               => 'bool',
 			'styles'                  => 'string',
 			'classes'                 => 'string',
+			'excerpt_template' => 'excerpt_template',
 			'jobdescription_template' => 'jobdescription_template',
 		);
 		return Helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
@@ -1310,6 +1315,7 @@ class PersonioPosition extends Post_Type {
 			'lang'                    => Languages::get_instance()->get_main_language(),
 			'template'                => '',
 			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults' ) ),
+			'excerpt_template' => get_option( 'personioIntegrationTemplateDetailsExcerptsTemplate' ),
 			'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription' ),
 			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDetail' ) ),
 			'donotlink'               => 1,

@@ -72,7 +72,7 @@ class Templates {
 
 		// our own hooks.
 		add_action( 'personio_integration_get_title', array( $this, 'get_title_template' ), 10, 2 );
-		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt_template' ), 10, 2 );
+		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt' ), 10, 2 );
 		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 );
 		add_action( 'personio_integration_get_formular', array( $this, 'get_application_link_template' ), 10, 2 );
 		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
@@ -452,7 +452,7 @@ class Templates {
 		$position_obj = Positions::get_instance()->get_position( get_the_ID() );
 
 		// return the excerpt-template.
-		return $this->get_excerpt_template( $position_obj, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ), true );
+		return $this->get_excerpt( $position_obj, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ), true );
 	}
 
 	/**
@@ -471,10 +471,22 @@ class Templates {
 		if ( is_single() ) {
 			$heading_size = '1';
 		}
+
 		// and h3 if list is grouped.
 		if ( ! empty( $attributes['groupby'] ) ) {
 			$heading_size = '3';
 		}
+
+		/**
+		 * Filter the heading size.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param string $heading_size The heading size.
+		 * @param Position $position The object ob the requested position.
+		 * @param array $attributes List of attributes.
+		 */
+		$heading_size = apply_filters( 'personio_integration_title_size', $heading_size, $position, $attributes );
 
 		// output for not linked title.
 		if ( false !== $attributes['donotlink'] ) {
@@ -493,7 +505,7 @@ class Templates {
 	 *
 	 * @return string
 	 */
-	public function get_excerpt_template( Position $position, array $attributes, bool $use_return = false ): string {
+	public function get_excerpt( Position $position, array $attributes, bool $use_return = false ): string {
 		// collect the details in this array.
 		$details = array();
 
@@ -538,6 +550,7 @@ class Templates {
 				}
 			}
 		}
+
 		if ( ! empty( $details ) ) {
 			// get configured template of none has been set for this output.
 			if ( empty( $attributes['excerpt_template'] ) ) {
@@ -818,8 +831,14 @@ class Templates {
 	 * @return array
 	 */
 	public function filter_attributes_for_templates( array $attributes, array $attributes_set_by_pagebuilder ): array {
+		if( ! isset( $attributes['lang'] ) ) {
+			$attributes['lang'] = Languages::get_instance()->get_current_lang();
+		}
 		if( isset( $attributes_set_by_pagebuilder['jobdescription_template'] ) ) {
 			$attributes['jobdescription_template'] = $attributes_set_by_pagebuilder['jobdescription_template'];
+		}
+		if( ! isset( $attributes['classes'] ) ) {
+			$attributes['classes'] = '';
 		}
 		return $attributes;
 	}
