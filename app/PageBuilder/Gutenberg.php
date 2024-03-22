@@ -106,7 +106,7 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return bool
 	 * @noinspection PhpUndefinedFunctionInspection
 	 */
-	private function theme_support_block_templates(): bool {
+	public function theme_support_block_templates(): bool {
 		if (
 			! $this->current_theme_is_fse_theme() &&
 			( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )

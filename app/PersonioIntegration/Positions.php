@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 defined( 'ABSPATH' ) or exit;
 
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use WP_Post;
 use WP_Query;
 
 /**
@@ -198,8 +199,13 @@ class Positions {
 		// -> optionally grouped by a given taxonomy.
 		$resulting_position_list = array();
 		foreach ( $this->results->posts as $post_id ) {
-			// get the position object.
-			$position_object = $this->get_position( absint( $post_id ) );
+			/**
+			 * Filter the resulting ID / object.
+			 *
+			 * @since 3.0.0 Available since 3.0.0
+			 * @param int|WP_Post $post_id The ID or object to use.
+			 */
+			$position_object = $this->get_position( apply_filters( 'personio_integration_positions_loop_id', $post_id ) );
 
 			// set used language on position-object.
 			if ( ! empty( $parameter_to_add['lang'] ) ) {
