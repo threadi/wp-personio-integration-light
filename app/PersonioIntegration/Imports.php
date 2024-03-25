@@ -80,6 +80,9 @@ class Imports {
 	 * @return void
 	 */
 	public function run(): void {
+		// mark process as running import
+		define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
+
 		// do not import if it is already running in another process.
 		if ( absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) > 0 ) ) {
 			$this->errors[] = __( 'Import is already running.', 'personio-integration-light' );

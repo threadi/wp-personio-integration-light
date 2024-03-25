@@ -160,9 +160,6 @@ class Import {
 	 * @return void
 	 */
 	public function run(): void {
-		// create array for positions.
-		$imported_positions = array();
-
 		// get imports-object to update stats during import.
 		$imports_obj = $this->get_imports_object();
 		if ( ! ( $imports_obj instanceof Imports ) ) {
@@ -302,9 +299,6 @@ class Import {
 
 					// loop through the positions and import them.
 					foreach ( $this->get_xml_positions() as $position ) {
-						// add to list for counting.
-						$imported_positions[ (int) $position->id ] = $position;
-
 						// marker to run import.
 						$run_import = true;
 
