@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PageBuilder;
 // prevent direct access.
 defined( 'ABSPATH' ) or exit;
 
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Patterns;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Templates;
@@ -20,40 +21,11 @@ use PersonioIntegrationLight\PageBuilder\Gutenberg\Variations;
  */
 class Gutenberg extends PageBuilder_Base {
 	/**
-	 * Internal name of the page builder.
+	 * The internal name of this extension.
 	 *
 	 * @var string
 	 */
 	protected string $name = 'gutenberg';
-
-	/**
-	 * Instance of this object.
-	 *
-	 * @var ?Gutenberg
-	 */
-	private static ?Gutenberg $instance = null;
-
-	/**
-	 * Constructor for Init-Handler.
-	 */
-	private function __construct() {}
-
-	/**
-	 * Prevent cloning of this object.
-	 *
-	 * @return void
-	 */
-	private function __clone() { }
-
-	/**
-	 * Return the instance of this Singleton object.
-	 */
-	public static function get_instance(): Gutenberg {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
-		}
-		return static::$instance;
-	}
 
 	/**
 	 * Initialize this PageBuilder support.
@@ -62,7 +34,7 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function init(): void {
 		// bail if Gutenbergs main functions does not exist.
-		if ( ! function_exists( 'register_block_type' ) ) {
+		if ( ! $this->is_enabled() ) {
 			return;
 		}
 
@@ -197,5 +169,32 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function add_variations(): void {
 		Variations::get_instance()->init();
+	}
+
+	/**
+	 * Return label of this extension.
+	 *
+	 * @return string
+	 */
+	public function get_label(): string {
+		return __( 'Block Editor', 'personio-integration-light' );
+	}
+
+	/**
+	 * Return whether this extension is enabled (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	public function is_enabled(): bool {
+		return function_exists( 'register_block_type' ) && ! Helper::is_plugin_active( 'classic-editor/classic-editor.php' );
+	}
+
+	/**
+	 * Return the description for this extension.
+	 *
+	 * @return string
+	 */
+	public function get_description(): string {
+		return __( 'Use the Page Builder with which WordPress is already delivered to style your positions in the frontend of your website. This extension is automatically enabled if your WordPress does not disabled Gutenberg.', 'personio-integration-light' );
 	}
 }

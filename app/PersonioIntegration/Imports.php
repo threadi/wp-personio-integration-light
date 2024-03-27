@@ -93,7 +93,7 @@ class Imports {
 			$this->errors[] = __( 'Personio URL not configured.', 'personio-integration-light' );
 		}
 
-		// check if simpleXML exists.
+		// check if PHP-extension SimpleXML exists.
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
 			$this->errors[] = __( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' );
 		}

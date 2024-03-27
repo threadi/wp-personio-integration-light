@@ -11,11 +11,12 @@ namespace PersonioIntegrationLight\PageBuilder;
 defined( 'ABSPATH' ) or exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
 
 /**
  * Define the base object for schedules.
  */
-class PageBuilder_Base {
+class PageBuilder_Base extends Extensions_Base {
 	/**
 	 * Internal name of the page builder.
 	 *
@@ -24,11 +25,25 @@ class PageBuilder_Base {
 	protected string $name = '';
 
 	/**
+	 * Internal name of the used category.
+	 *
+	 * @var string
+	 */
+	protected string $extension_category = 'pagebuilder';
+
+	/**
 	 * True if Page Builder has templates.
 	 *
 	 * @var bool
 	 */
 	protected bool $has_templates = false;
+
+	/**
+	 * This extension can be enabled by user.
+	 *
+	 * @var bool
+	 */
+	protected bool $can_be_enabled_by_user = false;
 
 	/**
 	 * Initialize the Page Builder support.

@@ -638,6 +638,11 @@ class Settings {
 	public function register_fields(): void {
 		foreach ( $this->get_settings() as $section_name => $section_settings ) {
 			if ( ! empty( $section_settings ) && ! empty( $section_settings['settings_page'] ) && ! empty( $section_settings['label'] ) && ! empty( $section_settings['callback'] ) ) {
+				// bail if fields is empty and callback is just true.
+				if( empty($section_settings['fields']) && $section_settings['callback'] === '__return_true' ) {
+					continue;
+				}
+
 				$args = array();
 				if ( isset( $section_settings['before_section'] ) ) {
 					$args['before_section'] = $section_settings['before_section'];
@@ -656,42 +661,40 @@ class Settings {
 				);
 
 				// add fields in this section.
-				if ( ! empty( $section_settings['fields'] ) ) {
-					foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-						// get arguments for this field.
-						$arguments = array(
-							'label_for'         => $field_name,
-							'fieldId'           => $field_name,
-							'options'           => ! empty( $field_settings['options'] ) ? $field_settings['options'] : array(),
-							'description'       => ! empty( $field_settings['description'] ) ? $field_settings['description'] : '',
-							'placeholder'       => ! empty( $field_settings['placeholder'] ) ? $field_settings['placeholder'] : '',
-							'pro_hint'          => ! empty( $field_settings['pro_hint'] ) ? $field_settings['pro_hint'] : '',
-							'highlight'         => ! empty( $field_settings['highlight'] ) ? $field_settings['highlight'] : false,
-							'readonly'          => ! empty( $field_settings['readonly'] ) ? $field_settings['readonly'] : false,
-							'hide_empty_option' => ! empty( $field_settings['hide_empty_option'] ) ? $field_settings['hide_empty_option'] : false,
-							'depends'           => ! empty( $field_settings['depends'] ) ? $field_settings['depends'] : array(),
-							'class'             => ! empty( $field_settings['class'] ) ? $field_settings['class'] : array(),
-						);
+				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
+					// get arguments for this field.
+					$arguments = array(
+						'label_for'         => $field_name,
+						'fieldId'           => $field_name,
+						'options'           => ! empty( $field_settings['options'] ) ? $field_settings['options'] : array(),
+						'description'       => ! empty( $field_settings['description'] ) ? $field_settings['description'] : '',
+						'placeholder'       => ! empty( $field_settings['placeholder'] ) ? $field_settings['placeholder'] : '',
+						'pro_hint'          => ! empty( $field_settings['pro_hint'] ) ? $field_settings['pro_hint'] : '',
+						'highlight'         => ! empty( $field_settings['highlight'] ) ? $field_settings['highlight'] : false,
+						'readonly'          => ! empty( $field_settings['readonly'] ) ? $field_settings['readonly'] : false,
+						'hide_empty_option' => ! empty( $field_settings['hide_empty_option'] ) ? $field_settings['hide_empty_option'] : false,
+						'depends'           => ! empty( $field_settings['depends'] ) ? $field_settings['depends'] : array(),
+						'class'             => ! empty( $field_settings['class'] ) ? $field_settings['class'] : array(),
+					);
 
-						/**
-						 * Filter the arguments for this field.
-						 *
-						 * @param array $arguments List of arguments.
-						 * @param array $field_settings Setting for this field.
-						 * @param string $field_name Internal name of the field.
-						 */
-						$arguments = apply_filters( 'personio_integration_setting_field_arguments', $arguments, $field_settings, $field_name );
+					/**
+					 * Filter the arguments for this field.
+					 *
+					 * @param array $arguments List of arguments.
+					 * @param array $field_settings Setting for this field.
+					 * @param string $field_name Internal name of the field.
+					 */
+					$arguments = apply_filters( 'personio_integration_setting_field_arguments', $arguments, $field_settings, $field_name );
 
-						// add the field.
-						add_settings_field(
-							$field_name,
-							$field_settings['label'],
-							$field_settings['field'],
-							$section_settings['settings_page'],
-							$section_name,
-							$arguments
-						);
-					}
+					// add the field.
+					add_settings_field(
+						$field_name,
+						$field_settings['label'],
+						$field_settings['field'],
+						$section_settings['settings_page'],
+						$section_name,
+						$arguments
+					);
 				}
 			}
 		}
@@ -1014,7 +1017,7 @@ class Settings {
 		<p>
 			<?php
 			/* translators: %1$s will be replaced by the URL for Personio */
-			printf( esc_html__( 'The Personio logo as part of all distributed icons is a trademark of <a href="%1$s" target="_blank">Personio SE & Co. KG (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ) );
+			echo wp_kses_post( sprintf( __( 'The Personio logo as part of all distributed icons is a trademark of <a href="%1$s" target="_blank">Personio SE & Co. KG (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ) ) );
 			?>
 		</p>
 		</div>

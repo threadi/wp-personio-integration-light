@@ -423,6 +423,13 @@ class Setup {
 	 * @return void
 	 */
 	public function process_init(): void {
+		/**
+		 * Run actions before setup-process is running.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 */
+		do_action( 'personio_integration_setup_process' );
+
 		// set marker that setup is running.
 		update_option( 'wp_easy_setup_pi_running', 1 );
 

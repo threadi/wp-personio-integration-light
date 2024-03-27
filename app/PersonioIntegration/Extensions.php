@@ -28,16 +28,14 @@ class Extensions {
 	/**
 	 * Constructor, not used as this a Singleton object.
 	 */
-	private function __construct() {
-	}
+	private function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.
 	 *
 	 * @return void
 	 */
-	private function __clone() {
-	}
+	private function __clone() {}
 
 	/**
 	 * Return the instance of this Singleton object.
@@ -56,12 +54,13 @@ class Extensions {
 	 * @return void
 	 */
 	public function init(): void {
+		// use our own hooks.
+		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_extensions' ) );
+		add_action( 'personio_integration_setup_process', array( $this, 'initialize_extensions' ) );
+
 		if( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
 		}
-
-		// use our own hooks.
-		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_extensions' ) );
 
 		// add AJAX-actions.
 		add_action( 'wp_ajax_personio_extension_state', array( $this, 'change_extension_state' ) );
@@ -73,11 +72,15 @@ class Extensions {
 		// misc.
 		add_action( 'admin_menu', array( $this, 'add_extension_menu' ) );
 
-		/**
-		 * Initialize extensions for this object.
-		 *
-		 * @return void
-		 */
+		$this->initialize_extensions();
+	}
+
+	/**
+	 * Initialize extensions for this object.
+	 *
+	 * @return void
+	 */
+	public function initialize_extensions(): void {
 		foreach ( $this->get_extensions() as $extension_name ) {
 			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
@@ -103,6 +106,8 @@ class Extensions {
 
 	/**
 	 * Return the list of available extensions.
+	 *
+	 * Hint: list contains only the class-name, not the objects.
 	 *
 	 * @return array
 	 */

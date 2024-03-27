@@ -43,6 +43,15 @@ class Extensions_Base {
 	private bool $pro = false;
 
 	/**
+	 * This extension can be enabled by user.
+	 *
+	 * Defaults to true as most extensions will be.
+	 *
+	 * @var bool
+	 */
+	protected bool $can_be_enabled_by_user = true;
+
+	/**
 	 * Name of the setting field which defines its state.
 	 *
 	 * @var string
@@ -68,7 +77,7 @@ class Extensions_Base {
 	 *
 	 * @var string
 	 */
-	protected string $extension_category = 'general';
+	protected string $extension_category = '';
 
 	/**
 	 * Variable for instance of this Singleton object.
@@ -289,5 +298,14 @@ class Extensions_Base {
 	 */
 	public function get_custom_state(): string {
 		return '';
+	}
+
+	/**
+	 * Return whether this extension can be enabled by the user (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	public function can_be_enabled_by_user(): bool {
+		return $this->can_be_enabled_by_user;
 	}
 }

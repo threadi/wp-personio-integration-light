@@ -180,7 +180,6 @@ class Extensions extends WP_List_Table {
 	 */
 	private function get_extension_categories(): array {
 		$categories = array(
-			'general' => __( 'General', 'personio-integration-light' ),
 			'forms' => __( 'Application forms', 'personio-integration-light' ),
 			'positions' => __( 'Positions', 'personio-integration-light' ),
 			'multilingual' => __( 'Multilingual', 'wp-personio-integration' ),
@@ -200,12 +199,17 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Show actions on name-row.
 	 *
+	 * Possible actions are:
+	 * - settings-link (to the tab where the extension settings can be found)
+	 * - pro-link (overrides all other actions, only for pro-extensions if pro-plugin is not active)
+	 *
+	 * Hint: actions must be in every output as they might be visible or hidden depending on extension state.
+	 *
 	 * @param Extensions_Base $item List of properties.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
-	public function _column_name( Extensions_Base $item ): string {
+	public function column_name( Extensions_Base $item ): string {
 		// define actions.
 		$actions = array();
 		if( ! empty( $item->get_setting_tab() ) ) {
@@ -219,37 +223,54 @@ class Extensions extends WP_List_Table {
 			);
 		}
 
-		// output.
-		return '<td><strong>'. wp_kses_post( $item->get_label() ) . '</strong><div class="row-actions-wrapper" style="display: ' . ( $item->is_enabled() ? 'block' : 'none' ) . '">' . wp_kses_post( $this->row_actions( $actions ) ) .'</div></td>';
+		// output label and actions.
+		return '<strong>'. wp_kses_post( $item->get_label() ) . '</strong><div class="row-actions-wrapper" style="display: ' . ( $item->is_enabled() ? 'block' : 'none' ) . '">' . wp_kses_post( $this->row_actions( $actions ) ) .'</div>';
 	}
 
 	/**
-	 * Show actions on name-row.
+	 * Show actual extension state.
+	 *
+	 * Possible values:
+	 * - Enabled (if extension can be activated by user or plugin)
+	 * - Disabled (if extension can be activated by user or plugin)
+	 * - Only Pro (if extension is only in pro-version which is not installed)
+	 * - Custom state, if extension has one
+	 *
+	 * Hint:
+	 * If Enabled or Disabled is used the extension could also define if it is changeable by the user.
 	 *
 	 * @param Extensions_Base $item List of properties.
 	 *
 	 * @return string
 	 * @noinspection PhpUnused
 	 */
-	public function _column_state( Extensions_Base $item ): string {
+	public function column_state( Extensions_Base $item ): string {
 		// show simple pro-hint if this is a pro-extension.
 		if( $item->is_pro() ) {
-			$html = '<a class="pro-marker" href="'.esc_url( Helper::get_pro_url() ).'" target="_blank">'.__( 'Only in Pro', 'personio-integration-light' ).' <span class="dashicons dashicons-external"></span></a>';
-
-			return '<td>'. wp_kses_post( $html ) .'</td>';
+			return '<a class="pro-marker" href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . __( 'Only in Pro', 'personio-integration-light' ) . ' <span class="dashicons dashicons-external"></span></a>';
 		}
 
-		// create output depending on state.
-		$html = '<a href="#" class="button button-state button-state-disabled" data-extension="' . esc_attr( $item->get_name() ) . '">' . esc_html__( 'Disabled', 'personio-integration-light' ) . '</a>';
+		// create output depending on state with option to change it.
+		$html = '<a href="#" class="button button-state button-state-disabled" title="'.esc_attr( __( 'Extension could be enabled', 'personio-integration-light' ) ).'" data-extension="' . esc_attr( $item->get_name() ) . '">' . esc_html__( 'Disabled', 'personio-integration-light' ) . '</a>';
 		if( $item->is_enabled() ) {
-			$html = '<a href="#" class="button button-state button-state-enabled" data-extension="' . esc_attr( $item->get_name() ) . '">' . __( 'Enabled', 'personio-integration-light' ) . '</a>';
+			$html = '<a href="#" class="button button-state button-state-enabled" title="'.esc_attr( __( 'Extension could be disabled', 'personio-integration-light' ) ).'" data-extension="' . esc_attr( $item->get_name() ) . '">' . __( 'Enabled', 'personio-integration-light' ) . '</a>';
 		}
+
+		// show just the state if user could not change it.
+		if( ! $item->can_be_enabled_by_user() ) {
+			$html = '<span class="button button-state-disabled" title="'.esc_attr( __( 'Extension is automatically disabled', 'personio-integration-light' ) ).'">' . esc_html__( 'Disabled', 'personio-integration-light' ) . '</span>';
+			if( $item->is_enabled() ) {
+				$html = '<span class="button button-state-enabled" title="'.esc_attr( __( 'Extension is automatically enabled', 'personio-integration-light' ) ).'">' . __( 'Enabled', 'personio-integration-light' ) . '</span>';
+			}
+		}
+
+		// show custom state.
 		if( $item->has_custom_state() ) {
-			$html = $item->get_custom_state(); //'<span class="button button-state button-disabled">' . __( 'Not available', 'personio-integration-light' ) . '</a>';
+			$html = $item->get_custom_state();
 		}
 
 		// output.
-		return '<td>'. wp_kses_post( $html ) .'</td>';
+		return $html;
 	}
 
 	/**

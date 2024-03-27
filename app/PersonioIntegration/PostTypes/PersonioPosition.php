@@ -1862,6 +1862,24 @@ class PersonioPosition extends Post_Type {
 				'description' => __( 'Measure the success of advertising your vacancies on your website, for example with Google Analytics and Matomo.', 'personio-integration-light' ),
 				'category' => 'tracking'
 			),
+			array(
+				'name' => 'divi',
+				'label' => __( 'Divi', 'personio-integration-light' ),
+				'description' => __( 'Use one of the most used page builder to style your positions in your website.', 'personio-integration-light' ),
+				'category' => 'pagebuilder'
+			),
+			array(
+				'name' => 'elementor',
+				'label' => __( 'Elementor', 'personio-integration-light' ),
+				'description' => __( 'Use the most used page builder to style your positions in your website.', 'personio-integration-light' ),
+				'category' => 'pagebuilder'
+			),
+			array(
+				'name' => 'wpbakery',
+				'label' => __( 'WP Bakery', 'personio-integration-light' ),
+				'description' => __( 'Use the self declared #1 WordPress Page Builder to style your positions in your website.', 'personio-integration-light' ),
+				'category' => 'pagebuilder'
+			),
 		);
 	}
 
