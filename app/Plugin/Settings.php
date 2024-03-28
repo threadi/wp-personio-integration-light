@@ -552,13 +552,8 @@ class Settings {
 				),
 			),
 			'hidden_section'                   => array(
+				'settings_page' => 'hidden_personio_page',
 				'fields' => array(
-					'wp_easy_setup_completed'             => array(
-						'register_attributes' => array(
-							'type'    => 'integer',
-							'default' => 0,
-						),
-					),
 					'personio_integration_transients'     => array(
 						'register_attributes' => array(
 							'type'    => 'integer',
@@ -611,20 +606,18 @@ class Settings {
 	 */
 	public function register_settings(): void {
 		foreach ( $this->get_settings() as $section_settings ) {
-			if ( ! empty( $section_settings['settings_page'] ) ) {
-				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-					if ( ! isset( $field_settings['do_not_register'] ) ) {
-						$args = array();
-						if ( ! empty( $field_settings['register_attributes'] ) ) {
-							unset( $field_settings['register_attributes']['default'] );
-							$args = $field_settings['register_attributes'];
-						}
-						register_setting(
-							$section_settings['settings_page'],
-							$field_name,
-							$args
-						);
+			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
+				if ( ! isset( $field_settings['do_not_register'] ) ) {
+					$args = array();
+					if ( ! empty( $field_settings['register_attributes'] ) ) {
+						unset( $field_settings['register_attributes']['default'] );
+						$args = $field_settings['register_attributes'];
 					}
+					register_setting(
+						$section_settings['settings_page'],
+						$field_name,
+						$args
+					);
 				}
 			}
 		}

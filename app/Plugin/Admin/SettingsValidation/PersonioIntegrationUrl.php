@@ -27,9 +27,9 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 * @return string
 	 */
 	public static function validate( string $value ): string {
-		$transients_obj = Transients::get_instance();
-
 		if ( ! Helper::is_admin_api_request() ) {
+			$transients_obj = Transients::get_instance();
+
 			$errors = get_settings_errors();
 			/**
 			 * If a result-entry already exists, do nothing here.

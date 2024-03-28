@@ -311,3 +311,7 @@ body.post-type-personioposition #post-body-content { display: none }
 .personioposition_page_personiopositionextensions #name {
 	width: 160px;
 }
+
+.wp-easy-setup__header:before {
+	background-image: url(../gfx/personio_logo_big.png);
+}

@@ -33,7 +33,7 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return void
 	 */
 	public function init(): void {
-		// bail if Gutenbergs main functions does not exist.
+		// bail if Gutenberg is disabled.
 		if ( ! $this->is_enabled() ) {
 			return;
 		}

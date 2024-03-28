@@ -83,9 +83,6 @@ class Init {
 		// init roles.
 		Roles::get_instance()->init();
 
-		// init page builder.
-		Page_Builders::get_instance()->init();
-
 		// init third-party-support.
 		Third_Party_Plugins::get_instance()->init();
 

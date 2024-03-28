@@ -14,8 +14,6 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
-use WP_REST_Request;
-use WP_REST_Server;
 
 /**
  * Initialize this plugin.
@@ -36,9 +34,19 @@ class Setup {
 	private array $setup = array();
 
 	/**
+	 * The object of the setup.
+	 *
+	 * @var \wpEasySetup\Setup
+	 */
+	private \wpEasySetup\Setup $setup_obj;
+
+	/**
 	 * Constructor for this handler.
 	 */
-	private function __construct() {}
+	private function __construct() {
+		// get the setup-object.
+		$this->setup_obj = \wpEasySetup\Setup::get_instance();
+	}
 
 	/**
 	 * Prevent cloning of this object.
@@ -64,21 +72,33 @@ class Setup {
 	 * @return void
 	 */
 	public function init(): void {
-		$this->check();
+		add_filter( 'wp_easy_setup_completed', array( $this, 'check_completed_value' ) );
+		add_action( 'wp_easy_setup_set_completed', array( $this, 'set_completed' ) );
+		add_action( 'wp_easy_setup_process', array( $this, 'run_process' ) );
+
+		// set configuration for the setup.
+		$this->setup_obj->set_config( $this->get_config() );
+
+		// show hint if setup should be run.
+		$this->show_hint();
 
 		if ( ! $this->is_completed() ) {
 			// add hooks to enable the setup of this plugin.
-			add_action( 'admin_init', array( $this, 'set_config' ) );
 			add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
-
-			// register REST API.
-			add_action( 'rest_api_init', array( $this, 'add_rest_api' ) );
 
 			// use own hooks.
 			add_action( 'personio_integration_import_max_count', array( $this, 'update_max_step' ) );
 			add_action( 'personio_integration_import_count', array( $this, 'update_step' ) );
 		}
+	}
+
+	/**
+	 * Return whether setup is completed.
+	 *
+	 * @return bool
+	 */
+	public function is_completed(): bool {
+		return $this->setup_obj->is_completed();
 	}
 
 	/**
@@ -91,49 +111,16 @@ class Setup {
 	}
 
 	/**
-	 * Return whether the setup has been completed.
-	 *
-	 * @return bool
-	 */
-	public function is_completed(): bool {
-		// return true if main block functions are not available.
-		if ( ! has_action( 'enqueue_block_assets' ) ) {
-			return true;
-		}
-
-		// return depending on own setting.
-		return (bool) get_option( 'wp_easy_setup_completed', false );
-	}
-
-	/**
-	 * Set setup as completed.
-	 *
-	 * @return void
-	 */
-	public function set_completed(): void {
-		update_option( 'wp_easy_setup_completed', true );
-
-		if ( Helper::is_admin_api_request() ) {
-			// Return JSON with forward-URL.
-			wp_send_json(
-				array(
-					'forward' => Intro::get_instance()->get_start_url(),
-				)
-			);
-		}
-	}
-
-	/**
 	 * Check if setup should be run and show hint for it.
 	 *
 	 * @return void
 	 */
-	public function check(): void {
+	public function show_hint(): void {
 		// get transients object.
 		$transients_obj = Transients::get_instance();
 
 		// check if setup should be run.
-		if ( ! $this->is_completed() ) {
+		if ( ! $this->setup_obj->is_completed() ) {
 			// bail if hint is already set.
 			if ( $transients_obj->get_transient_by_name( 'personio_integration_start_setup_hint' )->is_set() ) {
 				return;
@@ -191,7 +178,7 @@ class Setup {
 	 * @return void
 	 */
 	public function display(): void {
-		echo '<div id="wp-plugin-setup" data-config="' . esc_attr( wp_json_encode( $this->get_config() ) ) . '" data-fields="' . esc_attr( wp_json_encode( $this->get_setup() ) ) . '"></div>';
+		echo $this->setup_obj->display();
 	}
 
 	/**
@@ -227,60 +214,6 @@ class Setup {
 	}
 
 	/**
-	 * Embed our own scripts for setup-dialog.
-	 *
-	 * @return void
-	 */
-	public function admin_scripts(): void {
-		// embed necessary scripts for setup.
-		$path = Helper::get_plugin_path() . 'blocks/setup/';
-		$url  = Helper::get_plugin_url() . 'blocks/setup/';
-
-		// bail if path does not exist.
-		if ( ! file_exists( $path ) ) {
-			return;
-		}
-
-		// embed the setup-JS-script.
-		$script_asset_path = $path . 'build/setup.asset.php';
-		$script_asset      = require $script_asset_path;
-		wp_enqueue_script(
-			'wp-easy-setup',
-			$url . 'build/setup.js',
-			$script_asset['dependencies'],
-			$script_asset['version'],
-			true
-		);
-
-		// embed the dialog-components CSS-script.
-		$admin_css      = $url . 'build/setup.css';
-		$admin_css_path = $path . 'build/setup.css';
-		wp_enqueue_style(
-			'wp-easy-setup',
-			$admin_css,
-			array( 'wp-components' ),
-			Helper::get_file_version( $admin_css_path )
-		);
-
-		// localize the script.
-		wp_localize_script(
-			'wp-easy-setup',
-			'wp_easy_setup',
-			array(
-				'rest_nonce'       => wp_create_nonce( 'wp_rest' ),
-				'validation_url'   => rest_url( 'wp-easy-setup/v1/validate-field' ),
-				'process_url'      => rest_url( 'wp-easy-setup/v1/process' ),
-				'process_info_url' => rest_url( 'wp-easy-setup/v1/get-process-info' ),
-				'completed_url'    => rest_url( 'wp-easy-setup/v1/completed' ),
-				'title_error'      => __( 'Error', 'personio-integration-light' ),
-				'txt_error_1'      => __( 'The following error occurred:', 'personio-integration-light' ),
-				/* translators: %1$s will be replaced with the URL of the plugin-forum on wp.org */
-				'txt_error_2'      => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
-			)
-		);
-	}
-
-	/**
 	 * Convert options array to react-compatible array-list with label and value.
 	 *
 	 * @param array $options The list of options to convert.
@@ -304,156 +237,39 @@ class Setup {
 	}
 
 	/**
-	 * Validate a given field via REST API request.
-	 *
-	 * @param WP_REST_Request $request The REST API request object.
-	 *
-	 * @return void
-	 */
-	public function validate_field( WP_REST_Request $request ): void {
-		$validation_result = array(
-			'field_name' => false,
-			'result'     => 'error',
-		);
-
-		// get setup step.
-		$step = $request->get_param( 'step' );
-
-		// get field-name.
-		$field_name = $request->get_param( 'field_name' );
-
-		// get value.
-		$value = $request->get_param( 'value' );
-
-		// get setup-fields.
-		$fields = $this->get_setup();
-
-		// run check if all 3 vars are filled.
-		if ( ! empty( $step ) && ! empty( $field_name ) ) {
-			// set field for response.
-			$validation_result['field_name'] = $field_name;
-			// check if field exist in step.
-			if ( ! empty( $fields[ $step ][ $field_name ] ) ) {
-				// get validation-callback for this field.
-				$validation_callback = $this->get_setup()[ $step ][ $field_name ]['validation_callback'];
-				if ( ! empty( $validation_callback ) ) {
-					if ( is_callable( $validation_callback ) ) {
-						$validation_result['result'] = call_user_func( $validation_callback, $value );
-					}
-				}
-			}
-		}
-
-		// Return JSON with results.
-		wp_send_json( $validation_result );
-	}
-
-	/**
-	 * Add rest api endpoints.
-	 *
-	 * @return void
-	 */
-	public function add_rest_api(): void {
-		register_rest_route(
-			'wp-easy-setup/v1',
-			'/validate-field/',
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'validate_field' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'wp-easy-setup/v1',
-			'/process/',
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'process_init' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'wp-easy-setup/v1',
-			'/get-process-info/',
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'get_process_info' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'wp-easy-setup/v1',
-			'/completed/',
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'set_completed' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-	}
-
-	/**
 	 * Return configuration for setup.
-
-	 * Here we define how many steps are used.
+	 *
+	 * Here we define which steps and texts are used by wp-easy-setup.
 	 *
 	 * @return array
 	 */
 	private function get_config(): array {
-		return array(
+		// get setup.
+		$setup = $this->get_setup();
+
+		// collect configuration.
+		$config = array(
+			'name' => 'personio-integration-light',
+			'url' => Helper::get_plugin_url(),
+			'path' => Helper::get_plugin_path(),
 			'title'                 => __( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
-			'steps'                 => count( $this->get_setup() ),
+			'steps'                 => $setup,
 			'back_button_label'     => __( 'Back', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-undo"></span>',
 			'continue_button_label' => __( 'Continue', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-play"></span>',
 			'finish_button_label'   => __( 'Completed', 'personio-integration-light' ) . '<span class="dashicons dashicons-saved"></span>',
+			'title_error'      => __( 'Error', 'personio-integration-light' ),
+			'txt_error_1'      => __( 'The following error occurred:', 'personio-integration-light' ),
+			/* translators: %1$s will be replaced with the URL of the plugin-forum on wp.org */
+			'txt_error_2'      => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
 		);
-	}
 
-	/**
-	 * Run the setup-progress via REST API.
-	 *
-	 * @return void
-	 */
-	public function process_init(): void {
 		/**
-		 * Run actions before setup-process is running.
+		 * Filter the setup configuration.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
+		 * @param array $config List of setup-configuration.
 		 */
-		do_action( 'personio_integration_setup_process' );
-
-		// set marker that setup is running.
-		update_option( 'wp_easy_setup_pi_running', 1 );
-
-		// set max step count (taxonomy-labels + Personio-accounts).
-		update_option( 'wp_easy_setup_pi_max_steps', Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Imports::get_instance()->get_personio_urls() ) );
-
-		// set actual steps to 0.
-		update_option( 'wp_easy_setup_pi_step', 0 );
-
-		// 1. Run import of taxonomies.
-		$this->set_process_label( __( 'Import of Personio labels running.', 'personio-integration-light' ) );
-		Taxonomies::get_instance()->create_defaults( array( $this, 'update_process_step' ) );
-
-		// 2. Run import of positions.
-		$this->set_process_label( __( 'Import of your Personio positions running.', 'personio-integration-light' ) );
-		$imports_obj = Imports::get_instance();
-		$imports_obj->run();
-
-		// cleanup.
-		update_option( 'wp_easy_setup_pi_step_label', __( 'Setup has been run. Your positions from Personio has been imported. Click on "Completed" to view them in an intro.', 'personio-integration-light' ) );
-		delete_option( 'wp_easy_setup_pi_running' );
-
-		// return empty json.
-		wp_send_json( array() );
+		return apply_filters( 'personio_integration_setup_config', $config );
 	}
 
 	/**
@@ -464,7 +280,7 @@ class Setup {
 	 * @return void
 	 */
 	private function set_process_label( string $label ): void {
-		update_option( 'wp_easy_setup_pi_step_label', $label );
+		update_option( 'wp_easy_setup_step_label', $label );
 	}
 
 	/**
@@ -475,24 +291,7 @@ class Setup {
 	 * @return void
 	 */
 	public function update_process_step( int $step = 1 ): void {
-		update_option( 'wp_easy_setup_pi_step', absint( get_option( 'wp_easy_setup_pi_step', 0 ) + $step ) );
-	}
-
-	/**
-	 * Get progress info via REST API.
-	 *
-	 * @return void
-	 */
-	public function get_process_info(): void {
-		$return = array(
-			'running'    => absint( get_option( 'wp_easy_setup_pi_running', 0 ) ),
-			'max'        => absint( get_option( 'wp_easy_setup_pi_max_steps', 0 ) ),
-			'step'       => absint( get_option( 'wp_easy_setup_pi_step', 0 ) ),
-			'step_label' => get_option( 'wp_easy_setup_pi_step_label', '' ),
-		);
-
-		// Return JSON with result.
-		wp_send_json( $return );
+		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_step', 0 ) + $step ) );
 	}
 
 	/**
@@ -532,13 +331,13 @@ class Setup {
 				'help'                                => array(
 					'type' => 'Text',
 					/* translators: %1$s will be replaced by our support-forum-URL. */
-					'text' => '<p>' . sprintf( __( '<span class="dashicons dashicons-editor-help"></span> <strong>Need help?</strong> Ask in <a href="%1$s" target="_blank">our forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) . '</p>',
+					'text' => '<p><span class="dashicons dashicons-editor-help"></span> ' . sprintf( __( '<strong>Need help?</strong> Ask in <a href="%1$s" target="_blank">our forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) . '</p>',
 				),
 			),
 			2 => array(
 				'runSetup' => array(
 					'type'  => 'ProgressBar',
-					'label' => __( 'Setup preparing your Personio data', 'personio-integration-light' ),
+					'label' => __( 'Setup preparing your Personio data', 'personio-integration-light' )
 				),
 			),
 		);
@@ -552,7 +351,7 @@ class Setup {
 	 * @return void
 	 */
 	public function update_max_step( int $max_count ): void {
-		update_option( 'wp_easy_setup_pi_max_steps', absint( get_option( 'wp_easy_setup_pi_max_steps' ) ) + $max_count );
+		update_option( 'wp_easy_setup_max_steps', absint( get_option( 'wp_easy_setup_max_steps' ) ) + $max_count );
 	}
 
 	/**
@@ -563,6 +362,68 @@ class Setup {
 	 * @return void
 	 */
 	public function update_step( int $count ): void {
-		update_option( 'wp_easy_setup_pi_step', absint( get_option( 'wp_easy_setup_pi_step' ) ) + $count );
+		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_step' ) ) + $count );
+	}
+
+	/**
+	 * Run the process.
+	 *
+	 * @return void
+	 */
+	public function run_process(): void {
+		// get the max steps for this process.
+		$max_steps = Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Imports::get_instance()->get_personio_urls() );
+
+		// set max step count (taxonomy-labels + Personio-accounts).
+		update_option( 'wp_easy_setup_max_steps', $max_steps );
+
+		// 1. Run import of taxonomies.
+		$this->set_process_label( __( 'Import of Personio labels running.', 'personio-integration-light' ) );
+		Taxonomies::get_instance()->create_defaults( array( $this, 'update_process_step' ) );
+
+		// 2. Run import of positions.
+		$this->set_process_label( __( 'Import of your Personio positions running.', 'personio-integration-light' ) );
+		$imports_obj = Imports::get_instance();
+		$imports_obj->run();
+
+		// set steps to max steps to end the process.
+		update_option( 'wp_easy_setup_step', $max_steps );
+
+		$completed_text = __( 'Setup has been run. Your positions from Personio has been imported. Click on "Completed" to view them in an intro.', 'personio-integration-light' );
+		/**
+		 * Filter the text for display if setup has been run.
+		 */
+		$this->set_process_label( apply_filters( 'personio_integration_setup_process_completed_text', $completed_text ) );
+	}
+
+	/**
+	 * Run additional tasks if setup has been marked as completed.
+	 *
+	 * @return void
+	 */
+	public function set_completed(): void {
+		if ( Helper::is_admin_api_request() ) {
+			// Return JSON with forward-URL.
+			wp_send_json(
+				array(
+					'forward' => Intro::get_instance()->get_start_url(),
+				)
+			);
+		}
+	}
+
+	/**
+	 * If Personio URL is set do not run the setup.
+	 *
+	 * @param bool $is_completed Whether to run setup (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	public function check_completed_value( bool $is_completed ): bool {
+		if( Helper::is_personio_url_set() ) {
+			return true;
+		}
+
+		return $is_completed;
 	}
 }

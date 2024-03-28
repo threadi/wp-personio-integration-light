@@ -133,6 +133,9 @@ class Uninstaller {
 				delete_option( $option );
 			}
 
+			// remove setup-options.
+			\wpEasySetup\Setup::get_instance()->uninstall();
+
 			// remove user meta for each cpt we provide.
 			foreach ( Post_Types::get_instance()->get_post_types() as $post_type ) {
 				$obj = call_user_func( $post_type . '::get_instance' );
@@ -163,11 +166,6 @@ class Uninstaller {
 			WP_PERSONIO_INTEGRATION_IMPORT_STATUS,
 			'personio_integration_transients',
 			'personioIntegrationLightInstallDate',
-			'wp_easy_setup_pi_max_steps',
-			'wp_easy_setup_pi_step',
-			'wp_easy_setup_pi_step_label',
-			'wp_easy_setup_pi_running',
-			'wp_easy_setup_completed',
 		);
 	}
 }

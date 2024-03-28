@@ -26,7 +26,7 @@ class Page_Builders extends Extensions {
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_page_builder_as_extension' ) );
 
 		// register the known pagebuilder.
-		foreach ( $this->get_page_builder() as $page_builder ) {
+		foreach ( $this->get_page_builders() as $page_builder ) {
 			$obj = call_user_func( $page_builder . '::get_instance' );
 			if ( $obj instanceof PageBuilder_Base ) {
 				$obj->init();
@@ -39,7 +39,7 @@ class Page_Builders extends Extensions {
 	 *
 	 * @return array
 	 */
-	public function get_page_builder(): array {
+	public function get_page_builders(): array {
 		$list = array(
 			'\PersonioIntegrationLight\PageBuilder\Gutenberg',
 		);
@@ -60,7 +60,7 @@ class Page_Builders extends Extensions {
 	 * @return array
 	 */
 	public function add_page_builder_as_extension( array $extensions ): array {
-		return array_merge( $this->get_page_builder(), $extensions );
+		return array_merge( $this->get_page_builders(), $extensions );
 	}
 
 	/**

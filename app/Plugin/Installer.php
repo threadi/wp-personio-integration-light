@@ -11,7 +11,6 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) or exit;
 
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\Log;
 
 /**
  * Helper-function for plugin-activation and -deactivation.
@@ -108,10 +107,13 @@ class Installer {
 		// run all updates.
 		Update::run_all_updates();
 
+		// enable setup.
+		\wpEasySetup\Setup::get_instance()->activation();
+
 		// refresh permalinks.
 		update_option( 'personio_integration_update_slugs', 1 );
 
 		// show success message on cli.
-		Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin.' ) : false;
+		Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin :-)' ) : false;
 	}
 }

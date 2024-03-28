@@ -59,6 +59,7 @@
         <delete file="${log.dir}/npm-install1.txt"/>
         <delete file="${log.dir}/npm-install2.txt"/>
         <delete file="${log.dir}/npm-install3.txt"/>
+        <delete file="${log.dir}/npm-install4.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-install1.txt">
             <arg line="install"/>
         </exec>
@@ -66,6 +67,9 @@
             <arg line="install concurrently"/>
         </exec>
         <exec dir="${src.dir}/lib/threadi/wp-easy-dialog/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-install3.txt">
+            <arg line="install"/>
+        </exec>
+        <exec dir="${src.dir}/lib/threadi/wp-easy-setup/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-install4.txt">
             <arg line="install"/>
         </exec>
     </target>
@@ -81,6 +85,7 @@
         <delete file="${log.dir}/npm-build7.txt"/>
         <delete file="${log.dir}/npm-build8.txt"/>
         <delete file="${log.dir}/npm-build9.txt"/>
+        <delete file="${log.dir}/npm-build10.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build1.txt">
             <arg line="run build:show"/>
         </exec>
@@ -106,6 +111,9 @@
             <arg line="run build:setup"/>
         </exec>
         <exec dir="${src.dir}/lib/threadi/wp-easy-dialog/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build9.txt">
+            <arg line="run build"/>
+        </exec>
+        <exec dir="${src.dir}/lib/threadi/wp-easy-setup/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build10.txt">
             <arg line="run build"/>
         </exec>
     </target>
@@ -187,6 +195,8 @@
             <zipfileset dir="${src.dir}/lib" includes="autoload.php" fullpath="${plugin.slug}/lib/autoload.php" />
             <zipfileset dir="${src.dir}/lib/composer" prefix="${plugin.slug}/lib/composer" />
             <zipfileset dir="${src.dir}/lib/threadi/wp-easy-dialog/build/" prefix="${plugin.slug}/lib/threadi/wp-easy-dialog/build/" />
+            <zipfileset dir="${src.dir}/lib/threadi/wp-easy-setup/build/" prefix="${plugin.slug}/lib/threadi/wp-easy-setup/build/" />
+            <zipfileset dir="${src.dir}/lib/threadi/wp-easy-setup/lib/" prefix="${plugin.slug}/lib/threadi/wp-easy-setup/lib/" />
             <zipfileset dir="${src.dir}/node_modules/intro.js/minified/" prefix="${plugin.slug}/node_modules/intro.js/minified/" />
             <zipfileset dir="${src.dir}/inc" prefix="${plugin.slug}/inc" />
             <zipfileset dir="${src.dir}/templates" prefix="${plugin.slug}/templates" />
