@@ -75,6 +75,7 @@ class Setup {
 		add_filter( 'wp_easy_setup_completed', array( $this, 'check_completed_value' ) );
 		add_action( 'wp_easy_setup_set_completed', array( $this, 'set_completed' ) );
 		add_action( 'wp_easy_setup_process', array( $this, 'run_process' ) );
+		add_action( 'wp_easy_setup_process', array( $this, 'show_process_end' ), PHP_INT_MAX );
 
 		// set configuration for the setup.
 		$this->setup_obj->set_config( $this->get_config() );
@@ -279,7 +280,7 @@ class Setup {
 	 *
 	 * @return void
 	 */
-	private function set_process_label( string $label ): void {
+	public function set_process_label( string $label ): void {
 		update_option( 'wp_easy_setup_step_label', $label );
 	}
 
@@ -388,7 +389,14 @@ class Setup {
 
 		// set steps to max steps to end the process.
 		update_option( 'wp_easy_setup_step', $max_steps );
+	}
 
+	/**
+	 * Show process end text.
+	 *
+	 * @return void
+	 */
+	public function show_process_end(): void {
 		$completed_text = __( 'Setup has been run. Your positions from Personio has been imported. Click on "Completed" to view them in an intro.', 'personio-integration-light' );
 		/**
 		 * Filter the text for display if setup has been run.
