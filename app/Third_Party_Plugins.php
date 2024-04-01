@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
@@ -364,7 +364,7 @@ class Third_Party_Plugins {
 	 */
 	public function translatepress_hide_option( string $capability ): string {
 		// bail if this is admin.
-		if( is_admin() ) {
+		if ( is_admin() ) {
 			return $capability;
 		}
 

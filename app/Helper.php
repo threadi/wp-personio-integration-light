@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
@@ -156,9 +156,9 @@ class Helper {
 	 * @author matzeeable
 	 */
 	public static function is_admin_api_request(): bool {
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST // Case #1.
-			|| isset( $GLOBALS['wp']->query_vars['rest_route'] ) // (#2)
-				&& str_starts_with( $GLOBALS['wp']->query_vars['rest_route'], '/' ) ) {
+		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) // Case #1.
+			|| ( isset( $GLOBALS['wp']->query_vars['rest_route'] ) // (#2)
+				&& str_starts_with( $GLOBALS['wp']->query_vars['rest_route'], '/' ) ) ) {
 			return true;
 		}
 
@@ -513,7 +513,7 @@ class Helper {
 	public static function get_settings_url( string $page = 'personioPositions', string $tab = '' ): string {
 		$params = array(
 			'post_type' => PersonioPosition::get_instance()->get_name(),
-			'page'      => $page
+			'page'      => $page,
 		);
 		if ( ! empty( $tab ) ) {
 			$params['tab'] = $tab;
@@ -665,6 +665,9 @@ class Helper {
 	 */
 	public static function update_page_builder_list( string $page_builder_name ): void {
 		$page_builder_list = get_option( 'personioIntegrationPageBuilder' );
+		if ( ! is_array( $page_builder_list ) ) {
+			$page_builder_list = array();
+		}
 		if ( ! in_array( $page_builder_name, $page_builder_list, true ) ) {
 			$page_builder_list[] = $page_builder_name;
 			update_option( 'personioIntegrationPageBuilder', $page_builder_list );

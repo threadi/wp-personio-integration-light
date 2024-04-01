@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
@@ -604,7 +604,7 @@ class Admin {
 			),
 			'buttons' => array(
 				array(
-					'action'  => 'location.href="' . esc_url( add_query_arg( array( 'import_intro' => 1 ), Helper::get_settings_url( 'personioPositions','import' ) ) ) . '";',
+					'action'  => 'location.href="' . esc_url( add_query_arg( array( 'import_intro' => 1 ), Helper::get_settings_url( 'personioPositions', 'import' ) ) ) . '";',
 					'variant' => 'primary',
 					'text'    => __( 'Start', 'personio-integration-light' ),
 				),
@@ -627,7 +627,7 @@ class Admin {
 																								),
 																								'buttons' => array(
 																									array(
-																										'action'  => 'location.href="' . esc_url( add_query_arg( array( 'template_intro' => 1 ), Helper::get_settings_url( 'personioPositions','templates' ) ) ) . '";',
+																										'action'  => 'location.href="' . esc_url( add_query_arg( array( 'template_intro' => 1 ), Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '";',
 																										'variant' => 'primary',
 																										'text'    => __( 'Start', 'personio-integration-light' ),
 																									),
@@ -741,13 +741,13 @@ class Admin {
 		header( 'Content-Disposition: attachment; filename=' . sanitize_file_name( $filename ) );
 
 		// generate CSV-output.
-		$fp = fopen('php://output', 'w');
+		$fp      = fopen( 'php://output', 'w' );
 		$headrow = $entries[0];
-		fputcsv($fp, array_keys($headrow));
-		foreach ($entries as $data) {
-			fputcsv($fp, $data);
+		fputcsv( $fp, array_keys( $headrow ) );
+		foreach ( $entries as $data ) {
+			fputcsv( $fp, $data );
 		}
-		fclose($fp);
+		fclose( $fp );
 
 		// do nothing more.
 		exit;

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -90,7 +90,7 @@ class Position {
 
 			// if result is not our post-type, create an empty array.
 			if ( ! empty( $post_array['post_type'] ) && PersonioPosition::get_instance()->get_name() !== $post_array['post_type'] ) {
-				$post_array = array();
+				$post_array       = array();
 				$this->data['ID'] = 0;
 				return;
 			}
@@ -151,11 +151,11 @@ class Position {
 			$this->data['ID'] = 0;
 
 			// collect all posts.
-			$posts   = array();
+			$posts = array();
 
 			// get all positions with the given Personio ID.
 			foreach ( Positions::get_instance()->get_positions( -1, array( 'personioid' => $this->data['personioId'] ) ) as $position_obj ) {
-				$lang = $this->get_lang();
+				$lang    = $this->get_lang();
 				$post_id = $position_obj->get_id();
 				/**
 				 * Filter the post_id.
@@ -410,7 +410,7 @@ class Position {
 			$this->set_title( get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), true ) );
 		}
 
-		$title =  $this->data['post_title'];
+		$title = $this->data['post_title'];
 		/**
 		 * Filter the title of the position.
 		 *
@@ -523,7 +523,7 @@ class Position {
 	 */
 	public function set_lang( string $lang ): void {
 		// reset title if language will be changed.
-		if( ! empty( $this->data['personioLanguages'] ) && $lang !== $this->data['personioLanguages'] ) {
+		if ( ! empty( $this->data['personioLanguages'] ) && $lang !== $this->data['personioLanguages'] ) {
 			$this->set_title( '' );
 		}
 
@@ -537,7 +537,7 @@ class Position {
 	 * @return array
 	 */
 	public function get_content(): array {
-		return (array)get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
+		return (array) get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
 	}
 
 	/**

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 
@@ -22,7 +22,6 @@ class Page_Builders extends Extensions {
 	 * @return void
 	 */
 	public function init(): void {
-		add_filter( 'personio_integration_extension_categories', array( $this, 'add_extension_category' ) );
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_page_builder_as_extension' ) );
 
 		// register the known pagebuilder.
@@ -61,17 +60,5 @@ class Page_Builders extends Extensions {
 	 */
 	public function add_page_builder_as_extension( array $extensions ): array {
 		return array_merge( $this->get_page_builders(), $extensions );
-	}
-
-	/**
-	 * Add category for page builder in extensions.
-	 *
-	 * @param array $categories List of categories.
-	 *
-	 * @return array
-	 */
-	public function add_extension_category( array $categories ): array {
-		$categories['pagebuilder'] = __( 'PageBuilder', 'personio-integration-light' );
-		return $categories;
 	}
 }

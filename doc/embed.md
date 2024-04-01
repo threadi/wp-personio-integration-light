@@ -1,5 +1,11 @@
 # Embed Personio positions
 
+## Requirements
+
+* installed and activated plugin Personio Integration Light
+* installed and activated plugin Personio Integration Pro including valid license
+* enable the pro extension oEmbed and activate it in the settings
+
 ## Scenario
 
 You want to embed positions from your own WordPress-website A in another WordPress-website B.
@@ -17,7 +23,6 @@ function custom_add_personio_integration() {
 }
 add_action( 'init', 'custom_add_personio_integration' );
 ```
-
 Adjust the URLs in this code snippet to the URLs of your website A.
 
 ## Alternatives

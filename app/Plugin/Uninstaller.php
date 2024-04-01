@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
@@ -164,6 +164,8 @@ class Uninstaller {
 			WP_PERSONIO_INTEGRATION_OPTION_COUNT,
 			WP_PERSONIO_INTEGRATION_OPTION_MAX,
 			WP_PERSONIO_INTEGRATION_IMPORT_STATUS,
+			WP_PERSONIO_INTEGRATION_DELETE_RUNNING,
+			WP_PERSONIO_INTEGRATION_DELETE_STATUS,
 			'personio_integration_transients',
 			'personioIntegrationLightInstallDate',
 		);

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Object to handle positions.
@@ -89,7 +89,10 @@ class Extensions_Base {
 	/**
 	 * Constructor, not used as this a Singleton object.
 	 */
-	public function __construct() {}
+	public function __construct() {
+		// add global settings for each extension.
+		add_filter( 'personio_integration_settings', array( $this, 'add_global_settings' ) );
+	}
 
 	/**
 	 * Prevent cloning of this object.
@@ -121,12 +124,12 @@ class Extensions_Base {
 	/**
 	 * Set the internal name of this extension.
 	 *
-	 * @param string $string
+	 * @param string $name The name to set.
 	 *
 	 * @return void
 	 */
-	public function set_name( string $string ): void {
-		$this->name = $string;
+	public function set_name( string $name ): void {
+		$this->name = $name;
 	}
 
 	/**
@@ -209,7 +212,7 @@ class Extensions_Base {
 
 		// define opposite.
 		$new_state = 0;
-		if( 0 === $state ) {
+		if ( 0 === $state ) {
 			$new_state = 1;
 		}
 
@@ -307,5 +310,45 @@ class Extensions_Base {
 	 */
 	public function can_be_enabled_by_user(): bool {
 		return $this->can_be_enabled_by_user;
+	}
+
+	/**
+	 * Add the global settings for each extension.
+	 *
+	 * @param array $settings List of settings.
+	 *
+	 * @return array
+	 */
+	public function add_global_settings( array $settings ): array {
+		// bail if not setting field is set.
+		if ( empty( $this->get_settings_field_name() ) ) {
+			return $settings;
+		}
+
+		// bail if setting already exist.
+		if ( ! empty( $settings['hidden_section']['fields'][ $this->get_settings_field_name() ] ) ) {
+			return $settings;
+		}
+
+		// add global setting to enabled or disabled this extension.
+		$settings['hidden_section']['fields'][ $this->get_settings_field_name() ] = array(
+			'register_attributes' => array(
+				'type'         => 'integer',
+				'default'      => $this->is_default_enabled() ? 1 : 0,
+				'show_in_rest' => true,
+			),
+		);
+
+		// return resulting list.
+		return $settings;
+	}
+
+	/**
+	 * Whether this extension is enabled by default (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	protected function is_default_enabled(): bool {
+		return false;
 	}
 }

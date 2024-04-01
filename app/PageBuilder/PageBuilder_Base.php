@@ -8,10 +8,11 @@
 namespace PersonioIntegrationLight\PageBuilder;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
+use PersonioIntegrationLight\Plugin\Setup;
 
 /**
  * Define the base object for schedules.
@@ -51,6 +52,12 @@ class PageBuilder_Base extends Extensions_Base {
 	 * @return void
 	 */
 	public function init(): void {
+		// add global settings for the page builder.
+		add_filter( 'personio_integration_settings', array( $this, 'add_global_settings' ) );
+
+		// actions to run during setup.
+		add_action( 'wp_easy_setup_process', array( $this, 'run_setup_process' ) );
+
 		// add page builder to list of used page builder in this project.
 		Helper::update_page_builder_list( $this->get_name() );
 	}
@@ -91,5 +98,70 @@ class PageBuilder_Base extends Extensions_Base {
 	 */
 	public function get_name(): string {
 		return $this->name;
+	}
+
+	/**
+	 * Add global Elementor-settings, used by setup.
+	 *
+	 * @param array $settings List of settings.
+	 *
+	 * @return array
+	 */
+	public function add_global_settings( array $settings ): array {
+		// bail if page builder does not support templates.
+		if ( ! $this->has_templates() ) {
+			return $settings;
+		}
+
+		// add marker for template import via setup.
+		$settings['hidden_section']['fields'][ 'pb_templates_import_' . $this->get_name() ] = array(
+			'register_attributes' => array(
+				'type'         => 'boolean',
+				'show_in_rest' => true,
+				'default'      => false,
+			),
+			'do_not_export'       => true,
+		);
+
+		// return resulting settings.
+		return $settings;
+	}
+
+	/**
+	 * Run tasks on setup process depending on settings.
+	 *
+	 * @return void
+	 */
+	public function run_setup_process(): void {
+		// bail if page builder does not support templates.
+		if ( ! $this->has_templates() ) {
+			return;
+		}
+
+		// bail if import for templates is not enabled.
+		if ( 1 !== absint( get_option( 'pb_templates_import_' . $this->get_name() ) ) ) {
+			return;
+		}
+
+		// update max step count.
+		update_option( 'wp_easy_setup_max_steps', absint( get_option( 'wp_easy_setup_max_steps' ) ) + 1 );
+
+		// change label of progressbar in setup.
+		Setup::get_instance()->set_process_label( __( 'Import of templates running.', 'wp-personio-integration' ) );
+
+		// install templates.
+		$this->install_templates();
+
+		// set steps to max steps to end the process.
+		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_max_steps' ) ) );
+	}
+
+	/**
+	 * Return whether this page builder is active.
+	 *
+	 * @return bool
+	 */
+	public function is_active(): bool {
+		return false;
 	}
 }

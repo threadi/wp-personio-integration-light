@@ -1,5 +1,9 @@
 # Werbeanzeigen verstecken
 
+## Voraussetzungen
+
+* installiertes und aktiviertes Plugin _Personio Integration Light_
+
 Um Werbung für die Pro-Version oder das Bewerten des Plugins zu verstecken, kann man folgenden Code verwenden:
 
 ```

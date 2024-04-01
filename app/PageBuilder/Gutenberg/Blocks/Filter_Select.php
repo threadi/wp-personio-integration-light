@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;

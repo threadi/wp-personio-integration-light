@@ -8,8 +8,9 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 
 /**
@@ -53,6 +54,7 @@ class Schedules {
 	public function init(): void {
 		// use our own hooks.
 		add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
+		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
 
 		// loop through our own events.
 		foreach ( $this->get_events() as $event ) {
@@ -71,6 +73,36 @@ class Schedules {
 
 		// action to create all registered schedules.
 		add_action( 'admin_action_personioPositionsCreateSchedules', array( $this, 'create_schedules_per_request' ) );
+		add_action( 'shutdown', array( $this, 'check_events_on_shutdown' ) );
+	}
+
+	/**
+	 * Add settings for this extension.
+	 *
+	 * @param array $settings List of settings.
+	 *
+	 * @return array
+	 */
+	public function add_settings( array $settings ): array {
+		$settings['settings_section_advanced']['fields'] = Helper::add_array_in_array_on_position(
+			$settings['settings_section_advanced']['fields'],
+			8,
+			array(
+				'personioIntegrationEnableCronCheckInFrontend' => array(
+					'label'               => __( 'Check for schedules in frontend', 'wp-personio-integration' ),
+					'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+					'description'         => __( 'If enabled the plugin will check our own schedules on each request in frontend. This could be slow the performance of your website', 'wp-personio-integration' ),
+					'register_attributes' => array(
+						'type'    => 'integer',
+						'default' => 0,
+					),
+					'source'              => WP_PERSONIO_INTEGRATION_PLUGIN,
+				),
+			)
+		);
+
+		// return resulting list of settings.
+		return $settings;
 	}
 
 	/**
@@ -105,6 +137,20 @@ class Schedules {
 	 * @return array
 	 */
 	public function check_events( array $our_events ): array {
+		// bail if check should be disabled.
+		$false = false;
+		/**
+		 * Disable the additional cron check.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 * @param bool $false True if check should be disabled.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		if ( apply_filters( 'personio_integration_disable_cron_check', $false ) ) {
+			return $our_events;
+		}
+
 		if ( is_admin() && ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
 			foreach ( $this->get_schedule_object_names() as $object_name ) {
 				$obj = new $object_name();
@@ -114,10 +160,12 @@ class Schedules {
 						// reinstall the missing event.
 						$obj->install();
 
-						// log this event.
-						$log = new Log();
-						/* translators: %1$s will be replaced by the event name. */
-						$log->add_log( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success' );
+						// log this event if debug-mode is enabled.
+						if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+							$log = new Log();
+							/* translators: %1$s will be replaced by the event name. */
+							$log->add_log( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success' );
+						}
 
 						// re-run the check for WP-cron-events.
 						$our_events = $this->get_wp_events();
@@ -128,10 +176,10 @@ class Schedules {
 						$obj->delete();
 
 						// log this event if debug-mode is enabled.
-						if( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+						if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
 							$log = new Log();
 							/* translators: %1$s will be replaced by the event name. */
-							$log->add_log( sprintf( __( 'Not enabled cron event <i>%1$s</i> removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success' );
+							$log->add_log( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success' );
 						}
 
 						// re-run the check for WP-cron-events.
@@ -146,7 +194,7 @@ class Schedules {
 	}
 
 	/**
-	 * Delete all registered schedules.
+	 * Delete all our registered schedules.
 	 *
 	 * @return void
 	 */
@@ -197,7 +245,7 @@ class Schedules {
 	public function get_schedule_object_names(): array {
 		// list of schedules: free version supports only one import-schedule.
 		$list_of_schedules = array(
-			'PersonioIntegrationLight\Plugin\Schedules\Import',
+			'\PersonioIntegrationLight\Plugin\Schedules\Import',
 		);
 
 		/**
@@ -249,5 +297,20 @@ class Schedules {
 
 		// return resulting list.
 		return $our_events;
+	}
+
+	/**
+	 * Run check for cronjobs in frontend, if enabled.
+	 *
+	 * @return void
+	 */
+	public function check_events_on_shutdown(): void {
+		// bail if check is disabled.
+		if ( 1 !== absint( get_option( 'personioIntegrationEnableCronCheckInFrontend' ) ) ) {
+			return;
+		}
+
+		// run the check.
+		$this->check_events( $this->get_events() );
 	}
 }

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
@@ -831,13 +831,13 @@ class Templates {
 	 * @return array
 	 */
 	public function filter_attributes_for_templates( array $attributes, array $attributes_set_by_pagebuilder ): array {
-		if( ! isset( $attributes['lang'] ) ) {
+		if ( ! isset( $attributes['lang'] ) ) {
 			$attributes['lang'] = Languages::get_instance()->get_current_lang();
 		}
-		if( isset( $attributes_set_by_pagebuilder['jobdescription_template'] ) ) {
+		if ( isset( $attributes_set_by_pagebuilder['jobdescription_template'] ) ) {
 			$attributes['jobdescription_template'] = $attributes_set_by_pagebuilder['jobdescription_template'];
 		}
-		if( ! isset( $attributes['classes'] ) ) {
+		if ( ! isset( $attributes['classes'] ) ) {
 			$attributes['classes'] = '';
 		}
 		return $attributes;

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -80,7 +80,7 @@ class Imports {
 	 * @return void
 	 */
 	public function run(): void {
-		// mark process as running import
+		// mark process as running import.
 		define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
 
 		// do not import if it is already running in another process.

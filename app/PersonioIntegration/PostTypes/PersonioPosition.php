@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\PostTypes;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -291,9 +291,9 @@ class PersonioPosition extends Post_Type {
 		// do not output anything without ID.
 		if ( $personio_attributes['personioid'] <= 0 ) {
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-				$message = __( 'Single-view called without the PersonioId for a position.', 'personio-integration-light' );
-				$wrapper_id = 'position'.$personio_attributes['personioid'];
-				$type = '';
+				$message    = __( 'Single-view called without the PersonioId for a position.', 'personio-integration-light' );
+				$wrapper_id = 'position' . $personio_attributes['personioid'];
+				$type       = '';
 				ob_start();
 				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
 				return ob_get_clean();
@@ -302,14 +302,14 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// get the position by its PersonioId.
-		$position  = Positions::get_instance()->get_position_by_personio_id( $personio_attributes['personioid'] );
+		$position = Positions::get_instance()->get_position_by_personio_id( $personio_attributes['personioid'] );
 
 		// do not show this position if it is not valid or could not be loaded.
-		if ( $position && ! $position->is_valid() || ! $position ) {
+		if ( ( $position && ! $position->is_valid() ) || ! $position ) {
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-				$message = __( 'Given Id is not a valid position-Id.', 'personio-integration-light' );
-				$wrapper_id = 'position'.$personio_attributes['personioid'];
-				$type = '';
+				$message    = __( 'Given Id is not a valid position-Id.', 'personio-integration-light' );
+				$wrapper_id = 'position' . $personio_attributes['personioid'];
+				$type       = '';
 				ob_start();
 				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
 				return ob_get_clean();
@@ -414,7 +414,7 @@ class PersonioPosition extends Post_Type {
 			'template'                => '',
 			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentList' ) ),
 			'listing_template'        => get_option( 'personioIntegrationTemplateContentListingTemplate' ),
-			'excerpt_template' => get_option( 'personioIntegrationTemplateListingExcerptsTemplate' ),
+			'excerpt_template'        => get_option( 'personioIntegrationTemplateListingExcerptsTemplate' ),
 			'jobdescription_template' => get_option( 'personioIntegrationTemplateListingContentTemplate' ),
 			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDefaults' ) ),
 			'ids'                     => '',
@@ -436,7 +436,7 @@ class PersonioPosition extends Post_Type {
 			'filter'                  => 'array',
 			'template'                => 'string',
 			'listing_template'        => 'listing_template',
-			'excerpt_template' => 'excerpt_template',
+			'excerpt_template'        => 'excerpt_template',
 			'jobdescription_template' => 'jobdescription_template',
 			'templates'               => 'array',
 			'excerpt'                 => 'array',
@@ -831,7 +831,7 @@ class PersonioPosition extends Post_Type {
 			// loop through the languages of this position and show each of them.
 			foreach ( explode( ', ', $position_obj->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES, 'name' ) ) as $index => $language_name ) {
 				// bail if languages is not available.
-				if( empty( $languages[ $language_name ] ) ) {
+				if ( empty( $languages[ $language_name ] ) ) {
 					continue;
 				}
 
@@ -1226,10 +1226,10 @@ class PersonioPosition extends Post_Type {
 
 				// get label.
 				$label = $term->name;
-				if( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $taxonomy_name ) {
+				if ( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $taxonomy_name ) {
 					// get languages in the project.
 					$languages = Languages::get_instance()->get_languages();
-					$label = $languages[ $term->name ];
+					$label     = $languages[ $term->name ];
 				}
 
 				// create filter url.
@@ -1298,7 +1298,7 @@ class PersonioPosition extends Post_Type {
 			'donotlink'               => 'bool',
 			'styles'                  => 'string',
 			'classes'                 => 'string',
-			'excerpt_template' => 'excerpt_template',
+			'excerpt_template'        => 'excerpt_template',
 			'jobdescription_template' => 'jobdescription_template',
 		);
 		return Helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
@@ -1315,7 +1315,7 @@ class PersonioPosition extends Post_Type {
 			'lang'                    => Languages::get_instance()->get_main_language(),
 			'template'                => '',
 			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults' ) ),
-			'excerpt_template' => get_option( 'personioIntegrationTemplateDetailsExcerptsTemplate' ),
+			'excerpt_template'        => get_option( 'personioIntegrationTemplateDetailsExcerptsTemplate' ),
 			'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription' ),
 			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDetail' ) ),
 			'donotlink'               => 1,
@@ -1329,7 +1329,6 @@ class PersonioPosition extends Post_Type {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param array $default_values The list of default values for each attribute used to display positions in frontend.
-		 *
 		 */
 		return apply_filters( 'personio_integration_position_attribute_defaults', $default_values );
 	}
@@ -1819,66 +1818,79 @@ class PersonioPosition extends Post_Type {
 			return array();
 		}
 
+		/**
+		 * Hide the extensions for pro-version if Pro is installed but license not entered.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the extensions.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		if ( apply_filters( 'personio_integration_hide_pro_extensions', $false ) ) {
+			return array();
+		}
+
 		return array(
 			array(
-				'name' => 'personio_forms',
-				'label' => __( 'Application forms', 'personio-integration-light' ),
+				'name'        => 'personio_forms',
+				'label'       => __( 'Application forms', 'personio-integration-light' ),
 				'description' => __( 'Use application forms directly on your website. Use our own form handler, WPForms, Contact Form 7 or Ninja Forms.', 'personio-integration-light' ),
-				'category' => 'forms'
+				'category'    => 'forms',
 			),
 			array(
-				'name' => 'feature_image',
-				'label' => __( 'Feature Image', 'personio-integration-light' ),
+				'name'        => 'feature_image',
+				'label'       => __( 'Feature Image', 'personio-integration-light' ),
 				'description' => __( 'Add a feature image to each position on your website. Or one image for all positions.', 'personio-integration-light' ),
-				'category' => 'positions'
+				'category'    => 'positions',
 			),
 			array(
-				'name' => 'files',
-				'label' => __( 'Files', 'personio-integration-light' ),
+				'name'        => 'files',
+				'label'       => __( 'Files', 'personio-integration-light' ),
 				'description' => __( 'Add an unlimited list of files to each position on your website.', 'personio-integration-light' ),
-				'category' => 'positions'
+				'category'    => 'positions',
 			),
 			array(
-				'name' => 'multilingual',
-				'label' => __( 'Multilingual', 'personio-integration-light' ),
+				'name'        => 'multilingual',
+				'label'       => __( 'Multilingual', 'personio-integration-light' ),
 				'description' => __( 'Use Polylang, TranslatePress or WPML for optimal multilingual presentation of your positions.', 'personio-integration-light' ),
-				'category' => 'multilingual'
+				'category'    => 'multilingual',
 			),
 			array(
-				'name' => 'personio_accounts',
-				'label' => __( 'Multiple Personio Accounts', 'personio-integration-light' ),
+				'name'        => 'personio_accounts',
+				'label'       => __( 'Multiple Personio Accounts', 'personio-integration-light' ),
 				'description' => __( 'Use positions from multiple Personio accounts in your website.', 'personio-integration-light' ),
-				'category' => 'positions'
+				'category'    => 'positions',
 			),
 			array(
-				'name' => 'social_media',
-				'label' => __( 'Social Media', 'personio-integration-light' ),
+				'name'        => 'social_media',
+				'label'       => __( 'Social Media', 'personio-integration-light' ),
 				'description' => __( 'Add features to your jobs to advertise them optimally on social media platforms such as Fediverse (e.g. Mastodon), X (aka twitter), WhatsApp, Telegram or Facebook. Google Jobs is also supported.', 'personio-integration-light' ),
-				'category' => 'seo'
+				'category'    => 'seo',
 			),
 			array(
-				'name' => 'tracking',
-				'label' => __( 'Tracking', 'personio-integration-light' ),
+				'name'        => 'tracking',
+				'label'       => __( 'Tracking', 'personio-integration-light' ),
 				'description' => __( 'Measure the success of advertising your vacancies on your website, for example with Google Analytics and Matomo.', 'personio-integration-light' ),
-				'category' => 'tracking'
+				'category'    => 'tracking',
 			),
 			array(
-				'name' => 'divi',
-				'label' => __( 'Divi', 'personio-integration-light' ),
+				'name'        => 'divi',
+				'label'       => __( 'Divi', 'personio-integration-light' ),
 				'description' => __( 'Use one of the most used page builder to style your positions in your website.', 'personio-integration-light' ),
-				'category' => 'pagebuilder'
+				'category'    => 'pagebuilder',
 			),
 			array(
-				'name' => 'elementor',
-				'label' => __( 'Elementor', 'personio-integration-light' ),
+				'name'        => 'elementor',
+				'label'       => __( 'Elementor', 'personio-integration-light' ),
 				'description' => __( 'Use the most used page builder to style your positions in your website.', 'personio-integration-light' ),
-				'category' => 'pagebuilder'
+				'category'    => 'pagebuilder',
 			),
 			array(
-				'name' => 'wpbakery',
-				'label' => __( 'WP Bakery', 'personio-integration-light' ),
+				'name'        => 'wpbakery',
+				'label'       => __( 'WP Bakery', 'personio-integration-light' ),
 				'description' => __( 'Use the self declared #1 WordPress Page Builder to style your positions in your website.', 'personio-integration-light' ),
-				'category' => 'pagebuilder'
+				'category'    => 'pagebuilder',
 			),
 		);
 	}
@@ -1891,7 +1903,7 @@ class PersonioPosition extends Post_Type {
 	 * @return array
 	 */
 	public function add_pro_extensions( array $extensions ): array {
-		foreach( $this->get_pro_extensions() as $extension ) {
+		foreach ( $this->get_pro_extensions() as $extension ) {
 			$obj = new Extensions_Base();
 			$obj->set_name( $extension['name'] );
 			$obj->set_label( $extension['label'] );

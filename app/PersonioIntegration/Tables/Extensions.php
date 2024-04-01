@@ -7,7 +7,8 @@
 
 namespace PersonioIntegrationLight\PersonioIntegration\Tables;
 
-defined( 'ABSPATH' ) or exit;
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
@@ -29,9 +30,9 @@ class Extensions extends WP_List_Table {
 	 */
 	public function get_columns(): array {
 		$columns = array(
-			'category' => __( 'Category', 'personio-integration-light' ),
-			'name'       => __( 'Extension', 'personio-integration-light' ),
-			'state'        => __( 'Status', 'personio-integration-light' ),
+			'category'    => __( 'Category', 'personio-integration-light' ),
+			'name'        => __( 'Extension', 'personio-integration-light' ),
+			'state'       => __( 'Status', 'personio-integration-light' ),
 			'description' => __( 'Description', 'personio-integration-light' ),
 		);
 
@@ -52,32 +53,38 @@ class Extensions extends WP_List_Table {
 	 */
 	private function table_data(): array {
 		// get filter.
-		$category = isset( $_GET['category'] ) ? sanitize_text_field( wp_unslash( $_GET['category'] ) ) : '';
+		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if( is_null( $category ) ) {
+			$category = '';
+		}
 
+		// get list of extensions.
 		$extensions = array();
-		foreach( \PersonioIntegrationLight\PersonioIntegration\Extensions::get_instance()->get_extensions() as $extension_name ) {
+		foreach ( \PersonioIntegrationLight\PersonioIntegration\Extensions::get_instance()->get_extensions() as $extension_name ) {
 			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
-				if( $obj instanceof Extensions_Base && $this->filter_object( $obj, $category ) ) {
+				if ( $obj instanceof Extensions_Base && $this->filter_object( $obj, $category ) ) {
 					$extensions[] = $obj;
 				}
-			}
-			elseif( $extension_name instanceof Extensions_Base && $this->filter_object( $extension_name, $category ) ) {
+			} elseif ( $extension_name instanceof Extensions_Base && $this->filter_object( $extension_name, $category ) ) {
 				$extensions[] = $extension_name;
 			}
 		}
-
-		// sort the data.
-		usort( $extensions, array( $this, 'sort_extension_objects' ) );
 
 		/**
 		 * Filter the list of extensions in this table.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $extensions List of sorted extensions.
+		 * @param array $extensions List of unsorted extensions.
 		 */
-		return apply_filters( 'personio_integration_extensions_table_extensions',  $extensions );
+		$extensions = apply_filters( 'personio_integration_extensions_table_extensions', $extensions );
+
+		// sort the data.
+		usort( $extensions, array( $this, 'sort_extension_objects' ) );
+
+		// return resulting list of extensions.
+		return $extensions;
 	}
 
 	/**
@@ -95,18 +102,18 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Filter for given category-string.
 	 *
-	 * @param Extensions_Base $obj
-	 * @param string          $category
+	 * @param Extensions_Base $obj The extension object.
+	 * @param string          $category The filtered category.
 	 *
 	 * @return bool
 	 */
 	private function filter_object( Extensions_Base $obj, string $category ): bool {
 		// bail if category is not given.
-		if( empty( $category ) ) {
+		if ( empty( $category ) ) {
 			return true;
 		}
 
-		// filter for the given string,
+		// filter for the given string.
 		return $obj->get_category() === $category;
 	}
 
@@ -149,24 +156,24 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Define what data to show on each column of the table.
 	 *
-	 * @param  object  $item       Object.
+	 * @param  object $item       Object.
 	 * @param  string $column_name Current column name.
 	 *
 	 * @return string
 	 */
 	public function column_default( $item, $column_name ): string {
 		// bail if $item is not our object.
-		if( ! ( $item instanceof Extensions_Base ) ) {
+		if ( ! ( $item instanceof Extensions_Base ) ) {
 			return '';
 		}
 
 		// show category.
-		if( 'category' === $column_name ) {
-			return $this->get_extension_categories()[$item->get_category()];
+		if ( 'category' === $column_name ) {
+			return $this->get_extension_categories()[ $item->get_category() ];
 		}
 
 		// show description.
-		if( 'description' === $column_name ) {
+		if ( 'description' === $column_name ) {
 			return $item->get_description();
 		}
 
@@ -180,11 +187,12 @@ class Extensions extends WP_List_Table {
 	 */
 	private function get_extension_categories(): array {
 		$categories = array(
-			'forms' => __( 'Application forms', 'personio-integration-light' ),
-			'positions' => __( 'Positions', 'personio-integration-light' ),
+			'forms'        => __( 'Application forms', 'personio-integration-light' ),
+			'pagebuilder'  => __( 'PageBuilder', 'personio-integration-light' ),
+			'positions'    => __( 'Positions', 'personio-integration-light' ),
 			'multilingual' => __( 'Multilingual', 'wp-personio-integration' ),
-			'seo' => __( 'SEO', 'personio-integration-light' ),
-			'tracking' => __( 'Tracking', 'personio-integration-light' ),
+			'seo'          => __( 'SEO', 'personio-integration-light' ),
+			'tracking'     => __( 'Tracking', 'personio-integration-light' ),
 		);
 
 		/**
@@ -212,19 +220,19 @@ class Extensions extends WP_List_Table {
 	public function column_name( Extensions_Base $item ): string {
 		// define actions.
 		$actions = array();
-		if( ! empty( $item->get_setting_tab() ) ) {
+		if ( ! empty( $item->get_setting_tab() ) ) {
 			$actions['settings'] = '<a href="' . esc_url( Helper::get_settings_url( $item->get_settings_page(), $item->get_setting_tab() ) ) . '">' . esc_html__( 'Settings', 'personio-integration-light' ) . '</a>';
 		}
 
 		// change actions to pro-link only.
-		if( $item->is_pro() ) {
+		if ( $item->is_pro() ) {
 			$actions = array(
-				'pro' => '<a href="'.esc_url( Helper::get_pro_url() ).'" target="_blank">'.esc_html__( 'Get Pro', 'personio-integration-light' ).'</a>'
+				'pro' => '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . esc_html__( 'Get Pro', 'personio-integration-light' ) . '</a>',
 			);
 		}
 
 		// output label and actions.
-		return '<strong>'. wp_kses_post( $item->get_label() ) . '</strong><div class="row-actions-wrapper" style="display: ' . ( $item->is_enabled() ? 'block' : 'none' ) . '">' . wp_kses_post( $this->row_actions( $actions ) ) .'</div>';
+		return '<strong>' . wp_kses_post( $item->get_label() ) . '</strong><div class="row-actions-wrapper" style="display: ' . ( $item->is_enabled() ? 'block' : 'none' ) . '">' . wp_kses_post( $this->row_actions( $actions ) ) . '</div>';
 	}
 
 	/**
@@ -246,26 +254,26 @@ class Extensions extends WP_List_Table {
 	 */
 	public function column_state( Extensions_Base $item ): string {
 		// show simple pro-hint if this is a pro-extension.
-		if( $item->is_pro() ) {
+		if ( $item->is_pro() ) {
 			return '<a class="pro-marker" href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . __( 'Only in Pro', 'personio-integration-light' ) . ' <span class="dashicons dashicons-external"></span></a>';
 		}
 
 		// create output depending on state with option to change it.
-		$html = '<a href="#" class="button button-state button-state-disabled" title="'.esc_attr( __( 'Extension could be enabled', 'personio-integration-light' ) ).'" data-extension="' . esc_attr( $item->get_name() ) . '">' . esc_html__( 'Disabled', 'personio-integration-light' ) . '</a>';
-		if( $item->is_enabled() ) {
-			$html = '<a href="#" class="button button-state button-state-enabled" title="'.esc_attr( __( 'Extension could be disabled', 'personio-integration-light' ) ).'" data-extension="' . esc_attr( $item->get_name() ) . '">' . __( 'Enabled', 'personio-integration-light' ) . '</a>';
+		$html = '<a href="#" class="button button-state button-state-disabled" title="' . esc_attr( __( 'Extension could be enabled', 'personio-integration-light' ) ) . '" data-extension="' . esc_attr( $item->get_name() ) . '">' . esc_html__( 'Disabled', 'personio-integration-light' ) . '</a>';
+		if ( $item->is_enabled() ) {
+			$html = '<a href="#" class="button button-state button-state-enabled" title="' . esc_attr( __( 'Extension could be disabled', 'personio-integration-light' ) ) . '" data-extension="' . esc_attr( $item->get_name() ) . '">' . __( 'Enabled', 'personio-integration-light' ) . '</a>';
 		}
 
 		// show just the state if user could not change it.
-		if( ! $item->can_be_enabled_by_user() ) {
-			$html = '<span class="button button-state-disabled" title="'.esc_attr( __( 'Extension is automatically disabled', 'personio-integration-light' ) ).'">' . esc_html__( 'Disabled', 'personio-integration-light' ) . '</span>';
-			if( $item->is_enabled() ) {
-				$html = '<span class="button button-state-enabled" title="'.esc_attr( __( 'Extension is automatically enabled', 'personio-integration-light' ) ).'">' . __( 'Enabled', 'personio-integration-light' ) . '</span>';
+		if ( ! $item->can_be_enabled_by_user() ) {
+			$html = '<span class="button button-disabled button-state-disabled" title="' . esc_attr( __( 'Extension is automatically disabled', 'personio-integration-light' ) ) . '">' . esc_html__( 'Disabled', 'personio-integration-light' ) . '</span>';
+			if ( $item->is_enabled() ) {
+				$html = '<span class="button button-disabled button-state-enabled" title="' . esc_attr( __( 'Extension is automatically enabled', 'personio-integration-light' ) ) . '">' . __( 'Enabled', 'personio-integration-light' ) . '</span>';
 			}
 		}
 
 		// show custom state.
-		if( $item->has_custom_state() ) {
+		if ( $item->has_custom_state() ) {
 			$html = $item->get_custom_state();
 		}
 
@@ -276,15 +284,15 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Allow input-field in kses for on/off-toggle.
 	 *
-	 * @param array  $allowed_tags The allowed tags.
+	 * @param array $allowed_tags The allowed tags.
 	 *
 	 * @return array
 	 */
 	public function add_kses_html( array $allowed_tags ): array {
 		$allowed_tags['input'] = array(
-			'type' => true,
-			'class'  => true,
-			'id'     => true,
+			'type'  => true,
+			'class' => true,
+			'id'    => true,
 		);
 		return $allowed_tags;
 	}
@@ -305,7 +313,7 @@ class Extensions extends WP_List_Table {
 
 		// add all categories to the list.
 		foreach ( $this->get_extension_categories() as $name => $label ) {
-			$url               = add_query_arg( array( 'category' => $name ) );
+			$url           = add_query_arg( array( 'category' => $name ) );
 			$list[ $name ] = '<a href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
 		}
 
@@ -321,12 +329,12 @@ class Extensions extends WP_List_Table {
 	 * @return void
 	 */
 	protected function extra_tablenav( $which ): void {
-		if( 'top' === $which ) {
+		if ( 'top' === $which ) {
 			// URL to disable all extensions.
 			$disable_url = add_query_arg(
 				array(
 					'action' => 'personio_integration_extension_disable_all',
-					'nonce' => wp_create_nonce( 'personio-integration-extension-disable-all' )
+					'nonce'  => wp_create_nonce( 'personio-integration-extension-disable-all' ),
 				),
 				get_admin_url() . 'admin.php'
 			);
@@ -341,7 +349,7 @@ class Extensions extends WP_List_Table {
 				),
 				'buttons' => array(
 					array(
-						'action'  => 'location.href="' . esc_url($disable_url) . '";',
+						'action'  => 'location.href="' . esc_url( $disable_url ) . '";',
 						'variant' => 'primary',
 						'text'    => __( 'Yes, disable all', 'wp-personio-integration' ),
 					),
@@ -357,7 +365,7 @@ class Extensions extends WP_List_Table {
 			$enable_url = add_query_arg(
 				array(
 					'action' => 'personio_integration_extension_enable_all',
-					'nonce' => wp_create_nonce( 'personio-integration-extension-enable-all' )
+					'nonce'  => wp_create_nonce( 'personio-integration-extension-enable-all' ),
 				),
 				get_admin_url() . 'admin.php'
 			);
@@ -371,7 +379,7 @@ class Extensions extends WP_List_Table {
 				),
 				'buttons' => array(
 					array(
-						'action'  => 'location.href="' . esc_url($enable_url) . '";',
+						'action'  => 'location.href="' . esc_url( $enable_url ) . '";',
 						'variant' => 'primary',
 						'text'    => __( 'Yes, enable them', 'wp-personio-integration' ),
 					),

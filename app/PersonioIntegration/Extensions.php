@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
@@ -56,9 +56,9 @@ class Extensions {
 	public function init(): void {
 		// use our own hooks.
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_extensions' ) );
-		add_action( 'wp_easy_setup_process_init', array( $this, 'initialize_extensions' ) );
+		add_action( 'wp_easy_setup_process_init', array( $this, 'initialize_extensions_in_setup' ) );
 
-		if( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+		if ( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
 		}
 
@@ -72,6 +72,7 @@ class Extensions {
 		// misc.
 		add_action( 'admin_menu', array( $this, 'add_extension_menu' ) );
 
+		// initialize our extensions for the positions-cpt.
 		$this->initialize_extensions();
 	}
 
@@ -90,6 +91,22 @@ class Extensions {
 	}
 
 	/**
+	 * Initialize extensions for this object on request from setup.
+	 *
+	 * @param string $config_name The name of the setup-configuration.
+	 *
+	 * @return void
+	 */
+	public function initialize_extensions_in_setup( string $config_name ): void {
+		// bail if this is not our setup.
+		if ( Setup::get_instance()->get_setup_name() !== $config_name ) {
+			return;
+		}
+
+		$this->initialize_extensions();
+	}
+
+	/**
 	 * Set list of extension we use for our position object.
 	 *
 	 * @param array $extension_list List of extensions for the Position-object.
@@ -99,6 +116,7 @@ class Extensions {
 	public function add_extensions( array $extension_list ): array {
 		// add extensions we deliver in this plugin.
 		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Availability';
+		$extension_list[] = '\PersonioIntegrationLight\PageBuilder\Page_Builders';
 
 		// return resulting list.
 		return $extension_list;
@@ -135,10 +153,10 @@ class Extensions {
 		// get the name of the extension to change.
 		$extension_name = filter_input( INPUT_POST, 'extension', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
-		if( ! empty( $extension_name ) ) {
+		if ( ! empty( $extension_name ) ) {
 			// get the extension object.
 			$obj = $this->get_extension_by_name( $extension_name );
-			if( $obj instanceof Extensions_Base ) {
+			if ( $obj instanceof Extensions_Base ) {
 				// toggle the state.
 				$obj->toggle_state();
 
@@ -147,7 +165,7 @@ class Extensions {
 					array(
 						'success' => true,
 						'enabled' => $obj->is_enabled(),
-						'title' => $obj->is_enabled() ? __( 'Enabled', 'personio-integration-light' ) : __( 'Disabled', 'personio-integration-light' )
+						'title'   => $obj->is_enabled() ? __( 'Enabled', 'personio-integration-light' ) : __( 'Disabled', 'personio-integration-light' ),
 					)
 				);
 			}
@@ -168,7 +186,7 @@ class Extensions {
 		foreach ( $this->get_extensions() as $extension_name ) {
 			if ( method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
-				if( $obj instanceof Extensions_Base && $obj->get_name() === $name ) {
+				if ( $obj instanceof Extensions_Base && $obj->get_name() === $name ) {
 					return $obj;
 				}
 			}
@@ -204,10 +222,10 @@ class Extensions {
 	public function get_link( string $category = '' ): string {
 		$query = array(
 			'post_type' => PersonioPosition::get_instance()->get_name(),
-			'page' => 'personioPositionExtensions'
+			'page'      => 'personioPositionExtensions',
 		);
 
-		if( ! empty( $category ) ) {
+		if ( ! empty( $category ) ) {
 			$query['category'] = $category;
 		}
 
@@ -219,7 +237,7 @@ class Extensions {
 	}
 
 	/**
-	 * Show list of extensions to manage for
+	 * Show list of extensions to manage.
 	 *
 	 * @return void
 	 */
@@ -250,14 +268,13 @@ class Extensions {
 		check_admin_referer( 'personio-integration-extension-disable-all', 'nonce' );
 
 		// loop through all extensions and enable them.
-		foreach( $this->get_extensions() as $extension_name ) {
+		foreach ( $this->get_extensions() as $extension_name ) {
 			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
 				if ( $obj instanceof Extensions_Base ) {
 					$obj->set_disabled();
 				}
-			}
-			elseif( $extension_name instanceof Extensions_Base) {
+			} elseif ( $extension_name instanceof Extensions_Base ) {
 				$extension_name->set_disabled();
 			}
 		}
@@ -275,14 +292,13 @@ class Extensions {
 		check_admin_referer( 'personio-integration-extension-enable-all', 'nonce' );
 
 		// loop through all extensions and enable them.
-		foreach( $this->get_extensions() as $extension_name ) {
+		foreach ( $this->get_extensions() as $extension_name ) {
 			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
 				if ( $obj instanceof Extensions_Base ) {
 					$obj->set_enabled();
 				}
-			}
-			elseif( $extension_name instanceof Extensions_Base) {
+			} elseif ( $extension_name instanceof Extensions_Base ) {
 				$extension_name->set_enabled();
 			}
 		}

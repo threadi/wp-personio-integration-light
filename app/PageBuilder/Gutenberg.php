@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
@@ -195,6 +195,6 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __( 'Use the Page Builder with which WordPress is already delivered to style your positions in the frontend of your website. This extension is automatically enabled if your WordPress does not disabled Gutenberg.', 'personio-integration-light' );
+		return __( 'Use the Page Builder with which WordPress is already delivered to style your positions in the frontend of your website. This extension is automatically enabled if your WordPress does not disable the Block Editor.', 'personio-integration-light' );
 	}
 }

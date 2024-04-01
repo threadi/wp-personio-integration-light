@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
@@ -197,7 +197,7 @@ class Blocks_Basis {
 		$positions = Positions::get_instance();
 
 		// return the position as object if the called ID is valid.
-		$post_id      = get_the_ID();
+		$post_id = get_the_ID();
 		if ( $post_id > 0 ) {
 			$position_obj = $positions->get_position( $post_id );
 			if ( $position_obj->is_valid() ) {
@@ -208,7 +208,7 @@ class Blocks_Basis {
 		// fallback: get a random position, only during AJAX-request (e.g. in Gutenberg).
 		if ( Helper::is_admin_api_request() ) {
 			$position_array = $positions->get_positions( 1 );
-			if( ! empty($position_array) ) {
+			if ( ! empty( $position_array ) ) {
 				return $position_array[0];
 			}
 		}

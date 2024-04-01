@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use WP_List_Table;
 
@@ -142,10 +142,10 @@ class Log_Table extends WP_List_Table {
 
 			// create download-dialog.
 			$download_dialog = array(
-				'title' => __( 'Export log entries', 'personio-integration-light' ),
-				'texts' => array(
+				'title'   => __( 'Export log entries', 'personio-integration-light' ),
+				'texts'   => array(
 					'<p>' . __( 'Click on the button below to download the log entries as CSV.', 'personio-integration-light' ) . '</p>',
-					'<p>' . __( 'The file will contain ALL entries. Be aware of this before you send this file to someone.', 'personio-integration-light' ) . '</p>'
+					'<p>' . __( 'The file will contain ALL entries. Be aware of this before you send this file to someone.', 'personio-integration-light' ) . '</p>',
 				),
 				'buttons' => array(
 					array(
@@ -158,7 +158,7 @@ class Log_Table extends WP_List_Table {
 						'variant' => 'secondary',
 						'text'    => __( 'Cancel', 'personio-integration-light' ),
 					),
-				)
+				),
 			);
 
 			// define empty-URL.
@@ -172,10 +172,10 @@ class Log_Table extends WP_List_Table {
 
 			// create download-dialog.
 			$empty_dialog = array(
-				'title' => __( 'Empty log entries', 'personio-integration-light' ),
-				'texts' => array(
+				'title'   => __( 'Empty log entries', 'personio-integration-light' ),
+				'texts'   => array(
 					'<p><strong>' . __( 'Are you sure you want to empty the log?', 'personio-integration-light' ) . '</strong></p>',
-					'<p>' . __( 'You will lost any log until now.', 'personio-integration-light' ) . '</p>'
+					'<p>' . __( 'You will lost any log until now.', 'personio-integration-light' ) . '</p>',
 				),
 				'buttons' => array(
 					array(
@@ -188,12 +188,12 @@ class Log_Table extends WP_List_Table {
 						'variant' => 'secondary',
 						'text'    => __( 'Cancel', 'personio-integration-light' ),
 					),
-				)
+				),
 			);
 
 			?>
-			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary wp-easy-dialog<?php echo (0 === count( $this->items ) ? ' disabled' : ''); ?>" data-dialog="<?php echo esc_attr( wp_json_encode( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
-			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary wp-easy-dialog<?php echo (0 === count( $this->items ) ? ' disabled' : ''); ?>" data-dialog="<?php echo esc_attr( wp_json_encode( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary wp-easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( wp_json_encode( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary wp-easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( wp_json_encode( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
 			<?php
 		}
 	}

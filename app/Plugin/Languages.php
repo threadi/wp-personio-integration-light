@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Handler for any language-tasks.
@@ -144,7 +144,7 @@ class Languages {
 
 		// add active languages to returning list if they exist as language.
 		$languages = array(
-			$this->get_main_language() => $all_languages[ $this->get_main_language() ]
+			$this->get_main_language() => $all_languages[ $this->get_main_language() ],
 		);
 		foreach ( $this->get_languages() as $language_name => $label ) {
 			if ( ! empty( $active_languages[ $language_name ] ) && empty( $languages[ $language_name ] ) ) {
@@ -260,7 +260,7 @@ class Languages {
 		$mapping_languages = apply_filters( 'personio_integration_language_mappings', $mapping_languages );
 
 		// return empty array is entry does not exist.
-		if( empty( $mapping_languages[ $language_name ] ) ) {
+		if ( empty( $mapping_languages[ $language_name ] ) ) {
 			return array();
 		}
 
@@ -288,8 +288,8 @@ class Languages {
 		$mapping_languages = apply_filters( 'personio_integration_language_mappings', $mapping_languages );
 
 		// return the mapping for the requested language.
-		foreach( $mapping_languages as $language => $shortcodes ) {
-			if( in_array( $language_name, $shortcodes, true ) ) {
+		foreach ( $mapping_languages as $language => $shortcodes ) {
+			if ( in_array( $language_name, $shortcodes, true ) ) {
 				return $language;
 			}
 		}

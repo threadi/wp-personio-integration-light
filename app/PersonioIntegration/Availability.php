@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -56,9 +56,6 @@ class Availability extends Extensions_Base {
 		// add as extension.
 		add_filter( 'personio_integration_extensions_table_extension', array( $this, 'add_extension' ) );
 
-		// define settings.
-		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
-
 		// bail if settings is not enabled.
 		if ( ! $this->is_enabled() ) {
 			return;
@@ -67,6 +64,7 @@ class Availability extends Extensions_Base {
 		// use our own hooks.
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'run' ) );
+		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
 
 		// extend the position table.
 		add_filter( 'manage_' . PersonioPosition::get_instance()->get_name() . '_posts_columns', array( $this, 'add_column' ) );
@@ -81,13 +79,6 @@ class Availability extends Extensions_Base {
 	 * @return array
 	 */
 	public function add_settings( array $settings ): array {
-		$settings['hidden_section']['fields'][$this->get_settings_field_name()] = array(
-			'register_attributes' => array(
-				'type'    => 'integer',
-				'default' => 1,
-			),
-		);
-
 		$settings['settings_section_import']['fields'] = Helper::add_array_in_array_on_position(
 			$settings['settings_section_import']['fields'],
 			3,
@@ -144,7 +135,7 @@ class Availability extends Extensions_Base {
 		$log = new Log();
 
 		// show cli hint.
-		$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar('Run availability checks', count($positions)) : false;
+		$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Run availability checks', count( $positions ) ) : false;
 
 		// loop through the positions and check each.
 		foreach ( $positions as $position_obj ) {
@@ -206,7 +197,7 @@ class Availability extends Extensions_Base {
 	 */
 	public function add_schedule( array $list_of_schedules ): array {
 		// add the schedule-objekt.
-		$list_of_schedules[] = 'PersonioIntegrationLight\Plugin\Schedules\Availability';
+		$list_of_schedules[] = '\PersonioIntegrationLight\Plugin\Schedules\Availability';
 
 		// return resulting list.
 		return $list_of_schedules;
@@ -295,9 +286,9 @@ class Availability extends Extensions_Base {
 	 */
 	public function add_extension( array $extensions ): array {
 		$extensions[] = array(
-			'state' => false,
-			'name' => 'Availability',
-			'description' => __( 'Check each position for availability on your Personio career page.', 'personio-integration-light' )
+			'state'       => false,
+			'name'        => 'Availability',
+			'description' => __( 'Check each position for availability on your Personio career page.', 'personio-integration-light' ),
 		);
 
 		return $extensions;
@@ -329,5 +320,14 @@ class Availability extends Extensions_Base {
 	public function get_description(): string {
 		/* translators: %1$s will be replaced by the URL for the positions list. */
 		return sprintf( __( 'Checks your positions for availability on your Personio career page. This ensures that applicants can reach the application form there. If a position is not available, you will be informed of this in the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) );
+	}
+
+	/**
+	 * Whether this extension is enabled by default (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	protected function is_default_enabled(): bool {
+		return true;
 	}
 }

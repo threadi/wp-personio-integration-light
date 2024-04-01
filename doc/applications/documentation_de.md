@@ -6,7 +6,7 @@ Für den schnellen Einstieg bitte [Quickstart](quickstart_de.md) beachten. Im Do
 
 ## Voraussetzungen
 
-* Die beiden Plugins Personio Integration Light und Personio Integration müssen installiert und aktiviert sein.
+* Die beiden Plugins Personio Integration Light und Personio Integration müssen in Version 3.0.0 oder neuer installiert und aktiviert sein.
 * Es muss eine gültige Lizenz für die Pro-Version hinterlegt sein.
 * Es muss eine Personio URL angegeben und offene Stellen sollten importiert sein.
 
@@ -20,7 +20,7 @@ Für den schnellen Einstieg bitte [Quickstart](quickstart_de.md) beachten. Im Do
 5. Sobald die Personio API dazu die Rückmeldung gibt, dass die Bewerbung dort erfolgreich gespeichert wurde, löscht das Plugin die Bewerbung aus der lokalen Wordpress-Datenbank.
    * Dieses Verhalten ist konfigurierbar.
    * Mit dem Löschen der Daten werden auch dazu hochgeladene Dokumente im Wordpress-Hosting gelöscht.
-6. Alles weitere zur Bewerbung wird innerhalb von Personio geregelt.
+6. Alles Weitere zur Bewerbung wird innerhalb von Personio geregelt.
 
 ## Hinweise
 
@@ -30,18 +30,18 @@ In der Standard-Einstellung werden Bewerbungsdaten nur so lange in Wordpress ges
 
 ### Obligatorische Einstellungen
 
-Im Wordpress-Backend unter Stellen > Einstellungen > Export-Einstellungen müssen folgende Felder ausgefüllt werden:
+Im Wordpress-Backend unter Stellen > Bewerbungen > Export müssen folgende Felder ausgefüllt werden:
 
 * _Deine Company-ID_
 * _Access Token_
 
 Beide Angaben sind notwendig um Bewerbungen an Personio zu übermitteln. Die Angaben zu beiden finden Sie in Ihrem Personio-Konto unter Einstellungen > Integrationen > API Credentials.
 
-Im Wordpress-Backend unter Stellen > Einstellungen > Bewerbungen muss bei einem der Felder "_Bewerbung in Listen-Ansicht_" bzw. "_Bewerbung in Detail-Ansicht_" der Wert "_Bewerbungsformular anzeigen_" ausgewählt werden.
+Im Wordpress-Backend unter Stellen > Bewerbungen > Bewerbungen muss bei einem der Felder "_Bewerbung in Listen-Ansicht_" bzw. "_Bewerbung in Detail-Ansicht_" der Wert "_Bewerbungsformular anzeigen_" ausgewählt werden.
 
 ### Optionales
 
-Im Wordpress-Backend unter Stellen > Einstellungen > Export-Einstellungen gibt es folgende weitere Felder:
+Im Wordpress-Backend unter Stellen > Bewerbungen > Export-Einstellungen gibt es folgende weitere Felder:
 
 * Recruiting Channel ID (optional)
   * Nach Angabe dieser ID können Sie die eingehende Bewerbung in Personio einem Kanal Ihrer Wahl zuweisen. Die einzufügende ID finden Sie in Ihrem Personio Account unter Einstellungen > Channels unter dem Namen „Recruiting API Channel ID“.
@@ -57,7 +57,7 @@ Im Wordpress-Backend unter Stellen > Einstellungen > Export-Einstellungen gibt e
   * Legt fest, wie lange Bewerbungsdaten in deinem Wordpress-Hosting gespeichert werden.
   * Vorauswahl ist "Unmittelbar nach erfolgreicher Übertragung".
 
-Im Wordpress-Backend unter Stellen > Einstellungen > Bewerbungen gibt es folgende weitere Felder:
+Im Wordpress-Backend unter Stellen > Bewerbungen > Bewerbungen gibt es folgende weitere Felder:
 
 * _Aktivieren um den Link in einem neuen Fenster zu öffnen_
   * ist nur relevant bei Verwendung der Links zu Personio, nicht bei Verwendung des Bewerbungsformulars

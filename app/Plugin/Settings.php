@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -97,55 +97,63 @@ class Settings {
 		// set tabs.
 		$this->tabs = array(
 			array(
-				'label' => __( 'Basic Settings', 'personio-integration-light' ),
-				'key'   => '',
-				'settings_page'  => 'personioIntegrationMainSettings',
-				'page' => 'personioPositions'
+				'label'         => __( 'Basic Settings', 'personio-integration-light' ),
+				'key'           => '',
+				'settings_page' => 'personioIntegrationMainSettings',
+				'page'          => 'personioPositions',
+				'order'         => 10,
 			),
 			array(
-				'label' => __( 'Templates', 'personio-integration-light' ),
-				'key'   => 'templates',
-				'settings_page'  => 'personioIntegrationPositionsTemplates',
-				'page' => 'personioPositions'
+				'label'         => __( 'Templates', 'personio-integration-light' ),
+				'key'           => 'templates',
+				'settings_page' => 'personioIntegrationPositionsTemplates',
+				'page'          => 'personioPositions',
+				'order'         => 20,
 			),
 			array(
-				'label' => __( 'Import', 'personio-integration-light' ),
-				'key'   => 'import',
-				'settings_page'  => 'personioIntegrationPositionsImport',
-				'page' => 'personioPositions'
+				'label'         => __( 'Import', 'personio-integration-light' ),
+				'key'           => 'import',
+				'settings_page' => 'personioIntegrationPositionsImport',
+				'page'          => 'personioPositions',
+				'order'         => 30,
 			),
 			array(
 				'label'    => __( 'Applications, SEO & more', 'personio-integration-light' ),
 				'key'      => 'use_pro',
 				'only_pro' => true,
-				'page' => 'personioPositions'
+				'page'     => 'personioPositions',
+				'order'    => 40,
 			),
 			array(
-				'label' => __( 'Advanced', 'personio-integration-light' ),
-				'key'   => 'advanced',
-				'settings_page'  => 'personioIntegrationPositionsAdvanced',
-				'page' => 'personioPositions'
+				'label'         => __( 'Advanced', 'personio-integration-light' ),
+				'key'           => 'advanced',
+				'settings_page' => 'personioIntegrationPositionsAdvanced',
+				'page'          => 'personioPositions',
+				'order'         => 800,
 			),
 			array(
 				'label'    => __( 'Logs', 'personio-integration-light' ),
 				'key'      => 'logs',
 				'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\Logs', 'show' ),
-				'page' => 'personioPositions'
+				'page'     => 'personioPositions',
+				'order'    => 900,
 			),
 			array(
 				'label'    => '&nbsp;',
 				'key'      => 'copyright',
 				'callback' => array( $this, 'show_copyright' ),
 				'class'    => 'copyright',
-				'page' => 'personioPositions'
+				'page'     => 'personioPositions',
+				'order'    => 1000,
 			),
 			array(
-				'label' => __( 'Questions? Check our forum!', 'personio-integration-light' ),
-				'key'   => 'help',
-				'url'   => Helper::get_plugin_support_url(),
+				'label'      => __( 'Questions? Check our forum!', 'personio-integration-light' ),
+				'key'        => 'help',
+				'url'        => Helper::get_plugin_support_url(),
 				'url_target' => '_blank',
-				'class' => 'nav-tab-help nav-tab-active',
-				'page' => 'personioPositions'
+				'class'      => 'nav-tab-help nav-tab-active',
+				'page'       => 'personioPositions',
+				'order'      => 2000,
 			),
 		);
 
@@ -153,16 +161,16 @@ class Settings {
 		if ( ! Helper::is_personio_url_set() ) {
 			$this->tabs = array(
 				array(
-					'label' => __( 'General Settings', 'personio-integration-light' ),
-					'key'   => '',
-					'settings_page'  => 'personioIntegrationMainSettings',
-					'page' => 'personioPositions'
+					'label'         => __( 'General Settings', 'personio-integration-light' ),
+					'key'           => '',
+					'settings_page' => 'personioIntegrationMainSettings',
+					'page'          => 'personioPositions',
 				),
 				array(
 					'label'       => __( 'Enter Personio URL to get more options', 'personio-integration-light' ),
 					'key'         => 'enter_url',
 					'do_not_link' => true,
-					'page' => 'personioPositions'
+					'page'        => 'personioPositions',
 				),
 			);
 		}
@@ -188,10 +196,10 @@ class Settings {
 		// define settings for this plugin.
 		$this->settings = array(
 			'settings_section_main'            => array(
-				'label'    => __( 'General Settings', 'personio-integration-light' ),
-				'settings_page'     => 'personioIntegrationMainSettings',
-				'callback' => '__return_true',
-				'fields'   => array(
+				'label'         => __( 'General Settings', 'personio-integration-light' ),
+				'settings_page' => 'personioIntegrationMainSettings',
+				'callback'      => '__return_true',
+				'fields'        => array(
 					'personioIntegrationUrl'              => array(
 						'label'               => __( 'Personio URL', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Text', 'get' ),
@@ -238,10 +246,10 @@ class Settings {
 				),
 			),
 			'settings_section_template_list'   => array(
-				'label'    => __( 'List View', 'personio-integration-light' ),
-				'settings_page'     => 'personioIntegrationPositionsTemplates',
-				'callback' => '__return_true',
-				'fields'   => array(
+				'label'         => __( 'List View', 'personio-integration-light' ),
+				'settings_page' => 'personioIntegrationPositionsTemplates',
+				'callback'      => '__return_true',
+				'fields'        => array(
 					'personio_integration_fse_theme_hint' => array(
 						'label'       => '',
 						'field'       => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\TextHints', 'get' ),
@@ -365,10 +373,10 @@ class Settings {
 				),
 			),
 			'settings_section_template_detail' => array(
-				'label'    => __( 'Single View', 'personio-integration-light' ),
-				'settings_page'     => 'personioIntegrationPositionsTemplates',
-				'callback' => '__return_true',
-				'fields'   => array(
+				'label'         => __( 'Single View', 'personio-integration-light' ),
+				'settings_page' => 'personioIntegrationPositionsTemplates',
+				'callback'      => '__return_true',
+				'fields'        => array(
 					'personioIntegrationTemplateContentDefaults' => array(
 						'label'               => __( 'Choose templates', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Multiple_Select', 'get' ),
@@ -446,10 +454,10 @@ class Settings {
 				),
 			),
 			'settings_section_template_other'  => array(
-				'label'    => __( 'Other settings', 'personio-integration-light' ),
-				'settings_page'     => 'personioIntegrationPositionsTemplates',
-				'callback' => '__return_true',
-				'fields'   => array(
+				'label'         => __( 'Other settings', 'personio-integration-light' ),
+				'settings_page' => 'personioIntegrationPositionsTemplates',
+				'callback'      => '__return_true',
+				'fields'        => array(
 					'personioIntegrationTemplateExcerptSeparator' => array(
 						'label'               => __( 'Separator for details-listing', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Text', 'get' ),
@@ -462,10 +470,10 @@ class Settings {
 				),
 			),
 			'settings_section_advanced'        => array(
-				'label'    => __( 'Advanced settings', 'personio-integration-light' ),
-				'settings_page'     => 'personioIntegrationPositionsAdvanced',
-				'callback' => '__return_true',
-				'fields'   => array(
+				'label'         => __( 'Advanced settings', 'personio-integration-light' ),
+				'settings_page' => 'personioIntegrationPositionsAdvanced',
+				'callback'      => '__return_true',
+				'fields'        => array(
 					'personioIntegration_advanced_pro_hint' => array(
 						'label'    => '',
 						'field'    => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\ProHint', 'get' ),
@@ -521,10 +529,10 @@ class Settings {
 				),
 			),
 			'settings_section_import'          => array(
-				'label'    => __( 'Import of positions from Personio', 'personio-integration-light' ),
-				'settings_page'     => 'personioIntegrationPositionsImport',
-				'callback' => '__return_true',
-				'fields'   => array(
+				'label'         => __( 'Import of positions from Personio', 'personio-integration-light' ),
+				'settings_page' => 'personioIntegrationPositionsImport',
+				'callback'      => '__return_true',
+				'fields'        => array(
 					'personioIntegrationImportNow' => array(
 						'label' => __( 'Get open positions from Personio', 'personio-integration-light' ),
 						'field' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\ImportPositions', 'get' ),
@@ -553,7 +561,7 @@ class Settings {
 			),
 			'hidden_section'                   => array(
 				'settings_page' => 'hidden_personio_page',
-				'fields' => array(
+				'fields'        => array(
 					'personio_integration_transients'     => array(
 						'register_attributes' => array(
 							'type'    => 'integer',
@@ -605,7 +613,7 @@ class Settings {
 	 * @return void
 	 */
 	public function register_settings(): void {
-		foreach ( $this->get_settings() as $section_settings ) {
+		foreach ( $this->get_settings() as $section_name => $section_settings ) {
 			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 				if ( ! isset( $field_settings['do_not_register'] ) ) {
 					$args = array();
@@ -632,7 +640,7 @@ class Settings {
 		foreach ( $this->get_settings() as $section_name => $section_settings ) {
 			if ( ! empty( $section_settings ) && ! empty( $section_settings['settings_page'] ) && ! empty( $section_settings['label'] ) && ! empty( $section_settings['callback'] ) ) {
 				// bail if fields is empty and callback is just true.
-				if( empty($section_settings['fields']) && $section_settings['callback'] === '__return_true' ) {
+				if ( empty( $section_settings['fields'] ) && '__return_true' === $section_settings['callback'] ) {
 					continue;
 				}
 
@@ -777,12 +785,12 @@ class Settings {
 					}
 
 					// bail if tab-settings are not for the settings-page.
-					if( $tab_settings['page'] !== 'personioPositions' ) {
+					if ( 'personioPositions' !== $tab_settings['page'] ) {
 						continue;
 					}
 
 					// Set url.
-					$url    = Helper::get_settings_url('personioPositions', $tab_settings['key'] );
+					$url    = Helper::get_settings_url( 'personioPositions', $tab_settings['key'] );
 					$target = '_self';
 					if ( ! empty( $tab_settings['url'] ) ) {
 						$url    = $tab_settings['url'];
@@ -950,7 +958,6 @@ class Settings {
 	 */
 	public function get_tabs(): array {
 		$tabs = $this->tabs;
-
 		/**
 		 * Filter the list of tabs.
 		 *
@@ -958,7 +965,31 @@ class Settings {
 		 *
 		 * @param array $false Set true to hide the buttons.
 		 */
-		return apply_filters( 'personio_integration_settings_tabs', $tabs );
+		$tabs = apply_filters( 'personio_integration_settings_tabs', $tabs );
+
+		// sort them by 'order'-field.
+		usort( $tabs, array( $this, 'sort_tabs' ) );
+
+		// return resulting list of tabs.
+		return $tabs;
+	}
+
+	/**
+	 * Sort the tabs by 'order'-field.
+	 *
+	 * @param array $a Tab 1 to check.
+	 * @param array $b Tab 2 to compare with tab 1.
+	 *
+	 * @return int
+	 */
+	public function sort_tabs( array $a, array $b ): int {
+		if ( empty( $a['order'] ) ) {
+			$a['order'] = 500;
+		}
+		if ( empty( $b['order'] ) ) {
+			$b['order'] = 500;
+		}
+		return $a['order'] - $b['order'];
 	}
 
 	/**
@@ -1028,7 +1059,7 @@ class Settings {
 		$tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// bail if no value is set.
-		if( is_null( $tab ) ) {
+		if ( is_null( $tab ) ) {
 			return false;
 		}
 

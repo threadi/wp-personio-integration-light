@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Compatibilities;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Plugin\Compatibilities_Base;
 

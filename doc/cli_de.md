@@ -32,8 +32,6 @@ Liste der verfügbaren Befehle für dieses Plugin anzeigen:
 # weitere Kommandos in der Pro-Version
 
 `wp personio delete_partials`
-`wp personio remove_all_data_pro`
-`wp personio reset_plugin_pro`
 `wp personio run_partial_import`
 
 # Hint

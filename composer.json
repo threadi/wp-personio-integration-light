@@ -33,16 +33,10 @@
             "PersonioIntegrationLight\\": "app/"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "lib/threadi/wp-easy-setup"
-        }
-    ],
     "require": {
         "php": "^8.0",
         "threadi/wp-easy-dialog": "dev-master",
-        "threadi/wp-easy-setup": "dev-main"
+        "threadi/wp-easy-setup": "dev-master"
     },
     "require-dev": {
         "wp-coding-standards/wpcs": "^3.0.1",

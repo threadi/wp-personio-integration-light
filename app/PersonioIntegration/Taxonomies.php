@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -429,14 +429,13 @@ class Taxonomies {
 				$language_code = Languages::get_instance()->get_current_lang();
 			}
 
-			// get mappings
+			// get mappings.
 			$language_mappings = Languages::get_instance()->get_lang_mappings( $language_code );
 
 			// get WP-lang-compatible language-code.
-			if( empty( $language_code ) && ! empty($language_mappings) ) {
+			if ( empty( $language_code ) && ! empty( $language_mappings ) ) {
 				$language_code = $language_mappings[0];
-			}
-			else {
+			} else {
 				$language_code = Languages::get_instance()->get_fallback_language_name();
 			}
 
@@ -946,14 +945,13 @@ class Taxonomies {
 				$language_code = Languages::get_instance()->get_current_lang();
 			}
 
-			// get mappings
+			// get mappings.
 			$language_mappings = Languages::get_instance()->get_lang_mappings( $language_code );
 
 			// get WP-lang-compatible language-code.
-			if( empty( $language_code ) && ! empty($language_mappings) ) {
+			if ( empty( $language_code ) && ! empty( $language_mappings ) ) {
 				$language_code = $language_mappings[0];
-			}
-			else {
+			} else {
 				$language_code = Languages::get_instance()->get_fallback_language_name();
 			}
 

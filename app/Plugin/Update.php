@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) or exit;
+defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Schedules\Import;
@@ -142,7 +142,8 @@ class Update {
 
 		// if Personio-URL is set, set setup and intro to complete.
 		if ( Helper::is_personio_url_set() ) {
-			Setup::get_instance()->set_completed();
+			$setup_obj = Setup::get_instance();
+			$setup_obj->set_completed( $setup_obj->get_setup_name() );
 			Intro::get_instance()->set_closed();
 		}
 	}
