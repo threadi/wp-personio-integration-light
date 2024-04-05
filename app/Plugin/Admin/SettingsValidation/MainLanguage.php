@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Admin\Settings_Validation_Base;
 
 /**
@@ -31,6 +32,11 @@ class MainLanguage extends Settings_Validation_Base {
 			} elseif ( ! self::check_language( $value ) ) {
 				add_settings_error( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, __( 'The selected main language is not activated as a language.', 'personio-integration-light' ) );
 				$value = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language();
+			}
+
+			// trigger re-import hint if setting will be changed.
+			if ( get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE ) !== $value ) {
+				Positions::get_instance()->trigger_reimport_hint();
 			}
 		}
 		return $value;

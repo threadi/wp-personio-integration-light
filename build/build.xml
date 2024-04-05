@@ -85,7 +85,6 @@
         <delete file="${log.dir}/npm-build7.txt"/>
         <delete file="${log.dir}/npm-build8.txt"/>
         <delete file="${log.dir}/npm-build9.txt"/>
-        <delete file="${log.dir}/npm-build10.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build1.txt">
             <arg line="run build:show"/>
         </exec>
@@ -107,13 +106,10 @@
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build7.txt">
             <arg line="run build:description"/>
         </exec>
-        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build8.txt">
-            <arg line="run build:setup"/>
-        </exec>
-        <exec dir="${src.dir}/lib/threadi/wp-easy-dialog/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build9.txt">
+        <exec dir="${src.dir}/lib/threadi/wp-easy-dialog/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build8.txt">
             <arg line="run build"/>
         </exec>
-        <exec dir="${src.dir}/lib/threadi/wp-easy-setup/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build10.txt">
+        <exec dir="${src.dir}/lib/threadi/wp-easy-setup/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build9.txt">
             <arg line="run build"/>
         </exec>
     </target>
@@ -144,10 +140,10 @@
     <!-- check WCS compatibility -->
     <target name="check-wcs" depends="composer-install">
         <exec dir="${src.dir}" failonerror="false" executable="lib/bin/phpcbf">
-            <arg line="--extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/* --standard=ruleset.xml ."/>
+            <arg line="--extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml ."/>
         </exec>
         <exec dir="${src.dir}" failonerror="true" executable="lib/bin/phpcs">
-            <arg line="--extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/* --standard=ruleset.xml ."/>
+            <arg line="--extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml ."/>
         </exec>
     </target>
 
@@ -188,9 +184,9 @@
             <zipfileset dir="${src.dir}/blocks/application-button/build" prefix="${plugin.slug}/blocks/application-button/build" />
             <zipfileset dir="${src.dir}/blocks/show/" includes="block.json" prefix="${plugin.slug}/blocks/show/" />
             <zipfileset dir="${src.dir}/blocks/show/build" prefix="${plugin.slug}/blocks/show/build" />
-            <zipfileset dir="${src.dir}/blocks/setup/build" prefix="${plugin.slug}/blocks/setup/build" />
             <zipfileset dir="${src.dir}/blocks/" includes="components.js,index.js" prefix="${plugin.slug}/blocks/" />
             <zipfileset dir="${src.dir}/css" prefix="${plugin.slug}/css" />
+            <zipfileset dir="${src.dir}/deprecated" prefix="${plugin.slug}/deprecated" />
             <zipfileset dir="${src.dir}/gfx" prefix="${plugin.slug}/gfx" />
             <zipfileset dir="${src.dir}/lib" includes="autoload.php" fullpath="${plugin.slug}/lib/autoload.php" />
             <zipfileset dir="${src.dir}/lib/composer" prefix="${plugin.slug}/lib/composer" />

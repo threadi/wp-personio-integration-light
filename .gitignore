@@ -18,5 +18,4 @@
 *.zip
 languages/*.json
 /lib/
-!/lib/threadi/wp-easy-setup/
 *.min.css

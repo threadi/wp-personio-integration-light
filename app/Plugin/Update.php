@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\Plugin\Schedules\Import;
 
 /**
@@ -110,6 +111,11 @@ class Update {
 	 * @return void
 	 */
 	private function version300(): void {
+		define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
+
+		// get extensions.
+		Extensions::get_instance()->init();
+
 		// delete old wrong names interval.
 		wp_clear_scheduled_hook( 'personio_integration_schudule_events' );
 
@@ -127,18 +133,19 @@ class Update {
 			delete_transient( $transient );
 		}
 
-		// install new one.
-		$schedule_obj = new Import();
-		$schedule_obj->install();
-
 		// set default settings for new options.
-		foreach ( Settings::get_instance()->get_settings() as $section_settings ) {
+		$settings_obj = Settings::get_instance();
+		$settings_obj->set_settings();
+		foreach ( $settings_obj->get_settings() as $section_settings ) {
 			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 				if ( ! empty( $field_settings['register_attributes']['default'] ) && ! get_option( $field_name ) ) {
 					update_option( $field_name, $field_settings['register_attributes']['default'], true );
 				}
 			}
 		}
+
+		// create our schedules.
+		Schedules::get_instance()->create_schedules();
 
 		// if Personio-URL is set, set setup and intro to complete.
 		if ( Helper::is_personio_url_set() ) {

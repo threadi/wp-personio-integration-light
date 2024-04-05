@@ -613,7 +613,7 @@ class Settings {
 	 * @return void
 	 */
 	public function register_settings(): void {
-		foreach ( $this->get_settings() as $section_name => $section_settings ) {
+		foreach ( $this->get_settings() as $section_settings ) {
 			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 				if ( ! isset( $field_settings['do_not_register'] ) ) {
 					$args = array();

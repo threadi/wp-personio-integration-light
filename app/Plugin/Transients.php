@@ -265,7 +265,8 @@ class Transients {
 	public function set_default_pages_where_transients_are_hidden( array $urls ): array {
 		// add some URLs to the list.
 		$urls[] = get_admin_url() . 'themes.php';
-		$urls[] = get_admin_url() . 'update.php';
+		$urls[] = get_admin_url() . 'plugin-install.php';
+		$urls[] = get_admin_url() . 'update.php?action=upload-plugin';
 		$urls[] = get_admin_url() . 'update-core.php';
 
 		// return resulting URL-list.

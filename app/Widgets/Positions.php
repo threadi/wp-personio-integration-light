@@ -52,7 +52,7 @@ class Positions extends WP_Widget {
 			),
 			'limit'               => array(
 				'type'    => 'number',
-				'title'   => __( 'amount', 'personio-integration-light' ),
+				'title'   => __( 'Amount', 'personio-integration-light' ),
 				'default' => 0,
 			),
 			'sort'                => array(

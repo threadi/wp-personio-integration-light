@@ -99,6 +99,9 @@ class Third_Party_Plugins {
 
 		// Plugin PDF Generator for WP.
 		add_filter( 'wps_wpg_customize_template_post_content', array( $this, 'pdf_generator_get_content' ), 10, 2 );
+
+		// Plugin Slim SEO.
+		add_filter( 'slim_seo_meta_description_generated', array( $this, 'slim_seo_description_get_content' ), 10, 2 );
 	}
 
 	/**
@@ -419,6 +422,27 @@ class Third_Party_Plugins {
 		// bail if this is not our cpt.
 		if ( PersonioPosition::get_instance()->get_name() !== $post->post_type ) {
 			return $content;
+		}
+
+		// get the requested position.
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+
+		// return our compiled content.
+		return Templates::get_instance()->get_content_template( $position_obj, array(), true );
+	}
+
+	/**
+	 * Return the position description for meta description with Slim SEO.
+	 *
+	 * @param string  $meta_description The description.
+	 * @param WP_Post $post The post-object.
+	 *
+	 * @return string
+	 */
+	public function slim_seo_description_get_content( string $meta_description, WP_Post $post ): string {
+		// bail if this is not our cpt.
+		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( $post ) ) {
+			return $meta_description;
 		}
 
 		// get the requested position.

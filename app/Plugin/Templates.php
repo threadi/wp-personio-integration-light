@@ -524,6 +524,11 @@ class Templates {
 				// get taxonomy name by given slug.
 				$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $taxonomy_slug );
 
+				// bail if taxonomy could not be found.
+				if ( ! $taxonomy_name ) {
+					continue;
+				}
+
 				// get taxonomy label.
 				$taxonomy_label = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name, $attributes['lang'] )['name'];
 

@@ -56,8 +56,8 @@ class Availability extends Extensions_Base {
 		// add as extension.
 		add_filter( 'personio_integration_extensions_table_extension', array( $this, 'add_extension' ) );
 
-		// bail if settings is not enabled.
-		if ( ! $this->is_enabled() ) {
+		// bail if extension is not enabled.
+		if ( ! $this->is_enabled() && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
 		}
 
@@ -69,6 +69,13 @@ class Availability extends Extensions_Base {
 		// extend the position table.
 		add_filter( 'manage_' . PersonioPosition::get_instance()->get_name() . '_posts_columns', array( $this, 'add_column' ) );
 		add_action( 'manage_' . PersonioPosition::get_instance()->get_name() . '_posts_custom_column', array( $this, 'add_column_content' ), 10, 2 );
+
+		// AJAX-requests.
+		add_action( 'wp_ajax_personio_run_availability_check', array( $this, 'single_check_via_request' ) );
+		add_action( 'wp_ajax_personio_get_availability_check_info', array( $this, 'get_single_check_status' ) );
+
+		// misc.
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_js' ), PHP_INT_MAX );
 	}
 
 	/**
@@ -84,9 +91,9 @@ class Availability extends Extensions_Base {
 			3,
 			array(
 				'personioIntegrationEnableAvailabilityCheck' => array(
-					'label'               => __( 'Enable availability checks', 'wp-personio-integration' ),
+					'label'               => __( 'Enable availability checks', 'personio-integration-light' ),
 					'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-					'description'         => __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'wp-personio-integration' ),
+					'description'         => __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ),
 					'register_attributes' => array(
 						'type'    => 'integer',
 						'default' => 1,
@@ -102,7 +109,7 @@ class Availability extends Extensions_Base {
 	}
 
 	/**
-	 * Run the checks for availability of positions.
+	 * Run the checks for availability of multiple positions.
 	 *
 	 * @return void
 	 */
@@ -131,43 +138,14 @@ class Availability extends Extensions_Base {
 		// set import-label.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'We check the availability of each position.', 'personio-integration-light' ) );
 
-		// get log object.
-		$log = new Log();
-
 		// show cli hint.
 		$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Run availability checks', count( $positions ) ) : false;
 
 		// loop through the positions and check each.
 		foreach ( $positions as $position_obj ) {
 			if ( $position_obj instanceof Position ) {
-				// define settings for second request to get the contents.
-				$args     = array(
-					'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
-					'redirection' => 0,
-				);
-				$response = wp_remote_head( $position_obj->get_application_url(), $args );
-
-				if ( is_wp_error( $response ) ) {
-					// log possible error.
-					$log->add_log( 'Error on request to get position availability: ' . $response->get_error_message(), 'error' );
-				} elseif ( empty( $response ) ) {
-					// log im result is empty.
-					$log->add_log( 'Get empty response for position availability.', 'error' );
-				} else {
-					// get the http-status to check if call results in acceptable results.
-					$http_status = $response['http_response']->get_status();
-
-					// get extension to save the availability.
-					$availability_extension = $position_obj->get_extension( 'PersonioIntegrationLight\PersonioIntegration\Extensions\Availability' );
-
-					// bail if extension could not be loaded.
-					if ( ! ( $availability_extension instanceof Extensions\Availability ) ) {
-						continue;
-					}
-
-					// if http-status is not 200, mark the position as not available.
-					$availability_extension->set_availability( 200 === $http_status );
-				}
+				// run check for this single position.
+				$this->run_single_check( $position_obj );
 
 				$count = 1;
 				/**
@@ -229,7 +207,7 @@ class Availability extends Extensions_Base {
 		// show ID-column.
 		if ( 'personio_integration_position_availability' === $column ) {
 			if ( $position_obj->get_extension( 'PersonioIntegrationLight\PersonioIntegration\Extensions\Availability' )->get_availability() ) {
-				$html = '<span class="dashicons dashicons-yes"></span>';
+				$html = '<a class="dashicons dashicons-yes personio-integration-availability-check" data-personio-id="' . esc_attr( $position_obj->get_personio_id() ) . '" href="#" title="' . __( 'Available', 'personio-integration-light' ) . '"></a>';
 				/**
 				 * Filter the availability "yes"-output.
 				 *
@@ -244,10 +222,11 @@ class Availability extends Extensions_Base {
 					'className' => 'personio-integration-applications-hint',
 					'title'     => __( 'Personio page not available', 'personio-integration-light' ),
 					'texts'     => array(
-						'<p>' . __( 'If the Personio page for this position is not available, no one will be able to apply for it directly.', 'personio-integration-light' ) . '</p>',
+						'<p><strong>' . __( 'If the Personio page for this position is not available, no one will be able to apply for it directly.', 'personio-integration-light' ) . '</strong></p>',
+						'<p>' . __( 'We will check the availability after every import of positions for you.', 'personio-integration-light' ) . '</p>',
 						/* translators: %1$s will be replaced by the link to the Personio account */
 						'<p>' . sprintf( __( 'Check in your <a href="%1$s" target="_blank">Personio account (opens new window)</a> why the page is not available.<br>You may have only deactivated the career page.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ) ) . '</p>',
-						'<p>' . __( 'With <strong>Personio Integration Pro</strong>, you can also enter applications directly in the WordPress website and transfer them to Personio.<br>The career page of a job in Personio does not need to be activated for this.', 'personio-integration-light' ) . '</p>',
+						'<p>' . __( 'With <strong>Personio Integration Pro</strong>, you can also enter applications directly in the WordPress website and transfer them to Personio.<br>The career page of a position in Personio does not need to be enabled for this.', 'personio-integration-light' ) . '</p>',
 					),
 					'buttons'   => array(
 						array(
@@ -264,15 +243,16 @@ class Availability extends Extensions_Base {
 				);
 
 				// show icon with helper.
-				$html = '<span class="dashicons dashicons-no"></span><a class="pro-marker wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
+				$html = '<a class="dashicons dashicons-no personio-integration-availability-check" href="#" data-personio-id="' . esc_attr( $position_obj->get_personio_id() ) . '" title="' . __( 'Not available', 'personio-integration-light' ) . '"></a> <a class="pro-marker wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
 				/**
 				 * Filter the availability "no"-output.
 				 *
 				 * @since 3.0.0 Available since 3.0.0.
 				 *
 				 * @param string $html The output.
+				 * @param Position $position_obj The position as object.
 				 */
-				echo wp_kses_post( apply_filters( 'personio_integration_light_position_availability_no', $html ) );
+				echo wp_kses_post( apply_filters( 'personio_integration_light_position_availability_no', $html, $position_obj ) );
 			}
 		}
 	}
@@ -329,5 +309,124 @@ class Availability extends Extensions_Base {
 	 */
 	protected function is_default_enabled(): bool {
 		return true;
+	}
+
+	/**
+	 * Add own JS for backend.
+	 *
+	 * @return void
+	 */
+	public function add_js(): void {
+		// backend-JS.
+		wp_enqueue_script(
+			'personio-integration-admin-availability',
+			Helper::get_plugin_url() . 'admin/availability.js',
+			array( 'jquery', 'wp-easy-dialog' ),
+			Helper::get_file_version( Helper::get_plugin_path() . 'admin/availability.js' ),
+			true
+		);
+
+		// add php-vars to our js-script.
+		wp_localize_script(
+			'personio-integration-admin-availability',
+			'personioIntegrationLightAvailabilityJsVars',
+			array(
+				'ajax_url'                     => admin_url( 'admin-ajax.php' ),
+				'pro_url'                      => Helper::get_pro_url(),
+				'availability_nonce'           => wp_create_nonce( 'personio-integration-availability-nonce' ),
+				'get_availability_check_nonce' => wp_create_nonce( 'personio-integration-availability-info-nonce' ),
+				'title_check_in_progress'      => __( 'Checking availability', 'personio-integration-light' ),
+				'lbl_ok'                       => __( 'OK', 'personio-integration-light' ),
+				'title_check_success'          => __( 'Availability checked', 'personio-integration-light' ),
+				'txt_check_success'            => __( 'The check has been run.', 'personio-integration-light' ),
+			)
+		);
+	}
+
+	/**
+	 * Run single check via AJAX-request.
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function single_check_via_request(): void {
+		// check none.
+		check_ajax_referer( 'personio-integration-availability-nonce', 'nonce' );
+
+		// mark as running.
+		update_option( 'personio_integration_availability_check_running', 1 );
+
+		// get personio-id.
+		$personio_id = filter_input( INPUT_POST, 'personio_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		if ( ! empty( $personio_id ) ) {
+			$position_obj = Positions::get_instance()->get_position_by_personio_id( $personio_id );
+			if ( $position_obj instanceof Position ) {
+				$this->run_single_check( $position_obj );
+			}
+		}
+
+		// remove mark as running.
+		delete_option( 'personio_integration_availability_check_running' );
+
+		// return nothing.
+		wp_die();
+	}
+
+	/**
+	 * Return info about running check for availability of single position.
+	 *
+	 * @return void
+	 */
+	public function get_single_check_status(): void {
+		$is_running = 1 === absint( get_option( 'personio-integration-availability-info-nonce', 0 ) );
+
+		wp_send_json(
+			array(
+				'running' => $is_running,
+				'status'  => $is_running ? __( 'Check is running ..', 'personio-integration-light' ) : __( 'Check has been run.', 'personio-integration-light' ),
+			)
+		);
+	}
+
+	/**
+	 * Run check of single position.
+	 *
+	 * @param Position $position_obj The object of the position.
+	 *
+	 * @return void
+	 */
+	private function run_single_check( Position $position_obj ): void {
+		// get log object.
+		$log = new Log();
+
+		// define settings for second request to get the contents.
+		$args     = array(
+			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
+			'redirection' => 0,
+		);
+		$response = wp_remote_head( $position_obj->get_application_url(), $args );
+
+		if ( is_wp_error( $response ) ) {
+			// log possible error.
+			$log->add_log( 'Error on request to get position availability: ' . $response->get_error_message(), 'error' );
+		} elseif ( empty( $response ) ) {
+			// log im result is empty.
+			$log->add_log( 'Get empty response for position availability.', 'error' );
+		} else {
+			// get the http-status to check if call results in acceptable results.
+			$http_status = $response['http_response']->get_status();
+
+			// get extension to save the availability.
+			$availability_extension = $position_obj->get_extension( 'PersonioIntegrationLight\PersonioIntegration\Extensions\Availability' );
+
+			// bail if extension could not be loaded.
+			if ( ! ( $availability_extension instanceof Extensions\Availability ) ) {
+				return;
+			}
+
+			// if http-status is not 200, mark the position as not available.
+			$availability_extension->set_availability( 200 === $http_status );
+		}
 	}
 }

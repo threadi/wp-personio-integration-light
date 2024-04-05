@@ -29,11 +29,25 @@ class Schedules_Base {
 	protected string $option_name = '';
 
 	/**
+	 * Name of the option used to define the interval for this event.
+	 *
+	 * @var string
+	 */
+	protected string $interval_option_name = '';
+
+	/**
 	 * Interval of this event.
 	 *
 	 * @var string
 	 */
 	protected string $interval;
+
+	/**
+	 * Default interval of this event.
+	 *
+	 * @var string
+	 */
+	protected string $default_interval;
 
 	/**
 	 * Arguments for the schedule-event.
@@ -57,7 +71,15 @@ class Schedules_Base {
 	 * @return string
 	 */
 	public function get_interval(): string {
-		return $this->interval;
+		$interval = $this->interval;
+		/**
+		 * Filter the interval for a single schedule.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 * @param string $interval The interval.
+		 * @param Schedules_Base $this The schedule-object.
+		 */
+		return apply_filters( 'personio_integration_pro_schedule_interval', $interval, $this );
 	}
 
 	/**
@@ -169,6 +191,8 @@ class Schedules_Base {
 		 *
 		 * @param bool $false True if this object should NOT be enabled.
 		 * @param Schedules_Base $this Actual object.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_schedule_enabling', $false, $this ) ) {
 			return false;
@@ -181,5 +205,23 @@ class Schedules_Base {
 
 		// return the state of this schedule according to configuration.
 		return 1 === absint( get_option( $this->get_option_name() ) );
+	}
+
+	/**
+	 * Return the interval option name.
+	 *
+	 * @return string
+	 */
+	public function get_interval_option_name(): string {
+		return $this->interval_option_name;
+	}
+
+	/**
+	 * Return the interval option name.
+	 *
+	 * @return string
+	 */
+	public function get_default_interval(): string {
+		return $this->default_interval;
 	}
 }

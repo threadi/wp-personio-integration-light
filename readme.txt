@@ -369,7 +369,7 @@ Yes, it is without any further settings.
 * Added support for Multisite-installations
 * Added some additional classes in templates for better custom styling-possibilities
 * Added option to choose a content template on listings
-* Added support for additional plugins: Open Graph and Twitter Tags, SEOFramework, SEOPress
+* Added support for additional plugins: Open Graph and Twitter Tags, SEOFramework, SEOPress, Slim SEO
 * Added link to switch between frontend- and backend-view of single position
 * Added new templates for position title and excerpts
 * Added possibility to export and import all settings

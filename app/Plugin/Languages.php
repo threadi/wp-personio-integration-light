@@ -133,9 +133,11 @@ class Languages {
 	/**
 	 * Return only the active languages with the main language as first entry.
 	 *
+	 * @param bool $with_main_language True to use main language in list.
+	 *
 	 * @return array
 	 */
-	public function get_active_languages(): array {
+	public function get_active_languages( bool $with_main_language = true ): array {
 		// get active languages from settings.
 		$active_languages = get_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION );
 
@@ -143,9 +145,14 @@ class Languages {
 		$all_languages = $this->get_languages();
 
 		// add active languages to returning list if they exist as language.
-		$languages = array(
-			$this->get_main_language() => $all_languages[ $this->get_main_language() ],
-		);
+		$languages = array();
+
+		// list with main language.
+		if ( $with_main_language ) {
+			$languages = array(
+				$this->get_main_language() => $all_languages[ $this->get_main_language() ],
+			);
+		}
 		foreach ( $this->get_languages() as $language_name => $label ) {
 			if ( ! empty( $active_languages[ $language_name ] ) && empty( $languages[ $language_name ] ) ) {
 				$languages[ $language_name ] = $label;

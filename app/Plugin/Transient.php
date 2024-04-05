@@ -371,6 +371,7 @@ class Transient {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param array $hide_on List of absolute URLs.
+		 * @param Transient $this The actual transient object.
 		 */
 		return apply_filters( 'personio_integration_transient_hide_on', $hide_on, $this );
 	}

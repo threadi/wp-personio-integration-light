@@ -321,3 +321,5 @@ body.post-type-personioposition #post-body-content { display: none }
 }
 
 #wp-easy-setup .components-panel__body details summary { cursor: pointer }
+
+body.post-type-personioposition summary { cursor: pointer }

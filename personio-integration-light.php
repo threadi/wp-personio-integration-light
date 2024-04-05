@@ -15,6 +15,7 @@
  */
 
 use PersonioIntegrationLight\Plugin\Init;
+use PersonioIntegrationLight\Plugin\Update;
 
 // do nothing if PHP-version is not 8.0 or newer.
 if ( version_compare( PHP_VERSION, '8.0', '<' ) ) {
@@ -33,6 +34,9 @@ require_once __DIR__ . '/lib/autoload.php';
 // get constants.
 require_once __DIR__ . '/inc/constants.php';
 
+// add deprecated.
+require_once __DIR__ . '/deprecated/deprecated.php';
+
 // on activation.
 register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_instance(), 'activation' ) );
 
@@ -42,6 +46,7 @@ register_deactivation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_ins
 add_action(
 	'plugins_loaded',
 	function () {
+		Update::get_instance()->run();
 		Init::get_instance()->init();
 	}
 );

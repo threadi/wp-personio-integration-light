@@ -33,11 +33,25 @@ class Import extends Schedules_Base {
 	protected string $option_name = 'personioIntegrationEnablePositionSchedule';
 
 	/**
+	 * Name of the option used to enable this event.
+	 *
+	 * @var string
+	 */
+	protected string $interval_option_name = 'personioIntegrationPositionScheduleInterval';
+
+	/**
+	 * Define the default interval.
+	 *
+	 * @var string
+	 */
+	protected string $default_interval = 'daily';
+
+	/**
 	 * Initialize this schedule.
 	 */
 	public function __construct() {
 		// get interval from settings.
-		$this->interval = Settings::get_instance()->get_setting( 'personioIntegrationPositionScheduleInterval' );
+		$this->interval = Settings::get_instance()->get_setting( $this->get_interval_option_name() );
 	}
 
 	/**

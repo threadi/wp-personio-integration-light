@@ -409,7 +409,7 @@ function personio_get_import_info() {
 /**
  * Delete all positions.
  */
-function personio_delete_positions() {
+function personio_delete_positions( reimport ) {
   // start deletion.
   jQuery.ajax({
     type: "POST",
@@ -435,7 +435,7 @@ function personio_delete_positions() {
       personio_integration_create_dialog( dialog_config );
 
       // get info about progress.
-      setTimeout(function() { personio_get_delete_info() }, 1000);
+      setTimeout(function() { personio_get_delete_info( reimport ) }, 1000);
     }
   });
 }
@@ -443,7 +443,7 @@ function personio_delete_positions() {
 /**
  * Get info until deletion is done.
  */
-function personio_get_delete_info() {
+function personio_get_delete_info( reimport ) {
   jQuery.ajax({
     type: "POST",
     url: personioIntegrationLightJsVars.ajax_url,
@@ -495,23 +495,28 @@ function personio_get_delete_info() {
         personio_integration_create_dialog( dialog_config );
       }
       else {
-        let message = '<p>' + personioIntegrationLightJsVars.txt_deletion_success + '</p>';
-        let dialog_config = {
-          detail: {
-            title: personioIntegrationLightJsVars.title_deletion_success,
-            texts: [
-              message
-            ],
-            buttons: [
-              {
-                'action': 'location.reload();',
-                'variant': 'primary',
-                'text': personioIntegrationLightJsVars.lbl_ok
-              }
-            ]
-          }
+        if( reimport ) {
+            personio_start_import();
         }
-        personio_integration_create_dialog( dialog_config );
+        else {
+          let message = '<p>' + personioIntegrationLightJsVars.txt_deletion_success + '</p>';
+          let dialog_config = {
+            detail: {
+              title: personioIntegrationLightJsVars.title_deletion_success,
+              texts: [
+                message
+              ],
+              buttons: [
+                {
+                  'action': 'location.reload();',
+                  'variant': 'primary',
+                  'text': personioIntegrationLightJsVars.lbl_ok
+                }
+              ]
+            }
+          }
+          personio_integration_create_dialog( dialog_config );
+        }
       }
     }
   })

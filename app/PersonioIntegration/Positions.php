@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Transients;
 use WP_Post;
 use WP_Query;
 
@@ -290,5 +291,39 @@ class Positions {
 	 */
 	public function get_positions_count(): int {
 		return count( $this->get_positions() );
+	}
+
+	/**
+	 * Trigger re-import hint.
+	 *
+	 * @return void
+	 */
+	public function trigger_reimport_hint(): void {
+		// create re-import dialog.
+		$dialog = array(
+			'title'   => __( 'Re-Import positions', 'personio-integration-light' ),
+			'texts'   => array(
+				'<p>' . __( 'After click on the button below all positions in WordPress will be removed and new imported from Personio.', 'personio-integration-light' ) . '</p>',
+			),
+			'buttons' => array(
+				array(
+					'action'  => 'personio_delete_positions( true );',
+					'variant' => 'primary',
+					'text'    => __( 'Start re-import', 'personio-integration-light' ),
+				),
+				array(
+					'action'  => 'closeDialog();',
+					'variant' => 'secondary',
+					'text'    => __( 'Cancel', 'personio-integration-light' ),
+				),
+			),
+		);
+
+		// and trigger hint for re-import of positions.
+		$transient_obj = Transients::get_instance()->add();
+		$transient_obj->set_name( 'personio_integration_reimport_hint' );
+		$transient_obj->set_type( 'success' );
+		$transient_obj->set_message( __( 'You have changed settings that would make it advisable to re-import the positions from Personio. Click on the following button: ', 'personio-integration-light' ) . '</p><p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '">' . __( 'Re-Import all positions', 'personio-integration-light' ) . '</a>' );
+		$transient_obj->save();
 	}
 }

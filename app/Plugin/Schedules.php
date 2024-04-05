@@ -89,9 +89,9 @@ class Schedules {
 			8,
 			array(
 				'personioIntegrationEnableCronCheckInFrontend' => array(
-					'label'               => __( 'Check for schedules in frontend', 'wp-personio-integration' ),
+					'label'               => __( 'Check for schedules in frontend', 'personio-integration-light' ),
 					'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-					'description'         => __( 'If enabled the plugin will check our own schedules on each request in frontend. This could be slow the performance of your website', 'wp-personio-integration' ),
+					'description'         => __( 'If enabled the plugin will check our own schedules on each request in frontend. This could be slow the performance of your website.', 'personio-integration-light' ),
 					'register_attributes' => array(
 						'type'    => 'integer',
 						'default' => 0,

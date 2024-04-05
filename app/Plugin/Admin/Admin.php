@@ -159,8 +159,8 @@ class Admin {
 				'title_delete_progress'              => __( 'Deletion in progress', 'personio-integration_light' ),
 				'title_deletion_success'             => __( 'Deletion endet', 'personio-integration-light' ),
 				'txt_deletion_success'               => __( '<strong>All positions have been deleted.</strong><br>You can re-import the jobs at any time.', 'personio-integration-light' ),
-				'title_error'                        => __( 'Error', 'wp-personio-integration' ),
-				'txt_error'                          => __( '<strong>An unexpected error occurred.</strong> The error was:', 'wp-personio-integration' ),
+				'title_error'                        => __( 'Error', 'personio-integration-light' ),
+				'txt_error'                          => __( '<strong>An unexpected error occurred.</strong> The error was:', 'personio-integration-light' ),
 			)
 		);
 
@@ -353,7 +353,7 @@ class Admin {
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_no_url_set' );
 			/* translators: %1$s will be replaced by the URL to the settings-page. */
-			$transient_obj->set_message( sprintf( __( 'The specification of your Personio URL is still pending. <strong>Add it now on the <a href="%1$s">settings page</a></strong>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
+			$transient_obj->set_message( sprintf( __( 'The specification of your Personio URL is still pending. <strong>Add it now on the <a href="%1$s">settings page</a>.</strong>', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
 			$transient_obj->set_type( 'hint' );
 			$transient_obj->set_hide_on( array( Helper::get_settings_url() ) );
 			$transient_obj->save();
@@ -399,7 +399,7 @@ class Admin {
 					/* translators: %1$d is replaced with a day-count, %2$s will be replaced with the review-URL */
 					sprintf( __( 'Your use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="%2$s" target="_blank">leave us a review (opens new window)</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ), esc_url( Helper::get_review_url() ) ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
 				);
-				$transient_obj->set_type( 'error' );
+				$transient_obj->set_type( 'info' );
 				$transient_obj->save();
 			} else {
 				Transients::get_instance()->get_transient_by_name( 'personio_integration_admin_show_review_hint' )->delete();
@@ -650,6 +650,8 @@ class Admin {
 																							 * @since 3.0.0 Available since 3.0.0
 																							 *
 																							 * @param array $false Set true to hide the buttons.
+																							 *
+																							 * @noinspection PhpConditionAlreadyCheckedInspection
 																							 */
 																							if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 																								$dialog_templates = array(
@@ -741,13 +743,12 @@ class Admin {
 		header( 'Content-Disposition: attachment; filename=' . sanitize_file_name( $filename ) );
 
 		// generate CSV-output.
-		$fp      = fopen( 'php://output', 'w' );
-		$headrow = $entries[0];
-		fputcsv( $fp, array_keys( $headrow ) );
+		$fp       = fopen( 'php://output', 'w' );
+		$head_row = $entries[0];
+		fputcsv( $fp, array_keys( $head_row ) );
 		foreach ( $entries as $data ) {
 			fputcsv( $fp, $data );
 		}
-		fclose( $fp );
 
 		// do nothing more.
 		exit;

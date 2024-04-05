@@ -1165,8 +1165,8 @@ class PersonioPosition extends Post_Type {
 			$position = Positions::get_instance()->get_position( $post->ID );
 			if ( $position->is_valid() ) {
 				$url = Helper::get_personio_login_url();
-				/* translators: %1$s will be replaced by the URL for Personio */
-				printf( wp_kses_post( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the job details in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'personio-integration-light' ) ), esc_html( $position->get_title() ), esc_url( $url ) );
+				/* translators: %1$s will be replaced by the URL for Personio, %2$s will be replaced with the URL for the Personio account. */
+				printf( wp_kses_post( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the position data in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'personio-integration-light' ) ), esc_html( $position->get_title() ), esc_url( $url ) );
 			}
 		}
 	}
@@ -1736,7 +1736,7 @@ class PersonioPosition extends Post_Type {
 				'title'   => __( 'Run import', 'personio-integration-light' ),
 				'texts'   => array(
 					/* translators: %1$s will be replaced by the Personio URL */
-					'<p>' . sprintf( __( '<strong>Do you really want to import open positions from<br>%1$s ?</strong>', 'personio-integration-light' ), '<a href="" target="_blank">' . esc_url( Helper::get_personio_url() ) . '</a>' ) . '</p>',
+					'<p>' . sprintf( __( '<strong>Do you really want to import open positions from<br>%1$s ?</strong>', 'personio-integration-light' ), '<a href="' . esc_url( Helper::get_personio_url() ) . '" target="_blank">' . esc_url( Helper::get_personio_url() ) . '</a>' ) . '</p>',
 				),
 				'buttons' => array(
 					array(

@@ -58,7 +58,7 @@ class Extensions {
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_extensions' ) );
 		add_action( 'wp_easy_setup_process_init', array( $this, 'initialize_extensions_in_setup' ) );
 
-		if ( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+		if ( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
 		}
 

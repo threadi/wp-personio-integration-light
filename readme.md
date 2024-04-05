@@ -36,7 +36,7 @@ I recommend to use [PoEdit](https://poedit.net/) to translate texts for this plu
 
 Run in main directory:
 
-`wp i18n make-pot . languages/personio-integration-light.pot --exclude=blocks/show/src/,blocks/list/src/,blocks/filter-list/src/,blocks/filter-select/src/,blocks/application-button/src/,blocks/details/src/,blocks/description/src/,blocks/setup/src/,svn/`
+`wp i18n make-pot . languages/personio-integration-light.pot --exclude=blocks/show/src/,blocks/list/src/,blocks/filter-list/src/,blocks/filter-select/src/,blocks/application-button/src/,blocks/details/src/,blocks/description/src/,blocks/setup/src/,svn/,deprecated/`
 
 ### update translation-file
 
@@ -66,11 +66,11 @@ OR use ant in build/-directory: `ant json-translations`
 
 ### Run
 
-`lib/bin/phpcs --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/* --standard=ruleset.xml .`
+`lib/bin/phpcs --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .`
 
 ### Repair
 
-`lib/bin/phpcbf --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/* --standard=ruleset.xml .`
+`lib/bin/phpcbf --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .`
 
 ### Notes for Build
 TODO

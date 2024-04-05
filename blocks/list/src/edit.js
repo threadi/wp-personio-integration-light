@@ -155,7 +155,7 @@ export default function Edit( object ) {
 						}
 					</div>
 					<NumberControl
-						label={__('amount', 'personio-integration-light')}
+						label={__('Amount', 'personio-integration-light')}
 						labelPosition='top'
 						isShiftStepEnabled={ true }
 						onChange={ value => onChangeLimit( value, object ) }

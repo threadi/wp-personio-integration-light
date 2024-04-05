@@ -147,7 +147,7 @@ class PageBuilder_Base extends Extensions_Base {
 		update_option( 'wp_easy_setup_max_steps', absint( get_option( 'wp_easy_setup_max_steps' ) ) + 1 );
 
 		// change label of progressbar in setup.
-		Setup::get_instance()->set_process_label( __( 'Import of templates running.', 'wp-personio-integration' ) );
+		Setup::get_instance()->set_process_label( __( 'Import of templates running.', 'personio-integration-light' ) );
 
 		// install templates.
 		$this->install_templates();

@@ -108,19 +108,19 @@ export default function Edit( object ) {
 						onChange={(value) => onChangeId( parseInt(value), object )}
 					/>
 					<ToggleControl
-						label={__('show title', 'personio-integration-light')}
+						label={__('Show title', 'personio-integration-light')}
 						checked={ object.attributes.showTitle }
 						onChange={ value => onChangeTitleVisibility( value, object ) }
 						disabled={ disabledFields }
 					/>
 					<ToggleControl
-						label={__('link title', 'personio-integration-light')}
+						label={__('Link title', 'personio-integration-light')}
 						checked={ object.attributes.linkTitle }
 						onChange={ value => onChangeLinkingTitle( value, object ) }
 						disabled={ disabledFields }
 					/>
 					<ToggleControl
-						label={__('show excerpt', 'personio-integration-light')}
+						label={__('Show excerpt', 'personio-integration-light')}
 						checked={ object.attributes.showExcerpt }
 						onChange={ value => onChangeExcerptVisibility( value, object ) }
 						disabled={ disabledFields }
@@ -147,13 +147,13 @@ export default function Edit( object ) {
 						}
 					</div>
 					<ToggleControl
-						label={__('view content', 'personio-integration-light')}
+						label={__('View content', 'personio-integration-light')}
 						checked={ object.attributes.showContent }
 						onChange={ value => onChangeContentVisibility( value, object )  }
 						disabled={ disabledFields }
 					/>
 					<ToggleControl
-						label={__('view application link', 'personio-integration-light')}
+						label={__('View application link', 'personio-integration-light')}
 						checked={ object.attributes.showApplicationForm }
 						onChange={ value => onChangeApplicationFormVisibility( value, object )  }
 						disabled={ disabledFields }

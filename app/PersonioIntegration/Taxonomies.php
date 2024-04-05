@@ -477,13 +477,13 @@ class Taxonomies {
 	 */
 	public function get_taxonomy_labels_for_settings(): array {
 		$labels = array(
-			'recruitingCategory' => esc_html__( 'recruiting category', 'personio-integration-light' ),
-			'schedule'           => esc_html__( 'schedule', 'personio-integration-light' ),
-			'office'             => esc_html__( 'office', 'personio-integration-light' ),
-			'department'         => esc_html__( 'department', 'personio-integration-light' ),
-			'employmenttype'     => esc_html__( 'employment types', 'personio-integration-light' ),
-			'seniority'          => esc_html__( 'seniority', 'personio-integration-light' ),
-			'experience'         => esc_html__( 'experience', 'personio-integration-light' ),
+			'recruitingCategory' => esc_html__( 'Recruiting category', 'personio-integration-light' ),
+			'schedule'           => esc_html__( 'Schedule', 'personio-integration-light' ),
+			'office'             => esc_html__( 'Office', 'personio-integration-light' ),
+			'department'         => esc_html__( 'Department', 'personio-integration-light' ),
+			'employmenttype'     => esc_html__( 'Employment types', 'personio-integration-light' ),
+			'seniority'          => esc_html__( 'Seniority', 'personio-integration-light' ),
+			'experience'         => esc_html__( 'Experience', 'personio-integration-light' ),
 			'occupation'         => esc_html__( 'Job type', 'personio-integration-light' ),
 			'occupation_detail'  => esc_html__( 'Job type details', 'personio-integration-light' ),
 		);

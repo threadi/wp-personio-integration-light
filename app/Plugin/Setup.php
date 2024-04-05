@@ -440,6 +440,15 @@ class Setup {
 			return;
 		}
 
+		// get actual list of completed setups.
+		$actual_completed = get_option( 'wp_easy_setup_completed', array() );
+
+		// add this setup to the list.
+		$actual_completed[] = $this->get_setup_name();
+
+		// add the actual setup to the list of completed setups.
+		update_option( 'wp_easy_setup_completed', $actual_completed );
+
 		if ( Helper::is_admin_api_request() ) {
 			// Return JSON with forward-URL.
 			wp_send_json(
