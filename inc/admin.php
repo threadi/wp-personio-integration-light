@@ -383,11 +383,6 @@ function personio_integration_admin_show_review_hint(): void {
     $install_date = absint(get_option( 'personioIntegrationLightInstallDate', 0 ) );
     if( $install_date > 0 ) {
         if( time() > strtotime("+90 days", $install_date) ) {
-            for( $d=2;$d<10;$d++ ) {
-                if (time() > strtotime("+".($d*90)." days", $install_date)) {
-                    delete_option('pi-dismissed-' . md5('personio_integration_admin_show_review_hint'));
-                }
-            }
             set_transient('personio_integration_admin_show_review_hint', 1);
         } else {
             delete_transient('personio_integration_admin_show_review_hint');

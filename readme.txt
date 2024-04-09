@@ -6,7 +6,7 @@ Tested up to: 6.5
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.6.3
+Stable tag: 2.6.4
 
 == Description ==
 
@@ -357,3 +357,6 @@ Yes, it is without any further settings.
 = 2.6.3 =
 * Added plugin-update hints in plugin-list
 * Compatibility with WordPress 6.5
+
+= 2.6.4 =
+* Fixed visibility of review-hint
