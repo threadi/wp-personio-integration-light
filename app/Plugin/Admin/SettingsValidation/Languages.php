@@ -48,7 +48,9 @@ class Languages {
 			}
 
 			// trigger re-import hint.
-			Positions::get_instance()->trigger_reimport_hint();
+			if( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+				Positions::get_instance()->trigger_reimport_hint();
+			}
 		}
 		return $values;
 	}

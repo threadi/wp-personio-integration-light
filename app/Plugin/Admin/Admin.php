@@ -123,6 +123,7 @@ class Admin {
 				'ajax_url'                           => admin_url( 'admin-ajax.php' ),
 				'rest_personioposition_delete'       => rest_url( 'wp/v2/personioposition' ),
 				'pro_url'                            => Helper::get_pro_url(),
+				'review_url'                         => Helper::get_review_url(),
 				'dismiss_nonce'                      => wp_create_nonce( 'personio-integration-dismiss-nonce' ),
 				'dismiss_url_nonce'                  => wp_create_nonce( 'personio-integration-dismiss-url' ),
 				'run_import_nonce'                   => wp_create_nonce( 'personio-run-import' ),
@@ -158,7 +159,7 @@ class Admin {
 				'text_settings_import_file_missing'  => __( 'Please choose a file for the import.', 'personio-integration-light' ),
 				'title_delete_progress'              => __( 'Deletion in progress', 'personio-integration_light' ),
 				'title_deletion_success'             => __( 'Deletion endet', 'personio-integration-light' ),
-				'txt_deletion_success'               => __( '<strong>All positions have been deleted.</strong><br>You can re-import the jobs at any time.', 'personio-integration-light' ),
+				'txt_deletion_success'               => __( '<strong>All positions have been deleted.</strong><br>You can re-import the positions at any time.', 'personio-integration-light' ),
 				'title_error'                        => __( 'Error', 'personio-integration-light' ),
 				'txt_error'                          => __( '<strong>An unexpected error occurred.</strong> The error was:', 'personio-integration-light' ),
 			)
@@ -171,6 +172,8 @@ class Admin {
 			array(
 				/* translators: %1$s will be replaced by the URL for the Pro-plugin */
 				'Request Timeout' => sprintf( __( '<u>Request Timeout</u> - The import apparently took too long to be completed.<br>Use <a href="%1$s">Personio Integration Pro</a> to use partial imports without timeouts.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ),
+				/* translators: %1$s will be replaced by the URL for the Pro-plugin */
+				'Gateway Time-out' => sprintf( __( '<u>Gateway Timeout</u> - The import apparently took too long to be completed.<br>Use <a href="%1$s">Personio Integration Pro</a> to use partial imports without timeouts.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ),
 			)
 		);
 	}
@@ -384,14 +387,14 @@ class Admin {
 	 * @return void
 	 */
 	public function show_review_hint(): void {
+		// bail if transient is already dismissed.
+		if( Transients::get_instance()->get_transient_by_name( 'personio_integration_admin_show_review_hint' )->is_dismissed() ) {
+			return;
+		}
+
 		$install_date = absint( get_option( 'personioIntegrationLightInstallDate' ) );
 		if ( $install_date > 0 ) {
 			if ( time() > strtotime( '+90 days', $install_date ) ) {
-				for ( $d = 2;$d < 10;$d++ ) {
-					if ( time() > strtotime( '+' . ( $d * 90 ) . ' days', $install_date ) ) {
-						Transients::get_instance()->get_transient_by_name( 'personio_integration_admin_show_review_hint' )->delete_dismiss();
-					}
-				}
 				$transient_obj = Transients::get_instance()->add();
 				$transient_obj->set_dismissible_days( 90 );
 				$transient_obj->set_name( 'personio_integration_admin_show_review_hint' );
@@ -401,10 +404,10 @@ class Admin {
 				);
 				$transient_obj->set_type( 'info' );
 				$transient_obj->save();
-			} else {
-				Transients::get_instance()->get_transient_by_name( 'personio_integration_admin_show_review_hint' )->delete();
 			}
+			return;
 		}
+		Transients::get_instance()->get_transient_by_name( 'personio_integration_admin_show_review_hint' )->delete();
 	}
 
 	/**

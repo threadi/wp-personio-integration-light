@@ -88,8 +88,9 @@ class Imports {
 			$this->errors[] = __( 'Import is already running.', 'personio-integration-light' );
 		}
 
-		// check if Personio URL is set.
-		if ( ! Helper::is_personio_url_set() ) {
+		// get and check the Personio URLs.
+		$personio_urls = $this->get_personio_urls();
+		if( empty( $personio_urls ) ) {
 			$this->errors[] = __( 'Personio URL not configured.', 'personio-integration-light' );
 		}
 
@@ -111,9 +112,6 @@ class Imports {
 			$this->handle_errors();
 			return;
 		}
-
-		// get the Personio URLs.
-		$personio_urls = $this->get_personio_urls();
 
 		// set max counter.
 		$language_count = count( $languages );

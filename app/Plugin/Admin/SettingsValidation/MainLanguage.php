@@ -35,7 +35,7 @@ class MainLanguage extends Settings_Validation_Base {
 			}
 
 			// trigger re-import hint if setting will be changed.
-			if ( get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE ) !== $value ) {
+			if ( get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE ) !== $value && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 				Positions::get_instance()->trigger_reimport_hint();
 			}
 		}

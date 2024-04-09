@@ -95,6 +95,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Themify',
 			'PersonioIntegrationLight\Plugin\Compatibilities\TranslatePress',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Visual_Composer',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Salient_WpBakery',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpBakery',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Wpml',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpPageBuilder',

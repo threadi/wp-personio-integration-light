@@ -1,20 +1,20 @@
 jQuery(document).ready(function($) {
   $('a.personio-integration-availability-check').on('click', function( e ) {
     e.preventDefault();
-    personio_start_availability_check( $(this).data('personio-id') );
+    personio_start_availability_check( $(this).data('post-id') );
   })
 });
 /**
  * Start import of positions.
  */
-function personio_start_availability_check( personio_id ) {
+function personio_start_availability_check( post_id ) {
   // start the check.
   jQuery.ajax( {
     type: "POST",
     url: personioIntegrationLightAvailabilityJsVars.ajax_url,
     data: {
       'action': 'personio_run_availability_check',
-      'personio_id': personio_id,
+      'post': post_id,
       'nonce': personioIntegrationLightAvailabilityJsVars.availability_nonce
     },
     beforeSend: function () {
@@ -34,7 +34,7 @@ function personio_start_availability_check( personio_id ) {
 
       // get info about progress.
       setTimeout( function () {
-        personio_get_availability_check_info( personio_id )
+        personio_get_availability_check_info( post_id )
       }, 1000 );
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -46,13 +46,13 @@ function personio_start_availability_check( personio_id ) {
 /**
  * Get info until import is done.
  */
-function personio_get_availability_check_info( personio_id ) {
+function personio_get_availability_check_info( post_id ) {
     jQuery.ajax( {
       type: "POST",
       url: personioIntegrationLightAvailabilityJsVars.ajax_url,
       data: {
         'action': 'personio_get_availability_check_info',
-        'personio_id': personio_id,
+        'post_id': post_id,
         'nonce': personioIntegrationLightAvailabilityJsVars.get_availability_check_nonce
       },
       success: function (data) {
@@ -64,7 +64,7 @@ function personio_get_availability_check_info( personio_id ) {
 
         if (running >= 1) {
           setTimeout( function () {
-            personio_get_import_info( personio_id )
+            personio_get_import_info( post_id )
           }, 500 );
         } else {
           jQuery( '#progress' ).attr( 'value', 100 );

@@ -13,6 +13,8 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
+use WP_Block_Type_Registry;
+use WP_REST_Request;
 
 /**
  * Object to handle main functions for single block.
@@ -75,6 +77,12 @@ class Blocks_Basis {
 	 * @return void
 	 */
 	public function register(): void {
+		// bail if block is already registered.
+		if ( WP_Block_Type_Registry::get_instance()->is_registered( $this->get_name() ) ) {
+			return;
+		}
+
+		// register the block.
 		register_block_type(
 			$this->get_path(),
 			array(

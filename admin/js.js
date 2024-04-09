@@ -7,7 +7,7 @@ jQuery(document).ready(function($) {
     $('body.post-type-personioposition:not(.personio-integration-hide-buttons) h1').each(function() {
       let button = document.createElement('a');
       button.className = 'review-hint-button page-title-action';
-      button.href = 'https://wordpress.org/plugins/personio-integration-light/#reviews';
+      button.href = personioIntegrationLightJsVars.review_url;
       button.innerHTML = personioIntegrationLightJsVars.title_rate_us;
       button.target = '_blank';
       this.after(button);
@@ -320,7 +320,12 @@ function personio_start_import() {
       // get info about progress.
       setTimeout(function() { personio_get_import_info() }, 1000);
     },
+    success: function() {
+      // mark import as not running.
+      import_running = false;
+    },
     error: function( jqXHR, textStatus, errorThrown ) {
+      // mark import as not running.
       import_running = false;
       personio_integration_ajax_error_dialog( errorThrown, personioIntegrationLightJsImportErrors )
     }
@@ -331,79 +336,77 @@ function personio_start_import() {
  * Get info until import is done.
  */
 function personio_get_import_info() {
-  if( import_running ) {
-    jQuery.ajax( {
-      type: "POST",
-      url: personioIntegrationLightJsVars.ajax_url,
-      data: {
-        'action': 'personio_get_import_info',
-        'nonce': personioIntegrationLightJsVars.get_import_nonce
-      },
-      success: function (data) {
-        let count = parseInt( data[0] );
-        let max = parseInt( data[1] );
-        let running = parseInt( data[2] );
-        let status = data[3];
-        let errors = JSON.parse( data[4] );
+  jQuery.ajax( {
+    type: "POST",
+    url: personioIntegrationLightJsVars.ajax_url,
+    data: {
+      'action': 'personio_get_import_info',
+      'nonce': personioIntegrationLightJsVars.get_import_nonce
+    },
+    success: function (data) {
+      let count = parseInt( data[0] );
+      let max = parseInt( data[1] );
+      let running = parseInt( data[2] );
+      let status = data[3];
+      let errors = JSON.parse( data[4] );
 
-        // show progress.
-        jQuery( '#progress' ).attr( 'value', (count / max) * 100 );
-        jQuery( '#progress_status' ).html( status );
+      // show progress.
+      jQuery( '#progress' ).attr( 'value', (count / max) * 100 );
+      jQuery( '#progress_status' ).html( status );
 
-        /**
-         * If import is still running, get next info in 500ms.
-         * If import is not running and error occurred, show the error.
-         * If import is not running and no error occurred, show ok-message.
-         */
-        if (running >= 1) {
-          setTimeout( function () {
-            personio_get_import_info()
-          }, 500 );
-        } else if (errors.length > 0) {
-          let message = '<p>' + personioIntegrationLightJsVars.import_txt_error + '</p>';
-          message = message + '<ul>';
-          for (error of errors) {
-            message = message + '<li>' + error + '</li>';
-          }
-          message = message + '</ul>';
-          let dialog_config = {
-            detail: {
-              title: personioIntegrationLightJsVars.import_title_error,
-              texts: [
-                message
-              ],
-              buttons: [
-                {
-                  'action': 'location.reload();',
-                  'variant': 'primary',
-                  'text': personioIntegrationLightJsVars.lbl_ok
-                }
-              ]
-            }
-          }
-          personio_integration_create_dialog( dialog_config );
-        } else {
-          let message = '<p>' + personioIntegrationLightJsVars.txt_import_success + '</p>';
-          let dialog_config = {
-            detail: {
-              title: personioIntegrationLightJsVars.title_import_success,
-              texts: [
-                message
-              ],
-              buttons: [
-                {
-                  'action': 'location.reload();',
-                  'variant': 'primary',
-                  'text': personioIntegrationLightJsVars.lbl_ok
-                }
-              ]
-            }
-          }
-          personio_integration_create_dialog( dialog_config );
+      /**
+       * If import is still running, get next info in 500ms.
+       * If import is not running and error occurred, show the error.
+       * If import is not running and no error occurred, show ok-message.
+       */
+      if (running >= 1 || import_running) {
+        setTimeout( function () {
+          personio_get_import_info()
+        }, 500 );
+      } else if (errors.length > 0) {
+        let message = '<p>' + personioIntegrationLightJsVars.import_txt_error + '</p>';
+        message = message + '<ul>';
+        for (error of errors) {
+          message = message + '<li>' + error + '</li>';
         }
+        message = message + '</ul>';
+        let dialog_config = {
+          detail: {
+            title: personioIntegrationLightJsVars.import_title_error,
+            texts: [
+              message
+            ],
+            buttons: [
+              {
+                'action': 'location.reload();',
+                'variant': 'primary',
+                'text': personioIntegrationLightJsVars.lbl_ok
+              }
+            ]
+          }
+        }
+        personio_integration_create_dialog( dialog_config );
+      } else {
+        let message = '<p>' + personioIntegrationLightJsVars.txt_import_success + '</p>';
+        let dialog_config = {
+          detail: {
+            title: personioIntegrationLightJsVars.title_import_success,
+            texts: [
+              message
+            ],
+            buttons: [
+              {
+                'action': 'location.reload();',
+                'variant': 'primary',
+                'text': personioIntegrationLightJsVars.lbl_ok
+              }
+            ]
+          }
+        }
+        personio_integration_create_dialog( dialog_config );
       }
-    } )
-  }
+    }
+  } )
 }
 
 /**
@@ -468,7 +471,7 @@ function personio_get_delete_info( reimport ) {
        * If deletion is not running and no error occurred, show ok-message.
        */
       if( running >= 1 ) {
-        setTimeout(function() { personio_get_delete_info() }, 500);
+        setTimeout(function() { personio_get_delete_info( reimport ) }, 500);
       }
       else if( errors.length > 0 ) {
         let message = '<p>' + personioIntegrationLightJsVars.txt_error + '</p>';
@@ -595,6 +598,9 @@ function personio_integration_import_settings_file() {
  * Define dialog for AJAX-errors.
  */
 function personio_integration_ajax_error_dialog( errortext, texts ) {
+  if( errortext.length === 0 ) {
+    errortext = 'Request Timeout';
+  }
   let message = '<p>' + personioIntegrationLightJsVars.txt_error + '</p>';
   message = message + '<ul>';
   if( texts && texts[errortext] ) {

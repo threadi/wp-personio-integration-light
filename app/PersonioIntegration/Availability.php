@@ -207,7 +207,7 @@ class Availability extends Extensions_Base {
 		// show ID-column.
 		if ( 'personio_integration_position_availability' === $column ) {
 			if ( $position_obj->get_extension( 'PersonioIntegrationLight\PersonioIntegration\Extensions\Availability' )->get_availability() ) {
-				$html = '<a class="dashicons dashicons-yes personio-integration-availability-check" data-personio-id="' . esc_attr( $position_obj->get_personio_id() ) . '" href="#" title="' . __( 'Available', 'personio-integration-light' ) . '"></a>';
+				$html = '<a class="dashicons dashicons-yes personio-integration-availability-check" data-post-id="' . esc_attr( $position_obj->get_id() ) . '" href="#" title="' . __( 'Available', 'personio-integration-light' ) . '"></a>';
 				/**
 				 * Filter the availability "yes"-output.
 				 *
@@ -243,7 +243,7 @@ class Availability extends Extensions_Base {
 				);
 
 				// show icon with helper.
-				$html = '<a class="dashicons dashicons-no personio-integration-availability-check" href="#" data-personio-id="' . esc_attr( $position_obj->get_personio_id() ) . '" title="' . __( 'Not available', 'personio-integration-light' ) . '"></a> <a class="pro-marker wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
+				$html = '<a class="dashicons dashicons-no personio-integration-availability-check" href="#" data-post-id="' . esc_attr( $position_obj->get_id() ) . '" title="' . __( 'Not available', 'personio-integration-light' ) . '"></a> <a class="pro-marker wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
 				/**
 				 * Filter the availability "no"-output.
 				 *
@@ -356,14 +356,11 @@ class Availability extends Extensions_Base {
 		// mark as running.
 		update_option( 'personio_integration_availability_check_running', 1 );
 
-		// get personio-id.
-		$personio_id = filter_input( INPUT_POST, 'personio_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		// get post-id.
+		$post_id = absint( filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT ) );
 
-		if ( ! empty( $personio_id ) ) {
-			$position_obj = Positions::get_instance()->get_position_by_personio_id( $personio_id );
-			if ( $position_obj instanceof Position ) {
-				$this->run_single_check( $position_obj );
-			}
+		if ( $post_id > 0 ) {
+			$this->run_single_check( Positions::get_instance()->get_position( $post_id ) );
 		}
 
 		// remove mark as running.

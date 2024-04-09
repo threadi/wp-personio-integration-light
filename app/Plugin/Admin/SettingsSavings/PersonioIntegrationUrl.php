@@ -25,7 +25,7 @@ class PersonioIntegrationUrl {
 	 */
 	public static function save( string $value ): string {
 		// trigger re-import hint if URL will be changed.
-		if ( get_option( 'personioIntegrationUrl' ) !== $value ) {
+		if ( ! empty( get_option( 'personioIntegrationUrl' ) ) && get_option( 'personioIntegrationUrl' ) !== $value && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			Positions::get_instance()->trigger_reimport_hint();
 		}
 

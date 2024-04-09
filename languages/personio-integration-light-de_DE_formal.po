@@ -7,7 +7,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/personio-"
 "integration-light\n"
 "POT-Creation-Date: 2024-04-03T12:48:08+00:00\n"
-"PO-Revision-Date: 2024-04-03 14:59+0200\n"
+"PO-Revision-Date: 2024-04-09 13:40+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2686,7 +2686,7 @@ msgstr "Es sind aktuell keine Stellen importiert."
 
 #: app/Plugin/Admin/SettingFields/ImportPositions.php:29
 msgid "Run import of positions now"
-msgstr "Führen Sie jetzt den Import von Stellen jetzt durch"
+msgstr "Führen Sie den Import von Stellen jetzt durch"
 
 #: app/Plugin/Admin/SettingFields/ImportPositions.php:30
 msgid ""

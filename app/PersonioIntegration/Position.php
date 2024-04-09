@@ -499,10 +499,13 @@ class Position {
 	 * Return created at date as timestamp.
 	 *
 	 * @return string
-	 * @noinspection PhpUnused
 	 */
 	public function get_created_at(): string {
-		return get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT, true );
+		$date = get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT, true );
+		if( empty( $date ) ) {
+			return time().'';
+		}
+		return $date;
 	}
 
 	/**

@@ -161,7 +161,7 @@ class Transient {
 	 */
 	public function display(): void {
 		// check if this transient is dismissed.
-		if ( false === $this->is_transient_not_dismissed() ) {
+		if ( false !== $this->is_dismissed() ) {
 			return;
 		}
 
@@ -258,19 +258,19 @@ class Transient {
 	}
 
 	/**
-	 * Return whether this transient is dismissed (false) or not (true).
+	 * Return whether this transient is dismissed (true) or not (false).
 	 *
 	 * @return bool
 	 */
-	private function is_transient_not_dismissed(): bool {
+	public function is_dismissed(): bool {
 		// get value from cache, if set.
 		$db_record = $this->get_admin_transient_dismiss_cache();
 
 		// return bool depending on value.
 		if ( 'forever' === $db_record || absint( $db_record ) >= time() ) {
-			return false;
-		} else {
 			return true;
+		} else {
+			return false;
 		}
 	}
 

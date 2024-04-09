@@ -35,6 +35,7 @@ class Gutenberg extends PageBuilder_Base {
 	public function init(): void {
 		// bail if Gutenberg is disabled.
 		if ( ! $this->is_enabled() ) {
+			add_filter( 'personio_integration_settings', array( $this, 'remove_fse_hint' ) );
 			return;
 		}
 
@@ -86,7 +87,7 @@ class Gutenberg extends PageBuilder_Base {
 			return false;
 		}
 
-		return true;
+		return function_exists( 'gutenberg_supports_block_templates' );
 	}
 
 	/**

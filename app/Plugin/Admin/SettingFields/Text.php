@@ -55,6 +55,11 @@ class Text {
 				<?php
 			}
 
+			// define depends array if it does not exist.
+			if ( ! isset( $attributes['depends'] ) ) {
+				$attributes['depends'] = array();
+			}
+
 			// output.
 			?>
 			<input type="text" id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" value="<?php echo esc_attr( $value ); ?>"

@@ -106,6 +106,12 @@ Yes, it is without any further settings.
 3. List of imported positions
 4. Gutenberg Block for listings
 
+== Upgrade Notice ==
+
+= 3.0.0 =
+
+Complete revision of the plugin. Please make a backup before installing 3.0.0 or newer.
+
 == Changelog ==
 
 = 1.0.0 =
