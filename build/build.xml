@@ -151,7 +151,7 @@
     <target name="minify-css" depends="composer-install">
         <for param="file">
             <path>
-                <fileset dir="${src.dir}/css" includes="*.css"/>
+                <fileset dir="${src.dir}/css" includes="*.css" excludes="*.min.css"/>
             </path>
             <sequential>
                 <exec dir="${log.dir}" failonerror="false" executable="/usr/bin/php">

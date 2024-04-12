@@ -357,7 +357,7 @@ class Availability extends Extensions_Base {
 		update_option( 'personio_integration_availability_check_running', 1 );
 
 		// get post-id.
-		$post_id = absint( filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT ) );
+		$post_id = absint( filter_input( INPUT_POST, 'post', FILTER_SANITIZE_NUMBER_INT ) );
 
 		if ( $post_id > 0 ) {
 			$this->run_single_check( Positions::get_instance()->get_position( $post_id ) );
