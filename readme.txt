@@ -2,7 +2,7 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
 Requires at least: 5.9.3
-Tested up to: 6.5
+Tested up to: 6.5.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -98,6 +98,16 @@ Yes, it is without any further settings.
 2. Import-Settings
 3. List of imported positions
 4. Gutenberg Block for listings
+
+== Upgrade Notice ==
+
+= 2.6.4 =
+
+The next update to version 3.0.0 will offer much more features and options. Please note to create a backup of the project before importing.
+
+= 3.0.0 =
+
+This version offers you much more features for handling with positions. Please note to create a backup of the project before importing.
 
 == Changelog ==
 
@@ -359,4 +369,6 @@ Yes, it is without any further settings.
 * Compatibility with WordPress 6.5
 
 = 2.6.4 =
+* Compatibility with WordPress 6.5.2
+* Updated dependencies for Gutenberg-scripts
 * Fixed visibility of review-hint
