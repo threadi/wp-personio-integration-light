@@ -87,7 +87,7 @@ class Gutenberg extends PageBuilder_Base {
 			return false;
 		}
 
-		return function_exists( 'gutenberg_supports_block_templates' );
+		return $this->current_theme_is_fse_theme();
 	}
 
 	/**

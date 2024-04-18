@@ -332,7 +332,7 @@ class Position {
 	 *
 	 * @return void
 	 */
-	private function update_term( string $value, string $taxonomy, bool $append ): void {
+	public function update_term( string $value, string $taxonomy, bool $append ): void {
 		// get the term-object.
 		$term = get_term_by( 'name', $value, $taxonomy );
 
