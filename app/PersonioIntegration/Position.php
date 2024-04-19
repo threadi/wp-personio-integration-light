@@ -260,6 +260,12 @@ class Position {
 			// assign the position to its terms.
 			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 				if ( ! empty( $taxonomy['attr']['rewrite']['slug'] ) ) {
+					// first remove all existing relations if list is appended.
+					if ( $taxonomy['append'] ) {
+						wp_delete_object_term_relationships( $this->get_id(), $taxonomy_name );
+					}
+
+					// then assign the terms of this taxonomy to the object.
 					$this->update_terms( $taxonomy_name, $taxonomy_name, $taxonomy['append'] );
 				}
 			}
@@ -291,6 +297,15 @@ class Position {
 
 			// save the count of split texts.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', count( $job_description['jobDescription'] ) );
+
+			/**
+			 * Run hook for individual settings after all settings for the position have been saved.
+			 *
+			 * @since 3.0.0 Available since 3.0.0.
+			 *
+			 * @param Position $this The object of this position.
+			 */
+			do_action( 'personio_integration_import_single_position_save_finished', $this );
 
 			// mark as changed.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, 1 );
@@ -502,8 +517,8 @@ class Position {
 	 */
 	public function get_created_at(): string {
 		$date = get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT, true );
-		if( empty( $date ) ) {
-			return time().'';
+		if ( empty( $date ) ) {
+			return time() . '';
 		}
 		return $date;
 	}

@@ -20,11 +20,11 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 #### Features
 
-- manual or automatic import of open positions in German and English
+- manual or automatic import of open positions in German and English (other languages only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/))
 - positions are indexable by search engines (SEO)
 - each open position (job description) under own URL on your website
 - data protection friendly, as no applicant data is collected and stored
-- 7 Blocks for Block Editor, 2 classic widgets and [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
+- multiple Blocks for Block Editor, 2 classic widgets and [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
 - support for classic as well as block themes
 - optionally group the lists by categories, departments, offices etc.
 - some [WP CLI commands](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/cli.md) for simplified handling of data
@@ -38,19 +38,19 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 #### the Pro license includes:
 
 - Customization of slugs (URLs) for list and detailed views of positions
-- Multiple and customizable application formulars incl. export of them via Personio API
-- Multiple Personio-accounts per website
-- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Schwedish, Finnish
+- Multiple and customizable application forms incl. export of them via Personio API
+- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish
 - Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
 - Support for subcompanies and additional offices in positions
-- Support for multiple form handler like Contact Form 7, Forminator, NinjaForms and WPForms
-- Add unlimited custom files for download on each single position
-- Use a custom feature image on each position
+- Support for multiple form handler like Contact Form 7, Forminator and WPForms
+- Use custom feature image on each position
+- Unlimited custom files for download on each single position
 - Manual sorting of open positions in list views via drag&drop
 - Sorting of position details visible in frontend via drag&drop
-- Support for tracking of events with Google Analytics 4 // TODO andere zähler?
+- Support for tracking of events with Google Analytics 4
 - Support full text search for positions in frontend
-- Additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from job descriptions
+- Multiple Personio-accounts per website
+- Additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from position descriptions
 - RichSnippets for optimal findability via search engines like Google Jobs
 - Support for Open Graph (Facebook, LinkedIn, WhatsApp ...), Twitter Cards and Dublin Core (optionally configurable for all or single positions)
 - Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)
@@ -64,7 +64,7 @@ The development repository is on [GitHub](https://github.com/threadi/wp-personio
 
 The Personio logo as part of all distributed icons is a trademark of [Personio SE & Co. KG](https://www.personio.com).
 
-= ClassicPress =
+== ClassicPress ==
 
 This plugin is compatible with [ClassicPress](https://www.classicpress.net/).
 
@@ -110,7 +110,7 @@ Yes, it is without any further settings.
 
 = 3.0.0 =
 
-Complete revision of the plugin. Please make a backup before installing 3.0.0 or newer.
+Complete revision of the plugin. Please create a backup before installing version 3.0.0 or newer.
 
 == Changelog ==
 
@@ -386,7 +386,7 @@ Complete revision of the plugin. Please make a backup before installing 3.0.0 or
 * Added more simple initial styling for more often used themes
 * Optimized all templates for better handling and optimized output
 * Optimized check for existing part-templates
-* Many new hooks which are now documented [in the repository](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/hooks.md)
+* Many new hooks (total 137) which are now documented [in the repository](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/hooks.md)
 * Compatible with WordPress Coding Standards 3.0 (WCS3.0)
 * New WCS3.0 compatible WP CLI commands (old ones does not exist anymore)
 * New WP- and react-driven dialogs for each interaction with the plugin
@@ -394,7 +394,7 @@ Complete revision of the plugin. Please make a backup before installing 3.0.0 or
 * Now compatible with the WordPress-plugin AMP
 * And now compatibly with the WordPress-plugin PDF Generator for WP to print your positions as PDF in frontend
 * Check for and re-install missing cron-events (e.g. for automatically import positions) if they are missing
-* Removed 5 minutes cronjob as it is discouraged by WordPress (TODO Migrate)
+* Removed short intervals for cronjobs as it is discouraged by WordPress
 * Removed support for multilingual-plugins to detect the actual language (this is now only in Pro-plugin)
 * Removed usage of filter in classic widgets
 * Mark the filter options on Block "Personio Positions" as deprecated incl. warning for user to use Filter Block instead

@@ -171,7 +171,7 @@ class Admin {
 			'personioIntegrationLightJsImportErrors',
 			array(
 				/* translators: %1$s will be replaced by the URL for the Pro-plugin */
-				'Request Timeout' => sprintf( __( '<u>Request Timeout</u> - The import apparently took too long to be completed.<br>Use <a href="%1$s">Personio Integration Pro</a> to use partial imports without timeouts.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ),
+				'Request Timeout'  => sprintf( __( '<u>Request Timeout</u> - The import apparently took too long to be completed.<br>Use <a href="%1$s">Personio Integration Pro</a> to use partial imports without timeouts.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ),
 				/* translators: %1$s will be replaced by the URL for the Pro-plugin */
 				'Gateway Time-out' => sprintf( __( '<u>Gateway Timeout</u> - The import apparently took too long to be completed.<br>Use <a href="%1$s">Personio Integration Pro</a> to use partial imports without timeouts.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ),
 			)
@@ -388,7 +388,7 @@ class Admin {
 	 */
 	public function show_review_hint(): void {
 		// bail if transient is already dismissed.
-		if( Transients::get_instance()->get_transient_by_name( 'personio_integration_admin_show_review_hint' )->is_dismissed() ) {
+		if ( Transients::get_instance()->get_transient_by_name( 'personio_integration_admin_show_review_hint' )->is_dismissed() ) {
 			return;
 		}
 

@@ -151,7 +151,7 @@ class Schedules {
 			return $our_events;
 		}
 
-		if ( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
+		if ( is_admin() && ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
 			foreach ( $this->get_schedule_object_names() as $object_name ) {
 				$obj = new $object_name();
 				if ( $obj instanceof Schedules_Base ) {

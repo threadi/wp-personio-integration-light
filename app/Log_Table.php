@@ -86,19 +86,21 @@ class Log_Table extends WP_List_Table {
 
 		$data = $this->table_data();
 
-		$per_page = 100;
+		$per_page     = 100;
 		$current_page = $this->get_pagenum();
-		$total_items = count($data);
+		$total_items  = count( $data );
 
-		$this->set_pagination_args( array(
-			'total_items' => $total_items,
-			'per_page'    => $per_page
-		) );
+		$this->set_pagination_args(
+			array(
+				'total_items' => $total_items,
+				'per_page'    => $per_page,
+			)
+		);
 
-		$data = array_slice($data,(($current_page-1)*$per_page),$per_page);
+		$data = array_slice( $data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 
-		$this->_column_headers = array($columns, $hidden, $sortable);
-		$this->items = $data;
+		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->items           = $data;
 	}
 
 	/**

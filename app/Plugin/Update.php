@@ -12,7 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
-use PersonioIntegrationLight\Plugin\Schedules\Import;
 
 /**
  * Helper-function for updates of this plugin.
@@ -116,7 +115,7 @@ class Update {
 		// get extensions.
 		Extensions::get_instance()->init();
 
-		// delete old wrong names interval.
+		// delete old wrong named interval.
 		wp_clear_scheduled_hook( 'personio_integration_schudule_events' );
 
 		// delete old transients.

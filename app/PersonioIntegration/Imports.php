@@ -90,7 +90,7 @@ class Imports {
 
 		// get and check the Personio URLs.
 		$personio_urls = $this->get_personio_urls();
-		if( empty( $personio_urls ) ) {
+		if ( empty( $personio_urls ) ) {
 			$this->errors[] = __( 'Personio URL not configured.', 'personio-integration-light' );
 		}
 
