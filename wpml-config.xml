@@ -1,10 +1,11 @@
 <wpml-config>
     <custom-types>
-        <custom-type translate="0">personioposition</custom-type>
+        <custom-type translate="1">personioposition</custom-type>
     </custom-types>
     <taxonomies>
         <taxonomy translate="0">personioRecruitingCategory</taxonomy>
         <taxonomy translate="0">personioOccupationCategory</taxonomy>
+        <taxonomy translate="0">personioOccupation</taxonomy>
         <taxonomy translate="0">personioOffice</taxonomy>
         <taxonomy translate="0">personioDepartment</taxonomy>
         <taxonomy translate="0">personioEmploymentType</taxonomy>
@@ -14,4 +15,23 @@
         <taxonomy translate="0">personioLanguages</taxonomy>
         <taxonomy translate="0">personioKeywords</taxonomy>
     </taxonomies>
+    <custom-fields>
+        <custom-field action="ignore">personio_account_url</custom-field>
+        <custom-field action="ignore">personioCreatedAt</custom-field>
+        <custom-field action="ignore">personioId</custom-field>
+        <custom-field action="ignore">personio_integration_position_content_de</custom-field>
+        <custom-field action="ignore">personio_integration_position_content_de_0</custom-field>
+        <custom-field action="ignore">personio_integration_position_content_de_1</custom-field>
+        <custom-field action="ignore">personio_integration_position_content_de_2</custom-field>
+        <custom-field action="ignore">personio_integration_position_content_de_split</custom-field>
+        <custom-field action="ignore">personio_integration_position_content_en</custom-field>
+        <custom-field action="ignore">personio_integration_position_content_en_0</custom-field>
+        <custom-field action="ignore">personio_integration_position_content_en_1</custom-field>
+        <custom-field action="ignore">personio_integration_position_content_en_2</custom-field>
+        <custom-field action="ignore">personio_integration_position_content_en_split</custom-field>
+        <custom-field action="ignore">personio_integration_position_title_de</custom-field>
+        <custom-field action="ignore">personio_integration_position_title_en</custom-field>
+        <custom-field action="ignore">pi_description</custom-field>
+        <custom-field action="ignore">pi_is_generated</custom-field>
+    </custom-fields>
 </wpml-config>

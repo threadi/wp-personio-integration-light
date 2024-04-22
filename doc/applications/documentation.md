@@ -6,7 +6,7 @@ For a quick start please refer to [Quickstart](quickstart.md). In the document h
 
 ## Requirements
 
-* Both Personio Integration Light and Personio Integration plugins must be installed and activated.
+* Both Personio Integration Light and Personio Integration plugins must be installed in version 3.0.0 or newer and activated.
 * A valid license for the Pro version must be stored.
 * A Personio URL must be specified and open position should have been imported.
 
@@ -30,18 +30,18 @@ In the default setting, application data is stored in WordPress only as long as 
 
 ### Mandatory settings
 
-In the WordPress backend under Positions > Settings > Export Settings, the following fields must be filled in:
+In the WordPress backend under Positions > Applications > Export Settings, the following fields must be filled in:
 
 * _Your Company ID_
 * _Access Token_
 
 Both details are required to submit applications to Personio. The details for both can be found in your Personio account under Settings > Integrations > API Credentials.
 
-In the WordPress backend under Positions > Settings > Applications, the value "_Display application form_" must be selected for one of the fields "_Application in list view_" or "_Application in detail view_".
+In the WordPress backend under Positions > Applications > Applications, the value "_Display application form_" must be selected for one of the fields "_Application in list view_" or "_Application in detail view_".
 
 ### Optional
 
-In the WordPress backend under Positions > Settings > Export Settings there are the following additional fields:
+In the WordPress backend under Positions > Applications > Export Settings there are the following additional fields:
 
 * Recruiting Channel ID (optional).
     * After specifying this ID, you can assign the incoming application in Personio to a channel of your choice. The ID to be inserted can be found in your Personio account under Settings > Channels under the name "Recruiting API Channel ID".
@@ -57,7 +57,7 @@ In the WordPress backend under Positions > Settings > Export Settings there are 
     * Sets how long application data is stored in your WordPress hosting.
     * Preselection is "Immediately after successful transfer".
 
-In the WordPress backend under Positions > Settings > Applications there are the following additional fields:
+In the WordPress backend under Positions > Applications > Applications there are the following additional fields:
 
 * _Activate to open the link in a new window_.
     * is only relevant when using the links to Personio, not when using the application form.

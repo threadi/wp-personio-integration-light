@@ -12,29 +12,27 @@ Liste der verfügbaren Befehle für dieses Plugin anzeigen:
 
 # Kommandos
 
-`wp personio deleteAll`
+`wp personio delete_all`
 => alle aktuell importierten Daten (Stellen und alle Taxonomien) löschen
 
-`wp personio deletePositions`
+`wp personio delete_positions`
 => alle aktuell importierten Stellen löschen
 => zusätzliche Importdaten wie Taxonomien bleiben erhalten
 
-`wp personio getPositions`
+`wp personio get_positions`
 => aktuelle Stellen von Personio holen
 => erfordert gültige PersonioURL in den Einstellungen
 => kann verwendet werden, um Stellen über einen System-Cronjob zu importieren
 
-`wp personio resetPlugin`
+`wp personio reset_plugin`
 => setzt das Plugin komplett zurück
 => löscht alle Daten
 => initiiert das Plugin, als ob es neu installiert worden wäre
 
 # weitere Kommandos in der Pro-Version
 
-`wp personio deletePartials`
-`wp personio removeAllDataPro`
-`wp personio resetPluginPro`
-`wp personio runPartialImport`
+`wp personio delete_partials`
+`wp personio run_partial_import`
 
 # Hint
 

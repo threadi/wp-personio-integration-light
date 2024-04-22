@@ -7,6 +7,10 @@
     --personio-pro-hint-font: #000;
 }
 
+body.post-type-personioposition {
+	overflow-y: scroll;
+}
+
 #dashboard_personio_integration_positions .inside {
     margin: 0;
     padding: 0
@@ -44,15 +48,24 @@
 
 .personio-field-width { width: 280px }
 
-.wp-personio-integration-transient {
+.personio-integration-transient {
     position: relative;
     z-index: 1;
 }
 
-.wp-personio-integration-transient h3 img {
+.personio-integration-transient h3 img {
     vertical-align: middle;
     display: inline-block;
     margin-right: 8px;
+}
+
+.personio-integration-transient .notice-dismiss:before {
+	display: inline-block;
+	float: right;
+}
+
+.personio-integration-transient .notice-dismiss:hover {
+	color: #d63638;
 }
 
 .column-dragdrop { width: 20px }
@@ -65,12 +78,38 @@
     color: var(--personio-pro-font);
     display: inline-block;
     padding: 0 8px;
+	text-decoration: none
+}
+
+.pro-marker a {
+	font-size: 16px;
+	line-height: 1.4;
+}
+
+body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
+	margin-left: 0.4em;
 }
 
 .post-type-personioposition .personio-pro-hint {
     background-color: var(--personio-pro-hint-bg);
     color: var(--personio-pro-hint-font);
+	margin-top: 12px;
     padding: 12px;
+}
+
+.post-type-personioposition .personio-integration-hint {
+	background-color: var(--personio-hint-bg);
+	color: var(--personio-hint-font);
+	margin-top: 12px;
+	padding: 12px;
+}
+
+.post-type-personioposition .personio-integration-hint a {
+	color: inherit;
+}
+
+.post-type-personioposition .personio-pro-hint:first-child, .post-type-personioposition .personio-integration-hint:first-child {
+	margin-top: 0;
 }
 
 .post-type-personioposition div.wrap > .personio-pro-hint {
@@ -99,9 +138,7 @@
     width: 72px;
 }
 
-.personio-dialog-no-close .ui-dialog-titlebar-close {
-    display: none;
-}
+body.post-type-personioposition th#id, body.post-type-personioposition th#sort { width: 80px; }
 
 body.post-type-personioposition .tab-content {
     overflow: visible;
@@ -109,17 +146,182 @@ body.post-type-personioposition .tab-content {
     min-height: auto;
 }
 
-body.post-type-personioposition #submitdiv { display: none }
-
-body.post-type-personioposition #personio-edit-hints {
+body.post-type-personioposition #personioposition-edit-hints {
     background-color: var(--personio-pro-hint-bg);
     border: 0;
 }
 
-body.post-type-personioposition #personio-edit-hints .postbox-header { border: 0 }
+body.post-type-personioposition #personioposition-edit-hints .postbox-header { border: 0 }
 
-body.post-type-personioposition #personio-edit-hints .handle-actions { display: none }
+body.post-type-personioposition #personioposition-edit-hints .handle-actions { display: none }
 
-.wp-personio-integration-transient .dashicons-star-filled { color: #ffb900 }
+.personio-integration-transient .dashicons-star-filled { color: #ffb900 }
 
-#personio-integration-light-update p:before { display: none }
+.wp-pointer-content p img {
+	margin-right: 8px;
+	vertical-align: middle;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .components-modal__frame.wp-easy-dialog {
+	min-width: 400px;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .components-modal__frame.wp-easy-dialog:after {
+	background-image: url(/wp-content/plugins/personio-integration-light/gfx/personio_logo_big.png);
+	height: 41px;
+	float: right;
+	content: "";
+	background-size: contain;
+	background-repeat: no-repeat;
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	width: 130px;
+	z-index: 100;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .hide-header .wp-easy-dialog-text {
+	padding-right: 162px;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .components-modal__header .components-modal__header-heading {
+	padding-right: 162px;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .wp-easy-dialog-text label {
+	display: block;
+	font-weight: bold;
+}
+
+body.wp-easy-dialog-on-body.wp-core-ui .wp-easy-dialog-text:last-of-type {
+	margin-bottom: 1em;
+}
+
+.nav-tab-help {
+	float: right;
+	margin-right: 4px;
+}
+
+.nav-tab-help:before {
+	content: "\f125";
+	display: inline-block;
+	font-family: "dashicons", sans-serif;
+	font-size: 12px;
+	margin-right: 8px;
+}
+
+#menu-posts-personioposition a[href='#'], #menu-posts-personioposition a[href='#']:hover, #menu-posts-personioposition a[href='#']:visited, #menu-posts-personioposition a[href='#']:active, #menu-posts-personioposition a[href='#']:focus {
+	color: var(--personio-pro-hint-bg);
+}
+
+body form.personio-integration-settings input.button { margin-right: 1em }
+
+body .review-hint-button:after {
+	color: #d4af37;
+	content: "\f155 \f155 \f155 \f155 \f155";
+	display: inline-block;
+	font-family: "dashicons", sans-serif;
+	margin-left: 8px;
+}
+
+.personio-integration-applications-hint button.is-primary:after {
+	content: "\f504";
+	display: inline-block;
+	font-family: "dashicons", sans-serif;
+	margin-left: 8px;
+}
+
+body.post-type-personioposition tr.hide { display: none }
+
+body.post-type-personioposition tr.show_with_animation {
+	animation: show-animation 1s ease-in forwards;
+}
+
+@keyframes show-animation {
+	0% {
+		opacity: 0;
+		background-color: #fca15b00;
+	}
+	25% {
+		opacity: .25;
+		background-color: #fca15b20;
+	}
+	50% {
+		opacity: .5;
+		background-color: #fca15b40;
+	}
+	75% {
+		opacity: .75;
+		background-color: #fca15b60;
+	}
+	100% {
+		opacity: 1;
+		background-color: transparent;
+	}
+}
+
+.nav-tab.copyright { position: relative;z-index: 1 }
+
+.nav-tab.copyright:after {
+	content: '®';
+	font-size: 22px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	z-index: 1;
+	text-align: center;
+}
+
+.tab-content img.logo {
+	width: 120px;
+}
+
+body.post-type-personioposition #post-body-content { display: none }
+
+.personio-integration-dialog-error .wp-easy-dialog-text p:before {
+	content: "\f14c";
+	display: inline-block;
+	font-family: "dashicons", sans-serif;
+	vertical-align: middle;
+	color: red;
+	font-size: 1.6em;
+	margin-right: 8px;
+}
+
+.personioposition_page_personiopositionextensions .button-state-enabled {
+	background-color: green;
+	color: #fff;
+}
+
+.personioposition_page_personiopositionextensions .button-state-disabled {
+	background-color: #eee;
+	color: #000;
+}
+
+.personioposition_page_personiopositionextensions #category {
+	width: 128px;
+}
+
+.personioposition_page_personiopositionextensions #state {
+	width: 128px;
+}
+
+.personioposition_page_personiopositionextensions #name {
+	width: 160px;
+}
+
+.wp-easy-setup__header:before {
+	background-image: url(../gfx/personio_logo_big.png);
+}
+
+#wp-easy-setup .components-panel__body details {
+	margin-bottom: 1em;
+}
+
+#wp-easy-setup .components-panel__body details summary { cursor: pointer }
+
+body.post-type-personioposition summary { cursor: pointer }
+
+body.post-type-personioposition .icl_subsubsub { display: none !important; }

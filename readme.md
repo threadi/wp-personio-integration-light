@@ -4,6 +4,15 @@
 
 This repository provides the features of the Light version of the WordPress plugin _Personio Integration_. The repository is used as a basis for deploying the plugin to the WordPress repository. It is not intended to run as a plugin as it is, even if that is possible for development.
 
+## Preparations
+
+Add this in your wp-config.php for development:
+
+```
+define( 'WP_ENVIRONMENT_TYPE', 'local' );
+define( 'WP_DEVELOPMENT_MODE', 'plugin' );
+```
+
 ## Usage
 
 After checkout go through the following steps:
@@ -27,7 +36,7 @@ I recommend to use [PoEdit](https://poedit.net/) to translate texts for this plu
 
 Run in main directory:
 
-`wp i18n make-pot . languages/personio-integration-light.pot --exclude=blocks/show/src/,blocks/list/src/,blocks/filter-list/src/,blocks/filter-select/src/,blocks/application-button/src/,blocks/details/src/,blocks/description/src/,svn/`
+`wp i18n make-pot . languages/personio-integration-light.pot --exclude=blocks/show/src/,blocks/list/src/,blocks/filter-list/src/,blocks/filter-select/src/,blocks/application-button/src/,blocks/details/src/,blocks/description/src/,blocks/setup/src/,svn/,deprecated/`
 
 ### update translation-file
 
@@ -48,3 +57,21 @@ Run in main directory:
 `wp i18n make-json languages`
 
 OR use ant in build/-directory: `ant json-translations`
+
+## Check for WordPress Coding Standards
+
+### Initialize
+
+`composer install`
+
+### Run
+
+`lib/bin/phpcs --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .`
+
+### Repair
+
+`lib/bin/phpcbf --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .`
+
+### Generate documentation
+
+`lib/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration`

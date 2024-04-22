@@ -1,7 +1,7 @@
 {
   "name": "@wp-personio-integration/wp-personio-integration",
-  "version": "2.5.5",
-  "description": "Provides a Gutenberg Block to display positions managed by Personio.",
+  "version": "3.0.0",
+  "description": "Provides Blocks for Personio Integration Light.",
   "author": "laOlaWeb GmbH",
   "license": "GPL-2.0-or-later",
   "scripts": {
@@ -29,11 +29,13 @@
     "make-json": "wp i18n make-json languages"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^27.4.0",
+    "@wordpress/scripts": "^27.5.0",
     "npm-pack-zip": "^1.3.0"
   },
   "dependencies": {
     "@wordpress/i18n": "^4.41.0",
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "intro.js": "^7.2.0",
+    "react-dom": "^18.2.0"
   }
 }

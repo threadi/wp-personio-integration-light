@@ -114,6 +114,7 @@ export default function Edit( object ) {
 		<div { ...useBlockProps() }>
 			<InspectorControls>
 				<PanelBody title={ __( 'Filter', 'personio-integration-light' ) }>
+          <div class="alert"><p>{ __( 'Please use the Filter Block instead of this options.', 'personio-integration-light' ) }</p></div>
 					<ToggleControl
 						label={ __('Show filter', 'personio-integration-light') }
 						checked={ object.attributes.showFilter }
@@ -154,7 +155,7 @@ export default function Edit( object ) {
 						}
 					</div>
 					<NumberControl
-						label={__('amount', 'personio-integration-light')}
+						label={__('Amount', 'personio-integration-light')}
 						labelPosition='top'
 						isShiftStepEnabled={ true }
 						onChange={ value => onChangeLimit( value, object ) }

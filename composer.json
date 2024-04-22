@@ -1,0 +1,46 @@
+{
+    "name": "threadi/personio-integration-light",
+    "description": "This plugin supports the embedding of Personio in WordPress.",
+    "authors": [
+        {
+            "name": "Thomas Zwirner",
+            "email": "tz@laolaweb.com"
+        }
+    ],
+    "type": "wordpress-plugin",
+    "homepage": "https://laolaweb.com",
+    "minimum-stability": "stable",
+    "scripts": {
+        "post-install-cmd": [
+            "\"lib/bin/phpcs\" --config-set installed_paths lib/wp-coding-standards/wpcs,lib/phpcsstandards/phpcsutils,lib/phpcsstandards/phpcsextra"
+        ],
+        "post-update-cmd": [
+            "\"lib/bin/phpcs\" --config-set installed_paths lib/wp-coding-standards/wpcs,lib/phpcsstandards/phpcsutils,lib/phpcsstandards/phpcsextra"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "vendor-dir": "lib",
+        "optimize-autoloader": true,
+        "classmap-authoritative": true,
+        "apcu-autoloader": true,
+        "prepend-autoloader": false
+    },
+    "autoload": {
+        "psr-4": {
+            "PersonioIntegrationLight\\": "app/"
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "threadi/wp-easy-dialog": "dev-master",
+        "threadi/wp-easy-setup": "dev-master"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0.1",
+        "pronamic/wp-documentor": "^1.3",
+        "matthiasmullie/minify": "^1.3"
+    }
+}

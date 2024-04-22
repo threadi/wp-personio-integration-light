@@ -8,7 +8,7 @@
 
 ## Sequence of steps
 
-1. Go to Settings > Applications in WordPress-backend.
+1. Go to Positions > Applications > General Settings in WordPress-backend.
 2. Select the value "_application form_" for the field "_Application in list view_" or/and "_Application in detail view_".
 3. Save the setting by clicking on "Save changes".
 4. After that, the application form is immediately available for all positions.

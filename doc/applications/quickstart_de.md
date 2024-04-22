@@ -8,7 +8,7 @@
 
 ## Schrittfolge
 
-1. Im WordPress-Backend auf Einstellungen > Bewerbungen gehen.
+1. Im WordPress-Backend auf Stellen > Bewerbungen > Allgemeine Einstellungen gehen.
 2. Dort beim Feld "_Bewerbung in Listen-Ansicht_" oder/und "_Bewerbung in Detail-Ansicht_" den Wert "_Bewerbungsformular_" auswählen.
 3. Die Einstellung per Klick auf "Änderungen speichern" sichern.
 4. Danach steht bei allen Stellen sofort das Bewerbungsformular zur Verfügung.

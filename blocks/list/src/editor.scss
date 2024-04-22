@@ -3,4 +3,10 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-
+.alert {
+	background-color: #cc1818;
+	color: #fff;
+	padding: 2px 8px;
+	margin-bottom: 24px;
+	p:last-child { margin-bottom: 0 }
+}

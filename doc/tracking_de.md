@@ -3,7 +3,8 @@
 ## Voraussetzungen
 
 * Google Analytics 4 oder Tag Manager
-* Personio Position PRO-plugin
+* _Personio Position PRO_-plugin
+* aktivierte Erweiterung für Google Analytics oder Matomo
 * Optional ein Tracking-Plugin wie Borlabs oder MonsterInsights
 
 ## Einrichtung ohne Tracking-Plugin

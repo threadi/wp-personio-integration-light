@@ -1,0 +1,9 @@
+body.post-type-archive-personioposition .wrap {
+	margin: 0 auto;
+	max-width: 1220px;
+}
+
+body.post-type-archive-personioposition .wrap > header {
+	padding-left: 20px;
+	padding-right: 20px;
+}

@@ -1,0 +1,22 @@
+.introjs-tooltip-header { padding-top: 20px }
+
+.introjs-skipbutton {
+	top: 6px;
+	right: 6px;
+}
+
+.introjs-tooltiptext { line-height: 1.8 }
+
+.intro-width { min-width: 800px; }
+
+.introjs-tooltip-header h1:before {
+	background-image: url(/wp-content/plugins/personio-integration-light/gfx/personio_icon.png);
+	background-size: cover;
+	background-repeat: no-repeat;
+	content: "";
+	display: inline-block;
+	height: 20px;
+	margin-right: 8px;
+	vertical-align: middle;
+	width: 20px;
+}

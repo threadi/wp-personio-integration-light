@@ -1,12 +1,12 @@
 === Personio Integration Light ===
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
-Requires at least: 5.9.3
-Tested up to: 6.5.2
-Requires PHP: 7.4
+Requires at least: 4.9.24
+Tested up to: 6.4.2
+Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 2.6.4
+Stable tag: 3.0.0
 
 == Description ==
 
@@ -20,46 +20,53 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 #### Features
 
-- manual or automatic import of open positions
-- import of positions in German and English
-- output via 7 blocks for Block Editor, 2 classic widgets or via individual [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
-- search engine indexable output (SEO) of list views and open positions
-- open position (job description) under website's own URL
+- manual or automatic import of open positions in German and English (other languages only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/))
+- positions are indexable by search engines (SEO)
+- each open position (job description) under own URL on your website
 - data protection friendly, as no applicant data is collected and stored
+- multiple Blocks for Block Editor, 2 classic widgets and [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
 - support for classic as well as block themes
 - optionally group the lists by categories, departments, offices etc.
 - some [WP CLI commands](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/cli.md) for simplified handling of data
-- WCAG-compatible
+- compatible with WCAG
 
 #### Requirements
 
-- Personio account with XML interface enabled
-- PHP module simpleXML
-
-#### Compatibility tested with
-
-- WPML and Polylang for language-detection
-- Post Types Order
-- Elementor, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, Divi
+- Personio account with enabled XML interface
+- PHP module SimpleXML
 
 #### the Pro license includes:
 
-- application formulars incl. export of them via Personio API
-- manual sorting of open positions in list views via drag&drop
-- sorting of position details in frontend via drag&drop
-- supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese - compatible with translations via Polylang
-- support for tracking of events with Google Analytics 4
-- text search in frontend for applicants
-- additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from job descriptions
-- RichSnippets for optimal findability via search engines like Google
 - Customization of slugs (URLs) for list and detailed views of positions
+- Multiple and customizable application forms incl. export of them via Personio API
+- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish
+- Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
+- Support for subcompanies and additional offices in positions
+- Support for multiple form handler like Contact Form 7, Forminator and WPForms
+- Use custom feature image on each position
+- Unlimited custom files for download on each single position
+- Manual sorting of open positions in list views via drag&drop
+- Sorting of position details visible in frontend via drag&drop
+- Support for tracking of events with Google Analytics 4
+- Support full text search for positions in frontend
+- Multiple Personio-accounts per website
+- Additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from position descriptions
+- RichSnippets for optimal findability via search engines like Google Jobs
+- Support for Open Graph (Facebook, LinkedIn, WhatsApp ...), Twitter Cards and Dublin Core (optionally configurable for all or single positions)
+- Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)
 - Shortcode generator for individual views of lists and details
-- Extensions for the following PageBuilders: Elementor, Divi, Themify, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPPageBuilder, WPBakery, Avada
-- support for subcompanies and additional offices in positions
+- Extensions for the following PageBuilders: Avada, Elementor, Divi, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery
+- ... and much more
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
 
 The development repository is on [GitHub](https://github.com/threadi/wp-personio-integration-light).
+
+The Personio logo as part of all distributed icons is a trademark of [Personio SE & Co. KG](https://www.personio.com).
+
+== ClassicPress ==
+
+This plugin is compatible with [ClassicPress](https://www.classicpress.net/).
 
 ---
 
@@ -101,13 +108,9 @@ Yes, it is without any further settings.
 
 == Upgrade Notice ==
 
-= 2.6.4 =
-
-The next update to version 3.0.0 will offer much more features and options. Please note to create a backup of the project before importing.
-
 = 3.0.0 =
 
-This version offers you much more features for handling with positions. Please note to create a backup of the project before importing.
+Complete revision of the plugin. Please create a backup before installing version 3.0.0 or newer.
 
 == Changelog ==
 
@@ -364,11 +367,38 @@ This version offers you much more features for handling with positions. Please n
 * Updated dependencies for Gutenberg-scripts
 * Fix for possible code injection in search
 
-= 2.6.3 =
-* Added plugin-update hints in plugin-list
-* Compatibility with WordPress 6.5
-
-= 2.6.4 =
-* Compatibility with WordPress 6.5.2
-* Updated dependencies for Gutenberg-scripts
-* Fixed visibility of review-hint
+= 3.0.0 =
+* Completely revised plugin
+* Now only compatible with PHP 8.0 or newer
+* And compatible with WordPress since 4.9.24 (also usable with ClassicPress)
+* Added setup for first installations
+* Added support for Multisite-installations
+* Added some additional classes in templates for better custom styling-possibilities
+* Added option to choose a content template on listings
+* Added support for additional plugins: Open Graph and Twitter Tags, SEOFramework, SEOPress, Slim SEO
+* Added link to switch between frontend- and backend-view of single position
+* Added new templates for position title and excerpts
+* Added possibility to export and import all settings
+* Added daily checks for availability of the Personio-page of your positions
+* Added new pattern in Block Editor for fast implementing custom views of positions
+* Advanced Blocks for Positions in Block Editor
+* Advanced classic widgets for Positions
+* Added more simple initial styling for more often used themes
+* Optimized all templates for better handling and optimized output
+* Optimized check for existing part-templates
+* Many new hooks (total 137) which are now documented [in the repository](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/hooks.md)
+* Compatible with WordPress Coding Standards 3.0 (WCS3.0)
+* New WCS3.0 compatible WP CLI commands (old ones does not exist anymore)
+* New WP- and react-driven dialogs for each interaction with the plugin
+* New check for configured Personio-URL in Site Health
+* Now compatible with the WordPress-plugin AMP
+* And now compatibly with the WordPress-plugin PDF Generator for WP to print your positions as PDF in frontend
+* Check for and re-install missing cron-events (e.g. for automatically import positions) if they are missing
+* Removed short intervals for cronjobs as it is discouraged by WordPress
+* Removed support for multilingual-plugins to detect the actual language (this is now only in Pro-plugin)
+* Removed usage of filter in classic widgets
+* Mark the filter options on Block "Personio Positions" as deprecated incl. warning for user to use Filter Block instead
+* Extended Sitemap XML for Positions
+* Fixed usage of classic widgets
+* Fixed wrong Position count on dashboard
+* Fixed sorting in Log-table

@@ -1,22 +1,14 @@
 <?php
-
 /**
  * File to collect all constants this plugin is using.
- */
-
-/**
- * Define text-domain.
+ *
+ * @package personio-integration-light
  */
 
 /**
  * Name of the custom posttype for positions.
  */
-const WP_PERSONIO_INTEGRATION_CPT = 'personioposition';
-
-/**
- * Name of the prefix for any language-option.
- */
-const WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION = 'personioPositionLanguages';
+const WP_PERSONIO_INTEGRATION_MAIN_CPT = 'personioposition';
 
 /**
  * Name of the option which holds the main language.
@@ -24,14 +16,19 @@ const WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION = 'personioPositionLanguages';
 const WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE = 'personioIntegrationMainLanguage';
 
 /**
+ * Name of the prefix for any language-option.
+ */
+const WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION = 'personioPositionLanguages';
+
+/**
  * Name of the postmeta-field with the personioId.
  */
-const WP_PERSONIO_INTEGRATION_CPT_PM_PID = 'personioId';
+const WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID = 'personioId';
 
 /**
  * Name of the postmeta-field with the createdAt-setting.
  */
-const WP_PERSONIO_INTEGRATION_CPT_CREATEDAT = 'personioCreatedAt';
+const WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT = 'personioCreatedAt';
 
 /**
  * Marker for running import.
@@ -39,34 +36,44 @@ const WP_PERSONIO_INTEGRATION_CPT_CREATEDAT = 'personioCreatedAt';
 const WP_PERSONIO_INTEGRATION_IMPORT_RUNNING = 'personioIntegrationImportRunning';
 
 /**
- * Update-Flag
+ * List of possible errors during import.
+ */
+const WP_PERSONIO_INTEGRATION_IMPORT_ERRORS = 'personioIntegrationImportErrors';
+
+/**
+ * Marker for import status.
+ */
+const WP_PERSONIO_INTEGRATION_IMPORT_STATUS = 'personioIntegrationImportStatus';
+
+/**
+ * Marker for running deletion.
+ */
+const WP_PERSONIO_INTEGRATION_DELETE_RUNNING = 'personioIntegrationDeleteRunning';
+
+/**
+ * List of possible errors during deletion.
+ */
+const WP_PERSONIO_INTEGRATION_DELETE_ERRORS = 'personioIntegrationDeleteErrors';
+
+/**
+ * Marker for deletion status.
+ */
+const WP_PERSONIO_INTEGRATION_DELETE_STATUS = 'personioIntegrationDeleteStatus';
+
+/**
+ * Update-Flag.
  */
 const WP_PERSONIO_INTEGRATION_UPDATED = 'personio_integration_updateflag';
 
 /**
- * Language-specific marker for position-title
+ * Language-specific marker for position-title.
  */
 const WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE = 'personio_integration_position_title';
 
 /**
- * Language-specific marker for position-text
+ * Language-specific marker for position-text.
  */
 const WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT = 'personio_integration_position_content';
-
-/**
- * language-specific option name for MD5-Hash for import-string
- */
-const WP_PERSONIO_INTEGRATION_OPTION_IMPORT_MD5 = 'personioIntegration_xml_hash_';
-
-/**
- * language-specific option name for timestamp for import
- */
-const WP_PERSONIO_INTEGRATION_OPTION_IMPORT_TIMESTAMP = 'personioIntegration_xml_lm_timestamp_';
-
-/**
- * Language for emergencies if no language-data could be detected.
- */
-const WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY = 'en';
 
 /**
  * Name for taxonomy-meta-field for language-specific titles.
@@ -74,204 +81,36 @@ const WP_PERSONIO_INTEGRATION_LANGUAGE_EMERGENCY = 'en';
 const WP_PERSONIO_INTEGRATION_TAXONOMY_LANG_TITLE = 'langs';
 
 /**
- * include the taxonomy-settings
+ * Define each taxonomy
  */
-include_once 'taxonomies.php';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY = 'personioRecruitingCategory';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY = 'personioOccupationCategory';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION          = 'personioOccupation';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE              = 'personioOffice';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT          = 'personioDepartment';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE     = 'personioEmploymentType';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY           = 'personioSeniority';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE            = 'personioSchedule';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE          = 'personioExperience';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES           = 'personioLanguages';
+const WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS            = 'personioKeywords';
 
 /**
- * Set transient-based hints for the backend.
+ * Options-list of transients.
  */
-const WP_PERSONIO_INTEGRATION_TRANSIENTS = [
-    "personio_integration_no_simplexml" => [
-        'type' => 'error',
-        'options' => [
-            'disable_plugin' => true
-        ]
-    ],
-    "personio_integration_no_url_set" => [
-        'type' => 'error',
-        'options' => [
-            'hideOnPages' => [
-                'personioPositions'
-            ]
-        ]
-    ],
-    "personio_integration_no_position_imported" => [
-        'type' => 'error',
-        'options' => [
-            'hideIfTransients' => [
-                'personio_integration_no_url_set',
-                'personio_integration_import_now',
-                'personio_integration_url_not_usable',
-                'personio_integration_import_run',
-                'personio_integration_import_cancel',
-                'personio_integration_delete_run',
-                'personio_integration_update_slugs'
-            ],
-            'hideOnSettingsTabs' => [
-                'importexport'
-            ]
-        ]
-    ],
-    'personio_integration_import_run' => [
-        'type' => 'success'
-    ],
-    'personio_integration_delete_run' => [
-        'type' => 'success'
-    ],
-    'personio_integration_could_not_delete' => [
-        'type' => 'error'
-    ],
-    'personio_integration_update_slugs' => [
-        'type' => 'success'
-    ],
-    'personio_integration_import_now' => [
-        'type' => 'success'
-    ],
-    'personio_integration_url_not_usable' => [
-        'type' => 'error'
-    ],
-    'personio_integration_limit_hint' => [
-        'type' => 'error',
-    ],
-    'personio_integration_import_canceled' => [
-        'type' => 'success'
-    ],
-    'personio_integration_old_templates' => [
-        'type' => 'error'
-    ],
-    'personio_integration_divi' => [
-	    'type' => 'success'
-    ],
-    'personio_integration_elementor' => [
-	    'type' => 'success'
-    ],
-    'personio_integration_wpbakery' => [
-	    'type' => 'success'
-    ],
-    'personio_integration_beaver' => [
-	    'type' => 'success'
-    ],
-    'personio_integration_siteorigin' => [
-	    'type' => 'success'
-    ],
-    'personio_integration_themify' => [
-	    'type' => 'success'
-    ],
-    'personio_integration_avada' => [
-        'type' => 'success'
-    ],
-    'personio_integration_admin_show_review_hint' => [
-        'type' => 'success'
-    ],
-	'personio_integration_admin_show_text_domain_hint' => [
-		'type' => 'success'
-	]
-];
-
-/**
- * List of languages which are supported by Personio as of July 2022.
- */
-$languages = [
-    'de' => 1,
-    'en' => 1,
-];
-define("WP_PERSONIO_INTEGRATION_LANGUAGES_COMPLETE", $languages);
-define("WP_PERSONIO_INTEGRATION_LANGUAGES", get_option(WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION, []));
-
-/**
- * Define each taxonomy with its specific setting
- */
-const WP_PERSONIO_INTEGRATION_TAXONOMIES = [
-    WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY => [
-        'attr' => [ // taxonomy settings deviating from default
-            'rewrite' => ['slug' => 'recruitingCategory'],
-        ],
-        'slug' => 'recruitingCategory',
-        'useInFilter' => 1
-    ],
-    WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY => [
-        'attr' => [ // taxonomy settings deviating from default
-            'rewrite' => ['slug' => 'occupationCategory'],
-        ],
-        'slug' => 'occupation',
-        'useInFilter' => 1
-    ],
-    WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION => [
-        'attr' => [ // taxonomy settings deviating from default
-            'rewrite' => ['slug' => 'occupation'],
-        ],
-        'slug' => 'occupation_detail',
-        'useInFilter' => 1
-    ],
-    WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE => [
-        'attr' => [ // taxonomy settings deviating from default
-            'rewrite' => ['slug' => 'office']
-        ],
-        'slug' => 'office',
-        'useInFilter' => 1
-    ],
-    WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT => [
-        'attr' => [ // taxonomy settings deviating from default
-            'rewrite' => ['slug' => 'department'],
-        ],
-        'slug' => 'department',
-        'useInFilter' => 1
-    ],
-    WP_PERSONIO_INTEGRATION_TAXONOMY_EMPLOYMENT_TYPE => [
-        'attr' => [ // taxonomy settings deviating from default
-            'rewrite' => ['slug' => 'employmenttype'],
-        ],
-        'slug' => 'employmenttype',
-        'useInFilter' => 1
-    ],
-    WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY => [
-        'attr' => [ // taxonomy settings deviating from default
-            'rewrite' => ['slug' => 'seniority'],
-        ],
-        'slug' => 'seniority',
-        'useInFilter' => 1
-    ],
-    WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE => [
-        'attr' => [ // taxonomy settings deviating from default
-            'rewrite' => ['slug' => 'schedule'],
-        ],
-        'slug' => 'schedule',
-        'useInFilter' => 1
-    ],
-    WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE => [
-        'attr' => [ // taxonomy settings deviating from default
-            'rewrite' => ['slug' => 'experience'],
-        ],
-        'slug' => 'experience',
-        'useInFilter' => 1
-    ],
-    WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES => [
-        'attr' => [ // taxonomy settings deviating from default
-            'show_ui' => false
-        ],
-        'slug' => 'language',
-        'useInFilter' => 0
-    ],
-    WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS => [
-	    'attr' => [ // taxonomy settings deviating from default
-		    'rewrite' => ['slug' => 'keyword'],
-	    ],
-	    'slug' => 'keyword',
-	    'useInFilter' => 1
-    ],
-];
+const WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST = 'personio_integration_transients';
 
 /**
  * Define names for progressbar during import.
  */
-const WP_PERSONIO_OPTION_COUNT = 'piImportCount';
-const WP_PERSONIO_OPTION_MAX = 'piImportMax';
+const WP_PERSONIO_INTEGRATION_OPTION_COUNT = 'piImportCount';
+const WP_PERSONIO_INTEGRATION_OPTION_MAX   = 'piImportMax';
 
 /**
- * Path to the gutenberg-templates.
+ * Define names for progressbar during deletion.
  */
-define("WP_PERSONIO_GUTENBERG_TEMPLATES", trailingslashit(plugin_dir_path(WP_PERSONIO_INTEGRATION_PLUGIN)) . 'templates/gutenberg/');
+const WP_PERSONIO_INTEGRATION_DELETE_COUNT = 'piDeleteCount';
+const WP_PERSONIO_INTEGRATION_DELETE_MAX   = 'piDeleteMax';
 
 /**
  * Define the Gutenberg-template-parent-ID which should reflect the plugin-directory.

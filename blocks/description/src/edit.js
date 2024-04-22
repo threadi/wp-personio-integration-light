@@ -69,7 +69,7 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Template', 'personio-integration-light' ) }>
+				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
 					<div className="wp-personio-integration-selectcontrol">
 						{
 							<SelectControl
