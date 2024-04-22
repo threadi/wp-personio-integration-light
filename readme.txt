@@ -8,6 +8,8 @@ License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: 3.0.1
 
+Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
+
 == Description ==
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
