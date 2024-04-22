@@ -72,11 +72,6 @@ OR use ant in build/-directory: `ant json-translations`
 
 `lib/bin/phpcbf --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .`
 
-### Notes for Build
-TODO
-composer install --no-dev
-composer dump-autoload -oa --no-dev
-
 ### Generate documentation
 
 `lib/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration`
