@@ -6,7 +6,7 @@ Tested up to: 6.4.2
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 
 == Description ==
 
@@ -402,3 +402,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed usage of classic widgets
 * Fixed wrong Position count on dashboard
 * Fixed sorting in Log-table
+
+= 3.0.1 =
+* SVN cleanup
