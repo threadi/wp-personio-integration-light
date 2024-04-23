@@ -108,6 +108,7 @@ class Init {
 
 		// request-hooks.
 		add_action( 'wp', array( $this, 'update_slugs' ) );
+		add_action( 'init', array( $this, 'light_init' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 	}
 
@@ -305,6 +306,20 @@ class Init {
 				if ( method_exists( $obj, 'delete_table' ) ) {
 					$obj->delete_table();
 				}
+			}
+		}
+	}
+
+	/**
+	 * Enable check for updates for old pro-version if light has been updated but pro not.
+	 *
+	 * @return void
+	 */
+	public function light_init(): void {
+		if( Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
+			$path = trailingslashit( plugin_dir_path( WP_PLUGIN_DIR .'/personio-integration/personio-integration.php' ) ).'inc/update.php';
+			if( file_exists( $path ) ) {
+				require_once $path;
 			}
 		}
 	}

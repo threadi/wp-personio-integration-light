@@ -97,13 +97,21 @@ class Gutenberg extends PageBuilder_Base {
 	 * @noinspection PhpUndefinedFunctionInspection
 	 */
 	private function current_theme_is_fse_theme(): bool {
+		$resulting_value = false;
 		if ( function_exists( 'wp_is_block_theme' ) ) {
-			return (bool) wp_is_block_theme();
+			$resulting_value = (bool) wp_is_block_theme();
 		}
 		if ( function_exists( 'gutenberg_is_fse_theme' ) ) {
-			return (bool) gutenberg_is_fse_theme();
+			$resulting_value = (bool) gutenberg_is_fse_theme();
 		}
-		return false;
+
+		/**
+		 * Filter whether this theme is a block theme (true) or not (false).
+		 *
+		 * @since 3.0.2 Available since 3.0.2
+		 * @param bool $resulting_value The resulting value.
+		 */
+		return apply_filters( 'personio_integration_is_block_theme', $resulting_value );
 	}
 
 	/**
