@@ -90,21 +90,21 @@ body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
 	margin-left: 0.4em;
 }
 
-.post-type-personioposition .personio-pro-hint {
+.post-type-personioposition .personio-pro-hint, .personioposition_page_personioPositions .personio-pro-hint {
     background-color: var(--personio-pro-hint-bg);
     color: var(--personio-pro-hint-font);
 	margin-top: 12px;
     padding: 12px;
 }
 
-.post-type-personioposition .personio-integration-hint {
+.post-type-personioposition .personio-integration-hint, .personioposition_page_personioPositions .personio-integration-hint {
 	background-color: var(--personio-hint-bg);
 	color: var(--personio-hint-font);
 	margin-top: 12px;
 	padding: 12px;
 }
 
-.post-type-personioposition .personio-integration-hint a {
+.post-type-personioposition .personio-integration-hint a, .personioposition_page_personioPositions .personio-integration-hint a {
 	color: inherit;
 }
 
