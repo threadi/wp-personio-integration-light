@@ -6,7 +6,7 @@ Tested up to: 6.5.2
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.0.2
+Stable tag: 3.0.3
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -412,3 +412,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added filter to change the result for check if FSE-theme is used
 * Compatibility with WordPress 6.5.2
 * Fixed handling of updates together with Pro
+
+= 3.0.3 =
+* Fixed possible error in position by missing language-setting for position

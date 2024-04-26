@@ -524,11 +524,14 @@ class Position {
 	}
 
 	/**
-	 * Get the language of this object.
+	 * Return the language of this object.
 	 *
 	 * @return string
 	 */
 	public function get_lang(): string {
+		if( empty( $this->data['personioLanguages'] ) ) {
+			return Languages::get_instance()->get_main_language();
+		}
 		return $this->data['personioLanguages'];
 	}
 
