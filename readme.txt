@@ -414,4 +414,5 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed handling of updates together with Pro
 
 = 3.0.3 =
+* Optimized handling of language-assignments during import
 * Fixed possible error in position by missing language-setting for position
