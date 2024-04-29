@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Compatibilities\Wpml;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 use WP_Post;
@@ -93,6 +94,7 @@ class Third_Party_Plugins {
 
 		// Plugin WPML.
 		add_filter( 'manage_' . PersonioPosition::get_instance()->get_name() . '_posts_columns', array( $this, 'remove_wpml_column' ), 20 );
+		add_filter( 'personio_integration_positions_query', array( $this, 'wpml_suppress_filters' ) );
 
 		// Plugin Borlabs.
 		add_action( 'add_meta_boxes', array( $this, 'borlabs_meta_boxes' ), PHP_INT_MAX );
@@ -450,5 +452,37 @@ class Third_Party_Plugins {
 
 		// return our compiled content.
 		return Templates::get_instance()->get_content_template( $position_obj, array(), true );
+	}
+
+	/**
+	 * Suppress filters for position query if WPML is enabled.
+	 *
+	 * @param array $query
+	 *
+	 * @return array
+	 */
+	public function wpml_suppress_filters( array $query ): array {
+		// bail if wpml is not active.
+		if( ! Wpml::get_instance()->is_active() ) {
+			return $query;
+		}
+
+		$false = false;
+		/**
+		 * Bail via filter.
+		 *
+		 * @since 3.0.3 Available since 3.0.3.
+		 *
+		 * @param bool $false Whether optimizations should be prevented (true) or not (false)
+		 * @param array $query The running position query.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+         */
+		if( apply_filters( 'personio_integration_prevent_wpml_optimizations', $false, $query ) ) {
+			return $query;
+		}
+
+		$query['suppress_filters'] = true;
+		return $query;
 	}
 }
