@@ -316,9 +316,9 @@ class Init {
 	 * @return void
 	 */
 	public function light_init(): void {
-		if( Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
-			$path = trailingslashit( plugin_dir_path( WP_PLUGIN_DIR .'/personio-integration/personio-integration.php' ) ).'inc/update.php';
-			if( file_exists( $path ) ) {
+		if ( Helper::is_plugin_active( 'personio-integration/personio-integration.php' ) ) {
+			$path = trailingslashit( plugin_dir_path( WP_PLUGIN_DIR . '/personio-integration/personio-integration.php' ) ) . 'inc/update.php';
+			if ( file_exists( $path ) ) {
 				require_once $path;
 			}
 		}

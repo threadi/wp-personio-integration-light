@@ -80,6 +80,9 @@ class Imports {
 	 * @return void
 	 */
 	public function run(): void {
+		// set mark that import is running in WP.
+		define( 'WP_IMPORTING', true );
+
 		// mark process as running import.
 		define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
 

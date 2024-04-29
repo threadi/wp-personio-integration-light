@@ -524,16 +524,15 @@ class PersonioPosition extends Post_Type {
 		if ( ! empty( $form_id ) ) {
 			$url .= '#' . $form_id;
 		}
-		$query           = array(
+		$query      = array(
 			'base'    => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ) . $url,
 			'format'  => '?paged=%#%',
 			'current' => max( 1, get_query_var( 'paged' ) ),
 			'total'   => $positions_obj->get_results()->max_num_pages,
 		);
-		$pagination_link = paginate_links( $query );
-		$pagination      = '';
-		if ( ! is_null( $pagination_link ) ) {
-			$pagination = wp_kses_post( paginate_links( $query ) );
+		$pagination = paginate_links( $query );
+		if ( is_null( $pagination ) ) {
+			$pagination = '';
 		}
 
 		// collect the output.
