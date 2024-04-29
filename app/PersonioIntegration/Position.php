@@ -258,11 +258,12 @@ class Position {
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, $this->data['personioId'] );
 
 			// assign the position to its terms.
-			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
+			$taxonomies = Taxonomies::get_instance()->get_taxonomies();
+			foreach ( $taxonomies as $taxonomy_name => $taxonomy ) {
 				if ( ! empty( $taxonomy['attr']['rewrite']['slug'] ) ) {
 					// first remove all existing relations if list is appended (but not for language).
-					if ( $taxonomy['append'] && $taxonomy_name !== WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES ) {
-						wp_delete_object_term_relationships( $this->get_id(), $taxonomy_name );
+					if ( $taxonomy['append'] && WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES !== $taxonomy_name ) {
+						wp_delete_object_term_relationships( $this->get_id(), array( $taxonomy_name ) );
 					}
 
 					// then assign the terms of this taxonomy to the object.
@@ -529,7 +530,7 @@ class Position {
 	 * @return string
 	 */
 	public function get_lang(): string {
-		if( empty( $this->data['personioLanguages'] ) ) {
+		if ( empty( $this->data['personioLanguages'] ) ) {
 			return Languages::get_instance()->get_main_language();
 		}
 		return $this->data['personioLanguages'];

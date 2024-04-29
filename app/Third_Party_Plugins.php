@@ -457,13 +457,13 @@ class Third_Party_Plugins {
 	/**
 	 * Suppress filters for position query if WPML is enabled.
 	 *
-	 * @param array $query
+	 * @param array $query The data for WP_Query.
 	 *
 	 * @return array
 	 */
 	public function wpml_suppress_filters( array $query ): array {
 		// bail if wpml is not active.
-		if( ! Wpml::get_instance()->is_active() ) {
+		if ( ! Wpml::get_instance()->is_active() ) {
 			return $query;
 		}
 
@@ -477,8 +477,8 @@ class Third_Party_Plugins {
 		 * @param array $query The running position query.
 		 *
 		 * @noinspection PhpConditionAlreadyCheckedInspection
-         */
-		if( apply_filters( 'personio_integration_prevent_wpml_optimizations', $false, $query ) ) {
+		 */
+		if ( apply_filters( 'personio_integration_prevent_wpml_optimizations', $false, $query ) ) {
 			return $query;
 		}
 

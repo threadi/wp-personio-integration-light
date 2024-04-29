@@ -416,5 +416,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.0.3 =
 * Optimized handling of language-assignments during import
 * Optimized handling for languages im WPML is enabled (but we only support its usage on Pro)
+* Improved import speed
+* Changed default max age for log entries from 50 to 20 days
 * Fixed possible error in position by missing language-setting for position
 * Fixed generation of pagination links

@@ -495,7 +495,7 @@ class Settings {
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
 							'type'    => 'integer',
-							'default' => 50,
+							'default' => 20,
 						),
 					),
 					'personioIntegrationUrlTimeout'        => array(
