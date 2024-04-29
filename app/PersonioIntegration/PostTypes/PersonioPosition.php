@@ -530,10 +530,9 @@ class PersonioPosition extends Post_Type {
 			'current' => max( 1, get_query_var( 'paged' ) ),
 			'total'   => $positions_obj->get_results()->max_num_pages,
 		);
-		$pagination_link = paginate_links( $query );
-		$pagination      = '';
-		if ( ! is_null( $pagination_link ) ) {
-			$pagination = wp_kses_post( paginate_links( $query ) );
+		$pagination = paginate_links( $query );
+		if( is_null( $pagination ) ) {
+			$pagination = '';
 		}
 
 		// collect the output.

@@ -417,3 +417,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Optimized handling of language-assignments during import
 * Optimized handling for languages im WPML is enabled (but we only support its usage on Pro)
 * Fixed possible error in position by missing language-setting for position
+* Fixed generation of pagination links
