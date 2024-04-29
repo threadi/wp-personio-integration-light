@@ -203,7 +203,7 @@ class Third_Party_Plugins {
 		$position = new Position( $post_id );
 		$position->set_lang( Languages::get_instance()->get_current_lang() );
 		$description = $position->get_content();
-		if ( ! empty( $description ) ) {
+		if ( ! empty( $description ) && ! empty( $description['jobDescription'] ) ) {
 			$text = '';
 			foreach ( $description['jobDescription'] as $content ) {
 				$text .= $content['name'] . ' ' . $content['value'];
