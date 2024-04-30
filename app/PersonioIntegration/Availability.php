@@ -426,4 +426,27 @@ class Availability extends Extensions_Base {
 			$availability_extension->set_availability( 200 === $http_status );
 		}
 	}
+
+	/**
+	 * Toggle the state of this extension and reset its schedule.
+	 *
+	 * @return void
+	 */
+	public function toggle_state(): void {
+		parent::toggle_state();
+
+		// get the schedule object.
+		$schedule_obj = new \PersonioIntegrationLight\Plugin\Schedules\Availability();
+
+		// get the actual state.
+		$state = absint( get_option( $this->get_settings_field_name() ) );
+
+		// enable or disable the schedule depending on state.
+		if( 1 === $state ) {
+			$schedule_obj->install();
+		}
+		else {
+			$schedule_obj->delete();
+		}
+	}
 }
