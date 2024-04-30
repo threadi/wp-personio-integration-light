@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\Plugin\Schedules;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\Plugin\Schedules_Base;
 use PersonioIntegrationLight\Plugin\Settings;
 
@@ -61,7 +62,7 @@ class Import extends Schedules_Base {
 	 */
 	public function run(): void {
 		if ( $this->is_enabled() ) {
-			new \PersonioIntegrationLight\PersonioIntegration\Import();
+			Imports::get_instance()->run();
 		}
 	}
 }
