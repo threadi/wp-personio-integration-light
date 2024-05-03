@@ -239,6 +239,16 @@ class Import {
 					$imports_obj->set_import_count( $imports_obj->get_import_max_count() );
 					// log event.
 					$this->log->add_log( sprintf( 'No changes in positions for language %1$s according to the timestamp we got from Personio account %2$s. Timestamp: %3$s. No import run.', esc_html( $this->get_language_title() ), wp_kses_post( $this->get_link() ), esc_html( Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $last_modified_timestamp ) ) ) ), 'success' );
+
+					/**
+					 * Run actions for this case.
+					 *
+					 * @since 3.0.4 Available since 3.0.4.
+					 *
+					 * @param Import $this The import-object.
+					 * @param int $last_modified_timestamp The timestamp.
+					 */
+					do_action( 'personio_integration_import_timestamp_no_changed', $this, $last_modified_timestamp );
 					return;
 				}
 			}
@@ -267,7 +277,18 @@ class Import {
 				if ( $personio_obj->get_md5( $language_name ) === $md5hash && ! $this->debug ) {
 					// md5-hash did not change -> do nothing if we already have positions in the DB.
 					if ( $positions_count > 0 ) {
+						// log event.
 						$this->log->add_log( sprintf( 'No changes in positions from %1$s for language %2$s according to the content we got from Personio. No import run.', wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ) ), 'success' );
+
+						/**
+						 * Run actions for this case.
+						 *
+						 * @since 3.0.4 Available since 3.0.4.
+						 *
+						 * @param Import $this The import-object.
+						 * @param string $md5hash The md5-hash from body.
+						 */
+						do_action( 'personio_integration_import_content_not_changed', $this, $md5hash );
 						return;
 					}
 				}

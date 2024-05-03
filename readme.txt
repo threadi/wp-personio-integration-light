@@ -2,11 +2,11 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
 Requires at least: 4.9.24
-Tested up to: 6.5.2
+Tested up to: 6.5.3
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -426,4 +426,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed generation of pagination links
 
 = 3.0.4 =
+* Added more actions on import
 * Show Personio Timestamp in log for each import
+* Compatibility with WordPress 6.5.3
