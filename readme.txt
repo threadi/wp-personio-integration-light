@@ -424,3 +424,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed possible error in position by missing language-setting for position
 * Fixed possible error with Rank Math on single pages
 * Fixed generation of pagination links
+
+= 3.0.4 =
+* Show Personio Timestamp in log for each import

@@ -238,7 +238,7 @@ class Import {
 					// set import count to actual max to show that it has been run.
 					$imports_obj->set_import_count( $imports_obj->get_import_max_count() );
 					// log event.
-					$this->log->add_log( sprintf( 'No changes in positions for language %1$s according to the timestamp we got from Personio account %2$s. No import run.', esc_html( $this->get_language_title() ), wp_kses_post( $this->get_link() ) ), 'success' );
+					$this->log->add_log( sprintf( 'No changes in positions for language %1$s according to the timestamp we got from Personio account %2$s. Timestamp: %3$s. No import run.', esc_html( $this->get_language_title() ), wp_kses_post( $this->get_link() ), esc_html( Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $last_modified_timestamp ) ) ) ), 'success' );
 					return;
 				}
 			}
