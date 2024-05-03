@@ -177,6 +177,13 @@ class Imports {
 				// set status.
 				update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import completed.', 'personio-integration-light' ) );
 
+				/**
+				 * Run custom actions in this case.
+				 *
+				 * @since 3.0.4 Available since release 3.0.4.
+				 */
+				do_action( 'personio_integration_import_without_changes' );
+
 				// do nothing more.
 				return;
 			}
