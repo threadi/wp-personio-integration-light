@@ -771,4 +771,32 @@ class Position {
 		// return the object.
 		return new $name( $this->get_id() );
 	}
+
+	/**
+	 * Extend the data-setting for single position.
+	 *
+	 * @param string $setting_name The name of the setting.
+	 * @param string $value Its value.
+	 *
+	 * @return void
+	 */
+	public function add_setting( string $setting_name, string $value ): void {
+		$this->data[ $setting_name ] = $value;
+	}
+
+	/**
+	 * Return requested settings.
+	 *
+	 * @param string $setting_name The name of the setting.
+	 * @return string
+	 */
+	public function get_setting( string $setting_name ): string {
+		// bail if setting does not exist.
+		if ( empty( $this->data[ $setting_name ] ) ) {
+			return '';
+		}
+
+		// return the value.
+		return $this->data[ $setting_name ];
+	}
 }

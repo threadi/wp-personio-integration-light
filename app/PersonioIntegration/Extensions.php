@@ -116,6 +116,7 @@ class Extensions {
 	public function add_extensions( array $extension_list ): array {
 		// add extensions we deliver in this plugin.
 		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Availability';
+		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Show_Position_Xml';
 		$extension_list[] = '\PersonioIntegrationLight\PageBuilder\Page_Builders';
 
 		// return resulting list.

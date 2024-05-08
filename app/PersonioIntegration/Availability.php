@@ -27,7 +27,7 @@ class Availability extends Extensions_Base {
 	protected string $name = 'availability';
 
 	/**
-	 * Name if the setting field which defines its state.
+	 * Name of the setting field which defines its state.
 	 *
 	 * @var string
 	 */

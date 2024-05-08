@@ -191,7 +191,7 @@ class Init {
 	 * @noinspection PhpUnused
 	 */
 	public function update_slugs(): void {
-		if ( 1 !== absint( get_option( 'personio_integration_update_slugs' ) ) ) {
+		if ( 1 === absint( get_option( 'personio_integration_update_slugs' ) ) ) {
 			flush_rewrite_rules();
 			update_option( 'personio_integration_update_slugs', 0 );
 		}
