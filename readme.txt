@@ -431,4 +431,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Compatibility with WordPress 6.5.3
 
 = 3.0.5 =
+* Added new extension which allows to show the used XML from Personio on each position
 * Fixed missing permalink refresh after import of positions
+* Fixed some typos
