@@ -248,6 +248,9 @@ class Imports {
 			$this->handle_errors();
 		}
 
+		// refresh permalinks.
+		update_option( 'personio_integration_update_slugs', 1 );
+
 		// define step-count that has been run.
 		$step = 1;
 

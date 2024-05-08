@@ -429,3 +429,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added more actions on import
 * Show Personio Timestamp in log for each import
 * Compatibility with WordPress 6.5.3
+
+= 3.0.5 =
+* Fixed missing permalink refresh after import of positions
