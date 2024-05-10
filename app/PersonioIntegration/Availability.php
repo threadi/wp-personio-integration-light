@@ -442,10 +442,9 @@ class Availability extends Extensions_Base {
 		$state = absint( get_option( $this->get_settings_field_name() ) );
 
 		// enable or disable the schedule depending on state.
-		if( 1 === $state ) {
+		if ( 1 === $state ) {
 			$schedule_obj->install();
-		}
-		else {
+		} else {
 			$schedule_obj->delete();
 		}
 	}

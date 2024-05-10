@@ -38,4 +38,5 @@ if ( file_exists( __DIR__ . '/lib/autoload.php' ) ) {
 // include necessary files.
 require 'inc/constants.php';
 
+// run uninstaller.
 Uninstaller::get_instance()->run( array( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ) );

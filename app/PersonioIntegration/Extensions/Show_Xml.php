@@ -47,8 +47,8 @@ class Show_Xml extends Position_Extensions_Base {
 	/**
 	 * Set the XML for the position on object.
 	 *
-	 * @param Position          $position The position.
-	 * @param string $xml The XML of the position.
+	 * @param Position $position The position.
+	 * @param string   $xml The XML of the position.
 	 *
 	 * @return Position
 	 */
