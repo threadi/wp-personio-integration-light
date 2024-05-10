@@ -347,9 +347,6 @@ class Imports {
 		// update for frontend.
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, $this->get_import_count() + $count );
 
-		// set status.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Positions are importing ..', 'personio-integration-light' ) );
-
 		// update for WP CLI.
 		$this->cli_progress ? $this->cli_progress->tick() : false;
 

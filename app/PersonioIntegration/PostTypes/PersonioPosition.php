@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
+use PersonioIntegrationLight\PersonioIntegration\Import;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Position;
@@ -128,6 +129,7 @@ class PersonioPosition extends Post_Type {
 		add_action( 'personio_integration_import_count', array( $this, 'update_import_step' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'import_ended' ) );
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_pro_extensions' ) );
+		add_action( 'personio_integration_import_of_url_starting', array( $this, 'update_import_status' ), 10 , 0 );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
@@ -1914,5 +1916,14 @@ class PersonioPosition extends Post_Type {
 
 		// return resulting list.
 		return $extensions;
+	}
+
+	/**
+	 * Update the state in dialog.
+	 *
+	 * @return void
+	 */
+	public function update_import_status(): void {
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Positions are importing ..', 'personio-integration-light' ) );
 	}
 }
