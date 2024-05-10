@@ -183,6 +183,14 @@ class Import {
 		$url = $personio_obj->get_xml_url( $language_name );
 
 		/**
+		 * Run action on start of import of single URL.
+		 *
+		 * @since 3.0.5 Available since 3.0.5
+		 * @param Import $this The import-object.
+		 */
+		do_action( 'personio_integration_import_of_url_starting', $this );
+
+		/**
 		 * Change the URL via hook.
 		 *
 		 * @since 2.5.0 Available since 2.5.0.
@@ -371,6 +379,14 @@ class Import {
 			/* translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404) */
 			$this->errors[] = sprintf( __( 'Personio URL from Personio account %1$s for language %2$s not available.<br>Returned HTTP-Status %3$d.<br>Please check the configured URL and if it is available.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ), absint( $http_status ) );
 		}
+
+		/**
+		 * Run action on end of import of single URL.
+		 *
+		 * @since 3.0.5 Available since 3.0.5
+		 * @param Import $this The import-object.
+		 */
+		do_action( 'personio_integration_import_of_url_ended', $this );
 
 		// disable xml-error-handling.
 		libxml_use_internal_errors( false );
