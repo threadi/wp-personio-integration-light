@@ -153,7 +153,7 @@ class Uninstaller {
 	}
 
 	/**
-	 * Return list of options this plugin is using which are not configured via @file Settins.php.
+	 * Return list of options this plugin is using which are not configured via @file Settings.php.
 	 *
 	 * @return array
 	 */
@@ -168,6 +168,7 @@ class Uninstaller {
 			WP_PERSONIO_INTEGRATION_DELETE_STATUS,
 			'personio_integration_transients',
 			'personioIntegrationLightInstallDate',
+			'personio_integration_settings',
 		);
 	}
 }

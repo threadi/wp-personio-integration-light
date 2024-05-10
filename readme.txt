@@ -432,5 +432,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 
 = 3.0.5 =
 * Added new extension which allows to show the used XML from Personio on each position
+* Optimized internal usage of settings of this plugin
 * Fixed missing permalink refresh after import of positions
 * Fixed some typos

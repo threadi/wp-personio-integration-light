@@ -85,16 +85,16 @@ class Show_Position_Xml extends Extensions_Base {
 	 */
 	public function show_xml( WP_Post $post ): void {
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
-		$xml = $this->get_extension( $position_obj )->get_xml();
+		$xml          = $this->get_extension( $position_obj )->get_xml();
 
 		// bail if no xml is given.
-		if( empty( $xml ) ) {
+		if ( empty( $xml ) ) {
 			echo esc_html__( 'No XML saved. Try to re-import your positions.', 'personio-integration-light' );
 			return;
 		}
 
 		// show the xml.
-		echo '<code>'.wp_kses_post( nl2br( htmlentities( $xml ) ) ).'</code>';
+		echo '<code>' . wp_kses_post( nl2br( htmlentities( $xml ) ) ) . '</code>';
 	}
 
 	/**

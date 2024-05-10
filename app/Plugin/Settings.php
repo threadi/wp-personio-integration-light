@@ -86,6 +86,9 @@ class Settings {
 
 		// add admin-menu.
 		add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
+
+		// secure our own plugin settings.
+		add_filter( 'updated_option', array( $this, 'secure_settings' ) );
 	}
 
 	/**
@@ -1077,5 +1080,27 @@ class Settings {
 	public function remove_pro_hints_from_columns( array $columns ): array {
 		unset( $columns['sort'] );
 		return $columns;
+	}
+
+	/**
+	 * Secure settings in DB.
+	 *
+	 * @param string $option The option which has been saved.
+	 *
+	 * @return void
+	 */
+	public function secure_settings( string $option ): void {
+		// bail if updated option is 'personio_integration_settings'.
+		if ( 'personio_integration_settings' === $option ) {
+			return;
+		}
+
+		// bail if option is not part of our plugin.
+		if ( false === stripos( $option, 'personio' ) ) {
+			return;
+		}
+
+		// save complete settings on single field.
+		update_option( 'personio_integration_settings', $this->get_settings() );
 	}
 }
