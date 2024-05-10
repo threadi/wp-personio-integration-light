@@ -435,3 +435,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Optimized internal usage of settings of this plugin
 * Fixed missing permalink refresh after import of positions
 * Fixed some typos
+* Fixed generation of documentation during plugin release
