@@ -73,6 +73,12 @@ class Settings_Import {
 	 * @return array
 	 */
 	public function add_settings( array $settings ): array {
+		// bail if advanced section is not available.
+		if ( empty( $settings['settings_section_advanced'] ) ) {
+			return $settings;
+		}
+
+		// add settings.
 		$settings['settings_section_advanced']['fields'] = Helper::add_array_in_array_on_position(
 			$settings['settings_section_advanced']['fields'],
 			5,
