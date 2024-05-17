@@ -157,7 +157,7 @@ class Admin {
 				'title_settings_import_file_missing' => __( 'Import file missing', 'personio-integration-light' ),
 				'title_settings_import_file_result'  => __( 'Import file uploaded', 'personio-integration-light' ),
 				'text_settings_import_file_missing'  => __( 'Please choose a file for the import.', 'personio-integration-light' ),
-				'title_delete_progress'              => __( 'Deletion in progress', 'personio-integration_light' ),
+				'title_delete_progress'              => __( 'Deletion in progress', 'personio-integration-light' ),
 				'title_deletion_success'             => __( 'Deletion endet', 'personio-integration-light' ),
 				'txt_deletion_success'               => __( '<strong>All positions have been deleted from WordPress.</strong><br>They are still available in Personio.<br>You can re-import the positions at any time.', 'personio-integration-light' ),
 				'title_error'                        => __( 'Error', 'personio-integration-light' ),

@@ -346,8 +346,7 @@ class Helper {
 	}
 
 	/**
-	 * Prüfe, ob der Import per CLI aufgerufen wird.
-	 * Z.B. um einen Fortschrittsbalken anzuzeigen.
+	 * Check if WP CLI has been called.
 	 *
 	 * @return bool
 	 */
