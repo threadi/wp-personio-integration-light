@@ -169,6 +169,7 @@ class Uninstaller {
 			'personio_integration_transients',
 			'personioIntegrationLightInstallDate',
 			'personio_integration_settings',
+			'personio_integration_schedules',
 		);
 	}
 }

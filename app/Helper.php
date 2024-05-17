@@ -650,13 +650,13 @@ class Helper {
 	 * Add new entry with its key on specific position in array.
 	 *
 	 * @param array|null $fields The array we want to change.
-	 * @param int   $position The position where the new array should be added.
-	 * @param array $array_to_add The new array which should be added.
+	 * @param int        $position The position where the new array should be added.
+	 * @param array      $array_to_add The new array which should be added.
 	 *
 	 * @return array
 	 */
 	public static function add_array_in_array_on_position( array|null $fields, int $position, array $array_to_add ): array {
-		if( is_null( $fields ) ) {
+		if ( is_null( $fields ) ) {
 			return array();
 		}
 		return array_slice( $fields, 0, $position, true ) + $array_to_add + array_slice( $fields, $position, null, true );
