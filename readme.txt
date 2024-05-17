@@ -6,7 +6,7 @@ Tested up to: 6.5.3
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.0.54
+Stable tag: 3.0.6
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -41,7 +41,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 - Customization of slugs (URLs) for list and detailed views of positions
 - Multiple and customizable application forms incl. export of them via Personio API
-- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish
+- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish
 - Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
 - Support for subcompanies and additional offices in positions
 - Support for multiple form handler like Contact Form 7, Forminator and WPForms
