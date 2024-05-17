@@ -1100,7 +1100,30 @@ class Settings {
 			return;
 		}
 
-		// save complete settings on single field.
-		update_option( 'personio_integration_settings', $this->get_settings() );
+		// get settings.
+		$settings = $this->get_settings();
+
+		// remove the callbacks from settings.
+		foreach ( $settings as $section_name => $section_settings ) {
+			if ( ! empty( $section_settings['callback'] ) ) {
+				unset( $settings[ $section_name ]['callback'] );
+			}
+			if ( ! empty( $section_settings['fields'] ) ) {
+				foreach ( $section_settings['fields'] as $field_name => $field ) {
+					if ( ! empty( $field['field'] ) ) {
+						unset( $settings[ $section_name ]['fields'][ $field_name ]['field'] );
+					}
+					if ( ! empty( $field['callback'] ) ) {
+						unset( $settings[ $section_name ]['fields'][ $field_name ]['callback'] );
+					}
+					if ( ! empty( $field['register_attributes']['sanitize_callback'] ) ) {
+						unset( $settings[ $section_name ]['fields'][ $field_name ]['register_attributes']['sanitize_callback'] );
+					}
+				}
+			}
+		}
+
+		// save complete settings in single option field.
+		update_option( 'personio_integration_settings', $settings );
 	}
 }

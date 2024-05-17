@@ -73,6 +73,7 @@ class Schedules {
 
 		// action to create all registered schedules.
 		add_action( 'admin_action_personioPositionsCreateSchedules', array( $this, 'create_schedules_per_request' ) );
+		add_filter( 'schedule_event', array( $this, 'add_schedule_to_list' ) );
 		add_action( 'shutdown', array( $this, 'check_events_on_shutdown' ) );
 	}
 
@@ -312,5 +313,30 @@ class Schedules {
 
 		// run the check.
 		$this->check_events( $this->get_events() );
+	}
+
+	/**
+	 * Add schedule to our list of schedules.
+	 *
+	 * @param object $event The event properties.
+	 *
+	 * @return object
+	 */
+	public function add_schedule_to_list( object $event ): object {
+		// get our object.
+		$schedule_obj = $this->get_schedule_object_by_name( $event->hook );
+
+		// bail if this is not an event of our plugin.
+		if ( ! $schedule_obj ) {
+			return $event;
+		}
+
+		// get the actual list.
+		$list                              = get_option( 'personio_integration_schedules' );
+		$list[ $schedule_obj->get_name() ] = $schedule_obj->get_args();
+		update_option( 'personio_integration_schedules', $list );
+
+		// return the event object.
+		return $event;
 	}
 }

@@ -129,7 +129,7 @@ class PersonioPosition extends Post_Type {
 		add_action( 'personio_integration_import_count', array( $this, 'update_import_step' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'import_ended' ) );
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_pro_extensions' ) );
-		add_action( 'personio_integration_import_of_url_starting', array( $this, 'update_import_status' ), 10 , 0 );
+		add_action( 'personio_integration_import_of_url_starting', array( $this, 'update_import_status' ), 10, 0 );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );

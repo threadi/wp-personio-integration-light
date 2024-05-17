@@ -440,4 +440,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed generation of documentation during plugin release
 
 = 3.0.6 =
+* Optimized internal usage of settings of this plugin
+* Optimized internal usage of schedules of this plugin
 * Fixed typos
