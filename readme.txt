@@ -438,3 +438,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed missing permalink refresh after import of positions
 * Fixed some typos
 * Fixed generation of documentation during plugin release
+
+= 3.0.6 =
+* Fixed typos
