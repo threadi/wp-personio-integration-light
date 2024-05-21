@@ -442,4 +442,5 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.0.6 =
 * Optimized internal usage of settings of this plugin
 * Optimized internal usage of schedules of this plugin
+* Optimized schedule check in frontend
 * Fixed typos

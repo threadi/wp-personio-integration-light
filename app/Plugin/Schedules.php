@@ -53,7 +53,9 @@ class Schedules {
 	 */
 	public function init(): void {
 		// use our own hooks.
-		add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
+		if( is_admin() ) {
+			add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
+		}
 		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
 
 		// loop through our own events.
@@ -152,7 +154,7 @@ class Schedules {
 			return $our_events;
 		}
 
-		if ( is_admin() && ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
+		if ( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
 			foreach ( $this->get_schedule_object_names() as $object_name ) {
 				$obj = new $object_name();
 				if ( $obj instanceof Schedules_Base ) {
