@@ -92,23 +92,23 @@ export default function Edit( object ) {
 						checked={ object.attributes.hideFilterTitle }
 						onChange={ value => onChangeHideFilterTitle( value, object ) }
 					/>
-					<ToggleControl
-						label={__('Hide submit button', 'personio-integration-light')}
-						checked={ object.attributes.hideSubmitButton }
-						onChange={ value => onChangeHideSubmitButton( value, object ) }
-					/>
-					<ToggleControl
-						label={__('Hide reset link', 'personio-integration-light')}
-						checked={ object.attributes.hideResetLink }
-						onChange={ value => onChangeHideResetLink( value, object ) }
-					/>
-				</PanelBody>
-			</InspectorControls>
-			<ServerSideRender
-				block="wp-personio-integration/filter-select"
-				attributes={ object.attributes }
-				httpMethod="POST"
-			/>
-		</div>
-	);
+          <ToggleControl
+            label={__('Hide submit button', 'personio-integration-light')}
+            checked={ object.attributes.hideSubmitButton }
+            onChange={ value => onChangeHideSubmitButton( value, object ) }
+          />
+          <ToggleControl
+            label={__('Hide reset link', 'personio-integration-light')}
+            checked={ object.attributes.hideResetLink }
+            onChange={ value => onChangeHideResetLink( value, object ) }
+          />
+        </PanelBody>
+      </InspectorControls>
+      <ServerSideRender
+        block="wp-personio-integration/filter-select"
+        attributes={ object.attributes }
+        httpMethod="POST"
+      />
+    </div>
+  );
 }
