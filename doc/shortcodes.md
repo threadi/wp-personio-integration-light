@@ -136,6 +136,11 @@ The parameters in the shortcodes have the following tasks:
   * schedule
   * experience
 
+### limit
+
+* only available for list view
+* limits the list to the specified number
+
 ### show only positions with specific attributes
 
 * only available for list view

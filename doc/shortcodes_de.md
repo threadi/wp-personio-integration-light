@@ -136,6 +136,11 @@ Es sind folgende Parameter hierfür verfügbar:
   * schedule
   * experience
 
+### limit
+
+* nur für Listen-Ansicht verfügbar
+* beschränkt die Liste auf die angegebene Zahl
+
 ### nur Stellen mit spezifischen Eigenschaften aufzulisten
 
 * nur für Listen-Ansicht verfügbar
