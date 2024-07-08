@@ -52,6 +52,6 @@ class Polylang extends Compatibilities_Base {
 	 * @return bool
 	 */
 	public function is_active(): bool {
-		return Helper::is_plugin_active( 'polylang/polylang.php' );
+		return defined( 'POLYLANG_BASENAME' );
 	}
 }
