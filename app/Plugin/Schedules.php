@@ -335,6 +335,9 @@ class Schedules {
 
 		// get the actual list.
 		$list                              = get_option( 'personio_integration_schedules' );
+		if( ! is_array( $list ) ) {
+			$list = array();
+		}
 		$list[ $schedule_obj->get_name() ] = $schedule_obj->get_args();
 		update_option( 'personio_integration_schedules', $list );
 

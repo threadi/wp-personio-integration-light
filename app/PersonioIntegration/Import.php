@@ -222,11 +222,19 @@ class Import {
 			$http_status = $response['http_response']->get_status();
 
 			// get the last modified-timestamp from http-response.
-			$last_modified_timestamp = strtotime( $response['http_response']->get_headers()->offsetGet( 'last-modified' ) );
+			$last_modified_timestamp = $response['http_response']->get_headers()->offsetGet( 'last-modified' );
 
 			// log timestamp if debug is enabled.
-			if ( false !== $this->debug ) {
-				$this->log->add_log( sprintf( 'Last modified timestamp for %1$s from Personio: ', wp_kses_post( $this->get_link() ) ) . Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $last_modified_timestamp ) ), 'success' );
+			if ( ! is_null( $last_modified_timestamp ) && false !== $this->debug ) {
+				$this->log->add_log( sprintf( 'Last modified timestamp for %1$s from Personio: ', wp_kses_post( $this->get_link() ) ) . Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', strtotime( $last_modified_timestamp ) ) ), 'success' );
+			}
+
+			// if timestamp and xml api are not available set 404 as state.
+			if( is_null( $last_modified_timestamp ) ) {
+				$http_status = 404;
+			}
+			else {
+				$last_modified_timestamp = strtotime( $last_modified_timestamp );
 			}
 		}
 
@@ -377,7 +385,10 @@ class Import {
 			}
 		} else {
 			/* translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404) */
-			$this->errors[] = sprintf( __( 'Personio URL from Personio account %1$s for language %2$s not available.<br>Returned HTTP-Status %3$d.<br>Please check the configured URL and if it is available.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ), absint( $http_status ) );
+			$this->errors[] = sprintf( __( 'Personio URL from Personio account %1$s for language %2$s not available.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ) );
+			$this->errors[] = sprintf( __( 'Returned HTTP-Status %1$d.', 'personio-integration-light' ), absint( $http_status ) );
+			$this->errors[] = __( 'Please check the configured URL and if it is available.', 'personio-integration-light' );
+			$this->errors[] = sprintf( __( 'Please also check if the XML-API is enabled in <a href="%1$s" target="_blank">your Personio account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ) );
 		}
 
 		/**
