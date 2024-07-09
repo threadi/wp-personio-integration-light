@@ -538,14 +538,36 @@ class Templates {
 				// get terms this position is using on this taxonomy.
 				$terms = get_the_terms( $position->get_id(), $taxonomy_name );
 
+				$false = false;
+				/**
+				 * Filter whether to show terms of single taxonomy as list or not.
+				 *
+				 * @since 3.0.8 Available since 3.0.8.
+				 * @param bool $false True to show the list.
+				 * @param array $terms List of terms.
+				 */
+				$show_term_list = apply_filters( 'personio_integration_show_term_list', $false, $terms );
+
 				// if term exist, get the corresponding term-label.
 				if ( ! empty( $terms ) ) {
 					$added = false;
+					$values = '';
 					foreach ( $terms as $term ) {
 						if ( ! empty( $terms_label[ $term->slug ] ) ) {
 							$details[ $taxonomy_label ] = $terms_label[ $term->slug ];
 							$added                      = true;
 						}
+						elseif( $show_term_list ) {
+							if( ! empty( $values ) ) {
+								$values .= $separator;
+							}
+							$values .= $term->name;
+						}
+					}
+
+					if( ! empty( $values ) ) {
+						$details[ $taxonomy_label ] = $values;
+						$added = true;
 					}
 
 					// for not translated label.

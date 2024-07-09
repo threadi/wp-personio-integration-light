@@ -450,4 +450,5 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Optimized check for Polylang free and pro
 
 = 3.0.8 =
+* Added new hooks for custom template optimizations
 * Fixed listing template for archive which prevented link color for each link in list
