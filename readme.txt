@@ -451,4 +451,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 
 = 3.0.8 =
 * Added new hooks for custom template optimizations
+* Updated setup component
 * Fixed listing template for archive which prevented link color for each link in list
+* Fixed possible notices during uninstallation
