@@ -1,6 +1,6 @@
 {
   "name": "@wp-personio-integration/wp-personio-integration",
-  "version": "3.0.0",
+  "version": "3.0.8",
   "description": "Provides Blocks for Personio Integration Light.",
   "author": "laOlaWeb GmbH",
   "license": "GPL-2.0-or-later",
@@ -33,9 +33,8 @@
     "npm-pack-zip": "^1.3.0"
   },
   "dependencies": {
-    "@wordpress/i18n": "^4.41.0",
+    "@wordpress/i18n": "^5.2.0",
     "concurrently": "^8.2.2",
-    "intro.js": "^7.2.0",
-    "react-dom": "^18.2.0"
+    "intro.js": "^7.2.0"
   }
 }
