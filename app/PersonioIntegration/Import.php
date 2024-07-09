@@ -230,10 +230,9 @@ class Import {
 			}
 
 			// if timestamp and xml api are not available set 404 as state.
-			if( is_null( $last_modified_timestamp ) ) {
+			if ( is_null( $last_modified_timestamp ) ) {
 				$http_status = 404;
-			}
-			else {
+			} else {
 				$last_modified_timestamp = strtotime( $last_modified_timestamp );
 			}
 		}
@@ -384,10 +383,12 @@ class Import {
 				wp_defer_term_counting( false );
 			}
 		} else {
-			/* translators: %1$s will be replaced by the name of a language, %2$d will be replaced by HTTP-Status (like 404) */
+			/* translators: %1$s will be replaced by the name of a language, %2$d will be replaced by the name of the language used for import. */
 			$this->errors[] = sprintf( __( 'Personio URL from Personio account %1$s for language %2$s not available.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $this->get_language_title() ) );
+			/* translators: %1$d will be replaced by HTTP-Status (like 404). */
 			$this->errors[] = sprintf( __( 'Returned HTTP-Status %1$d.', 'personio-integration-light' ), absint( $http_status ) );
 			$this->errors[] = __( 'Please check the configured URL and if it is available.', 'personio-integration-light' );
+			/* translators: %1$s will be replaced the url for the personio account login */
 			$this->errors[] = sprintf( __( 'Please also check if the XML-API is enabled in <a href="%1$s" target="_blank">your Personio account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ) );
 		}
 
