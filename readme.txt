@@ -453,5 +453,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added new hooks for custom template optimizations
 * Optimized check for disabled XML API
 * Updated setup component
+* Updated dependencies
 * Fixed listing template for archive which prevented link color for each link in list
 * Fixed possible notices during uninstallation
