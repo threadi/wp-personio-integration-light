@@ -2,12 +2,13 @@
 /**
  * Default-template for archive-listing.
  *
- * @version 3.0.0
+ * @version 3.0.10
  * @package personio-integration-light
  */
 
 use PersonioIntegrationLight\Plugin\Templates;
 
+?><div><?php
 while ( $GLOBALS['personio_query_results']->have_posts() ) :
 	$GLOBALS['personio_query_results']->the_post();
 
@@ -27,3 +28,4 @@ while ( $GLOBALS['personio_query_results']->have_posts() ) :
 	</article>
 	<?php
 endwhile;
+?></div>
