@@ -53,7 +53,7 @@ class Schedules {
 	 */
 	public function init(): void {
 		// use our own hooks.
-		if( is_admin() ) {
+		if ( is_admin() ) {
 			add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
 		}
 		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
@@ -334,8 +334,8 @@ class Schedules {
 		}
 
 		// get the actual list.
-		$list                              = get_option( 'personio_integration_schedules' );
-		if( ! is_array( $list ) ) {
+		$list = get_option( 'personio_integration_schedules' );
+		if ( ! is_array( $list ) ) {
 			$list = array();
 		}
 		$list[ $schedule_obj->get_name() ] = $schedule_obj->get_args();

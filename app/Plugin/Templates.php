@@ -550,24 +550,23 @@ class Templates {
 
 				// if term exist, get the corresponding term-label.
 				if ( ! empty( $terms ) ) {
-					$added = false;
+					$added  = false;
 					$values = '';
 					foreach ( $terms as $term ) {
 						if ( ! empty( $terms_label[ $term->slug ] ) ) {
 							$details[ $taxonomy_label ] = $terms_label[ $term->slug ];
 							$added                      = true;
-						}
-						elseif( $show_term_list ) {
-							if( ! empty( $values ) ) {
+						} elseif ( $show_term_list ) {
+							if ( ! empty( $values ) ) {
 								$values .= $separator;
 							}
 							$values .= $term->name;
 						}
 					}
 
-					if( ! empty( $values ) ) {
+					if ( ! empty( $values ) ) {
 						$details[ $taxonomy_label ] = $values;
-						$added = true;
+						$added                      = true;
 					}
 
 					// for not translated label.
