@@ -451,8 +451,9 @@ Complete revision of the plugin. Please create a backup before installing versio
 
 = 3.0.8 =
 * Added new hooks for custom template optimizations
-* Optimized check for disabled XML API
+* Optimized check for disabled Personio XML API
 * Updated setup component
 * Updated dependencies
+* Extended compatibility with plugins which use WordPress events incorrectly
 * Fixed listing template for archive which prevented link color for each link in list
 * Fixed possible notices during uninstallation
