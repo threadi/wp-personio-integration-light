@@ -320,11 +320,16 @@ class Schedules {
 	/**
 	 * Add schedule to our list of schedules.
 	 *
-	 * @param object $event The event properties.
+	 * @param object|bool $event The event properties.
 	 *
-	 * @return object
+	 * @return object|bool
 	 */
-	public function add_schedule_to_list( object $event ): object {
+	public function add_schedule_to_list( object|bool $event ): object|bool {
+		// bail if event is not an object.
+		if ( ! is_object( $event ) ) {
+			return $event;
+		}
+
 		// get our object.
 		$schedule_obj = $this->get_schedule_object_by_name( $event->hook );
 
