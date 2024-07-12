@@ -85,7 +85,7 @@ class Setup {
 		// check to show hint if setup should be run.
 		$this->show_hint();
 
-		// do only load setup if it is not completed.
+		// only load setup if it is not completed.
 		if ( ! $this->is_completed() ) {
 			add_filter( 'wp_easy_setup_completed', array( $this, 'check_completed_value' ), 10, 2 );
 			add_action( 'wp_easy_setup_set_completed', array( $this, 'set_completed' ) );

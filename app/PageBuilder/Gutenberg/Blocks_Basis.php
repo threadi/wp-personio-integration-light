@@ -78,7 +78,7 @@ class Blocks_Basis {
 	 */
 	public function register(): void {
 		// bail if block is already registered.
-		if ( WP_Block_Type_Registry::get_instance()->is_registered( $this->get_name() ) ) {
+		if ( WP_Block_Type_Registry::get_instance()->is_registered( 'wp-personio-integration/'.$this->get_name() ) ) {
 			return;
 		}
 
