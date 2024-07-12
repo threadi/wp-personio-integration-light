@@ -24,7 +24,7 @@ class Single extends Blocks_Basis {
 	 *
 	 * @var string
 	 */
-	protected string $name = 'single';
+	protected string $name = 'show';
 
 	/**
 	 * Path to the directory where block.json resides.
