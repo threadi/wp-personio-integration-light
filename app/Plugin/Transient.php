@@ -189,7 +189,7 @@ class Transient {
 		if ( $this->has_message() ) {
 			?>
 			<div class="personio-integration-transient updated <?php echo esc_attr( $this->get_type() ); ?>" data-dismissible="<?php echo esc_attr( $this->get_name() ); ?>-<?php echo absint( $this->get_dismissible_days() ); ?>">
-				<h3><?php echo wp_kses_post( Helper::get_logo_img() ); ?> <?php echo esc_html( Helper::get_plugin_name() ); ?></h3>
+				<h3><?php echo wp_kses_post( Helper::get_logo_img() ); ?> <?php echo esc_html( apply_filters( 'personio_integration_light_transient_title', Helper::get_plugin_name() ) ); ?></h3>
 				<?php
 				echo wp_kses_post( wpautop( $this->get_message() ) );
 				if ( $this->get_dismissible_days() > 0 ) {

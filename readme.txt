@@ -459,5 +459,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed possible notices during uninstallation
 
 = 3.0.9 =
+* Added some hooks for internal optimizations
 * Optimized handling of trigger re-import if Personio URL is not cleaned up
 * Fixed wrong loaded single block
