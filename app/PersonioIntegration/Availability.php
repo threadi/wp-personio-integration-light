@@ -86,6 +86,9 @@ class Availability extends Extensions_Base {
 	 * @return array
 	 */
 	public function add_settings( array $settings ): array {
+		if( empty( $settings['settings_section_import']['fields'] ) ) {
+			return $settings;
+		}
 		$settings['settings_section_import']['fields'] = Helper::add_array_in_array_on_position(
 			$settings['settings_section_import']['fields'],
 			3,

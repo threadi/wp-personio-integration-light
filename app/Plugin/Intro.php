@@ -289,6 +289,9 @@ class Intro {
 	 * @return array
 	 */
 	public function add_settings( array $settings ): array {
+		if( empty($settings['settings_section_advanced']['fields']) ) {
+			return $settings;
+		}
 		$settings['settings_section_advanced']['fields']                    = Helper::add_array_in_array_on_position(
 			$settings['settings_section_advanced']['fields'],
 			5,

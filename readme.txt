@@ -6,7 +6,7 @@ Tested up to: 6.6
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.0.10
+Stable tag: 3.0.11
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -467,3 +467,8 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Do not install cronjobs before setup has been completed
 * Fixed on loading of Personio URL for import if no URL is configured
 * Fixed format of email notification on import errors
+
+= 3.0.11 =
+* Optimized REST API detection
+* Fixed PHP-Warnings in intro-object if Divi or other plugins will be enabled
+* Fixed template for grouped view
