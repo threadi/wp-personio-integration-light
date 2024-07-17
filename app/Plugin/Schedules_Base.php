@@ -106,6 +106,11 @@ class Schedules_Base {
 	 * @return void
 	 */
 	public function install(): void {
+		// bail if setup has not been completed.
+		if ( ! Setup::get_instance()->is_completed() ) {
+			return;
+		}
+
 		if ( ! wp_next_scheduled( $this->get_name() ) ) {
 			wp_schedule_event( time(), $this->get_interval(), $this->get_name() );
 		}
