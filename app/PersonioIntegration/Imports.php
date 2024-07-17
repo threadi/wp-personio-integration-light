@@ -278,9 +278,13 @@ class Imports {
 	 * @return array
 	 */
 	public function get_personio_urls(): array {
-		$personio_urls = array(
-			Helper::get_personio_url(),
-		);
+		// define list of Personio URLs.
+		$personio_urls = array();
+
+		// add the configured Personio URL, if set.
+		if( Helper::is_personio_url_set() ) {
+			$personio_urls[] = Helper::get_personio_url();
+		}
 
 		/**
 		 * Filter the list of Personio URLs used to import positions.

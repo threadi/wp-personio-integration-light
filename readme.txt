@@ -462,3 +462,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added some hooks for internal optimizations
 * Optimized handling of trigger re-import if Personio URL is not cleaned up
 * Fixed wrong loaded single block
+
+= 3.0.10 =
+* Fixed on loading of Personio URL for import if no URL is configured
