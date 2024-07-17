@@ -171,7 +171,7 @@ class Helper {
 		// Case #4.
 		$rest_url    = wp_parse_url( trailingslashit( rest_url() ) );
 		$current_url = wp_parse_url( add_query_arg( array() ) );
-		if( is_array( $current_url ) && isset($current_url['path']) ) {
+		if ( is_array( $current_url ) && isset( $current_url['path'] ) ) {
 			return str_starts_with( $current_url['path'], $rest_url['path'] );
 		}
 		return false;
