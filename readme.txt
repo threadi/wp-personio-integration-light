@@ -471,3 +471,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.0.11 =
 * Optimized REST API detection
 * Fixed PHP-Warnings in intro-object if Divi or other plugins will be enabled
+* Fixed template for grouped view
