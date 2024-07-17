@@ -467,3 +467,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Do not install cronjobs before setup has been completed
 * Fixed on loading of Personio URL for import if no URL is configured
 * Fixed format of email notification on import errors
+
+= 3.1.0 =
+* Optimized REST API detection
