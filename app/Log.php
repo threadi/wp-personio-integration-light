@@ -68,11 +68,11 @@ class Log {
 		$wpdb->insert(
 			$wpdb->prefix . 'personio_import_logs',
 			array(
-				'time'  => gmdate( 'Y-m-d H:i:s' ),
-				'log'   => $log,
-				'md5' => $md5,
+				'time'     => gmdate( 'Y-m-d H:i:s' ),
+				'log'      => $log,
+				'md5'      => $md5,
 				'category' => $category,
-				'state' => $state,
+				'state'    => $state,
 			)
 		);
 		$this->clean_log();

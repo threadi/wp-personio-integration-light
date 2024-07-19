@@ -5,5 +5,5 @@
  * @package personio-integration-light
  */
 
-_e( 'success', 'personio-integration-light' );
-_e( 'error', 'personio-integration-light' );
+esc_attr_e( 'success', 'personio-integration-light' );
+esc_attr_e( 'error', 'personio-integration-light' );

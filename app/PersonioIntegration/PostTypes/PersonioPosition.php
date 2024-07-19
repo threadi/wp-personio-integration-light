@@ -1932,7 +1932,7 @@ class PersonioPosition extends Post_Type {
 	public function add_log_categories( array $categories ): array {
 		// add categories we need for our cpt.
 		$categories['import'] = __( 'Import', 'personio-integration-light' );
-		$categories['cli'] = __( 'WP CLI', 'personio-integration-light' );
+		$categories['cli']    = __( 'WP CLI', 'personio-integration-light' );
 
 		// return resulting list.
 		return $categories;

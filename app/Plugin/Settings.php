@@ -566,7 +566,7 @@ class Settings {
 					),
 				),
 			),
-			'settings_section_import_other' => array(
+			'settings_section_import_other'    => array(
 				'label'         => __( 'Other settings', 'personio-integration-light' ),
 				'settings_page' => 'personioIntegrationPositionsImport',
 				'callback'      => '__return_true',
@@ -1139,24 +1139,24 @@ class Settings {
 		update_option( 'personio_integration_settings', $settings );
 
 		// log this change if debug is enabled.
-		if( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 			// get settings for this option.
 			$setting = $this->get_settings_for_field( $option );
 
 			// bail if setting could not be found.
-			if( empty( $setting ) ) {
+			if ( empty( $setting ) ) {
 				return;
 			}
 
 			// bail if no label is set.
-			if( empty( $setting['label'] ) ) {
+			if ( empty( $setting['label'] ) ) {
 				return;
 			}
 
 			// get the user.
-			$user = wp_get_current_user();
+			$user      = wp_get_current_user();
 			$user_name = __( 'Unknown', 'personio-integration-light' );
-			if( ! is_null( $user ) ) {
+			if ( ! is_null( $user ) ) {
 				$user_name = $user->display_name;
 			}
 

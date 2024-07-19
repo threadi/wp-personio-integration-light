@@ -725,7 +725,7 @@ class Admin {
 		$where = '';
 
 		// get filter.
-		$category   = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		if ( ! empty( $category ) ) {
 			$where .= ' AND `category` = "%s"';
 			$vars[] = $category;

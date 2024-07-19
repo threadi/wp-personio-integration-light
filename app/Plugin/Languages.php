@@ -312,11 +312,11 @@ class Languages {
 	 */
 	public function get_language_title( string $language_key ): string {
 		// bail if no key is given.
-		if( empty( $language_key ) ) {
+		if ( empty( $language_key ) ) {
 			return '';
 		}
 
-		$languages = Languages::get_instance()->get_languages();
+		$languages = self::get_instance()->get_languages();
 
 		// use fallback language if language could not be detected.
 		if ( empty( $languages[ $language_key ] ) ) {

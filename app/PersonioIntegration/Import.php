@@ -157,7 +157,7 @@ class Import {
 		libxml_use_internal_errors( true );
 
 		// get language name (e.g. "en").
-		$language_name = $this->get_language();
+		$language_name  = $this->get_language();
 		$language_title = Languages::get_instance()->get_language_title( $language_name );
 
 		// get Personio-URL-object.
