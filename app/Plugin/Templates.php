@@ -649,7 +649,7 @@ class Templates {
 		}
 
 		// generate styling.
-		$styles = ! empty( $attributes['styles'] ) ? $attributes['styles'] : '';
+		Helper::add_inline_style( $attributes['styles'] );
 
 		// get application URL.
 		$link = $position->get_application_url();

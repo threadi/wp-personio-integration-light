@@ -7,22 +7,15 @@
  * @param string $back_to_list_url Define the text for "back to list" link. If empty link will not be displayed.
  * @param string $target Defines the value for the target-attribute.
  *
- * @version: 3.0.0
+ * @version: 3.1.0
  * @package personio-integration-light
  */
-
-use PersonioIntegrationLight\Plugin\Templates;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Output an application-button for a single position.
  */
-
-// embed block-specific styling.
-require Templates::get_instance()->get_template( 'parts/styling.php' );
-
-// output.
 ?>
 <div class="entry-content">
 	<p class="personio-integration-application-button<?php echo esc_attr( $attributes['classes'] ); ?>">

@@ -1141,7 +1141,7 @@ class Taxonomies {
 			// log in debug-mode.
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
 				$log = new Log();
-				$log->add_log( 'Taxonomy ' . $taxonomy . ' has been deleted.', 'success' );
+				$log->add_log( 'Taxonomy ' . $taxonomy . ' has been deleted.', 'success', 'import' );
 			}
 
 			// show progress.

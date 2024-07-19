@@ -33,6 +33,8 @@ class Log {
             `id` mediumint(9) NOT NULL AUTO_INCREMENT,
             `time` datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
             `log` text DEFAULT '' NOT NULL,
+            `md5` text DEFAULT '' NOT NULL,
+            `category` varchar(40) DEFAULT '' NOT NULL,
             `state` varchar(40) DEFAULT '' NOT NULL,
             UNIQUE KEY id (id)
         ) $charset_collate;";
@@ -54,18 +56,22 @@ class Log {
 	/**
 	 * Add a single log-entry.
 	 *
-	 * @param string $log The text to log.
+	 * @param string $log   The text to log.
 	 * @param string $state The state to log.
+	 * @param string $category The category for this log entry (optional).
+	 * @param string $md5 Marker to identify unique entries (optional).
 	 *
 	 * @return void
 	 */
-	public function add_log( string $log, string $state ): void {
+	public function add_log( string $log, string $state, string $category = '', string $md5 = '' ): void {
 		global $wpdb;
 		$wpdb->insert(
 			$wpdb->prefix . 'personio_import_logs',
 			array(
 				'time'  => gmdate( 'Y-m-d H:i:s' ),
 				'log'   => $log,
+				'md5' => $md5,
+				'category' => $category,
 				'state' => $state,
 			)
 		);

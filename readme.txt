@@ -472,3 +472,12 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Optimized REST API detection
 * Fixed PHP-Warnings in intro-object if Divi or other plugins will be enabled
 * Fixed template for grouped view
+
+= 3.1.0 =
+* Added not grouped-setting for list block
+* Added categories for log entries
+* All protocol entries are now translatable
+* Use wp_add_inline_style() instead of styling-template
+* Updated Blocks for React 19 compatibility (for future WP-version)
+* Removed styling template
+* Fixed visibility of Single Block

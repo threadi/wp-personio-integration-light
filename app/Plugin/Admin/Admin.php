@@ -718,14 +718,34 @@ class Admin {
 		// check the nonce.
 		check_admin_referer( 'personio-integration-log-export', 'nonce' );
 
+		// collect vars for statement.
+		$vars = array( 1 );
+
+		// collect restrictions.
+		$where = '';
+
+		// get filter.
+		$category   = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( ! empty( $category ) ) {
+			$where .= ' AND `category` = "%s"';
+			$vars[] = $category;
+		}
+
+		// get md5.
+		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( ! empty( $md5 ) ) {
+			$where .= ' AND `md5` = "%s"';
+			$vars[] = $md5;
+		}
+
 		// get entries.
 		$entries = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
-                        WHERE 1 = %d
+                        WHERE 1 = %d' . $where . '
                         ORDER BY `date` DESC',
-				array( 1 )
+				$vars
 			),
 			ARRAY_A
 		);

@@ -690,4 +690,21 @@ class Helper {
 	public static function get_shortcode_documentation_url(): string {
 		return Languages::get_instance()->is_german_language() ? 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes_de.md' : 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md';
 	}
+
+	/**
+	 * Add custom inline style for output.
+	 *
+	 * @param string $style The style (CSS-code).
+	 *
+	 * @return void
+	 */
+	public static function add_inline_style( string $style ): void {
+		// bail if style it empty.
+		if ( empty( $style ) ) {
+			return;
+		}
+
+		// set the style.
+		wp_add_inline_style( 'wp-block-library', $style );
+	}
 }

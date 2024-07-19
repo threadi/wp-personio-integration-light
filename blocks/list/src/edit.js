@@ -102,6 +102,9 @@ export default function Edit( object ) {
 				return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
 			}
 		);
+    if( personioTaxonomies[0] && personioTaxonomies[0].id !== 0 ) {
+      personioTaxonomies.unshift( {id: 0, label: __( 'Ungrouped', 'personio-integration-light' ), value: ''} );
+    }
 	}
 
 	// set max amount for listings.
@@ -112,35 +115,6 @@ export default function Edit( object ) {
 	 */
 	return (
 		<div { ...useBlockProps() }>
-			<InspectorControls>
-				<PanelBody title={ __( 'Filter', 'personio-integration-light' ) }>
-          <div class="alert"><p>{ __( 'Please use the Filter Block instead of this options.', 'personio-integration-light' ) }</p></div>
-					<ToggleControl
-						label={ __('Show filter', 'personio-integration-light') }
-						checked={ object.attributes.showFilter }
-						onChange={ value => onChangeShowFilter( value, object ) }
-					/>
-					<div className="wp-personio-integration-selectcontrol-multiple">
-						{
-							<SelectControl
-								label={ __('Choose filter', 'personio-integration-light') }
-								value={ object.attributes.filter }
-								options={ personioTaxonomies }
-								multiple={ true }
-								disabled={ !object.attributes.showFilter }
-								onChange={ value => onChangeFilter(value, object) }
-							/>
-						}
-					</div>
-					<SelectControl
-						label={ __('Type of filter', 'personio-integration-light') }
-						value={ object.attributes.filtertype }
-						options={ filter_types }
-						disabled={ !object.attributes.showFilter }
-						onChange={ value => onChangeFilterType( value, object ) }
-					/>
-				</PanelBody>
-			</InspectorControls>
 			<InspectorControls>
 				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
 					<div className="wp-personio-integration-selectcontrol">
@@ -227,6 +201,35 @@ export default function Edit( object ) {
 					/>
 				</PanelBody>
 			</InspectorControls>
+      <InspectorControls>
+        <PanelBody title={ __( 'Filter', 'personio-integration-light' ) }>
+          <div className="alert"><p>{ __( 'Please use the Filter Block instead of this options.', 'personio-integration-light' ) }</p></div>
+          <ToggleControl
+            label={ __('Show filter', 'personio-integration-light') }
+            checked={ object.attributes.showFilter }
+            onChange={ value => onChangeShowFilter( value, object ) }
+          />
+          <div className="wp-personio-integration-selectcontrol-multiple">
+            {
+              <SelectControl
+                label={ __('Choose filter', 'personio-integration-light') }
+                value={ object.attributes.filter }
+                options={ personioTaxonomies }
+                multiple={ true }
+                disabled={ !object.attributes.showFilter }
+                onChange={ value => onChangeFilter(value, object) }
+              />
+            }
+          </div>
+          <SelectControl
+            label={ __('Type of filter', 'personio-integration-light') }
+            value={ object.attributes.filtertype }
+            options={ filter_types }
+            disabled={ !object.attributes.showFilter }
+            onChange={ value => onChangeFilterType( value, object ) }
+          />
+        </PanelBody>
+      </InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/list"
 				attributes={ object.attributes }

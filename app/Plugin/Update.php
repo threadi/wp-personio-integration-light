@@ -90,14 +90,9 @@ class Update {
 			)
 			&& version_compare( $installed_plugin_version, $db_plugin_version, '>' )
 		) {
-			switch ( $db_plugin_version ) {
-				case '1.2.3':
-					// nothing to do as 1.2.3 is the first version with this update-check.
-					break;
-				default:
-					$this->version300();
-					break;
-			}
+			define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
+			$this->version300();
+			$this->version310();
 
 			// save new plugin-version in DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
@@ -105,13 +100,11 @@ class Update {
 	}
 
 	/**
-	 * To run on update to (exact) version 3.0.0.
+	 * To run on update to version 3.0.0 or newer.
 	 *
 	 * @return void
 	 */
 	private function version300(): void {
-		define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
-
 		// get extensions.
 		Extensions::get_instance()->init();
 
@@ -152,5 +145,15 @@ class Update {
 			$setup_obj->set_completed( $setup_obj->get_setup_name() );
 			Intro::get_instance()->set_closed();
 		}
+	}
+
+	/**
+	 * To run on update to version 3.1.0 or newer.
+	 *
+	 * @return void
+	 */
+	private function version310(): void {
+		// update db tables.
+		Init::get_instance()->install_db_tables();
 	}
 }

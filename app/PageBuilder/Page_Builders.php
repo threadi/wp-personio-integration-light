@@ -23,6 +23,7 @@ class Page_Builders extends Extensions {
 	 */
 	public function init(): void {
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_page_builder_as_extension' ) );
+		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 
 		// register the known pagebuilder.
 		foreach ( $this->get_page_builders() as $page_builder ) {
@@ -60,5 +61,20 @@ class Page_Builders extends Extensions {
 	 */
 	public function add_page_builder_as_extension( array $extensions ): array {
 		return array_merge( $this->get_page_builders(), $extensions );
+	}
+
+	/**
+	 * Add categories for this extension type.
+	 *
+	 * @param array $categories List of categories.
+	 *
+	 * @return array
+	 */
+	public function add_log_categories( array $categories ): array {
+		// add category for this extension type.
+		$categories['pagebuilder'] = __( 'PageBuilder', 'personio-integration-light' );
+
+		// return resulting list.
+		return $categories;
 	}
 }

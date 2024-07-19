@@ -302,4 +302,28 @@ class Languages {
 		}
 		return '';
 	}
+
+	/**
+	 * Get the language title of the given language key.
+	 *
+	 * @param string $language_key The given language key.
+	 *
+	 * @return string
+	 */
+	public function get_language_title( string $language_key ): string {
+		// bail if no key is given.
+		if( empty( $language_key ) ) {
+			return '';
+		}
+
+		$languages = Languages::get_instance()->get_languages();
+
+		// use fallback language if language could not be detected.
+		if ( empty( $languages[ $language_key ] ) ) {
+			$language_key = $this->fallback_language_name;
+		}
+
+		// return the title of the language.
+		return $languages[ $language_key ];
+	}
 }

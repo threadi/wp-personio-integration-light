@@ -130,6 +130,7 @@ class PersonioPosition extends Post_Type {
 		add_action( 'personio_integration_import_ended', array( $this, 'import_ended' ) );
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_pro_extensions' ) );
 		add_action( 'personio_integration_import_of_url_starting', array( $this, 'update_import_status' ), 10, 0 );
+		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
@@ -337,13 +338,10 @@ class PersonioPosition extends Post_Type {
 		$position->set_title( '' );
 
 		// generate styling.
-		$styles = ! empty( $personio_attributes['styles'] ) ? $personio_attributes['styles'] : '';
+		Helper::add_inline_style( $personio_attributes['styles'] );
 
 		// collect the output.
 		ob_start();
-
-		// embed block-specific styling.
-		require Templates::get_instance()->get_template( 'parts/styling.php' );
 
 		// embed content.
 		include Templates::get_instance()->get_template( 'parts/content.php' );
@@ -516,7 +514,7 @@ class PersonioPosition extends Post_Type {
 		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $attribute_defaults );
 
 		// generate styling.
-		$styles = ! empty( $personio_attributes['styles'] ) ? $personio_attributes['styles'] : '';
+		Helper::add_inline_style( $personio_attributes['styles'] );
 
 		// set the group-title.
 		$group_title = '';
@@ -539,9 +537,6 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-
-		// embed block-specific styling.
-		require Templates::get_instance()->get_template( 'parts/styling.php' );
 
 		// embed filter.
 		require Templates::get_instance()->get_template( 'parts/part-filter.php' );
@@ -753,7 +748,7 @@ class PersonioPosition extends Post_Type {
 
 		// log the deletion.
 		$log = new Log();
-		$log->add_log( sprintf( 'Position %1$s has been deleted by %2$s.', esc_html( $position_obj->get_personio_id() ), esc_html( $username ) ), 'success' );
+		$log->add_log( sprintf( 'Position %1$s has been deleted by %2$s.', esc_html( $position_obj->get_personio_id() ), esc_html( $username ) ), 'success', 'import' );
 	}
 
 	/**
@@ -1606,7 +1601,7 @@ class PersonioPosition extends Post_Type {
 
 		// log this event.
 		$logs = new Log();
-		$logs->add_log( sprintf( 'Positions has been deleted by %1$s.', esc_html( $user->display_name ) ), 'success' );
+		$logs->add_log( sprintf( 'Positions has been deleted by %1$s.', esc_html( $user->display_name ) ), 'success', 'import' );
 
 		/**
 		 * Run custom actions after deletion of all positions has been done.
@@ -1925,5 +1920,21 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function update_import_status(): void {
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Positions are importing ..', 'personio-integration-light' ) );
+	}
+
+	/**
+	 * Add categories for our cpt for logging.
+	 *
+	 * @param array $categories List of categories.
+	 *
+	 * @return array
+	 */
+	public function add_log_categories( array $categories ): array {
+		// add categories we need for our cpt.
+		$categories['import'] = __( 'Import', 'personio-integration-light' );
+		$categories['cli'] = __( 'WP CLI', 'personio-integration-light' );
+
+		// return resulting list.
+		return $categories;
 	}
 }

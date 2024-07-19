@@ -26,6 +26,7 @@ class Log_Table extends WP_List_Table {
 			'state' => __( 'State', 'personio-integration-light' ),
 			'date'  => __( 'Date', 'personio-integration-light' ),
 			'log'   => __( 'Log', 'personio-integration-light' ),
+			'category' => __( 'Category', 'personio-integration-light' )
 		);
 	}
 
@@ -49,26 +50,46 @@ class Log_Table extends WP_List_Table {
 			$order = 'ASC';
 		}
 
+		// collect vars for statement.
+		$vars = array( 1 );
+
+		// collect restrictions.
+		$where = '';
+
+		// get filter.
+		$category   = $this->get_category_filter();
+		if ( ! empty( $category ) ) {
+			$where .= ' AND `category` = "%s"';
+			$vars[] = $category;
+		}
+
+		// get md5.
+		$md5 = $this->get_md5_filter();
+		if ( ! empty( $md5 ) ) {
+			$where .= ' AND `md5` = "%s"';
+			$vars[] = $md5;
+		}
+
 		// get results and return them.
 		if ( 'asc' === $order ) {
 			return $wpdb->get_results(
 				$wpdb->prepare(
-					'SELECT `state`, `time` AS `date`, `log`
+					'SELECT `state`, `time` AS `date`, `log`, `category`
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
-                        WHERE 1 = %d
+                        WHERE 1 = %d '.$where.'
                         ORDER BY ' . esc_sql( $order_by ) . ' ASC',
-					array( 1 )
+					$vars
 				),
 				ARRAY_A
 			);
 		}
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT `state`, `time` AS `date`, `log`
+				'SELECT `state`, `time` AS `date`, `log`, `category`
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
-                        WHERE 1 = %d
+                        WHERE 1 = %d '.$where.'
                         ORDER BY ' . esc_sql( $order_by ) . ' DESC',
-				array( 1 )
+				$vars
 			),
 			ARRAY_A
 		);
@@ -132,20 +153,64 @@ class Log_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ): string {
 		return match ( $column_name ) {
 			'date' => Helper::get_format_date_time( $item[ $column_name ] ),
-			'state' => $item[ $column_name ],
+			'state' => __( $item[ $column_name ], 'wp-personio-integration' ),
 			'log' => nl2br( $item[ $column_name ] ),
+			'category' => empty( $item[ $column_name ] ) ? '<i>' . esc_html__( 'not defined', 'personio-integration-light' ) . '</i>' : $this->get_category( $item[$column_name] ),
 			default => '',
 		};
 	}
 
 	/**
-	 * Add export-buttons on top of table.
+	 * Return list of categories with internal name & its label.
+	 *
+	 * @return array
+	 */
+	private function get_categories(): array {
+		$list = array(
+			'system' => __( 'System', 'personio-integration-light' )
+		);
+
+		/**
+		 * Filter the list of possible log categories.
+		 *
+		 * @since 3.1.0 Available since 3.1.0.
+		 *
+		 * @param array $list List of categories.
+		 */
+		return apply_filters( 'personio_integration_log_categories', $list );
+	}
+
+	/**
+	 * Get a single category.
+	 *
+	 * @param string $category The searched category.
+	 *
+	 * @return string
+	 */
+	private function get_category( string $category ): string {
+		// get list of categories.
+		$categories = $this->get_categories();
+
+		// bail if search category is not found.
+		if( empty( $categories[$category]) ) {
+			return '<i>' . esc_html__( 'Unknown', 'personio-integration-light' ) . '</i>';
+		}
+
+		// return the category-label.
+		return $categories[$category];
+	}
+
+	/**
+	 * Add export- and delete-buttons on top of table.
 	 *
 	 * @param string $which The position.
 	 * @return void
 	 */
 	public function extra_tablenav( $which ): void {
 		if ( 'top' === $which ) {
+			// define hint text.
+			$contains = '<p>' . __( 'The file will contain ALL entries. Be aware of this before you send this file to someone.', 'personio-integration-light' ) . '</p>';
+
 			// define export-URL.
 			$download_url = add_query_arg(
 				array(
@@ -155,12 +220,26 @@ class Log_Table extends WP_List_Table {
 				get_admin_url() . 'admin.php'
 			);
 
+			// get filter.
+			$category   = $this->get_category_filter();
+			if ( ! empty( $category ) ) {
+				$download_url = add_query_arg( array( 'category' => $category ), $download_url );
+				$contains = '<p>' . __( 'The file will contain ALL entries of the chosen filter. Be aware of this before you send this file to someone.', 'personio-integration-light' ) . '</p>';
+			}
+
+			// get md5.
+			$md5 = $this->get_md5_filter();
+			if ( ! empty( $md5 ) ) {
+				$download_url = add_query_arg( array( 'md5' => $md5 ), $download_url );
+				$contains = '<p>' . __( 'The file will contain ALL entries of the chosen filter. Be aware of this before you send this file to someone.', 'personio-integration-light' ) . '</p>';
+			}
+
 			// create download-dialog.
 			$download_dialog = array(
 				'title'   => __( 'Export log entries', 'personio-integration-light' ),
 				'texts'   => array(
 					'<p>' . __( 'Click on the button below to download the log entries as CSV.', 'personio-integration-light' ) . '</p>',
-					'<p>' . __( 'The file will contain ALL entries. Be aware of this before you send this file to someone.', 'personio-integration-light' ) . '</p>',
+					$contains
 				),
 				'buttons' => array(
 					array(
@@ -219,6 +298,79 @@ class Log_Table extends WP_List_Table {
 	 * @since 3.1.0
 	 */
 	public function no_items(): void {
+		// get actual filter.
+		$category = $this->get_category_filter();
+
+		// if filter is set show other text.
+		if( ! empty( $category ) ) {
+			// get all categories to get the title.
+			$categories = $this->get_categories();
+
+			// show text.
+			/* translators: %1$s will be replaced by the category name. */
+			echo sprintf( esc_html__( 'No log entries for %1$s found.', 'personio-integration-light' ), esc_html( $categories[$category] ) );
+			return;
+		}
+
+		// show default text.
 		echo esc_html__( 'No log entries found.', 'personio-integration-light' );
+	}
+
+	/**
+	 * Define filter for categories.
+	 *
+	 * @return array
+	 */
+	protected function get_views(): array {
+		// get main url without filter.
+		$url = remove_query_arg( array( 'category', 'md5' ) );
+
+		// get actual filter.
+		$category = $this->get_category_filter();
+
+		// define initial list.
+		$list = array(
+			'all' => '<a href="' . esc_url( $url ) . '"' . ( empty( $category ) ? ' class="current"' : '' ) . '>' . esc_html__( 'All', 'personio-integration-light' ) . '</a>',
+		);
+
+		// get all log categories.
+		foreach ( $this->get_categories() as $key => $label ) {
+			$url          = add_query_arg( array( 'category' => $key ) );
+			$list[ $key ] = '<a href="' . esc_url( $url ) . '"' . ( $category === $key ? ' class="current"' : '' ) . '>' . esc_html( $label ) . '</a>';
+		}
+
+		/**
+		 * Filter the list before output.
+		 *
+		 * @since 3.1.0 Available since 3.1.0.
+		 * @param array $list List of filter.
+		 */
+		return apply_filters( 'personio_integration_log_table_filter', $list );
+	}
+
+	/**
+	 * Get actual category-filter-value.
+	 *
+	 * @return string
+	 */
+	private function get_category_filter(): string {
+		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( is_null( $category ) ) {
+			return '';
+		}
+		return $category;
+	}
+
+	/**
+	 * Get actual category-filter-value.
+	 *
+	 * @return string
+	 */
+	private function get_md5_filter(): string {
+		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( is_null( $md5 ) ) {
+			return '';
+		}
+		return $md5;
 	}
 }
