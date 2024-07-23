@@ -153,7 +153,7 @@ class Log_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ): string {
 		return match ( $column_name ) {
 			'date' => Helper::get_format_date_time( $item[ $column_name ] ),
-			'state' => __( $item[ $column_name ], 'wp-personio-integration' ),
+			'state' => $this->get_status_icon( $item[ $column_name ] ),
 			'log' => nl2br( $item[ $column_name ] ),
 			'category' => empty( $item[ $column_name ] ) ? '<i>' . esc_html__( 'not defined', 'personio-integration-light' ) . '</i>' : $this->get_category( $item[ $column_name ] ),
 			default => '',
@@ -372,5 +372,27 @@ class Log_Table extends WP_List_Table {
 			return '';
 		}
 		return $md5;
+	}
+
+	/**
+	 * Return HTML-code for icon of the given status.
+	 *
+	 * @param string $status The requested status.
+	 *
+	 * @return string
+	 */
+	private function get_status_icon( string $status ): string {
+		$list = array(
+			'success' => '<span class="dashicons dashicons-yes"></span>',
+			'error' => '<span class="dashicons dashicons-no"></span>',
+		);
+
+		// bail if status is unknown.
+		if( empty( $list[$status] ) ) {
+			return '';
+		}
+
+		// return the HTML-code for the icon of this status.
+		return $list[$status];
 	}
 }
