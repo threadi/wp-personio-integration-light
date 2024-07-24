@@ -70,6 +70,15 @@ class Log_Table extends WP_List_Table {
 			$vars[] = $md5;
 		}
 
+		$limit = 10000;
+		/**
+		 * Filter limit to prevent possible errors on big tables.
+		 *
+		 * @since 3.1.0 Available since 3.1.0.
+		 * @param int $limit The actual limit.
+		 */
+		$limit = apply_filters( 'personio_integration_light_log_limit', $limit );
+
 		// get results and return them.
 		if ( 'asc' === $order ) {
 			return $wpdb->get_results(
@@ -77,7 +86,8 @@ class Log_Table extends WP_List_Table {
 					'SELECT `state`, `time` AS `date`, `log`, `category`
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
                         WHERE 1 = %d ' . $where . '
-                        ORDER BY ' . esc_sql( $order_by ) . ' ASC',
+                        ORDER BY ' . esc_sql( $order_by ) . ' ASC
+                        LIMIT '.$limit,
 					$vars
 				),
 				ARRAY_A
@@ -88,7 +98,8 @@ class Log_Table extends WP_List_Table {
 				'SELECT `state`, `time` AS `date`, `log`, `category`
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
                         WHERE 1 = %d ' . $where . '
-                        ORDER BY ' . esc_sql( $order_by ) . ' DESC',
+                        ORDER BY ' . esc_sql( $order_by ) . ' DESC
+                        LIMIT '.$limit,
 				$vars
 			),
 			ARRAY_A

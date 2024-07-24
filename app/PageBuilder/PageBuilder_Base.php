@@ -85,7 +85,7 @@ class PageBuilder_Base extends Extensions_Base {
 	/**
 	 * Installer for templates this page builder is using.
 	 *
-	 * @return bool
+	 * @return bool Returns true if import has been run successfully.
 	 */
 	public function install_templates(): bool {
 		return false;
@@ -116,10 +116,12 @@ class PageBuilder_Base extends Extensions_Base {
 		// add marker for template import via setup.
 		$settings['hidden_section']['fields'][ 'pb_templates_import_' . $this->get_name() ] = array(
 			'register_attributes' => array(
-				'type'         => 'boolean',
+				'type'         => 'integer',
 				'show_in_rest' => true,
-				'default'      => false,
+				'default'      => 0,
 			),
+			'page_builder' => $this->get_name(),
+			'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\PageBuilder', 'save' ),
 			'do_not_export'       => true,
 		);
 

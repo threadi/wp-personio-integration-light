@@ -738,13 +738,23 @@ class Admin {
 			$vars[] = $md5;
 		}
 
+		$limit = 10000;
+		/**
+		 * Filter limit to prevent possible errors on big tables.
+		 *
+		 * @since 3.1.0 Available since 3.1.0.
+		 * @param int $limit The actual limit.
+		 */
+		$limit = apply_filters( 'personio_integration_light_log_limit', $limit );
+
 		// get entries.
 		$entries = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
                         WHERE 1 = %d' . $where . '
-                        ORDER BY `date` DESC',
+                        ORDER BY `date` DESC
+                        LIMIT '.$limit,
 				$vars
 			),
 			ARRAY_A

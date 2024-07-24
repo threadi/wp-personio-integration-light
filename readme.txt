@@ -479,5 +479,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * All protocol entries are now translatable
 * Use wp_add_inline_style() instead of styling-template
 * Updated Blocks for React 19 compatibility (for future WP-version)
+* Log is now restricted to 10.000 entries for better performance, only changeable in Pro
 * Removed styling template
 * Fixed visibility of Single Block
