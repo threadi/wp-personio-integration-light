@@ -192,7 +192,7 @@ class Settings {
 			$detail_excerpt       = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateExcerptDetail' ) );
 		}
 
-		// get editor URL.
+		// get Block Editor URL.
 		$editor_url = add_query_arg(
 			array(
 				'path' => '/wp_template/all',
@@ -249,6 +249,18 @@ class Settings {
 						),
 						/* translators: %1$s is replaced with the name of the Pro-plugin */
 						'pro_hint'            => __( 'Use all languages supported by Personio with %s.', 'personio-integration-light' ),
+					),
+					'personioIntegrationLoginUrl'              => array(
+						'label'               => __( 'Personio Login URL', 'personio-integration-light' ),
+						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Text', 'get' ),
+						/* translators: %1$s is replaced with the url to the Personio support */
+						'description'         => sprintf( __( 'This URL is used by Personio to give you a unique login URL to your Personio account. It will be communicated to you when you register with Personio.<br>This is NOT the URL where your open positions are visible.<br>If you have any questions about this URL, please contact the <a href="%1$s" target="_blank">Personio support (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_support_url() ) ),
+						'placeholder'         => Helper::get_personio_login_url_example(),
+						'register_attributes' => array(
+							'default'           => '',
+							'type'              => 'string',
+							'sanitize_callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationLoginUrl', 'validate' ),
+						),
 					),
 				),
 			),

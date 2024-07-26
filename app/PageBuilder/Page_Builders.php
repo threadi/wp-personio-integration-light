@@ -77,4 +77,19 @@ class Page_Builders extends Extensions {
 		// return resulting list.
 		return $categories;
 	}
+
+	/**
+	 * Run uninstaller for all registered pagebuilder.
+	 *
+	 * @return void
+	 */
+	public function uninstall(): void {
+		// register the known pagebuilder.
+		foreach ( $this->get_page_builders() as $page_builder ) {
+			$obj = call_user_func( $page_builder . '::get_instance' );
+			if ( $obj instanceof PageBuilder_Base ) {
+				$obj->uninstall();
+			}
+		}
+	}
 }

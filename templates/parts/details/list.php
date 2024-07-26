@@ -8,7 +8,7 @@
  * @param string $line_break Setting for linke break after taxonomy-label.
  *
  * @package personio-integration-light
- * ´@version: 3.0.0
+ * @version: 3.0.0
  */
 
 defined( 'ABSPATH' ) || exit;

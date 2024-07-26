@@ -476,6 +476,8 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.1.0 =
 * Added not grouped-setting for list block
 * Added categories for log entries
+* Added new option to enter the Personio Login URL to help reach your Personio account from WordPress faster
+* Added deletion of extension data during uninstallation of this plugin
 * All protocol entries are now translatable
 * Use wp_add_inline_style() instead of styling-template
 * Updated Blocks for React 19 compatibility (for future WP-version)

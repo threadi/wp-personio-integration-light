@@ -508,6 +508,7 @@ class Templates {
 	public function get_excerpt( Position $position, array $attributes, bool $use_return = false ): string {
 		// collect the details in this array.
 		$details = array();
+		$taxonomy_data = array();
 
 		// get the configured separator.
 		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator' ) . ' ';
@@ -574,6 +575,7 @@ class Templates {
 						$details[ $taxonomy_label ] = $terms[0]->name;
 					}
 				}
+				$taxonomy_data[ $taxonomy_label ] = get_taxonomy( $taxonomy_name );
 			}
 		}
 

@@ -108,7 +108,9 @@ class Detail extends Blocks_Basis {
 			$template = $attributes['template'];
 		}
 
+		// collect the details in this array.
 		$details = array();
+		$taxonomy_data = array();
 
 		// loop through the chosen details.
 		foreach ( $attributes['excerptTemplates'] as $detail ) {
@@ -127,6 +129,7 @@ class Detail extends Blocks_Basis {
 					$labels = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name );
 
 					$details[ $labels['name'] ] = $value;
+					$taxonomy_data[ $labels['name'] ] = get_taxonomy( $taxonomy_name );
 				}
 			}
 		}

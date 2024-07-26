@@ -88,6 +88,7 @@ export default function Edit( object ) {
 
 	// get taxonomies.
 	let personioTaxonomies = [];
+  let personioTaxonomiesGrouped = [];
 	if( !object.attributes.preview ) {
 		useEffect(() => {
 			dispatch('core').addEntities([
@@ -102,8 +103,9 @@ export default function Edit( object ) {
 				return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
 			}
 		);
-    if( personioTaxonomies[0] && personioTaxonomies[0].id !== 0 ) {
-      personioTaxonomies.unshift( {id: 0, label: __( 'Ungrouped', 'personio-integration-light' ), value: ''} );
+    personioTaxonomiesGrouped = personioTaxonomies.map((x) => x);
+    if( personioTaxonomiesGrouped[0] && personioTaxonomiesGrouped[0].id !== 0 ) {
+      personioTaxonomiesGrouped.unshift( {id: 0, label: __( 'Ungrouped', 'personio-integration-light' ), value: ''} );
     }
 	}
 
@@ -159,7 +161,7 @@ export default function Edit( object ) {
 					<SelectControl
 						label={__('Group by', 'personio-integration-light')}
 						value={ object.attributes.groupby }
-						options={ personioTaxonomies }
+						options={ personioTaxonomiesGrouped }
 						onChange={ value => onChangeGroupBy( value, object ) }
 					/>
 					<ToggleControl
@@ -173,7 +175,7 @@ export default function Edit( object ) {
 						onChange={ value => onChangeLinkingTitle( value, object ) }
 					/>
 					<ToggleControl
-						label={__('show excerpt', 'personio-integration-light')}
+						label={__('Show excerpt', 'personio-integration-light')}
 						checked={ object.attributes.showExcerpt }
 						onChange={ value => onChangeExcerptVisibility( value, object ) }
 					/>
