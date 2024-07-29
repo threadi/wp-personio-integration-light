@@ -13,6 +13,10 @@ define( 'WP_ENVIRONMENT_TYPE', 'local' );
 define( 'WP_DEVELOPMENT_MODE', 'plugin' );
 ```
 
+You need to install:
+* npm
+* node
+
 ## Usage
 
 After checkout go through the following steps:
