@@ -92,4 +92,24 @@ class Log {
 		global $wpdb;
 		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) );
 	}
+
+	/**
+	 * Return list of categories with internal name & its label.
+	 *
+	 * @return array
+	 */
+	public function get_categories(): array {
+		$list = array(
+			'system' => __( 'System', 'personio-integration-light' ),
+		);
+
+		/**
+		 * Filter the list of possible log categories.
+		 *
+		 * @since 3.1.0 Available since 3.1.0.
+		 *
+		 * @param array $list List of categories.
+		 */
+		return apply_filters( 'personio_integration_log_categories', $list );
+	}
 }
