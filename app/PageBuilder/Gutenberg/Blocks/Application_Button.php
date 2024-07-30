@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 
 /**
@@ -61,6 +62,9 @@ class Application_Button extends Blocks_Basis {
 		if ( ! ( $position instanceof Position ) || ! $position->is_valid() ) {
 			return '';
 		}
+
+		// set actual language.
+		$position->set_lang( Languages::get_instance()->get_current_lang() );
 
 		// set ID as class.
 		$class = '';

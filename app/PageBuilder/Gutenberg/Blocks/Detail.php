@@ -15,6 +15,7 @@ use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 
 /**
@@ -83,6 +84,9 @@ class Detail extends Blocks_Basis {
 		if ( ! ( $position instanceof Position ) || ! $position->is_valid() ) {
 			return '';
 		}
+
+		// set actual language.
+		$position->set_lang( Languages::get_instance()->get_current_lang() );
 
 		// get setting for colon.
 		$colon = ': ';

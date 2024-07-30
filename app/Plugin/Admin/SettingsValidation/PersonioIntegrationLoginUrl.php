@@ -39,13 +39,15 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 			// cleanup the given URL.
 			$value = self::cleanup_url_string( $value );
 
-			// check if URL ends with ".jobs.personio.com" or ".jobs.personio.de" with or without "/" on the end.
-			if ( ! self::check_personio_login_url( $value ) ) {
-				add_settings_error( 'personioIntegrationLoginUrl', 'personioIntegrationLoginUrl', __( 'The Personio Login URL must end with ".personio.com" or ".personio.de"!', 'personio-integration-light' ) );
-				$value = '';
-			} elseif ( ! self::validate_url( $value ) ) {
-				add_settings_error( 'personioIntegrationLoginUrl', 'personioIntegrationLoginUrl', __( 'Please enter a valid URL for the Personio Login URL.', 'personio-integration-light' ) );
-				$value = '';
+			if( ! empty($value) ) {
+				// check if URL ends with ".jobs.personio.com" or ".jobs.personio.de" with or without "/" on the end.
+				if ( ! self::check_personio_login_url( $value ) ) {
+					add_settings_error( 'personioIntegrationLoginUrl', 'personioIntegrationLoginUrl', __( 'The Personio Login URL must end with ".personio.com" or ".personio.de"!', 'personio-integration-light' ) );
+					$value = '';
+				} elseif ( ! self::validate_url( $value ) ) {
+					add_settings_error( 'personioIntegrationLoginUrl', 'personioIntegrationLoginUrl', __( 'Please enter a valid URL for the Personio Login URL.', 'personio-integration-light' ) );
+					$value = '';
+				}
 			}
 		}
 
