@@ -165,7 +165,7 @@ class Positions {
 						'hide_empty' => true,
 					)
 				);
-				if ( is_array( $terms ) ) {
+				if ( is_array( $terms ) && ! empty( $terms ) ) {
 					$query['tax_query'] = array(
 						array(
 							'taxonomy' => $taxonomy_name,
