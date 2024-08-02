@@ -250,7 +250,7 @@ class Settings {
 						/* translators: %1$s is replaced with the name of the Pro-plugin */
 						'pro_hint'            => __( 'Use all languages supported by Personio with %s.', 'personio-integration-light' ),
 					),
-					'personioIntegrationLoginUrl'              => array(
+					'personioIntegrationLoginUrl'         => array(
 						'label'               => __( 'Personio Login URL', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Text', 'get' ),
 						/* translators: %1$s is replaced with the url to the Personio support */

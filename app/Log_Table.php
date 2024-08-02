@@ -87,7 +87,7 @@ class Log_Table extends WP_List_Table {
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
                         WHERE 1 = %d ' . $where . '
                         ORDER BY ' . esc_sql( $order_by ) . ' ASC
-                        LIMIT '.$limit,
+                        LIMIT ' . $limit,
 					$vars
 				),
 				ARRAY_A
@@ -99,7 +99,7 @@ class Log_Table extends WP_List_Table {
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
                         WHERE 1 = %d ' . $where . '
                         ORDER BY ' . esc_sql( $order_by ) . ' DESC
-                        LIMIT '.$limit,
+                        LIMIT ' . $limit,
 				$vars
 			),
 			ARRAY_A
@@ -180,7 +180,7 @@ class Log_Table extends WP_List_Table {
 	 */
 	private function get_category( string $category ): string {
 		// get list of categories.
-		$log_obj = new Log();
+		$log_obj    = new Log();
 		$categories = $log_obj->get_categories();
 
 		// bail if search category is not found.
@@ -296,7 +296,7 @@ class Log_Table extends WP_List_Table {
 		// if filter is set show other text.
 		if ( ! empty( $category ) ) {
 			// get all categories to get the title.
-			$log_obj = new Log();
+			$log_obj    = new Log();
 			$categories = $log_obj->get_categories();
 
 			// show text.
@@ -378,15 +378,15 @@ class Log_Table extends WP_List_Table {
 	private function get_status_icon( string $status ): string {
 		$list = array(
 			'success' => '<span class="dashicons dashicons-yes"></span>',
-			'error' => '<span class="dashicons dashicons-no"></span>',
+			'error'   => '<span class="dashicons dashicons-no"></span>',
 		);
 
 		// bail if status is unknown.
-		if( empty( $list[$status] ) ) {
+		if ( empty( $list[ $status ] ) ) {
 			return '';
 		}
 
 		// return the HTML-code for the icon of this status.
-		return $list[$status];
+		return $list[ $status ];
 	}
 }

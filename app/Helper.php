@@ -446,7 +446,7 @@ class Helper {
 		$personio_login_url = get_option( 'personioIntegrationLoginUrl' );
 
 		// return default URLs, if no Login URL is configured.
-		if( empty( $personio_login_url ) ) {
+		if ( empty( $personio_login_url ) ) {
 			if ( Languages::get_instance()->is_german_language() ) {
 				return 'https://www.personio.de/login/';
 			}

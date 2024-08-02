@@ -374,6 +374,11 @@ class Admin {
 			/* translators: %1$s will be replaced by the URL to the Pro-information-page. */
 			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro (opens new window)</a> any number of positions can be displayed - and you get a large number of additional features.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'error' );
+			$transient_obj->set_hide_on(
+				array(
+					get_admin_url() . 'edit.php?post_type=' . PersonioPosition::get_instance()->get_name() . '&page=personioPositionsLicense',
+				)
+			);
 			$transient_obj->save();
 		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_no_url_set' )->delete();
@@ -754,7 +759,7 @@ class Admin {
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
                         WHERE 1 = %d' . $where . '
                         ORDER BY `date` DESC
-                        LIMIT '.$limit,
+                        LIMIT ' . $limit,
 				$vars
 			),
 			ARRAY_A

@@ -120,8 +120,8 @@ class PageBuilder_Base extends Extensions_Base {
 				'show_in_rest' => true,
 				'default'      => 0,
 			),
-			'page_builder' => $this->get_name(),
-			'callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\PageBuilder', 'save' ),
+			'page_builder'        => $this->get_name(),
+			'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\PageBuilder', 'save' ),
 			'do_not_export'       => true,
 		);
 

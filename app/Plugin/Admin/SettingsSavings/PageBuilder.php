@@ -27,7 +27,7 @@ class PageBuilder {
 	 */
 	public static function save( string|null $value ): string {
 		// bail if value is not 1.
-		if( 1 !== absint( $value ) ) {
+		if ( 1 !== absint( $value ) ) {
 			return $value;
 		}
 
@@ -52,7 +52,7 @@ class PageBuilder {
 		}
 
 		// bail if no page builder could be found.
-		if( false === $page_builder_obj_to_use ) {
+		if ( false === $page_builder_obj_to_use ) {
 			return $value;
 		}
 

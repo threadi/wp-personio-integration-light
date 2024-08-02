@@ -39,7 +39,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 			// cleanup the given URL.
 			$value = self::cleanup_url_string( $value );
 
-			if( ! empty($value) ) {
+			if ( ! empty( $value ) ) {
 				// check if URL ends with ".jobs.personio.com" or ".jobs.personio.de" with or without "/" on the end.
 				if ( ! self::check_personio_login_url( $value ) ) {
 					add_settings_error( 'personioIntegrationLoginUrl', 'personioIntegrationLoginUrl', __( 'The Personio Login URL must end with ".personio.com" or ".personio.de"!', 'personio-integration-light' ) );
@@ -63,7 +63,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function check_personio_login_url( string $value ): bool {
-		return ( str_ends_with( $value, '.personio.com' ) || str_ends_with( $value, '.personio.de' ) ) && ! str_contains( $value, '.jobs.personio.' ) ;
+		return ( str_ends_with( $value, '.personio.com' ) || str_ends_with( $value, '.personio.de' ) ) && ! str_contains( $value, '.jobs.personio.' );
 	}
 
 	/**

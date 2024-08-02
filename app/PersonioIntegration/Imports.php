@@ -325,9 +325,9 @@ class Imports {
 			// send info to admin about the problem if debug is disabled.
 			if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
 				$send_to = get_bloginfo( 'admin_email' );
-				$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of Personio Positions', 'personio-integration-light' );
-				$msg     = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . "\r\n" . $ausgabe;
-				$msg    .= "\r\n\r\n" . __( 'Sent by the plugin Personio Integration Light', 'personio-integration-light' );
+				$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
+				$msg     = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br>' . nl2br( $ausgabe );
+				$msg    .= '<br><br>' . __( 'Sent by the plugin Personio Integration Light', 'personio-integration-light' );
 				wp_mail( $send_to, $subject, $msg );
 			}
 		}

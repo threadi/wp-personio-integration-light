@@ -478,7 +478,11 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added categories for log entries
 * Added new option to enter the Personio Login URL to help reach your Personio account from WordPress faster
 * Added deletion of extension data during uninstallation of this plugin
+* Added documentation how to implement custom extensions for this plugin
+* Compatible with PHP 8.4
 * Optimized translation of position contents for Blocks in Block Editor
+* Optimized email-format for info about errors during import
+* Hide Pro-hint for more entries on some specific pages
 * All protocol entries are now translatable
 * Use wp_add_inline_style() instead of styling-template
 * Updated Blocks for React 19 compatibility (for future WP-version)

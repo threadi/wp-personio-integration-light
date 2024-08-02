@@ -314,7 +314,7 @@ class Extensions {
 	 * @return void
 	 */
 	public function uninstall(): void {
-		foreach( $this->get_extensions() as $extension_name ) {
+		foreach ( $this->get_extensions() as $extension_name ) {
 			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
 				$obj->uninstall();
