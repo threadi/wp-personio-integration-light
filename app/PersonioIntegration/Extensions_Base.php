@@ -351,4 +351,11 @@ class Extensions_Base {
 	protected function is_default_enabled(): bool {
 		return false;
 	}
+
+	/**
+	 * Base function for uninstalling any extensions.
+	 *
+	 * @return void
+	 */
+	public function uninstall(): void {}
 }

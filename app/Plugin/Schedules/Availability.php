@@ -32,6 +32,13 @@ class Availability extends Schedules_Base {
 	protected string $option_name = 'personioIntegrationEnableAvailabilityCheck';
 
 	/**
+	 * Name of the log category.
+	 *
+	 * @var string
+	 */
+	protected string $log_category = 'availability';
+
+	/**
 	 * Initialize this schedule.
 	 */
 	public function __construct() {

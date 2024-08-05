@@ -33,6 +33,8 @@ class Log {
             `id` mediumint(9) NOT NULL AUTO_INCREMENT,
             `time` datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
             `log` text DEFAULT '' NOT NULL,
+            `md5` text DEFAULT '' NOT NULL,
+            `category` varchar(40) DEFAULT '' NOT NULL,
             `state` varchar(40) DEFAULT '' NOT NULL,
             UNIQUE KEY id (id)
         ) $charset_collate;";
@@ -54,19 +56,23 @@ class Log {
 	/**
 	 * Add a single log-entry.
 	 *
-	 * @param string $log The text to log.
+	 * @param string $log   The text to log.
 	 * @param string $state The state to log.
+	 * @param string $category The category for this log entry (optional).
+	 * @param string $md5 Marker to identify unique entries (optional).
 	 *
 	 * @return void
 	 */
-	public function add_log( string $log, string $state ): void {
+	public function add_log( string $log, string $state, string $category = '', string $md5 = '' ): void {
 		global $wpdb;
 		$wpdb->insert(
 			$wpdb->prefix . 'personio_import_logs',
 			array(
-				'time'  => gmdate( 'Y-m-d H:i:s' ),
-				'log'   => $log,
-				'state' => $state,
+				'time'     => gmdate( 'Y-m-d H:i:s' ),
+				'log'      => $log,
+				'md5'      => $md5,
+				'category' => $category,
+				'state'    => $state,
 			)
 		);
 		$this->clean_log();
@@ -84,6 +90,26 @@ class Log {
 		}
 
 		global $wpdb;
-		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY)', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) );
+		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) );
+	}
+
+	/**
+	 * Return list of categories with internal name & its label.
+	 *
+	 * @return array
+	 */
+	public function get_categories(): array {
+		$list = array(
+			'system' => __( 'System', 'personio-integration-light' ),
+		);
+
+		/**
+		 * Filter the list of possible log categories.
+		 *
+		 * @since 3.1.0 Available since 3.1.0.
+		 *
+		 * @param array $list List of categories.
+		 */
+		return apply_filters( 'personio_integration_log_categories', $list );
 	}
 }

@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 
@@ -88,7 +89,10 @@ class Settings {
 		add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
 
 		// secure our own plugin settings.
-		add_filter( 'updated_option', array( $this, 'secure_settings' ) );
+		add_filter( 'updated_option', array( $this, 'secure_settings' ), 10, 3 );
+
+		// use our own hooks.
+		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 	}
 
 	/**
@@ -188,7 +192,7 @@ class Settings {
 			$detail_excerpt       = Taxonomies::get_instance()->get_labels_for_settings( get_option( 'personioIntegrationTemplateExcerptDetail' ) );
 		}
 
-		// get editor URL.
+		// get Block Editor URL.
 		$editor_url = add_query_arg(
 			array(
 				'path' => '/wp_template/all',
@@ -245,6 +249,18 @@ class Settings {
 						),
 						/* translators: %1$s is replaced with the name of the Pro-plugin */
 						'pro_hint'            => __( 'Use all languages supported by Personio with %s.', 'personio-integration-light' ),
+					),
+					'personioIntegrationLoginUrl'         => array(
+						'label'               => __( 'Personio Login URL', 'personio-integration-light' ),
+						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Text', 'get' ),
+						/* translators: %1$s is replaced with the url to the Personio support */
+						'description'         => sprintf( __( 'This URL is used by Personio to give you a unique login URL to your Personio account. It will be communicated to you when you register with Personio.<br>This is NOT the URL where your open positions are visible.<br>If you have any questions about this URL, please contact the <a href="%1$s" target="_blank">Personio support (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_support_url() ) ),
+						'placeholder'         => Helper::get_personio_login_url_example(),
+						'register_attributes' => array(
+							'default'           => '',
+							'type'              => 'string',
+							'sanitize_callback' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationLoginUrl', 'validate' ),
+						),
 					),
 				),
 			),
@@ -561,6 +577,12 @@ class Settings {
 						'class'               => 'personio-integration-automatic-import',
 					),
 				),
+			),
+			'settings_section_import_other'    => array(
+				'label'         => __( 'Other settings', 'personio-integration-light' ),
+				'settings_page' => 'personioIntegrationPositionsImport',
+				'callback'      => '__return_true',
+				'fields'        => array(),
 			),
 			'hidden_section'                   => array(
 				'settings_page' => 'hidden_personio_page',
@@ -1086,10 +1108,12 @@ class Settings {
 	 * Secure settings in DB.
 	 *
 	 * @param string $option The option which has been saved.
+	 * @param mixed  $old_value The old value.
+	 * @param mixed  $new_value The new value.
 	 *
 	 * @return void
 	 */
-	public function secure_settings( string $option ): void {
+	public function secure_settings( string $option, mixed $old_value, mixed $new_value ): void {
 		// bail if updated option is 'personio_integration_settings'.
 		if ( 'personio_integration_settings' === $option ) {
 			return;
@@ -1125,5 +1149,48 @@ class Settings {
 
 		// save complete settings in single option field.
 		update_option( 'personio_integration_settings', $settings );
+
+		// log this change if debug is enabled.
+		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+			// get settings for this option.
+			$setting = $this->get_settings_for_field( $option );
+
+			// bail if setting could not be found.
+			if ( empty( $setting ) ) {
+				return;
+			}
+
+			// bail if no label is set.
+			if ( empty( $setting['label'] ) ) {
+				return;
+			}
+
+			// get the user.
+			$user      = wp_get_current_user();
+			$user_name = __( 'Unknown', 'personio-integration-light' );
+			if ( ! is_null( $user ) ) {
+				$user_name = $user->display_name;
+			}
+
+			// finally lot it.
+			$log = new Log();
+			/* translators: $1%s will be replaced by the setting label, %2$s by the username, %3$s by the old value, %4$s by the new value. */
+			$log->add_log( sprintf( __( 'Setting for <i>%1$s</i> has been changed by %2$s.<br>Old: %3$s<br>New: %4$s', 'personio-integration-light' ), esc_html( $setting['label'] ), esc_html( $user_name ), esc_html( $old_value ), esc_html( $new_value ) ), 'success', 'settings' );
+		}
+	}
+
+	/**
+	 * Add import categories.
+	 *
+	 * @param array $categories List of categories.
+	 *
+	 * @return array
+	 */
+	public function add_log_categories( array $categories ): array {
+		// add categories we need for our settings.
+		$categories['settings'] = __( 'Settings', 'personio-integration-light' );
+
+		// return resulting list.
+		return $categories;
 	}
 }

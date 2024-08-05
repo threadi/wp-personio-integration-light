@@ -374,6 +374,11 @@ class Admin {
 			/* translators: %1$s will be replaced by the URL to the Pro-information-page. */
 			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro (opens new window)</a> any number of positions can be displayed - and you get a large number of additional features.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'error' );
+			$transient_obj->set_hide_on(
+				array(
+					get_admin_url() . 'edit.php?post_type=' . PersonioPosition::get_instance()->get_name() . '&page=personioPositionsLicense',
+				)
+			);
 			$transient_obj->save();
 		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_no_url_set' )->delete();
@@ -718,14 +723,44 @@ class Admin {
 		// check the nonce.
 		check_admin_referer( 'personio-integration-log-export', 'nonce' );
 
+		// collect vars for statement.
+		$vars = array( 1 );
+
+		// collect restrictions.
+		$where = '';
+
+		// get filter.
+		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( ! empty( $category ) ) {
+			$where .= ' AND `category` = "%s"';
+			$vars[] = $category;
+		}
+
+		// get md5.
+		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( ! empty( $md5 ) ) {
+			$where .= ' AND `md5` = "%s"';
+			$vars[] = $md5;
+		}
+
+		$limit = 10000;
+		/**
+		 * Filter limit to prevent possible errors on big tables.
+		 *
+		 * @since 3.1.0 Available since 3.1.0.
+		 * @param int $limit The actual limit.
+		 */
+		$limit = apply_filters( 'personio_integration_light_log_limit', $limit );
+
 		// get entries.
 		$entries = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`
             			FROM `' . $wpdb->prefix . 'personio_import_logs`
-                        WHERE 1 = %d
-                        ORDER BY `date` DESC',
-				array( 1 )
+                        WHERE 1 = %d' . $where . '
+                        ORDER BY `date` DESC
+                        LIMIT ' . $limit,
+				$vars
 			),
 			ARRAY_A
 		);

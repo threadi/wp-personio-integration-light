@@ -141,7 +141,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 			// return error as the given string is a URL but not for Personio.
 			return array(
 				'error' => 'no_personio_url',
-				'text'  => __( 'The specified Personio URL is not a Personio-URL. It must end with <i>.jobs.personio.com</i> or <i>.jobs.personio.de</i>.', 'personio-integration-light' ),
+				'text'  => __( 'The specified Personio URL is not a Personio-URL. It must end with ".jobs.personio.com" or ".jobs.personio.de".', 'personio-integration-light' ),
 			);
 		} elseif ( ! self::check_url( $value ) ) {
 			// return error as the given URL is not a usable Personio-URL.
@@ -186,6 +186,6 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 */
 	public static function cleanup_url_string( string $value ): string {
 		// remove slash on the end of the given url.
-		return rtrim( $value, '/' );
+		return rtrim( trim( $value ), '/' );
 	}
 }

@@ -116,14 +116,14 @@ class Position {
 	public function save(): void {
 		// do not save anything without personioId.
 		if ( empty( $this->get_personio_id() ) ) {
-			$this->log->add_log( __( 'Position could not be saved as the PersonioId is missing.', 'personio-integration-light' ), 'error' );
+			$this->log->add_log( __( 'Position could not be saved as the PersonioId is missing.', 'personio-integration-light' ), 'error', 'import' );
 			return;
 		}
 
 		// do not save anything without language setting.
 		if ( empty( $this->get_lang() ) ) {
 			/* translators: %1$s will be replaced by the Personio ID. */
-			$this->log->add_log( sprintf( __( 'Position with PersonioId %1$s could not be saved as the position does not have a language set.', 'personio-integration-light' ), esc_html( $this->data['personioId'] ) ), 'error' );
+			$this->log->add_log( sprintf( __( 'Position with PersonioId %1$s could not be saved as the position does not have a language set.', 'personio-integration-light' ), esc_html( $this->data['personioId'] ) ), 'error', 'import' );
 			return;
 		}
 
@@ -185,7 +185,7 @@ class Position {
 				}
 
 				// log this event.
-				$this->log->add_log( 'PersonioId ' . $this->data['personioId'] . ' existed in database multiple times. Cleanup done.', 'error' );
+				$this->log->add_log( 'PersonioId ' . $this->data['personioId'] . ' existed in database multiple times. Cleanup done.', 'error', 'import' );
 			}
 		} else {
 			// set ID to 0.
@@ -237,10 +237,10 @@ class Position {
 		// if error occurred log it.
 		if ( is_wp_error( $result ) ) {
 			// log this event.
-			$this->log->add_log( 'Position with personioId ' . $this->data['personioId'] . ' could not be saved! Error: ' . $result->get_error_message(), 'error' );
+			$this->log->add_log( 'Position with personioId ' . $this->data['personioId'] . ' could not be saved! Error: ' . $result->get_error_message(), 'error', 'import' );
 		} elseif ( 0 === absint( $result ) ) {
 			// log this event.
-			$this->log->add_log( 'Position with personioId ' . $this->data['personioId'] . ' could not be saved! Got no error from WordPress.', 'error' );
+			$this->log->add_log( 'Position with personioId ' . $this->data['personioId'] . ' could not be saved! Got no error from WordPress.', 'error', 'import' );
 		} elseif ( absint( $result ) > 0 ) {
 			// save the post-ID in the object.
 			$this->data['ID'] = absint( $result );
@@ -313,7 +313,8 @@ class Position {
 
 			// add log in debug-mode.
 			if ( false !== $this->debug ) {
-				$this->log->add_log( 'Position ' . $this->get_personio_id() . ' successfully imported or updated in ' . $this->get_lang() . '.', 'success' );
+				/* translators: %1$s will be replaced by the PersonioID, %2$s by the language name. */
+				$this->log->add_log( sprintf( __( 'Position %1$s successfully imported or updated in %2$s.', 'personio-integration-light' ), esc_html( $this->get_personio_id() ), esc_html( Languages::get_instance()->get_language_title( $this->get_lang() ) ) ), 'success', 'import' );
 			}
 		}
 	}
@@ -358,7 +359,7 @@ class Position {
 			if ( ! is_wp_error( $term_array ) ) {
 				$term = get_term( $term_array['term_id'], $taxonomy );
 			} elseif ( false !== $this->debug ) {
-				$this->log->add_log( 'Term ' . $value . ' could not be imported in ' . $taxonomy, 'error' );
+				$this->log->add_log( 'Term ' . $value . ' could not be imported in ' . $taxonomy, 'error', 'import' );
 			}
 		}
 

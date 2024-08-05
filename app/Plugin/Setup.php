@@ -8,15 +8,15 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
-
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
- * Initialize this plugin.
+ * Initialize the setup object.
  */
 class Setup {
 	/**
@@ -50,7 +50,7 @@ class Setup {
 		$this->setup_obj->set_path( Helper::get_plugin_path() );
 		$this->setup_obj->set_texts(
 			array(
-				'title_error' => __( 'Error', 'wp-personio-integration-light' ),
+				'title_error' => __( 'Error', 'personio-integration-light' ),
 				'txt_error_1' => __( 'The following error occurred:', 'personio-integration-light' ),
 				/* translators: %1$s will be replaced with the URL of the plugin-forum on wp.org */
 				'txt_error_2' => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),

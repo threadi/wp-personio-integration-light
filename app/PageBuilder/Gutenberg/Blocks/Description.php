@@ -15,6 +15,7 @@ use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 
 /**
@@ -67,6 +68,9 @@ class Description extends Blocks_Basis {
 		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! ( $position instanceof Position ) ) {
 			return '';
 		}
+
+		// set actual language.
+		$position->set_lang( Languages::get_instance()->get_current_lang() );
 
 		// set ID as class.
 		$class = '';

@@ -15,6 +15,7 @@ use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 
 /**
@@ -84,6 +85,9 @@ class Detail extends Blocks_Basis {
 			return '';
 		}
 
+		// set actual language.
+		$position->set_lang( Languages::get_instance()->get_current_lang() );
+
 		// get setting for colon.
 		$colon = ': ';
 		if ( false === $attributes['colon'] ) {
@@ -108,7 +112,9 @@ class Detail extends Blocks_Basis {
 			$template = $attributes['template'];
 		}
 
+		// collect the details in this array.
 		$details = array();
+		$taxonomy_data = array();
 
 		// loop through the chosen details.
 		foreach ( $attributes['excerptTemplates'] as $detail ) {
@@ -127,6 +133,7 @@ class Detail extends Blocks_Basis {
 					$labels = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name );
 
 					$details[ $labels['name'] ] = $value;
+					$taxonomy_data[ $labels['name'] ] = get_taxonomy( $taxonomy_name );
 				}
 			}
 		}

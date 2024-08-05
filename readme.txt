@@ -6,7 +6,7 @@ Tested up to: 6.6
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.0.11
+Stable tag: 3.1.0
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -472,3 +472,21 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Optimized REST API detection
 * Fixed PHP-Warnings in intro-object if Divi or other plugins will be enabled
 * Fixed template for grouped view
+
+= 3.1.0 =
+* Added not grouped-setting for list block
+* Added categories for log entries
+* Added new option to enter the Personio Login URL to help reach your Personio account from WordPress faster
+* Added deletion of extension data during uninstallation of this plugin
+* Added documentation how to implement custom extensions for this plugin
+* Compatible with PHP 8.4
+* Optimized translation of position contents for Blocks in Block Editor
+* Optimized email-format for info about errors during import
+* Hide Pro-hint for more entries on some specific pages
+* All protocol entries are now translatable
+* Use wp_add_inline_style() instead of styling-template
+* Updated Blocks for React 19 compatibility (for future WP-version)
+* Log is now restricted to 10.000 entries for better performance, only changeable in Pro
+* Removed styling template
+* Fixed visibility of Single Block
+* Fixed handling of grouping list if not data for grouping is available

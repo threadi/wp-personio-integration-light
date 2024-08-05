@@ -87,7 +87,7 @@ class Schedules {
 	 * @return array
 	 */
 	public function add_settings( array $settings ): array {
-		if( empty( $settings['settings_section_advanced']['fields'] ) ) {
+		if ( empty( $settings['settings_section_advanced']['fields'] ) ) {
 			return $settings;
 		}
 		$settings['settings_section_advanced']['fields'] = Helper::add_array_in_array_on_position(
@@ -157,40 +157,44 @@ class Schedules {
 			return $our_events;
 		}
 
-		if ( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
-			foreach ( $this->get_schedule_object_names() as $object_name ) {
-				$obj = new $object_name();
-				if ( $obj instanceof Schedules_Base ) {
-					// install if schedule is enabled and not in list of our schedules.
-					if ( $obj->is_enabled() && ! isset( $our_events[ $obj->get_name() ] ) ) {
-						// reinstall the missing event.
-						$obj->install();
+		// bail if plugin activation is running.
+		if ( defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
+			return $our_events;
+		}
 
-						// log this event if debug-mode is enabled.
-						if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-							$log = new Log();
-							/* translators: %1$s will be replaced by the event name. */
-							$log->add_log( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success' );
-						}
+		// check the schedule objects if they are set.
+		foreach ( $this->get_schedule_object_names() as $object_name ) {
+			$obj = new $object_name();
+			if ( $obj instanceof Schedules_Base ) {
+				// install if schedule is enabled and not in list of our schedules.
+				if ( $obj->is_enabled() && ! isset( $our_events[ $obj->get_name() ] ) ) {
+					// reinstall the missing event.
+					$obj->install();
 
-						// re-run the check for WP-cron-events.
-						$our_events = $this->get_wp_events();
+					// log this event if debug-mode is enabled.
+					if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+						$log = new Log();
+						/* translators: %1$s will be replaced by the event name. */
+						$log->add_log( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 					}
 
-					// delete if schedule is in list of our events and not enabled.
-					if ( ! $obj->is_enabled() && isset( $our_events[ $obj->get_name() ] ) ) {
-						$obj->delete();
+					// re-run the check for WP-cron-events.
+					$our_events = $this->get_wp_events();
+				}
 
-						// log this event if debug-mode is enabled.
-						if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-							$log = new Log();
-							/* translators: %1$s will be replaced by the event name. */
-							$log->add_log( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success' );
-						}
+				// delete if schedule is in list of our events and not enabled.
+				if ( ! $obj->is_enabled() && isset( $our_events[ $obj->get_name() ] ) ) {
+					$obj->delete();
 
-						// re-run the check for WP-cron-events.
-						$our_events = $this->get_wp_events();
+					// log this event if debug-mode is enabled.
+					if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+						$log = new Log();
+						/* translators: %1$s will be replaced by the event name. */
+						$log->add_log( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 					}
+
+					// re-run the check for WP-cron-events.
+					$our_events = $this->get_wp_events();
 				}
 			}
 		}

@@ -11,10 +11,13 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PageBuilder\Page_Builders;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\Widgets\Widgets;
 
 /**
@@ -110,14 +113,17 @@ class Uninstaller {
 
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
-			// get extensions.
+			// initialize the extensions to call their uninstall routines.
 			Extensions::get_instance()->init();
 
 			// reset Personio- and language-specific settings.
 			Imports::get_instance()->reset_personio_settings();
 
-			// delete all collected data.
-			( new Cli() )->delete_all();
+			// delete taxonomies.
+			Taxonomies::get_instance()->delete_all();
+
+			// delete position.
+			PersonioPosition::get_instance()->delete_positions();
 
 			// remove options from settings.
 			$settings_obj = Settings::get_instance();
@@ -143,6 +149,9 @@ class Uninstaller {
 					$wpdb->query( $wpdb->prepare( 'DELETE FROM `' . $wpdb->usermeta . '` WHERE `meta_key` like %s', '%' . esc_sql( $obj->get_name() ) . '%' ) );
 				}
 			}
+
+			// uninstall extensions.
+			Extensions::get_instance()->uninstall();
 		}
 
 		// remove roles from our plugin.

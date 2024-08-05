@@ -134,9 +134,9 @@ body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
     vertical-align: middle;
 }
 
-.personioposition_page_personioPositions th#state {
-    width: 72px;
-}
+.personioposition_page_personioPositions th#state { width: 40px }
+.personioposition_page_personioPositions td.state { text-align: center }
+.personioposition_page_personioPositions th#category { width: 120px }
 
 body.post-type-personioposition th#id, body.post-type-personioposition th#sort { width: 80px; }
 
@@ -325,3 +325,6 @@ body.post-type-personioposition #post-body-content { display: none }
 body.post-type-personioposition summary { cursor: pointer }
 
 body.post-type-personioposition .icl_subsubsub { display: none !important; }
+
+body.personioposition_page_personioPositions .state .dashicons-yes { color: green }
+body.personioposition_page_personioPositions .state .dashicons-no { color: red }

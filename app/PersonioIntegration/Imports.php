@@ -214,7 +214,8 @@ class Imports {
 					if ( 1 === absint( get_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, true ) ) ) {
 						if ( false === delete_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED ) ) {
 							// log event.
-							$this->log->add_log( sprintf( 'Removing updated flag for %1$s failed.', esc_html( $personio_id ) ), 'error' );
+							/* translators: %1$s will be replaced by the PersonioId. */
+							$this->log->add_log( sprintf( __( 'Removing updated flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
 						}
 					} else {
 						// delete this position from database without using trash.
@@ -222,10 +223,12 @@ class Imports {
 
 						if ( $result instanceof WP_Post ) {
 							// log this event.
-							$this->log->add_log( 'Position ' . $personio_id . ' has been deleted as it was not updated during the last import run.', 'success' );
+							/* translators: %1$s will be replaced by the PersonioID. */
+							$this->log->add_log( sprintf( __( 'Position %1$s has been deleted as it was not updated during the last import run.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'success', 'import' );
 						} else {
 							// log event.
-							$this->log->add_log( sprintf( 'Removing of not updated positions %1$s failed.', esc_html( $personio_id ) ), 'error' );
+							/* translators: %1$s will be replaced by the PersonioID. */
+							$this->log->add_log( sprintf( __( 'Removing of not updated position %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
 						}
 					}
 				}
@@ -312,7 +315,7 @@ class Imports {
 
 			// save results in database.
 			$log = new Log();
-			$log->add_log( $ausgabe, 'error' );
+			$log->add_log( $ausgabe, 'error', 'import' );
 
 			// output results in WP-CLI.
 			if ( Helper::is_cli() ) {
@@ -322,9 +325,9 @@ class Imports {
 			// send info to admin about the problem if debug is disabled.
 			if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
 				$send_to = get_bloginfo( 'admin_email' );
-				$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of Personio Positions', 'personio-integration-light' );
-				$msg     = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . "\r\n" . $ausgabe;
-				$msg    .= "\r\n\r\n" . __( 'Sent by the plugin Personio Integration Light', 'personio-integration-light' );
+				$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
+				$msg     = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br>' . nl2br( $ausgabe );
+				$msg    .= '<br><br>' . __( 'Sent by the plugin Personio Integration Light', 'personio-integration-light' );
 				wp_mail( $send_to, $subject, $msg );
 			}
 		}

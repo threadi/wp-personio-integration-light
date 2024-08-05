@@ -171,7 +171,7 @@ class Helper {
 		// Case #4.
 		$rest_url    = wp_parse_url( trailingslashit( rest_url() ) );
 		$current_url = wp_parse_url( add_query_arg( array() ) );
-		if( is_array( $current_url ) && isset($current_url['path']) ) {
+		if ( is_array( $current_url ) && isset( $current_url['path'] ) ) {
 			return str_starts_with( $current_url['path'], $rest_url['path'] );
 		}
 		return false;
@@ -442,10 +442,19 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_personio_login_url(): string {
-		if ( Languages::get_instance()->is_german_language() ) {
-			return 'https://www.personio.de/login/';
+		// get the configured Personio Login URL.
+		$personio_login_url = get_option( 'personioIntegrationLoginUrl' );
+
+		// return default URLs, if no Login URL is configured.
+		if ( empty( $personio_login_url ) ) {
+			if ( Languages::get_instance()->is_german_language() ) {
+				return 'https://www.personio.de/login/';
+			}
+			return 'https://www.personio.com/login/';
 		}
-		return 'https://www.personio.com/login/';
+
+		// return the custom Personio Login URL.
+		return $personio_login_url;
 	}
 
 	/**
@@ -542,7 +551,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_personio_url_example(): string {
-		return Languages::get_instance()->is_german_language() ? 'https://dein-unternehmen.jobs.personio.de' : 'https://yourcompany.jobs.personio.com';
+		return Languages::get_instance()->is_german_language() ? 'https://dein-unternehmen.jobs.personio.de' : 'https://your-company.jobs.personio.com';
 	}
 
 	/**
@@ -552,6 +561,15 @@ class Helper {
 	 */
 	public static function get_template_documentation_url(): string {
 		return Languages::get_instance()->is_german_language() ? 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/templates_de.md' : 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/templates.md';
+	}
+
+	/**
+	 * Return language-depending Personio Login URL example.
+	 *
+	 * @return string
+	 */
+	public static function get_personio_login_url_example(): string {
+		return Languages::get_instance()->is_german_language() ? 'https://dein-unternehmen.personio.de' : 'https://your-company.personio.com';
 	}
 
 	/**
@@ -689,5 +707,22 @@ class Helper {
 	 */
 	public static function get_shortcode_documentation_url(): string {
 		return Languages::get_instance()->is_german_language() ? 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes_de.md' : 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md';
+	}
+
+	/**
+	 * Add custom inline style for output.
+	 *
+	 * @param string $style The style (CSS-code).
+	 *
+	 * @return void
+	 */
+	public static function add_inline_style( string $style ): void {
+		// bail if style it empty.
+		if ( empty( $style ) ) {
+			return;
+		}
+
+		// set the style.
+		wp_add_inline_style( 'wp-block-library', $style );
 	}
 }

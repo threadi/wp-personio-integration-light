@@ -48,6 +48,13 @@ class Import extends Schedules_Base {
 	protected string $default_interval = 'daily';
 
 	/**
+	 * Name of the log category.
+	 *
+	 * @var string
+	 */
+	protected string $log_category = 'import';
+
+	/**
 	 * Initialize this schedule.
 	 */
 	public function __construct() {

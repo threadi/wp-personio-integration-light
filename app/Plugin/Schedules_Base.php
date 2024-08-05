@@ -8,6 +8,8 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
+use PersonioIntegrationLight\Log;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -34,6 +36,13 @@ class Schedules_Base {
 	 * @var string
 	 */
 	protected string $interval_option_name = '';
+
+	/**
+	 * Name of the log category.
+	 *
+	 * @var string
+	 */
+	protected string $log_category = 'schedule';
 
 	/**
 	 * Interval of this event.
@@ -228,5 +237,14 @@ class Schedules_Base {
 	 */
 	public function get_default_interval(): string {
 		return $this->default_interval;
+	}
+
+	/**
+	 * Return the log category for this schedule.
+	 *
+	 * @return string
+	 */
+	public function get_log_category(): string {
+		return $this->log_category;
 	}
 }

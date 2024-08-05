@@ -65,6 +65,7 @@ class Availability extends Extensions_Base {
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'run' ) );
 		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
+		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 
 		// extend the position table.
 		add_filter( 'manage_' . PersonioPosition::get_instance()->get_name() . '_posts_columns', array( $this, 'add_column' ) );
@@ -86,25 +87,19 @@ class Availability extends Extensions_Base {
 	 * @return array
 	 */
 	public function add_settings( array $settings ): array {
-		if( empty( $settings['settings_section_import']['fields'] ) ) {
+		if ( empty( $settings['settings_section_import']['fields'] ) ) {
 			return $settings;
 		}
-		$settings['settings_section_import']['fields'] = Helper::add_array_in_array_on_position(
-			$settings['settings_section_import']['fields'],
-			3,
-			array(
-				'personioIntegrationEnableAvailabilityCheck' => array(
-					'label'               => __( 'Enable availability checks', 'personio-integration-light' ),
-					'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-					'description'         => __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ),
-					'register_attributes' => array(
-						'type'    => 'integer',
-						'default' => 1,
-					),
-					'source'              => WP_PERSONIO_INTEGRATION_PLUGIN,
-					'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ),
-				),
-			)
+		$settings['settings_section_import_other']['fields']['personioIntegrationEnableAvailabilityCheck'] = array(
+			'label'               => __( 'Enable availability checks', 'personio-integration-light' ),
+			'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+			'description'         => __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ),
+			'register_attributes' => array(
+				'type'    => 'integer',
+				'default' => 1,
+			),
+			'source'              => WP_PERSONIO_INTEGRATION_PLUGIN,
+			'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ),
 		);
 
 		// return resulting list of settings.
@@ -409,10 +404,10 @@ class Availability extends Extensions_Base {
 
 		if ( is_wp_error( $response ) ) {
 			// log possible error.
-			$log->add_log( 'Error on request to get position availability: ' . $response->get_error_message(), 'error' );
+			$log->add_log( 'Error on request to get position availability: ' . $response->get_error_message(), 'error', 'availability' );
 		} elseif ( empty( $response ) ) {
 			// log im result is empty.
-			$log->add_log( 'Get empty response for position availability.', 'error' );
+			$log->add_log( 'Get empty response for position availability.', 'error', 'availability' );
 		} else {
 			// get the http-status to check if call results in acceptable results.
 			$http_status = $response['http_response']->get_status();
@@ -450,5 +445,20 @@ class Availability extends Extensions_Base {
 		} else {
 			$schedule_obj->delete();
 		}
+	}
+
+	/**
+	 * Add import categories.
+	 *
+	 * @param array $categories List of categories.
+	 *
+	 * @return array
+	 */
+	public function add_log_categories( array $categories ): array {
+		// add categories we need for our cpt.
+		$categories['availability'] = __( 'Availability', 'personio-integration-light' );
+
+		// return resulting list.
+		return $categories;
 	}
 }
