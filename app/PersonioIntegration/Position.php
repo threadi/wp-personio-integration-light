@@ -258,18 +258,16 @@ class Position {
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, $this->data['personioId'] );
 
 			// assign the position to its terms (only for main language).
-			if( $this->get_lang() === Languages::get_instance()->get_main_language() ) {
-				$taxonomies = Taxonomies::get_instance()->get_taxonomies();
-				foreach ( $taxonomies as $taxonomy_name => $taxonomy ) {
-					if ( ! empty( $taxonomy['attr']['rewrite']['slug'] ) ) {
-						// first remove all existing relations if list is appended (but not for language).
-						if ( $taxonomy['append'] && WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES !== $taxonomy_name ) {
-							wp_delete_object_term_relationships( $this->get_id(), array( $taxonomy_name ) );
-						}
-
-						// then assign the terms of this taxonomy to the object.
-						$this->update_terms( $taxonomy_name, $taxonomy_name, $taxonomy['append'] );
+			$taxonomies = Taxonomies::get_instance()->get_taxonomies();
+			foreach ( $taxonomies as $taxonomy_name => $taxonomy ) {
+				if ( ! empty( $taxonomy['attr']['rewrite']['slug'] ) ) {
+					// first remove all existing relations if list is appended (but not for language).
+					if ( $taxonomy['append'] && WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES !== $taxonomy_name && $this->get_lang() === Languages::get_instance()->get_main_language() ) {
+						wp_delete_object_term_relationships( $this->get_id(), array( $taxonomy_name ) );
 					}
+
+					// then assign the terms of this taxonomy to the object.
+					$this->update_terms( $taxonomy_name, $taxonomy_name, $taxonomy['append'] );
 				}
 			}
 
