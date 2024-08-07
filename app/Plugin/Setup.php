@@ -48,6 +48,7 @@ class Setup {
 		$this->setup_obj = \wpEasySetup\Setup::get_instance();
 		$this->setup_obj->set_url( Helper::get_plugin_url() );
 		$this->setup_obj->set_path( Helper::get_plugin_path() );
+		$this->setup_obj->set_vendor_path( 'lib' );
 		$this->setup_obj->set_texts(
 			array(
 				'title_error' => __( 'Error', 'personio-integration-light' ),
