@@ -261,8 +261,8 @@ class Position {
 			$taxonomies = Taxonomies::get_instance()->get_taxonomies();
 			foreach ( $taxonomies as $taxonomy_name => $taxonomy ) {
 				if ( ! empty( $taxonomy['attr']['rewrite']['slug'] ) ) {
-					// first remove all existing relations if list is appended (but not for language).
-					if ( $taxonomy['append'] && WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES !== $taxonomy_name ) {
+					// first remove all existing relations if list is appended (but not for language-taxonomy and only for main language).
+					if ( $taxonomy['append'] && WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES !== $taxonomy_name && $this->get_lang() === Languages::get_instance()->get_main_language() ) {
 						wp_delete_object_term_relationships( $this->get_id(), array( $taxonomy_name ) );
 					}
 
