@@ -500,5 +500,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Show limitation hint only if 10+ positions are imported
 * Updates dependencies
 * Update WP Easy Setup configuration for better compatibility with other plugins which use this
+* Optimized cleanup of extensions during uninstallation
 * Fixed limitation of lists of positions in frontend
 * Fixed missing inline styles in Block Editor (e.g. to hide the filter-title there)

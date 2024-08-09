@@ -337,6 +337,7 @@ class Extensions_Base {
 				'default'      => $this->is_default_enabled() ? 1 : 0,
 				'show_in_rest' => true,
 			),
+			'source'              => WP_PERSONIO_INTEGRATION_PRO_PLUGIN,
 		);
 
 		// return resulting list.
