@@ -14,7 +14,6 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use WP_Block_Type_Registry;
-use WP_REST_Request;
 
 /**
  * Object to handle main functions for single block.
