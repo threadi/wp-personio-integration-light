@@ -486,7 +486,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// set limit.
-		$limit_by_wp   = $personio_attributes['limit'] ? ( absint( get_option( 'posts_per_page' ) ) > 10 ? absint( get_option( 'posts_per_page' ) ) : 10 ) : 10;
+		$limit_by_wp   = $personio_attributes['limit'] > 10 ? ( absint( get_option( 'posts_per_page' ) ) > 10 ? absint( get_option( 'posts_per_page' ) ) : 10 ) : $personio_attributes['limit'];
 		$limit_by_list = $personio_attributes['limit'];
 
 		/**
