@@ -342,6 +342,9 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
+		if ( Helper::is_admin_api_request() && ! empty( $personio_attributes['styles'] ) ) {
+			wp_styles()->print_inline_style( 'wp-block-library' );
+		}
 
 		// embed content.
 		include Templates::get_instance()->get_template( 'parts/content.php' );
@@ -537,6 +540,9 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
+		if ( Helper::is_admin_api_request() && ! empty( $personio_attributes['styles'] ) ) {
+			wp_styles()->print_inline_style( 'wp-block-library' );
+		}
 
 		// embed filter.
 		require Templates::get_instance()->get_template( 'parts/part-filter.php' );
