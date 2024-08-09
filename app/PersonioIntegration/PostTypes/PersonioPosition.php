@@ -342,6 +342,9 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
+		if ( Helper::is_admin_api_request() && ! empty( $personio_attributes['styles'] ) ) {
+			wp_styles()->print_inline_style( 'wp-block-library' );
+		}
 
 		// embed content.
 		include Templates::get_instance()->get_template( 'parts/content.php' );
@@ -486,7 +489,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// set limit.
-		$limit_by_wp   = $personio_attributes['limit'] ? ( absint( get_option( 'posts_per_page' ) ) > 10 ? absint( get_option( 'posts_per_page' ) ) : 10 ) : 10;
+		$limit_by_wp   = $personio_attributes['limit'] > 10 ? ( absint( get_option( 'posts_per_page' ) ) > 10 ? absint( get_option( 'posts_per_page' ) ) : 10 ) : $personio_attributes['limit'];
 		$limit_by_list = $personio_attributes['limit'];
 
 		/**
@@ -537,6 +540,9 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
+		if ( Helper::is_admin_api_request() && ! empty( $personio_attributes['styles'] ) ) {
+			wp_styles()->print_inline_style( 'wp-block-library' );
+		}
 
 		// embed filter.
 		require Templates::get_instance()->get_template( 'parts/part-filter.php' );
