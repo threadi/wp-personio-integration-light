@@ -367,7 +367,7 @@ class Admin {
 			 *
 			 * @param array $false Set true to hide the buttons.
 			 */
-		} elseif ( absint( get_option( 'personioIntegrationPositionCount', 0 ) ) > 0 && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+		} elseif ( Positions::get_instance()->get_positions_count() > 10 && absint( get_option( 'personioIntegrationPositionCount', 0 ) ) > 0 && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_limit_hint' );
