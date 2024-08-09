@@ -499,3 +499,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Only import taxonomies for main languages (prevent e.g. missing keywords for other languages)
 * Updates dependencies
 * Update WP Easy Setup configuration for better compatibility with other plugins which use this
+* Use real versioning for Blocks in Block Editor which speedup the loading process

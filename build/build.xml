@@ -135,6 +135,48 @@
         <replace file="${src.dir}/uninstall-release.php">
             <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
         </replace>
+
+        <delete file="${src.dir}/blocks/application-button/block-release.json"/>
+        <copy file="${src.dir}/blocks/application-button/block.json" tofile="${src.dir}/blocks/application-button/block-release.json"/>
+        <replace file="${src.dir}/blocks/application-button/block-release.json">
+            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
+        </replace>
+
+        <delete file="${src.dir}/blocks/description/block-release.json"/>
+        <copy file="${src.dir}/blocks/description/block.json" tofile="${src.dir}/blocks/description/block-release.json"/>
+        <replace file="${src.dir}/blocks/description/block-release.json">
+            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
+        </replace>
+
+        <delete file="${src.dir}/blocks/details/block-release.json"/>
+        <copy file="${src.dir}/blocks/details/block.json" tofile="${src.dir}/blocks/details/block-release.json"/>
+        <replace file="${src.dir}/blocks/details/block-release.json">
+            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
+        </replace>
+
+        <delete file="${src.dir}/blocks/filter-list/block-release.json"/>
+        <copy file="${src.dir}/blocks/filter-list/block.json" tofile="${src.dir}/blocks/filter-list/block-release.json"/>
+        <replace file="${src.dir}/blocks/filter-list/block-release.json">
+            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
+        </replace>
+
+        <delete file="${src.dir}/blocks/filter-select/block-release.json"/>
+        <copy file="${src.dir}/blocks/filter-select/block.json" tofile="${src.dir}/blocks/filter-select/block-release.json"/>
+        <replace file="${src.dir}/blocks/filter-select/block-release.json">
+            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
+        </replace>
+
+        <delete file="${src.dir}/blocks/list/block-release.json"/>
+        <copy file="${src.dir}/blocks/list/block.json" tofile="${src.dir}/blocks/list/block-release.json"/>
+        <replace file="${src.dir}/blocks/list/block-release.json">
+            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
+        </replace>
+
+        <delete file="${src.dir}/blocks/show/block-release.json"/>
+        <copy file="${src.dir}/blocks/show/block.json" tofile="${src.dir}/blocks/show/block-release.json"/>
+        <replace file="${src.dir}/blocks/show/block-release.json">
+            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
+        </replace>
     </target>
 
     <!-- check WCS compatibility -->
@@ -177,19 +219,19 @@
         <zip destfile="${build.dir}/${plugin.slug}_${plugin.version}.zip" comment="${plugin.slug} ${plugin.version} release">
             <zipfileset dir="${src.dir}/admin" prefix="${plugin.slug}/admin" />
             <zipfileset dir="${src.dir}/app" prefix="${plugin.slug}/app" />
-            <zipfileset dir="${src.dir}/blocks/list/" includes="block.json" prefix="${plugin.slug}/blocks/list/" />
+            <zipfileset dir="${src.dir}/blocks/list/" includes="block-release.json" fullpath="${plugin.slug}/blocks/list/block.json" />
             <zipfileset dir="${src.dir}/blocks/list/build" prefix="${plugin.slug}/blocks/list/build" />
-            <zipfileset dir="${src.dir}/blocks/details/" includes="block.json" prefix="${plugin.slug}/blocks/details/" />
+            <zipfileset dir="${src.dir}/blocks/details/" includes="block-release.json" fullpath="${plugin.slug}/blocks/details/block.json" />
             <zipfileset dir="${src.dir}/blocks/details/build" prefix="${plugin.slug}/blocks/details/build" />
-            <zipfileset dir="${src.dir}/blocks/description/" includes="block.json" prefix="${plugin.slug}/blocks/description/" />
+            <zipfileset dir="${src.dir}/blocks/description/" includes="block-release.json" fullpath="${plugin.slug}/blocks/description/block.json" />
             <zipfileset dir="${src.dir}/blocks/description/build" prefix="${plugin.slug}/blocks/description/build" />
-            <zipfileset dir="${src.dir}/blocks/filter-list/" includes="block.json" prefix="${plugin.slug}/blocks/filter-list/" />
+            <zipfileset dir="${src.dir}/blocks/filter-list/" includes="block-release.json" fullpath="${plugin.slug}/blocks/filter-list/block.json" />
             <zipfileset dir="${src.dir}/blocks/filter-list/build" prefix="${plugin.slug}/blocks/filter-list/build" />
-            <zipfileset dir="${src.dir}/blocks/filter-select/" includes="block.json" prefix="${plugin.slug}/blocks/filter-select/" />
+            <zipfileset dir="${src.dir}/blocks/filter-select/" includes="block-release.json" fullpath="${plugin.slug}/blocks/filter-select/block.json" />
             <zipfileset dir="${src.dir}/blocks/filter-select/build" prefix="${plugin.slug}/blocks/filter-select/build" />
-            <zipfileset dir="${src.dir}/blocks/application-button/" includes="block.json" prefix="${plugin.slug}/blocks/application-button/" />
+            <zipfileset dir="${src.dir}/blocks/application-button/" includes="block-release.json" fullpath="${plugin.slug}/blocks/application-button/block.json" />
             <zipfileset dir="${src.dir}/blocks/application-button/build" prefix="${plugin.slug}/blocks/application-button/build" />
-            <zipfileset dir="${src.dir}/blocks/show/" includes="block.json" prefix="${plugin.slug}/blocks/show/" />
+            <zipfileset dir="${src.dir}/blocks/show/" includes="block-release.json" fullpath="${plugin.slug}/blocks/show/block.json" />
             <zipfileset dir="${src.dir}/blocks/show/build" prefix="${plugin.slug}/blocks/show/build" />
             <zipfileset dir="${src.dir}/blocks/" includes="components.js,index.js,variations.js" prefix="${plugin.slug}/blocks/" />
             <zipfileset dir="${src.dir}/css" prefix="${plugin.slug}/css" />
