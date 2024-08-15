@@ -501,5 +501,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Updates dependencies
 * Update WP Easy Setup configuration for better compatibility with other plugins which use this
 * Optimized cleanup of extensions during uninstallation
+* Fixed WP Easy Setup for running on older WordPress-versions
 * Fixed limitation of lists of positions in frontend
 * Fixed missing inline styles in Block Editor (e.g. to hide the filter-title there)
