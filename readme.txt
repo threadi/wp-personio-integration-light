@@ -504,3 +504,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed WP Easy Setup for running on older WordPress-versions
 * Fixed limitation of lists of positions in frontend
 * Fixed missing inline styles in Block Editor (e.g. to hide the filter-title there)
+
+= 3.1.3 =
+* Downgrading wordpress-scripts for compatibility for our own Blocks with WordPress < 6.6
