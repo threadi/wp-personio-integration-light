@@ -8,12 +8,12 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
+defined( 'ABSPATH' ) || exit;
+
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Initialize the setup object.
