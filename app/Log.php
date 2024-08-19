@@ -89,7 +89,14 @@ class Log {
 			return;
 		}
 
+		// get db connection.
 		global $wpdb;
+
+		// run with limit if it is not sqlite.
+		if ( str_contains( strtolower( $wpdb->db_server_info() ), 'sqlite' ) ) {
+			$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY)', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) );
+			return;
+		}
 		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) );
 	}
 
