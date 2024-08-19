@@ -6,7 +6,7 @@ Tested up to: 6.6
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.1.3
+Stable tag: 3.1.4
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -498,7 +498,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.1.2 =
 * Only import taxonomies for main languages (prevent e.g. missing keywords for other languages)
 * Show limitation hint only if 10+ positions are imported
-* Updates dependencies
+* Updated dependencies
 * Update WP Easy Setup configuration for better compatibility with other plugins which use this
 * Optimized cleanup of extensions during uninstallation
 * Fixed WP Easy Setup for running on older WordPress-versions
@@ -508,3 +508,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.1.3 =
 * Downgrading wordpress-scripts for compatibility for our own Blocks with WordPress < 6.6
 * Check for db-type on deleting logs to prevent possible SQLite errors
+
+= 3.1.4 =
+* Updated dependencies
+* Fixed delete of log with SQLite (e.g. in playground)
