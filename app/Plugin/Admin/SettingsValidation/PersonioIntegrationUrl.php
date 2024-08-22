@@ -54,7 +54,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 					$error = true;
 					$value = '';
 				} elseif ( ! self::validate_url( $value ) ) {
-					add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'Please enter a valid URL.', 'personio-integration-light' ) );
+					add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'Please enter a valid URL, e.g. https://example.jobs.personio.com. See also the hints below.', 'personio-integration-light' ) );
 					$error = true;
 					$value = '';
 				} elseif ( Helper::get_personio_url() !== $value ) {
@@ -135,7 +135,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 			// return error as the given string is not a valid URL.
 			return array(
 				'error' => 'no_url',
-				'text'  => __( 'Given URL is not valid.', 'personio-integration-light' ),
+				'text'  => __( 'Please enter a valid URL, e.g. https://example.jobs.personio.com. See also the hints below.', 'personio-integration-light' ),
 			);
 		} elseif ( ! self::check_personio_in_url( $value ) ) {
 			// return error as the given string is a URL but not for Personio.
@@ -185,6 +185,11 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 * @return string
 	 */
 	public static function cleanup_url_string( string $value ): string {
+		// add protocol if this is missing.
+		if( ! empty( $value ) && ! str_contains( $value, 'https://' ) ) {
+			$value = 'https://' . $value;
+		}
+
 		// remove slash on the end of the given url.
 		return rtrim( trim( $value ), '/' );
 	}
