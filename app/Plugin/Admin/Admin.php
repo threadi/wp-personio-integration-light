@@ -115,6 +115,8 @@ class Admin {
 			true
 		);
 
+		var_dump( is_textdomain_loaded( 'personio-integration-light' ) );
+
 		// add php-vars to our js-script.
 		wp_localize_script(
 			'personio-integration-admin',
