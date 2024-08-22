@@ -209,8 +209,8 @@ class Helper {
 		// concat the lists.
 		$attributes = shortcode_atts( $attribute_defaults, $attributes );
 
-		// check if language-setting is valid.
-		if ( ! Languages::get_instance()->is_language_supported( $attributes['lang'] ) ) {
+		// check if language-setting is valid, if given.
+		if ( ! empty( $attributes['lang'] ) && ! Languages::get_instance()->is_language_supported( $attributes['lang'] ) ) {
 			$attributes['lang'] = Languages::get_instance()->get_fallback_language_name();
 		}
 
