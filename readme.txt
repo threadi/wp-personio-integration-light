@@ -6,7 +6,7 @@ Tested up to: 6.6
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.1.4
+Stable tag: 3.1.5
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -512,3 +512,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.1.4 =
 * Updated dependencies
 * Fixed delete of log with SQLite (e.g. in playground)
+
+= 3.1.5 =
+* Personio URL can now also insert without protocol (if https:// is missing)
