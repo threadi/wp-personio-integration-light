@@ -516,3 +516,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.1.5 =
 * Personio URL can now also insert without protocol (if https:// is missing)
 * Fixed query for positions without specific language
+* Fixed delete of log in playground

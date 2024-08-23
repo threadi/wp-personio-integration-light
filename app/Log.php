@@ -93,7 +93,7 @@ class Log {
 		global $wpdb;
 
 		// run with limit if it is not sqlite.
-		if ( class_exists( 'WP_SQLite_DB' ) && $wpdb instanceof WP_SQLite_DB ) {
+		if ( 1 === absint( get_option( 'personio_sqlite' ) ) ) {
 			$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY)', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) );
 			return;
 		}

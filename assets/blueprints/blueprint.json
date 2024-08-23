@@ -12,6 +12,10 @@
 			"step": "login",
 			"username": "admin",
 			"password": "password"
-		}
+		},
+        {
+            "step": "runPHP",
+            "code": "<?php require_once 'wordpress/wp-load.php';update_option( 'personio_sqlite', '1' );"
+        }
 	]
 }
