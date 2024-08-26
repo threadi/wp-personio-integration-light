@@ -10,6 +10,8 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Transients;
 use WP_Post;
@@ -191,6 +193,12 @@ class Positions {
 
 		// get the results.
 		$this->results = new WP_Query( $query );
+
+		// add log for this query if debug is enabled.
+		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+			$log = new Log();
+			$log->add_log( __( 'Query-Debug', 'personio-integration-light' ) . ': ' . wp_json_encode( $query ) . '<br><br>' . __( 'Result', 'personio-integration-light' ) . ': ' . wp_json_encode( $this->get_results() ) . '<br><br>' . __( 'Used URL', 'personio-integration-light' ) . ': ' . esc_url( Helper::get_current_url() ), 'success', 'system' );
+		}
 
 		// remove filter.
 		remove_filter( 'posts_join', array( $this, 'add_taxonomy_table_to_position_query' ) );
