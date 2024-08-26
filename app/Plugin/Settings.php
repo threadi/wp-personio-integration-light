@@ -651,6 +651,7 @@ class Settings {
 						$field_name,
 						$args
 					);
+					add_filter( 'option_' . $field_name, array( $this, 'sanitize_option' ), 10, 2 );
 				}
 			}
 		}
@@ -1192,5 +1193,42 @@ class Settings {
 
 		// return resulting list.
 		return $categories;
+	}
+
+	/**
+	 * Sanitize our own option values before output.
+	 *
+	 * @param mixed  $value The value.
+	 * @param string $option The option-name.
+	 *
+	 * @return mixed
+	 */
+	public function sanitize_option( mixed $value, string $option ): mixed {
+		// get field settings.
+		$field_settings = $this->get_settings_for_field( $option );
+
+		// bail if no type is set.
+		if( empty( $field_settings['register_attributes']['type'] ) ) {
+			return $value;
+		}
+
+		// if type is array, secure for array.
+		if( 'array' === $field_settings['register_attributes']['type'] ) {
+			// if it is an array, use it 1:1.
+			if( is_array( $value ) ) {
+				return $value;
+			}
+
+			// secure the value.
+			return (array)$value;
+		}
+
+		// if type is int, secure value for int.
+		if( 'integer' === $field_settings['register_attributes']['type'] ) {
+			return absint( $value );
+		}
+
+		// return the value.
+		return $value;
 	}
 }
