@@ -922,11 +922,12 @@ class Settings {
 	 * Return settings for single field.
 	 *
 	 * @param string $field The requested fiel.
+	 * @param array  $settings The settings to use.
 	 *
 	 * @return array
 	 */
-	public function get_settings_for_field( string $field ): array {
-		foreach ( $this->get_settings() as $section_settings ) {
+	public function get_settings_for_field( string $field, array $settings = array() ): array {
+		foreach ( ( empty( $settings ) ? $this->get_settings() : $settings ) as $section_settings ) {
 			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 				if ( $field === $field_name ) {
 					return $field_settings;
@@ -1205,7 +1206,7 @@ class Settings {
 	 */
 	public function sanitize_option( mixed $value, string $option ): mixed {
 		// get field settings.
-		$field_settings = $this->get_settings_for_field( $option );
+		$field_settings = $this->get_settings_for_field( $option, $this->settings );
 
 		// bail if no type is set.
 		if( empty( $field_settings['register_attributes']['type'] ) ) {
