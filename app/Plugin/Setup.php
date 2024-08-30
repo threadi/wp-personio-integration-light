@@ -191,6 +191,13 @@ class Setup {
 	 * @return void
 	 */
 	public function display(): void {
+		// create help in case of error during loading of the setup.
+		$error_help = '<div class="personio-integration-transient notice notice-success"><h3>' . wp_kses_post( Helper::get_logo_img() ) . ' ' . esc_html( apply_filters( 'personio_integration_light_transient_title', Helper::get_plugin_name() ) ) . '</h3><p><strong>' . __( 'Setup is loading', 'personio-integration-light' ) . '</strong><br>' . __( 'Please wait while we load the setup.', 'personio-integration-light' ) . '<br>' . __( 'However, you can also skip the setup and configure the plugin manually.', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $this->setup_obj->get_skip_url( $this->get_setup_name(), Helper::get_settings_url() ) ) . '" class="button button-primary">' . __( 'Skip setup', 'personio-integration-light' ) . '</a></p></div>';
+
+		// add error text.
+		$this->setup_obj->set_error_help( $error_help );
+
+		// output.
 		echo wp_kses_post( $this->setup_obj->display( $this->get_setup_name() ) );
 	}
 
@@ -268,6 +275,8 @@ class Setup {
 			'back_button_label'     => __( 'Back', 'personio-integration-light' ) . '<span class="dashicons dashicons-undo"></span>',
 			'continue_button_label' => __( 'Continue', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-play"></span>',
 			'finish_button_label'   => __( 'Completed', 'personio-integration-light' ) . '<span class="dashicons dashicons-saved"></span>',
+			'skip_button_label'     => __( 'Skip', 'personio-integration-light' ) . '<span class="dashicons dashicons-undo"></span>',
+			'skip_url'              => $this->setup_obj->get_skip_url( $this->get_setup_name(), Helper::get_settings_url() ),
 		);
 
 		/**

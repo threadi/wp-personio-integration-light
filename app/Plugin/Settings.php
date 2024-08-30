@@ -815,12 +815,22 @@ class Settings {
 						continue;
 					}
 
+					// bail if tab should be hidden.
+					if ( ! empty( $tab_settings['hidden'] ) ) {
+						if ( $tab === $tab_settings['key'] ) {
+							$page = $tab_settings['settings_page'];
+						}
+						continue;
+					}
+
 					// Set url.
 					$url    = Helper::get_settings_url( 'personioPositions', $tab_settings['key'] );
 					$target = '_self';
 					if ( ! empty( $tab_settings['url'] ) ) {
-						$url    = $tab_settings['url'];
-						$target = $tab_settings['url_target'];
+						$url = $tab_settings['url'];
+						if ( ! empty( $tab_settings['url_target'] ) ) {
+							$target = $tab_settings['url_target'];
+						}
 					}
 
 					// Set class for tab and page for form-view.
@@ -1209,23 +1219,23 @@ class Settings {
 		$field_settings = $this->get_settings_for_field( $option, $this->settings );
 
 		// bail if no type is set.
-		if( empty( $field_settings['register_attributes']['type'] ) ) {
+		if ( empty( $field_settings['register_attributes']['type'] ) ) {
 			return $value;
 		}
 
 		// if type is array, secure for array.
-		if( 'array' === $field_settings['register_attributes']['type'] ) {
+		if ( 'array' === $field_settings['register_attributes']['type'] ) {
 			// if it is an array, use it 1:1.
-			if( is_array( $value ) ) {
+			if ( is_array( $value ) ) {
 				return $value;
 			}
 
 			// secure the value.
-			return (array)$value;
+			return (array) $value;
 		}
 
 		// if type is int, secure value for int.
-		if( 'integer' === $field_settings['register_attributes']['type'] ) {
+		if ( 'integer' === $field_settings['register_attributes']['type'] ) {
 			return absint( $value );
 		}
 

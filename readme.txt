@@ -521,4 +521,5 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.2.0 =
 * Added logging for Personio database queries if debugging is enabled
 * Added sanitize for our own setting fields
+* Added loading screen for setup and option to skip it
 * Revert support for WPML-translation of our own taxonomies (now really only in Pro)

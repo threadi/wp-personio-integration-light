@@ -48,9 +48,6 @@ class Positions {
 	 */
 	private function __construct() {}
 
-	public function get_part_by_name( mixed $part ) {
-	}
-
 	/**
 	 * Prevent cloning of this object.
 	 *

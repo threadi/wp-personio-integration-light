@@ -8,7 +8,8 @@
 
 use PersonioIntegrationLight\Plugin\Templates;
 
-?><div><?php
+?><div>
+<?php
 while ( $GLOBALS['personio_query_results']->have_posts() ) :
 	$GLOBALS['personio_query_results']->the_post();
 
@@ -28,4 +29,5 @@ while ( $GLOBALS['personio_query_results']->have_posts() ) :
 	</article>
 	<?php
 endwhile;
-?></div>
+?>
+</div>
