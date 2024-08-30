@@ -47,7 +47,7 @@ class Positions extends WP_Widget {
 			'template'            => array(
 				'type'   => 'select',
 				'title'  => __( 'Choose template', 'personio-integration-light' ),
-				'std'    => 'title',
+				'std'    => get_option( 'personioIntegrationTemplateContentListingTemplate' ),
 				'values' => Templates::get_instance()->get_archive_templates(),
 			),
 			'limit'               => array(
@@ -110,7 +110,7 @@ class Positions extends WP_Widget {
 				'type'     => 'select',
 				'title'    => __( 'Choose detail components', 'personio-integration-light' ),
 				'multiple' => true,
-				'std'      => array( 'recruitingCategory', 'schedule', 'office' ),
+				'std'      => get_option( 'personioIntegrationTemplateExcerptDefaults' ),
 				'values'   => Taxonomies::get_instance()->get_taxonomy_labels_for_settings(),
 			),
 			'showContent'         => array(
@@ -125,7 +125,7 @@ class Positions extends WP_Widget {
 			'content_template'    => array(
 				'type'   => 'select',
 				'title'  => __( 'Choose content template', 'personio-integration-light' ),
-				'std'    => 'default',
+				'std'    => get_option( 'personioIntegrationTemplateListingContentTemplate' ),
 				'values' => Templates::get_instance()->get_jobdescription_templates(),
 			),
 			'showApplicationForm' => array(

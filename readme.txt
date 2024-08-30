@@ -524,4 +524,5 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added loading screen for setup and option to skip it
 * Optimized handling for transients in backend
 * Position details in Block Single and Details are now loaded dynamically
+* Use main settings as defaults in classic widgets
 * Revert support for WPML-translation of our own taxonomies (now really only in Pro)
