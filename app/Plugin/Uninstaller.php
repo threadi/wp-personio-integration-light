@@ -175,7 +175,7 @@ class Uninstaller {
 			WP_PERSONIO_INTEGRATION_IMPORT_STATUS,
 			WP_PERSONIO_INTEGRATION_DELETE_RUNNING,
 			WP_PERSONIO_INTEGRATION_DELETE_STATUS,
-			'personio_integration_transients',
+			WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST,
 			'personioIntegrationLightInstallDate',
 			'personio_integration_settings',
 			'personio_integration_schedules',

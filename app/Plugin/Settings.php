@@ -587,10 +587,10 @@ class Settings {
 			'hidden_section'                   => array(
 				'settings_page' => 'hidden_personio_page',
 				'fields'        => array(
-					'personio_integration_transients'     => array(
+					WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST     => array(
 						'register_attributes' => array(
-							'type'    => 'integer',
-							'default' => 0,
+							'type'    => 'array',
+							'default' => array(),
 						),
 						'do_not_export'       => true,
 					),
