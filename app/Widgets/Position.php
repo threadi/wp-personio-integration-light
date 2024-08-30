@@ -97,7 +97,7 @@ class Position extends WP_Widget {
 			),
 			'excerptTemplates'    => array(
 				'type'     => 'select',
-				'title'    => __( 'Choose detail components', 'personio-integration-light' ),
+				'title'    => __( 'Choose details', 'personio-integration-light' ),
 				'multiple' => true,
 				'std'      => array( 'recruitingCategory', 'schedule', 'office' ),
 				'values'   => Taxonomies::get_instance()->get_taxonomy_labels_for_settings(),
