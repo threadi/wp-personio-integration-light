@@ -598,7 +598,7 @@ function personio_integration_import_settings_file() {
  * Define dialog for AJAX-errors.
  */
 function personio_integration_ajax_error_dialog( errortext, texts ) {
-  if( errortext.length === 0 ) {
+  if( errortext === undefined || errortext.length === 0 ) {
     errortext = 'Request Timeout';
   }
   let message = '<p>' + personioIntegrationLightJsVars.txt_error + '</p>';
