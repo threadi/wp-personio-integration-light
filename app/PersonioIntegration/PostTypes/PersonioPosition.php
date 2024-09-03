@@ -1648,17 +1648,10 @@ class PersonioPosition extends Post_Type {
 			return;
 		}
 
-		// on action "reset_application_count" run exakt this.
-		if ( 'reset_application_count' === $params['task'] ) {
-			// get position as object.
-			$position_obj = Positions::get_instance()->get_position( $params['post'] );
-			if ( $position_obj->is_valid() ) {
-				delete_post_meta( $position_obj->get_id(), 'application_limit' );
-
-				// answer with true success.
-				wp_send_json( array( 'success' => true ) );
-			}
-		}
+		/**
+		 * Run the individual task.
+		 */
+		do_action( 'personio_integration_light_endpoint_task', $params );
 
 		// answer with error.
 		wp_send_json( array( 'success' => false ) );

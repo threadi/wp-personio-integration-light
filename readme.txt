@@ -522,6 +522,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added logging for Personio database queries if debugging is enabled
 * Added sanitize for our own setting fields
 * Added loading screen for setup and option to skip it
+* Added new hook for individual tasks per post type endpoint
 * Optimized handling for transients in backend
 * Optimized error handling for JS-errors in backend
 * Position details in Block Single and Details are now loaded dynamically
