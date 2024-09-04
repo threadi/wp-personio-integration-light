@@ -476,15 +476,27 @@ class Admin {
 				$post_id = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) );
 				if ( $post_id > 0 && PersonioPosition::get_instance()->get_name() === get_post_type( $post_id ) ) {
 					$position_obj = Positions::get_instance()->get_position( $post_id );
-					$admin_bar->add_menu(
-						array(
-							'id'     => 'personio-integration-detail',
-							'parent' => null,
-							'group'  => null,
-							'title'  => __( 'View Position in frontend', 'personio-integration-light' ),
-							'href'   => $position_obj->get_link(),
-						)
-					);
+					if( $position_obj->is_visible() ) {
+						$admin_bar->add_menu(
+							array(
+								'id'     => 'personio-integration-detail',
+								'parent' => null,
+								'group'  => null,
+								'title'  => __( 'View Position in frontend', 'personio-integration-light' ),
+								'href'   => $position_obj->get_link(),
+							)
+						);
+					}
+					else {
+						$admin_bar->add_menu(
+							array(
+								'id'     => 'personio-integration-detail',
+								'parent' => null,
+								'group'  => null,
+								'title'  => __( 'Not visible in frontend', 'personio-integration-light' ),
+							)
+						);
+					}
 				} else {
 					$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 					if ( ! empty( $post_type ) && PersonioPosition::get_instance()->get_name() === $post_type ) {
