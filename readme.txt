@@ -524,6 +524,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added loading screen for setup and option to skip it
 * Added new hook for individual tasks per post type endpoint
 * Added visibility state for positions if their visibility is restricted by global settings
+* Added hints which taxonomies are changeable e.g. via Loco Translate
 * Optimized handling for transients in backend
 * Optimized error handling for JS-errors in backend
 * Position details in Block Single and Details are now loaded dynamically

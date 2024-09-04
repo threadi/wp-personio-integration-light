@@ -23,6 +23,7 @@ use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Themes;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
+use PersonioIntegrationLight\Plugin\Compatibilities\Loco;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
@@ -112,7 +113,7 @@ class PersonioPosition extends Post_Type {
 
 		// edit positions.
 		add_action( 'admin_init', array( $this, 'remove_cpt_supports' ) );
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
 
@@ -1025,7 +1026,7 @@ class PersonioPosition extends Post_Type {
 	 *
 	 * @return void
 	 */
-	public function add_meta_box(): void {
+	public function add_meta_boxes(): void {
 		add_meta_box(
 			$this->get_name() . '-edit-hints',
 			__( 'About this page', 'personio-integration-light' ),
@@ -1057,15 +1058,65 @@ class PersonioPosition extends Post_Type {
 		// get taxonomies as object.
 		$taxonomies_obj = Taxonomies::get_instance();
 
+		// get the taxonomy settings.
+		$taxonomies_settings = $taxonomies_obj->get_taxonomies();
+
 		// add meta box for each supported taxonomy.
 		foreach ( $taxonomies_obj->get_taxonomies() as $taxonomy_name => $settings ) {
 			// get label.
 			$labels = $taxonomies_obj->get_taxonomy_label( $taxonomy_name );
 
+			// get the taxonomy settings.
+			$taxonomy_settings = $taxonomies_settings[$taxonomy_name];
+
+			// add changeable hint on title if enabled.
+			$changeable_hint = '';
+			if( isset( $taxonomy_settings['changeable'] ) ) {
+				// create dialog.
+				$dialog = array(
+					'title'     => __( 'Texts changeable', 'personio-integration-light' ),
+					'texts'     => array(
+						'<p><strong>' . __( 'The texts of this taxonomy could be changed.', 'personio-integration-light' ) . '</strong></p>',
+						/* translators: %1$s will be replaced by the plugin URL for Loco Translate. */
+						'<p>' . sprintf( __( 'They are in the language file of the plugin and can be changed with any plugin that supports their editing, e.g. with <a href="%1$s" target="_blank">Loco Translate (opens new window)</a>.', 'personio-integration-light' ), esc_url( Loco::get_instance()->get_plugin_url() ) ) . '</p>'
+					),
+					'buttons'   => array(
+						array(
+							'action'  => 'closeDialog();',
+							'variant' => 'primary',
+							'text'    => __( 'OK', 'personio-integration-light' ),
+						),
+					),
+				);
+
+				// set the URL.
+				$url = '#';
+
+				/**
+				 * Change this hint if Loco Translate is enabled.
+				 */
+				if( Loco::get_instance()->is_active() ) {
+					$url = add_query_arg(
+						array(
+							'bundle' => trailingslashit( basename( Helper::get_plugin_path() ) ) . 'personio-integration-light.php',
+							'page' => 'loco-plugin',
+							'action' => 'view'
+						),
+						get_admin_url() . 'admin.php'
+					);
+
+					/* translators: %1$s will be replaced by the URL for Loco Settings of this plugin. */
+					$dialog['texts'][1] = '<p>' . sprintf( __( 'You already have Loco Translate installed. Follow <a href="%1$s">this link</a> to edit the texts there.', 'personio-integration-light' ), esc_url( $url ) ) . '</p>';
+				}
+
+				// add link.
+				$changeable_hint = '<a href="' . esc_url( $url ) . '" class="wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-translation"></span></a>';
+			}
+
 			// add a box for single taxonomy.
 			add_meta_box(
 				$this->get_name() . '-taxonomy-' . $taxonomy_name,
-				$labels['name'],
+				$labels['name'] . $changeable_hint,
 				array( $this, 'get_meta_box_for_taxonomy' ),
 				$this->get_name(),
 				'side'
@@ -1215,12 +1266,20 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
+		// get the requested position as object.
 		$position_obj  = Positions::get_instance()->get_position( $post->ID );
+
+		// get the requested taxonomy from the box ID as string.
 		$taxonomy_name = str_replace( $this->get_name() . '-taxonomy-', '', $attr['id'] );
+
+		// get the terms of this taxonomy on this position.
 		$terms         = $position_obj->get_terms_by_field( $taxonomy_name );
+
+		// if no terms could be loaded, show hint.
 		if ( empty( $terms ) ) {
 			echo '<i>' . esc_html__( 'No data available.', 'personio-integration-light' ) . '</i>';
 		} else {
+			// loop through the terms and add them to the list.
 			foreach ( $terms as $index => $term ) {
 				if ( $index > 0 ) {
 					echo ', ';
@@ -1228,9 +1287,12 @@ class PersonioPosition extends Post_Type {
 
 				// get label.
 				$label = $term->name;
+
+				// special case for the language taxonomy.
 				if ( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $taxonomy_name ) {
 					// get languages in the project.
 					$languages = Languages::get_instance()->get_languages();
+					// get the label from the language list.
 					$label     = $languages[ $term->name ];
 				}
 

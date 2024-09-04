@@ -117,6 +117,7 @@ class Taxonomies {
 	 * @return void
 	 */
 	public function register(): void {
+		// loop through the taxonomies our plugin will be using.
 		foreach ( $this->get_taxonomies() as $taxonomy_name => $settings ) {
 			// get properties.
 			$taxonomy_array             = array_merge( $this->get_default_settings(), $settings['attr'] );
@@ -143,7 +144,7 @@ class Taxonomies {
 				$taxonomy_array['show_in_menu'] = false;
 			}
 
-			// register taxonomy.
+			// register this taxonomy.
 			register_taxonomy( $taxonomy_name, array( PersonioPosition::get_instance()->get_name() ), $taxonomy_array );
 
 			// filter for translations of entries in this taxonomy.
@@ -164,7 +165,7 @@ class Taxonomies {
 				),
 				'slug'        => 'recruitingCategory',
 				'useInFilter' => 1,
-				'append'      => false,
+				'append'      => false
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY => array(
 				'attr'        => array(
@@ -173,6 +174,7 @@ class Taxonomies {
 				'slug'        => 'occupation',
 				'useInFilter' => 1,
 				'append'      => false,
+				'changeable' => true
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION => array(
 				'attr'        => array(
@@ -181,6 +183,7 @@ class Taxonomies {
 				'slug'        => 'occupation_detail',
 				'useInFilter' => 1,
 				'append'      => false,
+				'changeable' => true
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE     => array(
 				'attr'        => array(
@@ -206,6 +209,7 @@ class Taxonomies {
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
 				'append'               => false,
+				'changeable' => true
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY  => array(
 				'attr'                 => array(
@@ -215,6 +219,7 @@ class Taxonomies {
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
 				'append'               => false,
+				'changeable' => true
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE   => array(
 				'attr'                 => array(
@@ -224,6 +229,7 @@ class Taxonomies {
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
 				'append'               => false,
+				'changeable' => true
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE => array(
 				'attr'                 => array(
@@ -233,6 +239,7 @@ class Taxonomies {
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
 				'append'               => false,
+				'changeable' => true
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES  => array(
 				'attr'        => array(
@@ -242,6 +249,7 @@ class Taxonomies {
 				'slug'        => 'language',
 				'useInFilter' => 0,
 				'append'      => true,
+				'changeable' => true
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS   => array(
 				'attr'                 => array(
