@@ -36,74 +36,8 @@ class Log_Table extends WP_List_Table {
 	 * @return array
 	 */
 	private function table_data(): array {
-		global $wpdb;
-
-		// order table.
-		$order_by = filter_input( INPUT_GET, 'orderby', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( is_null( $order_by ) ) {
-			$order_by = 'date';
-		}
-		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( ! is_null( $order ) ) {
-			$order = sanitize_sql_orderby( $order );
-		} else {
-			$order = 'ASC';
-		}
-
-		// collect vars for statement.
-		$vars = array( 1 );
-
-		// collect restrictions.
-		$where = '';
-
-		// get filter.
-		$category = $this->get_category_filter();
-		if ( ! empty( $category ) ) {
-			$where .= ' AND `category` = "%s"';
-			$vars[] = $category;
-		}
-
-		// get md5.
-		$md5 = $this->get_md5_filter();
-		if ( ! empty( $md5 ) ) {
-			$where .= ' AND `md5` = "%s"';
-			$vars[] = $md5;
-		}
-
-		$limit = 10000;
-		/**
-		 * Filter limit to prevent possible errors on big tables.
-		 *
-		 * @since 3.1.0 Available since 3.1.0.
-		 * @param int $limit The actual limit.
-		 */
-		$limit = apply_filters( 'personio_integration_light_log_limit', $limit );
-
-		// get results and return them.
-		if ( 'asc' === $order ) {
-			return $wpdb->get_results(
-				$wpdb->prepare(
-					'SELECT `state`, `time` AS `date`, `log`, `category`
-            			FROM `' . $wpdb->prefix . 'personio_import_logs`
-                        WHERE 1 = %d ' . $where . '
-                        ORDER BY ' . esc_sql( $order_by ) . ' ASC
-                        LIMIT ' . $limit,
-					$vars
-				),
-				ARRAY_A
-			);
-		}
-		return $wpdb->get_results(
-			$wpdb->prepare(
-				'SELECT `state`, `time` AS `date`, `log`, `category`
-            			FROM `' . $wpdb->prefix . 'personio_import_logs`
-                        WHERE 1 = %d ' . $where . '
-                        ORDER BY ' . esc_sql( $order_by ) . ' DESC
-                        LIMIT ' . $limit,
-				$vars
-			),
-			ARRAY_A
-		);
+		$log = new Log();
+		return $log->get_entries();
 	}
 
 	/**

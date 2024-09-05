@@ -527,6 +527,8 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added hints which taxonomies are changeable e.g. via Loco Translate
 * Optimized handling for transients in backend
 * Optimized error handling for JS-errors in backend
+* Optimized database handlings for better WCS compatibility without individual exceptions
 * Position details in Block Single and Details are now loaded dynamically
 * Use main settings as defaults in classic widgets
+* Renamed composer directory to default name
 * Revert support for WPML-translation of our own taxonomies (now really only in Pro)

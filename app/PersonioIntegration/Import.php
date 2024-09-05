@@ -103,7 +103,7 @@ class Import {
 	 * @return string
 	 */
 	private function get_link(): string {
-		return '<a href="' . esc_html( $this->get_url() ) . '" target="_blank">' . esc_html( $this->get_url() ) . '</a>';
+		return '<a href="' . esc_url( $this->get_url() ) . '" target="_blank">' . esc_html( $this->get_url() ) . '</a>';
 	}
 
 	/**

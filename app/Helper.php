@@ -501,7 +501,7 @@ class Helper {
 		global $wpdb;
 
 		// get blogs in this site-network.
-		return $wpdb->get_results(
+		return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			"
             SELECT blog_id
             FROM {$wpdb->blogs}

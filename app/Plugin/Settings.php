@@ -89,7 +89,7 @@ class Settings {
 		add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
 
 		// secure our own plugin settings.
-		add_filter( 'updated_option', array( $this, 'secure_settings' ), 10, 3 );
+		add_action( 'updated_option', array( $this, 'secure_settings' ), 10, 3 );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
@@ -587,7 +587,7 @@ class Settings {
 			'hidden_section'                   => array(
 				'settings_page' => 'hidden_personio_page',
 				'fields'        => array(
-					WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST     => array(
+					WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST => array(
 						'register_attributes' => array(
 							'type'    => 'array',
 							'default' => array(),

@@ -87,7 +87,7 @@ class Third_Party_Plugins {
 		add_filter( 'seopress_titles_desc', array( $this, 'seopress_titles' ) );
 
 		// Plugin Simple Custom Post Order.
-		add_filter( 'admin_init', array( $this, 'scpo_remove_filter' ), 11 );
+		add_action( 'admin_init', array( $this, 'scpo_remove_filter' ), 11 );
 
 		// Plugin TranslatePress.
 		add_filter( 'trp_translating_capability', array( $this, 'translatepress_hide_option' ) );

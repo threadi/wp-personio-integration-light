@@ -37,7 +37,7 @@ class Multiple_Checkboxes {
 				if ( isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ) {
 					$readonly = ' disabled="disabled"';
 					?>
-					<input type="hidden" id="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_html( ! empty( $checked ) ? '1' : '0' ); ?>">
+					<input type="hidden" id="<?php echo esc_attr( $attributes['fieldId'] . $key ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( ! empty( $checked ) ? '1' : '0' ); ?>">
 					<?php
 				}
 

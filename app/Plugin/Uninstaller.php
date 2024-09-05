@@ -146,7 +146,7 @@ class Uninstaller {
 			foreach ( Post_Types::get_instance()->get_post_types() as $post_type ) {
 				$obj = call_user_func( $post_type . '::get_instance' );
 				if ( $obj instanceof Post_Type && $obj->is_from_plugin( WP_PERSONIO_INTEGRATION_PLUGIN ) ) {
-					$wpdb->query( $wpdb->prepare( 'DELETE FROM `' . $wpdb->usermeta . '` WHERE `meta_key` like %s', '%' . esc_sql( $obj->get_name() ) . '%' ) );
+					$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => $obj->get_name() ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				}
 			}
 

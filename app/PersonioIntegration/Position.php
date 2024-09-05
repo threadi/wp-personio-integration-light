@@ -807,6 +807,14 @@ class Position {
 	 * @return bool
 	 */
 	public function is_visible(): bool {
-		return ! empty( Positions::get_instance()->get_positions( 1, array( 'ids' => array( $this->get_id() ), 'personio_run_in_admin' => true ) ) );
+		return ! empty(
+			Positions::get_instance()->get_positions(
+				1,
+				array(
+					'ids'                   => array( $this->get_id() ),
+					'personio_run_in_admin' => true,
+				)
+			)
+		);
 	}
 }
