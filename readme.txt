@@ -526,6 +526,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added visibility state for positions if their visibility is restricted by global settings
 * Added hints which taxonomies are changeable e.g. via Loco Translate
 * Added translation options for blocks
+* Added some styling in the filter blocks
 * Optimized handling of Blocks for Block Editor
 * Optimized handling for transients in backend
 * Optimized error handling for JS-errors in backend
