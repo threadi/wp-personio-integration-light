@@ -111,10 +111,6 @@ class Init {
 		add_action( 'wp', array( $this, 'update_slugs' ) );
 		add_action( 'init', array( $this, 'light_init' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
-
-		add_action( 'init', function() {
-			Positions::get_instance()->trigger_reimport_hint();
-		} );
 	}
 
 	/**

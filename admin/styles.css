@@ -330,3 +330,5 @@ body.personioposition_page_personioPositions .state .dashicons-yes { color: gree
 body.personioposition_page_personioPositions .state .dashicons-no { color: red }
 
 body.post-type-personioposition .postbox-header a { text-decoration: none }
+
+#minor-publishing-actions, #misc-publishing-actions { display: none }
