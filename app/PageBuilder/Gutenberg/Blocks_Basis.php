@@ -27,6 +27,13 @@ class Blocks_Basis {
 	protected string $name = '';
 
 	/**
+	 * The text domain of this block.
+	 *
+	 * @var string
+	 */
+	protected string $text_domain = 'personio-integration-light';
+
+	/**
 	 * Path to the directory where block.json resides.
 	 *
 	 * @var string
@@ -92,7 +99,7 @@ class Blocks_Basis {
 
 		// embed translation if available.
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'wp-personio-integration-' . $this->get_name() . '-editor-script', 'personio-integration-light', Helper::get_plugin_path() . 'languages/' );
+			wp_set_script_translations( 'wp-personio-integration-' . $this->get_name() . '-editor-script', $this->get_text_domain(), $this->get_language_path() );
 		}
 	}
 
@@ -222,5 +229,35 @@ class Blocks_Basis {
 
 		// return the object.
 		return false;
+	}
+
+	/**
+	 * Return the text domain this block is using.
+	 *
+	 * @return string
+	 */
+	private function get_text_domain(): string {
+		return $this->text_domain;
+	}
+
+	/**
+	 * Return the language path.
+	 *
+	 * @return string
+	 */
+	private function get_language_path(): string {
+		$language_path = Helper::get_plugin_path() . 'languages/';
+
+		/**
+		 * Return the language path this plugin should use.
+		 *
+		 * @since 3.2.0 Available since 3.2.0.
+		 *
+		 * @param string $language_path The path to the languages.
+		 * @param Blocks_Basis $this The Block object.
+		 *
+		 * @return string
+		 */
+		return apply_filters( 'personio_integration_light_block_language_path', $language_path, $this );
 	}
 }
