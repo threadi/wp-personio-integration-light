@@ -530,6 +530,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Optimized handling of Blocks for Block Editor
 * Optimized handling for transients in backend
 * Optimized error handling for JS-errors in backend
+* Re-Import now also possible without jQuery in backend
 * Position details in Block Single and Details are now loaded dynamically
 * Use main settings as defaults in classic widgets
 * Revert support for WPML-translation of our own taxonomies (now really only in Pro)

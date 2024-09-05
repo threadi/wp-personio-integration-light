@@ -270,6 +270,7 @@ class Intro {
 
 		// redirect user to intro-start.
 		wp_safe_redirect( $this->get_start_url() );
+		exit;
 	}
 
 	/**

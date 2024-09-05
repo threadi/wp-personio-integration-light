@@ -165,7 +165,7 @@ class Taxonomies {
 				),
 				'slug'        => 'recruitingCategory',
 				'useInFilter' => 1,
-				'append'      => false
+				'append'      => false,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY => array(
 				'attr'        => array(
@@ -174,7 +174,7 @@ class Taxonomies {
 				'slug'        => 'occupation',
 				'useInFilter' => 1,
 				'append'      => false,
-				'changeable' => true
+				'changeable'  => true,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION => array(
 				'attr'        => array(
@@ -183,7 +183,7 @@ class Taxonomies {
 				'slug'        => 'occupation_detail',
 				'useInFilter' => 1,
 				'append'      => false,
-				'changeable' => true
+				'changeable'  => true,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE     => array(
 				'attr'        => array(
@@ -209,7 +209,7 @@ class Taxonomies {
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
 				'append'               => false,
-				'changeable' => true
+				'changeable'           => true,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_SENIORITY  => array(
 				'attr'                 => array(
@@ -219,7 +219,7 @@ class Taxonomies {
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
 				'append'               => false,
-				'changeable' => true
+				'changeable'           => true,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_SCHEDULE   => array(
 				'attr'                 => array(
@@ -229,7 +229,7 @@ class Taxonomies {
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
 				'append'               => false,
-				'changeable' => true
+				'changeable'           => true,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_EXPERIENCE => array(
 				'attr'                 => array(
@@ -239,7 +239,7 @@ class Taxonomies {
 				'useInFilter'          => 1,
 				'initiallyHideInTable' => 1,
 				'append'               => false,
-				'changeable' => true
+				'changeable'           => true,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES  => array(
 				'attr'        => array(
@@ -249,7 +249,7 @@ class Taxonomies {
 				'slug'        => 'language',
 				'useInFilter' => 0,
 				'append'      => true,
-				'changeable' => true
+				'changeable'  => true,
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_KEYWORDS   => array(
 				'attr'                 => array(
@@ -1121,35 +1121,38 @@ class Taxonomies {
 		// -> hint: some will be newly insert after next wp-init.
 		$taxonomies = self::get_instance()->get_taxonomies();
 		$progress   = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
-		foreach ( $taxonomies as $taxonomy => $settings ) {
-			// delete all terms of this taxonomy.
-			$wpdb->query(
+		foreach ( $taxonomies as $taxonomy_name => $settings ) {
+			// get all terms with direct db access.
+			$terms = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
-					'DELETE FROM ' . $wpdb->terms . '
-                WHERE term_id IN
-                (
-                    SELECT ' . $wpdb->terms . '.term_id
+					'SELECT ' . $wpdb->terms . '.term_id
                     FROM ' . $wpdb->terms . '
-                    JOIN ' . $wpdb->term_taxonomy . '
-                    ON ' . $wpdb->term_taxonomy . '.term_id = ' . $wpdb->terms . '.term_id
-                    WHERE taxonomy = %s
-                )',
-					array(
-						$taxonomy,
-					)
+                    WHERE taxonomy = %s',
+					array( $taxonomy_name )
 				)
 			);
 
+			// delete them.
+			foreach ( $terms as $term ) {
+				$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					$wpdb->terms,
+					array(
+						'term_id'  => $term->term_id,
+						'taxonomy' => $taxonomy_name,
+					)
+				);
+			}
+
 			// delete all taxonomy-entries.
-			$wpdb->query( $wpdb->prepare( 'DELETE FROM ' . $wpdb->term_taxonomy . ' WHERE taxonomy = %s', array( $taxonomy ) ) );
+			$wpdb->delete( $wpdb->term_taxonomy, array( 'taxonomy' => $taxonomy_name ), array( '%s' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 			// cleanup options.
-			delete_option( $taxonomy . '_children' );
+			delete_option( $taxonomy_name . '_children' );
 
 			// log in debug-mode.
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
 				$log = new Log();
-				$log->add_log( 'Taxonomy ' . $taxonomy . ' has been deleted.', 'success', 'import' );
+				$log->add_log( 'Taxonomy ' . $taxonomy_name . ' has been deleted.', 'success', 'import' );
 			}
 
 			// show progress.

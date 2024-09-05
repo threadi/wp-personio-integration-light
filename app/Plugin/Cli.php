@@ -39,10 +39,10 @@ class Cli {
 		$logs = new Log();
 		$logs->add_log( 'WP CLI-command delete_all has been used.', 'success', 'cli' );
 
-		// delete taxonomies.
+		// delete all taxonomies.
 		Taxonomies::get_instance()->delete_all();
 
-		// delete position.
+		// delete all positions.
 		PersonioPosition::get_instance()->delete_positions();
 	}
 

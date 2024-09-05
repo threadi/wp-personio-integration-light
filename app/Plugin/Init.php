@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
@@ -110,6 +111,10 @@ class Init {
 		add_action( 'wp', array( $this, 'update_slugs' ) );
 		add_action( 'init', array( $this, 'light_init' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
+
+		add_action( 'init', function() {
+			Positions::get_instance()->trigger_reimport_hint();
+		} );
 	}
 
 	/**
