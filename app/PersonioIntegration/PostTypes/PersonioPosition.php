@@ -178,7 +178,7 @@ class PersonioPosition extends Post_Type {
 			'can_export'          => false,
 			'exclude_from_search' => false,
 			'taxonomies'          => array_keys( Taxonomies::get_instance()->get_taxonomies() ),
-			'publicly_queryable'  => (bool) $single_slug,
+			'publicly_queryable'  => true,
 			'show_in_rest'        => true,
 			'capability_type'     => 'post',
 			'capabilities'        => array(

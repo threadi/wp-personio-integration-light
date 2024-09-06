@@ -506,10 +506,20 @@ class Position {
 	 * @return string
 	 */
 	public function get_link(): string {
+		$url = '#';
 		if ( ! empty( $this->data['ID'] ) ) {
-			return get_permalink( $this->data['ID'] );
+			$url = get_permalink( $this->data['ID'] );
 		}
-		return '';
+
+		/**
+		 * Filter the public url of a single position.
+		 *
+		 * @since 3.2.0 Available since 3.2.0.
+		 *
+		 * @param string $url The URL.
+		 * @param Position $this The object of the position.
+		 */
+		return apply_filters( 'personio_integration_single_url', $url, $this );
 	}
 
 	/**
