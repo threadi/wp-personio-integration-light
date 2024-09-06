@@ -14,6 +14,7 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Settings;
+use PersonioIntegrationLight\Plugin\Setup;
 
 /**
  * Object to handle availability-checks for positions.
@@ -131,7 +132,7 @@ class Availability extends Extensions_Base {
 		do_action( 'personio_integration_import_max_count', $position_count );
 
 		// set setup-label.
-		update_option( 'wp_easy_setup_step_label', __( 'Setup is checking the availability of each position.', 'personio-integration-light' ) );
+		Setup::get_instance()->set_process_label( __( 'Setup is checking the availability of each position.', 'personio-integration-light' ) );
 
 		// set import-label.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'We check the availability of each position.', 'personio-integration-light' ) );

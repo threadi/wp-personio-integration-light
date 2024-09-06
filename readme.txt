@@ -539,3 +539,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Revert support for WPML-translation of our own taxonomies (now really only in Pro)
 * Remove Block Editor templates on uninstall
 * Fixed single view state
+* Fixed setup progress bar which now stops at 100%

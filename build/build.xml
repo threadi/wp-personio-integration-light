@@ -142,7 +142,7 @@
         <exec dir="${src.dir}" failonerror="false" executable="vendor/bin/phpcbf">
             <arg line="--extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml ."/>
         </exec>
-        <exec dir="${src.dir}" failonerror="true" executable="lib/bin/phpcs">
+        <exec dir="${src.dir}" failonerror="true" executable="vendor/bin/phpcs">
             <arg line="--extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml ."/>
         </exec>
     </target>
@@ -200,6 +200,11 @@
             <zipfileset dir="${src.dir}/vendor/threadi/wp-easy-dialog/build/" prefix="${plugin.slug}/vendor/threadi/wp-easy-dialog/build/" />
             <zipfileset dir="${src.dir}/vendor/threadi/wp-easy-setup/build/" prefix="${plugin.slug}/vendor/threadi/wp-easy-setup/build/" />
             <zipfileset dir="${src.dir}/vendor/threadi/wp-easy-setup/lib/" prefix="${plugin.slug}/vendor/threadi/wp-easy-setup/lib/" />
+            <!-- backwards compatibility with < 3.2.0-->
+            <zipfileset dir="${src.dir}/vendor/threadi/wp-easy-dialog/build/" prefix="${plugin.slug}/lib/threadi/wp-easy-dialog/build/" />
+            <zipfileset dir="${src.dir}/vendor/threadi/wp-easy-setup/build/" prefix="${plugin.slug}/lib/threadi/wp-easy-setup/build/" />
+            <zipfileset dir="${src.dir}/vendor/threadi/wp-easy-setup/lib/" prefix="${plugin.slug}/lib/threadi/wp-easy-setup/lib/" />
+            <!-- /backwards compatibility -->
             <zipfileset dir="${src.dir}/node_modules/intro.js/minified/" prefix="${plugin.slug}/node_modules/intro.js/minified/" />
             <zipfileset dir="${src.dir}/inc" prefix="${plugin.slug}/inc" />
             <zipfileset dir="${src.dir}/templates" prefix="${plugin.slug}/templates" />

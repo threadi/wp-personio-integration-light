@@ -70,12 +70,20 @@ OR use ant in build/-directory: `ant json-translations`
 
 ### Run
 
-`lib/bin/phpcs --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .`
+`vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .`
 
 ### Repair
 
-`lib/bin/phpcbf --extensions=php --ignore=*/lib/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .`
+`vendor/bin/phpcbf --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .`
 
-### Generate documentation
+## Check for WordPress VIP Coding Standards
 
-`lib/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration`
+Hint: this check runs against the VIP-GO-platform which is not our target for this plugin. Many warnings can be ignored.
+
+### Run
+
+`vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=WordPress-VIP-Go .`
+
+## Generate documentation
+
+`vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration`

@@ -100,7 +100,7 @@ class Setup {
 
 			// use own hooks.
 			add_action( 'personio_integration_import_max_count', array( $this, 'update_max_step' ) );
-			add_action( 'personio_integration_import_count', array( $this, 'update_step' ) );
+			add_action( 'personio_integration_import_count', array( $this, 'update_process_step' ) );
 		}
 	}
 
@@ -306,7 +306,7 @@ class Setup {
 	 * @return void
 	 */
 	public function update_process_step( int $step = 1 ): void {
-		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_step', 0 ) + $step ) );
+		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_step' ) + $step ) );
 	}
 
 	/**
@@ -361,23 +361,12 @@ class Setup {
 	/**
 	 * Update max count.
 	 *
-	 * @param int $max_count The value to add.
+	 * @param int $add_to_max_count The value to add.
 	 *
 	 * @return void
 	 */
-	public function update_max_step( int $max_count ): void {
-		update_option( 'wp_easy_setup_max_steps', absint( get_option( 'wp_easy_setup_max_steps' ) ) + $max_count );
-	}
-
-	/**
-	 * Update count.
-	 *
-	 * @param int $count The value to add.
-	 *
-	 * @return void
-	 */
-	public function update_step( int $count ): void {
-		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_step' ) ) + $count );
+	public function update_max_step( int $add_to_max_count ): void {
+		update_option( 'wp_easy_setup_max_steps', absint( get_option( 'wp_easy_setup_max_steps' ) ) + $add_to_max_count );
 	}
 
 	/**
@@ -393,23 +382,17 @@ class Setup {
 			return;
 		}
 
-		// get the max steps for this process.
-		$max_steps = Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Imports::get_instance()->get_personio_urls() );
+		// update the max steps for this process.
+		$this->update_max_step( Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Imports::get_instance()->get_personio_urls() ) );
 
-		// set max step count (taxonomy-labels + Personio-accounts).
-		update_option( 'wp_easy_setup_max_steps', $max_steps );
-
-		// 1. Run import of taxonomies.
+		// step 1: Run import of taxonomies.
 		$this->set_process_label( __( 'Import of Personio labels running.', 'personio-integration-light' ) );
 		Taxonomies::get_instance()->create_defaults( array( $this, 'update_process_step' ) );
 
-		// 2. Run import of positions.
+		// step 2: Run import of positions.
 		$this->set_process_label( __( 'Import of your Personio positions running.', 'personio-integration-light' ) );
 		$imports_obj = Imports::get_instance();
 		$imports_obj->run();
-
-		// set steps to max steps to end the process.
-		update_option( 'wp_easy_setup_step', $max_steps );
 	}
 
 	/**
@@ -434,6 +417,9 @@ class Setup {
 		 * @param string $config_name The name of the setup-configuration used.
 		 */
 		$this->set_process_label( apply_filters( 'personio_integration_setup_process_completed_text', $completed_text, $config_name ) );
+
+		// set steps to max steps.
+		$this->update_process_step( $this->get_max_step() );
 	}
 
 	/**
@@ -496,5 +482,14 @@ class Setup {
 	 */
 	public function get_setup_name(): string {
 		return 'personio-integration-light';
+	}
+
+	/**
+	 * Return the actual max steps.
+	 *
+	 * @return int
+	 */
+	public function get_max_step(): int {
+		return absint( get_option( 'wp_easy_setup_max_steps' ) );
 	}
 }

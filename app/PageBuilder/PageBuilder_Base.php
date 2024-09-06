@@ -56,7 +56,7 @@ class PageBuilder_Base extends Extensions_Base {
 		add_filter( 'personio_integration_settings', array( $this, 'add_global_settings' ) );
 
 		// actions to run during setup.
-		add_action( 'wp_easy_setup_process', array( $this, 'run_setup_process' ) );
+		add_action( 'wp_easy_setup_process', array( $this, 'run_setup_process' ), 20 );
 
 		// add page builder to list of used page builder in this project.
 		Helper::update_page_builder_list( $this->get_name() );
@@ -145,17 +145,20 @@ class PageBuilder_Base extends Extensions_Base {
 			return;
 		}
 
+		// get setup object.
+		$setup_obj = Setup::get_instance();
+
 		// update max step count.
-		update_option( 'wp_easy_setup_max_steps', absint( get_option( 'wp_easy_setup_max_steps' ) ) + 1 );
+		$setup_obj->update_max_step( 1 );
 
 		// change label of progressbar in setup.
-		Setup::get_instance()->set_process_label( __( 'Import of templates running.', 'personio-integration-light' ) );
+		$setup_obj->set_process_label( __( 'Import of templates running.', 'personio-integration-light' ) );
 
 		// install templates.
 		$this->install_templates();
 
 		// set steps to max steps to end the process.
-		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_max_steps' ) ) );
+		update_option( 'wp_easy_setup_step', $setup_obj->get_max_step() );
 	}
 
 	/**

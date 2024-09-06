@@ -223,7 +223,7 @@ class Settings_Import {
 		}
 
 		/**
-		 * Run additional task before running the import of settings.
+		 * Run additional tasks before running the import of settings.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 */

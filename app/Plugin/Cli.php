@@ -72,7 +72,7 @@ class Cli {
 		Uninstaller::get_instance()->run( $delete_data );
 
 		/**
-		 * Run additional task for uninstallation.
+		 * Run additional tasks for uninstallation.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
@@ -84,7 +84,7 @@ class Cli {
 		Installer::get_instance()->activation();
 
 		/**
-		 * Run additional task for installation.
+		 * Run additional tasks for installation.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 */

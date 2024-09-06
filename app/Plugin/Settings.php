@@ -527,7 +527,7 @@ class Settings {
 							'default'           => 30,
 						),
 					),
-					'personioIntegrationShowHelp' => array(
+					'personioIntegrationShowHelp'          => array(
 						'label'               => __( 'Show help', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
 						'readonly'            => ! Helper::is_personio_url_set(),

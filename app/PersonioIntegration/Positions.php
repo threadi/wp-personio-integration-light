@@ -331,7 +331,7 @@ class Positions {
 		$url = add_query_arg(
 			array(
 				'action' => 'personioPositionsReImport',
-				'nonce' => wp_create_nonce( 'personio-integration-re-import' )
+				'nonce'  => wp_create_nonce( 'personio-integration-re-import' ),
 			),
 			get_admin_url() . 'admin.php'
 		);
