@@ -1141,8 +1141,7 @@ class Taxonomies {
 				$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					$wpdb->terms,
 					array(
-						'term_id'  => $term->term_id,
-						'taxonomy' => $taxonomy_name,
+						'term_id'  => $term->term_id
 					)
 				);
 			}

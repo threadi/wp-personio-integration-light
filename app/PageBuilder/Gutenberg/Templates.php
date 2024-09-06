@@ -276,4 +276,16 @@ class Templates {
 			wp_update_post( $query );
 		}
 	}
+
+	/**
+	 * Remove our templates from DB.
+	 *
+	 * @return void
+	 */
+	public function remove_db_templates(): void {
+		// loop through the templates and update their template-parts in content to the new theme.
+		foreach ( $this->get_templates_from_db( array(), 'wp_template' ) as $template ) {
+			wp_delete_post( $template->get_post_id() );
+		}
+	}
 }
