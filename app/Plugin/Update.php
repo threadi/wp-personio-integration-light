@@ -93,6 +93,7 @@ class Update {
 			define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
 			$this->version300();
 			$this->version310();
+			$this->version320();
 
 			// save new plugin-version in DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
@@ -155,5 +156,15 @@ class Update {
 	private function version310(): void {
 		// update db tables.
 		Init::get_instance()->install_db_tables();
+	}
+
+	/**
+	 * To run on update to version 3.2.0 or newer.
+	 *
+	 * @return void
+	 */
+	private function version320(): void {
+		// enable the new help functions.
+		update_option( 'personioIntegrationShowHelp', 1 );
 	}
 }

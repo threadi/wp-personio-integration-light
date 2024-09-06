@@ -527,6 +527,8 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added hints which taxonomies are changeable e.g. via Loco Translate
 * Added translation options for blocks
 * Added some styling in the filter blocks
+* Added new help system within page builder widgets (could be disabled in advanced settings)
+* Added more hooks
 * Optimized handling of Blocks for Block Editor
 * Optimized handling for transients in backend
 * Optimized error handling for JS-errors in backend

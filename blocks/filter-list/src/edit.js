@@ -28,10 +28,11 @@ import {
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
-	onChangeFilter,
-	onChangeHideFilterTitle,
-	onChangeHideResetLink,
-	onChangeSpaceBetween
+  onChangeFilter,
+  onChangeHideFilterTitle,
+  onChangeHideResetLink,
+  onChangeSpaceBetween,
+  Personio_Helper_Panel
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -76,46 +77,45 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Filter', 'personio-integration-light' ) }>
-					<div className="wp-personio-integration-selectcontrol-multiple">
-						{
-							<SelectControl
-								label={ __('Choose filter', 'personio-integration-light') }
-								value={ object.attributes.filter }
-								options={ personioTaxonomies }
-								multiple={ true }
-								onChange={ value => onChangeFilter(value, object) }
-							/>
-						}
-					</div>
-					<ToggleControl
-						label={__('Hide filter title', 'personio-integration-light')}
-						checked={ object.attributes.hideFilterTitle }
-						onChange={ value => onChangeHideFilterTitle( value, object ) }
-					/>
-					<ToggleControl
-						label={__('Hide reset link', 'personio-integration-light')}
-						checked={ object.attributes.hideResetLink }
-						onChange={ value => onChangeHideResetLink( value, object ) }
-					/>
-				</PanelBody>
-			</InspectorControls>
-			<InspectorControls>
-				<div className="wp-personio-integration-range">
-					<RangeControl
-						label={__('Space between filters', 'personio-integration-light')}
-						value={ object.attributes.space_between }
-						onChange={ value => onChangeSpaceBetween( value, object ) }
-						min={ 0 }
-						max={ 100 }
-					/>
-				</div>
-			</InspectorControls>
-			<ServerSideRender
-				block="wp-personio-integration/filter-list"
-				attributes={ object.attributes }
-				httpMethod="POST"
-			/>
-		</div>
-	);
+        <PanelBody initialOpen={false} title={__( 'Filter', 'personio-integration-light' )}>
+          <div className="wp-personio-integration-selectcontrol-multiple">
+            {
+              <SelectControl
+                label={__( 'Choose filter', 'personio-integration-light' )}
+                value={object.attributes.filter}
+                options={personioTaxonomies}
+                multiple={true}
+                onChange={value => onChangeFilter( value, object )}
+              />
+            }
+          </div>
+          <ToggleControl
+            label={__( 'Hide filter title', 'personio-integration-light' )}
+            checked={object.attributes.hideFilterTitle}
+            onChange={value => onChangeHideFilterTitle( value, object )}
+          />
+          <ToggleControl
+            label={__( 'Hide reset link', 'personio-integration-light' )}
+            checked={object.attributes.hideResetLink}
+            onChange={value => onChangeHideResetLink( value, object )}
+          />
+          <div className="wp-personio-integration-range">
+            <RangeControl
+              label={__( 'Space between filters', 'personio-integration-light' )}
+              value={object.attributes.space_between}
+              onChange={value => onChangeSpaceBetween( value, object )}
+              min={0}
+              max={100}
+            />
+          </div>
+        </PanelBody>
+        <Personio_Helper_Panel/>
+      </InspectorControls>
+      <ServerSideRender
+        block="wp-personio-integration/filter-list"
+        attributes={object.attributes}
+        httpMethod="POST"
+      />
+    </div>
+  );
 }

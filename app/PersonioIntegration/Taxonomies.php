@@ -1127,7 +1127,11 @@ class Taxonomies {
 				$wpdb->prepare(
 					'SELECT ' . $wpdb->terms . '.term_id
                     FROM ' . $wpdb->terms . '
-                    WHERE taxonomy = %s',
+                    INNER JOIN
+                        ' . $wpdb->term_taxonomy . '
+                        ON
+                         ' . $wpdb->term_taxonomy . '.term_id = ' . $wpdb->terms . '.term_id
+                    WHERE ' . $wpdb->term_taxonomy . '.taxonomy = %s',
 					array( $taxonomy_name )
 				)
 			);

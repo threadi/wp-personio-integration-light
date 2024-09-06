@@ -17,9 +17,11 @@ import './editor.scss';
  * Add individual dependencies.
  */
 import {
-	useBlockProps
+  InspectorControls,
+  useBlockProps
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
+import {Personio_Helper_Panel} from "../../components";
 const { useEffect } = wp.element;
 
 /**
@@ -43,6 +45,9 @@ export default function Edit( object ) {
 	 */
 	return (
 		<div { ...useBlockProps() }>
+      <InspectorControls>
+        <Personio_Helper_Panel />
+      </InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/application-button"
 				attributes={ object.attributes }

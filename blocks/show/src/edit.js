@@ -27,13 +27,14 @@ import {
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
-	onChangeTitleVisibility,
-	onChangeExcerptVisibility,
-	onChangeContentVisibility,
-	onChangeApplicationFormVisibility,
-	onChangeExcerptTemplates,
-	onChangeId,
-	onChangeLinkingTitle
+  onChangeTitleVisibility,
+  onChangeExcerptVisibility,
+  onChangeContentVisibility,
+  onChangeApplicationFormVisibility,
+  onChangeExcerptTemplates,
+  onChangeId,
+  onChangeLinkingTitle,
+  Personio_Helper_Panel
 } from '../../components';
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -118,7 +119,7 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
+				<PanelBody initialOpen={false} title={ __( 'Settings', 'personio-integration-light' ) }>
 					<SelectControl
 						label={__('Select position', 'personio-integration-light')}
 						options={ positionOptions }
@@ -168,6 +169,7 @@ export default function Edit( object ) {
 						disabled={ disabledFields }
 					/>
 				</PanelBody>
+        <Personio_Helper_Panel/>
 			</InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/show"

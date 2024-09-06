@@ -527,6 +527,15 @@ class Settings {
 							'default'           => 30,
 						),
 					),
+					'personioIntegrationShowHelp' => array(
+						'label'               => __( 'Show help', 'personio-integration-light' ),
+						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type'    => 'integer',
+							'default' => 1,
+						),
+					),
 					'personioIntegrationDeleteOnUninstall' => array(
 						'label'               => __( 'Delete all imported data on uninstall', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),

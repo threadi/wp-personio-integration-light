@@ -25,7 +25,7 @@ import {
 	useBlockProps
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
-import { onChangeTemplate } from "../../components";
+import {onChangeTemplate, Personio_Helper_Panel} from "../../components";
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
 
@@ -69,7 +69,7 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
+				<PanelBody initialOpen={false} title={ __( 'Settings', 'personio-integration-light' ) }>
 					<div className="wp-personio-integration-selectcontrol">
 						{
 							<SelectControl
@@ -82,6 +82,7 @@ export default function Edit( object ) {
 						}
 					</div>
 				</PanelBody>
+        <Personio_Helper_Panel/>
 			</InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/description"

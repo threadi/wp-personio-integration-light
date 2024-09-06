@@ -27,10 +27,11 @@ import {
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
-	onChangeFilter,
-	onChangeHideFilterTitle,
-	onChangeHideResetLink,
-	onChangeHideSubmitButton
+  onChangeFilter,
+  onChangeHideFilterTitle,
+  onChangeHideResetLink,
+  onChangeHideSubmitButton,
+  Personio_Helper_Panel
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -75,7 +76,7 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Filter', 'personio-integration-light' ) }>
+				<PanelBody initialOpen={false} title={ __( 'Filter', 'personio-integration-light' ) }>
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
@@ -103,6 +104,7 @@ export default function Edit( object ) {
             onChange={ value => onChangeHideResetLink( value, object ) }
           />
         </PanelBody>
+        <Personio_Helper_Panel/>
       </InspectorControls>
       <ServerSideRender
         block="wp-personio-integration/filter-select"
