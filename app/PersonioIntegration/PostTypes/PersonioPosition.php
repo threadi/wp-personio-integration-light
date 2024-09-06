@@ -517,6 +517,14 @@ class PersonioPosition extends Post_Type {
 		 */
 		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $attribute_defaults );
 
+		/**
+		 * Run custom actions before the output of the archive listing.
+		 *
+		 * @since 3.2.0 Available since 3.2.0.
+		 * @param array $personio_attributes List of attributes.
+		 */
+		do_action( 'personio_integration_get_template_before', $personio_attributes );
+
 		// generate styling.
 		Helper::add_inline_style( $personio_attributes['styles'] );
 
