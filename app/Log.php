@@ -135,7 +135,7 @@ class Log {
 		if ( ! is_null( $order ) ) {
 			$order = sanitize_sql_orderby( $order );
 		} else {
-			$order = 'ASC';
+			$order = 'DESC';
 		}
 
 		$limit = 10000;
@@ -161,9 +161,9 @@ class Log {
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
                     WHERE `category` = %s
-                    ORDER BY %s %s
+                    ORDER BY ' . $order_by . ' ' . $order . '
                     LIMIT %d',
-					array( $category, $order_by, $order, $limit )
+					array( $category, $limit )
 				),
 				ARRAY_A
 			);
@@ -177,9 +177,9 @@ class Log {
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
                     WHERE `md5` = %s
-                    ORDER BY %s %s
+                    ORDER BY ' . $order_by . ' ' . $order . '
                     LIMIT %d',
-					array( $md5, $order_by, $order, $limit )
+					array( $md5, $limit )
 				),
 				ARRAY_A
 			);
@@ -193,9 +193,9 @@ class Log {
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
                     WHERE `md5` = %s AND `category` = %s
-                    ORDER BY %s %s
+                    ORDER BY ' . $order_by . ' ' . $order . '
                     LIMIT %d',
-					array( $md5, $category, $order_by, $order, $limit )
+					array( $md5, $category, $limit )
 				),
 				ARRAY_A
 			);
@@ -206,9 +206,9 @@ class Log {
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`, `category`
                 FROM `' . $wpdb->prefix . 'personio_import_logs`
-                ORDER BY %s %s
+                ORDER BY ' . $order_by . ' ' . $order . '
                 LIMIT %d',
-				array( $order_by, $order, $limit )
+				array( $limit )
 			),
 			ARRAY_A
 		);

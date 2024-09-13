@@ -540,3 +540,5 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Remove Block Editor templates on uninstall
 * Fixed single view state
 * Fixed setup progress bar which now stops at 100%
+* Fixed possible error with unknown custom extensions categories
+* Fixed group listings to hide additional terms per group entity

@@ -7,7 +7,7 @@
 
 ### `personio_integration_light_settings_export`
 
-*Run additional task before running the export of all settings.*
+*Run additional tasks before running the export of all settings.*
 
 
 **Changelog**
@@ -20,7 +20,7 @@ Source: [app/Plugin/Settings_Export.php](Plugin/Settings_Export.php), [line 173]
 
 ### `personio_integration_uninstaller`
 
-*Run additional task for uninstallation.*
+*Run additional tasks for uninstallation.*
 
 **Arguments**
 
@@ -38,7 +38,7 @@ Source: [app/Plugin/Cli.php](Plugin/Cli.php), [line 74](Plugin/Cli.php#L74-L81)
 
 ### `personio_integration_installer`
 
-*Run additional task for installation.*
+*Run additional tasks for installation.*
 
 
 **Changelog**
@@ -51,7 +51,7 @@ Source: [app/Plugin/Cli.php](Plugin/Cli.php), [line 86](Plugin/Cli.php#L86-L91)
 
 ### `personio_integration_light_settings_import`
 
-*Run additional task before running the import of settings.*
+*Run additional tasks before running the import of settings.*
 
 
 **Changelog**
@@ -352,7 +352,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 124](PersonioIntegration/Availability.php#L124-L131)
+Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 125](PersonioIntegration/Availability.php#L125-L132)
 
 ### `personio_integration_import_count`
 
@@ -370,7 +370,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 149](PersonioIntegration/Availability.php#L149-L156)
+Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 150](PersonioIntegration/Availability.php#L150-L157)
 
 ### `personio_integration_import_starting`
 
@@ -1035,7 +1035,7 @@ Argument | Type | Description
 `$completed_text` |  | 
 `$config_name` |  | 
 
-Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 436](Plugin/Setup.php#L436-L436)
+Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 419](Plugin/Setup.php#L419-L419)
 
 ### `personio_integration_objects_with_db_tables`
 
@@ -1678,7 +1678,7 @@ Version | Description
 ------- | -----------
 `3.2.0` | Available since 3.2.0.
 
-Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 514](PersonioIntegration/Position.php#L514-L522)
+Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 519](PersonioIntegration/Position.php#L519-L527)
 
 ### `personio_integration_get_personio_url`
 
@@ -1689,7 +1689,7 @@ Argument | Type | Description
 `$url` |  | 
 `$this` |  | 
 
-Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 757](PersonioIntegration/Position.php#L757-L757)
+Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 762](PersonioIntegration/Position.php#L762-L762)
 
 ### `personio_integration_theme_css`
 
@@ -1781,7 +1781,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Tables/Extensions.php](PersonioIntegration/Tables/Extensions.php), [line 198](PersonioIntegration/Tables/Extensions.php#L198-L204)
+Source: [app/PersonioIntegration/Tables/Extensions.php](PersonioIntegration/Tables/Extensions.php), [line 203](PersonioIntegration/Tables/Extensions.php#L203-L209)
 
 ### `personio_integration_light_position_availability_yes`
 
@@ -1791,7 +1791,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$html` |  | 
 
-Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 216](PersonioIntegration/Availability.php#L216-L216)
+Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 217](PersonioIntegration/Availability.php#L217-L217)
 
 ### `personio_integration_light_position_availability_no`
 
@@ -1802,7 +1802,7 @@ Argument | Type | Description
 `$html` |  | 
 `$position_obj` |  | 
 
-Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 253](PersonioIntegration/Availability.php#L253-L253)
+Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 254](PersonioIntegration/Availability.php#L254-L254)
 
 ### `personio_integration_delete_single_position`
 

@@ -30,7 +30,7 @@ Of course, if the Pro plugin is available and licensed, you can also access func
 ## Procedure
 
 1. First create your own WordPress plugin, see: https://developer.wordpress.org/plugins/
-2. Create a file in it whose class serves as an object for your extension. You can find a template for this here:
+2. Create a file in it whose class serves as an object for your extension. You can find a template for this here: https://github.com/threadi/personio-integration-example
 3. Use the hook 'personio_integration_extend_position_object' to add your extension to the list of available extensions.
 
 After these steps, your extension can be seen in the list under Positions > Extensions.

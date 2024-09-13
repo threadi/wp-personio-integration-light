@@ -775,7 +775,7 @@ class Admin {
 		 */
 		$filename = apply_filters( 'personio_integration_log_export_filename', $filename );
 
-		// set header for response as JSON-download.
+		// set header for response as CSV-download.
 		header( 'Content-Type: text/csv' );
 		header( 'Content-Disposition: attachment; filename=' . sanitize_file_name( $filename ) );
 

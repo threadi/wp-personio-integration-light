@@ -31,7 +31,7 @@ Erweiterung ansprechen.
 ## Vorgehen
 
 1. Erstelle zunächst ein eigenes WordPress-Plugin, siehe dazu: https://developer.wordpress.org/plugins/
-2. Erstelle darin eine Datei deren Klasse als Object für deine Erweiterung dient. Eine Vorlage dazu findest Du hier:
+2. Erstelle darin eine Datei deren Klasse als Object für deine Erweiterung dient. Eine Vorlage dazu findest Du hier: https://github.com/threadi/personio-integration-example
 3. Ergänze per Hook 'personio_integration_extend_position_object' deine Extension zur Liste der verfügbaren Erweiterungen.
 
 Nach diesen Schritten ist deine Erweiterung in der Liste unter Stellen > Erweiterungen zu sehen.
