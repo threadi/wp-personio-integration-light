@@ -27,12 +27,6 @@ class Select {
 			// get value from config.
 			$value = get_option( $attributes['fieldId'] );
 
-			// convert type of value depending on setting for requested field.
-			$settings = get_registered_settings();
-			if ( isset( $settings[ $attributes['fieldId'] ]['type'] ) && 'integer' === $settings[ $attributes['fieldId'] ]['type'] ) {
-				$value = absint( $value );
-			}
-
 			// or get it from request.
 			$request_value = sanitize_text_field( wp_unslash( filter_input( INPUT_POST, $attributes['fieldId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
 			if ( ! empty( $request_value ) ) {

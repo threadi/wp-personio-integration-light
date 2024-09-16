@@ -23,6 +23,7 @@ use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Themes;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
+use PersonioIntegrationLight\Plugin\Compatibilities\Loco;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
@@ -112,7 +113,7 @@ class PersonioPosition extends Post_Type {
 
 		// edit positions.
 		add_action( 'admin_init', array( $this, 'remove_cpt_supports' ) );
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
 
@@ -177,7 +178,7 @@ class PersonioPosition extends Post_Type {
 			'can_export'          => false,
 			'exclude_from_search' => false,
 			'taxonomies'          => array_keys( Taxonomies::get_instance()->get_taxonomies() ),
-			'publicly_queryable'  => (bool) $single_slug,
+			'publicly_queryable'  => true,
 			'show_in_rest'        => true,
 			'capability_type'     => 'post',
 			'capabilities'        => array(
@@ -515,6 +516,14 @@ class PersonioPosition extends Post_Type {
 		 * @param array $attribute_defaults The default attributes.
 		 */
 		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $attribute_defaults );
+
+		/**
+		 * Run custom actions before the output of the archive listing.
+		 *
+		 * @since 3.2.0 Available since 3.2.0.
+		 * @param array $personio_attributes List of attributes.
+		 */
+		do_action( 'personio_integration_get_template_before', $personio_attributes );
 
 		// generate styling.
 		Helper::add_inline_style( $personio_attributes['styles'] );
@@ -1025,7 +1034,7 @@ class PersonioPosition extends Post_Type {
 	 *
 	 * @return void
 	 */
-	public function add_meta_box(): void {
+	public function add_meta_boxes(): void {
 		add_meta_box(
 			$this->get_name() . '-edit-hints',
 			__( 'About this page', 'personio-integration-light' ),
@@ -1057,15 +1066,65 @@ class PersonioPosition extends Post_Type {
 		// get taxonomies as object.
 		$taxonomies_obj = Taxonomies::get_instance();
 
+		// get the taxonomy settings.
+		$taxonomies_settings = $taxonomies_obj->get_taxonomies();
+
 		// add meta box for each supported taxonomy.
 		foreach ( $taxonomies_obj->get_taxonomies() as $taxonomy_name => $settings ) {
 			// get label.
 			$labels = $taxonomies_obj->get_taxonomy_label( $taxonomy_name );
 
+			// get the taxonomy settings.
+			$taxonomy_settings = $taxonomies_settings[ $taxonomy_name ];
+
+			// add changeable hint on title if enabled.
+			$changeable_hint = '';
+			if ( isset( $taxonomy_settings['changeable'] ) ) {
+				// create dialog.
+				$dialog = array(
+					'title'   => __( 'Texts changeable', 'personio-integration-light' ),
+					'texts'   => array(
+						'<p><strong>' . __( 'The texts of this taxonomy could be changed.', 'personio-integration-light' ) . '</strong></p>',
+						/* translators: %1$s will be replaced by the plugin URL for Loco Translate. */
+						'<p>' . sprintf( __( 'They are in the language file of the plugin and can be changed with any plugin that supports their editing, e.g. with <a href="%1$s" target="_blank">Loco Translate (opens new window)</a>.', 'personio-integration-light' ), esc_url( Loco::get_instance()->get_plugin_url() ) ) . '</p>',
+					),
+					'buttons' => array(
+						array(
+							'action'  => 'closeDialog();',
+							'variant' => 'primary',
+							'text'    => __( 'OK', 'personio-integration-light' ),
+						),
+					),
+				);
+
+				// set the URL.
+				$url = '#';
+
+				/**
+				 * Change this hint if Loco Translate is enabled.
+				 */
+				if ( Loco::get_instance()->is_active() ) {
+					$url = add_query_arg(
+						array(
+							'bundle' => trailingslashit( basename( Helper::get_plugin_path() ) ) . 'personio-integration-light.php',
+							'page'   => 'loco-plugin',
+							'action' => 'view',
+						),
+						get_admin_url() . 'admin.php'
+					);
+
+					/* translators: %1$s will be replaced by the URL for Loco Settings of this plugin. */
+					$dialog['texts'][1] = '<p>' . sprintf( __( 'You already have Loco Translate installed. Follow <a href="%1$s">this link</a> to edit the texts there.', 'personio-integration-light' ), esc_url( $url ) ) . '</p>';
+				}
+
+				// add link.
+				$changeable_hint = '<a href="' . esc_url( $url ) . '" class="wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-translation"></span></a>';
+			}
+
 			// add a box for single taxonomy.
 			add_meta_box(
 				$this->get_name() . '-taxonomy-' . $taxonomy_name,
-				$labels['name'],
+				$labels['name'] . $changeable_hint,
 				array( $this, 'get_meta_box_for_taxonomy' ),
 				$this->get_name(),
 				'side'
@@ -1215,12 +1274,20 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
-		$position_obj  = Positions::get_instance()->get_position( $post->ID );
+		// get the requested position as object.
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+
+		// get the requested taxonomy from the box ID as string.
 		$taxonomy_name = str_replace( $this->get_name() . '-taxonomy-', '', $attr['id'] );
-		$terms         = $position_obj->get_terms_by_field( $taxonomy_name );
+
+		// get the terms of this taxonomy on this position.
+		$terms = $position_obj->get_terms_by_field( $taxonomy_name );
+
+		// if no terms could be loaded, show hint.
 		if ( empty( $terms ) ) {
 			echo '<i>' . esc_html__( 'No data available.', 'personio-integration-light' ) . '</i>';
 		} else {
+			// loop through the terms and add them to the list.
 			foreach ( $terms as $index => $term ) {
 				if ( $index > 0 ) {
 					echo ', ';
@@ -1228,10 +1295,13 @@ class PersonioPosition extends Post_Type {
 
 				// get label.
 				$label = $term->name;
+
+				// special case for the language taxonomy.
 				if ( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $taxonomy_name ) {
 					// get languages in the project.
 					$languages = Languages::get_instance()->get_languages();
-					$label     = $languages[ $term->name ];
+					// get the label from the language list.
+					$label = $languages[ $term->name ];
 				}
 
 				// create filter url.
@@ -1648,17 +1718,10 @@ class PersonioPosition extends Post_Type {
 			return;
 		}
 
-		// on action "reset_application_count" run exakt this.
-		if ( 'reset_application_count' === $params['task'] ) {
-			// get position as object.
-			$position_obj = Positions::get_instance()->get_position( $params['post'] );
-			if ( $position_obj->is_valid() ) {
-				delete_post_meta( $position_obj->get_id(), 'application_limit' );
-
-				// answer with true success.
-				wp_send_json( array( 'success' => true ) );
-			}
-		}
+		/**
+		 * Run the individual task.
+		 */
+		do_action( 'personio_integration_light_endpoint_task', $params );
 
 		// answer with error.
 		wp_send_json( array( 'success' => false ) );

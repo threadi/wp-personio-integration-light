@@ -20,7 +20,7 @@ import {
 	__experimentalNumberControl as NumberControl,
 	PanelBody,
 	SelectControl,
-	ToggleControl,
+	ToggleControl
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -41,7 +41,8 @@ import {
 	onChangeShowFilter,
 	onChangeSortBy,
 	onChangeGroupBy,
-	onChangeTemplate
+	onChangeTemplate,
+  Personio_Helper_Panel
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -118,7 +119,7 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
+				<PanelBody initialOpen={false} title={ __( 'Settings', 'personio-integration-light' ) }>
 					<div className="wp-personio-integration-selectcontrol">
 						{
 							<SelectControl
@@ -202,9 +203,8 @@ export default function Edit( object ) {
 						onChange={ value => onChangeApplicationFormVisibility( value, object )  }
 					/>
 				</PanelBody>
-			</InspectorControls>
-      <InspectorControls>
-        <PanelBody title={ __( 'Filter', 'personio-integration-light' ) }>
+        <Personio_Helper_Panel/>
+        <PanelBody initialOpen={false} title={ __( 'Filter', 'personio-integration-light' ) }>
           <div className="alert"><p>{ __( 'Please use the Filter Block instead of this options.', 'personio-integration-light' ) }</p></div>
           <ToggleControl
             label={ __('Show filter', 'personio-integration-light') }

@@ -56,7 +56,7 @@ class Extensions {
 	public function init(): void {
 		// use our own hooks.
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_extensions' ) );
-		add_action( 'wp_easy_setup_process_init', array( $this, 'initialize_extensions_in_setup' ) );
+		add_action( 'wp_easy_setup_process_init', array( $this, 'initialize_extensions_in_setup' ), 30 );
 
 		if ( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
@@ -282,6 +282,7 @@ class Extensions {
 
 		// redirect user.
 		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		exit;
 	}
 
 	/**
@@ -306,6 +307,7 @@ class Extensions {
 
 		// redirect user.
 		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		exit;
 	}
 
 	/**

@@ -89,7 +89,7 @@ class Settings {
 		add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
 
 		// secure our own plugin settings.
-		add_filter( 'updated_option', array( $this, 'secure_settings' ), 10, 3 );
+		add_action( 'updated_option', array( $this, 'secure_settings' ), 10, 3 );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
@@ -527,6 +527,15 @@ class Settings {
 							'default'           => 30,
 						),
 					),
+					'personioIntegrationShowHelp'          => array(
+						'label'               => __( 'Show help', 'personio-integration-light' ),
+						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type'    => 'integer',
+							'default' => 1,
+						),
+					),
 					'personioIntegrationDeleteOnUninstall' => array(
 						'label'               => __( 'Delete all imported data on uninstall', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
@@ -587,10 +596,10 @@ class Settings {
 			'hidden_section'                   => array(
 				'settings_page' => 'hidden_personio_page',
 				'fields'        => array(
-					'personio_integration_transients'     => array(
+					WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST => array(
 						'register_attributes' => array(
-							'type'    => 'integer',
-							'default' => 0,
+							'type'    => 'array',
+							'default' => array(),
 						),
 						'do_not_export'       => true,
 					),
@@ -651,6 +660,7 @@ class Settings {
 						$field_name,
 						$args
 					);
+					add_filter( 'option_' . $field_name, array( $this, 'sanitize_option' ), 10, 2 );
 				}
 			}
 		}
@@ -814,12 +824,22 @@ class Settings {
 						continue;
 					}
 
+					// bail if tab should be hidden.
+					if ( ! empty( $tab_settings['hidden'] ) ) {
+						if ( $tab === $tab_settings['key'] ) {
+							$page = $tab_settings['settings_page'];
+						}
+						continue;
+					}
+
 					// Set url.
 					$url    = Helper::get_settings_url( 'personioPositions', $tab_settings['key'] );
 					$target = '_self';
 					if ( ! empty( $tab_settings['url'] ) ) {
-						$url    = $tab_settings['url'];
-						$target = $tab_settings['url_target'];
+						$url = $tab_settings['url'];
+						if ( ! empty( $tab_settings['url_target'] ) ) {
+							$target = $tab_settings['url_target'];
+						}
 					}
 
 					// Set class for tab and page for form-view.
@@ -921,11 +941,12 @@ class Settings {
 	 * Return settings for single field.
 	 *
 	 * @param string $field The requested fiel.
+	 * @param array  $settings The settings to use.
 	 *
 	 * @return array
 	 */
-	public function get_settings_for_field( string $field ): array {
-		foreach ( $this->get_settings() as $section_settings ) {
+	public function get_settings_for_field( string $field, array $settings = array() ): array {
+		foreach ( ( empty( $settings ) ? $this->get_settings() : $settings ) as $section_settings ) {
 			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
 				if ( $field === $field_name ) {
 					return $field_settings;
@@ -1192,5 +1213,42 @@ class Settings {
 
 		// return resulting list.
 		return $categories;
+	}
+
+	/**
+	 * Sanitize our own option values before output.
+	 *
+	 * @param mixed  $value The value.
+	 * @param string $option The option-name.
+	 *
+	 * @return mixed
+	 */
+	public function sanitize_option( mixed $value, string $option ): mixed {
+		// get field settings.
+		$field_settings = $this->get_settings_for_field( $option, $this->settings );
+
+		// bail if no type is set.
+		if ( empty( $field_settings['register_attributes']['type'] ) ) {
+			return $value;
+		}
+
+		// if type is array, secure for array.
+		if ( 'array' === $field_settings['register_attributes']['type'] ) {
+			// if it is an array, use it 1:1.
+			if ( is_array( $value ) ) {
+				return $value;
+			}
+
+			// secure the value.
+			return (array) $value;
+		}
+
+		// if type is int, secure value for int.
+		if ( 'integer' === $field_settings['register_attributes']['type'] ) {
+			return absint( $value );
+		}
+
+		// return the value.
+		return $value;
 	}
 }

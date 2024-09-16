@@ -71,7 +71,8 @@ Es sind folgende Parameter hierfür verfügbar:
 * verfügbare Werte werden kommagetrennt angegeben:
   * title => für den Titel der Stelle
   * excerpt => für die Liste der Kategorien denen die Stelle zugeordnet ist
-  * content => für den Beschreibungstext zur Stelle
+  * content => für den kompletten Beschreibungstext zur Stelle
+  * content_part => füe einen Teil des Beschreibungstextes der Stelle (nur in Verbindung mit _jobdescription_part_)
   * formular => für den Link zum Bewerbungsformular
   * meta => nur in Pro-Version verfügbar, wenn SEO aktiviert ist
 
@@ -90,8 +91,13 @@ Es sind folgende Parameter hierfür verfügbar:
 
 ### jobdescription_template
 
-* legt das Template für die Job-Beschreibung fest
+* legt das Template für die Stellen-Beschreibung fest
 * siehe [Beschreibungstemplate](description-template_de.md)
+
+### jobdescription_part
+
+* legt fest welcher Teil des Beschreibungstextes von dem Template _content_part_ verwendet werden soll
+* Zahl zwischen 0 und max. der Beschreibungsteile
 
 ### sort
 

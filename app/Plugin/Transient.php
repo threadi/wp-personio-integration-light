@@ -196,7 +196,7 @@ class Transient {
 					/* translators: %1$d will be replaced by the days this message will be hidden. */
 					$title = sprintf( __( 'Hide this message for %1$d days.', 'personio-integration-light' ), $this->get_dismissible_days() );
 					?>
-					<button type="button" class="notice-dismiss" title="<?php echo esc_html( $title ); ?>"><?php echo esc_html__( 'Dismiss', 'personio-integration-light' ); ?><span class="screen-reader-text"><?php echo esc_html( $title ); ?></span></button>
+					<button type="button" class="notice-dismiss" title="<?php echo esc_attr( $title ); ?>"><?php echo esc_html__( 'Dismiss', 'personio-integration-light' ); ?><span class="screen-reader-text"><?php echo esc_html( $title ); ?></span></button>
 					<?php
 				}
 				?>

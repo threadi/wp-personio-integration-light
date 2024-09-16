@@ -15,11 +15,18 @@ defined( 'ABSPATH' ) || exit;
  */
 class Compatibilities_Base {
 	/**
-	 * Name of this event.
+	 * Name of this plugin.
 	 *
 	 * @var string
 	 */
 	protected string $name = '';
+
+	/**
+	 * URL of this plugin.
+	 *
+	 * @var string
+	 */
+	protected string $plugin_url = '';
 
 	/**
 	 * Instance of this object.
@@ -75,5 +82,14 @@ class Compatibilities_Base {
 	 */
 	public function is_active(): bool {
 		return false;
+	}
+
+	/**
+	 * Return the plugin URL, if set.
+	 *
+	 * @return string
+	 */
+	public function get_plugin_url(): string {
+		return $this->plugin_url;
 	}
 }

@@ -6,7 +6,7 @@ Tested up to: 6.6
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.1.5
+Stable tag: 3.2.0
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -516,3 +516,29 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.1.5 =
 * Personio URL can now also insert without protocol (if https:// is missing)
 * Fixed query for positions without specific language
+* Fixed delete of log in playground
+
+= 3.2.0 =
+* Added logging for Personio database queries if debugging is enabled
+* Added sanitize for our own setting fields
+* Added loading screen for setup and option to skip it
+* Added new hook for individual tasks per post type endpoint
+* Added visibility state for positions if their visibility is restricted by global settings
+* Added hints which taxonomies are changeable e.g. via Loco Translate
+* Added translation options for blocks
+* Added some styling in the filter blocks
+* Added new help system within page builder widgets (could be disabled in advanced settings)
+* Added more hooks
+* Optimized handling of Blocks for Block Editor
+* Optimized handling for transients in backend
+* Optimized error handling for JS-errors in backend
+* Hide more third party plugin actions for positions
+* Re-Import now also possible without jQuery in backend
+* Position details in Block Single and Details are now loaded dynamically
+* Use main settings as defaults in classic widgets
+* Revert support for WPML-translation of our own taxonomies (now really only in Pro)
+* Remove Block Editor templates on uninstall
+* Fixed single view state
+* Fixed setup progress bar which now stops at 100%
+* Fixed possible error with unknown custom extensions categories
+* Fixed group listings to hide additional terms per group entity

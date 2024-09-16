@@ -7,7 +7,7 @@
 
 ### `personio_integration_light_settings_export`
 
-*Run additional task before running the export of all settings.*
+*Run additional tasks before running the export of all settings.*
 
 
 **Changelog**
@@ -16,11 +16,11 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Settings_Export.php](Plugin/Settings_Export.php), [line 167](Plugin/Settings_Export.php#L167-L172)
+Source: [app/Plugin/Settings_Export.php](Plugin/Settings_Export.php), [line 173](Plugin/Settings_Export.php#L173-L178)
 
 ### `personio_integration_uninstaller`
 
-*Run additional task for uninstallation.*
+*Run additional tasks for uninstallation.*
 
 **Arguments**
 
@@ -38,7 +38,7 @@ Source: [app/Plugin/Cli.php](Plugin/Cli.php), [line 74](Plugin/Cli.php#L74-L81)
 
 ### `personio_integration_installer`
 
-*Run additional task for installation.*
+*Run additional tasks for installation.*
 
 
 **Changelog**
@@ -51,7 +51,7 @@ Source: [app/Plugin/Cli.php](Plugin/Cli.php), [line 86](Plugin/Cli.php#L86-L91)
 
 ### `personio_integration_light_settings_import`
 
-*Run additional task before running the import of settings.*
+*Run additional tasks before running the import of settings.*
 
 
 **Changelog**
@@ -60,7 +60,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Settings_Import.php](Plugin/Settings_Import.php), [line 219](Plugin/Settings_Import.php#L219-L224)
+Source: [app/Plugin/Settings_Import.php](Plugin/Settings_Import.php), [line 225](Plugin/Settings_Import.php#L225-L230)
 
 ### `personio_integration_admin_show_pro_hint`
 
@@ -211,7 +211,7 @@ Source: [app/Plugin/Admin/SettingFields/Multiple_Checkboxes.php](Plugin/Admin/Se
 *Add additional boxes for help page.*
 
 
-Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 590](Plugin/Admin/Admin.php#L590-L593)
+Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 634](Plugin/Admin/Admin.php#L634-L637)
 
 ### `personio_integration_help_tours`
 
@@ -224,7 +224,25 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 679](Plugin/Admin/Admin.php#L679-L684)
+Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 723](Plugin/Admin/Admin.php#L723-L728)
+
+### `personio_integration_import_of_url_starting`
+
+*Run action on start of import of single URL.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$this` | `\PersonioIntegrationLight\PersonioIntegration\Import` | The import-object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.5` | Available since 3.0.5
+
+Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 169](PersonioIntegration/Import.php#L169-L175)
 
 ### `personio_integration_import_timestamp_no_changed`
 
@@ -243,7 +261,7 @@ Version | Description
 ------- | -----------
 `3.0.4` | Available since 3.0.4.
 
-Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 243](PersonioIntegration/Import.php#L243-L251)
+Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 244](PersonioIntegration/Import.php#L244-L252)
 
 ### `personio_integration_import_content_not_changed`
 
@@ -262,7 +280,25 @@ Version | Description
 ------- | -----------
 `3.0.4` | Available since 3.0.4.
 
-Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 283](PersonioIntegration/Import.php#L283-L291)
+Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 284](PersonioIntegration/Import.php#L284-L292)
+
+### `personio_integration_import_of_url_ended`
+
+*Run action on end of import of single URL.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$this` | `\PersonioIntegrationLight\PersonioIntegration\Import` | The import-object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.5` | Available since 3.0.5
+
+Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 389](PersonioIntegration/Import.php#L389-L395)
 
 ### `personio_integration_import_single_position_save`
 
@@ -316,7 +352,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 126](PersonioIntegration/Availability.php#L126-L133)
+Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 125](PersonioIntegration/Availability.php#L125-L132)
 
 ### `personio_integration_import_count`
 
@@ -334,7 +370,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 151](PersonioIntegration/Availability.php#L151-L158)
+Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 150](PersonioIntegration/Availability.php#L150-L157)
 
 ### `personio_integration_import_starting`
 
@@ -386,7 +422,7 @@ Version | Description
 ------- | -----------
 `2.0.0` | Available since release 2.0.0.
 
-Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 234](PersonioIntegration/Imports.php#L234-L239)
+Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 237](PersonioIntegration/Imports.php#L237-L242)
 
 ### `personio_integration_import_finished`
 
@@ -404,7 +440,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since release 3.0.0.
 
-Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 257](PersonioIntegration/Imports.php#L257-L264)
+Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 260](PersonioIntegration/Imports.php#L260-L267)
 
 ### `personio_integration_import_count`
 
@@ -422,7 +458,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 356](PersonioIntegration/Imports.php#L356-L363)
+Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 360](PersonioIntegration/Imports.php#L360-L367)
 
 ### `personio_integration_import_max_count`
 
@@ -440,7 +476,25 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 418](PersonioIntegration/Imports.php#L418-L425)
+Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 422](PersonioIntegration/Imports.php#L422-L429)
+
+### `personio_integration_get_template_before`
+
+*Run custom actions before the output of the archive listing.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$personio_attributes` | `array` | List of attributes.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.2.0` | Available since 3.2.0.
+
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 520](PersonioIntegration/PostTypes/PersonioPosition.php#L520-L526)
 
 ### `personio_integration_deletion_starting`
 
@@ -453,7 +507,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since release 3.0.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1543](PersonioIntegration/PostTypes/PersonioPosition.php#L1543-L1548)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1616](PersonioIntegration/PostTypes/PersonioPosition.php#L1616-L1621)
 
 ### `personio_integration_deletion_ended`
 
@@ -466,7 +520,19 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since release 3.0.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1609](PersonioIntegration/PostTypes/PersonioPosition.php#L1609-L1614)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1682](PersonioIntegration/PostTypes/PersonioPosition.php#L1682-L1687)
+
+### `personio_integration_light_endpoint_task`
+
+*Run the individual task.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$params` |  | 
+
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1721](PersonioIntegration/PostTypes/PersonioPosition.php#L1721-L1724)
 
 ## Filters
 
@@ -609,7 +675,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Schedules_Base.php](Plugin/Schedules_Base.php), [line 75](Plugin/Schedules_Base.php#L75-L82)
+Source: [app/Plugin/Schedules_Base.php](Plugin/Schedules_Base.php), [line 84](Plugin/Schedules_Base.php#L84-L91)
 
 ### `personio_integration_schedule_enabling`
 
@@ -628,7 +694,17 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Schedules_Base.php](Plugin/Schedules_Base.php), [line 187](Plugin/Schedules_Base.php#L187-L197)
+Source: [app/Plugin/Schedules_Base.php](Plugin/Schedules_Base.php), [line 201](Plugin/Schedules_Base.php#L201-L211)
+
+### `personio_integration_light_transient_title`
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`Helper::get_plugin_name()` |  | 
+
+Source: [app/Plugin/Transient.php](Plugin/Transient.php), [line 192](Plugin/Transient.php#L192-L192)
 
 ### `personio_integration_transient_hide_on`
 
@@ -809,6 +885,25 @@ Version | Description
 
 Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 480](Plugin/Templates.php#L480-L489)
 
+### `personio_integration_show_term_list`
+
+*Filter whether to show terms of single taxonomy as list or not.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$false` | `bool` | True to show the list.
+`$terms` | `array` | List of terms.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.8` | Available since 3.0.8.
+
+Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 543](Plugin/Templates.php#L543-L550)
+
 ### `personio_integration_hide_button`
 
 *Bail if no button should be visible.*
@@ -825,7 +920,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 599](Plugin/Templates.php#L599-L606)
+Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 622](Plugin/Templates.php#L622-L629)
 
 ### `personio_integration_back_to_list_target_attribute`
 
@@ -845,7 +940,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 636](Plugin/Templates.php#L636-L644)
+Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 659](Plugin/Templates.php#L659-L667)
 
 ### `personio_integration_add_kses_filter`
 
@@ -865,7 +960,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 807](Plugin/Templates.php#L807-L815)
+Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 830](Plugin/Templates.php#L830-L838)
 
 ### `personio_integration_settings_export_filename`
 
@@ -883,7 +978,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Settings_Export.php](Plugin/Settings_Export.php), [line 145](Plugin/Settings_Export.php#L145-L152)
+Source: [app/Plugin/Settings_Export.php](Plugin/Settings_Export.php), [line 151](Plugin/Settings_Export.php#L151-L158)
 
 ### `personio_integration_setup`
 
@@ -903,6 +998,16 @@ Version | Description
 
 Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 177](Plugin/Setup.php#L177-L184)
 
+### `personio_integration_light_transient_title`
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`Helper::get_plugin_name()` |  | 
+
+Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 194](Plugin/Setup.php#L194-L194)
+
 ### `personio_integration_setup_config`
 
 *Filter the setup configuration.*
@@ -919,7 +1024,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 272](Plugin/Setup.php#L272-L278)
+Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 281](Plugin/Setup.php#L281-L287)
 
 ### `personio_integration_setup_process_completed_text`
 
@@ -930,7 +1035,7 @@ Argument | Type | Description
 `$completed_text` |  | 
 `$config_name` |  | 
 
-Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 427](Plugin/Setup.php#L427-L427)
+Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 419](Plugin/Setup.php#L419-L419)
 
 ### `personio_integration_objects_with_db_tables`
 
@@ -942,7 +1047,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `array('PersonioIntegrationLight\\Log')` |  | 
 
-Source: [app/Plugin/Init.php](Plugin/Init.php), [line 283](Plugin/Init.php#L283-L289)
+Source: [app/Plugin/Init.php](Plugin/Init.php), [line 284](Plugin/Init.php#L284-L290)
 
 ### `personio_integration_objects_with_db_tables`
 
@@ -954,7 +1059,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `array('PersonioIntegrationLight\\Log')` |  | 
 
-Source: [app/Plugin/Init.php](Plugin/Init.php), [line 297](Plugin/Init.php#L297-L303)
+Source: [app/Plugin/Init.php](Plugin/Init.php), [line 298](Plugin/Init.php#L298-L304)
 
 ### `personio_integration_run_compatibility_checks`
 
@@ -1040,7 +1145,7 @@ Argument | Type | Description
 `$field_settings` | `array` | Setting for this field.
 `$field_name` | `string` | Internal name of the field.
 
-Source: [app/Plugin/Settings.php](Plugin/Settings.php), [line 684](Plugin/Settings.php#L684-L691)
+Source: [app/Plugin/Settings.php](Plugin/Settings.php), [line 716](Plugin/Settings.php#L716-L723)
 
 ### `personio_integration_settings_title`
 
@@ -1058,7 +1163,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Settings.php](Plugin/Settings.php), [line 738](Plugin/Settings.php#L738-L745)
+Source: [app/Plugin/Settings.php](Plugin/Settings.php), [line 770](Plugin/Settings.php#L770-L777)
 
 ### `personio_integration_settings`
 
@@ -1076,7 +1181,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0
 
-Source: [app/Plugin/Settings.php](Plugin/Settings.php), [line 874](Plugin/Settings.php#L874-L881)
+Source: [app/Plugin/Settings.php](Plugin/Settings.php), [line 916](Plugin/Settings.php#L916-L923)
 
 ### `personio_integration_hide_pro_hints`
 
@@ -1094,7 +1199,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0
 
-Source: [app/Plugin/Settings.php](Plugin/Settings.php), [line 923](Plugin/Settings.php#L923-L930)
+Source: [app/Plugin/Settings.php](Plugin/Settings.php), [line 966](Plugin/Settings.php#L966-L973)
 
 ### `personio_integration_settings_tabs`
 
@@ -1112,7 +1217,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0
 
-Source: [app/Plugin/Settings.php](Plugin/Settings.php), [line 964](Plugin/Settings.php#L964-L971)
+Source: [app/Plugin/Settings.php](Plugin/Settings.php), [line 1007](Plugin/Settings.php#L1007-L1014)
 
 ### `personio_integration_dashboard_widgets`
 
@@ -1209,7 +1314,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$text` |  | 
 
-Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 242](Plugin/Admin/Admin.php#L242-L242)
+Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 244](Plugin/Admin/Admin.php#L244-L244)
 
 ### `personio_integration_hide_pro_hints`
 
@@ -1219,7 +1324,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$false` |  | 
 
-Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 370](Plugin/Admin/Admin.php#L370-L370)
+Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 398](Plugin/Admin/Admin.php#L398-L398)
 
 ### `personio_integration_hide_pro_hints`
 
@@ -1229,7 +1334,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$false` |  | 
 
-Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 429](Plugin/Admin/Admin.php#L429-L429)
+Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 462](Plugin/Admin/Admin.php#L462-L462)
 
 ### `personio_integration_hide_pro_hints`
 
@@ -1239,7 +1344,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$false` |  | 
 
-Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 541](Plugin/Admin/Admin.php#L541-L541)
+Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 585](Plugin/Admin/Admin.php#L585-L585)
 
 ### `personio_integration_hide_pro_hints`
 
@@ -1249,7 +1354,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$false` |  | 
 
-Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 659](Plugin/Admin/Admin.php#L659-L659)
+Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 703](Plugin/Admin/Admin.php#L703-L703)
 
 ### `personio_integration_log_export_filename`
 
@@ -1267,7 +1372,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 735](Plugin/Admin/Admin.php#L735-L742)
+Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 769](Plugin/Admin/Admin.php#L769-L776)
 
 ### `personio_integration_schedule_our_events`
 
@@ -1286,7 +1391,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Schedules.php](Plugin/Schedules.php), [line 117](Plugin/Schedules.php#L117-L125)
+Source: [app/Plugin/Schedules.php](Plugin/Schedules.php), [line 123](Plugin/Schedules.php#L123-L131)
 
 ### `personio_integration_disable_cron_check`
 
@@ -1304,7 +1409,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Schedules.php](Plugin/Schedules.php), [line 142](Plugin/Schedules.php#L142-L150)
+Source: [app/Plugin/Schedules.php](Plugin/Schedules.php), [line 148](Plugin/Schedules.php#L148-L156)
 
 ### `personio_integration_schedules`
 
@@ -1324,7 +1429,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Schedules.php](Plugin/Schedules.php), [line 251](Plugin/Schedules.php#L251-L260)
+Source: [app/Plugin/Schedules.php](Plugin/Schedules.php), [line 262](Plugin/Schedules.php#L262-L271)
 
 ### `personio_integration_supported_themes`
 
@@ -1361,7 +1466,7 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 185](PersonioIntegration/Import.php#L185-L193)
+Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 177](PersonioIntegration/Import.php#L177-L185)
 
 ### `personio_integration_import_header_status`
 
@@ -1392,7 +1497,7 @@ Argument | Type | Description
 `$language_name` |  | 
 `$personio_obj` |  | 
 
-Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 338](PersonioIntegration/Import.php#L338-L338)
+Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 340](PersonioIntegration/Import.php#L340-L340)
 
 ### `personio_integration_import_sleep_positions_limit`
 
@@ -1402,7 +1507,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `20` |  | 
 
-Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 356](PersonioIntegration/Import.php#L356-L356)
+Source: [app/PersonioIntegration/Import.php](PersonioIntegration/Import.php), [line 358](PersonioIntegration/Import.php#L358-L358)
 
 ### `personio_integration_taxonomies`
 
@@ -1420,7 +1525,7 @@ Version | Description
 ------- | -----------
 `1.0.0` | Available since first release.
 
-Source: [app/PersonioIntegration/Taxonomies.php](PersonioIntegration/Taxonomies.php), [line 257](PersonioIntegration/Taxonomies.php#L257-L264)
+Source: [app/PersonioIntegration/Taxonomies.php](PersonioIntegration/Taxonomies.php), [line 265](PersonioIntegration/Taxonomies.php#L265-L272)
 
 ### `personio_integration_filter_taxonomy_label`
 
@@ -1439,7 +1544,7 @@ Version | Description
 ------- | -----------
 `1.0.0` | Available since first release.
 
-Source: [app/PersonioIntegration/Taxonomies.php](PersonioIntegration/Taxonomies.php), [line 462](PersonioIntegration/Taxonomies.php#L462-L470)
+Source: [app/PersonioIntegration/Taxonomies.php](PersonioIntegration/Taxonomies.php), [line 470](PersonioIntegration/Taxonomies.php#L470-L478)
 
 ### `personio_integration_cat_labels`
 
@@ -1457,7 +1562,7 @@ Version | Description
 ------- | -----------
 `1.0.0` | Available since first release.
 
-Source: [app/PersonioIntegration/Taxonomies.php](PersonioIntegration/Taxonomies.php), [line 491](PersonioIntegration/Taxonomies.php#L491-L498)
+Source: [app/PersonioIntegration/Taxonomies.php](PersonioIntegration/Taxonomies.php), [line 499](PersonioIntegration/Taxonomies.php#L499-L506)
 
 ### `personio_integration_settings_get_list`
 
@@ -1476,7 +1581,7 @@ Version | Description
 ------- | -----------
 `2.3.0` | Available since 2.3.0.
 
-Source: [app/PersonioIntegration/Taxonomies.php](PersonioIntegration/Taxonomies.php), [line 1014](PersonioIntegration/Taxonomies.php#L1014-L1022)
+Source: [app/PersonioIntegration/Taxonomies.php](PersonioIntegration/Taxonomies.php), [line 1022](PersonioIntegration/Taxonomies.php#L1022-L1030)
 
 ### `personio_integration_check_requirement_to_import_single_position`
 
@@ -1556,6 +1661,25 @@ Version | Description
 
 Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 224](PersonioIntegration/Position.php#L224-L232)
 
+### `personio_integration_single_url`
+
+*Filter the public url of a single position.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$url` | `string` | The URL.
+`$this` | `\PersonioIntegrationLight\PersonioIntegration\Position` | The object of the position.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.2.0` | Available since 3.2.0.
+
+Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 519](PersonioIntegration/Position.php#L519-L527)
+
 ### `personio_integration_get_personio_url`
 
 **Arguments**
@@ -1565,7 +1689,7 @@ Argument | Type | Description
 `$url` |  | 
 `$this` |  | 
 
-Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 746](PersonioIntegration/Position.php#L746-L746)
+Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 762](PersonioIntegration/Position.php#L762-L762)
 
 ### `personio_integration_theme_css`
 
@@ -1657,7 +1781,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Tables/Extensions.php](PersonioIntegration/Tables/Extensions.php), [line 198](PersonioIntegration/Tables/Extensions.php#L198-L204)
+Source: [app/PersonioIntegration/Tables/Extensions.php](PersonioIntegration/Tables/Extensions.php), [line 203](PersonioIntegration/Tables/Extensions.php#L203-L209)
 
 ### `personio_integration_light_position_availability_yes`
 
@@ -1667,7 +1791,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$html` |  | 
 
-Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 218](PersonioIntegration/Availability.php#L218-L218)
+Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 217](PersonioIntegration/Availability.php#L217-L217)
 
 ### `personio_integration_light_position_availability_no`
 
@@ -1678,7 +1802,7 @@ Argument | Type | Description
 `$html` |  | 
 `$position_obj` |  | 
 
-Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 255](PersonioIntegration/Availability.php#L255-L255)
+Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 254](PersonioIntegration/Availability.php#L254-L254)
 
 ### `personio_integration_delete_single_position`
 
@@ -1707,7 +1831,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 285](PersonioIntegration/Imports.php#L285-L292)
+Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 292](PersonioIntegration/Imports.php#L292-L299)
 
 ### `personio_integration_import_single_position_xml`
 
@@ -1727,7 +1851,7 @@ Version | Description
 ------- | -----------
 `1.0.0` | Available since first release.
 
-Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 463](PersonioIntegration/Imports.php#L463-L472)
+Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 467](PersonioIntegration/Imports.php#L467-L476)
 
 ### `personio_integration_get_position_obj`
 
@@ -1746,7 +1870,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 77](PersonioIntegration/Positions.php#L77-L85)
+Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 79](PersonioIntegration/Positions.php#L79-L87)
 
 ### `personio_integration_positions_query`
 
@@ -1765,7 +1889,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 182](PersonioIntegration/Positions.php#L182-L190)
+Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 184](PersonioIntegration/Positions.php#L184-L192)
 
 ### `personio_integration_positions_loop_id`
 
@@ -1775,7 +1899,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$post_id` |  | 
 
-Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 209](PersonioIntegration/Positions.php#L209-L209)
+Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 217](PersonioIntegration/Positions.php#L217-L217)
 
 ### `personio_integration_positions_resulting_list`
 
@@ -1795,7 +1919,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 228](PersonioIntegration/Positions.php#L228-L237)
+Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 236](PersonioIntegration/Positions.php#L236-L245)
 
 ### `personio_integration_extend_position_object`
 
@@ -1832,7 +1956,7 @@ Version | Description
 ------- | -----------
 `2.0.0` | Available since 2.0.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 323](PersonioIntegration/PostTypes/PersonioPosition.php#L323-L331)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 327](PersonioIntegration/PostTypes/PersonioPosition.php#L327-L335)
 
 ### `personio_integration_pagination`
 
@@ -1850,7 +1974,7 @@ Version | Description
 ------- | -----------
 `1.2.0` | Available since 1.2.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 397](PersonioIntegration/PostTypes/PersonioPosition.php#L397-L406)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 401](PersonioIntegration/PostTypes/PersonioPosition.php#L401-L410)
 
 ### `personio_integration_limit`
 
@@ -1869,7 +1993,7 @@ Version | Description
 ------- | -----------
 `2.0.0` | Available since 2.0.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 492](PersonioIntegration/PostTypes/PersonioPosition.php#L492-L500)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 496](PersonioIntegration/PostTypes/PersonioPosition.php#L496-L504)
 
 ### `personio_integration_get_template`
 
@@ -1888,7 +2012,7 @@ Version | Description
 ------- | -----------
 `1.2.0` | Available since 1.2.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 506](PersonioIntegration/PostTypes/PersonioPosition.php#L506-L514)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 510](PersonioIntegration/PostTypes/PersonioPosition.php#L510-L518)
 
 ### `personio_integration_rest_templates_details`
 
@@ -1906,7 +2030,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 651](PersonioIntegration/PostTypes/PersonioPosition.php#L651-L658)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 663](PersonioIntegration/PostTypes/PersonioPosition.php#L663-L670)
 
 ### `personio_integration_rest_templates_jobdescription`
 
@@ -1924,7 +2048,7 @@ Version | Description
 ------- | -----------
 `2.6.0` | Available since 2.6.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 681](PersonioIntegration/PostTypes/PersonioPosition.php#L681-L688)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 693](PersonioIntegration/PostTypes/PersonioPosition.php#L693-L700)
 
 ### `personio_integration_rest_templates_archive`
 
@@ -1942,7 +2066,7 @@ Version | Description
 ------- | -----------
 `2.6.0` | Available since 2.6.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 711](PersonioIntegration/PostTypes/PersonioPosition.php#L711-L718)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 723](PersonioIntegration/PostTypes/PersonioPosition.php#L723-L730)
 
 ### `personio_integration_personioposition_columns`
 
@@ -1960,7 +2084,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 785](PersonioIntegration/PostTypes/PersonioPosition.php#L785-L791)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 797](PersonioIntegration/PostTypes/PersonioPosition.php#L797-L803)
 
 ### `personio_integration_position_prevent_meta_box_remove`
 
@@ -1980,7 +2104,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1107](PersonioIntegration/PostTypes/PersonioPosition.php#L1107-L1118)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1169](PersonioIntegration/PostTypes/PersonioPosition.php#L1169-L1180)
 
 ### `personio_integration_do_not_hide_meta_box`
 
@@ -1999,7 +2123,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1133](PersonioIntegration/PostTypes/PersonioPosition.php#L1133-L1143)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1195](PersonioIntegration/PostTypes/PersonioPosition.php#L1195-L1205)
 
 ### `personio_integration_position_attribute_defaults`
 
@@ -2017,7 +2141,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1325](PersonioIntegration/PostTypes/PersonioPosition.php#L1325-L1332)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1398](PersonioIntegration/PostTypes/PersonioPosition.php#L1398-L1405)
 
 ### `personio_integration_sitemap_entry`
 
@@ -2036,7 +2160,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1423](PersonioIntegration/PostTypes/PersonioPosition.php#L1423-L1431)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1496](PersonioIntegration/PostTypes/PersonioPosition.php#L1496-L1504)
 
 ### `personio_integration_import_dialog`
 
@@ -2054,7 +2178,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1755](PersonioIntegration/PostTypes/PersonioPosition.php#L1755-L1762)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1821](PersonioIntegration/PostTypes/PersonioPosition.php#L1821-L1828)
 
 ### `personio_integration_hide_pro_hints`
 
@@ -2072,7 +2196,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1807](PersonioIntegration/PostTypes/PersonioPosition.php#L1807-L1816)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1873](PersonioIntegration/PostTypes/PersonioPosition.php#L1873-L1882)
 
 ### `personio_integration_hide_pro_extensions`
 
@@ -2090,7 +2214,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0
 
-Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1820](PersonioIntegration/PostTypes/PersonioPosition.php#L1820-L1829)
+Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1886](PersonioIntegration/PostTypes/PersonioPosition.php#L1886-L1895)
 
 ### `personio_integration_get_list_attributes`
 
@@ -2172,6 +2296,35 @@ Version | Description
 
 Source: [app/PageBuilder/Gutenberg/Templates.php](PageBuilder/Gutenberg/Templates.php), [line 204](PageBuilder/Gutenberg/Templates.php#L204-L211)
 
+### `personio_integration_block_help_url`
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`Helper::get_plugin_support_url()` |  | 
+
+Source: [app/PageBuilder/Gutenberg/Blocks_Basis.php](PageBuilder/Gutenberg/Blocks_Basis.php), [line 116](PageBuilder/Gutenberg/Blocks_Basis.php#L116-L116)
+
+### `personio_integration_light_block_language_path`
+
+*Return the language path this plugin should use.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$language_path` | `string` | The path to the languages.
+`$this` | `\PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis` | The Block object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.2.0` | Available since 3.2.0.
+
+Source: [app/PageBuilder/Gutenberg/Blocks_Basis.php](PageBuilder/Gutenberg/Blocks_Basis.php), [line 269](PageBuilder/Gutenberg/Blocks_Basis.php#L269-L279)
+
 ### `personio_integration_pagebuilder`
 
 *Filter the possible page builders.*
@@ -2182,7 +2335,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$list` | `array` | List of the handler.
 
-Source: [app/PageBuilder/Page_Builders.php](PageBuilder/Page_Builders.php), [line 46](PageBuilder/Page_Builders.php#L46-L51)
+Source: [app/PageBuilder/Page_Builders.php](PageBuilder/Page_Builders.php), [line 47](PageBuilder/Page_Builders.php#L47-L52)
 
 ### `personio_integration_is_block_theme`
 
@@ -2213,6 +2366,60 @@ Argument | Type | Description
 `$list` |  | 
 
 Source: [app/PageBuilder/Gutenberg.php](PageBuilder/Gutenberg.php), [line 117](PageBuilder/Gutenberg.php#L117-L134)
+
+### `personio_integration_log_table_filter`
+
+*Filter the list before output.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$list` | `array` | List of filter.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.1.0` | Available since 3.1.0.
+
+Source: [app/Log_Table.php](Log_Table.php), [line 270](Log_Table.php#L270-L276)
+
+### `personio_integration_log_categories`
+
+*Filter the list of possible log categories.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$list` | `array` | List of categories.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.1.0` | Available since 3.1.0.
+
+Source: [app/Log.php](Log.php), [line 109](Log.php#L109-L116)
+
+### `personio_integration_light_log_limit`
+
+*Filter limit to prevent possible errors on big tables.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$limit` | `int` | The actual limit.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.1.0` | Available since 3.1.0.
+
+Source: [app/Log.php](Log.php), [line 142](Log.php#L142-L148)
 
 ### `personio_integration_prevent_wpml_optimizations`
 
@@ -2303,7 +2510,7 @@ Version | Description
 ------- | -----------
 `2.0.0` | Available since first release.
 
-Source: [app/Helper.php](Helper.php), [line 192](Helper.php#L192-L199)
+Source: [app/Helper.php](Helper.php), [line 195](Helper.php#L195-L202)
 
 ### `personio_integration_url`
 
@@ -2321,7 +2528,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Helper.php](Helper.php), [line 469](Helper.php#L469-L476)
+Source: [app/Helper.php](Helper.php), [line 480](Helper.php#L480-L487)
 
 ### `personio_integration_list_of_cpts`
 
@@ -2339,7 +2546,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Helper.php](Helper.php), [line 595](Helper.php#L595-L602)
+Source: [app/Helper.php](Helper.php), [line 615](Helper.php#L615-L622)
 
 ### `personio_integration_file_version`
 
@@ -2358,7 +2565,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Helper.php](Helper.php), [line 639](Helper.php#L639-L647)
+Source: [app/Helper.php](Helper.php), [line 659](Helper.php#L659-L667)
 
 
 <p align="center"><a href="https://github.com/pronamic/wp-documentor"><img src="https://cdn.jsdelivr.net/gh/pronamic/wp-documentor@main/logos/pronamic-wp-documentor.svgo-min.svg" alt="Pronamic WordPress Documentor" width="32" height="32"></a><br><em>Generated by <a href="https://github.com/pronamic/wp-documentor">Pronamic WordPress Documentor</a> <code>1.2.0</code></em><p>

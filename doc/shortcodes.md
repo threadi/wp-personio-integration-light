@@ -67,11 +67,12 @@ The parameters in the shortcodes have the following tasks:
 
 ### templates
 
-* specifies the structure of the template for a job
+* specifies the structure of the template for a position
 * available values are specified comma separated:
-  * title => for the title of the job
-  * excerpt => for the list of categories the job is assigned to
-  * content => for the description text of the job
+  * title => for the title of the position
+  * excerpt => for the list of categories the position is assigned to
+  * content => for the complete description text of the position
+  * content_part => for a part of the description text of the position
   * form => for the link to the application form
   * meta => available only in Pro version, if SEO is enabled
 
@@ -90,13 +91,18 @@ The parameters in the shortcodes have the following tasks:
 
 ### jobdescription_template
 
-* defines the template for job-description
+* defines the template for the description of a position
 * more info here: [description template](description-template.md)
+
+### jobdescription_part
+
+* defines which part of the description text should be used by template _content_part_
+* number between 0 and max. of description parts
 
 ### sort
 
 * only available for list view
-* sets the sort order for the jobs in the list
+* sets the sort order for the positions in the list
 * only one of the following values may be specified:
   * asc => for ascending
   * desc => for descending
@@ -104,28 +110,28 @@ The parameters in the shortcodes have the following tasks:
 ### sortby
 
 * only available for list view
-* specifies by which value the list of jobs should be sorted
+* specifies by which value the list of positions should be sorted
 * only one of the following values may be specified:
-  * title => by the title of the job
-  * date => by the date when the job was imported into Wordpress
+  * title => by the title of the position
+  * date => by the date when the position was imported into Wordpress
 
 ### ids
 
 * only available for list view
 * restricts the view to the specified PersonioIDs
-* which IDs are available can be seen in the list "open jobs" in the column "PersonioId
+* which IDs are available can be seen in the list "open positions" in the column "PersonioId
 
 ### personioid
 
 * only mandatory field for shortcodes
 * only available for detail view
-* determines which specific job is displayed
-* which IDs are available can be seen in the "open jobs" list in the "PersonioId" column
+* determines which specific position is displayed
+* which IDs are available can be seen in the "open positions" list in the "PersonioId" column
 
 ### groupby
 
 * only available for list view
-* groups the list of jobs by one of the properties
+* groups the list of positions by one of the properties
 * available values are:
   * office
   * recruitingCategory
@@ -145,8 +151,8 @@ The parameters in the shortcodes have the following tasks:
 
 * only available for list view
 * Use cases:
-  * Display jobs from one department only
-  * show only full time jobs
+  * Display positions from one department only
+  * show only full time positions
 * the property must be specified as a parameter, as a value the database ID of the desired value must be specified
 * Example:
   `[personioPositions department="42"]`

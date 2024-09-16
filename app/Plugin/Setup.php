@@ -48,7 +48,6 @@ class Setup {
 		$this->setup_obj = \wpEasySetup\Setup::get_instance();
 		$this->setup_obj->set_url( Helper::get_plugin_url() );
 		$this->setup_obj->set_path( Helper::get_plugin_path() );
-		$this->setup_obj->set_vendor_path( 'lib' );
 		$this->setup_obj->set_texts(
 			array(
 				'title_error' => __( 'Error', 'personio-integration-light' ),
@@ -101,7 +100,7 @@ class Setup {
 
 			// use own hooks.
 			add_action( 'personio_integration_import_max_count', array( $this, 'update_max_step' ) );
-			add_action( 'personio_integration_import_count', array( $this, 'update_step' ) );
+			add_action( 'personio_integration_import_count', array( $this, 'update_process_step' ) );
 		}
 	}
 
@@ -191,6 +190,13 @@ class Setup {
 	 * @return void
 	 */
 	public function display(): void {
+		// create help in case of error during loading of the setup.
+		$error_help = '<div class="personio-integration-transient notice notice-success"><h3>' . wp_kses_post( Helper::get_logo_img() ) . ' ' . esc_html( apply_filters( 'personio_integration_light_transient_title', Helper::get_plugin_name() ) ) . '</h3><p><strong>' . __( 'Setup is loading', 'personio-integration-light' ) . '</strong><br>' . __( 'Please wait while we load the setup.', 'personio-integration-light' ) . '<br>' . __( 'However, you can also skip the setup and configure the plugin manually.', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $this->setup_obj->get_skip_url( $this->get_setup_name(), Helper::get_settings_url() ) ) . '" class="button button-primary">' . __( 'Skip setup', 'personio-integration-light' ) . '</a></p></div>';
+
+		// add error text.
+		$this->setup_obj->set_error_help( $error_help );
+
+		// output.
 		echo wp_kses_post( $this->setup_obj->display( $this->get_setup_name() ) );
 	}
 
@@ -268,6 +274,8 @@ class Setup {
 			'back_button_label'     => __( 'Back', 'personio-integration-light' ) . '<span class="dashicons dashicons-undo"></span>',
 			'continue_button_label' => __( 'Continue', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-play"></span>',
 			'finish_button_label'   => __( 'Completed', 'personio-integration-light' ) . '<span class="dashicons dashicons-saved"></span>',
+			'skip_button_label'     => __( 'Skip', 'personio-integration-light' ) . '<span class="dashicons dashicons-undo"></span>',
+			'skip_url'              => $this->setup_obj->get_skip_url( $this->get_setup_name(), Helper::get_settings_url() ),
 		);
 
 		/**
@@ -298,7 +306,7 @@ class Setup {
 	 * @return void
 	 */
 	public function update_process_step( int $step = 1 ): void {
-		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_step', 0 ) + $step ) );
+		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_step' ) + $step ) );
 	}
 
 	/**
@@ -353,23 +361,12 @@ class Setup {
 	/**
 	 * Update max count.
 	 *
-	 * @param int $max_count The value to add.
+	 * @param int $add_to_max_count The value to add.
 	 *
 	 * @return void
 	 */
-	public function update_max_step( int $max_count ): void {
-		update_option( 'wp_easy_setup_max_steps', absint( get_option( 'wp_easy_setup_max_steps' ) ) + $max_count );
-	}
-
-	/**
-	 * Update count.
-	 *
-	 * @param int $count The value to add.
-	 *
-	 * @return void
-	 */
-	public function update_step( int $count ): void {
-		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_step' ) ) + $count );
+	public function update_max_step( int $add_to_max_count ): void {
+		update_option( 'wp_easy_setup_max_steps', absint( get_option( 'wp_easy_setup_max_steps' ) ) + $add_to_max_count );
 	}
 
 	/**
@@ -385,23 +382,17 @@ class Setup {
 			return;
 		}
 
-		// get the max steps for this process.
-		$max_steps = Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Imports::get_instance()->get_personio_urls() );
+		// update the max steps for this process.
+		$this->update_max_step( Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Imports::get_instance()->get_personio_urls() ) );
 
-		// set max step count (taxonomy-labels + Personio-accounts).
-		update_option( 'wp_easy_setup_max_steps', $max_steps );
-
-		// 1. Run import of taxonomies.
+		// step 1: Run import of taxonomies.
 		$this->set_process_label( __( 'Import of Personio labels running.', 'personio-integration-light' ) );
 		Taxonomies::get_instance()->create_defaults( array( $this, 'update_process_step' ) );
 
-		// 2. Run import of positions.
+		// step 2: Run import of positions.
 		$this->set_process_label( __( 'Import of your Personio positions running.', 'personio-integration-light' ) );
 		$imports_obj = Imports::get_instance();
 		$imports_obj->run();
-
-		// set steps to max steps to end the process.
-		update_option( 'wp_easy_setup_step', $max_steps );
 	}
 
 	/**
@@ -426,6 +417,9 @@ class Setup {
 		 * @param string $config_name The name of the setup-configuration used.
 		 */
 		$this->set_process_label( apply_filters( 'personio_integration_setup_process_completed_text', $completed_text, $config_name ) );
+
+		// set steps to max steps.
+		$this->update_process_step( $this->get_max_step() );
 	}
 
 	/**
@@ -488,5 +482,14 @@ class Setup {
 	 */
 	public function get_setup_name(): string {
 		return 'personio-integration-light';
+	}
+
+	/**
+	 * Return the actual max steps.
+	 *
+	 * @return int
+	 */
+	public function get_max_step(): int {
+		return absint( get_option( 'wp_easy_setup_max_steps' ) );
 	}
 }

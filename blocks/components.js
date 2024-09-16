@@ -1,3 +1,6 @@
+import {__} from "@wordpress/i18n";
+import { PanelBody, ExternalLink } from '@wordpress/components';
+
 export const onChangeTitleVisibility = ( newValue, object ) => {
     object.setAttributes( { showTitle: newValue } );
 }
@@ -75,6 +78,20 @@ export const onChangeSpaceBetween = ( newValue, object ) => {
 
 export const onChangeTemplate = ( newValue, object ) => {
 	object.setAttributes( { template: newValue } );
+}
+
+/**
+ * Panel for helper texts.
+ */
+export class Personio_Helper_Panel extends React.Component {
+  render() {
+    return (
+      window.personio_integration_config.enable_help && <PanelBody initialOpen={false} title={ __( 'Do you need help?', 'personio-integration-light' ) }>
+        <p>{__( 'You are welcome to contact our support forum if you have any questions.', 'personio-integration-light' )}</p>
+        <p>{<ExternalLink href={ window.personio_integration_config.support_url }>{ __( 'Go to supportforum', 'personio-integration-light' ) }</ExternalLink>}</p>
+      </PanelBody>
+    )
+  }
 }
 
 const el = wp.element.createElement;

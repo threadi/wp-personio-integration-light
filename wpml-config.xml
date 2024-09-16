@@ -4,13 +4,13 @@
     </custom-types>
     <taxonomies>
         <taxonomy translate="0">personioRecruitingCategory</taxonomy>
-        <taxonomy translate="1">personioOccupationCategory</taxonomy>
-        <taxonomy translate="1">personioOccupation</taxonomy>
-        <taxonomy translate="1">personioOffice</taxonomy>
-        <taxonomy translate="1">personioDepartment</taxonomy>
-        <taxonomy translate="1">personioEmploymentType</taxonomy>
+        <taxonomy translate="0">personioOccupationCategory</taxonomy>
+        <taxonomy translate="0">personioOccupation</taxonomy>
+        <taxonomy translate="0">personioOffice</taxonomy>
+        <taxonomy translate="0">personioDepartment</taxonomy>
+        <taxonomy translate="0">personioEmploymentType</taxonomy>
         <taxonomy translate="0">personioSeniority</taxonomy>
-        <taxonomy translate="1">personioSchedule</taxonomy>
+        <taxonomy translate="0">personioSchedule</taxonomy>
         <taxonomy translate="0">personioExperience</taxonomy>
         <taxonomy translate="0">personioLanguages</taxonomy>
         <taxonomy translate="0">personioKeywords</taxonomy>

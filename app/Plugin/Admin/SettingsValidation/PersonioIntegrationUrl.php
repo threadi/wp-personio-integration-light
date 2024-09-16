@@ -186,7 +186,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 */
 	public static function cleanup_url_string( string $value ): string {
 		// add protocol if this is missing.
-		if( ! empty( $value ) && ! str_contains( $value, 'https://' ) ) {
+		if ( ! empty( $value ) && ! str_contains( $value, 'https://' ) ) {
 			$value = 'https://' . $value;
 		}
 

@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin\Admin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -86,6 +87,7 @@ class Admin {
 
 		// add admin_actions.
 		add_action( 'admin_action_personioPositionsImport', array( $this, 'import_positions' ) );
+		add_action( 'admin_action_personioPositionsReImport', array( $this, 'reimport_positions' ) );
 		add_action( 'admin_action_personioPositionsCancelImport', array( $this, 'cancel_import' ) );
 		add_action( 'admin_action_personioPositionsDelete', array( $this, 'delete_positions' ) );
 		add_action( 'admin_action_personio_integration_log_export', array( $this, 'export_log' ) );
@@ -185,8 +187,8 @@ class Admin {
 	 */
 	public function add_dialog(): void {
 		// embed necessary scripts for dialog.
-		$path = Helper::get_plugin_path() . 'lib/threadi/wp-easy-dialog/';
-		$url  = Helper::get_plugin_url() . 'lib/threadi/wp-easy-dialog/';
+		$path = Helper::get_plugin_path() . 'vendor/threadi/wp-easy-dialog/';
+		$url  = Helper::get_plugin_url() . 'vendor/threadi/wp-easy-dialog/';
 
 		// bail if path does not exist.
 		if ( ! file_exists( $path ) ) {
@@ -263,6 +265,7 @@ class Admin {
 	 */
 	public function forward_importer_to_settings(): void {
 		wp_safe_redirect( Helper::get_settings_url( 'personioPositions', 'import' ) );
+		exit;
 	}
 
 	/**
@@ -295,12 +298,35 @@ class Admin {
 
 		// redirect user.
 		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		exit;
+	}
+
+	/**
+	 * Start import manually via request.
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function reimport_positions(): void {
+		check_ajax_referer( 'personio-integration-re-import', 'nonce' );
+
+		// delete positions.
+		PersonioPosition::get_instance()->delete_positions();
+
+		// run import.
+		$imports_obj = Imports::get_instance();
+		$imports_obj->run();
+
+		// redirect user.
+		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		exit;
 	}
 
 	/**
 	 * Set marker to cancel running import.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function cancel_import(): void {
 		check_ajax_referer( 'wp-personio-integration-cancel-import', 'nonce' );
@@ -320,6 +346,7 @@ class Admin {
 
 		// redirect user.
 		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		exit;
 	}
 
 	/**
@@ -335,6 +362,7 @@ class Admin {
 
 		// redirect user.
 		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		exit;
 	}
 
 	/**
@@ -476,15 +504,26 @@ class Admin {
 				$post_id = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) );
 				if ( $post_id > 0 && PersonioPosition::get_instance()->get_name() === get_post_type( $post_id ) ) {
 					$position_obj = Positions::get_instance()->get_position( $post_id );
-					$admin_bar->add_menu(
-						array(
-							'id'     => 'personio-integration-detail',
-							'parent' => null,
-							'group'  => null,
-							'title'  => __( 'View Position in frontend', 'personio-integration-light' ),
-							'href'   => $position_obj->get_link(),
-						)
-					);
+					if ( $position_obj->is_visible() ) {
+						$admin_bar->add_menu(
+							array(
+								'id'     => 'personio-integration-detail',
+								'parent' => null,
+								'group'  => null,
+								'title'  => __( 'View Position in frontend', 'personio-integration-light' ),
+								'href'   => $position_obj->get_link(),
+							)
+						);
+					} else {
+						$admin_bar->add_menu(
+							array(
+								'id'     => 'personio-integration-detail',
+								'parent' => null,
+								'group'  => null,
+								'title'  => __( 'Not visible in frontend', 'personio-integration-light' ),
+							)
+						);
+					}
 				} else {
 					$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 					if ( ! empty( $post_type ) && PersonioPosition::get_instance()->get_name() === $post_type ) {
@@ -718,52 +757,12 @@ class Admin {
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function export_log(): void {
-		global $wpdb;
-
 		// check the nonce.
 		check_admin_referer( 'personio-integration-log-export', 'nonce' );
 
-		// collect vars for statement.
-		$vars = array( 1 );
-
-		// collect restrictions.
-		$where = '';
-
-		// get filter.
-		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( ! empty( $category ) ) {
-			$where .= ' AND `category` = "%s"';
-			$vars[] = $category;
-		}
-
-		// get md5.
-		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( ! empty( $md5 ) ) {
-			$where .= ' AND `md5` = "%s"';
-			$vars[] = $md5;
-		}
-
-		$limit = 10000;
-		/**
-		 * Filter limit to prevent possible errors on big tables.
-		 *
-		 * @since 3.1.0 Available since 3.1.0.
-		 * @param int $limit The actual limit.
-		 */
-		$limit = apply_filters( 'personio_integration_light_log_limit', $limit );
-
 		// get entries.
-		$entries = $wpdb->get_results(
-			$wpdb->prepare(
-				'SELECT `state`, `time` AS `date`, `log`
-            			FROM `' . $wpdb->prefix . 'personio_import_logs`
-                        WHERE 1 = %d' . $where . '
-                        ORDER BY `date` DESC
-                        LIMIT ' . $limit,
-				$vars
-			),
-			ARRAY_A
-		);
+		$log     = new Log();
+		$entries = $log->get_entries();
 
 		// create filename for JSON-download-file.
 		$filename = gmdate( 'YmdHi' ) . '_' . get_option( 'blogname' ) . '_Personio_Integration_Light_Logs.csv';
@@ -776,7 +775,7 @@ class Admin {
 		 */
 		$filename = apply_filters( 'personio_integration_log_export_filename', $filename );
 
-		// set header for response as JSON-download.
+		// set header for response as CSV-download.
 		header( 'Content-Type: text/csv' );
 		header( 'Content-Disposition: attachment; filename=' . sanitize_file_name( $filename ) );
 
@@ -808,5 +807,6 @@ class Admin {
 
 		// redirect user.
 		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		exit;
 	}
 }

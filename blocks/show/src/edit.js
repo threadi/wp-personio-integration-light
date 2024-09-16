@@ -27,15 +27,16 @@ import {
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
-	onChangeTitleVisibility,
-	onChangeExcerptVisibility,
-	onChangeContentVisibility,
-	onChangeApplicationFormVisibility,
-	onChangeExcerptTemplates,
-	onChangeId,
-	onChangeLinkingTitle
+  onChangeTitleVisibility,
+  onChangeExcerptVisibility,
+  onChangeContentVisibility,
+  onChangeApplicationFormVisibility,
+  onChangeExcerptTemplates,
+  onChangeId,
+  onChangeLinkingTitle,
+  Personio_Helper_Panel
 } from '../../components';
-const { useSelect } = wp.data;
+const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
 
 /**
@@ -58,6 +59,24 @@ export default function Edit( object ) {
 	const positions = useSelect(
 		(select) => select('core').getEntityRecords('postType', 'personioposition', { per_page: -1 }), []
 	);
+
+  // get taxonomies
+  let personioTaxonomies = [];
+  if( !object.attributes.preview ) {
+    useEffect(() => {
+      dispatch('core').addEntities([
+        {
+          name: 'taxonomies', // route name
+          kind: 'personio/v1', // namespace
+          baseURL: '/personio/v1/taxonomies' // API path without /wp-json
+        }
+      ]);
+    }, []);
+    personioTaxonomies = useSelect((select) => {
+        return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
+      }
+    );
+  }
 
 	// Options expects [{label: ..., value: ...}]
 	// noinspection JSUnresolvedVariable
@@ -100,7 +119,7 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
+				<PanelBody initialOpen={false} title={ __( 'Settings', 'personio-integration-light' ) }>
 					<SelectControl
 						label={__('Select position', 'personio-integration-light')}
 						options={ positionOptions }
@@ -130,16 +149,7 @@ export default function Edit( object ) {
 							<SelectControl
 								label={__('Choose details', 'personio-integration-light')}
 								value={object.attributes.excerptTemplates}
-								options={[
-									{label: __('Category', 'personio-integration-light'), value: 'recruitingCategory'},
-									{label: __('Contract type', 'personio-integration-light'), value: 'schedule'},
-									{label: __('Location', 'personio-integration-light'), value: 'office'},
-									{label: __('Department', 'personio-integration-light'), value: 'department'},
-									{label: __('Experience', 'personio-integration-light'), value: 'seniority'},
-									{label: __('Years of experience', 'personio-integration-light'), value: 'experience'},
-									{label: __('Job type', 'personio-integration-light'), value: 'occupation'},
-									{label: __('Job type detail', 'personio-integration-light'), value: 'occupation_detail'}
-								]}
+								options={ personioTaxonomies }
 								multiple={true}
 								onChange={value => onChangeExcerptTemplates(value, object)}
 								disabled={ disabledFields }
@@ -159,6 +169,7 @@ export default function Edit( object ) {
 						disabled={ disabledFields }
 					/>
 				</PanelBody>
+        <Personio_Helper_Panel/>
 			</InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/show"

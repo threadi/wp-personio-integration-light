@@ -169,7 +169,11 @@ class Extensions extends WP_List_Table {
 
 		// show category.
 		if ( 'category' === $column_name ) {
-			return $this->get_extension_categories()[ $item->get_category() ];
+			$extension_categories = $this->get_extension_categories();
+			if ( empty( $extension_categories[ $item->get_category() ] ) ) {
+				return __( 'Unknown', 'personio-integration-light' );
+			}
+			return $extension_categories[ $item->get_category() ];
 		}
 
 		// show description.
@@ -177,6 +181,7 @@ class Extensions extends WP_List_Table {
 			return $item->get_description();
 		}
 
+		// return nothing.
 		return '';
 	}
 

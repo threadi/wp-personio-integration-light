@@ -50,7 +50,7 @@ class Log {
 	 */
 	public function delete_table(): void {
 		global $wpdb;
-		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) );
+		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Log {
 	 */
 	public function add_log( string $log, string $state, string $category = '', string $md5 = '' ): void {
 		global $wpdb;
-		$wpdb->insert(
+		$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->prefix . 'personio_import_logs',
 			array(
 				'time'     => gmdate( 'Y-m-d H:i:s' ),
@@ -92,12 +92,8 @@ class Log {
 		// get db connection.
 		global $wpdb;
 
-		// run with limit if it is not sqlite.
-		if ( class_exists( 'WP_SQLite_DB' ) && $wpdb instanceof WP_SQLite_DB ) {
-			$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY)', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) );
-			return;
-		}
-		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) );
+		// run the deletion.
+		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	}
 
 	/**
@@ -118,5 +114,103 @@ class Log {
 		 * @param array $list List of categories.
 		 */
 		return apply_filters( 'personio_integration_log_categories', $list );
+	}
+
+	/**
+	 * Get log entries depending on filter.
+	 *
+	 * Use for each possible condition own statements to match WCS.
+	 *
+	 * @return array
+	 */
+	public function get_entries(): array {
+		global $wpdb;
+
+		// order table.
+		$order_by = filter_input( INPUT_GET, 'orderby', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( is_null( $order_by ) ) {
+			$order_by = 'date';
+		}
+		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( ! is_null( $order ) ) {
+			$order = sanitize_sql_orderby( $order );
+		} else {
+			$order = 'DESC';
+		}
+
+		$limit = 10000;
+		/**
+		 * Filter limit to prevent possible errors on big tables.
+		 *
+		 * @since 3.1.0 Available since 3.1.0.
+		 * @param int $limit The actual limit.
+		 */
+		$limit = apply_filters( 'personio_integration_light_log_limit', $limit );
+
+		// get filter.
+		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// get md5.
+		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// if only category is set.
+		if ( ! is_null( $category ) && is_null( $md5 ) ) {
+			// get and return the entries.
+			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$wpdb->prepare(
+					'SELECT `state`, `time` AS `date`, `log`, `category`
+                    FROM `' . $wpdb->prefix . 'personio_import_logs`
+                    WHERE `category` = %s
+                    ORDER BY ' . $order_by . ' ' . $order . '
+                    LIMIT %d',
+					array( $category, $limit )
+				),
+				ARRAY_A
+			);
+		}
+
+		// if only md5 is set.
+		if ( is_null( $category ) && ! is_null( $md5 ) ) {
+			// get and return the entries.
+			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$wpdb->prepare(
+					'SELECT `state`, `time` AS `date`, `log`, `category`
+                    FROM `' . $wpdb->prefix . 'personio_import_logs`
+                    WHERE `md5` = %s
+                    ORDER BY ' . $order_by . ' ' . $order . '
+                    LIMIT %d',
+					array( $md5, $limit )
+				),
+				ARRAY_A
+			);
+		}
+
+		// if both are set.
+		if ( ! is_null( $category ) && ! is_null( $md5 ) ) {
+			// get and return the entries.
+			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$wpdb->prepare(
+					'SELECT `state`, `time` AS `date`, `log`, `category`
+                    FROM `' . $wpdb->prefix . 'personio_import_logs`
+                    WHERE `md5` = %s AND `category` = %s
+                    ORDER BY ' . $order_by . ' ' . $order . '
+                    LIMIT %d',
+					array( $md5, $category, $limit )
+				),
+				ARRAY_A
+			);
+		}
+
+		// return all.
+		return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->prepare(
+				'SELECT `state`, `time` AS `date`, `log`, `category`
+                FROM `' . $wpdb->prefix . 'personio_import_logs`
+                ORDER BY ' . $order_by . ' ' . $order . '
+                LIMIT %d',
+				array( $limit )
+			),
+			ARRAY_A
+		);
 	}
 }

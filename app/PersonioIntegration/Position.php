@@ -373,11 +373,12 @@ class Position {
 	 * Get a term field by a given taxonomy for this single position.
 	 *
 	 * @param string $taxonomy The taxonomy.
-	 * @param string $field The field.
+	 * @param string $field    The field.
+	 * @param bool   $no_list Prevent usage of list, only use first term.
 	 *
 	 * @return string
 	 */
-	public function get_term_by_field( string $taxonomy, string $field ): string {
+	public function get_term_by_field( string $taxonomy, string $field, bool $no_list = false ): string {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$taxonomy_terms = get_the_terms( $this->get_id(), $taxonomy );
 			if ( ! is_wp_error( $taxonomy_terms ) ) {
@@ -386,11 +387,15 @@ class Position {
 		}
 		if ( ! empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$term_string = '';
-			foreach ( $this->taxonomy_terms[ $taxonomy ] as $term ) {
-				if ( ! empty( $term_string ) ) {
-					$term_string .= ', ';
+			if ( false === $no_list ) {
+				foreach ( $this->taxonomy_terms[ $taxonomy ] as $term ) {
+					if ( ! empty( $term_string ) ) {
+						$term_string .= ', ';
+					}
+					$term_string .= $term->$field;
 				}
-				$term_string .= $term->$field;
+			} elseif ( ! empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
+				$term_string = $this->taxonomy_terms[ $taxonomy ][0]->$field;
 			}
 			return $term_string;
 		}
@@ -506,10 +511,20 @@ class Position {
 	 * @return string
 	 */
 	public function get_link(): string {
+		$url = '#';
 		if ( ! empty( $this->data['ID'] ) ) {
-			return get_permalink( $this->data['ID'] );
+			$url = get_permalink( $this->data['ID'] );
 		}
-		return '';
+
+		/**
+		 * Filter the public url of a single position.
+		 *
+		 * @since 3.2.0 Available since 3.2.0.
+		 *
+		 * @param string $url The URL.
+		 * @param Position $this The object of the position.
+		 */
+		return apply_filters( 'personio_integration_single_url', $url, $this );
 	}
 
 	/**
@@ -799,5 +814,22 @@ class Position {
 
 		// return the value.
 		return $this->data[ $setting_name ];
+	}
+
+	/**
+	 * Return whether this position is actually visible (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	public function is_visible(): bool {
+		return ! empty(
+			Positions::get_instance()->get_positions(
+				1,
+				array(
+					'ids'                   => array( $this->get_id() ),
+					'personio_run_in_admin' => true,
+				)
+			)
+		);
 	}
 }

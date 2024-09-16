@@ -171,7 +171,7 @@ class Settings_Export {
 	 */
 	public function get_settings(): array {
 		/**
-		 * Run additional task before running the export of all settings.
+		 * Run additional tasks before running the export of all settings.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 */
