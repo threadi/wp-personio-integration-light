@@ -8,8 +8,6 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-use PersonioIntegrationLight\Log;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -88,7 +86,7 @@ class Schedules_Base {
 		 * @param string $interval The interval.
 		 * @param Schedules_Base $this The schedule-object.
 		 */
-		return apply_filters( 'personio_integration_pro_schedule_interval', $interval, $this );
+		return apply_filters( 'personio_integration_light_schedule_interval', $interval, $this );
 	}
 
 	/**
