@@ -546,3 +546,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 3.2.1 =
 * Small code optimizations
 * Updated dependencies
+* Fixed uninstaller routine
