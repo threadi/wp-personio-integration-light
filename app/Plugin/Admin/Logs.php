@@ -7,6 +7,9 @@
 
 namespace PersonioIntegrationLight\Plugin\Admin;
 
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
+
 use PersonioIntegrationLight\Log_Table;
 
 /**

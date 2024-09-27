@@ -301,7 +301,14 @@ class Init {
 	 * @return void
 	 */
 	public function delete_db_tables(): void {
-		foreach ( apply_filters( 'personio_integration_objects_with_db_tables', array( 'PersonioIntegrationLight\Log' ) ) as $obj_name ) {
+		$objects = array( 'PersonioIntegrationLight\Log' );
+		/**
+		 * Add additional objects for this plugin which use custom tables.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 * @param array $objects List of objects.
+		 */
+		foreach ( apply_filters( 'personio_integration_objects_with_db_tables', $objects ) as $obj_name ) {
 			if ( str_contains( $obj_name, 'PersonioIntegrationLight\\' ) ) {
 				$obj = new $obj_name();
 				if ( method_exists( $obj, 'delete_table' ) ) {
