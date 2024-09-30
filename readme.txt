@@ -547,4 +547,5 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Small code optimizations
 * Updated dependencies
 * Prevent composer plattform check
+* Replaced redirect targets for actual referer with WP-own function
 * Fixed uninstaller routine
