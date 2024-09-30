@@ -26,14 +26,12 @@ class Positions extends WP_Widget {
 	 * Initialize this widget.
 	 */
 	public function __construct() {
-		$widget_options = array(
-			'classname'   => 'personioIntegration\PositionsWidget',
-			'description' => __( 'Provides a Widget to show a list of positions provided by Personio.', 'personio-integration-light' ),
-		);
 		parent::__construct(
 			'PersonioPositionsWidget',
 			__( 'Personio Positions', 'personio-integration-light' ),
-			$widget_options
+			array(
+				'description' => __( 'Provides a Widget to show a list of positions provided by Personio.', 'personio-integration-light' ),
+			)
 		);
 	}
 

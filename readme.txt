@@ -547,4 +547,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Small code optimizations
 * Updated dependencies
 * Prevent composer plattform check
+* Replaced redirect targets for actual referer with WP-own function
+* Optimized securing of settings in classic widgets
 * Fixed uninstaller routine
+* Fixed missing output for classic widget for single position

@@ -297,7 +297,7 @@ class Admin {
 		$transient_obj->save();
 
 		// redirect user.
-		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		wp_safe_redirect( wp_get_referer() );
 		exit;
 	}
 
@@ -318,7 +318,7 @@ class Admin {
 		$imports_obj->run();
 
 		// redirect user.
-		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		wp_safe_redirect( wp_get_referer() );
 		exit;
 	}
 
@@ -345,7 +345,7 @@ class Admin {
 		}
 
 		// redirect user.
-		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		wp_safe_redirect( wp_get_referer() );
 		exit;
 	}
 
@@ -361,7 +361,7 @@ class Admin {
 		PersonioPosition::get_instance()->delete_positions();
 
 		// redirect user.
-		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		wp_safe_redirect( wp_get_referer() );
 		exit;
 	}
 
@@ -806,7 +806,7 @@ class Admin {
 		$wpdb->query( 'TRUNCATE TABLE `' . $wpdb->prefix . 'personio_import_logs`' );
 
 		// redirect user.
-		wp_safe_redirect( isset( $_SERVER['HTTP_REFERER'] ) ? wp_unslash( $_SERVER['HTTP_REFERER'] ) : '' );
+		wp_safe_redirect( wp_get_referer() );
 		exit;
 	}
 }

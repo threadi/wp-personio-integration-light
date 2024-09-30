@@ -25,14 +25,12 @@ class Position extends WP_Widget {
 	 * Initialize this widget.
 	 */
 	public function __construct() {
-		$widget_options = array(
-			'classname'   => 'personioIntegration\PositionWidget',
-			'description' => __( 'Provides a Widget to show a single position provided by Personio.', 'personio-integration-light' ),
-		);
 		parent::__construct(
 			'PersonioPositionWidget',
 			__( 'Personio Position', 'personio-integration-light' ),
-			$widget_options
+			array(
+				'description' => __( 'Provides a Widget to show a single position provided by Personio.', 'personio-integration-light' ),
+			)
 		);
 	}
 
@@ -184,8 +182,21 @@ class Position extends WP_Widget {
 			$do_not_link = false;
 		}
 
+		// bail if no post id is set.
+		if( empty( $settings['postId'] ) ) {
+			return;
+		}
+
+		// get the personio ID of the requested position.
+		$position_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_position( $settings['postId'] );
+
+		// bail if position could not be loaded.
+		if( ! $position_obj->is_valid() ) {
+			return;
+		}
+
 		$attribute_defaults = array(
-			'id'        => $settings['postId'],
+			'personioid'        => $position_obj->get_personio_id(),
 			'templates' => $templates,
 			'excerpt'   => $excerpt_templates,
 			'donotlink' => $do_not_link,
