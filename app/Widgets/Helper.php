@@ -117,7 +117,7 @@ trait Helper {
 					}
 					break;
 				case 'number':
-					$instance[ $name ] = absint( $new_instance[ $name ] );
+					$instance[ $name ] = absint( ! empty( $new_instance[ $name ] ) ? $new_instance[ $name ] : 0 );
 					break;
 			}
 		}
