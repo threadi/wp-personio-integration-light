@@ -547,6 +547,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added filter for errors in log
 * Added some new hooks
 * Added active marker for categories in extension table
+* Added warning for outdated PHP-versions in preparation for future plugin updates
 * Small code optimizations
 * Updated dependencies
 * Prevent composer plattform check

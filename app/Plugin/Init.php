@@ -11,7 +11,6 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
@@ -111,6 +110,9 @@ class Init {
 		add_action( 'wp', array( $this, 'update_slugs' ) );
 		add_action( 'init', array( $this, 'light_init' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
+
+		// misc.
+		add_action( 'admin_init', array( $this, 'check_php' ) );
 	}
 
 	/**
@@ -330,5 +332,34 @@ class Init {
 				require_once $path;
 			}
 		}
+	}
+
+	/**
+	 * Check if website is using a valid SSL and show warning if not.
+	 *
+	 * @return void
+	 */
+	public function check_php(): void {
+		// get transients object.
+		$transients_obj = Transients::get_instance();
+
+		// bail if WordPress is in developer mode.
+		if ( function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' ) ) {
+			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
+			return;
+		}
+
+		// bail if PHP >= 8.1 is used.
+		if ( version_compare( PHP_VERSION, '8.1', '>' ) ) {
+			return;
+		}
+
+		// show hint for necessary configuration to restrict access to application files.
+		$transient_obj = Transients::get_instance()->add();
+		$transient_obj->set_type( 'error' );
+		$transient_obj->set_name( 'personio_integration_light_php_hint' );
+		$transient_obj->set_dismissible_days( 90 );
+		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'wp-personio-integration' ) . '</strong><br>' . __( 'Future versions of Personio Integration Light will no longer be compatible with PHP 8.0 or older. This versions <a href="https://www.php.net/supported-versions.php" target="_blank">are outdated</a> since December 2023. To continue using the plugins new features, please update your PHP version.', 'wp-personio-integration' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'wp-personio-integration' ) );
+		$transient_obj->save();
 	}
 }
