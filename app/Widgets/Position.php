@@ -183,7 +183,7 @@ class Position extends WP_Widget {
 		}
 
 		// bail if no post id is set.
-		if( empty( $settings['postId'] ) ) {
+		if ( empty( $settings['postId'] ) ) {
 			return;
 		}
 
@@ -191,15 +191,15 @@ class Position extends WP_Widget {
 		$position_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_position( $settings['postId'] );
 
 		// bail if position could not be loaded.
-		if( ! $position_obj->is_valid() ) {
+		if ( ! $position_obj->is_valid() ) {
 			return;
 		}
 
 		$attribute_defaults = array(
-			'personioid'        => $position_obj->get_personio_id(),
-			'templates' => $templates,
-			'excerpt'   => $excerpt_templates,
-			'donotlink' => $do_not_link,
+			'personioid' => $position_obj->get_personio_id(),
+			'templates'  => $templates,
+			'excerpt'    => $excerpt_templates,
+			'donotlink'  => $do_not_link,
 		);
 
 		// add wrapper from template around widget-content.

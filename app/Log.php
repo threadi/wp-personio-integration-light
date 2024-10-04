@@ -153,6 +153,15 @@ class Log {
 		// get md5.
 		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
+		// get errors.
+		$errors = absint( filter_input( INPUT_GET, 'errors', FILTER_SANITIZE_NUMBER_INT ) );
+
+		// add where-condition for errors.
+		$where = '';
+		if( 1 === $errors ) {
+			$where .= ' AND `state` = "error"';
+		}
+
 		// if only category is set.
 		if ( ! is_null( $category ) && is_null( $md5 ) ) {
 			// get and return the entries.
@@ -160,7 +169,7 @@ class Log {
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
-                    WHERE `category` = %s
+                    WHERE `category` = %s'. $where .'
                     ORDER BY ' . $order_by . ' ' . $order . '
                     LIMIT %d',
 					array( $category, $limit )
@@ -176,7 +185,7 @@ class Log {
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
-                    WHERE `md5` = %s
+                    WHERE `md5` = %s'. $where .'
                     ORDER BY ' . $order_by . ' ' . $order . '
                     LIMIT %d',
 					array( $md5, $limit )
@@ -192,10 +201,25 @@ class Log {
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
-                    WHERE `md5` = %s AND `category` = %s
+                    WHERE `md5` = %s AND `category` = %s'. $where .'
                     ORDER BY ' . $order_by . ' ' . $order . '
                     LIMIT %d',
 					array( $md5, $category, $limit )
+				),
+				ARRAY_A
+			);
+		}
+
+		if( 1 === $errors ) {
+			// return all.
+			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$wpdb->prepare(
+					'SELECT `state`, `time` AS `date`, `log`, `category`
+                FROM `' . $wpdb->prefix . 'personio_import_logs`
+                WHERE `state` = "error"
+                ORDER BY ' . $order_by . ' ' . $order . '
+                LIMIT %d',
+					array( $limit )
 				),
 				ARRAY_A
 			);

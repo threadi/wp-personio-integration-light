@@ -250,7 +250,7 @@ class Log_Table extends WP_List_Table {
 	 */
 	protected function get_views(): array {
 		// get main url without filter.
-		$url = remove_query_arg( array( 'category', 'md5' ) );
+		$url = remove_query_arg( array( 'category', 'md5', 'errors' ) );
 
 		// get actual filter.
 		$category = $this->get_category_filter();
@@ -266,6 +266,10 @@ class Log_Table extends WP_List_Table {
 			$url          = add_query_arg( array( 'category' => $key ) );
 			$list[ $key ] = '<a href="' . esc_url( $url ) . '"' . ( $category === $key ? ' class="current"' : '' ) . '>' . esc_html( $label ) . '</a>';
 		}
+
+		// add filter for errors.
+		$url          = add_query_arg( array( 'errors' => 1 ) );
+		$list[ 'errors' ] = '<a href="' . esc_url( $url ) . '"' . ( 1 === absint( filter_input( INPUT_GET, 'errors', FILTER_SANITIZE_NUMBER_INT ) ) ? ' class="current"' : '' ) . '>' . esc_html__( 'Errors', 'personio-integration-light' ) . '</a>';
 
 		/**
 		 * Filter the list before output.
