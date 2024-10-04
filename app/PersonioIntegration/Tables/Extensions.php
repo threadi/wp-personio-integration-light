@@ -311,19 +311,41 @@ class Extensions extends WP_List_Table {
 		// get main url.
 		$url = remove_query_arg( 'category' );
 
+		/**
+		 * Filter the main url for "all".
+		 *
+		 * @since 3.3.0 Available since 3.3.0.
+		 * @param string $url The URL.
+		 */
+		$all_url = apply_filters( 'personio_integration_light_extension_all_url', $url );
+
 		// define initial list.
 		$list = array(
-			'all' => '<a href="' . esc_url( $url ) . '">' . __( 'All', 'personio-integration-light' ) . '</a>',
+			'all' => '<a href="' . esc_url( $all_url ) . '">' . __( 'All', 'personio-integration-light' ) . '</a>',
 		);
+
+		// get active marker for category.
+		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// add all categories to the list.
 		foreach ( $this->get_extension_categories() as $name => $label ) {
+			// check if filter is active used.
+			$active = $category === $name;
+
+			// get URL.
 			$url           = add_query_arg( array( 'category' => $name ) );
-			$list[ $name ] = '<a href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
+
+			// add to list.
+			$list[ $name ] = '<a href="' . esc_url( $url ) . '" class="' . ( $active ? ' current' : '' ) . '">' . esc_html( $label ) . '</a>';
 		}
 
-		// return resulting list.
-		return $list;
+		/**
+		 * Filter the list of possible views in extension table.
+		 *
+		 * @since 3.3.0 Available since 3.3.0.
+		 * @param array $list List of views.
+		 */
+		return apply_filters( 'personio_integration_light_extension_table_views', $list );
 	}
 
 	/**

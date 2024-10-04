@@ -544,6 +544,8 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed group listings to hide additional terms per group entity
 
 = 3.3.0 =
+* Added some new hooks
+* Added active marker for categories in extension table
 * Small code optimizations
 * Updated dependencies
 * Prevent composer plattform check
