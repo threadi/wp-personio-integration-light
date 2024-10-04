@@ -11,7 +11,6 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PageBuilder\Page_Builders;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
@@ -134,7 +133,7 @@ class Uninstaller {
 				}
 			}
 
-			// remove manuel options.
+			// remove custom options.
 			foreach ( $this->get_options() as $option ) {
 				delete_option( $option );
 			}
