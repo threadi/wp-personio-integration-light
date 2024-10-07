@@ -548,7 +548,9 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added some new hooks
 * Added active marker for categories in extension table
 * Added warning for outdated PHP-versions in preparation for future plugin updates
+* Changed usage of post_content column: it now contains the output for job description in the configured template
 * Small code optimizations
+* Some style optimizations in backend
 * Updated dependencies
 * Prevent composer plattform check
 * Replaced redirect targets for actual referer with WP-own function

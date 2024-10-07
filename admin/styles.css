@@ -332,3 +332,8 @@ body.personioposition_page_personioPositions .state .dashicons-no { color: red }
 body.post-type-personioposition .postbox-header a { text-decoration: none }
 
 body.post-type-personioposition #minor-publishing-actions, body.post-type-personioposition #misc-publishing-actions { display: none }
+
+body.post-type-personioposition #poststuff header h2 {
+	font-size: 23px;
+	padding-left: 0;
+}

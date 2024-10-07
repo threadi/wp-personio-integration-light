@@ -215,7 +215,7 @@ class Position {
 		);
 		if ( Languages::get_instance()->get_main_language() === $this->get_lang() ) {
 			$array['post_title']   = $this->data['post_title'];
-			$array['post_content'] = $this->data['post_content'];
+			$array['post_content'] = Templates::get_instance()->get_content_template( $this, array(), true );
 		} else {
 			$array['post_title']   = get_post_field( 'post_title', $this->data['ID'] );
 			$array['post_content'] = get_post_field( 'post_content', $this->data['ID'] );
@@ -278,7 +278,7 @@ class Position {
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), $this->data['post_title'] );
 
 			// convert the job description from JSON to array.
-			$job_description = json_decode( $this->data['post_content'], true );
+			$job_description = json_decode( $this->data['jobdescription'], true );
 
 			// add all language-specific texts.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), $job_description );
@@ -570,7 +570,7 @@ class Position {
 	}
 
 	/**
-	 * Return the language-specific post_content.
+	 * Return the language-specific job description.
 	 *
 	 * @return array
 	 */
@@ -608,7 +608,7 @@ class Position {
 				$value = array( 'jobDescription' => array( $v->jobDescription ) );
 			}
 		}
-		$this->data['post_content'] = wp_json_encode( $value );
+		$this->data['jobdescription'] = wp_json_encode( $value );
 	}
 
 	/**
