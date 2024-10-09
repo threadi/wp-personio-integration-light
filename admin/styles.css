@@ -337,3 +337,10 @@ body.post-type-personioposition #poststuff header h2 {
 	font-size: 23px;
 	padding-left: 0;
 }
+
+body.post-type-personioposition .button span {
+	vertical-align: middle;
+	position: relative;
+	top: -2px;
+	z-index: 1;
+}

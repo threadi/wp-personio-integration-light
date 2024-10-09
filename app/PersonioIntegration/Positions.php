@@ -234,7 +234,7 @@ class Positions {
 		ksort( $resulting_position_list );
 
 		/**
-		 * Filter the resulting list of position objects.
+		 * Filter the resulting and sorted list of position objects.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
