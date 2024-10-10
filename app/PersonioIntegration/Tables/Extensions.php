@@ -333,7 +333,7 @@ class Extensions extends WP_List_Table {
 			$active = $category === $name;
 
 			// get URL.
-			$url           = add_query_arg( array( 'category' => $name ) );
+			$url = add_query_arg( array( 'category' => $name ) );
 
 			// add to list.
 			$list[ $name ] = '<a href="' . esc_url( $url ) . '" class="' . ( $active ? ' current' : '' ) . '">' . esc_html( $label ) . '</a>';

@@ -230,12 +230,12 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function add_body_classes( array $css_classes ): array {
 		// bail if this is not a single page.
-		if( ! is_single() ) {
+		if ( ! is_single() ) {
 			return $css_classes;
 		}
 
 		// bail if this is not our cpt.
-		if( PersonioPosition::get_instance()->get_name() !== get_post_type() ) {
+		if ( PersonioPosition::get_instance()->get_name() !== get_post_type() ) {
 			return $css_classes;
 		}
 
@@ -243,7 +243,7 @@ class Gutenberg extends PageBuilder_Base {
 		$position_obj = Positions::get_instance()->get_position( get_queried_object_id() );
 
 		// bail if position is not valid.
-		if( ! $position_obj->is_valid() ) {
+		if ( ! $position_obj->is_valid() ) {
 			return $css_classes;
 		}
 

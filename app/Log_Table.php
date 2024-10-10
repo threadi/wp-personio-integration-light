@@ -268,8 +268,8 @@ class Log_Table extends WP_List_Table {
 		}
 
 		// add filter for errors.
-		$url          = add_query_arg( array( 'errors' => 1 ) );
-		$list[ 'errors' ] = '<a href="' . esc_url( $url ) . '"' . ( 1 === absint( filter_input( INPUT_GET, 'errors', FILTER_SANITIZE_NUMBER_INT ) ) ? ' class="current"' : '' ) . '>' . esc_html__( 'Errors', 'personio-integration-light' ) . '</a>';
+		$url            = add_query_arg( array( 'errors' => 1 ) );
+		$list['errors'] = '<a href="' . esc_url( $url ) . '"' . ( 1 === absint( filter_input( INPUT_GET, 'errors', FILTER_SANITIZE_NUMBER_INT ) ) ? ' class="current"' : '' ) . '>' . esc_html__( 'Errors', 'personio-integration-light' ) . '</a>';
 
 		/**
 		 * Filter the list before output.

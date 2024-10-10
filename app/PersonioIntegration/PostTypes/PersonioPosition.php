@@ -961,7 +961,7 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function add_extension_hint( string $which ): void {
-		if( 'top' !== $which ) {
+		if ( 'top' !== $which ) {
 			return;
 		}
 
@@ -978,7 +978,7 @@ class PersonioPosition extends Post_Type {
 			return;
 		}
 
-		echo '<a href="' . esc_url( Extensions::get_instance()->get_link( 'positions' ) ) . '" class="button button-secondary"><span class="dashicons dashicons-lightbulb"></span> ' . __( 'Extend', 'personio-integration-light' ) . '</a>';
+		echo '<a href="' . esc_url( Extensions::get_instance()->get_link( 'positions' ) ) . '" class="button button-secondary"><span class="dashicons dashicons-lightbulb"></span> ' . esc_html__( 'Extend', 'personio-integration-light' ) . '</a>';
 	}
 
 	/**
@@ -1005,7 +1005,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// bail if page is not edit.php.
-		if( 'edit.php' !== $pagenow ) {
+		if ( 'edit.php' !== $pagenow ) {
 			return;
 		}
 
@@ -1569,10 +1569,10 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// get the position as object.
-		$position          = Positions::get_instance()->get_position( $post->ID );
+		$position = Positions::get_instance()->get_position( $post->ID );
 
 		// get the date.
-		$entry['lastmod']  = gmdate( 'Y-m-d', $position->get_created_at() );
+		$entry['lastmod'] = gmdate( 'Y-m-d', $position->get_created_at() );
 
 		// set the priority for sitemap.
 		$entry['priority'] = 0.8;
@@ -1614,7 +1614,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function get_dashboard_widget_content( string $post, array $callback_args ): void {
 		// bail if we miss data.
-		if ( !( empty( $post ) && ! empty( $callback_args ) ) ) {
+		if ( ! ( empty( $post ) && ! empty( $callback_args ) ) ) {
 			return;
 		}
 

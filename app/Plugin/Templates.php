@@ -895,17 +895,17 @@ class Templates {
 		$css_classes[] = 'status-' . get_post_status( $position_obj->get_id() );
 
 		// add taxonomies.
-		foreach( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			// get values of this position for this taxonomy.
 			$terms = $position_obj->get_terms_by_field( $taxonomy_name );
 
 			// bail if no values returned.
-			if( empty( $terms) ) {
+			if ( empty( $terms ) ) {
 				continue;
 			}
 
 			// add each value to the list.
-			foreach( $terms as $term ) {
+			foreach ( $terms as $term ) {
 				$css_classes[] = 'taxonomy-' . sanitize_html_class( $taxonomy['slug'] );
 				$css_classes[] = 'term-' . sanitize_html_class( $taxonomy['slug'] ) . '-' . sanitize_html_class( str_replace( '_', '-', $term->slug ) );
 				$css_classes[] = 'term-' . sanitize_html_class( str_replace( '_', '-', $term->slug ) );

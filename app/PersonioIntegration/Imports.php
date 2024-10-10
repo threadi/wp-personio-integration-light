@@ -94,6 +94,7 @@ class Imports {
 		// get and check the Personio URLs.
 		$personio_urls = $this->get_personio_urls();
 		if ( ! empty( $personio_urls ) ) {
+			/* translators: %1$s will be replaced by the URL for main settings. */
 			$this->errors[] = sprintf( __( 'Personio URL not configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) );
 		}
 
@@ -334,9 +335,9 @@ class Imports {
 		if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
 			$send_to = get_bloginfo( 'admin_email' );
 			$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
-			$body     = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br><em>' . nl2br( $ausgabe ) . '</em>';
-			$body    .= '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
-			$body    .= '<br><br>' . __( 'Sent by the plugin Personio Integration Light', 'personio-integration-light' );
+			$body    = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br><em>' . nl2br( $ausgabe ) . '</em>';
+			$body   .= '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
+			$body   .= '<br><br>' . __( 'Sent by the plugin Personio Integration Light', 'personio-integration-light' );
 			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
 			wp_mail( $send_to, $subject, $body, $headers );
 		}
