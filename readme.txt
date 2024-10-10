@@ -549,6 +549,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added active marker for categories in extension table
 * Added warning for outdated PHP-versions in preparation for future plugin updates
 * Added hint for extension of positions in position table
+* Added output of generated CSS classes for all properties of a single position in list and single view
 * Changed usage of post_content column: it now contains the output for job description in the configured template
 * Some code optimizations
 * Some style optimizations in backend

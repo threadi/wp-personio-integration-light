@@ -15,6 +15,8 @@ use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Patterns;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Templates;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Variations;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
  * Object to handle the Gutenberg support.
@@ -59,6 +61,9 @@ class Gutenberg extends PageBuilder_Base {
 		add_action( 'init', array( $this, 'add_templates' ) );
 		add_filter( 'personio_integration_load_single_template', '__return_true' );
 		add_filter( 'personio_integration_load_archive_template', '__return_true' );
+
+		// misc.
+		add_filter( 'body_class', array( $this, 'add_body_classes' ) );
 
 		// call parent init.
 		parent::init();
@@ -214,5 +219,38 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function uninstall(): void {
 		Templates::get_instance()->remove_db_templates();
+	}
+
+	/**
+	 * Add position specific classes in body class for single view.
+	 *
+	 * @param array $css_classes List of classes.
+	 *
+	 * @return array
+	 */
+	public function add_body_classes( array $css_classes ): array {
+		// bail if this is not a single page.
+		if( ! is_single() ) {
+			return $css_classes;
+		}
+
+		// bail if this is not our cpt.
+		if( PersonioPosition::get_instance()->get_name() !== get_post_type() ) {
+			return $css_classes;
+		}
+
+		// get the position as object.
+		$position_obj = Positions::get_instance()->get_position( get_queried_object_id() );
+
+		// bail if position is not valid.
+		if( ! $position_obj->is_valid() ) {
+			return $css_classes;
+		}
+
+		// add the position specific classes.
+		$css_classes[] = \PersonioIntegrationLight\Plugin\Templates::get_instance()->get_classes_of_position( $position_obj );
+
+		// return resulting classes.
+		return $css_classes;
 	}
 }

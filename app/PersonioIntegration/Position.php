@@ -16,6 +16,7 @@ use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 use SimpleXMLElement;
+use WP_Post;
 use WP_Term;
 
 /**

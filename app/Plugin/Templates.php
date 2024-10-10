@@ -78,6 +78,7 @@ class Templates {
 		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
 		add_filter( 'personio_integration_get_list_attributes', array( $this, 'filter_attributes_for_templates' ), 10, 2 );
+		add_filter( 'personio_integration_light_position_get_classes', array( $this, 'get_classes_of_position' ) );
 
 		// expand kses-filter.
 		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
@@ -869,5 +870,55 @@ class Templates {
 			$attributes['classes'] = '';
 		}
 		return $attributes;
+	}
+
+	/**
+	 * Create list of classes as string from properties of the given position.
+	 *
+	 * @param Position $position_obj The position as object.
+	 *
+	 * @return string
+	 */
+	public function get_classes_of_position( Position $position_obj ): string {
+		$css_classes = array();
+
+		// add the id.
+		$css_classes[] = 'post-' . $position_obj->get_id();
+
+		// add our cpt.
+		$css_classes[] = PersonioPosition::get_instance()->get_name();
+		$css_classes[] = 'type-' . PersonioPosition::get_instance()->get_name();
+
+		// add post status.
+		$css_classes[] = 'status-' . get_post_status( $position_obj->get_id() );
+
+		// add taxonomies.
+		foreach( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
+			// get values of this position for this taxonomy.
+			$terms = $position_obj->get_terms_by_field( $taxonomy_name );
+
+			// bail if no values returned.
+			if( empty( $terms) ) {
+				continue;
+			}
+
+			// add each value to the list.
+			foreach( $terms as $term ) {
+				$css_classes[] = 'term-' . sanitize_html_class( $taxonomy['slug'] ) . '-' . sanitize_html_class( str_replace( '_', '-', $term->slug ) );
+				$css_classes[] = 'term-' . sanitize_html_class( str_replace( '_', '-', $term->slug ) );
+			}
+		}
+
+		/**
+		 * Filter the class list of a single position.
+		 *
+		 * @since 3.3.0 Available since 3.3.0.
+		 * @param array $css_classes List of classes.
+		 * @param Position $position_obj Position as object.
+		 */
+		$css_classes = apply_filters( 'personio_integration_light_position_classes', $css_classes, $position_obj );
+
+		// return the list as string.
+		return implode( ' ', $css_classes );
 	}
 }
