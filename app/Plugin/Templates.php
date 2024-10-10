@@ -16,6 +16,7 @@ use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use WP_Post;
+use WP_Term;
 
 /**
  * Handler for templates.
@@ -79,6 +80,7 @@ class Templates {
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
 		add_filter( 'personio_integration_get_list_attributes', array( $this, 'filter_attributes_for_templates' ), 10, 2 );
 		add_filter( 'personio_integration_light_position_get_classes', array( $this, 'get_classes_of_position' ) );
+		add_filter( 'personio_integration_light_term_get_classes', array( $this, 'get_classes_of_term' ) );
 
 		// expand kses-filter.
 		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
@@ -904,6 +906,7 @@ class Templates {
 
 			// add each value to the list.
 			foreach( $terms as $term ) {
+				$css_classes[] = 'taxonomy-' . sanitize_html_class( $taxonomy['slug'] );
 				$css_classes[] = 'term-' . sanitize_html_class( $taxonomy['slug'] ) . '-' . sanitize_html_class( str_replace( '_', '-', $term->slug ) );
 				$css_classes[] = 'term-' . sanitize_html_class( str_replace( '_', '-', $term->slug ) );
 			}
@@ -918,7 +921,37 @@ class Templates {
 		 */
 		$css_classes = apply_filters( 'personio_integration_light_position_classes', $css_classes, $position_obj );
 
-		// return the list as string.
+		// return the list of classes as string.
+		return implode( ' ', $css_classes );
+	}
+
+	/**
+	 * Get classes of terms.
+	 *
+	 * @param WP_Term $term The term.
+	 *
+	 * @return string
+	 */
+	public function get_classes_of_term( WP_Term $term ): string {
+		// define list.
+		$css_classes = array();
+
+		// add the slug.
+		$css_classes[] = 'term-' . sanitize_html_class( $term->slug );
+
+		// add the taxonomy.
+		$css_classes[] = 'taxonomy-' . sanitize_html_class( $term->taxonomy );
+
+		/**
+		 * Filter the class list of a term.
+		 *
+		 * @since 3.3.0 Available since 3.3.0.
+		 * @param array $css_classes List of classes.
+		 * @param WP_Term $term The term object.
+		 */
+		$css_classes = apply_filters( 'personio_integration_light_term_classes', $css_classes, $term );
+
+		// return resulting list of classes as string.
 		return implode( ' ', $css_classes );
 	}
 }

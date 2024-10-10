@@ -43,7 +43,7 @@
 		},
 		"hideFilterTitle": {
 			"type": "boolean",
-			"default": false
+			"default": true
 		},
 		"hideSubmitButton": {
 			"type": "boolean",
@@ -59,7 +59,6 @@
 			"preview": true,
 			"filter": ["recruitingCategory","schedule","office"],
 			"blockId": "personio-example",
-			"hideFilterTitle": true,
 			"hideSubmitButton": true,
 			"hideResetLink": true
 		}

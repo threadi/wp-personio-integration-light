@@ -57,7 +57,7 @@ class Filter_List extends Blocks_Basis {
 		),
 		'hideFilterTitle' => array(
 			'type'    => 'boolean',
-			'default' => false,
+			'default' => true,
 		),
 		'space_between'   => array(
 			'type'    => 'integer',
