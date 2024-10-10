@@ -559,3 +559,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed uninstaller routine
 * Fixed missing output for classic widget for single position
 * Fixed email format for import error
+* Fixed class usage in listing templates
