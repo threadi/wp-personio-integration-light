@@ -2,18 +2,24 @@
 /**
  * Template-file for job description as list.
  *
- * @version 3.0.0
+ * @param array    $attribute List of settings.
+ * @param Position $position  The position as object.
+ *
  * @package personio-integration-light
+ * @version 3.3.0
  */
 
+// prevent direct access.
 defined( 'ABSPATH' ) || exit;
+
+use PersonioIntegrationLight\PersonioIntegration\Position;
 
 /**
  * Output of the content a single position as list.
  */
 $content_array = $position->get_content_as_array();
 if ( ! empty( $content_array ) ) {
-	?><div class="entry-content"><ul class="position-integration-jobdescription">
+	?><div class="entry-content <?php echo esc_attr( $attributes['classes'] ); ?>""><ul class="position-integration-jobdescription">
 		<?php
 		foreach ( $content_array as $content ) {
 			?>
