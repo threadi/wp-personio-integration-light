@@ -151,7 +151,7 @@ class Admin {
 				'lbl_get_more_information'           => __( 'Get more information', 'personio-integration-light' ),
 				'lbl_look_later'                     => __( 'I\'ll look later', 'personio-integration-light' ),
 				'import_title_error'                 => __( 'Error during import of positions', 'personio-integration-light' ),
-				'import_txt_error'                   => __( '<strong>Error during import of positions.</strong> The following error occurred:', 'personio-integration-light' ),
+				'import_txt_error'                   => __( 'The following error occurred:', 'personio-integration-light' ),
 				'lbl_ok'                             => __( 'OK', 'personio-integration-light' ),
 				'title_import_success'               => __( 'Positions has been imported', 'personio-integration-light' ),
 				/* translators: %1$s is replaced with "string", %2$s is replaced with "string" */

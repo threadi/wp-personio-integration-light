@@ -349,6 +349,7 @@ function personio_get_import_info() {
       let running = parseInt( data[2] );
       let status = data[3];
       let errors = JSON.parse( data[4] );
+      console.log( data[4], errors);
 
       // show progress.
       jQuery( '#progress' ).attr( 'value', (count / max) * 100 );

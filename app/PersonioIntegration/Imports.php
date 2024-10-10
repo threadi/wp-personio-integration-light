@@ -93,8 +93,8 @@ class Imports {
 
 		// get and check the Personio URLs.
 		$personio_urls = $this->get_personio_urls();
-		if ( empty( $personio_urls ) ) {
-			$this->errors[] = __( 'Personio URL not configured. Please check your settings.', 'personio-integration-light' );
+		if ( ! empty( $personio_urls ) ) {
+			$this->errors[] = sprintf( __( 'Personio URL not configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) );
 		}
 
 		// check if PHP-extension SimpleXML exists.
@@ -107,7 +107,8 @@ class Imports {
 
 		// check if languages are enabled.
 		if ( empty( $languages ) ) {
-			$this->errors[] = __( 'No active language configured. Please check your settings.', 'personio-integration-light' );
+			/* translators: %1$s will be replaced by the URL for main settings. */
+			$this->errors[] = sprintf( __( 'No active language configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) );
 		}
 
 		// bail if any error occurred.
@@ -309,30 +310,44 @@ class Imports {
 	 * @return void
 	 */
 	private function handle_errors(): void {
-		if ( ! empty( $this->errors ) ) {
-			// convert array to string for output.
-			$ausgabe = implode( "\n", $this->errors );
-
-			// save results in database.
-			$log = new Log();
-			$log->add_log( $ausgabe, 'error', 'import' );
-
-			// output results in WP-CLI.
-			if ( Helper::is_cli() ) {
-				\WP_CLI::success( trim( $ausgabe ), 'error' );
-			}
-
-			// send info to admin about the problem if debug is disabled.
-			if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
-				$send_to = get_bloginfo( 'admin_email' );
-				$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
-				$body     = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br><em>' . nl2br( $ausgabe ) . '</em>';
-				$body    .= '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
-				$body    .= '<br><br>' . __( 'Sent by the plugin Personio Integration Light', 'personio-integration-light' );
-				$headers = array( 'Content-Type: text/html; charset=UTF-8' );
-				wp_mail( $send_to, $subject, $body, $headers );
-			}
+		// bail on no errors.
+		if ( empty( $this->errors ) ) {
+			return;
 		}
+
+		// convert array to string for output.
+		$ausgabe = implode( "\n", $this->errors );
+
+		// save results in database.
+		$log = new Log();
+		$log->add_log( $ausgabe, 'error', 'import' );
+
+		// output results in WP-CLI.
+		if ( Helper::is_cli() ) {
+			\WP_CLI::success( trim( $ausgabe ), 'error' );
+		}
+
+		// set errors in list for response.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, $this->errors );
+
+		// send info to admin about the problem if debug is disabled.
+		if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
+			$send_to = get_bloginfo( 'admin_email' );
+			$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
+			$body     = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br><em>' . nl2br( $ausgabe ) . '</em>';
+			$body    .= '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
+			$body    .= '<br><br>' . __( 'Sent by the plugin Personio Integration Light', 'personio-integration-light' );
+			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+			wp_mail( $send_to, $subject, $body, $headers );
+		}
+
+		/**
+		 * Run additional tasks for processing errors during import of positions.
+		 *
+		 * @since 3.3.0 Available since 3.3.0.
+		 * @param array $errors List of errors.
+		 */
+		do_action( 'personio_integration_light_import_error', $this->errors );
 	}
 
 	/**
