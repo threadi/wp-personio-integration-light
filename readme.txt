@@ -563,3 +563,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed email format for import error
 * Fixed class usage in listing templates
 * Fixed missing styling for description in Block Editor
+* Fixed disable all extensions call: it disabled only the extensions which could be enabled by users

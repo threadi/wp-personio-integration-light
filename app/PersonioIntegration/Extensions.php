@@ -264,6 +264,7 @@ class Extensions {
 	 * Disable all extensions via request.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function disable_all(): void {
 		check_admin_referer( 'personio-integration-extension-disable-all', 'nonce' );
@@ -272,10 +273,10 @@ class Extensions {
 		foreach ( $this->get_extensions() as $extension_name ) {
 			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
-				if ( $obj instanceof Extensions_Base ) {
+				if ( $obj instanceof Extensions_Base && $obj->can_be_enabled_by_user() ) {
 					$obj->set_disabled();
 				}
-			} elseif ( $extension_name instanceof Extensions_Base ) {
+			} elseif ( $extension_name instanceof Extensions_Base && $extension_name->can_be_enabled_by_user() ) {
 				$extension_name->set_disabled();
 			}
 		}
@@ -289,6 +290,7 @@ class Extensions {
 	 * Disable all extensions via request.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function enable_all(): void {
 		check_admin_referer( 'personio-integration-extension-enable-all', 'nonce' );
@@ -297,10 +299,10 @@ class Extensions {
 		foreach ( $this->get_extensions() as $extension_name ) {
 			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
 				$obj = call_user_func( $extension_name . '::get_instance' );
-				if ( $obj instanceof Extensions_Base ) {
+				if ( $obj instanceof Extensions_Base && $obj->can_be_enabled_by_user() ) {
 					$obj->set_enabled();
 				}
-			} elseif ( $extension_name instanceof Extensions_Base ) {
+			} elseif ( $extension_name instanceof Extensions_Base && $extension_name->can_be_enabled_by_user() ) {
 				$extension_name->set_enabled();
 			}
 		}
