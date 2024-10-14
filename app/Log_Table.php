@@ -315,9 +315,17 @@ class Log_Table extends WP_List_Table {
 	 */
 	private function get_status_icon( string $status ): string {
 		$list = array(
-			'success' => '<span class="dashicons dashicons-yes"></span>',
-			'error'   => '<span class="dashicons dashicons-no"></span>',
+			'success' => '<span class="dashicons dashicons-yes" title="' . __( 'Ended successfully', 'personio-integration-light' ) . '"></span>',
+			'info' => '<span class="dashicons dashicons-info-outline" title="' . __( 'Just an info', 'personio-integration-light' ) . '"></span>',
+			'error'   => '<span class="dashicons dashicons-no" title="' . __( 'Error occurred', 'personio-integration-light' ) . '"></span>',
 		);
+
+		/**
+		 * Filter the list of possible states in log table.
+		 *
+		 * @since 3.3.0 Available since 3.3.0.0
+		 */
+		$list = apply_filters( 'personio_integration_light_status_list', $list );
 
 		// bail if status is unknown.
 		if ( empty( $list[ $status ] ) ) {
