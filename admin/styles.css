@@ -338,7 +338,7 @@ body.post-type-personioposition #poststuff header h2 {
 	padding-left: 0;
 }
 
-body.post-type-personioposition .button span {
+body.post-type-personioposition .button span.dashicons {
 	vertical-align: middle;
 	position: relative;
 	top: -2px;
