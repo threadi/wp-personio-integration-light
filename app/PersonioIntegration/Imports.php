@@ -93,7 +93,7 @@ class Imports {
 
 		// get and check the Personio URLs.
 		$personio_urls = $this->get_personio_urls();
-		if ( ! empty( $personio_urls ) ) {
+		if ( empty( $personio_urls ) ) {
 			/* translators: %1$s will be replaced by the URL for main settings. */
 			$this->errors[] = sprintf( __( 'Personio URL not configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) );
 		}
