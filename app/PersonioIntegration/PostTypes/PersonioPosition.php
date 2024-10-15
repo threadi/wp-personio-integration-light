@@ -1172,7 +1172,7 @@ class PersonioPosition extends Post_Type {
 				}
 
 				// add link.
-				$changeable_hint = '<a href="' . esc_url( $url ) . '" class="easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-translation"></span></a>';
+				$changeable_hint = '<a href="' . esc_url( $url ) . '" class="easy-dialog-for-wordpress" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-translation"></span></a>';
 			}
 
 			// add a box for single taxonomy.
