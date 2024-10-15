@@ -531,7 +531,7 @@ function personio_get_delete_info( reimport ) {
  * @param config
  */
 function personio_integration_create_dialog( config ) {
-  document.body.dispatchEvent(new CustomEvent("wp-easy-dialog", config));
+  document.body.dispatchEvent(new CustomEvent("easy-dialog-for-wordpress", config));
 }
 
 /**

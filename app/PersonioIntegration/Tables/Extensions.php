@@ -419,8 +419,8 @@ class Extensions extends WP_List_Table {
 			);
 
 			// output buttons.
-			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_disable ) ) . '" class="page-title-action wp-easy-dialog" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable all', 'personio-integration-light' ) . '</a>';
-			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_enable ) ) . '" class="page-title-action wp-easy-dialog" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable all', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_disable ) ) . '" class="page-title-action easy-dialog" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable all', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_enable ) ) . '" class="page-title-action easy-dialog" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable all', 'personio-integration-light' ) . '</a>';
 		}
 	}
 }

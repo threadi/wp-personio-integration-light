@@ -242,7 +242,7 @@ class Availability extends Extensions_Base {
 				);
 
 				// show icon with helper.
-				$html = '<a class="dashicons dashicons-no personio-integration-availability-check" href="#" data-post-id="' . esc_attr( $position_obj->get_id() ) . '" title="' . __( 'Not available', 'personio-integration-light' ) . '"></a> <a class="pro-marker wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
+				$html = '<a class="dashicons dashicons-no personio-integration-availability-check" href="#" data-post-id="' . esc_attr( $position_obj->get_id() ) . '" title="' . __( 'Not available', 'personio-integration-light' ) . '"></a> <a class="pro-marker easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
 				/**
 				 * Filter the availability "no"-output.
 				 *
@@ -320,7 +320,7 @@ class Availability extends Extensions_Base {
 		wp_enqueue_script(
 			'personio-integration-admin-availability',
 			Helper::get_plugin_url() . 'admin/availability.js',
-			array( 'jquery', 'wp-easy-dialog' ),
+			array( 'jquery', 'easy-dialog' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/availability.js' ),
 			true
 		);

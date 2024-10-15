@@ -112,7 +112,7 @@ class Admin {
 		wp_enqueue_script(
 			'personio-integration-admin',
 			Helper::get_plugin_url() . 'admin/js.js',
-			array( 'jquery', 'wp-easy-dialog' ),
+			array( 'jquery', 'easy-dialog' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/js.js' ),
 			true
 		);
@@ -187,8 +187,8 @@ class Admin {
 	 */
 	public function add_dialog(): void {
 		// embed necessary scripts for dialog.
-		$path = Helper::get_plugin_path() . 'vendor/threadi/wp-easy-dialog/';
-		$url  = Helper::get_plugin_url() . 'vendor/threadi/wp-easy-dialog/';
+		$path = Helper::get_plugin_path() . 'vendor/threadi/easy-dialog-for-wordpress/';
+		$url  = Helper::get_plugin_url() . 'vendor/threadi/easy-dialog-for-wordpress/';
 
 		// bail if path does not exist.
 		if ( ! file_exists( $path ) ) {
@@ -206,7 +206,7 @@ class Admin {
 		// embed script.
 		$script_asset = require $script_asset_path;
 		wp_enqueue_script(
-			'wp-easy-dialog',
+			'easy-dialog',
 			$url . 'build/index.js',
 			$script_asset['dependencies'],
 			$script_asset['version'],
@@ -217,7 +217,7 @@ class Admin {
 		$admin_css      = $url . 'build/style-index.css';
 		$admin_css_path = $path . 'build/style-index.css';
 		wp_enqueue_style(
-			'wp-easy-dialog',
+			'easy-dialog',
 			$admin_css,
 			array( 'wp-components' ),
 			Helper::get_file_version( $admin_css_path )
@@ -663,7 +663,7 @@ class Admin {
 			),
 		);
 		?>
-		<p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_import ) ); ?>"><?php echo esc_html__( 'How to change the import of positions?', 'personio-integration-light' ); ?></a></p>
+		<p><a href="#" class="button button-primary easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_import ) ); ?>"><?php echo esc_html__( 'How to change the import of positions?', 'personio-integration-light' ); ?></a></p>
 																							<?php
 
 																							// button to show template options as intro.
@@ -686,7 +686,7 @@ class Admin {
 																								),
 																							);
 																							?>
-		<p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to configure templates?', 'personio-integration-light' ); ?></a></p>
+		<p><a href="#" class="button button-primary easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to configure templates?', 'personio-integration-light' ); ?></a></p>
 																							<?php
 
 																							// button to show how to get the pro-version.
@@ -716,7 +716,7 @@ class Admin {
 																									),
 																								);
 																								?>
-			<p><a href="#" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p>
+			<p><a href="#" class="button button-primary easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p>
 																								<?php
 																							}
 

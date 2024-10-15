@@ -1,6 +1,6 @@
 {
     "name": "threadi/personio-integration-light",
-    "version": "3.2.0",
+    "version": "3.3.0",
     "description": "This plugin supports the embedding of Personio in WordPress.",
     "authors": [
         {
@@ -36,8 +36,8 @@
     },
     "require": {
         "php": "^8.0",
-        "threadi/wp-easy-dialog": "^1.0.6",
-        "threadi/wp-easy-setup": "^1.2.0"
+        "threadi/easy-dialog-for-wordpress": "^1.0.0",
+        "threadi/easy-setup-for-wordpress": "^1.0.1"
     },
     "require-dev": {
         "wp-coding-standards/wpcs": "^3.1.0",

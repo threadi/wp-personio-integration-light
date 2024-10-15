@@ -162,11 +162,11 @@ body.post-type-personioposition #personioposition-edit-hints .handle-actions { d
 	vertical-align: middle;
 }
 
-body.wp-easy-dialog-on-body.wp-core-ui .components-modal__frame.wp-easy-dialog {
+body.easy-dialog-for-wordpress.wp-core-ui .components-modal__frame.easy-dialog {
 	min-width: 400px;
 }
 
-body.wp-easy-dialog-on-body.wp-core-ui .components-modal__frame.wp-easy-dialog:after {
+body.easy-dialog-for-wordpress.wp-core-ui .components-modal__frame.easy-dialog:after {
 	background-image: url(/wp-content/plugins/personio-integration-light/gfx/personio_logo_big.png);
 	height: 41px;
 	float: right;
@@ -180,20 +180,20 @@ body.wp-easy-dialog-on-body.wp-core-ui .components-modal__frame.wp-easy-dialog:a
 	z-index: 100;
 }
 
-body.wp-easy-dialog-on-body.wp-core-ui .hide-header .wp-easy-dialog-text {
+body.easy-dialog-for-wordpress.wp-core-ui .hide-header .easy-dialog-for-wordpress-text {
 	padding-right: 162px;
 }
 
-body.wp-easy-dialog-on-body.wp-core-ui .components-modal__header .components-modal__header-heading {
+body.easy-dialog-for-wordpress.wp-core-ui .components-modal__header .components-modal__header-heading {
 	padding-right: 162px;
 }
 
-body.wp-easy-dialog-on-body.wp-core-ui .wp-easy-dialog-text label {
+body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text label {
 	display: block;
 	font-weight: bold;
 }
 
-body.wp-easy-dialog-on-body.wp-core-ui .wp-easy-dialog-text:last-of-type {
+body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text:last-of-type {
 	margin-bottom: 1em;
 }
 
@@ -280,7 +280,7 @@ body.post-type-personioposition tr.show_with_animation {
 
 body.post-type-personioposition #post-body-content { display: none }
 
-.personio-integration-dialog-error .wp-easy-dialog-text p:before {
+.personio-integration-dialog-error .easy-dialog-for-wordpress-text p:before {
 	content: "\f14c";
 	display: inline-block;
 	font-family: "dashicons", sans-serif;

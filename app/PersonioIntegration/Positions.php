@@ -340,7 +340,7 @@ class Positions {
 		$transient_obj = Transients::get_instance()->add();
 		$transient_obj->set_name( 'personio_integration_reimport_hint' );
 		$transient_obj->set_type( 'success' );
-		$transient_obj->set_message( __( 'You have changed settings that would make it advisable to re-import the positions from Personio. Click on the following button: ', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $url ) . '" class="button button-primary wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '">' . __( 'Re-Import all positions', 'personio-integration-light' ) . '</a>' );
+		$transient_obj->set_message( __( 'You have changed settings that would make it advisable to re-import the positions from Personio. Click on the following button: ', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $url ) . '" class="button button-primary easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '">' . __( 'Re-Import all positions', 'personio-integration-light' ) . '</a>' );
 		$transient_obj->save();
 	}
 }

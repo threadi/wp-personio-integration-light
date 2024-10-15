@@ -139,7 +139,7 @@ class Uninstaller {
 			}
 
 			// remove setup-options.
-			\wpEasySetup\Setup::get_instance()->uninstall();
+			\easySetupForWordPress\Setup::get_instance()->uninstall();
 
 			// remove user meta for each cpt we provide.
 			foreach ( Post_Types::get_instance()->get_post_types() as $post_type ) {

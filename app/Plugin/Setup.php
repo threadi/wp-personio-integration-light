@@ -34,29 +34,9 @@ class Setup {
 	private array $setup = array();
 
 	/**
-	 * The object of the setup.
-	 *
-	 * @var \wpEasySetup\Setup
-	 */
-	private \wpEasySetup\Setup $setup_obj;
-
-	/**
 	 * Constructor for this handler.
 	 */
-	private function __construct() {
-		// get the setup-object.
-		$this->setup_obj = \wpEasySetup\Setup::get_instance();
-		$this->setup_obj->set_url( Helper::get_plugin_url() );
-		$this->setup_obj->set_path( Helper::get_plugin_path() );
-		$this->setup_obj->set_texts(
-			array(
-				'title_error' => __( 'Error', 'personio-integration-light' ),
-				'txt_error_1' => __( 'The following error occurred:', 'personio-integration-light' ),
-				/* translators: %1$s will be replaced with the URL of the plugin-forum on wp.org */
-				'txt_error_2' => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
-			)
-		);
-	}
+	private function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.
@@ -87,13 +67,30 @@ class Setup {
 
 		// only load setup if it is not completed.
 		if ( ! $this->is_completed() ) {
-			add_filter( 'wp_easy_setup_completed', array( $this, 'check_completed_value' ), 10, 2 );
-			add_action( 'wp_easy_setup_set_completed', array( $this, 'set_completed' ) );
-			add_action( 'wp_easy_setup_process', array( $this, 'run_process' ) );
-			add_action( 'wp_easy_setup_process', array( $this, 'show_process_end' ), PHP_INT_MAX );
+			// initialize the setup object.
+			$setup_obj = \easySetupForWordPress\Setup::get_instance();
+			$setup_obj->init();
 
-			// set configuration for the setup.
-			$this->setup_obj->set_config( $this->get_config() );
+			// get the setup-object.
+			$setup_obj->set_url( Helper::get_plugin_url() );
+			$setup_obj->set_path( Helper::get_plugin_path() );
+			$setup_obj->set_texts(
+				array(
+					'title_error' => __( 'Error', 'personio-integration-light' ),
+					'txt_error_1' => __( 'The following error occurred:', 'personio-integration-light' ),
+					/* translators: %1$s will be replaced with the URL of the plugin-forum on wp.org */
+					'txt_error_2' => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
+				)
+			);
+
+			// set configuration for setup.
+			$setup_obj->set_config( $this->get_config() );
+
+			// only load setup if it is not completed.
+			add_filter( 'esfw_completed', array( $this, 'check_completed_value' ), 10, 2 );
+			add_action( 'esfw_set_completed', array( $this, 'set_completed' ) );
+			add_action( 'esfw_process', array( $this, 'run_process' ) );
+			add_action( 'esfw_process', array( $this, 'show_process_end' ), PHP_INT_MAX );
 
 			// add hooks to enable the setup of this plugin.
 			add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
@@ -110,7 +107,7 @@ class Setup {
 	 * @return bool
 	 */
 	public function is_completed(): bool {
-		return $this->setup_obj->is_completed( $this->get_setup_name() );
+		return \easySetupForWordPress\Setup::get_instance()->is_completed( $this->get_setup_name() );
 	}
 
 	/**
@@ -191,13 +188,13 @@ class Setup {
 	 */
 	public function display(): void {
 		// create help in case of error during loading of the setup.
-		$error_help = '<div class="personio-integration-transient notice notice-success"><h3>' . wp_kses_post( Helper::get_logo_img() ) . ' ' . esc_html( apply_filters( 'personio_integration_light_transient_title', Helper::get_plugin_name() ) ) . '</h3><p><strong>' . __( 'Setup is loading', 'personio-integration-light' ) . '</strong><br>' . __( 'Please wait while we load the setup.', 'personio-integration-light' ) . '<br>' . __( 'However, you can also skip the setup and configure the plugin manually.', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $this->setup_obj->get_skip_url( $this->get_setup_name(), Helper::get_settings_url() ) ) . '" class="button button-primary">' . __( 'Skip setup', 'personio-integration-light' ) . '</a></p></div>';
+		$error_help = '<div class="personio-integration-transient notice notice-success"><h3>' . wp_kses_post( Helper::get_logo_img() ) . ' ' . esc_html( apply_filters( 'personio_integration_light_transient_title', Helper::get_plugin_name() ) ) . '</h3><p><strong>' . __( 'Setup is loading', 'personio-integration-light' ) . '</strong><br>' . __( 'Please wait while we load the setup.', 'personio-integration-light' ) . '<br>' . __( 'However, you can also skip the setup and configure the plugin manually.', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( \easySetupForWordPress\Setup::get_instance()->get_skip_url( $this->get_setup_name(), Helper::get_settings_url() ) ) . '" class="button button-primary">' . __( 'Skip setup', 'personio-integration-light' ) . '</a></p></div>';
 
 		// add error text.
-		$this->setup_obj->set_error_help( $error_help );
+		\easySetupForWordPress\Setup::get_instance()->set_error_help( $error_help );
 
 		// output.
-		echo wp_kses_post( $this->setup_obj->display( $this->get_setup_name() ) );
+		echo wp_kses_post( \easySetupForWordPress\Setup::get_instance()->display( $this->get_setup_name() ) );
 	}
 
 	/**
@@ -275,7 +272,7 @@ class Setup {
 			'continue_button_label' => __( 'Continue', 'personio-integration-light' ) . '<span class="dashicons dashicons-controls-play"></span>',
 			'finish_button_label'   => __( 'Completed', 'personio-integration-light' ) . '<span class="dashicons dashicons-saved"></span>',
 			'skip_button_label'     => __( 'Skip', 'personio-integration-light' ) . '<span class="dashicons dashicons-undo"></span>',
-			'skip_url'              => $this->setup_obj->get_skip_url( $this->get_setup_name(), Helper::get_settings_url() ),
+			'skip_url'              => \easySetupForWordPress\Setup::get_instance()->get_skip_url( $this->get_setup_name(), Helper::get_settings_url() ),
 		);
 
 		/**
@@ -295,7 +292,7 @@ class Setup {
 	 * @return void
 	 */
 	public function set_process_label( string $label ): void {
-		update_option( 'wp_easy_setup_step_label', $label );
+		update_option( 'esfw_step_label', $label );
 	}
 
 	/**
@@ -306,7 +303,7 @@ class Setup {
 	 * @return void
 	 */
 	public function update_process_step( int $step = 1 ): void {
-		update_option( 'wp_easy_setup_step', absint( get_option( 'wp_easy_setup_step' ) + $step ) );
+		update_option( 'esfw_step', absint( get_option( 'esfw_step' ) + $step ) );
 	}
 
 	/**
@@ -366,7 +363,7 @@ class Setup {
 	 * @return void
 	 */
 	public function update_max_step( int $add_to_max_count ): void {
-		update_option( 'wp_easy_setup_max_steps', absint( get_option( 'wp_easy_setup_max_steps' ) ) + $add_to_max_count );
+		update_option( 'esfw_max_steps', absint( get_option( 'esfw_max_steps' ) ) + $add_to_max_count );
 	}
 
 	/**
@@ -436,13 +433,13 @@ class Setup {
 		}
 
 		// get actual list of completed setups.
-		$actual_completed = get_option( 'wp_easy_setup_completed', array() );
+		$actual_completed = get_option( 'esfw_completed', array() );
 
 		// add this setup to the list.
 		$actual_completed[] = $this->get_setup_name();
 
 		// add the actual setup to the list of completed setups.
-		update_option( 'wp_easy_setup_completed', $actual_completed );
+		update_option( 'esfw_completed', $actual_completed );
 
 		if ( Helper::is_admin_api_request() ) {
 			// Return JSON with forward-URL.
@@ -490,6 +487,6 @@ class Setup {
 	 * @return int
 	 */
 	public function get_max_step(): int {
-		return absint( get_option( 'wp_easy_setup_max_steps' ) );
+		return absint( get_option( 'esfw_max_steps' ) );
 	}
 }
