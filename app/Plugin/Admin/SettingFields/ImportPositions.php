@@ -39,7 +39,7 @@ class ImportPositions {
 					$url = add_query_arg(
 						array(
 							'action' => 'personioPositionsCancelImport',
-							'nonce'  => wp_create_nonce( 'wp-personio-integration-cancel-import' ),
+							'nonce'  => wp_create_nonce( 'personio-integration-cancel-import' ),
 						),
 						get_admin_url() . 'admin.php'
 					);

@@ -100,7 +100,7 @@ class Helper {
 		return add_query_arg(
 			array(
 				'action' => 'personioPositionsImport',
-				'nonce'  => wp_create_nonce( 'wp-personio-integration-import' ),
+				'nonce'  => wp_create_nonce( 'personio-integration-import' ),
 			),
 			get_admin_url() . 'admin.php'
 		);
@@ -115,7 +115,7 @@ class Helper {
 		return add_query_arg(
 			array(
 				'action' => 'personioPositionsDelete',
-				'nonce'  => wp_create_nonce( 'wp-personio-integration-delete' ),
+				'nonce'  => wp_create_nonce( 'personio-integration-delete' ),
 			),
 			get_admin_url() . 'admin.php'
 		);

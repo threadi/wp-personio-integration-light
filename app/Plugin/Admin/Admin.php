@@ -274,7 +274,7 @@ class Admin {
 	 * @return void
 	 */
 	public function import_positions(): void {
-		check_ajax_referer( 'wp-personio-integration-import', 'nonce' );
+		check_ajax_referer( 'personio-integration-import', 'nonce' );
 
 		// run import.
 		$imports_obj = Imports::get_instance();
@@ -329,7 +329,7 @@ class Admin {
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function cancel_import(): void {
-		check_ajax_referer( 'wp-personio-integration-cancel-import', 'nonce' );
+		check_ajax_referer( 'personio-integration-cancel-import', 'nonce' );
 
 		// check if import as running.
 		if ( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) > 0 ) {
@@ -355,7 +355,7 @@ class Admin {
 	 * @return void
 	 */
 	public function delete_positions(): void {
-		check_ajax_referer( 'wp-personio-integration-delete', 'nonce' );
+		check_ajax_referer( 'personio-integration-delete', 'nonce' );
 
 		// delete positions.
 		PersonioPosition::get_instance()->delete_positions();
@@ -376,8 +376,7 @@ class Admin {
 			return;
 		}
 
-		$false = false;
-
+		$false          = false;
 		$transients_obj = Transients::get_instance();
 		if ( ! Helper::is_personio_url_set() ) {
 			$transient_obj = $transients_obj->add();
@@ -395,7 +394,7 @@ class Admin {
 			 *
 			 * @param array $false Set true to hide the buttons.
 			 */
-		} elseif ( Positions::get_instance()->get_positions_count() > 10 && absint( get_option( 'personioIntegrationPositionCount', 0 ) ) > 0 && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+		} elseif ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) && Positions::get_instance()->get_positions_count() > 10 && absint( get_option( 'personioIntegrationPositionCount', 0 ) ) > 0 ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_limit_hint' );
