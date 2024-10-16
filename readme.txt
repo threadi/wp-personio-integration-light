@@ -554,6 +554,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added new log state: info
 * Errors during import of positions are now visible in dialog in backend
 * Changed usage of post_content column: it now contains the output for job description in the configured template
+* Changed too general internal slugs to prevent collision with other plugins
 * Some code optimizations
 * Some style optimizations in backend
 * Updated dependencies

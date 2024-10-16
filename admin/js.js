@@ -25,7 +25,7 @@ jQuery(document).ready(function($) {
             dismissible_length = attr_value.pop();
             option_name = attr_value.join('-');
             data = {
-                'action': 'dismiss_admin_notice',
+                'action': 'personio_integration_dismiss_admin_notice',
                 'option_name': option_name,
                 'dismissible_length': dismissible_length,
                 'nonce': personioIntegrationLightJsVars.dismiss_nonce
