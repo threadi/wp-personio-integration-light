@@ -133,6 +133,7 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_pro_extensions' ) );
 		add_action( 'personio_integration_import_of_url_starting', array( $this, 'update_import_status' ), 10, 0 );
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
+		add_filter( 'personio_integration_limit', array( $this, 'set_limit' ), 10, 2 );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
@@ -490,8 +491,8 @@ class PersonioPosition extends Post_Type {
 			$personio_attributes['ids'] = $resulting_list;
 		}
 
-		// set limit.
-		$limit_by_wp   = $personio_attributes['limit'] > 10 ? ( absint( get_option( 'posts_per_page' ) ) > 10 ? absint( get_option( 'posts_per_page' ) ) : 10 ) : $personio_attributes['limit'];
+		// set limits.
+		$limit_by_wp   = absint( get_option( 'posts_per_page' ) );
 		$limit_by_list = $personio_attributes['limit'];
 
 		/**
@@ -499,8 +500,8 @@ class PersonioPosition extends Post_Type {
 		 *
 		 * @since 2.0.0 Available since 2.0.0.
 		 *
-		 * @param int $limit_by_wp The limit.
-		 * @param int $limit_by_list The limit for this list.
+		 * @param int $limit_by_wp The limit define by wp which will be used for the list.
+		 * @param int $limit_by_list The limit explicit set for this listing.
 		 */
 		$personio_attributes['limit'] = apply_filters( 'personio_integration_limit', $limit_by_wp, $limit_by_list );
 
@@ -2103,5 +2104,39 @@ class PersonioPosition extends Post_Type {
 
 		// return resulting list.
 		return $categories;
+	}
+
+	/**
+	 * Set limit for listings.
+	 *
+	 * @param int $wp_limit The limit set via WP.
+	 * @param int $list_limit The limit set for the listing.
+	 *
+	 * @return int
+	 */
+	public function set_limit( int $wp_limit, int $list_limit ): int {
+		// set limit.
+		$limit = 10;
+
+		/**
+		 * Filter the max allowed limit.
+		 *
+		 * @since 3.3.0 Available since 3.3.0.
+		 * @param int $limit The max. limit to use.
+		 */
+		$limit = apply_filters( 'personio_integration_light_limit', $limit );
+
+		// bail if list limit is <= $limit but > 0.
+		if( $list_limit > 0 && $list_limit <= $limit ) {
+			return $list_limit;
+		}
+
+		// bail if wp_limit is <= $limit.
+		if( $wp_limit <= $limit ) {
+			return $wp_limit;
+		}
+
+		// return the limit.
+		return $limit;
 	}
 }
