@@ -94,6 +94,7 @@ class Update {
 			$this->version300();
 			$this->version310();
 			$this->version320();
+			$this->version330();
 
 			// save new plugin-version in DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
@@ -164,7 +165,21 @@ class Update {
 	 * @return void
 	 */
 	private function version320(): void {
-		// enable the new help functions.
-		update_option( 'personioIntegrationShowHelp', 1 );
+		// enable the new help functions, if not already set.
+		if( ! get_option( 'personioIntegrationShowHelp' ) ) {
+			update_option( 'personioIntegrationShowHelp', 1 );
+		}
+	}
+
+	/**
+	 * To run on update to version 3.3.0 or newer.
+	 *
+	 * @return void
+	 */
+	private function version330(): void {
+		// get actual value for setup and save it in new field, if not already set.
+		if( ! get_option( 'esfw_completed' ) ) {
+			update_option( 'esfw_completed', get_option( 'wp_easy_setup_completed' ) );
+		}
 	}
 }
