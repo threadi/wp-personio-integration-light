@@ -312,15 +312,15 @@ body.post-type-personioposition #post-body-content { display: none }
 	width: 160px;
 }
 
-.wp-easy-setup__header:before {
+.easy-setup-for-wordpress-header:before {
 	background-image: url(../gfx/personio_logo_big.png);
 }
 
-#wp-easy-setup .components-panel__body details {
+#easy-setup-for-wordpress .components-panel__body details {
 	margin-bottom: 1em;
 }
 
-#wp-easy-setup .components-panel__body details summary { cursor: pointer }
+#easy-setup-for-wordpress .components-panel__body details summary { cursor: pointer }
 
 body.post-type-personioposition summary { cursor: pointer }
 
