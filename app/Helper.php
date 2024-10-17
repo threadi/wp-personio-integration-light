@@ -725,4 +725,13 @@ class Helper {
 		// set the style.
 		wp_add_inline_style( 'wp-block-library', $style );
 	}
+
+	/**
+	 * Return the GitHub documentation link.
+	 *
+	 * @return string
+	 */
+	public static function get_github_documentation_link() {
+		return 'https://github.com/threadi/wp-personio-integration-light/tree/master/doc';
+	}
 }

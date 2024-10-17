@@ -110,7 +110,6 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'parse_query', array( $this, 'use_filter' ) );
 		add_filter( 'views_edit-' . $this->get_name(), array( $this, 'hide_cpt_filter' ), 10, 0 );
 		add_filter( 'pre_get_posts', array( $this, 'ignore_author' ) );
-		add_action( 'manage_posts_extra_tablenav', array( $this, 'add_extension_hint' ) );
 
 		// edit positions.
 		add_action( 'admin_init', array( $this, 'remove_cpt_supports' ) );
@@ -134,6 +133,8 @@ class PersonioPosition extends Post_Type {
 		add_action( 'personio_integration_import_of_url_starting', array( $this, 'update_import_status' ), 10, 0 );
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 		add_filter( 'personio_integration_limit', array( $this, 'set_limit' ), 10, 2 );
+		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 20 );
+		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_shortcode_help' ), 60 );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
@@ -952,34 +953,6 @@ class PersonioPosition extends Post_Type {
 				<?php
 			}
 		}
-	}
-
-	/**
-	 * Show hint for extensions.
-	 *
-	 * @param string $which Position in table.
-	 *
-	 * @return void
-	 */
-	public function add_extension_hint( string $which ): void {
-		if ( 'top' !== $which ) {
-			return;
-		}
-
-		// get requested post type.
-		$post_type = sanitize_text_field( wp_unslash( filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
-
-		// bail if no post type is given.
-		if ( is_null( $post_type ) ) {
-			return;
-		}
-
-		// bail if this is not our cpt.
-		if ( self::get_instance()->get_name() !== $post_type ) {
-			return;
-		}
-
-		echo '<a href="' . esc_url( Extensions::get_instance()->get_link( 'positions' ) ) . '" class="button button-secondary"><span class="dashicons dashicons-lightbulb"></span> ' . esc_html__( 'Extend', 'personio-integration-light' ) . '</a>';
 	}
 
 	/**
@@ -2138,5 +2111,117 @@ class PersonioPosition extends Post_Type {
 
 		// return the limit.
 		return $limit;
+	}
+
+	/**
+	 * Add help for the cpt.
+	 *
+	 * @param array $list List of help tabs.
+	 *
+	 * @return array
+	 */
+	public function add_help( array $list ): array {
+		// collect the content for the help.
+		$content = Helper::get_logo_img( true ) . '<h2>' . __( 'Positions from Personio', 'personio-integration-light' ) . '</h2><p>' . __( 'You manage all your positions yourself in Personio. They are imported into your WordPress website using the WordPress plugin <i>Personio Integration Light</i>. They are then displayed on your website.', 'personio-integration-light' ) . '</p>';
+		$content .= '<p><strong>' . __( 'Steps to use:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<ol>';
+		/* translators: %1$s will be replaced by a URL. */
+		$content .= '<li>' . sprintf( __( 'Add your Personio URL <a href="%1$s">in the settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) . '</li>';
+		/* translators: %1$s will be replaced by a URL. */
+		$content .= '<li>' . sprintf( __( 'Import your positions <a href="%1$s" class="personio-integration-import-hint">via click on the button</a>.', 'personio-integration-light' ), esc_url( Helper::get_import_url() ) ) . '</li>';
+		/* translators: %1$s will be replaced by a URL. */
+		$content .= '<li>' . sprintf( __( 'Check the positions <a href="%1$s">in your frontend</a>.', 'personio-integration-light' ), esc_url( get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ) ) ) . '</li>';
+		/* translators: %1$s will be replaced by a URL. */
+		$content .= '<li>' . sprintf( __( 'Change settings <a href="%1$s">for the template</a> to optimize the view.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
+		// add menu entry for applications (with hint to pro).
+		$false = false;
+		/**
+		 * Hide pro hint in help.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			/* translators: %1$s will be replaced by a URL. */
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Positions Pro (opens new window)</a> for individual application forms and much more options.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+		}
+		$content .= '</ol>';
+
+		// add help for the positions in general.
+		$list[] = array(
+			'id'       => PersonioPosition::get_instance()->get_name() . '-cpt',
+			'title'    => __( 'Personio Positions', 'personio-integration-light' ),
+			'content'  => $content
+		);
+
+		// return resulting list.
+		return $list;
+	}
+
+	/**
+	 * Add help for the cpt.
+	 *
+	 * @param array $list List of help tabs.
+	 *
+	 * @return array
+	 */
+	public function add_shortcode_help( array $list ): array {
+		// collect the content for the help.
+		$content = Helper::get_logo_img( true ) . '<h2>' . __( 'Shortcodes', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide 2 shortcodes with numerous options. These can be used to output the positions.', 'personio-integration-light' ) . '</p>';
+		$content .= '<p><strong>' . __( 'When to use:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<p>' . __( 'Shortcodes should only be used if your own theme or PageBuilder do not offer any other options.', 'personio-integration-light' ) . '</p>';
+		$false = false;
+		/**
+		 * Hide pro hint in help.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			$content .= '<p>' . __( 'With <i>Personio Integration Light</i>, we only support the Block Editor in this regard.', 'personio-integration-light' ) . '</p>';
+			$content .= '<p>' . __( 'With <i>Personio Integration Pro</i> you can also manage your posts with Elementor, Divi, Avada and many other PageBuilders and do not have to use shortcodes.', 'personio-integration-light' ) . '</p>';
+		}
+		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<ol>';
+		$content .= '<li>' . __( 'Import your open positions from Personio.', 'personio-integration-light' ) . '</li>';
+		$content .= '<li>' . __( 'Add the shortcode you want to use where you want to output data for your positions.', 'personio-integration-light' ) . '</li>';
+		$content .= '</ol>';
+		$content .= '<p><strong>' . __( 'Example 1:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<p>' . __( 'This shortcode will output a list of jobs including the filter above it. The filter will provide 2 properties. The jobs are displayed with a title and 2 job details matching the filter.', 'personio-integration-light' ) . '</p>';
+		$content .= '<code>[personioPositions showfilter="1" filter="recruitingCategory,schedule" filtertype="linklist" templates="title,excerpt" excerpt="recruitingCategory,schedule"]</code>';
+		$content .= '<p><strong>' . __( 'Example 2:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<p>' . __( 'This shortcode will output a single job with the Personio ID 42. The title, the job description and the link to the application form at Personio are output.', 'personio-integration-light' ) . '</p>';
+		$content .= '<code>[personioPosition templates="title,content,formular" personioid="42"]</code>';
+		$content .= '<p><strong>' . __( 'Documentation:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<p>' . sprintf( __( 'The complete documentation on the possibilities with shortcodes can be found <a href="%1$s" target="_blank">here (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_shortcode_documentation_url() ) ) . '</p>';
+		$content .= '<p><strong>' . __( 'Further notes:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<ol>';
+		$content .= '<li>' . __( 'If you want to customize the output of shortcodes in terms of styling, you have to write and store the necessary style properties yourself. If necessary, contact the person responsible for your project.', 'personio-integration-light' ) . '</li>';
+		$false = false;
+		/**
+		 * Hide pro hint in help.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			/* translators: %1$s will be replaced by a URL. */
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Positions Pro (opens new window)</a> to get more flexible widgets for your theme or page builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+		}
+		$content .= '</ol>';
+
+
+		// add help for the positions in general.
+		$list[] = array(
+			'id'       => PersonioPosition::get_instance()->get_name() . '-shortcodes',
+			'title'    => __( 'Shortcodes', 'personio-integration-light' ),
+			'content'  => $content
+		);
+
+		// return resulting list.
+		return $list;
 	}
 }

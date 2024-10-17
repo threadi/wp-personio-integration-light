@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
 
@@ -57,6 +58,7 @@ class Extensions {
 		// use our own hooks.
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_extensions' ) );
 		add_action( 'esfw_process_init', array( $this, 'initialize_extensions_in_setup' ), 30 );
+		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 40 );
 
 		if ( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
@@ -324,5 +326,46 @@ class Extensions {
 				$obj->uninstall();
 			}
 		}
+	}
+
+	/**
+	 * Add help for extensions.
+	 *
+	 * @param array $list List of help tabs.
+	 *
+	 * @return array
+	 */
+	public function add_help( array $list ): array {
+		// collect the content for the help.
+		$content = Helper::get_logo_img( true ) . '<h2>' . __( 'Extensions', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide you with a variety of extensions for the plugin. These extend the possibilities you have with the plugin for your vacancies.', 'personio-integration-light' ) . '</p>';
+		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<ol>';
+		/* translators: %1$s will be replaced by a URL. */
+		$content .= '<li>' . sprintf( __( 'Call up the <a href="%1$s">list of extensions</a>.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link() ) ) . '</li>';
+		$content .= '<li>' . __( 'Activate the extension you require by clicking on the button provided.', 'personio-integration-light' ) . '</li>';
+		$content .= '<li>' . __( 'Check whether the extension still offers settings. Follow the instructions that are displayed.', 'personio-integration-light' ) . '</li>';
+		$false = false;
+		/**
+		 * Hide pro hint in help.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			/* translators: %1$s will be replaced by a URL. */
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Positions Pro (opens new window)</a> to get much more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+		}
+		$content .= '</ol>';
+
+		// add help for the positions in general.
+		$list[] = array(
+			'id'       => PersonioPosition::get_instance()->get_name() . '-extensions',
+			'title'    => __( 'Extensions', 'personio-integration-light' ),
+			'content'  => $content
+		);
+
+		// return resulting list.
+		return $list;
 	}
 }

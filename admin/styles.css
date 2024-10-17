@@ -344,3 +344,9 @@ body.post-type-personioposition .button span.dashicons {
 	top: -2px;
 	z-index: 1;
 }
+
+#contextual-help-columns div[id*=tab-panel-personioposition] img {
+	float: right;
+	margin-left: 1em;
+	width: 240px;
+}

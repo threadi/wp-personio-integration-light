@@ -34,8 +34,7 @@ class Admin {
 	/**
 	 * Constructor for Init-Handler.
 	 */
-	private function __construct() {
-	}
+	private function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.
@@ -70,6 +69,9 @@ class Admin {
 
 		// initialize the Site Health support.
 		Site_Health::get_instance()->init();
+
+		// initialize help system.
+		Help_System::get_instance()->init();
 
 		// show hint for Pro-version.
 		add_action( 'personio_integration_admin_show_pro_hint', array( $this, 'show_pro_hint' ) );
@@ -140,6 +142,7 @@ class Admin {
 				'url_example'                        => Helper::get_personio_url_example(),
 				'title_rate_us'                      => __( 'Rate us', 'personio-integration-light' ),
 				'title_run_import'                   => __( 'Run import', 'personio-integration-light' ),
+				'import_url' => Helper::get_import_url(),
 				'title_get_pro'                      => __( 'Get Personio Integration Pro', 'personio-integration-light' ),
 				'title_import_progress'              => __( 'Import in progress', 'personio-integration-light' ),
 				'title_delete_positions'             => __( 'Delete all positions', 'personio-integration-light' ),
@@ -262,6 +265,7 @@ class Admin {
 	 * Forward user to settings-page.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function forward_importer_to_settings(): void {
 		wp_safe_redirect( Helper::get_settings_url( 'personioPositions', 'import' ) );
@@ -272,6 +276,7 @@ class Admin {
 	 * Start import manually via request.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function import_positions(): void {
 		check_ajax_referer( 'personio-integration-import', 'nonce' );
@@ -353,6 +358,7 @@ class Admin {
 	 * Delete all positions manually.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function delete_positions(): void {
 		check_ajax_referer( 'personio-integration-delete', 'nonce' );
@@ -571,39 +577,42 @@ class Admin {
 	 * @return void
 	 */
 	public function add_menu(): void {
-		if ( Setup::get_instance()->is_completed() ) {
-			// add menu entry for applications (with hint to pro).
-			$false = false;
-			/**
-			 * Hide the additional the sort column which is only filled in Pro.
-			 *
-			 * @since 3.0.0 Available since 3.0.0
-			 *
-			 * @param array $false Set true to hide the buttons.
-			 */
-			if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
-				add_submenu_page(
-					PersonioPosition::get_instance()->get_link( true ),
-					__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Settings', 'personio-integration-light' ),
-					__( 'Applications', 'personio-integration-light' ),
-					'manage_' . PersonioPosition::get_instance()->get_name(),
-					'#',
-					false,
-					2
-				);
-			}
+		// bail if setup is not completed.
+		if ( ! Setup::get_instance()->is_completed() ) {
+			return;
+		}
 
-			// add help link.
+		// add menu entry for applications (with hint to pro).
+		$false = false;
+		/**
+		 * Hide the additional the sort column which is only filled in Pro.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 */
+		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			add_submenu_page(
 				PersonioPosition::get_instance()->get_link( true ),
-				__( 'Need help with Personio Integration?', 'personio-integration-light' ),
-				'<span class="disable">' . __( 'Help', 'personio-integration-light' ) . '</span>',
-				'read_' . PersonioPosition::get_instance()->get_name(),
-				'personioPositionsHelp',
-				array( $this, 'show_help_page' ),
-				9
+				__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Settings', 'personio-integration-light' ),
+				__( 'Applications', 'personio-integration-light' ),
+				'manage_' . PersonioPosition::get_instance()->get_name(),
+				'#',
+				false,
+				2
 			);
 		}
+
+		// add help link.
+		add_submenu_page(
+			PersonioPosition::get_instance()->get_link( true ),
+			__( 'Need help with Personio Integration?', 'personio-integration-light' ),
+			'<span class="disable">' . __( 'Help', 'personio-integration-light' ) . '</span>',
+			'read_' . PersonioPosition::get_instance()->get_name(),
+			'personioPositionsHelp',
+			array( $this, 'show_help_page' ),
+			9
+		);
 	}
 
 	/**
@@ -743,7 +752,7 @@ class Admin {
 		<p>
 			<?php
 			/* translators: %1$s and %2$s will be replaced by external URLs. */
-			echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">github</a>. There you will also find <a href="%2$s" target="_blank">some documentations (opens new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light/tree/master/doc' ) ) );
+			echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">github</a>. There you will also find <a href="%2$s" target="_blank">some documentations (opens new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ) ) );
 			?>
 			</p>
 		<?php
@@ -794,6 +803,7 @@ class Admin {
 	 * Empty the log per request.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function empty_log(): void {
 		global $wpdb;
