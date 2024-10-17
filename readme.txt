@@ -569,3 +569,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed class usage in listing templates
 * Fixed missing styling for description in Block Editor
 * Fixed disable all extensions call: it disabled only the extensions which could be enabled by users
+* Fixed support for plugin "PDF Generator for WP"

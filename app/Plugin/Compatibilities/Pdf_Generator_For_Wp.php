@@ -55,7 +55,7 @@ class Pdf_Generator_For_Wp extends Compatibilities_Base {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-			$transient_obj->set_message( sprintf( __( 'We realized that you are using PDF Generator for WP - very nice! If you want to print your open positions as PDF, go to the <a href="%s" target="_blank">advanced settings of PDF Generator for WP</a> and choose "personioposition" as allowed post type.', 'personio-integration-light' ), esc_url( $url ) ) );
+			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using PDF Generator for WP - very nice!</strong> If you want to print your open positions as PDF, go to the <a href="%s" target="_blank">advanced settings of PDF Generator for WP</a> and choose "personioposition" as allowed post type.', 'personio-integration-light' ), esc_url( $url ) ) );
 			$transient_obj->set_type( 'success' );
 			$transient_obj->set_dismissible_days( 182 );
 			$transient_obj->save();

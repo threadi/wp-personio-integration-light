@@ -430,7 +430,7 @@ class Third_Party_Plugins {
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
 		// return our compiled content.
-		return Templates::get_instance()->get_content_template( $position_obj, array(), true );
+		return Templates::get_instance()->get_content_template( $position_obj, array( 'classes' => '' ), true );
 	}
 
 	/**
