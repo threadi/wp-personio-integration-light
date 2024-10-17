@@ -6,10 +6,11 @@
  * @package personio-integration-light
  */
 
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
+
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Themes;
-
-defined( 'ABSPATH' ) || exit;
 
 get_header();
 

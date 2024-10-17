@@ -153,12 +153,12 @@ class Init {
 		 * Load listing-style from Block "list" if FSE-theme is NOT used.
 		 */
 		if ( ! Helper::theme_is_fse_theme() ) {
-			/*wp_enqueue_style(
+			wp_enqueue_style(
 				'personio-integration-additional-styles',
 				Helper::get_plugin_url() . 'blocks/list/build/style-index.css',
 				array(),
 				Helper::get_file_version( Helper::get_plugin_path() . 'blocks/list/build/style-index.css' )
-			);*/
+			);
 		}
 	}
 

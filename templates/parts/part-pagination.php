@@ -2,10 +2,13 @@
 /**
  * Template for output a pagination of positions.
  *
- * @version: 3.0.0
+ * @param string    $pagination The pagination.
+ *
  * @package personio-integration-light
+ * @version: 3.3.0
  */
 
+// prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
 /**

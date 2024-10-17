@@ -7,10 +7,11 @@
  * @param string $back_to_list_url Define the text for "back to list" link. If empty link will not be displayed.
  * @param string $target Defines the value for the target-attribute.
  *
- * @version: 3.1.0
+ * @version: 3.3.0
  * @package personio-integration-light
  */
 
+// prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
 /**

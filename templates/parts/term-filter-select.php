@@ -2,8 +2,13 @@
 /**
  * Show select-filter for a chosen taxonomy.
  *
- * @version: 3.3.0
+ * @param string $filter     Internal name of used filter.
+ * @param string $filtername Public name of used filter.
+ * @param string $value      Actual selected value.
+ * @param array  $terms      List of terms to show.
+ *
  * @package personio-integration-light
+ * @version: 3.3.0
  */
 
 defined( 'ABSPATH' ) || exit;

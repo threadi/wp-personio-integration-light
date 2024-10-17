@@ -17,8 +17,8 @@ if ( ! empty( $personio_attributes['filter'] ) && false !== $personio_attributes
 	// generate random id.
 	$form_id = 'pif' . md5( wp_json_encode( $personio_attributes['filter'] ) );
 	?>
-	<article id="<?php echo esc_attr( $form_id ); ?>" class="site-main entry entry-content container inside-article container qodef-container-inner site-content site-content site-container content-bg content-area <?php echo esc_attr( $personio_attributes['classes'] ); ?>" role="region" aria-label="<?php echo esc_attr__( 'Filter for positions', 'personio-integration-light' ); ?>">
-		<form action="<?php echo esc_url( helper::get_current_url() ); ?>#<?php echo esc_attr( $form_id ); ?>" class="entry-content personio-position-filter personio-position-filter-<?php echo esc_attr( $personio_attributes['filtertype'] ); ?> qodef-container-inner site-content site-container content-bg content-area">
+	<article id="<?php echo esc_attr( $form_id ); ?>" class="site-main entry entry-content container inside-article container site-content site-content site-container content-bg content-area <?php echo esc_attr( $personio_attributes['classes'] ); ?>" role="region" aria-label="<?php echo esc_attr__( 'Filter for positions', 'personio-integration-light' ); ?>">
+		<form action="<?php echo esc_url( helper::get_current_url() ); ?>#<?php echo esc_attr( $form_id ); ?>" class="entry-content personio-position-filter personio-position-filter-<?php echo esc_attr( $personio_attributes['filtertype'] ); ?> site-content site-container content-bg content-area">
 			<legend><?php echo esc_html__( 'Filter', 'personio-integration-light' ); ?></legend>
 			<?php
 
