@@ -553,6 +553,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Added hint for extension of positions in position table
 * Added output of generated CSS classes for all properties of a single position in list and single view
 * Added new log state: info
+* Added detection for third-party SEO-plugins Yoast, Rank Math and The Seo Framework
 * Errors during import of positions are now visible in dialog in backend
 * Changed usage of post_content column: it now contains the output for job description in the configured template
 * Changed too general internal slugs to prevent collision with other plugins
