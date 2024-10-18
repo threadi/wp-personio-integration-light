@@ -7,7 +7,7 @@
  * @param array $details The list of excerpts to show (list of labels of the terms).
  *
  * @package personio-integration-light
- * @version: 3.3.0
+ * @version: 4.0.0
  */
 
 // prevent direct access.

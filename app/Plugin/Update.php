@@ -166,19 +166,19 @@ class Update {
 	 */
 	private function version320(): void {
 		// enable the new help functions, if not already set.
-		if( ! get_option( 'personioIntegrationShowHelp' ) ) {
+		if ( ! get_option( 'personioIntegrationShowHelp' ) ) {
 			update_option( 'personioIntegrationShowHelp', 1 );
 		}
 	}
 
 	/**
-	 * To run on update to version 3.3.0 or newer.
+	 * To run on update to version 4.0.0 or newer.
 	 *
 	 * @return void
 	 */
 	private function version330(): void {
 		// get actual value for setup and save it in new field, if not already set.
-		if( ! get_option( 'esfw_completed' ) ) {
+		if ( ! get_option( 'esfw_completed' ) ) {
 			update_option( 'esfw_completed', get_option( 'wp_easy_setup_completed' ) );
 		}
 	}

@@ -1260,13 +1260,13 @@ class Settings {
 	/**
 	 * Add help for the cpt.
 	 *
-	 * @param array $list List of help tabs.
+	 * @param array $help_list List of help tabs.
 	 *
 	 * @return array
 	 */
-	public function add_help( array $list ): array {
+	public function add_help( array $help_list ): array {
 		// collect the content for the help.
-		$content = Helper::get_logo_img( true ) . '<h2>' . __( 'Settings', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide you with a variety of possible settings. You can use these to influence the behavior of the plugin as well as the appearance of your posts in the frontend.', 'personio-integration-light' ) . '</p>';
+		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Settings', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide you with a variety of possible settings. You can use these to influence the behavior of the plugin as well as the appearance of your posts in the frontend.', 'personio-integration-light' ) . '</p>';
 		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		/* translators: %1$s will be replaced by a URL. */
@@ -1274,7 +1274,7 @@ class Settings {
 		$content .= '<li>' . __( 'You will find a short explanation for each setting.', 'personio-integration-light' ) . '</li>';
 		$content .= '<li>' . __( 'Adjust the settings to your requirements.', 'personio-integration-light' ) . '</li>';
 		$content .= '<li>' . __( 'Check your settings where they should apply.', 'personio-integration-light' ) . '</li>';
-		$false = false;
+		$false    = false;
 		/**
 		 * Hide pro hint in help.
 		 *
@@ -1289,13 +1289,13 @@ class Settings {
 		$content .= '</ol>';
 
 		// add help for the positions in general.
-		$list[] = array(
-			'id'       => PersonioPosition::get_instance()->get_name() . '-settings',
-			'title'    => __( 'Settings', 'personio-integration-light' ),
-			'content'  => $content
+		$help_list[] = array(
+			'id'      => PersonioPosition::get_instance()->get_name() . '-settings',
+			'title'   => __( 'Settings', 'personio-integration-light' ),
+			'content' => $content,
 		);
 
 		// return resulting list.
-		return $list;
+		return $help_list;
 	}
 }

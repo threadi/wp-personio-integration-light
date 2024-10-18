@@ -142,7 +142,7 @@ class Admin {
 				'url_example'                        => Helper::get_personio_url_example(),
 				'title_rate_us'                      => __( 'Rate us', 'personio-integration-light' ),
 				'title_run_import'                   => __( 'Run import', 'personio-integration-light' ),
-				'import_url' => Helper::get_import_url(),
+				'import_url'                         => Helper::get_import_url(),
 				'title_get_pro'                      => __( 'Get Personio Integration Pro', 'personio-integration-light' ),
 				'title_import_progress'              => __( 'Import in progress', 'personio-integration-light' ),
 				'title_delete_positions'             => __( 'Delete all positions', 'personio-integration-light' ),

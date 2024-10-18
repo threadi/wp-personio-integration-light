@@ -345,7 +345,7 @@ class Imports {
 		/**
 		 * Run additional tasks for processing errors during import of positions.
 		 *
-		 * @since 3.3.0 Available since 3.3.0.
+		 * @since 4.0.0 Available since 4.0.0.
 		 * @param array $errors List of errors.
 		 */
 		do_action( 'personio_integration_light_import_error', $this->errors );

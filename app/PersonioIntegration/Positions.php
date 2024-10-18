@@ -197,7 +197,7 @@ class Positions {
 		// add log for this query if debug is enabled.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 			$log = new Log();
-			$log->add_log( __( 'Query-Debug', 'personio-integration-light' ) . ': ' . wp_json_encode( $query ) . '<br><br>' . __( 'Result', 'personio-integration-light' ) . ': ' . wp_json_encode( $this->get_results() ) . '<br><br>' . __( 'Used URL', 'personio-integration-light' ) . ': ' . esc_url( Helper::get_current_url() ), 'info', 'system' );
+			$log->add_log( __( 'Query-Debug', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $query ) . '</code><br><br>' . __( 'Result', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $this->get_results() ) . '</code><br><br>' . __( 'Used URL', 'personio-integration-light' ) . ': ' . esc_url( Helper::get_current_url() ), 'info', 'system' );
 		}
 
 		// remove filter.

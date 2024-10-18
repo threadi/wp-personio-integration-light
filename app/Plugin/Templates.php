@@ -339,7 +339,7 @@ class Templates {
 			// show a transient.
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_old_templates' );
-			$transient_obj->set_message( __( '<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'personio-integration-light' ) . $html_list . '<strong>' . __( 'Hints:', 'personio-integration-light' ) . '</strong><br>' . __('The version-number in the header of the files must match.', 'personio-integration-light' ) . '<br>' . __('If you have any questions about this, talk to the technical administrator of your website.', 'personio-integration-light' ) );
+			$transient_obj->set_message( __( '<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'personio-integration-light' ) . $html_list . '<strong>' . __( 'Hints:', 'personio-integration-light' ) . '</strong><br>' . __( 'The version-number in the header of the files must match.', 'personio-integration-light' ) . '<br>' . __( 'If you have any questions about this, talk to the technical administrator of your website.', 'personio-integration-light' ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->set_dismissible_days( 10 );
 			$transient_obj->save();
@@ -915,7 +915,7 @@ class Templates {
 		/**
 		 * Filter the class list of a single position.
 		 *
-		 * @since 3.3.0 Available since 3.3.0.
+		 * @since 4.0.0 Available since 4.0.0.
 		 * @param array $css_classes List of classes.
 		 * @param Position $position_obj Position as object.
 		 */
@@ -945,7 +945,7 @@ class Templates {
 		/**
 		 * Filter the class list of a term.
 		 *
-		 * @since 3.3.0 Available since 3.3.0.
+		 * @since 4.0.0 Available since 4.0.0.
 		 * @param array $css_classes List of classes.
 		 * @param WP_Term $term The term object.
 		 */

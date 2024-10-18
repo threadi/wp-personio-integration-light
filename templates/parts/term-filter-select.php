@@ -8,7 +8,7 @@
  * @param array  $terms      List of terms to show.
  *
  * @package personio-integration-light
- * @version: 3.3.0
+ * @version: 4.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
 			$term_count = count( $terms );
 			for ( $t = 0;$t < $term_count;$t++ ) {
 				?>
-				<option value="<?php echo absint( $terms[ $t ]->term_id ); ?>"<?php echo ( $terms[ $t ]->term_id === $value ? ' selected="selected"' : '' ); ?> class="<?php echo esc_attr( apply_filters( 'personio_integration_light_term_get_classes', $terms[$t] ) ); ?>"><?php echo esc_html( $terms[ $t ]->name ); ?></option>
+				<option value="<?php echo absint( $terms[ $t ]->term_id ); ?>"<?php echo ( $terms[ $t ]->term_id === $value ? ' selected="selected"' : '' ); ?> class="<?php echo esc_attr( apply_filters( 'personio_integration_light_term_get_classes', $terms[ $t ] ) ); ?>"><?php echo esc_html( $terms[ $t ]->name ); ?></option>
 											<?php
 			}
 			?>

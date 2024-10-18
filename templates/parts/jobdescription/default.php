@@ -5,7 +5,7 @@
  * @param array $attribute List of settings.
  * @param Position $position The position as object.
  *
- * @version 3.3.0
+ * @version: 4.0.0
  * @package personio-integration-light
  */
 

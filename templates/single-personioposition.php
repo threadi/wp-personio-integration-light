@@ -2,7 +2,7 @@
 /**
  * Template for output of a single position.
  *
- * @version: 3.3.0
+ * @version: 4.0.0
  * @package personio-integration-light
  */
 

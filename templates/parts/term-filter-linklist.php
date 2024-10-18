@@ -8,7 +8,7 @@
  * @param array $terms List of terms to show.
  *
  * @package personio-integration-light
- * @version: 3.3.0
+ * @version: 4.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -29,7 +29,12 @@ defined( 'ABSPATH' ) || exit;
 						$url .= '#' . $form_id;
 					}
 					?>
-					<li><a href="<?php echo esc_url( $url ); ?>" class="<?php echo esc_attr( apply_filters( 'personio_integration_light_term_get_classes', $terms[$t] ) );echo ( $terms[ $t ]->term_id === $value ? ' personio-filter-selected' : '' ); ?>"><?php echo esc_html( $terms[ $t ]->name ); ?></a></li>
+					<li><a href="<?php echo esc_url( $url ); ?>" class="
+											<?php
+											echo esc_attr( apply_filters( 'personio_integration_light_term_get_classes', $terms[ $t ] ) );
+											echo ( $terms[ $t ]->term_id === $value ? ' personio-filter-selected' : '' );
+											?>
+					"><?php echo esc_html( $terms[ $t ]->name ); ?></a></li>
 											<?php
 				}
 			}

@@ -6,7 +6,7 @@ Tested up to: 6.6
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.3.0
+Stable tag: 4.0.0
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -543,7 +543,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed possible error with unknown custom extensions categories
 * Fixed group listings to hide additional terms per group entity
 
-= 3.3.0 =
+= 4.0.0 =
 * Added help system which uses the integrated help context from WordPress
 * Added new libraries for setup and dialog
 * Added filter for errors in log

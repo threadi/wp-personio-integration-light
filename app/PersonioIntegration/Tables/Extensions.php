@@ -314,7 +314,7 @@ class Extensions extends WP_List_Table {
 		/**
 		 * Filter the main url for "all".
 		 *
-		 * @since 3.3.0 Available since 3.3.0.
+		 * @since 4.0.0 Available since 4.0.0.
 		 * @param string $url The URL.
 		 */
 		$all_url = apply_filters( 'personio_integration_light_extension_all_url', $url );
@@ -342,7 +342,7 @@ class Extensions extends WP_List_Table {
 		/**
 		 * Filter the list of possible views in extension table.
 		 *
-		 * @since 3.3.0 Available since 3.3.0.
+		 * @since 4.0.0 Available since 4.0.0.
 		 * @param array $list List of views.
 		 */
 		return apply_filters( 'personio_integration_light_extension_table_views', $list );

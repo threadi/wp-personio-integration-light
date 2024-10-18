@@ -9,7 +9,7 @@
  * @param string $line_break Setting for linke break after taxonomy-label.
  *
  * @package personio-integration-light
- * @version: 3.3.0
+ * @version: 4.0.0
  */
 
 // prevent direct access.

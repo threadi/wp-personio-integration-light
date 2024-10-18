@@ -323,7 +323,7 @@ class Log_Table extends WP_List_Table {
 		/**
 		 * Filter the list of possible states in log table.
 		 *
-		 * @since 3.3.0 Available since 3.3.0.0
+		 * @since 4.0.0 Available since 4.0.0.0
 		 */
 		$list = apply_filters( 'personio_integration_light_status_list', $list );
 

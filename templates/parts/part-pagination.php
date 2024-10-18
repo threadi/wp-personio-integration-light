@@ -5,7 +5,7 @@
  * @param string    $pagination The pagination.
  *
  * @package personio-integration-light
- * @version: 3.3.0
+ * @version: 4.0.0
  */
 
 // prevent direct access.
