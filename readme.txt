@@ -44,7 +44,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish
 - Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
 - Support for subcompanies and additional offices in positions
-- Support for multiple form handler like Contact Form 7, Forminator and WPForms
+- Support for multiple form handler like Contact Form 7, Elementor Forms, Forminator and WPForms
 - Use custom feature image on each position
 - Unlimited custom files for download on each single position
 - Manual sorting of open positions in list views via drag&drop
@@ -571,3 +571,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed missing styling for description in Block Editor
 * Fixed disable all extensions call: it disabled only the extensions which could be enabled by users
 * Fixed support for plugin "PDF Generator for WP"
+* Fixed wrong loading of page builder object list during uninstallation

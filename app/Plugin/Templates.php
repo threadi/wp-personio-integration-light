@@ -807,6 +807,10 @@ class Templates {
 			$template_file = 'parts/jobdescription/' . $template . '.php';
 		}
 
+		if( ! isset( $attributes['classes' ]) ) {
+			$attributes['classes'] = '';
+		}
+
 		// get template and return it.
 		ob_start();
 		include $this->get_template( $template_file );

@@ -74,7 +74,7 @@ class Extensions {
 		// misc.
 		add_action( 'admin_menu', array( $this, 'add_extension_menu' ) );
 
-		// initialize our extensions for the positions-cpt.
+		// initialize our extensions.
 		$this->initialize_extensions();
 	}
 
@@ -84,12 +84,44 @@ class Extensions {
 	 * @return void
 	 */
 	public function initialize_extensions(): void {
-		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				$obj->init();
-			}
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			$extension_obj->init();
 		}
+	}
+
+	/**
+	 * Get extensions as list of Extension_Base-objects.
+	 *
+	 * @return array
+	 */
+	public function get_extensions_as_objects(): array {
+		// the list of objects.
+		$list = array();
+
+		// loop through them.
+		foreach ( $this->get_extensions() as $extension_name ) {
+			// bail if name is not a string.
+			if( ! is_string( $extension_name ) && $extension_name instanceof Extensions_Base ) {
+				$list[] = $extension_name;
+				continue;
+			}
+
+			// bail if method does not exist.
+			if( ! method_exists( $extension_name, 'get_instance' ) ) {
+				continue;
+			}
+
+			// bail if method is not callable.
+			if( ! is_callable( $extension_name . '::get_instance' ) ) {
+				continue;
+			}
+
+			// get the object.
+			$list[] = call_user_func( $extension_name . '::get_instance' );
+		}
+
+		// return resulting list.
+		return $list;
 	}
 
 	/**
@@ -135,7 +167,7 @@ class Extensions {
 	public function get_extensions(): array {
 		$list = array();
 		/**
-		 * Filter the possible extensions for the Personio-object.
+		 * Filter the possible extensions.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
@@ -186,13 +218,14 @@ class Extensions {
 	 * @return Extensions_Base|false
 	 */
 	private function get_extension_by_name( string $name ): Extensions_Base|false {
-		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				if ( $obj instanceof Extensions_Base && $obj->get_name() === $name ) {
-					return $obj;
-				}
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			// bail if name does not match.
+			if ( $extension_obj->get_name() !== $name ) {
+				continue;
 			}
+
+			// return this object.
+			return $extension_obj;
 		}
 		return false;
 	}
@@ -272,15 +305,14 @@ class Extensions {
 		check_admin_referer( 'personio-integration-extension-disable-all', 'nonce' );
 
 		// loop through all extensions and enable them.
-		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				if ( $obj instanceof Extensions_Base && $obj->can_be_enabled_by_user() ) {
-					$obj->set_disabled();
-				}
-			} elseif ( $extension_name instanceof Extensions_Base && $extension_name->can_be_enabled_by_user() ) {
-				$extension_name->set_disabled();
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			// bail if this extension could not be disabled by user.
+			if ( ! $extension_obj->can_be_enabled_by_user() ) {
+				continue;
 			}
+
+			// disable this extension.
+			$extension_obj->set_disabled();
 		}
 
 		// redirect user.
@@ -298,15 +330,14 @@ class Extensions {
 		check_admin_referer( 'personio-integration-extension-enable-all', 'nonce' );
 
 		// loop through all extensions and enable them.
-		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				if ( $obj instanceof Extensions_Base && $obj->can_be_enabled_by_user() ) {
-					$obj->set_enabled();
-				}
-			} elseif ( $extension_name instanceof Extensions_Base && $extension_name->can_be_enabled_by_user() ) {
-				$extension_name->set_enabled();
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			// bail if this extension could not be enabled by user.
+			if ( ! $extension_obj->can_be_enabled_by_user() ) {
+				continue;
 			}
+
+			// enable this extension.
+			$extension_obj->set_enabled();
 		}
 
 		// redirect user.
@@ -320,11 +351,8 @@ class Extensions {
 	 * @return void
 	 */
 	public function uninstall(): void {
-		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				$obj->uninstall();
-			}
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			$extension_obj->uninstall();
 		}
 	}
 

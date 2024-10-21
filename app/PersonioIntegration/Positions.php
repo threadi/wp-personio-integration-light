@@ -212,9 +212,9 @@ class Positions {
 			 * Filter the resulting ID / object.
 			 *
 			 * @since 3.0.0 Available since 3.0.0
-			 * @param int|WP_Post $post_id The ID or object to use.
+			 * @param int $post_id The ID to use.
 			 */
-			$position_object = $this->get_position( apply_filters( 'personio_integration_positions_loop_id', $post_id ) );
+			$position_object = $this->get_position( absint( apply_filters( 'personio_integration_positions_loop_id', $post_id ) ) );
 
 			// set used language on position-object.
 			if ( ! empty( $parameter_to_add['lang'] ) ) {

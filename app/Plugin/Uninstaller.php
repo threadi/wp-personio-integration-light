@@ -112,7 +112,7 @@ class Uninstaller {
 
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
-			// initialize the extensions to call their uninstall routines.
+			// initialize the extensions to call their uninstall routines later.
 			Extensions::get_instance()->init();
 
 			// reset Personio- and language-specific settings.
@@ -178,6 +178,7 @@ class Uninstaller {
 			'personioIntegrationLightInstallDate',
 			'personio_integration_settings',
 			'personio_integration_schedules',
+			'personioIntegrationPositionCount'
 		);
 	}
 }

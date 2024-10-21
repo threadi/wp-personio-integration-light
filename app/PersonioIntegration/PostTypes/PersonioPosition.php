@@ -1592,32 +1592,36 @@ class PersonioPosition extends Post_Type {
 			return;
 		}
 
+		// get the position count.
+		$position_count = absint( get_option( 'personioIntegrationPositionCount', 0 ) );
+
 		// get the positions object.
 		$positions_obj = Positions::get_instance();
 
-		// remove filter which could interfere here.
-		if ( function_exists( 'personio_integration_set_ordering' ) ) {
-			remove_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
-		}
-
-		// get list of the newest 3 positions.
-		$positions_list = $positions_obj->get_positions(
-			3,
-			array(
-				'sortby' => 'date',
-				'sort'   => 'DESC',
-			)
-		);
-
-		// re-add the filter.
-		if ( function_exists( 'personio_integration_set_ordering' ) ) {
-			add_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
-		}
-
 		// show results.
-		if ( 0 === count( $positions_list ) ) {
+		if ( 0 === $position_count ) {
 			echo '<p>' . esc_html__( 'Actually there are no positions imported from Personio.', 'personio-integration-light' ) . '</p>';
 		} else {
+			// remove filter which could interfere here.
+			if ( function_exists( 'personio_integration_set_ordering' ) ) {
+				remove_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
+			}
+
+			// get list of the newest 3 positions.
+			$positions_list = $positions_obj->get_positions(
+				3,
+				array(
+					'sortby' => 'date',
+					'sort'   => 'DESC',
+				)
+			);
+
+			// re-add the filter.
+			if ( function_exists( 'personio_integration_set_ordering' ) ) {
+				add_filter( 'pre_get_posts', 'personio_integration_set_ordering' );
+			}
+
+			// show the list.
 			?>
 			<ul class="personio_positions">
 			<?php
@@ -1631,7 +1635,7 @@ class PersonioPosition extends Post_Type {
 			<p><a href="<?php echo esc_url( self::get_instance()->get_link() ); ?>">
 					<?php
 					/* translators: %1$d will be replaced by the count of positions */
-					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( Positions::get_instance()->get_positions_count() ) );
+					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), $position_count );
 					?>
 				</a></p>
 			<?php

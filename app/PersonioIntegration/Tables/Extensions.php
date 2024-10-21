@@ -60,15 +60,14 @@ class Extensions extends WP_List_Table {
 
 		// get list of extensions.
 		$extensions = array();
-		foreach ( \PersonioIntegrationLight\PersonioIntegration\Extensions::get_instance()->get_extensions() as $extension_name ) {
-			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				if ( $obj instanceof Extensions_Base && $this->filter_object( $obj, $category ) ) {
-					$extensions[] = $obj;
-				}
-			} elseif ( $extension_name instanceof Extensions_Base && $this->filter_object( $extension_name, $category ) ) {
-				$extensions[] = $extension_name;
+		foreach ( \PersonioIntegrationLight\PersonioIntegration\Extensions::get_instance()->get_extensions_as_objects() as $extension_obj ) {
+			// bail if filter does not match.
+			if ( ! $this->filter_object( $extension_obj, $category ) ) {
+				continue;
 			}
+
+			// add to list.
+			$extensions[] = $extension_obj;
 		}
 
 		/**
@@ -108,6 +107,11 @@ class Extensions extends WP_List_Table {
 	 * @return bool
 	 */
 	private function filter_object( Extensions_Base $obj, string $category ): bool {
+		// bail if extension has no title.
+		if( empty( $obj->get_label() ) ) {
+			return false;
+		}
+
 		// bail if category is not given.
 		if ( empty( $category ) ) {
 			return true;
