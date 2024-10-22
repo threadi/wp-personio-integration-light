@@ -52,7 +52,7 @@ class Update {
 	 * @return void
 	 */
 	public function init(): void {
-		add_action( 'plugins_loaded', array( $this, 'run' ) );
+		$this->run();
 	}
 
 	/**
@@ -63,6 +63,9 @@ class Update {
 	public static function run_all_updates(): void {
 		$obj = self::get_instance();
 		$obj->version300();
+		$obj->version310();
+		$obj->version320();
+		$obj->version440();
 
 		// reset import-flag.
 		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
@@ -94,7 +97,7 @@ class Update {
 			$this->version300();
 			$this->version310();
 			$this->version320();
-			$this->version330();
+			$this->version440();
 
 			// save new plugin-version in DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
@@ -176,7 +179,7 @@ class Update {
 	 *
 	 * @return void
 	 */
-	private function version330(): void {
+	private function version440(): void {
 		// get actual value for setup and save it in new field, if not already set.
 		if ( ! get_option( 'esfw_completed' ) ) {
 			update_option( 'esfw_completed', get_option( 'wp_easy_setup_completed' ) );
