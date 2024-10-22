@@ -919,7 +919,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// bail if this is not our cpt.
-		if ( self::get_instance()->get_name() !== $post_type ) {
+		if ( $this->get_name() !== $post_type ) {
 			return;
 		}
 
@@ -974,7 +974,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// bail if this is not our cpt.
-		if ( self::get_instance()->get_name() !== $post_type ) {
+		if ( $this->get_name() !== $post_type ) {
 			return;
 		}
 
@@ -1189,7 +1189,7 @@ class PersonioPosition extends Post_Type {
 		$page = $screen->id;
 
 		// bail if this is not our own cpt.
-		if ( self::get_instance()->get_name() !== $page ) {
+		if ( $this->get_name() !== $page ) {
 			return;
 		}
 
@@ -1511,7 +1511,7 @@ class PersonioPosition extends Post_Type {
             1 = 1 ' . $search . '
         )
         OR (
-            ' . $wpdb->posts . ".post_type = '" . self::get_instance()->get_name() . "'
+            ' . $wpdb->posts . ".post_type = '" . $this->get_name() . "'
             AND EXISTS(
                 SELECT * FROM " . $wpdb->terms . '
                 INNER JOIN ' . $wpdb->term_taxonomy . '
@@ -1632,10 +1632,10 @@ class PersonioPosition extends Post_Type {
 			}
 			?>
 			</ul>
-			<p><a href="<?php echo esc_url( self::get_instance()->get_link() ); ?>">
+			<p><a href="<?php echo esc_url( $this->get_link() ); ?>">
 					<?php
 					/* translators: %1$d will be replaced by the count of positions */
-					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), $position_count );
+					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( $position_count ) );
 					?>
 				</a></p>
 			<?php
@@ -2134,7 +2134,7 @@ class PersonioPosition extends Post_Type {
 		/* translators: %1$s will be replaced by a URL. */
 		$content .= '<li>' . sprintf( __( 'Import your positions <a href="%1$s" class="personio-integration-import-hint">via click on the button</a>.', 'personio-integration-light' ), esc_url( Helper::get_import_url() ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Check the positions <a href="%1$s">in your frontend</a>.', 'personio-integration-light' ), esc_url( get_post_type_archive_link( self::get_instance()->get_name() ) ) ) . '</li>';
+		$content .= '<li>' . sprintf( __( 'Check the positions <a href="%1$s">in your frontend</a>.', 'personio-integration-light' ), esc_url( get_post_type_archive_link( $this->get_name() ) ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
 		$content .= '<li>' . sprintf( __( 'Change settings <a href="%1$s">for the template</a> to optimize the view.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
 		// add menu entry for applications (with hint to pro).
@@ -2154,7 +2154,7 @@ class PersonioPosition extends Post_Type {
 
 		// add help for the positions in general.
 		$help_list[] = array(
-			'id'      => self::get_instance()->get_name() . '-cpt',
+			'id'      => $this->get_name() . '-cpt',
 			'title'   => __( 'Personio Positions', 'personio-integration-light' ),
 			'content' => $content,
 		);
@@ -2220,7 +2220,7 @@ class PersonioPosition extends Post_Type {
 
 		// add help for the positions in general.
 		$help_list[] = array(
-			'id'      => self::get_instance()->get_name() . '-shortcodes',
+			'id'      => $this->get_name() . '-shortcodes',
 			'title'   => __( 'Shortcodes', 'personio-integration-light' ),
 			'content' => $content,
 		);

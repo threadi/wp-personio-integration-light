@@ -233,8 +233,8 @@ class Languages {
 		$wp_language = substr( get_bloginfo( 'language' ), 0, 2 );
 
 		// if language is not known, use fallback language.
-		if ( ! self::get_instance()->is_language_supported( $wp_language ) ) {
-			$wp_language = self::get_instance()->get_fallback_language_name();
+		if ( ! $this->is_language_supported( $wp_language ) ) {
+			$wp_language = $this->get_fallback_language_name();
 		}
 
 		/**
@@ -316,7 +316,8 @@ class Languages {
 			return '';
 		}
 
-		$languages = self::get_instance()->get_languages();
+		// get languages.
+		$languages = $this->get_languages();
 
 		// use fallback language if language could not be detected.
 		if ( empty( $languages[ $language_key ] ) ) {

@@ -493,56 +493,68 @@ class Admin {
 	 * @return void
 	 */
 	public function add_custom_toolbar( WP_Admin_Bar $admin_bar ): void {
-		if ( Helper::is_personio_url_set() && 0 === absint( get_option( 'personioIntegrationDisableListSlug' ) ) ) {
-			$admin_bar->add_menu(
-				array(
-					'id'     => PersonioPosition::get_instance()->get_name() . '-archive',
-					'parent' => 'site-name',
-					'title'  => __( 'Personio Positions', 'personio-integration-light' ),
-					'href'   => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ),
-				)
-			);
+		$true = Helper::is_personio_url_set();
+		/**
+		 * Filter whether to show the link to Archive page in admin bar.
+		 *
+		 * @since 4.0.0 Available since 4.0.0.
+		 * @param bool $true True if it should be visible.
+		 */
+		if ( ! apply_filters( 'personio_integration_light_show_admin_bar_menu', $true ) ) {
+			return;
+		}
 
-			// add links in admin-bar in backend.
-			if ( is_admin() ) {
-				// add link to view position in frontend if one is called in backend.
-				$post_id = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) );
-				if ( $post_id > 0 && PersonioPosition::get_instance()->get_name() === get_post_type( $post_id ) ) {
-					$position_obj = Positions::get_instance()->get_position( $post_id );
-					if ( $position_obj->is_visible() ) {
-						$admin_bar->add_menu(
-							array(
-								'id'     => 'personio-integration-detail',
-								'parent' => null,
-								'group'  => null,
-								'title'  => __( 'View Position in frontend', 'personio-integration-light' ),
-								'href'   => $position_obj->get_link(),
-							)
-						);
-					} else {
-						$admin_bar->add_menu(
-							array(
-								'id'     => 'personio-integration-detail',
-								'parent' => null,
-								'group'  => null,
-								'title'  => __( 'Not visible in frontend', 'personio-integration-light' ),
-							)
-						);
-					}
-				} else {
-					$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-					if ( ! empty( $post_type ) && PersonioPosition::get_instance()->get_name() === $post_type ) {
-						$admin_bar->add_menu(
-							array(
-								'id'     => 'personio-integration-list',
-								'parent' => null,
-								'group'  => null,
-								'title'  => __( 'View Positions in frontend', 'personio-integration-light' ),
-								'href'   => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ),
-							)
-						);
-					}
-				}
+		// add link in admin bar dropdown.
+		$admin_bar->add_menu(
+			array(
+				'id'     => PersonioPosition::get_instance()->get_name() . '-archive',
+				'parent' => 'site-name',
+				'title'  => __( 'Personio Positions', 'personio-integration-light' ),
+				'href'   => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ),
+			)
+		);
+
+		// add links in admin-bar in backend.
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		// add link to view position in frontend if one is called in backend.
+		$post_id = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) );
+		if ( $post_id > 0 && PersonioPosition::get_instance()->get_name() === get_post_type( $post_id ) ) {
+			$position_obj = Positions::get_instance()->get_position( $post_id );
+			if ( $position_obj->is_visible() ) {
+				$admin_bar->add_menu(
+					array(
+						'id'     => 'personio-integration-detail',
+						'parent' => null,
+						'group'  => null,
+						'title'  => __( 'View Position in frontend', 'personio-integration-light' ),
+						'href'   => $position_obj->get_link(),
+					)
+				);
+			} else {
+				$admin_bar->add_menu(
+					array(
+						'id'     => 'personio-integration-detail',
+						'parent' => null,
+						'group'  => null,
+						'title'  => __( 'Not visible in frontend', 'personio-integration-light' ),
+					)
+				);
+			}
+		} else {
+			$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			if ( ! empty( $post_type ) && PersonioPosition::get_instance()->get_name() === $post_type ) {
+				$admin_bar->add_menu(
+					array(
+						'id'     => 'personio-integration-list',
+						'parent' => null,
+						'group'  => null,
+						'title'  => __( 'View Positions in frontend', 'personio-integration-light' ),
+						'href'   => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ),
+					)
+				);
 			}
 		}
 	}

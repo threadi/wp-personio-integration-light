@@ -108,7 +108,7 @@ class Extensions extends WP_List_Table {
 	 */
 	private function filter_object( Extensions_Base $obj, string $category ): bool {
 		// bail if extension has no title.
-		if( empty( $obj->get_label() ) ) {
+		if ( empty( $obj->get_label() ) ) {
 			return false;
 		}
 

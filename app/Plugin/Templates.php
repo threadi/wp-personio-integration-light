@@ -493,9 +493,9 @@ class Templates {
 
 		// output for not linked title.
 		if ( false !== $attributes['donotlink'] ) {
-			include self::get_instance()->get_template( 'parts/part-title.php' );
+			include $this->get_template( 'parts/part-title.php' );
 		} else {
-			include self::get_instance()->get_template( 'parts/part-title-linked.php' );
+			include $this->get_template( 'parts/part-title-linked.php' );
 		}
 	}
 
@@ -807,7 +807,7 @@ class Templates {
 			$template_file = 'parts/jobdescription/' . $template . '.php';
 		}
 
-		if( ! isset( $attributes['classes' ]) ) {
+		if ( ! isset( $attributes['classes'] ) ) {
 			$attributes['classes'] = '';
 		}
 

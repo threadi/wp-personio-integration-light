@@ -101,18 +101,18 @@ class Extensions {
 		// loop through them.
 		foreach ( $this->get_extensions() as $extension_name ) {
 			// bail if name is not a string.
-			if( ! is_string( $extension_name ) && $extension_name instanceof Extensions_Base ) {
+			if ( ! is_string( $extension_name ) && $extension_name instanceof Extensions_Base ) {
 				$list[] = $extension_name;
 				continue;
 			}
 
 			// bail if method does not exist.
-			if( ! method_exists( $extension_name, 'get_instance' ) ) {
+			if ( ! method_exists( $extension_name, 'get_instance' ) ) {
 				continue;
 			}
 
 			// bail if method is not callable.
-			if( ! is_callable( $extension_name . '::get_instance' ) ) {
+			if ( ! is_callable( $extension_name . '::get_instance' ) ) {
 				continue;
 			}
 
@@ -369,7 +369,7 @@ class Extensions {
 		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Call up the <a href="%1$s">list of extensions</a>.', 'personio-integration-light' ), esc_url( self::get_instance()->get_link() ) ) . '</li>';
+		$content .= '<li>' . sprintf( __( 'Call up the <a href="%1$s">list of extensions</a>.', 'personio-integration-light' ), esc_url( $this->get_link() ) ) . '</li>';
 		$content .= '<li>' . __( 'Activate the extension you require by clicking on the button provided.', 'personio-integration-light' ) . '</li>';
 		$content .= '<li>' . __( 'Check whether the extension still offers settings. Follow the instructions that are displayed.', 'personio-integration-light' ) . '</li>';
 		$false    = false;

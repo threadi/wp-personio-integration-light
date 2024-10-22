@@ -572,3 +572,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed disable all extensions call: it disabled only the extensions which could be enabled by users
 * Fixed support for plugin "PDF Generator for WP"
 * Fixed wrong loading of page builder object list during uninstallation
+* Fixed visibility of archive links in backend

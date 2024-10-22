@@ -178,7 +178,7 @@ class Uninstaller {
 			'personioIntegrationLightInstallDate',
 			'personio_integration_settings',
 			'personio_integration_schedules',
-			'personioIntegrationPositionCount'
+			'personioIntegrationPositionCount',
 		);
 	}
 }
