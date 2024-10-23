@@ -184,5 +184,24 @@ class Update {
 		if ( ! get_option( 'esfw_completed' ) ) {
 			update_option( 'esfw_completed', get_option( 'wp_easy_setup_completed' ) );
 		}
+
+		// clean the setup completed from multiple entries.
+		$setup_completed = get_option( 'esfw_completed' );
+		if ( is_array( $setup_completed ) ) {
+			$setup_completed_new = array();
+			foreach ( $setup_completed as $config_name ) {
+				if ( in_array( $config_name, $setup_completed_new, true ) ) {
+					continue;
+				}
+				$setup_completed_new[] = $config_name;
+			}
+			update_option( 'esfw_completed', $setup_completed_new );
+		}
+
+		// delete old setup options (except the main config as other plugins might use it).
+		delete_option( 'wp_easy_setup_max_steps' );
+		delete_option( 'wp_easy_setup_step' );
+		delete_option( 'wp_easy_setup_step_label' );
+		delete_option( 'wp_easy_setup_running' );
 	}
 }

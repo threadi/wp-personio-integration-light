@@ -60,6 +60,7 @@ class Extensions {
 		add_action( 'esfw_process_init', array( $this, 'initialize_extensions_in_setup' ), 30 );
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 40 );
 
+		// bail if setup is not completed.
 		if ( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
 		}
@@ -68,8 +69,8 @@ class Extensions {
 		add_action( 'wp_ajax_personio_extension_state', array( $this, 'change_extension_state' ) );
 
 		// add admin-actions.
-		add_action( 'admin_action_personio_integration_extension_disable_all', array( $this, 'disable_all' ) );
-		add_action( 'admin_action_personio_integration_extension_enable_all', array( $this, 'enable_all' ) );
+		add_action( 'admin_action_personio_integration_extension_disable_all', array( $this, 'disable_all_by_request' ) );
+		add_action( 'admin_action_personio_integration_extension_enable_all', array( $this, 'enable_all_by_request' ) );
 
 		// misc.
 		add_action( 'admin_menu', array( $this, 'add_extension_menu' ) );
@@ -141,9 +142,9 @@ class Extensions {
 	}
 
 	/**
-	 * Set list of extension we use for our position object.
+	 * Set list of extensions.
 	 *
-	 * @param array $extension_list List of extensions for the Position-object.
+	 * @param array $extension_list List of extensions.
 	 *
 	 * @return array
 	 */
@@ -296,12 +297,12 @@ class Extensions {
 	}
 
 	/**
-	 * Disable all extensions via request.
+	 * Disable all extensions which could be enabled by user via request.
 	 *
 	 * @return void
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
-	public function disable_all(): void {
+	public function disable_all_by_request(): void {
 		check_admin_referer( 'personio-integration-extension-disable-all', 'nonce' );
 
 		// loop through all extensions and enable them.
@@ -321,14 +322,27 @@ class Extensions {
 	}
 
 	/**
-	 * Disable all extensions via request.
+	 * Enable all extensions which could be enabled by user via request.
 	 *
 	 * @return void
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
-	public function enable_all(): void {
+	public function enable_all_by_request(): void {
 		check_admin_referer( 'personio-integration-extension-enable-all', 'nonce' );
 
+		$this->enable_all();
+
+		// redirect user.
+		wp_safe_redirect( wp_get_referer() );
+		exit;
+	}
+
+	/**
+	 * Enable all extensions which could be enabled by user.
+	 *
+	 * @return void
+	 */
+	public function enable_all(): void {
 		// loop through all extensions and enable them.
 		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
 			// bail if this extension could not be enabled by user.
@@ -339,10 +353,6 @@ class Extensions {
 			// enable this extension.
 			$extension_obj->set_enabled();
 		}
-
-		// redirect user.
-		wp_safe_redirect( wp_get_referer() );
-		exit;
 	}
 
 	/**
@@ -350,7 +360,7 @@ class Extensions {
 	 *
 	 * @return void
 	 */
-	public function uninstall(): void {
+	public function uninstall_all(): void {
 		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
 			$extension_obj->uninstall();
 		}

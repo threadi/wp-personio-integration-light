@@ -562,7 +562,9 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Updated dependencies
 * Prevent composer plattform check
 * Replaced redirect targets for actual referer with WP-own function
+* Remove unnecessary check for Pro-plugin
 * Optimized securing of settings in classic widgets
+* Optimized uninstallation
 * Fixed uninstaller routine
 * Fixed missing output for classic widget for single position
 * Fixed email format for import error

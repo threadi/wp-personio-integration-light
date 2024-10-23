@@ -432,23 +432,17 @@ class Setup {
 			return;
 		}
 
-		// get actual list of completed setups.
-		$actual_completed = get_option( 'esfw_completed', array() );
-
-		// add this setup to the list.
-		$actual_completed[] = $this->get_setup_name();
-
-		// add the actual setup to the list of completed setups.
-		update_option( 'esfw_completed', $actual_completed );
-
-		if ( Helper::is_admin_api_request() ) {
-			// Return JSON with forward-URL.
-			wp_send_json(
-				array(
-					'forward' => Intro::get_instance()->get_start_url(),
-				)
-			);
+		// bail if this is not a request from API.
+		if ( ! Helper::is_admin_api_request() ) {
+			return;
 		}
+
+		// return JSON with forward-URL.
+		wp_send_json(
+			array(
+				'forward' => Intro::get_instance()->get_start_url(),
+			)
+		);
 	}
 
 	/**
@@ -488,5 +482,14 @@ class Setup {
 	 */
 	public function get_max_step(): int {
 		return absint( get_option( 'esfw_max_steps' ) );
+	}
+
+	/**
+	 * Uninstall the setup.
+	 *
+	 * @return void
+	 */
+	public function uninstall(): void {
+		\easySetupForWordPress\Setup::get_instance()->uninstall( $this->get_setup_name() );
 	}
 }

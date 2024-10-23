@@ -2,7 +2,7 @@
 /**
  * File to handle table with extensions for our cpt.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 namespace PersonioIntegrationLight\PersonioIntegration\Tables;

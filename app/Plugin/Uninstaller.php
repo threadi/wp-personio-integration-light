@@ -100,7 +100,7 @@ class Uninstaller {
 		Schedules::get_instance()->delete_all();
 
 		// remove widgets.
-		Widgets::get_instance()->uninstall();
+		Widgets::get_instance()->uninstall_all();
 
 		// remove transients.
 		foreach ( Transients::get_instance()->get_transients() as $transient_obj ) {
@@ -139,7 +139,7 @@ class Uninstaller {
 			}
 
 			// remove setup-options.
-			\easySetupForWordPress\Setup::get_instance()->uninstall();
+			Setup::get_instance()->uninstall();
 
 			// remove user meta for each cpt we provide.
 			foreach ( Post_Types::get_instance()->get_post_types() as $post_type ) {
@@ -150,7 +150,7 @@ class Uninstaller {
 			}
 
 			// uninstall extensions.
-			Extensions::get_instance()->uninstall();
+			Extensions::get_instance()->uninstall_all();
 		}
 
 		// remove roles from our plugin.
@@ -179,6 +179,7 @@ class Uninstaller {
 			'personio_integration_settings',
 			'personio_integration_schedules',
 			'personioIntegrationPositionCount',
+			'personio_integration_intro',
 		);
 	}
 }
