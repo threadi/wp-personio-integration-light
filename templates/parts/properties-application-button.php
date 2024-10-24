@@ -7,7 +7,7 @@
  * @param string $back_to_list_url Define the text for "back to list" link. If empty link will not be displayed.
  * @param string $target Defines the value for the target-attribute.
  *
- * @version: 4.0.0
+ * @version 4.0.0
  * @package personio-integration-light
  */
 

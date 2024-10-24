@@ -63,6 +63,14 @@ class Filter_Select extends Blocks_Basis {
 			'type'    => 'boolean',
 			'default' => false,
 		),
+		'anchor' => array(
+			'type' => 'string',
+			'default' => ''
+		),
+		'link_to_anchor' => array(
+			'type' => 'string',
+			'default' => ''
+		)
 	);
 
 	/**
@@ -108,6 +116,8 @@ class Filter_Select extends Blocks_Basis {
 			'showfilter' => true,
 			'styles'     => implode( PHP_EOL, $styles_array ),
 			'classes'    => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
+			'anchor' => ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : '',
+			'link_to_anchor' => ! empty( $attributes['link_to_anchor'] ) ? $attributes['link_to_anchor'] : ''
 		);
 
 		/**

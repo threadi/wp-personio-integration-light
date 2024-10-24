@@ -76,11 +76,12 @@ class Templates {
 		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt' ), 10, 2 );
 		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 );
 		add_action( 'personio_integration_get_formular', array( $this, 'get_application_link_template' ), 10, 2 );
-		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
+		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 3 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
 		add_filter( 'personio_integration_get_list_attributes', array( $this, 'filter_attributes_for_templates' ), 10, 2 );
 		add_filter( 'personio_integration_light_position_get_classes', array( $this, 'get_classes_of_position' ) );
 		add_filter( 'personio_integration_light_term_get_classes', array( $this, 'get_classes_of_term' ) );
+		add_filter( 'personio_integration_light_filter_url', array( $this, 'format_filter_url' ), 10, 2 );
 
 		// expand kses-filter.
 		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
@@ -726,12 +727,19 @@ class Templates {
 	 *
 	 * @param string $filter Name of the filter (taxonomy-slug).
 	 * @param array  $attributes List of attributes for the filter.
+	 * @param string $link_to_anchor The anchor to use for targets in template.
+	 *
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function get_filter_template( string $filter, array $attributes ): void {
+	public function get_filter_template( string $filter, array $attributes, string $link_to_anchor ): void {
 		$taxonomy_to_use = '';
 		$term_ids        = array();
+
+		// check anchor.
+		if ( empty( $link_to_anchor ) ) {
+			$link_to_anchor = '';
+		}
 
 		// get the terms we want to use in filter-output.
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
@@ -957,5 +965,23 @@ class Templates {
 
 		// return resulting list of classes as string.
 		return implode( ' ', $css_classes );
+	}
+
+	/**
+	 * Format the filter URL.
+	 *
+	 * @param string $url The URL.
+	 * @param string $anchor The anchor.
+	 *
+	 * @return string
+	 */
+	public function format_filter_url( string $url, string $anchor ): string {
+		// bail if anchor is empty.
+		if ( empty( $anchor ) ) {
+			return $url;
+		}
+
+		// return URL with anchor.
+		return $url . '#' . $anchor;
 	}
 }

@@ -433,6 +433,8 @@ class PersonioPosition extends Post_Type {
 			'groupby'                 => '',
 			'styles'                  => '',
 			'classes'                 => '',
+			'anchor'                  => '',
+			'link_to_anchor'          => '',
 		);
 
 		// define the settings for each attribute (array or string).
@@ -457,6 +459,8 @@ class PersonioPosition extends Post_Type {
 			'groupby'                 => 'string',
 			'styles'                  => 'string',
 			'classes'                 => 'string',
+			'anchor'                  => 'string',
+			'link_to_anchor'          => 'string',
 		);
 
 		// add taxonomies which are available as filter.
@@ -531,16 +535,27 @@ class PersonioPosition extends Post_Type {
 		// generate styling.
 		Helper::add_inline_style( $personio_attributes['styles'] );
 
+		// for backwards compatibility.
+		$form_id = '';
+
+		// set anchor.
+		$anchor = 'pif' . md5( wp_json_encode( $personio_attributes['filter'] ) );
+		if ( ! empty( $personio_attributes['anchor'] ) ) {
+			$anchor = sanitize_html_class( $personio_attributes['anchor'] );
+		}
+
+		// set link to anchor.
+		$link_to_anchor = '';
+		if ( ! empty( $personio_attributes['link_to_anchor'] ) ) {
+			$link_to_anchor = sanitize_html_class( $personio_attributes['link_to_anchor'] );
+		}
+
 		// set the group-title.
 		$group_title = '';
 
 		// get pagination.
-		$url = '';
-		if ( ! empty( $form_id ) ) {
-			$url .= '#' . $form_id;
-		}
 		$query      = array(
-			'base'    => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ) . $url,
+			'base'    => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
 			'format'  => '?paged=%#%',
 			'current' => max( 1, get_query_var( 'paged' ) ),
 			'total'   => $positions_obj->get_results()->max_num_pages,

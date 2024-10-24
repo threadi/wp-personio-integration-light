@@ -9,6 +9,7 @@
 	"description": "Provides a Gutenberg block to show filter as link-based dropdown-list for Personio Positions.",
 	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {
+        "anchor": true,
 		"color": {
 			"gradients": true,
 			"link": true
@@ -52,7 +53,15 @@
 		"space_between": {
 			"type": "integer",
 			"default": 0
-		}
+		},
+        "anchor": {
+            "type": "string",
+            "default": ""
+        },
+        "link_to_anchor": {
+            "type": "string",
+            "default": ""
+        }
 	},
 	"example": {
 		"attributes": {

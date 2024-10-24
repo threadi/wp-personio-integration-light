@@ -545,6 +545,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 
 = 4.0.0 =
 * Added help system which uses the integrated help context from WordPress
+* Added possibility to link to individual anchors in filter
 * Added new libraries for setup and dialog
 * Added filter for errors in log
 * Added some new hooks
