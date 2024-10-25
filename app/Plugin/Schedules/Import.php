@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\Plugin\Schedules;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\Plugin\Schedules_Base;
 use PersonioIntegrationLight\Plugin\Settings;
@@ -68,8 +69,25 @@ class Import extends Schedules_Base {
 	 * @return void
 	 */
 	public function run(): void {
-		if ( $this->is_enabled() ) {
-			Imports::get_instance()->run();
+		// if debug mode is enabled log this event.
+		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+			$log = new Log();
+			$log->add_log( __( 'Automatic import of positions starting.', 'personio-integration-light' ), 'success', 'application' );
+		}
+
+		// bail if import is not enabled.
+		if ( ! $this->is_enabled() ) {
+			$log = new Log();
+			$log->add_log( __( 'Automatic import of positions is not enabled.', 'personio-integration-light' ), 'success', 'application' );
+		}
+
+		// run the import.
+		Imports::get_instance()->run();
+
+		// if debug mode is enabled log this event.
+		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+			$log = new Log();
+			$log->add_log( __( 'Automatic import of positions ended.', 'personio-integration-light' ), 'success', 'application' );
 		}
 	}
 }

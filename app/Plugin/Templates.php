@@ -79,6 +79,8 @@ class Templates {
 		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 3 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
 		add_filter( 'personio_integration_get_list_attributes', array( $this, 'filter_attributes_for_templates' ), 10, 2 );
+		add_filter( 'personio_integration_get_list_attributes', array( $this, 'set_anchor' ) );
+		add_filter( 'personio_integration_get_list_attributes', array( $this, 'set_link_to_anchor' ), 10, 2 );
 		add_filter( 'personio_integration_light_position_get_classes', array( $this, 'get_classes_of_position' ) );
 		add_filter( 'personio_integration_light_term_get_classes', array( $this, 'get_classes_of_term' ) );
 		add_filter( 'personio_integration_light_filter_url', array( $this, 'format_filter_url' ), 10, 2 );
@@ -725,21 +727,14 @@ class Templates {
 	/**
 	 * Show a filter in frontend restricted to positions which are visible in list.
 	 *
-	 * @param string $filter Name of the filter (taxonomy-slug).
-	 * @param array  $attributes List of attributes for the filter.
-	 * @param string $link_to_anchor The anchor to use for targets in template.
+	 * @param string      $filter         Name of the filter (taxonomy-slug).
+	 * @param array       $attributes     List of attributes for the filter.
 	 *
 	 * @return void
-	 * @noinspection PhpUnused
 	 */
-	public function get_filter_template( string $filter, array $attributes, string $link_to_anchor ): void {
+	public function get_filter_template( string $filter, array $attributes ): void {
 		$taxonomy_to_use = '';
 		$term_ids        = array();
-
-		// check anchor.
-		if ( empty( $link_to_anchor ) ) {
-			$link_to_anchor = '';
-		}
 
 		// get the terms we want to use in filter-output.
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
@@ -970,12 +965,17 @@ class Templates {
 	/**
 	 * Format the filter URL.
 	 *
-	 * @param string $url The URL.
-	 * @param string $anchor The anchor.
+	 * @param string      $url    The URL.
+	 * @param string|null $anchor The anchor.
 	 *
 	 * @return string
 	 */
-	public function format_filter_url( string $url, string $anchor ): string {
+	public function format_filter_url( string $url, string|null $anchor ): string {
+		// bail if anchor is null.
+		if( is_null( $anchor ) ) {
+			return $url;
+		}
+
 		// bail if anchor is empty.
 		if ( empty( $anchor ) ) {
 			return $url;
@@ -983,5 +983,57 @@ class Templates {
 
 		// return URL with anchor.
 		return $url . '#' . $anchor;
+	}
+
+	/**
+	 * Set anchor value for output.
+	 *
+	 * @param array $attributes List of pre-filtered attributes.
+	 *
+	 * @return array
+	 */
+	public function set_anchor( array $attributes ): array {
+		// bail if anchor is already set.
+		if( ! empty( $attributes['anchor'] ) ) {
+			return $attributes;
+		}
+
+		// bail if no filter is set.
+		if( empty( $attributes['filter'] ) ) {
+			return $attributes;
+		}
+
+		// add the default value.
+		$attributes['anchor'] = 'pif' . md5( wp_json_encode( $attributes['filter'] ) );
+
+		// return resulting attributes.
+		return $attributes;
+	}
+
+	/**
+	 * Set link_to_anchor value for output.
+	 *
+	 * @param array $attributes List of pre-filtered attributes.
+	 * @param array $attributes_set_by_pagebuilder List if attributes set by page builder.
+	 *
+	 * @return array
+	 */
+	public function set_link_to_anchor( array $attributes, array $attributes_set_by_pagebuilder ): array {
+		// bail if link_to_anchor is already set.
+		if( ! empty( $attributes['link_to_anchor'] ) ) {
+			return $attributes;
+		}
+
+		// use link_to_anchor set by pagebuilder.
+		if( ! empty( $attributes_set_by_pagebuilder['link_to_anchor'] ) ) {
+			$attributes['link_to_anchor'] = $attributes_set_by_pagebuilder['link_to_anchor'];
+			return $attributes;
+		}
+
+		// add the value from .
+		$attributes['link_to_anchor'] = '';
+
+		// return resulting attributes.
+		return $attributes;
 	}
 }

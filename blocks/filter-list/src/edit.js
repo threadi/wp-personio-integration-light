@@ -116,7 +116,7 @@ export default function Edit( object ) {
       </InspectorControls>
       <InspectorAdvancedControls key="inspector">
         <InputControl
-          label={__('Link to this anchor', 'personio-integration-light')}
+          label={__('Use this anchor for any links', 'personio-integration-light')}
           value={object.attributes.link_to_anchor}
           onChange={value => onChangeLinkToAnchor( value, object )}
         />

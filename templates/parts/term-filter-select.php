@@ -6,7 +6,7 @@
  * @param string $filtername Public name of used filter.
  * @param string $value      Actual selected value.
  * @param array  $terms      List of terms to show.
- * @param string $link_to_anchor     The anchor.
+ * @param array $attributes The attributes.
  *
  * @package personio-integration-light
  * @version 4.0.0

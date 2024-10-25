@@ -6,7 +6,7 @@
  * @param string $filtername Public name of used filter.
  * @param string $value Actual selected value.
  * @param array $terms List of terms to show.
- * @param string $link_to_anchor The anchor to link to.
+ * @param array $attributes The attributes.
  *
  * @package personio-integration-light
  * @version 4.0.0
@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 			$term_count = count( $terms );
 			for ( $t = 0;$t < $term_count;$t++ ) {
 				if ( ! empty( $terms[ $t ] ) ) {
-					$url = apply_filters( 'personio_integration_light_filter_url', add_query_arg( 'personiofilter[' . $filter . ']', $terms[ $t ]->term_id ), $link_to_anchor );
+					$url = apply_filters( 'personio_integration_light_filter_url', add_query_arg( 'personiofilter[' . $filter . ']', $terms[ $t ]->term_id ), $attributes['link_to_anchor'] );
 					?>
 					<li><a href="<?php echo esc_url( $url ); ?>" class="
 											<?php

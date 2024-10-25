@@ -538,18 +538,6 @@ class PersonioPosition extends Post_Type {
 		// for backwards compatibility.
 		$form_id = '';
 
-		// set anchor.
-		$anchor = 'pif' . md5( wp_json_encode( $personio_attributes['filter'] ) );
-		if ( ! empty( $personio_attributes['anchor'] ) ) {
-			$anchor = sanitize_html_class( $personio_attributes['anchor'] );
-		}
-
-		// set link to anchor.
-		$link_to_anchor = '';
-		if ( ! empty( $personio_attributes['link_to_anchor'] ) ) {
-			$link_to_anchor = sanitize_html_class( $personio_attributes['link_to_anchor'] );
-		}
-
 		// set the group-title.
 		$group_title = '';
 
