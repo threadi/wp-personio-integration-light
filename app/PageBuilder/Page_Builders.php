@@ -18,6 +18,13 @@ use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
 class Page_Builders extends Extensions_Base {
 
 	/**
+	 * The internal name of this extension.
+	 *
+	 * @var string
+	 */
+	protected string $name = 'Page Builders';
+
+	/**
 	 * Initialize this object.
 	 *
 	 * @return void

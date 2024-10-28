@@ -87,6 +87,14 @@ class Extensions {
 	public function initialize_extensions(): void {
 		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
 			$extension_obj->init();
+
+			/**
+			 * Run additional action after extension as been initialized.
+			 *
+			 * @since 4.0.0 Available since 4.0.0.
+			 * @param Extensions_Base $extension_obj The extension object.
+			 */
+			do_action( 'personio_integration_light_extension_initialized', $extension_obj );
 		}
 	}
 
