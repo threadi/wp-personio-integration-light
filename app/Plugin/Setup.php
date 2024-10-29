@@ -437,6 +437,13 @@ class Setup {
 			return;
 		}
 
+		/**
+		 * Run additional tasks if setup is marked as completed.
+		 *
+		 * @since 4.0.0 Available since 4.0.0.
+		 */
+		do_action( 'personio_integration_light_setup_completed' );
+
 		// return JSON with forward-URL.
 		wp_send_json(
 			array(
