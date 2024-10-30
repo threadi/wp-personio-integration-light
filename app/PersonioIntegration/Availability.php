@@ -99,7 +99,6 @@ class Availability extends Extensions_Base {
 				'type'    => 'integer',
 				'default' => 1,
 			),
-			'source'              => WP_PERSONIO_INTEGRATION_PLUGIN,
 			'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ),
 		);
 

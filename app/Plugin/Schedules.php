@@ -102,7 +102,6 @@ class Schedules {
 						'type'    => 'integer',
 						'default' => 0,
 					),
-					'source'              => WP_PERSONIO_INTEGRATION_PLUGIN,
 				),
 			)
 		);
