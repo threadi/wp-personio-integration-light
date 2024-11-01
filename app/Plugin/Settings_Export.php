@@ -131,7 +131,7 @@ class Settings_Export {
 
 		// output button.
 		?>
-		<a href="" class="button button-primary wp-easy-dialog" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog ) ); ?>"><?php echo esc_html__( 'Export settings', 'personion-integration-light' ); ?></a>
+		<a href="" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog ) ); ?>"><?php echo esc_html__( 'Export settings', 'personion-integration-light' ); ?></a>
 		<?php
 	}
 

@@ -57,12 +57,20 @@ class Filter_List extends Blocks_Basis {
 		),
 		'hideFilterTitle' => array(
 			'type'    => 'boolean',
-			'default' => false,
+			'default' => true,
 		),
 		'space_between'   => array(
 			'type'    => 'integer',
 			'default' => 0,
 		),
+		'anchor' => array(
+            'type' => 'string',
+			'default' => ''
+        ),
+		'link_to_anchor' => array(
+			'type' => 'string',
+			'default' => ''
+		)
 	);
 
 	/**

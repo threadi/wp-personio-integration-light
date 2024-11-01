@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
 
@@ -56,8 +57,10 @@ class Extensions {
 	public function init(): void {
 		// use our own hooks.
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_extensions' ) );
-		add_action( 'wp_easy_setup_process_init', array( $this, 'initialize_extensions_in_setup' ), 30 );
+		add_action( 'esfw_process_init', array( $this, 'initialize_extensions_in_setup' ), 30 );
+		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 40 );
 
+		// bail if setup is not completed.
 		if ( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
 		}
@@ -66,13 +69,13 @@ class Extensions {
 		add_action( 'wp_ajax_personio_extension_state', array( $this, 'change_extension_state' ) );
 
 		// add admin-actions.
-		add_action( 'admin_action_personio_integration_extension_disable_all', array( $this, 'disable_all' ) );
-		add_action( 'admin_action_personio_integration_extension_enable_all', array( $this, 'enable_all' ) );
+		add_action( 'admin_action_personio_integration_extension_disable_all', array( $this, 'disable_all_by_request' ) );
+		add_action( 'admin_action_personio_integration_extension_enable_all', array( $this, 'enable_all_by_request' ) );
 
 		// misc.
 		add_action( 'admin_menu', array( $this, 'add_extension_menu' ) );
 
-		// initialize our extensions for the positions-cpt.
+		// initialize our extensions.
 		$this->initialize_extensions();
 	}
 
@@ -82,12 +85,52 @@ class Extensions {
 	 * @return void
 	 */
 	public function initialize_extensions(): void {
-		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				$obj->init();
-			}
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			$extension_obj->init();
+
+			/**
+			 * Run additional action after extension as been initialized.
+			 *
+			 * @since 4.0.0 Available since 4.0.0.
+			 * @param Extensions_Base $extension_obj The extension object.
+			 */
+			do_action( 'personio_integration_light_extension_initialized', $extension_obj );
 		}
+	}
+
+	/**
+	 * Get extensions as list of Extension_Base-objects.
+	 *
+	 * @return array
+	 */
+	public function get_extensions_as_objects(): array {
+		// the list of objects.
+		$list = array();
+
+		// loop through them.
+		foreach ( $this->get_extensions() as $extension_name ) {
+			// bail if name is not a string.
+			if ( ! is_string( $extension_name ) && $extension_name instanceof Extensions_Base ) {
+				$list[] = $extension_name;
+				continue;
+			}
+
+			// bail if method does not exist.
+			if ( ! method_exists( $extension_name, 'get_instance' ) ) {
+				continue;
+			}
+
+			// bail if method is not callable.
+			if ( ! is_callable( $extension_name . '::get_instance' ) ) {
+				continue;
+			}
+
+			// get the object.
+			$list[] = call_user_func( $extension_name . '::get_instance' );
+		}
+
+		// return resulting list.
+		return $list;
 	}
 
 	/**
@@ -107,9 +150,9 @@ class Extensions {
 	}
 
 	/**
-	 * Set list of extension we use for our position object.
+	 * Set list of extensions.
 	 *
-	 * @param array $extension_list List of extensions for the Position-object.
+	 * @param array $extension_list List of extensions.
 	 *
 	 * @return array
 	 */
@@ -133,7 +176,7 @@ class Extensions {
 	public function get_extensions(): array {
 		$list = array();
 		/**
-		 * Filter the possible extensions for the Personio-object.
+		 * Filter the possible extensions.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
@@ -184,13 +227,14 @@ class Extensions {
 	 * @return Extensions_Base|false
 	 */
 	private function get_extension_by_name( string $name ): Extensions_Base|false {
-		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				if ( $obj instanceof Extensions_Base && $obj->get_name() === $name ) {
-					return $obj;
-				}
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			// bail if name does not match.
+			if ( $extension_obj->get_name() !== $name ) {
+				continue;
 			}
+
+			// return this object.
+			return $extension_obj;
 		}
 		return false;
 	}
@@ -261,23 +305,23 @@ class Extensions {
 	}
 
 	/**
-	 * Disable all extensions via request.
+	 * Disable all extensions which could be enabled by user via request.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
-	public function disable_all(): void {
+	public function disable_all_by_request(): void {
 		check_admin_referer( 'personio-integration-extension-disable-all', 'nonce' );
 
 		// loop through all extensions and enable them.
-		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				if ( $obj instanceof Extensions_Base ) {
-					$obj->set_disabled();
-				}
-			} elseif ( $extension_name instanceof Extensions_Base ) {
-				$extension_name->set_disabled();
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			// bail if this extension could not be disabled by user.
+			if ( ! $extension_obj->can_be_enabled_by_user() ) {
+				continue;
 			}
+
+			// disable this extension.
+			$extension_obj->set_disabled();
 		}
 
 		// redirect user.
@@ -286,28 +330,37 @@ class Extensions {
 	}
 
 	/**
-	 * Disable all extensions via request.
+	 * Enable all extensions which could be enabled by user via request.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
-	public function enable_all(): void {
+	public function enable_all_by_request(): void {
 		check_admin_referer( 'personio-integration-extension-enable-all', 'nonce' );
 
-		// loop through all extensions and enable them.
-		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				if ( $obj instanceof Extensions_Base ) {
-					$obj->set_enabled();
-				}
-			} elseif ( $extension_name instanceof Extensions_Base ) {
-				$extension_name->set_enabled();
-			}
-		}
+		$this->enable_all();
 
 		// redirect user.
 		wp_safe_redirect( wp_get_referer() );
 		exit;
+	}
+
+	/**
+	 * Enable all extensions which could be enabled by user.
+	 *
+	 * @return void
+	 */
+	public function enable_all(): void {
+		// loop through all extensions and enable them.
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			// bail if this extension could not be enabled by user.
+			if ( ! $extension_obj->can_be_enabled_by_user() ) {
+				continue;
+			}
+
+			// enable this extension.
+			$extension_obj->set_enabled();
+		}
 	}
 
 	/**
@@ -315,12 +368,51 @@ class Extensions {
 	 *
 	 * @return void
 	 */
-	public function uninstall(): void {
-		foreach ( $this->get_extensions() as $extension_name ) {
-			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				$obj->uninstall();
-			}
+	public function uninstall_all(): void {
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			$extension_obj->uninstall();
 		}
+	}
+
+	/**
+	 * Add help for extensions.
+	 *
+	 * @param array $help_list List of help tabs.
+	 *
+	 * @return array
+	 */
+	public function add_help( array $help_list ): array {
+		// collect the content for the help.
+		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Extensions', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide you with a variety of extensions for the plugin. These extend the possibilities you have with the plugin for your vacancies.', 'personio-integration-light' ) . '</p>';
+		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<ol>';
+		/* translators: %1$s will be replaced by a URL. */
+		$content .= '<li>' . sprintf( __( 'Call up the <a href="%1$s">list of extensions</a>.', 'personio-integration-light' ), esc_url( $this->get_link() ) ) . '</li>';
+		$content .= '<li>' . __( 'Activate the extension you require by clicking on the button provided.', 'personio-integration-light' ) . '</li>';
+		$content .= '<li>' . __( 'Check whether the extension still offers settings. Follow the instructions that are displayed.', 'personio-integration-light' ) . '</li>';
+		$false    = false;
+		/**
+		 * Hide pro hint in help.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param array $false Set true to hide the buttons.
+		 *                     @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			/* translators: %1$s will be replaced by a URL. */
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Positions Pro (opens new window)</a> to get much more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+		}
+		$content .= '</ol>';
+
+		// add help for the positions in general.
+		$help_list[] = array(
+			'id'      => PersonioPosition::get_instance()->get_name() . '-extensions',
+			'title'   => __( 'Extensions', 'personio-integration-light' ),
+			'content' => $content,
+		);
+
+		// return resulting list.
+		return $help_list;
 	}
 }

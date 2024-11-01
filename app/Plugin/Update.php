@@ -52,7 +52,7 @@ class Update {
 	 * @return void
 	 */
 	public function init(): void {
-		add_action( 'plugins_loaded', array( $this, 'run' ) );
+		$this->run();
 	}
 
 	/**
@@ -63,6 +63,9 @@ class Update {
 	public static function run_all_updates(): void {
 		$obj = self::get_instance();
 		$obj->version300();
+		$obj->version310();
+		$obj->version320();
+		$obj->version440();
 
 		// reset import-flag.
 		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
@@ -90,10 +93,13 @@ class Update {
 			)
 			&& version_compare( $installed_plugin_version, $db_plugin_version, '>' )
 		) {
-			define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
+			if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING ' ) ) {
+				define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
+			}
 			$this->version300();
 			$this->version310();
 			$this->version320();
+			$this->version440();
 
 			// save new plugin-version in DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
@@ -164,7 +170,40 @@ class Update {
 	 * @return void
 	 */
 	private function version320(): void {
-		// enable the new help functions.
-		update_option( 'personioIntegrationShowHelp', 1 );
+		// enable the new help functions, if not already set.
+		if ( ! get_option( 'personioIntegrationShowHelp' ) ) {
+			update_option( 'personioIntegrationShowHelp', 1 );
+		}
+	}
+
+	/**
+	 * To run on update to version 4.0.0 or newer.
+	 *
+	 * @return void
+	 */
+	private function version440(): void {
+		// get actual value for setup and save it in new field, if not already set.
+		if ( ! get_option( 'esfw_completed' ) ) {
+			update_option( 'esfw_completed', get_option( 'wp_easy_setup_completed' ) );
+		}
+
+		// clean the setup completed from multiple entries.
+		$setup_completed = get_option( 'esfw_completed' );
+		if ( is_array( $setup_completed ) ) {
+			$setup_completed_new = array();
+			foreach ( $setup_completed as $config_name ) {
+				if ( in_array( $config_name, $setup_completed_new, true ) ) {
+					continue;
+				}
+				$setup_completed_new[] = $config_name;
+			}
+			update_option( 'esfw_completed', $setup_completed_new );
+		}
+
+		// delete old setup options (except the main config as other plugins might use it).
+		delete_option( 'wp_easy_setup_max_steps' );
+		delete_option( 'wp_easy_setup_step' );
+		delete_option( 'wp_easy_setup_step_label' );
+		delete_option( 'wp_easy_setup_running' );
 	}
 }

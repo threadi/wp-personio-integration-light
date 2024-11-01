@@ -108,7 +108,7 @@ class Installer {
 		Update::run_all_updates();
 
 		// enable setup.
-		\wpEasySetup\Setup::get_instance()->activation();
+		\easySetupForWordPress\Setup::get_instance()->activation();
 
 		// refresh permalinks.
 		update_option( 'personio_integration_update_slugs', 1 );

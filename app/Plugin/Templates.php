@@ -16,6 +16,7 @@ use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use WP_Post;
+use WP_Term;
 
 /**
  * Handler for templates.
@@ -75,9 +76,14 @@ class Templates {
 		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt' ), 10, 2 );
 		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 );
 		add_action( 'personio_integration_get_formular', array( $this, 'get_application_link_template' ), 10, 2 );
-		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
+		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 3 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
 		add_filter( 'personio_integration_get_list_attributes', array( $this, 'filter_attributes_for_templates' ), 10, 2 );
+		add_filter( 'personio_integration_get_list_attributes', array( $this, 'set_anchor' ) );
+		add_filter( 'personio_integration_get_list_attributes', array( $this, 'set_link_to_anchor' ), 10, 2 );
+		add_filter( 'personio_integration_light_position_get_classes', array( $this, 'get_classes_of_position' ) );
+		add_filter( 'personio_integration_light_term_get_classes', array( $this, 'get_classes_of_term' ) );
+		add_filter( 'personio_integration_light_filter_url', array( $this, 'format_filter_url' ), 10, 2 );
 
 		// expand kses-filter.
 		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
@@ -336,9 +342,9 @@ class Templates {
 			// show a transient.
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_old_templates' );
-			$transient_obj->set_message( __( '<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'personio-integration-light' ) . $html_list . __( '<strong>Hint:</strong> the version-number in the header of the files must match.', 'personio-integration-light' ) );
+			$transient_obj->set_message( __( '<strong>You are using a child theme that contains outdated Personio Integration Light template files.</strong> Please compare the following files in your child-theme with the one this plugin provides:', 'personio-integration-light' ) . $html_list . '<strong>' . __( 'Hints:', 'personio-integration-light' ) . '</strong><br>' . __( 'The version-number in the header of the files must match.', 'personio-integration-light' ) . '<br>' . __( 'If you have any questions about this, talk to the technical administrator of your website.', 'personio-integration-light' ) );
 			$transient_obj->set_type( 'error' );
-			$transient_obj->set_dismissible_days( 60 );
+			$transient_obj->set_dismissible_days( 10 );
 			$transient_obj->save();
 		} else {
 			$transients_obj->get_transient_by_name( 'personio_integration_old_templates' )->delete();
@@ -490,9 +496,9 @@ class Templates {
 
 		// output for not linked title.
 		if ( false !== $attributes['donotlink'] ) {
-			include self::get_instance()->get_template( 'parts/part-title.php' );
+			include $this->get_template( 'parts/part-title.php' );
 		} else {
-			include self::get_instance()->get_template( 'parts/part-title-linked.php' );
+			include $this->get_template( 'parts/part-title-linked.php' );
 		}
 	}
 
@@ -721,10 +727,10 @@ class Templates {
 	/**
 	 * Show a filter in frontend restricted to positions which are visible in list.
 	 *
-	 * @param string $filter Name of the filter (taxonomy-slug).
-	 * @param array  $attributes List of attributes for the filter.
+	 * @param string      $filter         Name of the filter (taxonomy-slug).
+	 * @param array       $attributes     List of attributes for the filter.
+	 *
 	 * @return void
-	 * @noinspection PhpUnused
 	 */
 	public function get_filter_template( string $filter, array $attributes ): void {
 		$taxonomy_to_use = '';
@@ -804,6 +810,10 @@ class Templates {
 			$template_file = 'parts/jobdescription/' . $template . '.php';
 		}
 
+		if ( ! isset( $attributes['classes'] ) ) {
+			$attributes['classes'] = '';
+		}
+
 		// get template and return it.
 		ob_start();
 		include $this->get_template( $template_file );
@@ -868,6 +878,162 @@ class Templates {
 		if ( ! isset( $attributes['classes'] ) ) {
 			$attributes['classes'] = '';
 		}
+		return $attributes;
+	}
+
+	/**
+	 * Create list of classes as string from properties of the given position.
+	 *
+	 * @param Position $position_obj The position as object.
+	 *
+	 * @return string
+	 */
+	public function get_classes_of_position( Position $position_obj ): string {
+		$css_classes = array();
+
+		// add the id.
+		$css_classes[] = 'post-' . $position_obj->get_id();
+
+		// add our cpt.
+		$css_classes[] = PersonioPosition::get_instance()->get_name();
+		$css_classes[] = 'type-' . PersonioPosition::get_instance()->get_name();
+
+		// add post status.
+		$css_classes[] = 'status-' . get_post_status( $position_obj->get_id() );
+
+		// add taxonomies.
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
+			// get values of this position for this taxonomy.
+			$terms = $position_obj->get_terms_by_field( $taxonomy_name );
+
+			// bail if no values returned.
+			if ( empty( $terms ) ) {
+				continue;
+			}
+
+			// add each value to the list.
+			foreach ( $terms as $term ) {
+				$css_classes[] = 'taxonomy-' . sanitize_html_class( $taxonomy['slug'] );
+				$css_classes[] = 'term-' . sanitize_html_class( $taxonomy['slug'] ) . '-' . sanitize_html_class( str_replace( '_', '-', $term->slug ) );
+				$css_classes[] = 'term-' . sanitize_html_class( str_replace( '_', '-', $term->slug ) );
+			}
+		}
+
+		/**
+		 * Filter the class list of a single position.
+		 *
+		 * @since 4.0.0 Available since 4.0.0.
+		 * @param array $css_classes List of classes.
+		 * @param Position $position_obj Position as object.
+		 */
+		$css_classes = apply_filters( 'personio_integration_light_position_classes', $css_classes, $position_obj );
+
+		// return the list of classes as string.
+		return implode( ' ', $css_classes );
+	}
+
+	/**
+	 * Get classes of terms.
+	 *
+	 * @param WP_Term $term The term.
+	 *
+	 * @return string
+	 */
+	public function get_classes_of_term( WP_Term $term ): string {
+		// define list.
+		$css_classes = array();
+
+		// add the slug.
+		$css_classes[] = 'term-' . sanitize_html_class( $term->slug );
+
+		// add the taxonomy.
+		$css_classes[] = 'taxonomy-' . sanitize_html_class( $term->taxonomy );
+
+		/**
+		 * Filter the class list of a term.
+		 *
+		 * @since 4.0.0 Available since 4.0.0.
+		 * @param array $css_classes List of classes.
+		 * @param WP_Term $term The term object.
+		 */
+		$css_classes = apply_filters( 'personio_integration_light_term_classes', $css_classes, $term );
+
+		// return resulting list of classes as string.
+		return implode( ' ', $css_classes );
+	}
+
+	/**
+	 * Format the filter URL.
+	 *
+	 * @param string      $url    The URL.
+	 * @param string|null $anchor The anchor.
+	 *
+	 * @return string
+	 */
+	public function format_filter_url( string $url, string|null $anchor ): string {
+		// bail if anchor is null.
+		if( is_null( $anchor ) ) {
+			return $url;
+		}
+
+		// bail if anchor is empty.
+		if ( empty( $anchor ) ) {
+			return $url;
+		}
+
+		// return URL with anchor.
+		return $url . '#' . $anchor;
+	}
+
+	/**
+	 * Set anchor value for output.
+	 *
+	 * @param array $attributes List of pre-filtered attributes.
+	 *
+	 * @return array
+	 */
+	public function set_anchor( array $attributes ): array {
+		// bail if anchor is already set.
+		if( ! empty( $attributes['anchor'] ) ) {
+			return $attributes;
+		}
+
+		// bail if no filter is set.
+		if( empty( $attributes['filter'] ) ) {
+			return $attributes;
+		}
+
+		// add the default value.
+		$attributes['anchor'] = 'pif' . md5( wp_json_encode( $attributes['filter'] ) );
+
+		// return resulting attributes.
+		return $attributes;
+	}
+
+	/**
+	 * Set link_to_anchor value for output.
+	 *
+	 * @param array $attributes List of pre-filtered attributes.
+	 * @param array $attributes_set_by_pagebuilder List if attributes set by page builder.
+	 *
+	 * @return array
+	 */
+	public function set_link_to_anchor( array $attributes, array $attributes_set_by_pagebuilder ): array {
+		// bail if link_to_anchor is already set.
+		if( ! empty( $attributes['link_to_anchor'] ) ) {
+			return $attributes;
+		}
+
+		// use link_to_anchor set by pagebuilder.
+		if( ! empty( $attributes_set_by_pagebuilder['link_to_anchor'] ) ) {
+			$attributes['link_to_anchor'] = $attributes_set_by_pagebuilder['link_to_anchor'];
+			return $attributes;
+		}
+
+		// add the value from .
+		$attributes['link_to_anchor'] = '';
+
+		// return resulting attributes.
 		return $attributes;
 	}
 }

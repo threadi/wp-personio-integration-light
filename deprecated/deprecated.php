@@ -29,3 +29,10 @@ function personio_integration_position_shortcode( $attributes = array() ): strin
 	_deprecated_function( __FUNCTION__, '3.0.0', 'PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition::get_instance()->shortcode_single()' );
 	return PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition::get_instance()->shortcode_single( $attributes );
 }
+
+/**
+ * Load alias for setup.
+ */
+if( ! class_exists( '\wpEasySetup\Setup' ) ) {
+	class_alias('\easySetupForWordPress\Setup', 'wpEasySetup\Setup');
+}

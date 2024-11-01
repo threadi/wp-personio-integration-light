@@ -158,7 +158,7 @@ class Log {
 
 		// add where-condition for errors.
 		$where = '';
-		if( 1 === $errors ) {
+		if ( 1 === $errors ) {
 			$where .= ' AND `state` = "error"';
 		}
 
@@ -169,7 +169,7 @@ class Log {
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
-                    WHERE `category` = %s'. $where .'
+                    WHERE `category` = %s' . $where . '
                     ORDER BY ' . $order_by . ' ' . $order . '
                     LIMIT %d',
 					array( $category, $limit )
@@ -185,7 +185,7 @@ class Log {
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
-                    WHERE `md5` = %s'. $where .'
+                    WHERE `md5` = %s' . $where . '
                     ORDER BY ' . $order_by . ' ' . $order . '
                     LIMIT %d',
 					array( $md5, $limit )
@@ -201,7 +201,7 @@ class Log {
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
-                    WHERE `md5` = %s AND `category` = %s'. $where .'
+                    WHERE `md5` = %s AND `category` = %s' . $where . '
                     ORDER BY ' . $order_by . ' ' . $order . '
                     LIMIT %d',
 					array( $md5, $category, $limit )
@@ -210,7 +210,7 @@ class Log {
 			);
 		}
 
-		if( 1 === $errors ) {
+		if ( 1 === $errors ) {
 			// return all.
 			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(

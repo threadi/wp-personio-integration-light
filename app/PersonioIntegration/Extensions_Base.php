@@ -113,6 +113,13 @@ class Extensions_Base {
 	}
 
 	/**
+	 * Initialize this object.
+	 *
+	 * @return void
+	 */
+	public function init(): void {}
+
+	/**
 	 * Return internal name of this extension.
 	 *
 	 * @return string
@@ -325,18 +332,19 @@ class Extensions_Base {
 			return $settings;
 		}
 
-		// bail if setting already exist.
+		// bail if setting does already exist.
 		if ( ! empty( $settings['hidden_section']['fields'][ $this->get_settings_field_name() ] ) ) {
 			return $settings;
 		}
 
-		// add global setting to enabled or disabled this extension.
+		// add global setting to enable or disable this extension.
 		$settings['hidden_section']['fields'][ $this->get_settings_field_name() ] = array(
 			'register_attributes' => array(
 				'type'         => 'integer',
 				'default'      => $this->is_default_enabled() ? 1 : 0,
 				'show_in_rest' => true,
 			),
+			'source'              => $this->get_plugin_source(),
 		);
 
 		// return resulting list.
@@ -358,4 +366,13 @@ class Extensions_Base {
 	 * @return void
 	 */
 	public function uninstall(): void {}
+
+	/**
+	 * Set the plugin source for this page builder support.
+	 *
+	 * @return string
+	 */
+	protected function get_plugin_source(): string {
+		return WP_PERSONIO_INTEGRATION_PLUGIN;
+	}
 }

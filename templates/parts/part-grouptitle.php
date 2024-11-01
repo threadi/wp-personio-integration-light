@@ -2,9 +2,17 @@
 /**
  * Selects and show the group-title if list is grouped by a taxonomy
  *
- * @version: 3.0.1
+ * @param array    $personio_attributes List of settings.
+ * @param Position $position       The positions object.
+ *
+ * @version 4.0.0
  * @package personio-integration-light
  */
+
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
+
+use PersonioIntegrationLight\PersonioIntegration\Position;
 
 // only if group by is set.
 if ( ! empty( $personio_attributes['groupby'] ) ) {

@@ -7,9 +7,8 @@
 
 namespace PersonioIntegrationLight\Plugin\Admin;
 
-use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\Positions;
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Helper-function for Dashboard options of this plugin.
@@ -25,16 +24,14 @@ class Dashboard {
 	/**
 	 * Constructor for Init-Handler.
 	 */
-	private function __construct() {
-	}
+	private function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.
 	 *
 	 * @return void
 	 */
-	private function __clone() {
-	}
+	private function __clone() {}
 
 	/**
 	 * Return the instance of this Singleton object.

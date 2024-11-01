@@ -90,6 +90,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Nimble_Builder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Pdf_Generator_For_Wp',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Polylang',
+			'PersonioIntegrationLight\Plugin\Compatibilities\RankMath',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Seed_Prod',
 			'PersonioIntegrationLight\Plugin\Compatibilities\SiteOrigin',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Themify',
@@ -99,6 +100,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpBakery',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Wpml',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpPageBuilder',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Yoast',
 		);
 
 		/**

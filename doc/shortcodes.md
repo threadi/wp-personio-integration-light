@@ -163,6 +163,11 @@ The parameters in the shortcodes have the following tasks:
   4. in the URL you will see both the parameter and the value, for example: `?personiofilter[department]=42`.
   5. copy the value in brackets and the number behind them to put them together in the shortcode as shown in the above example.
 
+### more options
+
+* anchor
+* link_to_anchor
+
 ## Examples
 
 ### list without filter & with title & description text per position

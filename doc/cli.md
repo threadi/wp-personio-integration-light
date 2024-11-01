@@ -10,14 +10,18 @@ Show list of available commands for this plugin:
 
 `wp personio`
 
+# Get help
+
+`wp help personio`
+
 # Commands
 
 `wp personio delete_all`
-=> delete all actual imported data (positions and all taxonomies)
+=> delete all actual imported positions and all terms in the taxonomies
 
 `wp personio delete_positions`
 => delete all actual imported positions
-=> additional import data like taxonomies will resist
+=> additional imported data like taxonomies will resist
 
 `wp personio get_positions`
 => get actual positions from Personio
@@ -29,7 +33,7 @@ Show list of available commands for this plugin:
 => deletes all data
 => initiate the plugin as if it was fresh installed
 
-# additional Commands in Pro-version
+# Additional commands in Pro-plugin
 
 `wp personio delete_partials`
 `wp personio run_partial_import`

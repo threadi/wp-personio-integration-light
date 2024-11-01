@@ -57,7 +57,20 @@ class Schedules {
 			add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
 		}
 		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
+		add_action( 'init', array( $this, 'init_schedules' ) );
 
+		// action to create all registered schedules.
+		add_action( 'admin_action_personioPositionsCreateSchedules', array( $this, 'create_schedules_per_request' ) );
+		add_filter( 'schedule_event', array( $this, 'add_schedule_to_list' ) );
+		add_action( 'shutdown', array( $this, 'check_events_on_shutdown' ) );
+	}
+
+	/**
+	 * Initialize the schedules via init-hook.
+	 *
+	 * @return void
+	 */
+	public function init_schedules(): void {
 		// loop through our own events.
 		foreach ( $this->get_events() as $event ) {
 			// get the schedule object.
@@ -72,11 +85,6 @@ class Schedules {
 				add_action( $schedule_obj->get_name(), array( $schedule_obj, 'run' ), 10, 0 );
 			}
 		}
-
-		// action to create all registered schedules.
-		add_action( 'admin_action_personioPositionsCreateSchedules', array( $this, 'create_schedules_per_request' ) );
-		add_filter( 'schedule_event', array( $this, 'add_schedule_to_list' ) );
-		add_action( 'shutdown', array( $this, 'check_events_on_shutdown' ) );
 	}
 
 	/**
@@ -102,7 +110,6 @@ class Schedules {
 						'type'    => 'integer',
 						'default' => 0,
 					),
-					'source'              => WP_PERSONIO_INTEGRATION_PLUGIN,
 				),
 			)
 		);

@@ -9,6 +9,7 @@
 	"description": "Provides a Gutenberg block to show filter as dropdown-list for Personio Positions.",
 	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {
+        "anchor": true,
 		"color": {
 			"gradients": true,
 			"link": true
@@ -43,7 +44,7 @@
 		},
 		"hideFilterTitle": {
 			"type": "boolean",
-			"default": false
+			"default": true
 		},
 		"hideSubmitButton": {
 			"type": "boolean",
@@ -52,14 +53,21 @@
 		"hideResetLink": {
 			"type": "boolean",
 			"default": false
-		}
+		},
+        "anchor": {
+            "type": "string",
+            "default": ""
+        },
+        "link_to_anchor": {
+            "type": "string",
+            "default": ""
+        }
 	},
 	"example": {
 		"attributes": {
 			"preview": true,
 			"filter": ["recruitingCategory","schedule","office"],
 			"blockId": "personio-example",
-			"hideFilterTitle": true,
 			"hideSubmitButton": true,
 			"hideResetLink": true
 		}

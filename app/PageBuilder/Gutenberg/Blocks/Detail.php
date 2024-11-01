@@ -138,6 +138,11 @@ class Detail extends Blocks_Basis {
 			}
 		}
 
+		// get block-classes.
+		if ( function_exists( 'get_block_wrapper_attributes' ) ) {
+			$attributes['classes'] =  Helper::get_attribute_value_from_html( 'class', get_block_wrapper_attributes() );
+		}
+
 		// get content for output.
 		ob_start();
 		include Templates::get_instance()->get_template( 'parts/details/' . $template . '.php' );

@@ -197,7 +197,7 @@ class Positions {
 		// add log for this query if debug is enabled.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 			$log = new Log();
-			$log->add_log( __( 'Query-Debug', 'personio-integration-light' ) . ': ' . wp_json_encode( $query ) . '<br><br>' . __( 'Result', 'personio-integration-light' ) . ': ' . wp_json_encode( $this->get_results() ) . '<br><br>' . __( 'Used URL', 'personio-integration-light' ) . ': ' . esc_url( Helper::get_current_url() ), 'success', 'system' );
+			$log->add_log( __( 'Query-Debug', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $query ) . '</code><br><br>' . __( 'Result', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $this->get_results() ) . '</code><br><br>' . __( 'Used URL', 'personio-integration-light' ) . ': ' . esc_url( Helper::get_current_url() ), 'info', 'system' );
 		}
 
 		// remove filter.
@@ -212,9 +212,9 @@ class Positions {
 			 * Filter the resulting ID / object.
 			 *
 			 * @since 3.0.0 Available since 3.0.0
-			 * @param int|WP_Post $post_id The ID or object to use.
+			 * @param int $post_id The ID to use.
 			 */
-			$position_object = $this->get_position( apply_filters( 'personio_integration_positions_loop_id', $post_id ) );
+			$position_object = $this->get_position( absint( apply_filters( 'personio_integration_positions_loop_id', $post_id ) ) );
 
 			// set used language on position-object.
 			if ( ! empty( $parameter_to_add['lang'] ) ) {
@@ -234,7 +234,7 @@ class Positions {
 		ksort( $resulting_position_list );
 
 		/**
-		 * Filter the resulting list of position objects.
+		 * Filter the resulting and sorted list of position objects.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
@@ -340,7 +340,7 @@ class Positions {
 		$transient_obj = Transients::get_instance()->add();
 		$transient_obj->set_name( 'personio_integration_reimport_hint' );
 		$transient_obj->set_type( 'success' );
-		$transient_obj->set_message( __( 'You have changed settings that would make it advisable to re-import the positions from Personio. Click on the following button: ', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $url ) . '" class="button button-primary wp-easy-dialog" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '">' . __( 'Re-Import all positions', 'personio-integration-light' ) . '</a>' );
+		$transient_obj->set_message( __( 'You have changed settings that would make it advisable to re-import the positions from Personio. Click on the following button: ', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $url ) . '" class="button button-primary easy-dialog-for-wordpress" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '">' . __( 'Re-Import all positions', 'personio-integration-light' ) . '</a>' );
 		$transient_obj->save();
 	}
 }

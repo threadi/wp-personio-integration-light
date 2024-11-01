@@ -2,8 +2,14 @@
 /**
  * Show select-filter for a chosen taxonomy.
  *
- * @version: 3.0.0
+ * @param string $filter     Internal name of used filter.
+ * @param string $filtername Public name of used filter.
+ * @param string $value      Actual selected value.
+ * @param array  $terms      List of terms to show.
+ * @param array $attributes The attributes.
+ *
  * @package personio-integration-light
+ * @version 4.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -20,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 			$term_count = count( $terms );
 			for ( $t = 0;$t < $term_count;$t++ ) {
 				?>
-				<option value="<?php echo absint( $terms[ $t ]->term_id ); ?>"<?php echo ( $terms[ $t ]->term_id === $value ? ' selected="selected"' : '' ); ?>><?php echo esc_html( $terms[ $t ]->name ); ?></option>
+				<option value="<?php echo absint( $terms[ $t ]->term_id ); ?>"<?php echo ( $terms[ $t ]->term_id === $value ? ' selected="selected"' : '' ); ?> class="<?php echo esc_attr( apply_filters( 'personio_integration_light_term_get_classes', $terms[ $t ] ) ); ?>"><?php echo esc_html( $terms[ $t ]->name ); ?></option>
 											<?php
 			}
 			?>

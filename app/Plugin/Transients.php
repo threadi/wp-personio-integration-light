@@ -61,7 +61,7 @@ class Transients {
 		add_filter( 'personio_integration_transient_hide_on', array( $this, 'set_default_pages_where_transients_are_hidden' ) );
 
 		// process AJAX-requests to dismiss transient notices.
-		add_action( 'wp_ajax_dismiss_admin_notice', array( $this, 'dismiss_transient_via_ajax' ) );
+		add_action( 'wp_ajax_personio_integration_dismiss_admin_notice', array( $this, 'dismiss_transient_via_ajax' ) );
 	}
 
 	/**
@@ -72,10 +72,13 @@ class Transients {
 	 * @return void
 	 */
 	public function init_notices(): void {
-		if ( current_user_can( 'manage_' . PersonioPosition::get_instance()->get_name() ) ) {
-			$transients_obj = self::get_instance();
-			$transients_obj->check_transients();
+		// return if user has no capability for this.
+		if ( ! current_user_can( 'manage_' . PersonioPosition::get_instance()->get_name() ) ) {
+			return;
 		}
+
+		// check the transients.
+		$this->check_transients();
 	}
 
 	/**
@@ -200,9 +203,13 @@ class Transients {
 		 * @param array $transients List of transients.
 		 */
 		foreach ( apply_filters( 'personio_integration_get_transients_for_display', $transients ) as $transient_obj ) {
-			if ( $transient_obj->is_set() ) {
-				$transient_obj->display();
+			// bail if transient is not set.
+			if ( ! $transient_obj->is_set() ) {
+				continue;
 			}
+
+			// show this transient hint.
+			$transient_obj->display();
 		}
 	}
 
@@ -249,7 +256,7 @@ class Transients {
 		add_option( 'pi-dismissed-' . md5( $option_name ), $dismissible_length, '', true );
 
 		// remove transient.
-		self::get_instance()->get_transient_by_name( $option_name )->delete();
+		$this->get_transient_by_name( $option_name )->delete();
 
 		// return nothing.
 		wp_die();

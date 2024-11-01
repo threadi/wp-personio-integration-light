@@ -19,10 +19,12 @@ import './editor.scss';
 import {
 	PanelBody,
 	SelectControl,
-	ToggleControl
+	ToggleControl,
+  __experimentalInputControl as InputControl
 } from '@wordpress/components';
 import {
 	InspectorControls,
+  InspectorAdvancedControls,
 	useBlockProps
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
@@ -31,6 +33,7 @@ import {
   onChangeHideFilterTitle,
   onChangeHideResetLink,
   onChangeHideSubmitButton,
+  onChangeLinkToAnchor,
   Personio_Helper_Panel
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
@@ -106,6 +109,13 @@ export default function Edit( object ) {
         </PanelBody>
         <Personio_Helper_Panel/>
       </InspectorControls>
+      <InspectorAdvancedControls key="inspector">
+        <InputControl
+          label={__('Use this anchor for any links', 'personio-integration-light')}
+          value={object.attributes.link_to_anchor}
+          onChange={value => onChangeLinkToAnchor( value, object )}
+        />
+      </InspectorAdvancedControls>
       <ServerSideRender
         block="wp-personio-integration/filter-select"
         attributes={ object.attributes }

@@ -2,7 +2,7 @@
 /**
  * File to save the setting for import page builder templates.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsSavings;

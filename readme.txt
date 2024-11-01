@@ -2,11 +2,11 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
 Requires at least: 4.9.24
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.3.0
+Stable tag: 4.0.0
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -44,7 +44,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish
 - Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
 - Support for subcompanies and additional offices in positions
-- Support for multiple form handler like Contact Form 7, Forminator and WPForms
+- Support for multiple form handler like Contact Form 7, Elementor Forms, Forminator and WPForms
 - Use custom feature image on each position
 - Unlimited custom files for download on each single position
 - Manual sorting of open positions in list views via drag&drop
@@ -543,15 +543,36 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed possible error with unknown custom extensions categories
 * Fixed group listings to hide additional terms per group entity
 
-= 3.3.0 =
+= 4.0.0 =
+* Added help system which uses the integrated help context from WordPress
+* Added possibility to link to individual anchors in filter
+* Added new libraries for setup and dialog
 * Added filter for errors in log
 * Added some new hooks
 * Added active marker for categories in extension table
 * Added warning for outdated PHP-versions in preparation for future plugin updates
-* Small code optimizations
+* Added hint for extension of positions in position table
+* Added output of generated CSS classes for all properties of a single position in list and single view
+* Added new log state: info
+* Added detection for third-party SEO-plugins Yoast, Rank Math and The Seo Framework
+* Errors during import of positions are now visible in dialog in backend
+* Changed usage of post_content column: it now contains the output for job description in the configured template
+* Changed too general internal slugs to prevent collision with other plugins
+* Some code optimizations
+* Some style optimizations in backend
 * Updated dependencies
 * Prevent composer plattform check
 * Replaced redirect targets for actual referer with WP-own function
+* Remove unnecessary check for Pro-plugin
 * Optimized securing of settings in classic widgets
+* Optimized uninstallation
 * Fixed uninstaller routine
 * Fixed missing output for classic widget for single position
+* Fixed email format for import error
+* Fixed limit for listings
+* Fixed class usage in listing templates
+* Fixed missing styling for description in Block Editor
+* Fixed disable all extensions call: it disabled only the extensions which could be enabled by users
+* Fixed support for plugin "PDF Generator for WP"
+* Fixed wrong loading of page builder object list during uninstallation
+* Fixed visibility of archive links in backend

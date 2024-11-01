@@ -80,6 +80,10 @@ export const onChangeTemplate = ( newValue, object ) => {
 	object.setAttributes( { template: newValue } );
 }
 
+export const onChangeLinkToAnchor = ( newValue, object ) => {
+  object.setAttributes( { link_to_anchor: newValue } );
+}
+
 /**
  * Panel for helper texts.
  */

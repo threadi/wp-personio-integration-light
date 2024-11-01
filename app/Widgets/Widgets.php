@@ -71,7 +71,7 @@ class Widgets {
 	 */
 	public function deactivate(): void {
 		if ( function_exists( 'wp_use_widgets_block_editor' ) && wp_use_widgets_block_editor() ) {
-			$this->uninstall();
+			$this->uninstall_all();
 		}
 	}
 
@@ -80,7 +80,7 @@ class Widgets {
 	 *
 	 * @return void
 	 */
-	public function uninstall(): void {
+	public function uninstall_all(): void {
 		unregister_widget( 'PersonioIntegrationLight\Widgets\Position' );
 		unregister_widget( 'PersonioIntegrationLight\Widgets\Positions' );
 		delete_option( 'widget_personiopositionwidget' );

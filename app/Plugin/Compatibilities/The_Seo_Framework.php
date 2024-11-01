@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the compatibility-check for SCF.
+ * File to handle the compatibility-check for The SEO Framework.
  *
  * @package personio-integration-light
  */
@@ -17,14 +17,14 @@ use PersonioIntegrationLight\Plugin\Transients;
 /**
  * Object for this check.
  */
-class Acf extends Compatibilities_Base {
+class The_Seo_Framework extends Compatibilities_Base {
 
 	/**
 	 * Name of this object.
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_acf';
+	protected string $name = 'personio_integration_compatibility_the_seo_framework';
 
 	/**
 	 * Run the check.
@@ -37,7 +37,7 @@ class Acf extends Compatibilities_Base {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Secure Custom Fields (SCF) - very nice!</strong> <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to extend the data of your positions with SCF.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using <i>The SEO Framework</i> to optimize your website for SEO - very nice!</strong> <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to utilize the capabilities of this plugin at your positions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
 			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
@@ -52,6 +52,6 @@ class Acf extends Compatibilities_Base {
 	 * @return bool
 	 */
 	public function is_active(): bool {
-		return Helper::is_plugin_active( 'advanced-custom-fields/acf.php' );
+		return Helper::is_plugin_active( 'autodescription/autodescription.php' );
 	}
 }

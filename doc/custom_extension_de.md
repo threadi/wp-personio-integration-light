@@ -15,7 +15,7 @@ innerhalb von Erweiterungen alle Funktionen des Personio Integration Light Plugi
 
 ### Hinweis zum Pro Plugin
 
-Natürlich kann man, wenn das Pro Plugin vorhanden und lizensiert ist, auch Funktionen von diesem in der eigenen
+Natürlich kann man, wenn das Pro Plugin vorhanden und lizenziert ist, auch Funktionen von diesem in der eigenen
 Erweiterung ansprechen.
 
 ## Voraussetzungen

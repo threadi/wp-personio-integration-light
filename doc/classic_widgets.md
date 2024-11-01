@@ -10,9 +10,10 @@ Provides the ability to output a single position in a widget. The following opti
 * show title (default: an)
 * link the title (default: off)
 * show excerpt (default: off)
-* select components for the excerpt (default: nothing selected)
+* select components for the excerpt (default: global settings)
 * show content (default: on)
 * show link to application form (default: on)
+* .. and many more
 
 ## Personio positions
 
@@ -27,3 +28,4 @@ Provides the ability to output a list of positions in a widget. The following op
 * select components for the excerpt (default: nothing selected)
 * show content (default: off)
 * show link to application form (default: off)
+* .. and many more

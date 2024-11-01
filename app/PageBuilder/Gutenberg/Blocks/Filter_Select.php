@@ -63,6 +63,14 @@ class Filter_Select extends Blocks_Basis {
 			'type'    => 'boolean',
 			'default' => false,
 		),
+		'anchor' => array(
+			'type' => 'string',
+			'default' => ''
+		),
+		'link_to_anchor' => array(
+			'type' => 'string',
+			'default' => ''
+		)
 	);
 
 	/**

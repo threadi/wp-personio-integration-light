@@ -10,12 +10,20 @@ namespace PersonioIntegrationLight\PageBuilder;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\PersonioIntegration\Extensions;
+use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
 
 /**
  * Object to handle page builder support.
  */
-class Page_Builders extends Extensions {
+class Page_Builders extends Extensions_Base {
+
+	/**
+	 * The internal name of this extension.
+	 *
+	 * @var string
+	 */
+	protected string $name = 'Page Builders';
+
 	/**
 	 * Initialize this object.
 	 *
@@ -76,20 +84,5 @@ class Page_Builders extends Extensions {
 
 		// return resulting list.
 		return $categories;
-	}
-
-	/**
-	 * Run uninstaller for all registered pagebuilder.
-	 *
-	 * @return void
-	 */
-	public function uninstall(): void {
-		// register the known pagebuilder.
-		foreach ( $this->get_page_builders() as $page_builder ) {
-			$obj = call_user_func( $page_builder . '::get_instance' );
-			if ( $obj instanceof PageBuilder_Base ) {
-				$obj->uninstall();
-			}
-		}
 	}
 }

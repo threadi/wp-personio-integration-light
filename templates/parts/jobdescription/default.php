@@ -2,17 +2,23 @@
 /**
  * Template-file for job description with headers.
  *
- * @version 3.0.0
+ * @param array $attribute List of settings.
+ * @param Position $position The position as object.
+ *
+ * @version 4.0.0
  * @package personio-integration-light
  */
 
+// prevent direct access.
 defined( 'ABSPATH' ) || exit;
+
+use PersonioIntegrationLight\PersonioIntegration\Position;
 
 /**
  * Output of the content a single position with headers.
  */
 
-?><div class="entry-content">
+?><div class="entry-content <?php echo esc_attr( $attributes['classes'] ); ?>">
 	<?php
 	foreach ( $position->get_content_as_array() as $content ) {
 		?>

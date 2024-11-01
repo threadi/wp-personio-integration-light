@@ -3,7 +3,7 @@ jQuery(document).ready(function($) {
 
     // add option near to list-headline.
     $('body.post-type-personioposition:not(.personio-integration-hide-buttons):not(.edit-tags-php):not(.personioposition_page_personioApplication):not(.personioposition_page_personioformtemplate) h1.wp-heading-inline').after('<a class="page-title-action personio-pro-hint" href="' + personioIntegrationLightJsVars.pro_url + '" target="_blank">' + personioIntegrationLightJsVars.title_get_pro + '</a>');
-    $('body.post-type-personioposition.edit-php h1.wp-heading-inline, body.post-type-personioposition.edit-personioposition-php:not(.personio-integration-url-missing) h1.wp-heading-inline').after('<a class="page-title-action personio-integration-import-hint" href="admin.php?action=personioPositionsImport">' + personioIntegrationLightJsVars.title_run_import + '</a>');
+    $('body.post-type-personioposition.edit-php h1.wp-heading-inline, body.post-type-personioposition.edit-personioposition-php:not(.personio-integration-url-missing) h1.wp-heading-inline').after('<a class="page-title-action personio-integration-import-hint" href="' + personioIntegrationLightJsVars.import_url + '">' + personioIntegrationLightJsVars.title_run_import + '</a>');
     $('body.post-type-personioposition:not(.personio-integration-hide-buttons) h1').each(function() {
       let button = document.createElement('a');
       button.className = 'review-hint-button page-title-action';
@@ -25,7 +25,7 @@ jQuery(document).ready(function($) {
             dismissible_length = attr_value.pop();
             option_name = attr_value.join('-');
             data = {
-                'action': 'dismiss_admin_notice',
+                'action': 'personio_integration_dismiss_admin_notice',
                 'option_name': option_name,
                 'dismissible_length': dismissible_length,
                 'nonce': personioIntegrationLightJsVars.dismiss_nonce
@@ -531,7 +531,7 @@ function personio_get_delete_info( reimport ) {
  * @param config
  */
 function personio_integration_create_dialog( config ) {
-  document.body.dispatchEvent(new CustomEvent("wp-easy-dialog", config));
+  document.body.dispatchEvent(new CustomEvent("easy-dialog-for-wordpress", config));
 }
 
 /**

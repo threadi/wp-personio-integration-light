@@ -2,7 +2,7 @@
 /**
  * File to handle table with extensions for our cpt.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 namespace PersonioIntegrationLight\PersonioIntegration\Tables;
@@ -60,15 +60,14 @@ class Extensions extends WP_List_Table {
 
 		// get list of extensions.
 		$extensions = array();
-		foreach ( \PersonioIntegrationLight\PersonioIntegration\Extensions::get_instance()->get_extensions() as $extension_name ) {
-			if ( is_string( $extension_name ) && method_exists( $extension_name, 'get_instance' ) && is_callable( $extension_name . '::get_instance' ) ) {
-				$obj = call_user_func( $extension_name . '::get_instance' );
-				if ( $obj instanceof Extensions_Base && $this->filter_object( $obj, $category ) ) {
-					$extensions[] = $obj;
-				}
-			} elseif ( $extension_name instanceof Extensions_Base && $this->filter_object( $extension_name, $category ) ) {
-				$extensions[] = $extension_name;
+		foreach ( \PersonioIntegrationLight\PersonioIntegration\Extensions::get_instance()->get_extensions_as_objects() as $extension_obj ) {
+			// bail if filter does not match.
+			if ( ! $this->filter_object( $extension_obj, $category ) ) {
+				continue;
 			}
+
+			// add to list.
+			$extensions[] = $extension_obj;
 		}
 
 		/**
@@ -108,6 +107,11 @@ class Extensions extends WP_List_Table {
 	 * @return bool
 	 */
 	private function filter_object( Extensions_Base $obj, string $category ): bool {
+		// bail if extension has no title.
+		if ( empty( $obj->get_label() ) ) {
+			return false;
+		}
+
 		// bail if category is not given.
 		if ( empty( $category ) ) {
 			return true;
@@ -314,7 +318,7 @@ class Extensions extends WP_List_Table {
 		/**
 		 * Filter the main url for "all".
 		 *
-		 * @since 3.3.0 Available since 3.3.0.
+		 * @since 4.0.0 Available since 4.0.0.
 		 * @param string $url The URL.
 		 */
 		$all_url = apply_filters( 'personio_integration_light_extension_all_url', $url );
@@ -333,7 +337,7 @@ class Extensions extends WP_List_Table {
 			$active = $category === $name;
 
 			// get URL.
-			$url           = add_query_arg( array( 'category' => $name ) );
+			$url = add_query_arg( array( 'category' => $name ) );
 
 			// add to list.
 			$list[ $name ] = '<a href="' . esc_url( $url ) . '" class="' . ( $active ? ' current' : '' ) . '">' . esc_html( $label ) . '</a>';
@@ -342,7 +346,7 @@ class Extensions extends WP_List_Table {
 		/**
 		 * Filter the list of possible views in extension table.
 		 *
-		 * @since 3.3.0 Available since 3.3.0.
+		 * @since 4.0.0 Available since 4.0.0.
 		 * @param array $list List of views.
 		 */
 		return apply_filters( 'personio_integration_light_extension_table_views', $list );
@@ -419,8 +423,8 @@ class Extensions extends WP_List_Table {
 			);
 
 			// output buttons.
-			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_disable ) ) . '" class="page-title-action wp-easy-dialog" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable all', 'personio-integration-light' ) . '</a>';
-			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_enable ) ) . '" class="page-title-action wp-easy-dialog" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable all', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_disable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable all', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_enable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable all', 'personio-integration-light' ) . '</a>';
 		}
 	}
 }

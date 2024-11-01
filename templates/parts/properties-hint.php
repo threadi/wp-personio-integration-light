@@ -1,12 +1,16 @@
 <?php
 /**
- * Simple hint-wrapper for any messages.
+ * Simple hint-wrapper for any messages in frontend.
  *
- * @version: 3.0.0
+ * @param string $wrapper_id ID for the wrapper.
+ * @param string $message The message.
+ * @param string $type The type.
  *
  * @package personio-integration-light
+ * @version 4.0.0
  */
 
+// prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
 ?>
