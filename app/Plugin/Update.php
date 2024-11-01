@@ -93,7 +93,9 @@ class Update {
 			)
 			&& version_compare( $installed_plugin_version, $db_plugin_version, '>' )
 		) {
-			define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
+			if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING ' ) ) {
+				define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
+			}
 			$this->version300();
 			$this->version310();
 			$this->version320();

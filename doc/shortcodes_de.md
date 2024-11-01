@@ -163,6 +163,11 @@ Es sind folgende Parameter hierfür verfügbar:
   4. In der URL ist daraufhin sowohl der Parameter als auch der Wert zu sehen, Beispiel: `?personiofilter[department]=42`
   5. Kopieren Sie das in Klammern stehende sowie die Zahl dahinter um diese im Shortcode wie in o.g. Beispiel zu sehen zusammen zu setzen.
 
+### weitere Optionen
+
+* anchor
+* link_to_anchor
+
 ## Beispiele
 
 ### Liste ohne Filter & mit Titel & Beschreibungstext pro Stelle

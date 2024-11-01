@@ -63,31 +63,45 @@ class Cli {
 	/**
 	 * Resets all settings of this plugin.
 	 *
+	 * [--delete-all]
+	 * : Reset all data and not just settings.
+	 *
+	 * [--not-light]
+	 * : Prevent reset of light plugin.
+	 *
 	 * @since        1.0.0
 	 *
-	 * @param array $delete_data Marker to delete all data or not.
+	 * @param array $attributes Marker to delete all data or not.
+	 * @param array $options List of options.
 	 *
 	 * @return void
 	 * @noinspection PhpUnused
-	 **/
-	public function reset_plugin( array $delete_data = array() ): void {
+	 * @noinspection PhpUnusedParameterInspection
+	 */
+	public function reset_plugin( array $attributes = array(), array $options = array() ): void {
+		// check for delete all marker.
+		$delete_all = isset( $options['delete-all'] ) ? 1 : 0;
+
 		// run uninstaller tasks.
-		Uninstaller::get_instance()->run( $delete_data );
+		if( ! isset( $options['not-light'] ) ) {
+			Uninstaller::get_instance()->run( array( $delete_all ) );
+		}
 
 		/**
-		 * Run additional tasks for uninstallation.
+		 * Run additional tasks for uninstallation via WP CLI.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
+		 * @updated 4.0.0 Using options instead of attributes.
 		 *
-		 * @param array $delete_data Marker to delete all data or not.
+		 * @param array $options Options used to call this command.
 		 */
-		do_action( 'personio_integration_uninstaller', $delete_data );
+		do_action( 'personio_integration_uninstaller', $options );
 
 		// run installer tasks.
 		Installer::get_instance()->activation();
 
 		/**
-		 * Run additional tasks for installation.
+		 * Run additional tasks for installation via WP CLI.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 */

@@ -10,9 +10,10 @@ Bietet die Möglichkeit eine einzelne Stelle in einem Widget auszugeben. Es steh
 * zeige Titel an (Standard: an)
 * verlinke den Titel (Standard: aus)
 * zeige den Auszug an (Standard: aus)
-* wähle Komponenten für den Auszug (Standard: nichts gewählt)
+* wähle Komponenten für den Auszug (Standard: globale Einstellungen)
 * zeige Inhalt an (Standard: an)
 * zeige Link zum Bewerbungsformular an (Standard: an)
+* ... und viele mehr
 
 ## Personio Stellen
 
@@ -27,3 +28,4 @@ Bietet die Möglichkeit eine Liste von Stellen in einem Widget auszugeben. Es st
 * wähle Komponenten für den Auszug (Standard: nichts gewählt)
 * zeige Inhalt an (Standard: aus)
 * zeige Link zum Bewerbungsformular an (Standard: aus)
+* ... und viele mehr

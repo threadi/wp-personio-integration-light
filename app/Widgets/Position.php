@@ -187,7 +187,7 @@ class Position extends WP_Widget {
 			return;
 		}
 
-		// get the personio ID of the requested position.
+		// get the Personio ID of the requested position.
 		$position_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_position( $settings['postId'] );
 
 		// bail if position could not be loaded.

@@ -829,7 +829,7 @@ class PersonioPosition extends Post_Type {
 
 		// show ID-column.
 		if ( 'id' === $column ) {
-			echo absint( $position_obj->get_personio_id() );
+			echo esc_html( $position_obj->get_personio_id() );
 		}
 
 		// show sort column with pro-hint.

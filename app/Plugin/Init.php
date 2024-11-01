@@ -337,7 +337,7 @@ class Init {
 		$transient_obj->set_type( 'error' );
 		$transient_obj->set_name( 'personio_integration_light_php_hint' );
 		$transient_obj->set_dismissible_days( 90 );
-		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'personio-integration-light' ) . '</strong><br>' . __( 'Future versions of Personio Integration Light will no longer be compatible with PHP 8.0 or older. This versions <a href="https://www.php.net/supported-versions.php" target="_blank">are outdated</a> since December 2023. To continue using the plugins new features, please update your PHP version.', 'personio-integration-light' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'personio-integration-light' ) );
+		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'personio-integration-light' ) . '</strong><br>' . __( 'Future versions of <i>Personio Integration Light</i> will no longer be compatible with PHP 8.0 or older. This versions <a href="https://www.php.net/supported-versions.php" target="_blank">are outdated</a> since December 2023. To continue using the plugins new features, please update your PHP version.', 'personio-integration-light' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'personio-integration-light' ) );
 		$transient_obj->save();
 	}
 }

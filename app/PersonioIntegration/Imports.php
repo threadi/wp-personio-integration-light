@@ -83,7 +83,7 @@ class Imports {
 		// if debug mode is enabled log this event.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 			$log = new Log();
-			$log->add_log( __( 'Automatic import of positions is now running.', 'personio-integration-light' ), 'success', 'application' );
+			$log->add_log( __( 'Automatic import of positions is now running.', 'personio-integration-light' ), 'success', 'import' );
 		}
 
 		// set mark that import is running in WP.

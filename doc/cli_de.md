@@ -13,11 +13,11 @@ Liste der verfügbaren Befehle für dieses Plugin anzeigen:
 # Kommandos
 
 `wp personio delete_all`
-=> alle aktuell importierten Daten (Stellen und alle Taxonomien) löschen
+=> alle aktuell importierten Stellen und alle Werte in den Taxonomien
 
 `wp personio delete_positions`
 => alle aktuell importierten Stellen löschen
-=> zusätzliche Importdaten wie Taxonomien bleiben erhalten
+=> zusätzlich importierte Daten wie Taxonomien bleiben erhalten
 
 `wp personio get_positions`
 => aktuelle Stellen von Personio holen
@@ -29,7 +29,7 @@ Liste der verfügbaren Befehle für dieses Plugin anzeigen:
 => löscht alle Daten
 => initiiert das Plugin, als ob es neu installiert worden wäre
 
-# weitere Kommandos in der Pro-Version
+# weitere Kommandos im Pro-Plugin
 
 `wp personio delete_partials`
 `wp personio run_partial_import`

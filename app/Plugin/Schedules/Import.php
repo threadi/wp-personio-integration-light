@@ -72,13 +72,13 @@ class Import extends Schedules_Base {
 		// if debug mode is enabled log this event.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 			$log = new Log();
-			$log->add_log( __( 'Automatic import of positions starting.', 'personio-integration-light' ), 'success', 'application' );
+			$log->add_log( __( 'Automatic import of positions starting.', 'personio-integration-light' ), 'success', 'import' );
 		}
 
 		// bail if import is not enabled.
 		if ( ! $this->is_enabled() ) {
 			$log = new Log();
-			$log->add_log( __( 'Automatic import of positions is not enabled.', 'personio-integration-light' ), 'success', 'application' );
+			$log->add_log( __( 'Automatic import of positions is not enabled.', 'personio-integration-light' ), 'success', 'import' );
 		}
 
 		// run the import.
@@ -87,7 +87,7 @@ class Import extends Schedules_Base {
 		// if debug mode is enabled log this event.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 			$log = new Log();
-			$log->add_log( __( 'Automatic import of positions ended.', 'personio-integration-light' ), 'success', 'application' );
+			$log->add_log( __( 'Automatic import of positions ended.', 'personio-integration-light' ), 'success', 'import' );
 		}
 	}
 }
