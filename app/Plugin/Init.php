@@ -186,10 +186,12 @@ class Init {
 	 * @noinspection PhpUnused
 	 */
 	public function update_slugs(): void {
-		if ( 1 === absint( get_option( 'personio_integration_update_slugs' ) ) ) {
-			flush_rewrite_rules();
-			update_option( 'personio_integration_update_slugs', 0 );
+		if ( 1 !== absint( get_option( 'personio_integration_update_slugs' ) ) ) {
+			return;
 		}
+
+		flush_rewrite_rules();
+		update_option( 'personio_integration_update_slugs', 0 );
 	}
 
 	/**
@@ -212,6 +214,7 @@ class Init {
 	 * @param object $response The response-data.
 	 *
 	 * @return void
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function add_plugin_update_hints( array $data, object $response ): void {
 		// bail if plugin_data is empty.
