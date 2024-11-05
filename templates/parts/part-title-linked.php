@@ -15,8 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Position;
 
-defined( 'ABSPATH' ) || exit;
-
 ?>
 <header class="entry-content default-max-width">
 	<h<?php echo absint( $heading_size ); ?> class="entry-title"><a href="<?php echo esc_url( $position->get_link() ); ?>"><?php echo esc_html( $position->get_title() ); ?></a></h<?php echo absint( $heading_size ); ?>>

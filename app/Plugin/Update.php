@@ -65,7 +65,7 @@ class Update {
 		$obj->version300();
 		$obj->version310();
 		$obj->version320();
-		$obj->version440();
+		$obj->version400();
 
 		// reset import-flag.
 		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
@@ -99,10 +99,13 @@ class Update {
 			$this->version300();
 			$this->version310();
 			$this->version320();
-			$this->version440();
+			$this->version400();
 
 			// save new plugin-version in DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
+
+			// refresh permalinks.
+			update_option( 'personio_integration_update_slugs', 1 );
 		}
 	}
 
@@ -181,7 +184,7 @@ class Update {
 	 *
 	 * @return void
 	 */
-	private function version440(): void {
+	private function version400(): void {
 		// get actual value for setup and save it in new field, if not already set.
 		if ( ! get_option( 'esfw_completed' ) ) {
 			update_option( 'esfw_completed', get_option( 'wp_easy_setup_completed' ) );
