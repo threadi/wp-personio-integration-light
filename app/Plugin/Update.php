@@ -65,7 +65,7 @@ class Update {
 		$obj->version300();
 		$obj->version310();
 		$obj->version320();
-		$obj->version440();
+		$obj->version400();
 
 		// reset import-flag.
 		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
