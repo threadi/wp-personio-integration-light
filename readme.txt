@@ -47,8 +47,6 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Support for multiple form handler like Contact Form 7, Elementor Forms, Forminator and WPForms
 - Use custom feature image on each position
 - Unlimited custom files for download on each single position
-- Manual sorting of open positions in list views via drag&drop
-- Sorting of position details visible in frontend via drag&drop
 - Support for tracking of events with Google Analytics 4
 - Support full text search for positions in frontend
 - Multiple Personio-accounts per website
@@ -58,6 +56,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)
 - Shortcode generator for individual views of lists and details
 - Extensions for the following PageBuilders: Avada, Elementor, Divi, Beaver Builder, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery
+- Every privacy values are encrypted (e.g. applicant data and API credentials)
 - ... and much more
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
