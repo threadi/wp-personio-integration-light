@@ -158,7 +158,7 @@ class Help_System {
 		/* translators: %1$s will be replaced by a URL. */
 		$content .= '<li>' . sprintf( __( 'Show the application link on each position. Enable this <a href="%1$s">in the template settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Positions Pro (opens new window)</a> to use application forms in your website.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+		$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens new window)</a> to use application forms in your website.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
 		$content .= '</ol>';
 
 		// add help for the positions in general.

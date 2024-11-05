@@ -1266,7 +1266,7 @@ class Settings {
 	 */
 	public function add_help( array $help_list ): array {
 		// collect the content for the help.
-		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Settings', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide you with a variety of possible settings. You can use these to influence the behavior of the plugin as well as the appearance of your posts in the frontend.', 'personio-integration-light' ) . '</p>';
+		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Settings', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide you with a variety of possible settings. You can use these to influence the behavior of the plugin as well as the appearance of your positions in the frontend.', 'personio-integration-light' ) . '</p>';
 		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		/* translators: %1$s will be replaced by a URL. */
@@ -1284,7 +1284,7 @@ class Settings {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Positions Pro (opens new window)</a> to get much more settings.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens new window)</a> to get much more settings.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
 		}
 		$content .= '</ol>';
 
