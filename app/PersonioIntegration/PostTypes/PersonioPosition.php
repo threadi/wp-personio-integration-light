@@ -2151,7 +2151,7 @@ class PersonioPosition extends Post_Type {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Positions Pro (opens new window)</a> for individual application forms and much more options.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens new window)</a> for individual application forms and much more options.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
 		}
 		$content .= '</ol>';
 
@@ -2188,7 +2188,7 @@ class PersonioPosition extends Post_Type {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			$content .= '<p>' . __( 'With <i>Personio Integration Light</i>, we only support the Block Editor in this regard.', 'personio-integration-light' ) . '</p>';
-			$content .= '<p>' . __( 'With <i>Personio Integration Pro</i> you can also manage your posts with Elementor, Divi, Avada and many other PageBuilders and do not have to use shortcodes.', 'personio-integration-light' ) . '</p>';
+			$content .= '<p>' . __( 'With <i>Personio Integration Pro</i> you can also manage your positions with Elementor, Divi, Avada and many other PageBuilders and do not have to use shortcodes.', 'personio-integration-light' ) . '</p>';
 		}
 		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
@@ -2196,10 +2196,10 @@ class PersonioPosition extends Post_Type {
 		$content .= '<li>' . __( 'Add the shortcode you want to use where you want to output data for your positions.', 'personio-integration-light' ) . '</li>';
 		$content .= '</ol>';
 		$content .= '<p><strong>' . __( 'Example 1:', 'personio-integration-light' ) . '</strong></p>';
-		$content .= '<p>' . __( 'This shortcode will output a list of jobs including the filter above it. The filter will provide 2 properties. The jobs are displayed with a title and 2 job details matching the filter.', 'personio-integration-light' ) . '</p>';
+		$content .= '<p>' . __( 'This shortcode will output a list of positions including the filter above it. The filter will provide 2 properties. The jobs are displayed with a title and 2 job details matching the filter.', 'personio-integration-light' ) . '</p>';
 		$content .= '<code>[personioPositions showfilter="1" filter="recruitingCategory,schedule" filtertype="linklist" templates="title,excerpt" excerpt="recruitingCategory,schedule"]</code>';
 		$content .= '<p><strong>' . __( 'Example 2:', 'personio-integration-light' ) . '</strong></p>';
-		$content .= '<p>' . __( 'This shortcode will output a single job with the Personio ID 42. The title, the job description and the link to the application form at Personio are output.', 'personio-integration-light' ) . '</p>';
+		$content .= '<p>' . __( 'This shortcode will output a single position with the Personio ID 42. The title, the job description and the link to the application form at Personio are output.', 'personio-integration-light' ) . '</p>';
 		$content .= '<code>[personioPosition templates="title,content,formular" personioid="42"]</code>';
 		$content .= '<p><strong>' . __( 'Documentation:', 'personio-integration-light' ) . '</strong></p>';
 		/* translators: %1$s will be replaced by an URL. */
@@ -2217,7 +2217,7 @@ class PersonioPosition extends Post_Type {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Positions Pro (opens new window)</a> to get more flexible widgets for your theme or page builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens new window)</a> to get more flexible widgets for your theme or page builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
 		}
 		$content .= '</ol>';
 

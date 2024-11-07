@@ -37,7 +37,7 @@ class Beaver extends Compatibilities_Base {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Beaver Builder - very nice!</strong> <a href="%s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Beaver Builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Beaver Builder - very nice!</strong> <a href="%1$s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design the output of positions in Beaver Builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
 			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();

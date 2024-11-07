@@ -249,7 +249,7 @@ class Settings {
 							'type'              => 'array',
 						),
 						/* translators: %1$s is replaced with the name of the Pro-plugin */
-						'pro_hint'            => __( 'Use all languages supported by Personio with %s.', 'personio-integration-light' ),
+						'pro_hint'            => __( 'Use all languages supported by Personio with %1$s.', 'personio-integration-light' ),
 					),
 					'personioIntegrationLoginUrl'         => array(
 						'label'               => __( 'Personio Login URL', 'personio-integration-light' ),
@@ -294,7 +294,7 @@ class Settings {
 						'description'         => __( 'Mark multiple default filter for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						/* translators: %1$s is replaced with "string" */
-						'pro_hint'            => __( 'Sort this list with %s.', 'personio-integration-light' ),
+						'pro_hint'            => __( 'Sort this list with %1$s.', 'personio-integration-light' ),
 						'register_attributes' => array(
 							'type'    => 'array',
 							'default' => array( 'recruitingCategory', 'schedule', 'office' ),
@@ -429,7 +429,7 @@ class Settings {
 						'description'         => __( 'Mark multiple details for single-view of positions. Only used if template "detail" is enabled for detail-view. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						/* translators: %1$s is replaced with "string" */
-						'pro_hint'            => __( 'Sort this list with %s.', 'personio-integration-light' ),
+						'pro_hint'            => __( 'Sort this list with %1$s.', 'personio-integration-light' ),
 						'register_attributes' => array(
 							'type'    => 'array',
 							'default' => array( 'recruitingCategory', 'schedule', 'office' ),
@@ -577,8 +577,8 @@ class Settings {
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'description'         => __( 'The automatic import is run once per day. You don\'t have to worry about updating your jobs on the website yourself.', 'personio-integration-light' ),
-						/* translators: %s will be replaced with the Pro-plugin-URL. */
-						'pro_hint'            => __( 'Use more import options with the %s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' ),
+						/* translators: %1$s will be replaced with the Pro-plugin-URL. */
+						'pro_hint'            => __( 'Use more import options with the %1$s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' ),
 						'register_attributes' => array(
 							'type'    => 'integer',
 							'default' => 1,
@@ -1200,7 +1200,7 @@ class Settings {
 
 			// finally lot it.
 			$log = new Log();
-			/* translators: $1%s will be replaced by the setting label, %2$s by the username, %3$s by the old value, %4$s by the new value. */
+			/* translators: %1$s will be replaced by the setting label, %2$s by the username, %3$s by the old value, %4$s by the new value. */
 			$log->add_log( sprintf( __( 'Setting for <i>%1$s</i> has been changed by %2$s.<br>Old: %3$s<br>New: %4$s', 'personio-integration-light' ), esc_html( $setting['label'] ), esc_html( $user_name ), esc_html( $old_value ), esc_html( $new_value ) ), 'success', 'settings' );
 		}
 	}
@@ -1266,7 +1266,7 @@ class Settings {
 	 */
 	public function add_help( array $help_list ): array {
 		// collect the content for the help.
-		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Settings', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide you with a variety of possible settings. You can use these to influence the behavior of the plugin as well as the appearance of your posts in the frontend.', 'personio-integration-light' ) . '</p>';
+		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Settings', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide you with a variety of possible settings. You can use these to influence the behavior of the plugin as well as the appearance of your positions in the frontend.', 'personio-integration-light' ) . '</p>';
 		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		/* translators: %1$s will be replaced by a URL. */
@@ -1284,7 +1284,7 @@ class Settings {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Positions Pro (opens new window)</a> to get much more settings.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens new window)</a> to get much more settings.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
 		}
 		$content .= '</ol>';
 
