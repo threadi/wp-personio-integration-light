@@ -578,3 +578,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 
 = 4.0.1 =
 * Changed some typos in texts
+* Optimized PHP version hint

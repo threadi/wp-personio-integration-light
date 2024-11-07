@@ -316,7 +316,7 @@ class Init {
 	}
 
 	/**
-	 * Check if website is using a valid SSL and show warning if not.
+	 * Check if website is using an old PHP version and show warning if is it using such.
 	 *
 	 * @return void
 	 */
@@ -332,6 +332,7 @@ class Init {
 
 		// bail if PHP >= 8.1 is used.
 		if ( version_compare( PHP_VERSION, '8.1', '>' ) ) {
+			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
 			return;
 		}
 
