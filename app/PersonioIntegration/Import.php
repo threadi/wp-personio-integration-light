@@ -145,8 +145,8 @@ class Import {
 	public function run(): void {
 		// get imports-object to update stats during import.
 		$imports_obj = $this->get_imports_object();
-		if ( ! ( $imports_obj instanceof Imports ) ) {
-			$this->log->add_log( 'Imports-object could not be loaded.', 'error', 'import' );
+		if ( ! $imports_obj instanceof Imports ) {
+			$this->log->add_log( __( 'Object for Imports could not be loaded.', 'personio-integration-light' ), 'error', 'import' );
 		}
 
 		// get actual local positions.
@@ -197,10 +197,10 @@ class Import {
 
 		if ( is_wp_error( $response ) ) {
 			// log possible error.
-			$this->log->add_log( 'Error on request to get Personio timestamp: ' . $response->get_error_message(), 'error', 'import' );
+			$this->log->add_log( __( 'Error on request to get Personio timestamp: ', 'personio-integration-light' ) . $response->get_error_message(), 'error', 'import' );
 		} elseif ( empty( $response ) ) {
 			// log im result is empty.
-			$this->log->add_log( 'Get empty response for Personio timestamp.', 'error', 'import' );
+			$this->log->add_log( __( 'Get empty response for Personio timestamp.', 'personio-integration-light' ), 'error', 'import' );
 		} else {
 			// get the http-status to check if call results in acceptable results.
 			$http_status = $response['http_response']->get_status();
@@ -279,7 +279,7 @@ class Import {
 					// md5-hash did not change -> do nothing if we already have positions in the DB.
 					if ( $positions_count > 0 ) {
 						// log event.
-						$this->log->add_log( sprintf( 'No changes in positions from %1$s for language %2$s according to the content we got from Personio. No import run.', wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
+						$this->log->add_log( sprintf( __( 'No changes in positions from %1$s for language %2$s according to the content we got from Personio. No import run.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
 
 						/**
 						 * Run actions for this case.
@@ -341,7 +341,8 @@ class Import {
 							// import the position and add it to the list.
 							$this->imported_postions[] = $this->get_imports_object()->import_single_position( $position, $language_name, $personio_obj->get_url() );
 						} elseif ( false !== $this->debug ) {
-							$this->log->add_log( sprintf( 'Position %1$s has not been imported from %2$s.', esc_html( $position->id ), wp_kses_post( $this->get_link() ) ), 'success', 'import' );
+							/* translators: %1$s will be replaced by the Personio ID, %2$s by a URL, %3$s by the name of the language. */
+							$this->log->add_log( sprintf( __( 'Position %1$s has not been imported from %2$s in language %3$s.', 'personio-integration-light' ), esc_html( $position->id ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
 						}
 
 						// update progress.
