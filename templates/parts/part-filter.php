@@ -25,7 +25,7 @@ if ( ! empty( $personio_attributes['filter'] ) && false !== $personio_attributes
 			do_action( 'personio_integration_filter_pre', $personio_attributes );
 
 			foreach ( $personio_attributes['filter'] as $filter ) :
-				do_action( 'personio_integration_get_filter', $filter, $personio_attributes,  $personio_attributes['link_to_anchor'] );
+				do_action( 'personio_integration_get_filter', $filter, $personio_attributes, $personio_attributes['link_to_anchor'] );
 			endforeach;
 
 			do_action( 'personio_integration_filter_post', $personio_attributes );
@@ -35,5 +35,5 @@ if ( ! empty( $personio_attributes['filter'] ) && false !== $personio_attributes
 			<a href="<?php echo esc_url( apply_filters( 'personio_integration_light_filter_url', remove_query_arg( 'personiofilter' ), $personio_attributes['link_to_anchor'] ) ); ?>" class="personio-position-filter-reset"><?php echo esc_html__( 'Reset Filter', 'wp-personio-integration' ); ?></a>
 		</form>
 	</article>
-<?php
+	<?php
 endif;

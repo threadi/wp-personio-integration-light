@@ -580,3 +580,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Changed some typos in texts
 * Optimized PHP version hint
 * Optimized import log texts
+* Fixed update run for compatibility with WordPress 6.7

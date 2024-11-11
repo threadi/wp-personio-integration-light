@@ -279,6 +279,7 @@ class Import {
 					// md5-hash did not change -> do nothing if we already have positions in the DB.
 					if ( $positions_count > 0 ) {
 						// log event.
+						/* translators: %1$s will be replaced by a URL, %2$s by the language name. */
 						$this->log->add_log( sprintf( __( 'No changes in positions from %1$s for language %2$s according to the content we got from Personio. No import run.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
 
 						/**
