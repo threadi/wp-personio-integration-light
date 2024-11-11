@@ -52,7 +52,7 @@ class Update {
 	 * @return void
 	 */
 	public function init(): void {
-		$this->run();
+		add_action( 'init', array( $this, 'run' ) );
 	}
 
 	/**

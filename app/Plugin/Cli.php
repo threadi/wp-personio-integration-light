@@ -83,7 +83,7 @@ class Cli {
 		$delete_all = isset( $options['delete-all'] ) ? 1 : 0;
 
 		// run uninstaller tasks.
-		if( ! isset( $options['not-light'] ) ) {
+		if ( ! isset( $options['not-light'] ) ) {
 			Uninstaller::get_instance()->run( array( $delete_all ) );
 		}
 

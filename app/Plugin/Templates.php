@@ -727,8 +727,8 @@ class Templates {
 	/**
 	 * Show a filter in frontend restricted to positions which are visible in list.
 	 *
-	 * @param string      $filter         Name of the filter (taxonomy-slug).
-	 * @param array       $attributes     List of attributes for the filter.
+	 * @param string $filter         Name of the filter (taxonomy-slug).
+	 * @param array  $attributes     List of attributes for the filter.
 	 *
 	 * @return void
 	 */
@@ -972,7 +972,7 @@ class Templates {
 	 */
 	public function format_filter_url( string $url, string|null $anchor ): string {
 		// bail if anchor is null.
-		if( is_null( $anchor ) ) {
+		if ( is_null( $anchor ) ) {
 			return $url;
 		}
 
@@ -994,12 +994,12 @@ class Templates {
 	 */
 	public function set_anchor( array $attributes ): array {
 		// bail if anchor is already set.
-		if( ! empty( $attributes['anchor'] ) ) {
+		if ( ! empty( $attributes['anchor'] ) ) {
 			return $attributes;
 		}
 
 		// bail if no filter is set.
-		if( empty( $attributes['filter'] ) ) {
+		if ( empty( $attributes['filter'] ) ) {
 			return $attributes;
 		}
 
@@ -1020,12 +1020,12 @@ class Templates {
 	 */
 	public function set_link_to_anchor( array $attributes, array $attributes_set_by_pagebuilder ): array {
 		// bail if link_to_anchor is already set.
-		if( ! empty( $attributes['link_to_anchor'] ) ) {
+		if ( ! empty( $attributes['link_to_anchor'] ) ) {
 			return $attributes;
 		}
 
 		// use link_to_anchor set by pagebuilder.
-		if( ! empty( $attributes_set_by_pagebuilder['link_to_anchor'] ) ) {
+		if ( ! empty( $attributes_set_by_pagebuilder['link_to_anchor'] ) ) {
 			$attributes['link_to_anchor'] = $attributes_set_by_pagebuilder['link_to_anchor'];
 			return $attributes;
 		}

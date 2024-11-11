@@ -46,7 +46,7 @@ register_deactivation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_ins
 add_action(
 	'plugins_loaded',
 	function () {
-		Update::get_instance()->run();
+		Update::get_instance()->init();
 		Init::get_instance()->init();
 	}
 );
