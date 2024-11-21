@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-require '../lib/autoload.php';
+require '../vendor/autoload.php';
 
 use MatthiasMullie\Minify\CSS;
 

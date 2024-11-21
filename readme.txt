@@ -16,16 +16,14 @@ Import and display your positions from [Personio](https://www.personio.com) dire
 
 Show application forms on your positions and transfer applications from your website to Personio with [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/).
 
-#### Hint ####
-
-The output of the positions is limited to a maximum of 10. Only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/) there is no limitation.
+[youtube https://www.youtube.com/watch?v=0qjFEbKFq3w]
 
 #### Features
 
 - manual or automatic import of open positions in German and English (other languages only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/))
 - positions are indexable by search engines (SEO)
-- each open position (job description) under own URL on your website
-- data protection friendly, as no applicant data is collected and stored
+- each open position (incl. job description) under its own URL on your website
+- data protection-friendly, as no applicant data is collected and stored
 - multiple Blocks for Block Editor, 2 classic widgets and [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
 - support for classic as well as block themes
 - optionally group the lists by categories, departments, offices etc.
@@ -36,6 +34,10 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 - Personio account with enabled XML interface
 - PHP module SimpleXML
+
+#### Hint ####
+
+The output of the positions is limited to a maximum of 10. Only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/) there is no limitation.
 
 #### the Pro license includes:
 
