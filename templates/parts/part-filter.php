@@ -6,7 +6,7 @@
  * @param string $anchor The ID to use to ID as anchor-target.
  * @param string $link_to_anchor The anchor for any targets (form or link).
  *
- * @version 4.0.0
+ * @version: 4.0.0
  * @package wp-personio-integration
  */
 
