@@ -6,7 +6,7 @@
  * @param Positions $positions_obj The positions object.
  *
  * @package personio-integration-light
- * @version 4.0.0
+ * @version: 4.0.0
  */
 
 // prevent direct access.

@@ -2,7 +2,7 @@
 /**
  * Template for output of a list of positions as archive of our custom post type.
  *
- * @version 4.0.0
+ * @version: 4.0.0
  * @package personio-integration-light
  */
 

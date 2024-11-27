@@ -306,24 +306,34 @@ class Templates {
 
 		// check the files from child-theme and compare them with our own.
 		foreach ( $files as $file ) {
-			// check only files wich are exist in our plugin.
-			if ( isset( $plugin_files[ basename( $file ) ] ) ) {
-				// get the file-version-data of the child-template-file.
-				$file_data = get_file_data( $file, $headers );
-				// only check more if something could be read.
-				if ( isset( $file_data['version'] ) ) {
-					// if version is not set, show warning.
-					if ( empty( $file_data['version'] ) ) {
-						$warnings[] = $file;
-					} elseif ( ! empty( $plugin_files[ basename( $file ) ] ) ) {
-						// compare files.
-						$plugin_file_data = get_file_data( $plugin_files[ basename( $file ) ], $headers );
-						if ( isset( $plugin_file_data['version'] ) ) {
-							if ( version_compare( $plugin_file_data['version'], $file_data['version'], '>' ) ) {
-								$warnings[] = $file;
-							}
-						}
-					}
+			// bail if file does not exist in our plugin.
+			if ( ! isset( $plugin_files[ basename( $file ) ] ) ) {
+				continue;
+			}
+
+			// get the file-version-data of the child-template-file.
+			$file_data = get_file_data( $file, $headers );
+
+			// bail if version does not exist.
+			if ( ! isset( $file_data['version'] ) ) {
+				continue;
+			}
+
+			// if version is empty, show warning (aka: no setting found).
+			if ( empty( $file_data['version'] ) ) {
+				$warnings[] = $file;
+			} elseif ( ! empty( $plugin_files[ basename( $file ) ] ) ) {
+				// get data of the original template.
+				$plugin_file_data = get_file_data( $plugin_files[ basename( $file ) ], $headers );
+
+				// bail if no version is set in original.
+				if ( ! isset( $plugin_file_data['version'] ) ) {
+					continue;
+				}
+
+				// trigger warning for this file.
+				if ( version_compare( $plugin_file_data['version'], $file_data['version'], '>' ) ) {
+					$warnings[] = $file;
 				}
 			}
 		}
