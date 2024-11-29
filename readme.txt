@@ -585,4 +585,5 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Fixed update run for compatibility with WordPress 6.7
 
 = 4.0.2 =
+* Optimized log table regarding the category filter
 * Fixed template versioning format
