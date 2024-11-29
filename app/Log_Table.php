@@ -286,10 +286,15 @@ class Log_Table extends WP_List_Table {
 	 * @return string
 	 */
 	private function get_category_filter(): string {
+		// get category from request.
 		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// return empty if nothing has been in request.
 		if ( is_null( $category ) ) {
 			return '';
 		}
+
+		// return the category.
 		return $category;
 	}
 
@@ -299,10 +304,15 @@ class Log_Table extends WP_List_Table {
 	 * @return string
 	 */
 	private function get_md5_filter(): string {
+		// get md5 from request.
 		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// return empty if nothing has been in request.
 		if ( is_null( $md5 ) ) {
 			return '';
 		}
+
+		// return the md5 hash.
 		return $md5;
 	}
 
@@ -323,7 +333,7 @@ class Log_Table extends WP_List_Table {
 		/**
 		 * Filter the list of possible states in log table.
 		 *
-		 * @since 4.0.0 Available since 4.0.0.0
+		 * @since 4.0.0 Available since 4.0.0.
 		 */
 		$list = apply_filters( 'personio_integration_light_status_list', $list );
 
