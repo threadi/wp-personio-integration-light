@@ -587,3 +587,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 = 4.0.2 =
 * Optimized log table regarding the category filter
 * Fixed template versioning format
+
+= 4.0.3 =
+* Added compatibility with plugin Duplicate Page to prevent the duplication of positions with this plugin
+* Cleaned up third party support from unused code

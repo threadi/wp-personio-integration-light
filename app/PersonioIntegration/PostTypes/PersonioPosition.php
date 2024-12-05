@@ -1651,7 +1651,7 @@ class PersonioPosition extends Post_Type {
 	 * @return bool
 	 */
 	public function is_single_page_called(): bool {
-		// bail if single is not valled.
+		// bail if single is not called.
 		if ( ! is_single() ) {
 			return false;
 		}
