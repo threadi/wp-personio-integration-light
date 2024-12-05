@@ -104,6 +104,9 @@ class Third_Party_Plugins {
 
 		// Plugin Slim SEO.
 		add_filter( 'slim_seo_meta_description_generated', array( $this, 'slim_seo_description_get_content' ), 10, 2 );
+
+		// Plugin Duplicate Page
+		add_action( 'wp_before_admin_bar_render', array( $this, 'duplicate_page_prevent_options' ), 20 );
 	}
 
 	/**
@@ -352,15 +355,6 @@ class Third_Party_Plugins {
 	}
 
 	/**
-	 * Remove SEO Frameworks meta box from our own cpt as it could not be saved.
-	 *
-	 * @return void
-	 */
-	public function remove_seo_framework_meta_box(): void {
-		remove_meta_box( 'tsf-inpost-box', PersonioPosition::get_instance()->get_name(), 'normal' );
-	}
-
-	/**
 	 * Hide translation-option on our own custom post type pages.
 	 *
 	 * @param string $capability The actual capability.
@@ -484,5 +478,35 @@ class Third_Party_Plugins {
 
 		$query['suppress_filters'] = true;
 		return $query;
+	}
+
+	/**
+	 * Prevent visibility of duplicate options on position details during usage if plugin Duplicate Page.
+	 *
+	 * @return void
+	 */
+	public function duplicate_page_prevent_options(): void {
+		// bail if we are not logged in.
+		if( ! is_user_logged_in() ) {
+			return;
+		}
+
+		// bail if plugin Duplicate Page is not active.
+		if( ! Helper::is_plugin_active( 'duplicate-page/duplicatepage.php' ) ) {
+			return;
+		}
+
+		// bail if we are in backend.
+		if( is_admin() ) {
+			return;
+		}
+
+		// bail if this is not our cpt.
+		if ( ! PersonioPosition::get_instance()->is_single_page_called() ) {
+			return;
+		}
+
+		global $wp_admin_bar;
+		$wp_admin_bar->remove_node( 'duplicate_this' );
 	}
 }
