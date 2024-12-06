@@ -202,7 +202,7 @@ class Availability extends Extensions_Base {
 		// get position as object.
 		$position_obj = Positions::get_instance()->get_position( $post_id );
 
-		// show ID-column.
+		// show column for availability.
 		if ( 'personio_integration_position_availability' === $column ) {
 			if ( $position_obj->get_extension( 'PersonioIntegrationLight\PersonioIntegration\Extensions\Availability' )->get_availability() ) {
 				$html = '<a class="dashicons dashicons-yes personio-integration-availability-check" data-post-id="' . esc_attr( $position_obj->get_id() ) . '" href="#" title="' . __( 'Available', 'personio-integration-light' ) . '"></a>';

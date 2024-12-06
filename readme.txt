@@ -6,7 +6,7 @@ Tested up to: 6.7
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 4.0.2
+Stable tag: 4.1.0
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -588,6 +588,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Optimized log table regarding the category filter
 * Fixed template versioning format
 
-= 4.0.3 =
+= 4.1.0 =
 * Added compatibility with plugin Duplicate Page to prevent the duplication of positions with this plugin
+* Added some more hooks
 * Cleaned up third party support from unused code
