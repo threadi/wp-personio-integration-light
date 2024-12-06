@@ -1286,6 +1286,14 @@ class PersonioPosition extends Post_Type {
 
 		// show the Personio ID of this position.
 		echo wp_kses_post( $position_obj->get_personio_id() );
+
+		/**
+		 * Run additional tasks.
+		 *
+		 * @since 4.1.0 Available since 4.1.0.
+		 * @param Position $position_obj The position as object.
+		 */
+		do_action( 'personio_integration_light_edit_position_box_personio_id', $position_obj );
 	}
 
 	/**
@@ -1300,6 +1308,14 @@ class PersonioPosition extends Post_Type {
 
 		// show the title of this position.
 		echo wp_kses_post( $position_obj->get_title() );
+
+		/**
+		 * Run additional tasks.
+		 *
+		 * @since 4.1.0 Available since 4.1.0.
+		 * @param Position $position_obj The position as object.
+		 */
+		do_action( 'personio_integration_light_edit_position_box_title', $position_obj );
 	}
 
 	/**
@@ -1312,6 +1328,14 @@ class PersonioPosition extends Post_Type {
 	 **/
 	public function get_meta_box_for_description( WP_Post $post ): void {
 		the_content();
+
+		/**
+		 * Run additional tasks.
+		 *
+		 * @since 4.1.0 Available since 4.1.0.
+		 * @param WP_post $post The post as object.
+		 */
+		do_action( 'personio_integration_light_edit_position_box_content', $post );
 	}
 
 	/**
@@ -1367,6 +1391,14 @@ class PersonioPosition extends Post_Type {
 				echo '<a href="' . esc_url( $filter_url ) . '">' . esc_html( $label ) . '</a> (' . absint( $term->count ) . ')';
 			}
 		}
+
+		/**
+		 * Run additional tasks.
+		 *
+		 * @since 4.1.0 Available since 4.1.0.
+		 * @param Position $position_obj The position as object.
+		 */
+		do_action( 'personio_integration_light_edit_position_box_taxonomy', $position_obj );
 	}
 
 	/**

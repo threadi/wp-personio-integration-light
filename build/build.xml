@@ -135,6 +135,12 @@
         <replace file="${src.dir}/uninstall-release.php">
             <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
         </replace>
+
+        <delete file="${build.dir}/readme-release.php"/>
+        <copy file="${src.dir}/readme.txt" tofile="${src.dir}/readme-release.txt"/>
+        <replace file="${src.dir}/readme-release.txt">
+            <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
+        </replace>
     </target>
 
     <!-- check WCS compatibility -->
@@ -204,13 +210,14 @@
             <zipfileset dir="${src.dir}/inc" prefix="${plugin.slug}/inc" />
             <zipfileset dir="${src.dir}/templates" prefix="${plugin.slug}/templates" />
             <zipfileset dir="${src.dir}" includes="wpml-config.xml" fullpath="${plugin.slug}/wpml-config.xml" />
-            <zipfileset dir="${src.dir}" includes="readme.txt" prefix="${plugin.slug}" />
+            <zipfileset dir="${src.dir}" includes="readme-release.txt" fullpath="${plugin.slug}/readme.txt" />
             <zipfileset dir="${src.dir}" includes="uninstall-release.php" fullpath="${plugin.slug}/uninstall.php" />
             <zipfileset dir="${src.dir}" includes="${plugin.slug}-release.php" fullpath="${plugin.slug}/${plugin.slug}.php" />
         </zip>
         <antcall target="autoloader-generation-dev" />
         <delete file="${src.dir}/${plugin.slug}-release.php"/>
 		<delete file="${src.dir}/uninstall-release.php"/>
+        <delete file="${src.dir}/readme-release.txt"/>
     </target>
 
     <target name="help">
