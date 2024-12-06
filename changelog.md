@@ -9,6 +9,7 @@
 
 ### Changed
 
+- plugin version number is now automatically generated in readme.txt during plugin release build
 - Cleaned up third party support from unused code
 - Moved changelog from readme.txt in GitHub-repository
 

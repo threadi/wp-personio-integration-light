@@ -6,7 +6,7 @@ Tested up to: 6.7
 Requires PHP: 8.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 4.1.0
+Stable tag: @@VersionNumber@@
 
 Import and display your positions from [Personio](https://www.personio.com) directly on your website. Get full control over how they are displayed.
 
@@ -111,9 +111,9 @@ Yes, it is without any further settings.
 
 == Upgrade Notice ==
 
-= 3.0.0 =
+= 4.0.0 =
 
-Complete revision of the plugin. Please create a backup before installing version 3.0.0 or newer.
+Complete revision of the plugin. Please create a backup before installing version 4.0.0 or newer.
 
 == Changelog ==
 
