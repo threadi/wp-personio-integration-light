@@ -15,6 +15,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class Log {
 	/**
+	 * The md5 hash.
+	 *
+	 * @var string
+	 */
+	private string $md5 = '';
+
+	/**
 	 * Constructor for Logging-Handler.
 	 */
 	public function __construct() {}
@@ -150,11 +157,40 @@ class Log {
 		// get filter.
 		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
+		/**
+		 * Filter the used category.
+		 *
+		 * @since 4.1.0 Available since 4.1.0.
+		 * @param string $category The category to use.
+		 */
+		$category = apply_filters( 'personio_integration_light_log_category', $category );
+
 		// get md5.
 		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
+		// if request is empty, get md5 from object if set.
+		if( empty( $md5 ) ) {
+			$md5 = $this->get_md5();
+		}
+
+		/**
+		 * Filter the used md5.
+		 *
+		 * @since 4.1.0 Available since 4.1.0.
+		 * @param string $md5 The md5 to use.
+		 */
+		$md5 = apply_filters( 'personio_integration_light_log_md5', $md5 );
+
 		// get errors.
 		$errors = absint( filter_input( INPUT_GET, 'errors', FILTER_SANITIZE_NUMBER_INT ) );
+
+		/**
+		 * Filter for errors.
+		 *
+		 * @since 4.1.0 Available since 4.1.0.
+		 * @param int $errors Should 1 to filter only for errors.
+		 */
+		$errors = apply_filters( 'personio_integration_light_log_errors', $errors );
 
 		// add where-condition for errors.
 		$where = '';
@@ -180,6 +216,14 @@ class Log {
 
 		// if only md5 is set.
 		if ( is_null( $category ) && ! is_null( $md5 ) ) {
+			var_dump($wpdb->prepare(
+				'SELECT `state`, `time` AS `date`, `log`, `category`
+                    FROM `' . $wpdb->prefix . 'personio_import_logs`
+                    WHERE `md5` = %s' . $where . '
+                    ORDER BY ' . $order_by . ' ' . $order . '
+                    LIMIT %d',
+				array( $md5, $limit )
+			));
 			// get and return the entries.
 			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
@@ -236,5 +280,25 @@ class Log {
 			),
 			ARRAY_A
 		);
+	}
+
+	/**
+	 * Return md5 hash.
+	 *
+	 * @return string
+	 */
+	private function get_md5(): string {
+		return $this->md5;
+	}
+
+	/**
+	 * Set the md5 hash.
+	 *
+	 * @param string $md5 The md5 hash.
+	 *
+	 * @return void
+	 */
+	public function set_md5( string $md5 ): void {
+		$this->md5 = $md5;
 	}
 }

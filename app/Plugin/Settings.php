@@ -548,6 +548,7 @@ class Settings {
 					),
 					'personioIntegration_debug'            => array(
 						'label'               => __( 'Debug-Mode', 'personio-integration-light' ),
+						'description' => sprintf( __( 'When activated, the plugin logs many processes. This information can then be seen <a href="%1$s">in the log</a>. This helps to analyze any problems that may occur. At the same time, all open positions are retrieved in full at any time - there is no need to check whether anything has changed. <strong>We do not recommend using this mode permanently in a productive system.</strong>', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
