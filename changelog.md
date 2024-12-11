@@ -6,6 +6,7 @@
 
 - Added compatibility with plugin Duplicate Page to prevent the duplication of positions with this plugin
 - Added some more hooks
+- Added support for using filter on static front page
 
 ### Changed
 
