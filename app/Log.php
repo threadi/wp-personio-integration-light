@@ -216,14 +216,6 @@ class Log {
 
 		// if only md5 is set.
 		if ( is_null( $category ) && ! is_null( $md5 ) ) {
-			var_dump($wpdb->prepare(
-				'SELECT `state`, `time` AS `date`, `log`, `category`
-                    FROM `' . $wpdb->prefix . 'personio_import_logs`
-                    WHERE `md5` = %s' . $where . '
-                    ORDER BY ' . $order_by . ' ' . $order . '
-                    LIMIT %d',
-				array( $md5, $limit )
-			));
 			// get and return the entries.
 			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(

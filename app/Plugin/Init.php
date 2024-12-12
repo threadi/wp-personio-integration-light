@@ -15,6 +15,7 @@ use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
 use PersonioIntegrationLight\Widgets\Widgets;
+use WP_Query;
 
 /**
  * Initialize this plugin.
@@ -109,8 +110,9 @@ class Init {
 		// request-hooks.
 		add_action( 'wp', array( $this, 'update_slugs' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
+		add_action( 'parse_query', array( $this, 'check_static_front_filter' ) );
 
-		// misc.
+			// misc.
 		add_action( 'admin_init', array( $this, 'check_php' ) );
 	}
 
@@ -343,5 +345,41 @@ class Init {
 		$transient_obj->set_dismissible_days( 90 );
 		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'personio-integration-light' ) . '</strong><br>' . __( 'Future versions of <i>Personio Integration Light</i> will no longer be compatible with PHP 8.0 or older. This versions <a href="https://www.php.net/supported-versions.php" target="_blank">are outdated</a> since December 2023. To continue using the plugins new features, please update your PHP version.', 'personio-integration-light' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'personio-integration-light' ) );
 		$transient_obj->save();
+	}
+
+	/**
+	 * Check for static front page with active filter and change the main query settings to show the page with filter.
+	 *
+	 * @param WP_Query $query The query object.
+	 *
+	 * @return void
+	 */
+	public function check_static_front_filter( WP_Query $query ): void {
+		// bail if this is not the main query.
+		if( ! $query->is_main_query() ) {
+			return;
+		}
+
+		// bail if 'personiofilter' is not set.
+		if( empty( $query->get( 'personiofilter' ) ) ) {
+			return;
+		}
+
+		// bail if page on front is not used.
+		$page_on_front = absint( get_option( 'page_on_front' ) );
+		if( 0 === $page_on_front ) {
+			return;
+		}
+
+		// bail if pagename is set.
+		if( ! empty( $query->get( 'pagename' ) ) ) {
+			return;
+		}
+
+		// we assume this is a static frontpage with personiofilter.
+		$query->is_home = false;
+		$query->is_page = true;
+		$query->is_singular = true;
+		$query->set( 'page_id', $page_on_front );
 	}
 }

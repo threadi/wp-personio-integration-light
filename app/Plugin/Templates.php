@@ -1040,8 +1040,8 @@ class Templates {
 			return $attributes;
 		}
 
-		// add the value from .
-		$attributes['link_to_anchor'] = '';
+		// add the default value.
+		$attributes['link_to_anchor'] = 'pif' . md5( wp_json_encode( $attributes['filter'] ) );
 
 		// return resulting attributes.
 		return $attributes;

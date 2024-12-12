@@ -6,6 +6,7 @@
 
 - Added compatibility with plugin Duplicate Page to prevent the duplication of positions with this plugin
 - Added some more hooks
+- Added support for using filter on static front page
 
 ### Changed
 
@@ -13,6 +14,14 @@
 - Cleaned up third party support from unused code
 - Moved changelog from readme.txt in GitHub-repository
 - Extended help for debug mode
+
+### Removed
+
+- Not needed additional translation file
+
+### Fixed
+
+- Missing anchor for filter
 
 ## [4.0.2] - 2024-11-29
 
