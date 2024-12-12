@@ -15,6 +15,10 @@
 - Moved changelog from readme.txt in GitHub-repository
 - Extended help for debug mode
 
+### Fixed
+
+- Missing anchor for filter
+
 ## [4.0.2] - 2024-11-29
 
 ### Changed
