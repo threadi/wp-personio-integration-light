@@ -15,6 +15,10 @@
 - Moved changelog from readme.txt in GitHub-repository
 - Extended help for debug mode
 
+### Removed
+
+- Not needed additional translation file
+
 ### Fixed
 
 - Missing anchor for filter
