@@ -198,6 +198,7 @@ body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text:last-o
 }
 
 .nav-tab-help {
+	background-color: var(--personio-pro-hint-bg);
 	float: right;
 	margin-right: 4px;
 }
