@@ -23,6 +23,7 @@
 ### Fixed
 
 - Missing anchor for filter
+- Fixed helper tab formatting
 
 ## [4.0.2] - 2024-11-29
 

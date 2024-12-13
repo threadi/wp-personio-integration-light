@@ -574,11 +574,11 @@ class Admin {
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php echo esc_html( get_admin_page_title() ); ?></h1>
-		</div>
-		<div id="poststuff">
-			<?php
-			do_meta_boxes( get_current_screen(), 'normal', null );
-			?>
+			<div id="poststuff">
+				<?php
+				do_meta_boxes( get_current_screen(), 'normal', null );
+				?>
+			</div>
 		</div>
 		<?php
 	}
