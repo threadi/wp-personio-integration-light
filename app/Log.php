@@ -169,7 +169,7 @@ class Log {
 		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// if request is empty, get md5 from object if set.
-		if( empty( $md5 ) ) {
+		if ( empty( $md5 ) ) {
 			$md5 = $this->get_md5();
 		}
 

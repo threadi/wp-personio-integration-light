@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 			$term_count = count( $terms );
 			for ( $t = 0;$t < $term_count;$t++ ) {
 				if ( ! empty( $terms[ $t ] ) ) {
-					$url = apply_filters( 'personio_integration_light_filter_url', add_query_arg(  array( 'personiofilter[' . $filter . ']' => $terms[ $t ]->term_id ) ), $attributes['link_to_anchor'] );
+					$url = apply_filters( 'personio_integration_light_filter_url', add_query_arg( array( 'personiofilter[' . $filter . ']' => $terms[ $t ]->term_id ) ), $attributes['link_to_anchor'] );
 					?>
 					<li><a href="<?php echo esc_url( $url ); ?>" class="
 											<?php

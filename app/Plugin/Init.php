@@ -356,29 +356,29 @@ class Init {
 	 */
 	public function check_static_front_filter( WP_Query $query ): void {
 		// bail if this is not the main query.
-		if( ! $query->is_main_query() ) {
+		if ( ! $query->is_main_query() ) {
 			return;
 		}
 
 		// bail if 'personiofilter' is not set.
-		if( empty( $query->get( 'personiofilter' ) ) ) {
+		if ( empty( $query->get( 'personiofilter' ) ) ) {
 			return;
 		}
 
 		// bail if page on front is not used.
 		$page_on_front = absint( get_option( 'page_on_front' ) );
-		if( 0 === $page_on_front ) {
+		if ( 0 === $page_on_front ) {
 			return;
 		}
 
 		// bail if pagename is set.
-		if( ! empty( $query->get( 'pagename' ) ) ) {
+		if ( ! empty( $query->get( 'pagename' ) ) ) {
 			return;
 		}
 
 		// we assume this is a static frontpage with personiofilter.
-		$query->is_home = false;
-		$query->is_page = true;
+		$query->is_home     = false;
+		$query->is_page     = true;
 		$query->is_singular = true;
 		$query->set( 'page_id', $page_on_front );
 	}
