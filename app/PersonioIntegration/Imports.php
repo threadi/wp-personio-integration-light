@@ -339,13 +339,31 @@ class Imports {
 
 		// send info to admin about the problem if debug is disabled.
 		if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
-			$send_to = get_bloginfo( 'admin_email' );
-			$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
-			$body    = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br><em>' . nl2br( $ausgabe ) . '</em>';
 			/* translators: %1$s will be replaced by a URL. */
-			$body   .= '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="%1$s">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
-			$body   .= '<br><br>' . __( 'Sent by the plugin Personio Integration Light', 'personio-integration-light' );
+			$support_part  = '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="%1$s">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
+			$support_part  .= '<br><br>' . __( 'This hint was sent to by the WordPress-plugin Personio Integration Light', 'personio-integration-light' );
+			/**
+			 * Filter the support part of the email on import error.
+			 *
+			 * @since 4.1.0 Available since 4.1.0.
+			 * @param string $support_part The text to use.
+			 */
+			$support_part = apply_filters( 'personio_integration_light_import_error_support_hint', $support_part );
+
+			// set recipient.
+			$send_to = get_bloginfo( 'admin_email' );
+
+			// set subject.
+			$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
+
+			// set email text.
+			$body    = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br><em>' . nl2br( $ausgabe ) . '</em>';
+			$body   .= $support_part;
+
+			// set headers.
 			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+			// send email.
 			wp_mail( $send_to, $subject, $body, $headers );
 		}
 
