@@ -80,7 +80,7 @@ jobs:
             - name: Create ZIP release
               run: |
                   rm -fr assets
-                  rm -fr builds
+                  rm -fr build
                   rm readme.md
                   rm -fr releases
                   rm -fr svn
