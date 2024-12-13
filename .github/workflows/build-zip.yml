@@ -79,9 +79,16 @@ jobs:
 
             - name: Create ZIP release
               run: |
+                  rm -fr assets
+                  rm -fr builds
+                  rm readme.md
+                  rm -fr releases
+                  rm -fr svn
+                  rm -fr languages
+                  rm -fr example
                   cd ..
                   mv ${{ github.event.repository.name }} personio-integration-light
-                  zip -r -q personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/* -x "*/.git/*" "*/.github/*" "*/blocks/*/src/*" "*/doc/*" "*/legacy-classes/Divi/.yarn/*" "*/phpcs.xml" "*/composer.json" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/readme.md" "*/ruleset.xml" "*/todo.txt" "build/*" "releases/*" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "/.editorconfig"
+                  zip -r -q personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/* -x "*/.git/*" "*/.github/*" "*/blocks/*/src/*" "*/doc/*" "*/legacy-classes/Divi/.yarn/*" "*/phpcs.xml" "*/composer.json" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/ruleset.xml" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "/.editorconfig"
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/autoload.php
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/composer/*
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/*/build/*
