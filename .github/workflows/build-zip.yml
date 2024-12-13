@@ -1,0 +1,123 @@
+name: Build release zip
+
+on:
+    push:
+        tags:
+            - '*'
+
+jobs:
+    build:
+        name: Build release zip
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup WP-CLI
+              uses: godaddy-wordpress/setup-wp-cli@1
+
+            - name: Run package installs and builds
+              run: |
+                  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+                  export NVM_DIR=~/.nvm
+                  source ~/.nvm/nvm.sh
+                  composer install
+                  composer update
+                  npm i
+                  npm i concurrently
+                  cd vendor/threadi/easy-dialog-for-wordpress/
+                  npm i
+                  npm run build
+                  cd ../../../
+                  cd vendor/threadi/easy-setup-for-wordpress/
+                  npm run build
+                  npm i
+                  cd ../../../
+                  npm run build:show
+                  npm run build:list
+                  npm run build:filter-list
+                  npm run build:filter-select
+                  npm run build:application-button
+                  npm run build:details
+                  npm run build:description
+
+            - name: Set licence server
+              uses: richardrigutins/replace-in-files@v2
+              with:
+                  files: 'inc/constants_urls.php'
+                  search-text: '@@UrlLicense@@'
+                  replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/'
+
+            - name: Set update server
+              uses: richardrigutins/replace-in-files@v2
+              with:
+                  files: 'inc/constants_urls.php'
+                  search-text: '@@UrlUpdate@@'
+                  replacement-text: 'https://laolaweb.com/wp-json/lwreleases/personio-integration/'
+
+            - name: Set support server
+              uses: richardrigutins/replace-in-files@v2
+              with:
+                  files: 'inc/constants_urls.php'
+                  search-text: '@@UrlSupport@@'
+                  replacement-text: 'https://laolaweb.com/wp-json/lwsupport/v1/'
+
+            - name: Generate checksum
+              uses: Solratic/checksum-action@v1
+              with:
+                    pattern: "inc/constants_urls.php"
+                    suffix: "MD5"
+
+            - name: Generate autoloader
+              run: composer dump-autoload -oa --no-dev
+
+            - name: Generate translation files
+              run: |
+                  wp i18n make-json languages --no-purge
+                  wp i18n make-php languages
+
+            - name: Run WordPress Coding Standard fixes
+              run: vendor/bin/phpcbf --extensions=php --ignore=*/vendor/*,*/node_modules/*,*/blocks/*,*/svn/*,*/legacy-classes/Divi/node_modules/*,*/inc/applications/texts.php,*/app/PersonioIntegration/Multilingual/TranslatePress.php,*/deprecated/*,*/languages/*,*/inc/constants_urls.php --standard=ruleset.xml .
+
+            - name: Run WordPress Coding Standard checks
+              run: vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/node_modules/*,*/blocks/*,*/svn/*,*/legacy-classes/Divi/node_modules/*,*/inc/applications/texts.php,*/app/PersonioIntegration/Multilingual/TranslatePress.php,*/deprecated/*,*/languages/*,*/inc/constants_urls.php --standard=ruleset.xml .
+
+            - name: Set version number 1
+              uses: richardrigutins/replace-in-files@v2
+              with:
+                  files: 'personio-integration.php'
+                  search-text: '@@VersionNumber@@'
+                  replacement-text: ${{ github.ref_name }}
+
+            - name: Set version number 2
+              uses: richardrigutins/replace-in-files@v2
+              with:
+                  files: 'uninstall.php'
+                  search-text: '@@VersionNumber@@'
+                  replacement-text: ${{ github.ref_name }}
+
+            - name: Set version number 3
+              uses: richardrigutins/replace-in-files@v2
+              with:
+                  files: 'readme.txt'
+                  search-text: '@@VersionNumber@@'
+                  replacement-text: ${{ github.ref_name }}
+
+            - name: Create ZIP release
+              run: |
+                  cd ..
+                  mv ${{ github.event.repository.name }} personio-integration
+                  zip -r -q personio-integration_${{ github.ref_name }}.zip personio-integration/* -x "*/.git/*" "*/.github/*" "*/blocks/*/src/*" "*/doc/*" "*/inc/constants_urls.php.dist" "*/inc/applications/texts.php" "*/legacy-classes/Divi/.yarn/*" "*/legacy-classes/Divi/node_modules/*" "*/legacy-classes/Divi/.env" "*/legacy-classes/Divi/.yarnrc" "*/legacy-classes/Divi/yarn.lock" "*/legacy-classes/Divi/package.json" "*/legacy-classes/Divi/*/.gitkeep" "*/phpcs.xml" "*/composer.json" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/readme.md" "*/ruleset.xml" "*/todo.txt" "/build/*" "/releases/*" "*/.gitignore" "/vendor/*" "*/node_modules/*" "/.editorconfig"
+                  zip -ur personio-integration_${{ github.ref_name }}.zip personio-integration/vendor/autoload.php
+                  zip -ur personio-integration_${{ github.ref_name }}.zip personio-integration/vendor/composer/*
+                  zip -ur personio-integration_${{ github.ref_name }}.zip personio-integration/vendor/threadi/*/build/*
+                  mv personio-integration ${{ github.event.repository.name }}
+                  cp personio-integration_${{ github.ref_name }}.zip ${{ github.event.repository.name }}/
+
+            - name: Create Release
+              uses: softprops/action-gh-release@v2
+              if: startsWith(github.ref, 'refs/tags/')
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  files: personio-integration_${{ github.ref_name }}.zip
