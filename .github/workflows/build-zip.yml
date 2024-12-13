@@ -41,27 +41,6 @@ jobs:
                   npm run build:details
                   npm run build:description
 
-            - name: Set licence server
-              uses: richardrigutins/replace-in-files@v2
-              with:
-                  files: 'inc/constants_urls.php'
-                  search-text: '@@UrlLicense@@'
-                  replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/'
-
-            - name: Set update server
-              uses: richardrigutins/replace-in-files@v2
-              with:
-                  files: 'inc/constants_urls.php'
-                  search-text: '@@UrlUpdate@@'
-                  replacement-text: 'https://laolaweb.com/wp-json/lwreleases/personio-integration/'
-
-            - name: Set support server
-              uses: richardrigutins/replace-in-files@v2
-              with:
-                  files: 'inc/constants_urls.php'
-                  search-text: '@@UrlSupport@@'
-                  replacement-text: 'https://laolaweb.com/wp-json/lwsupport/v1/'
-
             - name: Generate checksum
               uses: Solratic/checksum-action@v1
               with:
@@ -115,4 +94,4 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  files: personio-integration-light${{ github.ref_name }}.zip
+                  files: personio-integration-light-${{ github.ref_name }}.zip
