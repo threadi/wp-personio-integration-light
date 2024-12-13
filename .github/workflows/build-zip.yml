@@ -71,21 +71,16 @@ jobs:
             - name: Generate autoloader
               run: composer dump-autoload -oa --no-dev
 
-            - name: Generate translation files
-              run: |
-                  wp i18n make-json languages --no-purge
-                  wp i18n make-php languages
-
             - name: Run WordPress Coding Standard fixes
-              run: vendor/bin/phpcbf --extensions=php --ignore=*/vendor/*,*/node_modules/*,*/blocks/*,*/svn/*,*/legacy-classes/Divi/node_modules/*,*/inc/applications/texts.php,*/app/PersonioIntegration/Multilingual/TranslatePress.php,*/deprecated/*,*/languages/*,*/inc/constants_urls.php --standard=ruleset.xml .
+              run: vendor/bin/phpcbf --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .
 
             - name: Run WordPress Coding Standard checks
-              run: vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/node_modules/*,*/blocks/*,*/svn/*,*/legacy-classes/Divi/node_modules/*,*/inc/applications/texts.php,*/app/PersonioIntegration/Multilingual/TranslatePress.php,*/deprecated/*,*/languages/*,*/inc/constants_urls.php --standard=ruleset.xml .
+              run: vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .
 
             - name: Set version number 1
               uses: richardrigutins/replace-in-files@v2
               with:
-                  files: 'personio-integration.php'
+                  files: 'personio-integration-light.php'
                   search-text: '@@VersionNumber@@'
                   replacement-text: ${{ github.ref_name }}
 
@@ -106,13 +101,13 @@ jobs:
             - name: Create ZIP release
               run: |
                   cd ..
-                  mv ${{ github.event.repository.name }} personio-integration
-                  zip -r -q personio-integration_${{ github.ref_name }}.zip personio-integration/* -x "*/.git/*" "*/.github/*" "*/blocks/*/src/*" "*/doc/*" "*/inc/constants_urls.php.dist" "*/inc/applications/texts.php" "*/legacy-classes/Divi/.yarn/*" "*/legacy-classes/Divi/node_modules/*" "*/legacy-classes/Divi/.env" "*/legacy-classes/Divi/.yarnrc" "*/legacy-classes/Divi/yarn.lock" "*/legacy-classes/Divi/package.json" "*/legacy-classes/Divi/*/.gitkeep" "*/phpcs.xml" "*/composer.json" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/readme.md" "*/ruleset.xml" "*/todo.txt" "/build/*" "/releases/*" "*/.gitignore" "/vendor/*" "*/node_modules/*" "/.editorconfig"
-                  zip -ur personio-integration_${{ github.ref_name }}.zip personio-integration/vendor/autoload.php
-                  zip -ur personio-integration_${{ github.ref_name }}.zip personio-integration/vendor/composer/*
-                  zip -ur personio-integration_${{ github.ref_name }}.zip personio-integration/vendor/threadi/*/build/*
-                  mv personio-integration ${{ github.event.repository.name }}
-                  cp personio-integration_${{ github.ref_name }}.zip ${{ github.event.repository.name }}/
+                  mv ${{ github.event.repository.name }} personio-integration-light
+                  zip -r -q personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/* -x "*/.git/*" "*/.github/*" "*/blocks/*/src/*" "*/doc/*" "*/legacy-classes/Divi/.yarn/*" "*/phpcs.xml" "*/composer.json" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/readme.md" "*/ruleset.xml" "*/todo.txt" "build/*" "releases/*" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "/.editorconfig"
+                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/autoload.php
+                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/composer/*
+                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/*/build/*
+                  mv personio-integration-light ${{ github.event.repository.name }}
+                  cp personio-integration-light_${{ github.ref_name }}.zip ${{ github.event.repository.name }}/
 
             - name: Create Release
               uses: softprops/action-gh-release@v2
@@ -120,4 +115,4 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  files: personio-integration_${{ github.ref_name }}.zip
+                  files: personio-integration-light${{ github.ref_name }}.zip
