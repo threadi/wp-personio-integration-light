@@ -14,6 +14,7 @@
 - Cleaned up third party support from unused code
 - Moved changelog from readme.txt in GitHub-repository
 - Extended help for debug mode
+- Colored the helper tab for better visibility
 
 ### Removed
 
@@ -22,6 +23,7 @@
 ### Fixed
 
 - Missing anchor for filter
+- Fixed helper tab formatting
 
 ## [4.0.2] - 2024-11-29
 
