@@ -761,7 +761,7 @@ class PersonioPosition extends Post_Type {
 		$user = wp_get_current_user();
 
 		// if no user could be found, check if we are running on WP CLI.
-		if ( empty( $user ) ) {
+		if ( is_null( $user ) ) {
 			$username = 'WP CLI';
 		} else {
 			$username = $user->display_name;
@@ -1786,9 +1786,16 @@ class PersonioPosition extends Post_Type {
 		// get current user for logging.
 		$user = wp_get_current_user();
 
+		if( is_null( $user ) ) {
+			$username = 'WP CLI';
+		}
+		else {
+			$username = $user->display_name;
+		}
+
 		// log this event.
 		$logs = new Log();
-		$logs->add_log( sprintf( 'Positions has been deleted by %1$s.', esc_html( $user->display_name ) ), 'success', 'import' );
+		$logs->add_log( sprintf( 'Positions has been deleted by %1$s.', esc_html( $username ) ), 'success', 'import' );
 
 		/**
 		 * Run custom actions after deletion of all positions has been done.
