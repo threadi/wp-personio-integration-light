@@ -61,11 +61,15 @@ class Themes_Base {
 	 * @return void
 	 */
 	public function add_styles(): void {
+		// get the CSS file.
+		$css_file = $this->get_css_file();
+
+		// enqueue it.
 		wp_enqueue_style(
 			'personio-integration-' . $this->get_name(),
-			Helper::get_plugin_url() . 'css/' . $this->get_css_file(),
-			array( 'personio-integration-styles', 'personio-integration-additional-styles' ),
-			Helper::get_file_version( Helper::get_plugin_path() . 'css/' . $this->get_css_file() ),
+			Helper::get_plugin_url() . 'css/' . $css_file,
+			array( 'personio-integration-additional-styles' ),
+			Helper::get_file_version( Helper::get_plugin_path() . 'css/' . $css_file ),
 		);
 	}
 
