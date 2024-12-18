@@ -14,6 +14,7 @@
 - plugin version number is now automatically generated in readme.txt during plugin release build
 - Cleaned up third party support from unused code
 - Moved changelog from readme.txt in GitHub-repository
+- Optimized documentation of deleted position via WP CLI
 - Extended help for debug mode
 - Colored the helper tab for better visibility
 
