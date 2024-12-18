@@ -8,6 +8,7 @@
 - Added some more hooks
 - Added support for using filter on static front page
 - Added GitHub action to build release ZIP
+- Added style for archive with theme Blocksy
 
 ### Changed
 
@@ -26,6 +27,7 @@
 
 - Missing anchor for filter
 - Fixed helper tab formatting
+- Fixed output of custom styles for individual supported theme (like Blocksy)
 
 ## [4.0.2] - 2024-11-29
 
