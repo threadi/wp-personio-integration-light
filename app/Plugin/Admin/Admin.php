@@ -764,7 +764,7 @@ class Admin {
 		<p>
 			<?php
 			/* translators: %1$s and %2$s will be replaced by external URLs. */
-			echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">github</a>. There you will also find <a href="%2$s" target="_blank">some documentations (opens new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ) ) );
+			echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">GitHub</a>. There you will also find <a href="%2$s" target="_blank">some documentations (opens new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ) ) );
 			?>
 			</p>
 		<?php

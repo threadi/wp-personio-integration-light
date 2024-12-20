@@ -1786,10 +1786,9 @@ class PersonioPosition extends Post_Type {
 		// get current user for logging.
 		$user = wp_get_current_user();
 
-		if( is_null( $user ) ) {
+		if ( is_null( $user ) ) {
 			$username = 'WP CLI';
-		}
-		else {
+		} else {
 			$username = $user->display_name;
 		}
 

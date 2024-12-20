@@ -18,12 +18,14 @@
   display: inline-block;
   margin: 0 1.4em 0 0;
   position: relative;
+	width: auto;
   z-index :1;
 }
 
 .personio-position-filter-linklist > div ul {
   background-color: #fff;
   display: none;
+	list-style: none;
   margin: 0;
   padding: 0;
   position: absolute;
@@ -39,6 +41,8 @@
   padding: 0 4px;
   white-space: nowrap;
 }
+
+body .personio-position-filter-linklist > div li:before { display: none !important; }
 
 .personio-position-filter-linklist > div:hover ul {
   display: block;

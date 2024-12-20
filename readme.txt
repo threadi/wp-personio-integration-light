@@ -123,4 +123,4 @@ Complete revision of the plugin. Please create a backup before installing versio
 * Moved changelog from readme.txt to GitHub-hosted file
 * Cleaned up third party support from unused code
 
-[older changes](https://github.com/threadi/wp-personio-integration-light/changelog.md)
+[older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

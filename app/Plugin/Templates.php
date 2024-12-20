@@ -76,7 +76,7 @@ class Templates {
 		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt' ), 10, 2 );
 		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 );
 		add_action( 'personio_integration_get_formular', array( $this, 'get_application_link_template' ), 10, 2 );
-		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 3 );
+		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
 		add_filter( 'personio_integration_get_list_attributes', array( $this, 'filter_attributes_for_templates' ), 10, 2 );
 		add_filter( 'personio_integration_get_list_attributes', array( $this, 'set_anchor' ) );
@@ -737,14 +737,23 @@ class Templates {
 	/**
 	 * Show a filter in frontend restricted to positions which are visible in list.
 	 *
-	 * @param string $filter         Name of the filter (taxonomy-slug).
-	 * @param array  $attributes     List of attributes for the filter.
+	 * @param string $filter     Name of the filter (taxonomy-slug).
+	 * @param array  $attributes List of attributes for the filter.
 	 *
 	 * @return void
 	 */
 	public function get_filter_template( string $filter, array $attributes ): void {
+		// bail if no filtertype is set.
+		if( empty( $attributes['filtertype'] ) ) {
+			return;
+		}
+
 		$taxonomy_to_use = '';
 		$term_ids        = array();
+
+		// set anchor used by classic themes.
+		$attributes = $this->set_anchor( $attributes );
+		$attributes['link_to_anchor'] = $attributes['anchor'];
 
 		// get the terms we want to use in filter-output.
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
@@ -761,33 +770,35 @@ class Templates {
 			}
 		}
 
-		// show term as filter only if its name is known.
-		if ( strlen( $taxonomy_to_use ) > 0 ) {
-			// get the terms of this taxonomy.
-			$terms = get_terms(
-				array(
-					'taxonomy' => $taxonomy_to_use,
-					'include'  => $term_ids,
-				)
-			);
+		// bail if no term as filter is available.
+		if ( 0 === strlen( $taxonomy_to_use ) ) {
+			return;
+		}
 
-			if ( ! empty( $terms ) ) {
-				// get the value.
-				$value = 0;
-				// -> if filter is set by user in frontend.
-				if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ) {
-					$value = absint( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] );
-				}
+		// get the terms of this taxonomy.
+		$terms = get_terms(
+			array(
+				'taxonomy' => $taxonomy_to_use,
+				'include'  => $term_ids,
+			)
+		);
 
-				// get name.
-				$filtername = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_to_use )['name'];
-
-				// get url.
-				$page_url = Helper::get_current_url();
-
-				// output of filter.
-				include $this->get_template( 'parts/term-filter-' . $attributes['filtertype'] . '.php' );
+		if ( ! empty( $terms ) ) {
+			// get the value.
+			$value = 0;
+			// -> if filter is set by user in frontend.
+			if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ) {
+				$value = absint( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] );
 			}
+
+			// get name.
+			$filtername = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_to_use )['name'];
+
+			// get url.
+			$page_url = Helper::get_current_url();
+
+			// output of filter.
+			include $this->get_template( 'parts/term-filter-' . $attributes['filtertype'] . '.php' );
 		}
 	}
 
@@ -854,12 +865,19 @@ class Templates {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param bool $false False if filter should be run.
-		 */
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 **/
 		if ( apply_filters( 'personio_integration_add_kses_filter', $false ) ) {
 			return $allowed_tags;
 		}
 
-		if ( 'post' === $context ) {
+		// bail if context is not "post".
+		if ( 'post' !== $context ) {
+			return $allowed_tags;
+		}
+
+		// add necessary fields for the filter, if not already set.
+		if( empty( $allowed_tags['form'] ) ) {
 			$allowed_tags['form'] = array(
 				'action' => true,
 				'method' => true,
@@ -867,6 +885,32 @@ class Templates {
 				'id'     => true,
 			);
 		}
+		if( empty( $allowed_tags['select'] ) ) {
+			$allowed_tags['select'] = array(
+				'class' => true,
+				'id'    => true,
+				'name'  => true,
+			);
+		}
+		if( empty( $allowed_tags['option'] ) ) {
+			$allowed_tags['option'] = array(
+				'class' => true,
+				'id'    => true,
+				'value' => true
+			);
+		}
+		if( empty( $allowed_tags['input'] ) ) {
+			$allowed_tags['input'] = array(
+				'class' => true,
+				'id'    => true,
+				'name'  => true,
+				'type'  => true,
+				'value' => true,
+				'placeholder' => true
+			);
+		}
+
+		// return list of allowed tags.
 		return $allowed_tags;
 	}
 

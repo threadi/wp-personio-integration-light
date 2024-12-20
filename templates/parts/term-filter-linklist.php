@@ -9,7 +9,7 @@
  * @param array $attributes The attributes.
  *
  * @package personio-integration-light
- * @version: 4.0.0
+ * @version: 4.1.0
  */
 
 // prevent direct access.
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * Template for output a single term filter as linklist.
  */
 ?>
-	<div<?php echo ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ? ' class="personio-filter-selected"' : ''; ?>>
+	<div<?php echo ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ? ' class="personio-filter-list-selected"' : ''; ?>>
 		<label><?php echo esc_html( $filtername ); ?></label>
 		<ul>
 			<?php

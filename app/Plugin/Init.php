@@ -365,6 +365,11 @@ class Init {
 			return;
 		}
 
+		// bail if this is a single page, an archive or a preview.
+		if( is_single() || is_archive() || is_preview() ) {
+			return;
+		}
+
 		// bail if page on front is not used.
 		$page_on_front = absint( get_option( 'page_on_front' ) );
 		if ( 0 === $page_on_front ) {
@@ -376,7 +381,7 @@ class Init {
 			return;
 		}
 
-		// we assume this is a static frontpage with personiofilter.
+		// we assume this is a static frontpage with "personiofilter".
 		$query->is_home     = false;
 		$query->is_page     = true;
 		$query->is_singular = true;

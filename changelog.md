@@ -9,25 +9,28 @@
 - Added support for using filter on static front page
 - Added GitHub action to build release ZIP
 - Added style for archive with theme Blocksy
+- Added support for using filter on preview-pages while preparing the website
 
 ### Changed
 
+- Changed CSS class to mark active list filter to "personio-filter-list-selected"
 - plugin version number is now automatically generated in readme.txt during plugin release build
-- Cleaned up third party support from unused code
 - Moved changelog from readme.txt in GitHub-repository
 - Optimized documentation of deleted position via WP CLI
+- Optimized handling of filter output in frontend
 - Extended help for debug mode
 - Colored the helper tab for better visibility
 
 ### Removed
 
 - Not needed additional translation file
+- Cleaned up third party support from unused code
 
 ### Fixed
 
 - Missing anchor for filter
-- Fixed helper tab formatting
 - Fixed output of custom styles for individual supported theme (like Blocksy)
+- Fixed output of select filter via KSES-rules
 
 ## [4.0.2] - 2024-11-29
 
