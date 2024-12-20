@@ -341,7 +341,7 @@ class Imports {
 		if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
 			/* translators: %1$s will be replaced by a URL. */
 			$support_part  = '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="%1$s">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
-			$support_part  .= '<br><br>' . __( 'This hint was sent to by the WordPress-plugin Personio Integration Light', 'personio-integration-light' );
+			$support_part .= '<br><br>' . __( 'This hint was sent to by the WordPress-plugin Personio Integration Light', 'personio-integration-light' );
 			/**
 			 * Filter the support part of the email on import error.
 			 *
@@ -357,8 +357,8 @@ class Imports {
 			$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
 
 			// set email text.
-			$body    = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br><em>' . nl2br( $ausgabe ) . '</em>';
-			$body   .= $support_part;
+			$body  = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br><em>' . nl2br( $ausgabe ) . '</em>';
+			$body .= $support_part;
 
 			// set headers.
 			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
