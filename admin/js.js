@@ -285,6 +285,13 @@ jQuery(document).ready(function($) {
 
     personio_integration_extension_state_button();
 
+    /**
+     * Trigger help click.
+     */
+    $('#personio-open-help').on('click', function(e) {
+      e.preventDefault();
+      $('#contextual-help-link').trigger('click');
+    });
 });
 
 /**

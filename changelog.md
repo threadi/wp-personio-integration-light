@@ -10,6 +10,7 @@
 - Added GitHub action to build release ZIP
 - Added style for archive with theme Blocksy
 - Added support for using filter on preview-pages while preparing the website
+- Added hint for WordPress-own help for this plugin
 
 ### Changed
 
