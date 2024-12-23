@@ -21,6 +21,7 @@
 - Usage of filter on archive block marked as deprecated (will be removed on next major release)
 - Extended help for debug mode
 - Colored the helper tab for better visibility
+- Updated dependencies
 
 ### Removed
 
