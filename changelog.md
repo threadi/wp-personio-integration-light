@@ -33,6 +33,7 @@
 - Missing anchor for filter
 - Fixed output of custom styles for individual supported theme (like Blocksy)
 - Fixed output of select filter via KSES-rules
+- Fixed typo in job listing HTML-template
 
 ## [4.0.2] - 2024-11-29
 
