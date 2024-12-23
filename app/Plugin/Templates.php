@@ -896,6 +896,7 @@ class Templates {
 			$allowed_tags['option'] = array(
 				'class' => true,
 				'id'    => true,
+				'selected' => true,
 				'value' => true
 			);
 		}

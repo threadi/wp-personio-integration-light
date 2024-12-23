@@ -4,7 +4,7 @@
  *
  * @param string $filter Internal name of used filter.
  * @param string $filtername Public name of used filter.
- * @param string $value Actual selected value.
+ * @param int $value Actual selected value.
  * @param array $terms List of terms to show.
  * @param array $attributes The attributes.
  *
