@@ -6,7 +6,7 @@
  * @param Position $position  The position as object.
  *
  * @package personio-integration-light
- * @version: 4.0.0
+ * @version: 4.1.0
  */
 
 // prevent direct access.
@@ -19,7 +19,7 @@ use PersonioIntegrationLight\PersonioIntegration\Position;
  */
 $content_array = $position->get_content_as_array();
 if ( ! empty( $content_array ) ) {
-	?><div class="entry-content <?php echo esc_attr( $attributes['classes'] ); ?>""><ul class="position-integration-jobdescription">
+	?><div class="entry-content <?php echo esc_attr( $attributes['classes'] ); ?>"><ul class="position-integration-jobdescription">
 		<?php
 		foreach ( $content_array as $content ) {
 			?>
