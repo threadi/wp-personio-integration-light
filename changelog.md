@@ -18,6 +18,7 @@
 - Moved changelog from readme.txt in GitHub-repository
 - Optimized documentation of deleted position via WP CLI
 - Optimized handling of filter output in frontend
+- Usage of filter on archive block marked as deprecated (will be removed on next major release)
 - Extended help for debug mode
 - Colored the helper tab for better visibility
 
