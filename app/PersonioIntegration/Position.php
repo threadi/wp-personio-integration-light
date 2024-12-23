@@ -35,7 +35,9 @@ class Position {
 	 *
 	 * @var array
 	 */
-	protected array $data = array();
+	protected array $data = array(
+		'ID' => 0
+	);
 
 	/**
 	 * List of all taxonomy-terms of this object.
@@ -59,15 +61,6 @@ class Position {
 	private bool $debug;
 
 	/**
-	 * The post ID of this position.
-	 *
-	 * @depecated Please use get_id() instead.
-	 *
-	 * @var string
-	 */
-	public string $ID;
-
-	/**
 	 * Constructor for this position.
 	 *
 	 * @param int $post_id The post_id of this position.
@@ -79,29 +72,29 @@ class Position {
 		// get debug-mode.
 		$this->debug = 1 === absint( get_option( 'personioIntegration_debug' ) );
 
-		if ( $post_id > 0 ) {
-			// get the post as array to save it in this object.
-			$post_array = get_post( $post_id, ARRAY_A );
-
-			// if result is not an array, create an empty array.
-			if ( ! is_array( $post_array ) ) {
-				$post_array = array();
-			}
-
-			// if result is not our post-type, create an empty array.
-			if ( ! empty( $post_array['post_type'] ) && PersonioPosition::get_instance()->get_name() !== $post_array['post_type'] ) {
-				$this->data['ID'] = 0;
-				return;
-			}
-
-			// set the WP_Post-settings in this object.
-			$this->data = $post_array;
-
-			// set the main language for this position.
-			$this->set_lang( Languages::get_instance()->get_main_language() );
-		} else {
-			$this->data['ID'] = 0;
+		// bail if no ID is given.
+		if ( 0 === $post_id ) {
+			return;
 		}
+
+		// get the post as array to save it in this object.
+		$post_array = get_post( $post_id, ARRAY_A );
+
+		// if result is not an array, create an empty array.
+		if ( ! is_array( $post_array ) ) {
+			$post_array = array();
+		}
+
+		// if result is not our post-type, create an empty array.
+		if ( ! empty( $post_array['post_type'] ) && PersonioPosition::get_instance()->get_name() !== $post_array['post_type'] ) {
+			return;
+		}
+
+		// set the WP_Post-settings in this object.
+		$this->data = $post_array;
+
+		// set the main language for this position.
+		$this->set_lang( Languages::get_instance()->get_main_language() );
 	}
 
 	/**
@@ -144,9 +137,6 @@ class Position {
 
 		// search for the personioID to get an existing post-object.
 		if ( 0 === $this->get_id() ) {
-			// set ID to 0.
-			$this->data['ID'] = 0;
-
 			// collect all posts.
 			$posts = array();
 
@@ -184,9 +174,6 @@ class Position {
 				// log this event.
 				$this->log->add_log( 'PersonioId ' . $this->data['personioId'] . ' existed in database multiple times. Cleanup done.', 'error', 'import' );
 			}
-		} else {
-			// set ID to 0.
-			$this->data['ID'] = 0;
 		}
 
 		/**
@@ -327,14 +314,19 @@ class Position {
 	 * @return void
 	 */
 	public function update_terms( string $value, string $taxonomy, bool $append ): void {
-		if ( ! empty( $this->data[ $value ] ) ) {
-			if ( is_array( $this->data[ $value ] ) ) {
-				foreach ( $this->data[ $value ] as $value ) {
-					$this->update_term( $value, $taxonomy, $append );
-				}
-			} else {
-				$this->update_term( $this->data[ $value ], $taxonomy, $append );
+		// bail if no value is set.
+		if ( empty( $this->data[ $value ] ) ) {
+			return;
+		}
+
+		// import multiple values from given array.
+		if ( is_array( $this->data[ $value ] ) ) {
+			foreach ( $this->data[ $value ] as $value ) {
+				$this->update_term( $value, $taxonomy, $append );
 			}
+		} else {
+			// import single value.
+			$this->update_term( $this->data[ $value ], $taxonomy, $append );
 		}
 	}
 
