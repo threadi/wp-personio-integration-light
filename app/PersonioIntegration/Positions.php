@@ -14,7 +14,6 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Transients;
-use WP_Post;
 use WP_Query;
 
 /**

@@ -27,6 +27,7 @@
 
 - Not needed additional translation file
 - Cleaned up third party support from unused code
+- Removed unused ID attribute from position object
 
 ### Fixed
 

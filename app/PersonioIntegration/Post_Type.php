@@ -25,6 +25,13 @@ class Post_Type {
 	protected string $name = '';
 
 	/**
+	 * Initialize this object.
+	 *
+	 * @return void
+	 */
+	public function init(): void {}
+
+	/**
 	 * Return the post type name.
 	 *
 	 * @return string

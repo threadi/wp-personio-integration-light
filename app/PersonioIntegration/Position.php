@@ -16,7 +16,6 @@ use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 use SimpleXMLElement;
-use WP_Post;
 use WP_Term;
 
 /**
@@ -91,16 +90,12 @@ class Position {
 
 			// if result is not our post-type, create an empty array.
 			if ( ! empty( $post_array['post_type'] ) && PersonioPosition::get_instance()->get_name() !== $post_array['post_type'] ) {
-				$post_array       = array();
 				$this->data['ID'] = 0;
 				return;
 			}
 
 			// set the WP_Post-settings in this object.
 			$this->data = $post_array;
-
-			// set deprecated ID param on object.
-			$this->ID = $this->get_id();
 
 			// set the main language for this position.
 			$this->set_lang( Languages::get_instance()->get_main_language() );
@@ -136,6 +131,7 @@ class Position {
 		 *
 		 * @param bool $false Return false to import this position.
 		 * @param Position $this The object of the position.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_check_requirement_to_import_single_position', $false, $this ) ) {
 			return;
@@ -193,7 +189,6 @@ class Position {
 			$this->data['ID'] = 0;
 		}
 
-		$false = false;
 		/**
 		 * Filter if position should be imported after we get an ID.
 		 *
@@ -201,6 +196,8 @@ class Position {
 		 *
 		 * @param bool $false Return false to import this position.
 		 * @param Position $this The object of the position.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_prevent_import_of_single_position', $false, $this ) ) {
 			return;
