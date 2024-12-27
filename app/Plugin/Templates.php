@@ -744,7 +744,7 @@ class Templates {
 	 */
 	public function get_filter_template( string $filter, array $attributes ): void {
 		// bail if no filtertype is set.
-		if( empty( $attributes['filtertype'] ) ) {
+		if ( empty( $attributes['filtertype'] ) ) {
 			return;
 		}
 
@@ -752,7 +752,7 @@ class Templates {
 		$term_ids        = array();
 
 		// set anchor used by classic themes.
-		$attributes = $this->set_anchor( $attributes );
+		$attributes                   = $this->set_anchor( $attributes );
 		$attributes['link_to_anchor'] = $attributes['anchor'];
 
 		// get the terms we want to use in filter-output.
@@ -866,7 +866,7 @@ class Templates {
 		 *
 		 * @param bool $false False if filter should be run.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
-		 **/
+		 */
 		if ( apply_filters( 'personio_integration_add_kses_filter', $false ) ) {
 			return $allowed_tags;
 		}
@@ -877,7 +877,7 @@ class Templates {
 		}
 
 		// add necessary fields for the filter, if not already set.
-		if( empty( $allowed_tags['form'] ) ) {
+		if ( empty( $allowed_tags['form'] ) ) {
 			$allowed_tags['form'] = array(
 				'action' => true,
 				'method' => true,
@@ -885,29 +885,29 @@ class Templates {
 				'id'     => true,
 			);
 		}
-		if( empty( $allowed_tags['select'] ) ) {
+		if ( empty( $allowed_tags['select'] ) ) {
 			$allowed_tags['select'] = array(
 				'class' => true,
 				'id'    => true,
 				'name'  => true,
 			);
 		}
-		if( empty( $allowed_tags['option'] ) ) {
+		if ( empty( $allowed_tags['option'] ) ) {
 			$allowed_tags['option'] = array(
-				'class' => true,
-				'id'    => true,
+				'class'    => true,
+				'id'       => true,
 				'selected' => true,
-				'value' => true
+				'value'    => true,
 			);
 		}
-		if( empty( $allowed_tags['input'] ) ) {
+		if ( empty( $allowed_tags['input'] ) ) {
 			$allowed_tags['input'] = array(
-				'class' => true,
-				'id'    => true,
-				'name'  => true,
-				'type'  => true,
-				'value' => true,
-				'placeholder' => true
+				'class'       => true,
+				'id'          => true,
+				'name'        => true,
+				'type'        => true,
+				'value'       => true,
+				'placeholder' => true,
 			);
 		}
 

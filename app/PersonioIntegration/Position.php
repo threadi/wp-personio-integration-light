@@ -36,7 +36,7 @@ class Position {
 	 * @var array
 	 */
 	protected array $data = array(
-		'ID' => 0
+		'ID' => 0,
 	);
 
 	/**

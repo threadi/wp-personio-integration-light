@@ -366,7 +366,7 @@ class Init {
 		}
 
 		// bail if this is a single page, an archive or a preview.
-		if( is_single() || is_archive() || is_preview() ) {
+		if ( is_single() || is_archive() || is_preview() ) {
 			return;
 		}
 

@@ -117,10 +117,32 @@ Complete revision of the plugin. Please create a backup before installing versio
 
 == Changelog ==
 
-= 4.1.0 =
-* Added compatibility with plugin Duplicate Page to prevent the duplication of positions with this plugin
-* Added some more hooks
-* Moved changelog from readme.txt to GitHub-hosted file
-* Cleaned up third party support from unused code
+= @@VersionNumber@@ =
+- Added compatibility with plugin Duplicate Page to prevent the duplication of positions with this plugin
+- Added some more hooks
+- Added support for using filter on static front page
+- Added GitHub action to build release ZIP
+- Added style for archive with theme Blocksy
+- Added support for using filter on preview-pages while preparing the website
+- Added hint for WordPress-own help for this plugin
+- Changed CSS class to mark active list filter to "personio-filter-list-selected"
+- plugin version number is now automatically generated in readme.txt during plugin release build
+- Moved changelog from readme.txt in GitHub-repository
+- Optimized documentation of deleted position via WP CLI
+- Optimized handling of filter output in frontend
+- Optimized position object
+- Usage of filter on archive block marked as deprecated (will be removed on next major release)
+- Extended help for debug mode
+- Colored the helper tab for better visibility
+- Updated dependencies
+- Removed not needed additional translation file
+- Cleaned up third party support from unused code
+- Removed unused ID attribute from position object
+- Fixed missing anchor for filter
+- Fixed wrong textdomain in main filter template (which results in english and not translatable texts for links and buttons)
+- Fixed compatibility with WordPress 6.7 if any compatibility check results in a message in backend
+- Fixed output of custom styles for individual supported theme (like Blocksy)
+- Fixed output of select filter via KSES-rules
+- Fixed typo in job listing HTML-template
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
