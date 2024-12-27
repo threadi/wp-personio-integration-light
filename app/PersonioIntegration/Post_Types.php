@@ -61,10 +61,16 @@ class Post_Types {
 	 */
 	public function register_post_type(): void {
 		foreach ( $this->get_post_types() as $post_type ) {
+			// get the object.
 			$obj = call_user_func( $post_type . '::get_instance' );
-			if ( $obj instanceof Post_Type ) {
-				$obj->init();
+
+			// bail if instance is not our Post_Type.
+			if ( ! $obj instanceof Post_Type ) {
+				continue;
 			}
+
+			// initialize the object.
+			$obj->init();
 		}
 	}
 

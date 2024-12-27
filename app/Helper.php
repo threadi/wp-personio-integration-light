@@ -731,7 +731,7 @@ class Helper {
 	 *
 	 * @return string
 	 */
-	public static function get_github_documentation_link() {
+	public static function get_github_documentation_link(): string {
 		return 'https://github.com/threadi/wp-personio-integration-light/tree/master/doc';
 	}
 }

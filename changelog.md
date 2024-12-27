@@ -10,6 +10,7 @@
 - Added GitHub action to build release ZIP
 - Added style for archive with theme Blocksy
 - Added support for using filter on preview-pages while preparing the website
+- Added hint for WordPress-own help for this plugin
 
 ### Changed
 
@@ -18,6 +19,7 @@
 - Moved changelog from readme.txt in GitHub-repository
 - Optimized documentation of deleted position via WP CLI
 - Optimized handling of filter output in frontend
+- Optimized position object
 - Usage of filter on archive block marked as deprecated (will be removed on next major release)
 - Extended help for debug mode
 - Colored the helper tab for better visibility
@@ -25,12 +27,15 @@
 
 ### Removed
 
-- Not needed additional translation file
+- Removed not needed additional translation file
 - Cleaned up third party support from unused code
+- Removed unused ID attribute from position object
 
 ### Fixed
 
-- Missing anchor for filter
+- Fixed missing anchor for filter
+- Fixed wrong textdomain in main filter template (which results in english and not translatable texts for links and buttons)
+- Fixed compatibility with WordPress 6.7 if any compatibility check results in a message in backend
 - Fixed output of custom styles for individual supported theme (like Blocksy)
 - Fixed output of select filter via KSES-rules
 - Fixed typo in job listing HTML-template

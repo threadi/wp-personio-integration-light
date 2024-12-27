@@ -757,6 +757,11 @@ class Admin {
 		?>
 		<p>
 			<?php
+			echo wp_kses_post( __( 'Click on the <a href="#" id="personio-open-help">help button</a> top right in this site. You will find multiple help texts for this plugin.', 'personio-integration-light' ) );
+			?>
+		</p>
+		<p>
+			<?php
 			/* translators: %1$s will be replaced by the support-forum-URL. */
 			echo wp_kses_post( sprintf( __( 'If you have any questions do not hesitate to ask them in our <a href="%1$s" target="_blank">forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) );
 			?>

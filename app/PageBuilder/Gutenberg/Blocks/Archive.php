@@ -143,7 +143,7 @@ class Archive extends Blocks_Basis {
 
 		// mark "showFilter" as deprecated.
 		if( ! empty( $attributes['showFilter'] ) ) {
-			_deprecated_argument( 'PersonioIntegrationLight:Archive:render', 4.0, __( 'Please your the filter blocks instead of the filter on archive block!', 'personio-integration-light' ) );
+			_deprecated_argument( 'PersonioIntegrationLight:Archive:render', 4.0, esc_html__( 'Please your the filter blocks instead of the filter on archive block!', 'personio-integration-light' ) );
 		}
 
 		// collect all settings for this block.

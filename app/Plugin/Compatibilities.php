@@ -52,25 +52,31 @@ class Compatibilities {
 		// add our own hook to prevent checks in wp-admin.
 		add_filter( 'personio_integration_run_compatibility_checks', array( $this, 'prevent_checks_outside_of_admin' ) );
 
-		$false = false;
-		/**
-		 * Filter whether the compatibility-checks should be run (false) or not (true)
-		 *
-		 * @since 3.0.0 Available since 3.0.0
-		 *
-		 * @param bool $false True to prevent compatibility-checks.
-		 */
-		if ( apply_filters( 'personio_integration_run_compatibility_checks', $false ) ) {
-			return;
-		}
+		// check each compatibility.
+		add_action(
+			'init',
+			function () {
+				$false = false;
+				/**
+				 * Filter whether the compatibility-checks should be run (false) or not (true)
+				 *
+				 * @since 3.0.0 Available since 3.0.0
+				 *
+				 * @param bool $false True to prevent compatibility-checks.
+				 */
+				if ( apply_filters( 'personio_integration_run_compatibility_checks', $false ) ) {
+					return;
+				}
 
-		// loop through our compatibility-checks.
-		foreach ( $this->get_compatibility_checks() as $compatibility_check ) {
-			$obj = call_user_func( $compatibility_check . '::get_instance' );
-			if ( $obj instanceof Compatibilities_Base ) {
-				$obj->check();
+				// loop through our compatibility-checks.
+				foreach ( $this->get_compatibility_checks() as $compatibility_check ) {
+					$obj = call_user_func( $compatibility_check . '::get_instance' );
+					if ( $obj instanceof Compatibilities_Base ) {
+						$obj->check();
+					}
+				}
 			}
-		}
+		);
 	}
 
 	/**
