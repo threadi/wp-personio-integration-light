@@ -49,6 +49,5 @@ add_action(
 	function () {
 		Update::get_instance()->init();
 		Init::get_instance()->init();
-		Positions::get_instance()->trigger_reimport_hint();
 	}
 );
