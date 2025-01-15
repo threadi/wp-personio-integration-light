@@ -8,6 +8,11 @@
 - Optimized loading of JS in backend to in order not to influence the loading times there too much
 - Changed dialog and handling of extension state changes
 
+### Removed
+
+- Removed support for filter on archive-widget (please use the filter-widget for this)
+- Removed support for all since version 3.0.0 as deprecated marked functions and attributes
+
 ### Fixed
 
 - Fixed potential PHP-warning regarding filter in templates
