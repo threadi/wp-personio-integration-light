@@ -1633,6 +1633,9 @@ class PersonioPosition extends Post_Type {
 		// get the positions object.
 		$positions_obj = Positions::get_instance();
 
+		// show wrapper.
+		?><div class="community-events"><?php
+
 		// show results.
 		if ( 0 === $position_count ) {
 			echo '<p>' . esc_html__( 'Actually there are no positions imported from Personio.', 'personio-integration-light' ) . '</p>';
@@ -1675,6 +1678,9 @@ class PersonioPosition extends Post_Type {
 				</a></p>
 			<?php
 		}
+
+		// show end of wrapper.
+		?></div><?php
 	}
 
 	/**

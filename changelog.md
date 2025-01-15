@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Optimized loading of JS in backend to in order not to influence the loading times there too much
+
 ### Fixed
 
 - Fixed potential PHP-warning regarding filter in templates
