@@ -14,6 +14,7 @@
  * @package personio-integration-light
  */
 
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Init;
 use PersonioIntegrationLight\Plugin\Update;
 
@@ -48,5 +49,6 @@ add_action(
 	function () {
 		Update::get_instance()->init();
 		Init::get_instance()->init();
+		Positions::get_instance()->trigger_reimport_hint();
 	}
 );
