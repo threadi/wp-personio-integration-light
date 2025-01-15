@@ -641,12 +641,14 @@ function personio_integration_ajax_error_dialog( errortext, texts ) {
  * Change extension state via button click.
  */
 function personio_integration_extension_state_button() {
-  // create confirm dialog for deletion of all positions.
+  // add state change event for each extension in the list.
   jQuery('.personioposition_page_personiopositionextensions .button-state').on('click', function (e) {
     e.preventDefault();
 
+    // get the button object.
     let button = jQuery(this);
 
+    // send ajax request and process the response.
     jQuery.ajax( {
       type: "POST",
       url: personioIntegrationLightJsVars.ajax_url,
@@ -655,23 +657,22 @@ function personio_integration_extension_state_button() {
         'extension': button.data( 'extension' ),
         'nonce': personioIntegrationLightJsVars.extension_state_nonce
       },
-      success: function (data) {
-        if( data.success ) {
-          if( data.enabled ) {
+      error: function( jqXHR, textStatus, errorThrown ) {
+        personio_integration_ajax_error_dialog( errorThrown )
+      },
+      success: function (dialog_config) {
+        if( dialog_config.success ) {
             button.removeClass( 'button-state-disabled' );
             button.addClass( 'button-state-enabled' );
             button.parents('tr').find('.row-actions-wrapper').show();
-          }
-          else {
-            button.removeClass( 'button-state-enabled' );
-            button.addClass( 'button-state-disabled' );
-            button.parents('tr').find('.row-actions-wrapper').hide();
-          }
-          button.html( data.title );
         }
         else {
-          // TODO error anzeigen.
+          button.removeClass( 'button-state-enabled' );
+          button.addClass( 'button-state-disabled' );
+          button.parents('tr').find('.row-actions-wrapper').hide();
         }
+        button.html( dialog_config.data.button_title );
+        personio_integration_create_dialog( dialog_config.data );
       }
     } )
   });

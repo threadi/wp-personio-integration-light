@@ -5,6 +5,7 @@
 ### Changed
 
 - Optimized loading of JS in backend to in order not to influence the loading times there too much
+- Changed dialog and handling of extension state changes
 
 ### Fixed
 
