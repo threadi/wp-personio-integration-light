@@ -17,8 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// do nothing if PHP-version is not 8.0 or newer.
-if ( version_compare( PHP_VERSION, '8.0', '<' ) ) {
+// do nothing if PHP-version is not 8.1 or newer.
+if ( version_compare( PHP_VERSION, '8.1', '<' ) ) {
 	return;
 }
 

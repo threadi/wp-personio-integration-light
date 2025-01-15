@@ -3,7 +3,7 @@
  * Plugin Name:       Personio Integration Light
  * Description:       Provides recruiting handling for Personio.
  * Requires at least: 4.9.24
- * Requires PHP:      8.0
+ * Requires PHP:      8.1
  * Version:           @@VersionNumber@@
  * Author:            laOlaWeb
  * Author URI:        https://laolaweb.com
@@ -14,12 +14,14 @@
  * @package personio-integration-light
  */
 
-use PersonioIntegrationLight\PersonioIntegration\Positions;
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
+
 use PersonioIntegrationLight\Plugin\Init;
 use PersonioIntegrationLight\Plugin\Update;
 
-// do nothing if PHP-version is not 8.0 or newer.
-if ( version_compare( PHP_VERSION, '8.0', '<' ) ) {
+// do nothing if PHP-version is not 8.1 or newer.
+if ( version_compare( PHP_VERSION, '8.1', '<' ) ) {
 	return;
 }
 
