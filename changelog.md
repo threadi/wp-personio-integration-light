@@ -7,6 +7,7 @@
 - PHP 8.1 is now minimum requirement (plugin is fully compatible until PHP 8.4)
 - Optimized loading of JS in backend to in order not to influence the loading times there too much
 - Changed dialog and handling of extension state changes
+- All external links are now marked with an icon
 
 ### Removed
 
