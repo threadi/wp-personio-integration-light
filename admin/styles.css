@@ -124,11 +124,9 @@ body.post-type-personioposition a[target="_blank"]:after {
 	vertical-align: middle;
 }
 
-body.post-type-personioposition .nav-tab a[target="_blank"]:after {
+body.post-type-personioposition .nav-tab a[target="_blank"]:after, body.post-type-personioposition a.nav-tab[target="_blank"]:after {
 	font-size: 1.2em;
-	position: relative;
-	top: -2px;
-	z-index: 1;
+	margin-top: -7px;
 }
 
 .personioposition_page_personioPositions th#state { width: 40px }
