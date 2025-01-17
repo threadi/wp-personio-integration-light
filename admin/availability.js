@@ -37,7 +37,7 @@ function personio_start_availability_check( post_id ) {
         personio_get_availability_check_info( post_id )
       }, 1000 );
     },
-    error: function (jqXHR, textStatus, errorThrown) {
+    error: function( jqXHR, textStatus, errorThrown ) {
       personio_integration_ajax_error_dialog( errorThrown )
     }
   } );
@@ -54,6 +54,9 @@ function personio_get_availability_check_info( post_id ) {
         'action': 'personio_get_availability_check_info',
         'post_id': post_id,
         'nonce': personioIntegrationLightAvailabilityJsVars.get_availability_check_nonce
+      },
+      error: function( jqXHR, textStatus, errorThrown ) {
+        personio_integration_ajax_error_dialog( errorThrown )
       },
       success: function (data) {
         let running = data[0];

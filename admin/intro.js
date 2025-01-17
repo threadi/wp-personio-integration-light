@@ -65,7 +65,10 @@ jQuery(document).ready(function($) {
           data: {
             'action': 'personio_intro_closed',
             'nonce': personioIntegrationLightIntroJsVars.intro_closed_nonce
-          }
+          },
+          error: function( jqXHR, textStatus, errorThrown ) {
+            personio_integration_ajax_error_dialog( errorThrown )
+          },
         } )
       } )
       .start();

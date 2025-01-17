@@ -11,6 +11,7 @@
 - Optimized loading of JS in backend to in order not to influence the loading times there too much
 - Changed dialog and handling of extension state changes
 - All external links are now marked with an icon
+- Clearer error text for AJAX errors
 
 ### Removed
 
