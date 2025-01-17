@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added default options to hide title and reset link on filter
+
 ### Changed
 
 - PHP 8.1 is now minimum requirement (plugin is fully compatible until PHP 8.4)

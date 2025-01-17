@@ -317,6 +317,32 @@ class Settings {
 							'personioIntegrationEnableFilter' => 1,
 						),
 					),
+					'personioIntegrationHideFilterTitle'       => array(
+						'label'               => __( 'Hide filter title', 'personio-integration-light' ),
+						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'options'             => Helper::get_filter_types(),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type'    => 'integer',
+							'default' => 1,
+						),
+						'depends'             => array(
+							'personioIntegrationEnableFilter' => 1,
+						),
+					),
+					'personioIntegrationHideFilterReset'       => array(
+						'label'               => __( 'Hide reset link', 'personio-integration-light' ),
+						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'options'             => Helper::get_filter_types(),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type'    => 'integer',
+							'default' => 0,
+						),
+						'depends'             => array(
+							'personioIntegrationEnableFilter' => 1,
+						),
+					),
 					'personioIntegrationTemplateContentListingTemplate' => array(
 						'label'               => __( 'Choose template for listing', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Select', 'get' ),

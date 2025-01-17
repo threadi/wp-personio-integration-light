@@ -432,7 +432,7 @@ class PersonioPosition extends Post_Type {
 			'nopagination'            => $pagination,
 			'groupby'                 => '',
 			'styles'                  => '',
-			'classes'                 => '',
+			'classes'                 => $this->get_default_classes(),
 			'anchor'                  => '',
 			'link_to_anchor'          => '',
 		);
@@ -2274,5 +2274,36 @@ class PersonioPosition extends Post_Type {
 
 		// return resulting list.
 		return $help_list;
+	}
+
+	/**
+	 * Return list of default classes depending on main settings.
+	 *
+	 * @return string
+	 */
+	private function get_default_classes(): string {
+		// initiate the list of classes.
+		$css_classes = array();
+
+		// add hide title.
+		if ( 1 === absint( get_option( 'personioIntegrationHideFilterTitle' ) ) ) {
+			$css_classes[] = 'personio-hide-title';
+		}
+
+		// add hide reset.
+		if ( 1 === absint( get_option( 'personioIntegrationHideFilterReset' ) ) ) {
+			$css_classes[] = 'personio-hide-reset';
+		}
+
+		/**
+		 * Filter the default classes for each output of positions.
+		 *
+		 * @since 4.2.0 Available since 4.2.0
+		 * @param array $css_classes List of classes.
+		 */
+		$css_classes = apply_filters( 'personio_integration_light_default_css_classes', $css_classes );
+
+		// return the resulting list.
+		return implode(' ', $css_classes );
 	}
 }
