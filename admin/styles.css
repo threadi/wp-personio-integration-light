@@ -346,3 +346,8 @@ body.post-type-personioposition .button span.dashicons {
 	margin-left: 1em;
 	width: 240px;
 }
+
+#dashboard_personio_integration_positions p:last-child:after {
+	content: url(../gfx/personio_icon.png);
+	float: right;
+}

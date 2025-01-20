@@ -1661,7 +1661,7 @@ class PersonioPosition extends Post_Type {
 
 			// show the list.
 			?>
-			<ul class="personio_positions">
+			<ul class="personio-positions activity-block">
 			<?php
 			foreach ( $positions_list as $position ) {
 				?>
