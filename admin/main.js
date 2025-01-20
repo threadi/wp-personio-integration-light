@@ -671,9 +671,9 @@ function personio_integration_extension_state_button() {
       },
       success: function (dialog_config) {
         if( dialog_config.success ) {
-            button.removeClass( 'button-state-disabled' );
-            button.addClass( 'button-state-enabled' );
-            button.parents('tr').find('.row-actions-wrapper').show();
+          button.removeClass( 'button-state-disabled' );
+          button.addClass( 'button-state-enabled' );
+          button.parents('tr').find('.row-actions-wrapper').show();
         }
         else {
           button.removeClass( 'button-state-enabled' );

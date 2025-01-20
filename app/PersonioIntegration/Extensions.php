@@ -277,8 +277,18 @@ class Extensions {
 		 */
 		$dialog = apply_filters( 'personio_integration_light_extension_state_changed_dialog', $dialog, $obj );
 
+		if( $obj->is_enabled() ) {
+			// send the answer.
+			wp_send_json_success(
+				array(
+					'detail' => $dialog,
+					'button_title' => $button_title
+				)
+			);
+		}
+
 		// send the answer.
-		wp_send_json_success(
+		wp_send_json_error(
 			array(
 				'detail' => $dialog,
 				'button_title' => $button_title
