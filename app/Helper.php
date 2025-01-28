@@ -13,6 +13,8 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
+use PersonioIntegrationPro\PersonioIntegration\PostTypes\Personio_Application;
+use PersonioIntegrationPro\PersonioIntegration\PostTypes\Personio_Form_Template;
 use WP_Post;
 use WP_Post_Type;
 use WP_Rewrite;
@@ -751,7 +753,7 @@ class Helper {
 		// do not load our files outside our own backend pages.
 		if( in_array( $hook, array( 'post.php', 'edit-tags.php'), true ) && function_exists( 'get_current_screen' ) ) {
 			$screen = get_current_screen();
-			if( PersonioPosition::get_instance()->get_name() !== $screen->post_type ) {
+			if( ! in_array( $screen->post_type, array( PersonioPosition::get_instance()->get_name(), Personio_Form_Template::get_instance()->get_name(), Personio_Application::get_instance()->get_name() ), true ) ) {
 				return true;
 			}
 		}
