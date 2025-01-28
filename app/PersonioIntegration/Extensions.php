@@ -197,26 +197,103 @@ class Extensions {
 		// get the name of the extension to change.
 		$extension_name = filter_input( INPUT_POST, 'extension', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
-		if ( ! empty( $extension_name ) ) {
-			// get the extension object.
-			$obj = $this->get_extension_by_name( $extension_name );
-			if ( $obj instanceof Extensions_Base ) {
-				// toggle the state.
-				$obj->toggle_state();
-
-				// return success-message.
-				wp_send_json(
-					array(
-						'success' => true,
-						'enabled' => $obj->is_enabled(),
-						'title'   => $obj->is_enabled() ? __( 'Enabled', 'personio-integration-light' ) : __( 'Disabled', 'personio-integration-light' ),
-					)
-				);
-			}
+		// bail if no extension name was set.
+		if ( empty( $extension_name ) ) {
+			wp_send_json_error(
+				array(
+					'detail' =>
+						array(
+							'title'   => __( 'No extension given', 'personio-integration-light' ),
+							'texts'   => array(
+								'<p>' . __( 'Please check the request you sent and try it again.', 'personio-integration-light' ) . '</p>',
+							),
+							'buttons' => array(
+								array(
+									'action' => 'closeDialog();',
+									'variant' => 'primary',
+									'text' => __( 'OK', 'personio-integration-light' ),
+								),
+							),
+						),
+				)
+			);
 		}
 
-		// return error in response.
-		wp_send_json( array( 'success' => false ) );
+		// get the extension object.
+		$obj = $this->get_extension_by_name( $extension_name );
+
+		// bail if extension could not be found.
+		if( ! $obj instanceof Extensions_Base ) {
+			wp_send_json_error(
+				array(
+					'detail' =>
+						array(
+							'title'   => __( 'Extension not found', 'personio-integration-light' ),
+							'texts'   => array(
+								'<p>' . __( 'Please check the request you sent and try it again.', 'personio-integration-light' ) . '</p>',
+							),
+							'buttons' => array(
+								array(
+									'action' => 'closeDialog();',
+									'variant' => 'primary',
+									'text' => __( 'OK', 'personio-integration-light' ),
+								),
+							),
+						),
+				)
+			);
+		}
+
+		// toggle the state of the extension (this triggers extension-own handlers).
+		$obj->toggle_state();
+
+		// return success-message depending on the new extension state.
+		$title = __( 'Extension has been disabled', 'personio-integration-light' );
+		$text = __( 'The extension has been disabled.', 'personio-integration-light' );
+		$button_title = __( 'Disabled', 'personio-integration-light' );
+		if( $obj->is_enabled() ) {
+			$title = __( 'Extension has been enabled', 'personio-integration-light' );
+			$text = __( 'The extension has been successfully enabled.', 'personio-integration-light' );
+			$button_title = __( 'Enabled', 'personio-integration-light' );
+		}
+
+		// create the dialog for the answer.
+		$dialog = array(
+			'title'   => $title,
+			'texts'   => array(
+				'<p>' . $text . '</p>',
+			),
+			'buttons' => array(
+				array(
+					'action' => 'closeDialog();',
+					'variant' => 'primary',
+					'text' => __( 'OK', 'personio-integration-light' ),
+				),
+			),
+		);
+
+		/**
+		 * Filter the success dialog if state of extension has been changed.
+		 */
+		$dialog = apply_filters( 'personio_integration_light_extension_state_changed_dialog', $dialog, $obj );
+
+		if( $obj->is_enabled() ) {
+			// send the answer.
+			wp_send_json_success(
+				array(
+					'detail' => $dialog,
+					'button_title' => $button_title
+				)
+			);
+		}
+
+		// send the answer.
+		wp_send_json_error(
+			array(
+				'detail' => $dialog,
+				'button_title' => $button_title
+			)
+		);
 	}
 
 	/**

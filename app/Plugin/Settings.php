@@ -317,6 +317,32 @@ class Settings {
 							'personioIntegrationEnableFilter' => 1,
 						),
 					),
+					'personioIntegrationHideFilterTitle'       => array(
+						'label'               => __( 'Hide filter title', 'personio-integration-light' ),
+						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'options'             => Helper::get_filter_types(),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type'    => 'integer',
+							'default' => 1,
+						),
+						'depends'             => array(
+							'personioIntegrationEnableFilter' => 1,
+						),
+					),
+					'personioIntegrationHideFilterReset'       => array(
+						'label'               => __( 'Hide reset link', 'personio-integration-light' ),
+						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'options'             => Helper::get_filter_types(),
+						'readonly'            => ! Helper::is_personio_url_set(),
+						'register_attributes' => array(
+							'type'    => 'integer',
+							'default' => 0,
+						),
+						'depends'             => array(
+							'personioIntegrationEnableFilter' => 1,
+						),
+					),
 					'personioIntegrationTemplateContentListingTemplate' => array(
 						'label'               => __( 'Choose template for listing', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Select', 'get' ),
@@ -871,7 +897,7 @@ class Settings {
 					// decide which tab-type we want to output.
 					if ( isset( $tab_settings['only_pro'] ) && false !== $tab_settings['only_pro'] ) {
 						?>
-						<span class="nav-tab" title="<?php echo esc_attr__( 'Only in Pro.', 'personio-integration-light' ); ?>"><?php echo esc_html( $tab_settings['label'] ); ?> <a class="pro-marker" href="<?php echo esc_url( Helper::get_pro_url() ); ?>" target="_blank">Pro <span class="dashicons dashicons-external"></span></a></span>
+						<span class="nav-tab" title="<?php echo esc_attr__( 'Only in Pro.', 'personio-integration-light' ); ?>"><?php echo esc_html( $tab_settings['label'] ); ?> <a class="pro-marker" href="<?php echo esc_url( Helper::get_pro_url() ); ?>" target="_blank">Pro</a></span>
 						<?php
 					} elseif ( isset( $tab_settings['do_not_link'] ) && false !== $tab_settings['do_not_link'] ) {
 						?>

@@ -113,9 +113,9 @@ class Admin {
 		// backend-JS.
 		wp_enqueue_script(
 			'personio-integration-admin',
-			Helper::get_plugin_url() . 'admin/js.js',
+			Helper::get_plugin_url() . 'admin/main.js',
 			array( 'jquery', 'easy-dialog' ),
-			Helper::get_file_version( Helper::get_plugin_path() . 'admin/js.js' ),
+			Helper::get_file_version( Helper::get_plugin_path() . 'admin/main.js' ),
 			true
 		);
 
@@ -167,6 +167,7 @@ class Admin {
 				'txt_deletion_success'               => __( '<strong>All positions have been deleted from WordPress.</strong><br>They are still available in Personio.<br>You can re-import the positions at any time.', 'personio-integration-light' ),
 				'title_error'                        => __( 'Error', 'personio-integration-light' ),
 				'txt_error'                          => __( '<strong>An unexpected error occurred.</strong> The error was:', 'personio-integration-light' ),
+				'generate_error_text'                => __( 'Unknown error during AJAX-request', 'personio-integration-light' )
 			)
 		);
 
@@ -186,9 +187,11 @@ class Admin {
 	/**
 	 * Add the dialog-scripts and -styles.
 	 *
+	 * @param string $hook The used hook.
+	 *
 	 * @return void
 	 */
-	public function add_dialog(): void {
+	public function add_dialog( string $hook ): void {
 		// embed necessary scripts for dialog.
 		$path = Helper::get_plugin_path() . 'vendor/threadi/easy-dialog-for-wordpress/';
 		$url  = Helper::get_plugin_url() . 'vendor/threadi/easy-dialog-for-wordpress/';

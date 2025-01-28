@@ -2,6 +2,23 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added default options to hide title and reset link on filter
+
+### Changed
+
+- Optimized loading of JS in backend to in order not to influence the loading times there too much
+- Optimized output of positions in WordPress dashboard
+- Changed dialog and handling of extension state changes
+- All external links are now marked with an icon
+- Clearer error text for AJAX errors
+
+### Removed
+
+- Removed support for filter on archive-widget (please use the filter-widget for this)
+- Removed support for all since version 3.0.0 as deprecated marked functions and attributes
+
 ### Fixed
 
 - Fixed potential PHP-warning regarding filter in templates

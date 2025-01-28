@@ -14,6 +14,9 @@
  * @package personio-integration-light
  */
 
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
+
 use PersonioIntegrationLight\Plugin\Init;
 use PersonioIntegrationLight\Plugin\Update;
 

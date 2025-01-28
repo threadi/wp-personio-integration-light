@@ -57,3 +57,7 @@
 		list-style: none
 	}
 }
+
+.personio-hide-title legend {	display: none; }
+.personio-hide-reset .personio-position-filter-reset {	display: none; }
+.personio-hide-title legend + div {	margin-left: 0 !important }

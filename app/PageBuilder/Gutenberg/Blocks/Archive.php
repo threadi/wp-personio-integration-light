@@ -141,11 +141,6 @@ class Archive extends Blocks_Basis {
 			}
 		}
 
-		// mark "showFilter" as deprecated.
-		if( ! empty( $attributes['showFilter'] ) ) {
-			_deprecated_argument( 'PersonioIntegrationLight:Archive:render', 4.0, esc_html__( 'Please your the filter blocks instead of the filter on archive block!', 'personio-integration-light' ) );
-		}
-
 		// collect all settings for this block.
 		$attribute_defaults = array(
 			'templates'         => $templates,
@@ -157,7 +152,7 @@ class Archive extends Blocks_Basis {
 			'limit'             => absint( $attributes['limit'] ),
 			'filter'            => implode( ',', $attributes['filter'] ),
 			'filtertype'        => $attributes['filtertype'],
-			'showfilter'        => $attributes['showFilter'],
+			'showfilter'        => false,
 			'show_back_to_list' => '',
 			'styles'            => implode( PHP_EOL, $styles_array ),
 			'classes'           => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),

@@ -350,6 +350,9 @@ function personio_get_import_info() {
       'action': 'personio_get_import_info',
       'nonce': personioIntegrationLightJsVars.get_import_nonce
     },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      personio_integration_ajax_error_dialog( errorThrown )
+    },
     success: function (data) {
       let count = parseInt( data[0] );
       let max = parseInt( data[1] );
@@ -446,7 +449,7 @@ function personio_delete_positions( reimport ) {
 
       // get info about progress.
       setTimeout(function() { personio_get_delete_info( reimport ) }, 1000);
-    }
+    },
   });
 }
 
@@ -460,6 +463,9 @@ function personio_get_delete_info( reimport ) {
     data: {
       'action': 'personio_get_deletion_info',
       'nonce': personioIntegrationLightJsVars.get_deletion_nonce
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      personio_integration_ajax_error_dialog( errorThrown )
     },
     success: function(data) {
       let count = parseInt(data[0]);
@@ -577,6 +583,9 @@ function personio_integration_import_settings_file() {
     data: request,
     contentType: false,
     processData: false,
+    error: function( jqXHR, textStatus, errorThrown ) {
+      personio_integration_ajax_error_dialog( errorThrown )
+    },
     success: function( data ){
       if( data.html ) {
         let dialog_config = {
@@ -606,7 +615,7 @@ function personio_integration_import_settings_file() {
  */
 function personio_integration_ajax_error_dialog( errortext, texts ) {
   if( errortext === undefined || errortext.length === 0 ) {
-    errortext = 'Request Timeout';
+    errortext = personioIntegrationLightJsVars.generate_error_text;
   }
   let message = '<p>' + personioIntegrationLightJsVars.txt_error + '</p>';
   message = message + '<ul>';
@@ -641,12 +650,14 @@ function personio_integration_ajax_error_dialog( errortext, texts ) {
  * Change extension state via button click.
  */
 function personio_integration_extension_state_button() {
-  // create confirm dialog for deletion of all positions.
+  // add state change event for each extension in the list.
   jQuery('.personioposition_page_personiopositionextensions .button-state').on('click', function (e) {
     e.preventDefault();
 
+    // get the button object.
     let button = jQuery(this);
 
+    // send ajax request and process the response.
     jQuery.ajax( {
       type: "POST",
       url: personioIntegrationLightJsVars.ajax_url,
@@ -655,23 +666,22 @@ function personio_integration_extension_state_button() {
         'extension': button.data( 'extension' ),
         'nonce': personioIntegrationLightJsVars.extension_state_nonce
       },
-      success: function (data) {
-        if( data.success ) {
-          if( data.enabled ) {
-            button.removeClass( 'button-state-disabled' );
-            button.addClass( 'button-state-enabled' );
-            button.parents('tr').find('.row-actions-wrapper').show();
-          }
-          else {
-            button.removeClass( 'button-state-enabled' );
-            button.addClass( 'button-state-disabled' );
-            button.parents('tr').find('.row-actions-wrapper').hide();
-          }
-          button.html( data.title );
+      error: function( jqXHR, textStatus, errorThrown ) {
+        personio_integration_ajax_error_dialog( errorThrown )
+      },
+      success: function (dialog_config) {
+        if( dialog_config.success ) {
+          button.removeClass( 'button-state-disabled' );
+          button.addClass( 'button-state-enabled' );
+          button.parents('tr').find('.row-actions-wrapper').show();
         }
         else {
-          // TODO error anzeigen.
+          button.removeClass( 'button-state-enabled' );
+          button.addClass( 'button-state-disabled' );
+          button.parents('tr').find('.row-actions-wrapper').hide();
         }
+        button.html( dialog_config.data.button_title );
+        personio_integration_create_dialog( dialog_config.data );
       }
     } )
   });

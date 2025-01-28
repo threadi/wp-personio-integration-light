@@ -432,7 +432,7 @@ class PersonioPosition extends Post_Type {
 			'nopagination'            => $pagination,
 			'groupby'                 => '',
 			'styles'                  => '',
-			'classes'                 => '',
+			'classes'                 => $this->get_default_classes(),
 			'anchor'                  => '',
 			'link_to_anchor'          => '',
 		);
@@ -1633,6 +1633,9 @@ class PersonioPosition extends Post_Type {
 		// get the positions object.
 		$positions_obj = Positions::get_instance();
 
+		// show wrapper.
+		?><div class="community-events"><?php
+
 		// show results.
 		if ( 0 === $position_count ) {
 			echo '<p>' . esc_html__( 'Actually there are no positions imported from Personio.', 'personio-integration-light' ) . '</p>';
@@ -1658,7 +1661,7 @@ class PersonioPosition extends Post_Type {
 
 			// show the list.
 			?>
-			<ul class="personio_positions">
+			<ul class="personio-positions activity-block">
 			<?php
 			foreach ( $positions_list as $position ) {
 				?>
@@ -1675,6 +1678,9 @@ class PersonioPosition extends Post_Type {
 				</a></p>
 			<?php
 		}
+
+		// show end of wrapper.
+		?></div><?php
 	}
 
 	/**
@@ -2268,5 +2274,36 @@ class PersonioPosition extends Post_Type {
 
 		// return resulting list.
 		return $help_list;
+	}
+
+	/**
+	 * Return list of default classes depending on main settings.
+	 *
+	 * @return string
+	 */
+	private function get_default_classes(): string {
+		// initiate the list of classes.
+		$css_classes = array();
+
+		// add hide title.
+		if ( 1 === absint( get_option( 'personioIntegrationHideFilterTitle' ) ) ) {
+			$css_classes[] = 'personio-hide-title';
+		}
+
+		// add hide reset.
+		if ( 1 === absint( get_option( 'personioIntegrationHideFilterReset' ) ) ) {
+			$css_classes[] = 'personio-hide-reset';
+		}
+
+		/**
+		 * Filter the default classes for each output of positions.
+		 *
+		 * @since 4.2.0 Available since 4.2.0
+		 * @param array $css_classes List of classes.
+		 */
+		$css_classes = apply_filters( 'personio_integration_light_default_css_classes', $css_classes );
+
+		// return the resulting list.
+		return implode(' ', $css_classes );
 	}
 }

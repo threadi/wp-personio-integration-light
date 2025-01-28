@@ -118,11 +118,18 @@ class Intro {
 	/**
 	 * Add the intro.js-scripts and -styles.
 	 *
+	 * @param string $hook The used hook.
+	 *
 	 * @source https://introjs.com/docs/examples/basic/hello-world
 	 *
 	 * @return void
 	 */
-	public function add_js(): void {
+	public function add_js( string $hook ): void {
+		// do not load styles depending on used hook.
+		if( Helper::do_not_load_styles( $hook ) ) {
+			return;
+		}
+
 		// embed necessary scripts for dialog.
 		$path = Helper::get_plugin_path() . 'node_modules/intro.js/minified/';
 		$url  = Helper::get_plugin_url() . 'node_modules/intro.js/minified/';

@@ -264,7 +264,7 @@ class Extensions extends WP_List_Table {
 	public function column_state( Extensions_Base $item ): string {
 		// show simple pro-hint if this is a pro-extension.
 		if ( $item->is_pro() ) {
-			return '<a class="pro-marker" href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . __( 'Only in Pro', 'personio-integration-light' ) . ' <span class="dashicons dashicons-external"></span></a>';
+			return '<a class="pro-marker" href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . __( 'Only in Pro', 'personio-integration-light' ) . '</a>';
 		}
 
 		// create output depending on state with option to change it.

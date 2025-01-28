@@ -312,9 +312,16 @@ class Availability extends Extensions_Base {
 	/**
 	 * Add own JS for backend.
 	 *
+	 * @param string $hook The used hook.
+	 *
 	 * @return void
 	 */
-	public function add_js(): void {
+	public function add_js( string $hook ): void {
+		// do not load styles depending on used hook.
+		if( Helper::do_not_load_styles( $hook ) ) {
+			return;
+		}
+
 		// backend-JS.
 		wp_enqueue_script(
 			'personio-integration-admin-availability',
