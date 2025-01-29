@@ -22,6 +22,7 @@
 ### Fixed
 
 - Fixed potential PHP-warning regarding filter in templates
+- Fixed missing usage of colon and line break settings for details template
 
 ## [4.1.0] - 06.01.2025
 
