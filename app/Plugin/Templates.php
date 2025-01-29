@@ -531,9 +531,15 @@ class Templates {
 
 		// get colon setting.
 		$colon = ':';
+		if ( '' === $attributes['colon'] ) {
+			$colon = '';
+		}
 
 		// get line break from setting.
 		$line_break = '<br>';
+		if ( '' === $attributes['line_break'] ) {
+			$line_break = ' ';
+		}
 
 		// get the excerpts for this position.
 		if ( ! empty( $attributes['excerpt'] ) ) {
