@@ -531,13 +531,13 @@ class Templates {
 
 		// get colon setting.
 		$colon = ':';
-		if ( '' === $attributes['colon'] ) {
+		if ( isset( $attributes['colon'] ) && '' === $attributes['colon'] ) {
 			$colon = '';
 		}
 
 		// get line break from setting.
 		$line_break = '<br>';
-		if ( '' === $attributes['line_break'] ) {
+		if ( isset( $attributes['line_break'] ) && '' === $attributes['line_break'] ) {
 			$line_break = ' ';
 		}
 

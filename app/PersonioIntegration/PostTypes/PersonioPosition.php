@@ -400,7 +400,6 @@ class PersonioPosition extends Post_Type {
 	public function shortcode_archive( array $attributes = array() ): string {
 		// set pagination settings.
 		$pagination = true;
-
 		/**
 		 * Set pagination settings.
 		 *
