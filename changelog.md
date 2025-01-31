@@ -8,6 +8,7 @@
 
 ### Changed
 
+- Optimized import if no position is returned from Personio (and no other errors occur)
 - Optimized loading of JS in backend to in order not to influence the loading times there too much
 - Optimized output of positions in WordPress dashboard
 - Changed dialog and handling of extension state changes
