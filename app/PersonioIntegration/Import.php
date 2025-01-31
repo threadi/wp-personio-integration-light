@@ -15,6 +15,7 @@ use PersonioIntegrationLight\Log;
 use Exception;
 use PersonioIntegrationLight\Plugin\Languages;
 use SimpleXMLElement;
+use WP_Post;
 
 /**
  * Import-handling for positions from Personio.
@@ -365,6 +366,40 @@ class Import {
 					/* translators: %1$s will be replaced by the Personio account URL, %2$s by the language title. */
 					$this->log->add_log( sprintf( __( 'Import of positions from Personio account %1$s for language %2$s ended.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
 				}
+				else {
+					$true = true;
+					/**
+					 * Do not delete positions if Personio sends 0 positions.
+					 *
+					 * @since 4.2.0 Available since 4.2.0
+					 * @param bool $true Must be false to prevent deletion in this case.
+					 * @noinspection PhpConditionAlreadyCheckedInspection
+					 **/
+					if( apply_filters( 'personio_integration_import_delete_if_no_positions_returned', $true ) ) {
+						// remove all positions as we got none from Personio.
+						foreach ( $positions_obj->get_positions() as $position_obj ) {
+							if ( ! $position_obj instanceof Position ) {
+								continue;
+							}
+
+							// get Personio ID for logging.
+							$personio_id = $position_obj->get_personio_id();
+
+							// delete this position from database without using trash.
+							$result = wp_delete_post( $position_obj->get_id(), true );
+
+							if ( $result instanceof WP_Post ) {
+								// log this event.
+								/* translators: %1$s will be replaced by the PersonioID. */
+								$this->log->add_log( sprintf( __( 'Position %1$s has been deleted as it was not updated during the last import run.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'success', 'import' );
+							} else {
+								// log event.
+								/* translators: %1$s will be replaced by the PersonioID. */
+								$this->log->add_log( sprintf( __( 'Removing of not updated position %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
+							}
+						}
+					}
+				}
 
 				// log ok.
 				/* translators: %1$d will be replaced by a number, %2$s by the Personio account URL and %3$s by the language title. */
@@ -450,7 +485,7 @@ class Import {
 	 * @return bool
 	 */
 	private function has_xml_positions(): bool {
-		return ! empty( $this->get_xml_positions() );
+		return count( $this->get_xml_positions() ) > 0;
 	}
 
 	/**
