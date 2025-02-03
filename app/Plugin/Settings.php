@@ -317,7 +317,7 @@ class Settings {
 							'personioIntegrationEnableFilter' => 1,
 						),
 					),
-					'personioIntegrationHideFilterTitle'       => array(
+					'personioIntegrationHideFilterTitle'  => array(
 						'label'               => __( 'Hide filter title', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
 						'options'             => Helper::get_filter_types(),
@@ -330,7 +330,7 @@ class Settings {
 							'personioIntegrationEnableFilter' => 1,
 						),
 					),
-					'personioIntegrationHideFilterReset'       => array(
+					'personioIntegrationHideFilterReset'  => array(
 						'label'               => __( 'Hide reset link', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
 						'options'             => Helper::get_filter_types(),

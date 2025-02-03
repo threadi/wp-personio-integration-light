@@ -326,6 +326,12 @@ class Init {
 		// get transients object.
 		$transients_obj = Transients::get_instance();
 
+		// bail if setup has not been run yet.
+		if ( ! Setup::get_instance()->is_completed() ) {
+			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
+			return;
+		}
+
 		// bail if WordPress is in developer mode.
 		if ( function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' ) ) {
 			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );

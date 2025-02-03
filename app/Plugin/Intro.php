@@ -126,7 +126,7 @@ class Intro {
 	 */
 	public function add_js( string $hook ): void {
 		// do not load styles depending on used hook.
-		if( Helper::do_not_load_styles( $hook ) ) {
+		if ( Helper::do_not_load_styles( $hook ) ) {
 			return;
 		}
 

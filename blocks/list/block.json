@@ -35,18 +35,6 @@
 			"type": "boolean",
 			"default": false
 		},
-		"showFilter": {
-			"type": "boolean",
-			"default": false
-		},
-		"filter": {
-			"type": "array",
-			"default": ["recruitingCategory","schedule","office"]
-		},
-		"filtertype": {
-			"type": "string",
-			"default": "linklist"
-		},
 		"limit": {
 			"type": "integer",
 			"default": 0

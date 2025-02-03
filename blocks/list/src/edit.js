@@ -204,33 +204,6 @@ export default function Edit( object ) {
 					/>
 				</PanelBody>
         <Personio_Helper_Panel/>
-        <PanelBody initialOpen={false} title={ __( 'Filter', 'personio-integration-light' ) }>
-          <div className="alert"><p>{ __( 'Please use the Filter Block instead of this options.', 'personio-integration-light' ) }</p></div>
-          <ToggleControl
-            label={ __('Show filter', 'personio-integration-light') }
-            checked={ object.attributes.showFilter }
-            onChange={ value => onChangeShowFilter( value, object ) }
-          />
-          <div className="wp-personio-integration-selectcontrol-multiple">
-            {
-              <SelectControl
-                label={ __('Choose filter', 'personio-integration-light') }
-                value={ object.attributes.filter }
-                options={ personioTaxonomies }
-                multiple={ true }
-                disabled={ !object.attributes.showFilter }
-                onChange={ value => onChangeFilter(value, object) }
-              />
-            }
-          </div>
-          <SelectControl
-            label={ __('Type of filter', 'personio-integration-light') }
-            value={ object.attributes.filtertype }
-            options={ filter_types }
-            disabled={ !object.attributes.showFilter }
-            onChange={ value => onChangeFilterType( value, object ) }
-          />
-        </PanelBody>
       </InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/list"

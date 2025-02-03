@@ -209,9 +209,9 @@ class Extensions {
 							),
 							'buttons' => array(
 								array(
-									'action' => 'closeDialog();',
+									'action'  => 'closeDialog();',
 									'variant' => 'primary',
-									'text' => __( 'OK', 'personio-integration-light' ),
+									'text'    => __( 'OK', 'personio-integration-light' ),
 								),
 							),
 						),
@@ -223,7 +223,7 @@ class Extensions {
 		$obj = $this->get_extension_by_name( $extension_name );
 
 		// bail if extension could not be found.
-		if( ! $obj instanceof Extensions_Base ) {
+		if ( ! $obj instanceof Extensions_Base ) {
 			wp_send_json_error(
 				array(
 					'detail' =>
@@ -234,9 +234,9 @@ class Extensions {
 							),
 							'buttons' => array(
 								array(
-									'action' => 'closeDialog();',
+									'action'  => 'closeDialog();',
 									'variant' => 'primary',
-									'text' => __( 'OK', 'personio-integration-light' ),
+									'text'    => __( 'OK', 'personio-integration-light' ),
 								),
 							),
 						),
@@ -248,12 +248,12 @@ class Extensions {
 		$obj->toggle_state();
 
 		// return success-message depending on the new extension state.
-		$title = __( 'Extension has been disabled', 'personio-integration-light' );
-		$text = __( 'The extension has been disabled.', 'personio-integration-light' );
+		$title        = __( 'Extension has been disabled', 'personio-integration-light' );
+		$text         = __( 'The extension has been disabled.', 'personio-integration-light' );
 		$button_title = __( 'Disabled', 'personio-integration-light' );
-		if( $obj->is_enabled() ) {
-			$title = __( 'Extension has been enabled', 'personio-integration-light' );
-			$text = __( 'The extension has been successfully enabled.', 'personio-integration-light' );
+		if ( $obj->is_enabled() ) {
+			$title        = __( 'Extension has been enabled', 'personio-integration-light' );
+			$text         = __( 'The extension has been successfully enabled.', 'personio-integration-light' );
 			$button_title = __( 'Enabled', 'personio-integration-light' );
 		}
 
@@ -265,9 +265,9 @@ class Extensions {
 			),
 			'buttons' => array(
 				array(
-					'action' => 'closeDialog();',
+					'action'  => 'closeDialog();',
 					'variant' => 'primary',
-					'text' => __( 'OK', 'personio-integration-light' ),
+					'text'    => __( 'OK', 'personio-integration-light' ),
 				),
 			),
 		);
@@ -277,12 +277,12 @@ class Extensions {
 		 */
 		$dialog = apply_filters( 'personio_integration_light_extension_state_changed_dialog', $dialog, $obj );
 
-		if( $obj->is_enabled() ) {
+		if ( $obj->is_enabled() ) {
 			// send the answer.
 			wp_send_json_success(
 				array(
-					'detail' => $dialog,
-					'button_title' => $button_title
+					'detail'       => $dialog,
+					'button_title' => $button_title,
 				)
 			);
 		}
@@ -290,8 +290,8 @@ class Extensions {
 		// send the answer.
 		wp_send_json_error(
 			array(
-				'detail' => $dialog,
-				'button_title' => $button_title
+				'detail'       => $dialog,
+				'button_title' => $button_title,
 			)
 		);
 	}

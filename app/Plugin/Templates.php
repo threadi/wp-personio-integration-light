@@ -1092,7 +1092,7 @@ class Templates {
 		}
 
 		// bail if no filter is set.
-		if( empty( $attributes['filter'] ) ) {
+		if ( empty( $attributes['filter'] ) ) {
 			return $attributes;
 		}
 

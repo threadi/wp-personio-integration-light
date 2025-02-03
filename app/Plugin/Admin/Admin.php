@@ -167,7 +167,7 @@ class Admin {
 				'txt_deletion_success'               => __( '<strong>All positions have been deleted from WordPress.</strong><br>They are still available in Personio.<br>You can re-import the positions at any time.', 'personio-integration-light' ),
 				'title_error'                        => __( 'Error', 'personio-integration-light' ),
 				'txt_error'                          => __( '<strong>An unexpected error occurred.</strong> The error was:', 'personio-integration-light' ),
-				'generate_error_text'                => __( 'Unknown error during AJAX-request', 'personio-integration-light' )
+				'generate_error_text'                => __( 'Unknown error during AJAX-request', 'personio-integration-light' ),
 			)
 		);
 
@@ -187,11 +187,9 @@ class Admin {
 	/**
 	 * Add the dialog-scripts and -styles.
 	 *
-	 * @param string $hook The used hook.
-	 *
 	 * @return void
 	 */
-	public function add_dialog( string $hook ): void {
+	public function add_dialog(): void {
 		// embed necessary scripts for dialog.
 		$path = Helper::get_plugin_path() . 'vendor/threadi/easy-dialog-for-wordpress/';
 		$url  = Helper::get_plugin_url() . 'vendor/threadi/easy-dialog-for-wordpress/';
@@ -239,7 +237,7 @@ class Admin {
 	 * @return void
 	 */
 	public function show_pro_hint( string $hint ): void {
-		$text = '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">Personio Integration Pro (opens new window)</a>';
+		$text = '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . esc_html__( 'Personio Integration Pro (opens new window)', 'personio-integration-light' ) . '</a>';
 		/**
 		 * Filter the pro hint text.
 		 *

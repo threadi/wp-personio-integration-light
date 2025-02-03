@@ -43,18 +43,6 @@ class Archive extends Blocks_Basis {
 			'type'    => 'boolean',
 			'default' => false,
 		),
-		'showFilter'          => array(
-			'type'    => 'boolean',
-			'default' => false,
-		),
-		'filter'              => array(
-			'type'    => 'array',
-			'default' => array( 'recruitingCategory', 'schedule', 'office' ),
-		),
-		'filtertype'          => array(
-			'type'    => 'string',
-			'default' => 'linklist',
-		),
 		'limit'               => array(
 			'type'    => 'integer',
 			'default' => 0,
@@ -150,8 +138,6 @@ class Archive extends Blocks_Basis {
 			'sortby'            => $attributes['sortby'],
 			'groupby'           => $attributes['groupby'],
 			'limit'             => absint( $attributes['limit'] ),
-			'filter'            => implode( ',', $attributes['filter'] ),
-			'filtertype'        => $attributes['filtertype'],
 			'showfilter'        => false,
 			'show_back_to_list' => '',
 			'styles'            => implode( PHP_EOL, $styles_array ),
