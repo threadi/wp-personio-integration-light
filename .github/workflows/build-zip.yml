@@ -41,6 +41,9 @@ jobs:
                   npm run build:details
                   npm run build:description
 
+            - name: Generate hook documentation
+              run: vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration
+
             - name: Generate checksum
               uses: Solratic/checksum-action@v1
               with:
@@ -55,9 +58,6 @@ jobs:
 
             - name: Run WordPress Coding Standard checks
               run: vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml .
-
-            - name: Generate hook documentation
-              run: vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration
 
             - name: Set version number 1
               uses: richardrigutins/replace-in-files@v2
