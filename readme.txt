@@ -119,31 +119,17 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added compatibility with plugin Duplicate Page to prevent the duplication of positions with this plugin
-- Added some more hooks
-- Added support for using filter on static front page
-- Added GitHub action to build release ZIP
-- Added style for archive with theme Blocksy
-- Added support for using filter on preview-pages while preparing the website
-- Added hint for WordPress-own help for this plugin
-- Changed CSS class to mark active list filter to "personio-filter-list-selected"
-- plugin version number is now automatically generated in readme.txt during plugin release build
-- Moved changelog from readme.txt in GitHub-repository
-- Optimized documentation of deleted position via WP CLI
-- Optimized handling of filter output in frontend
-- Optimized position object
-- Usage of filter on archive block marked as deprecated (will be removed on next major release)
-- Extended help for debug mode
-- Colored the helper tab for better visibility
-- Updated dependencies
-- Removed not needed additional translation file
-- Cleaned up third party support from unused code
-- Removed unused ID attribute from position object
-- Fixed missing anchor for filter
-- Fixed wrong textdomain in main filter template (which results in english and not translatable texts for links and buttons)
-- Fixed compatibility with WordPress 6.7 if any compatibility check results in a message in backend
-- Fixed output of custom styles for individual supported theme (like Blocksy)
-- Fixed output of select filter via KSES-rules
-- Fixed typo in job listing HTML-template
+- Added default options to hide title and reset link on filter
+- Optimized loading of JS in backend to in order not to influence the loading times there too much
+- Optimized output of positions in WordPress dashboard
+- Changed dialog and handling of extension state changes
+- All external links are now marked with an icon
+- Clearer error text for AJAX errors
+- Show PHP-version-hint only after setup has been run
+- Removed support for filter on archive-widget (please use the filter-widget for this)
+- Removed support for all since version 3.0.0 as deprecated marked functions and attributes
+- Fixed potential PHP-warning regarding filter in templates
+- Fixed missing usage of colon and line break settings for details template
+- Fixed missing translations
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

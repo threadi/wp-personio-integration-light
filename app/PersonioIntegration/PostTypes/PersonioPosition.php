@@ -1633,7 +1633,9 @@ class PersonioPosition extends Post_Type {
 		$positions_obj = Positions::get_instance();
 
 		// show wrapper.
-		?><div class="community-events"><?php
+		?>
+		<div class="community-events">
+		<?php
 
 		// show results.
 		if ( 0 === $position_count ) {
@@ -1670,16 +1672,18 @@ class PersonioPosition extends Post_Type {
 			?>
 			</ul>
 			<p><a href="<?php echo esc_url( $this->get_link() ); ?>">
-					<?php
-					/* translators: %1$d will be replaced by the count of positions */
-					printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( $position_count ) );
-					?>
+			<?php
+			/* translators: %1$d will be replaced by the count of positions */
+			printf( esc_html__( 'Show all %1$d positions', 'personio-integration-light' ), absint( $position_count ) );
+			?>
 				</a></p>
 			<?php
 		}
 
 		// show end of wrapper.
-		?></div><?php
+		?>
+		</div>
+		<?php
 	}
 
 	/**
@@ -2303,6 +2307,6 @@ class PersonioPosition extends Post_Type {
 		$css_classes = apply_filters( 'personio_integration_light_default_css_classes', $css_classes );
 
 		// return the resulting list.
-		return implode(' ', $css_classes );
+		return implode( ' ', $css_classes );
 	}
 }

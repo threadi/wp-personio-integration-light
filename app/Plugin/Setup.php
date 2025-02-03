@@ -91,7 +91,7 @@ class Setup {
 					'txt_error_2' => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
 				)
 			);
-			$setup_obj->set_display_hook( Helper::get_archive_slug() . '_page_personioPositions' );
+			$setup_obj->set_display_hook( 'stellen_page_personioPositions' );
 
 			// set configuration for setup.
 			$setup_obj->set_config( $this->get_config() );

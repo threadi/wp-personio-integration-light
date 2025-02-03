@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased]
+## [4.2.1] - 03.02.2025
+
+### Fixed
+
+- Fixed error in release-tagging
+
+## [4.2.0] - 03.02.2025
 
 ### Added
 
@@ -14,6 +20,7 @@
 - Changed dialog and handling of extension state changes
 - All external links are now marked with an icon
 - Clearer error text for AJAX errors
+- Show PHP-version-hint only after setup has been run
 
 ### Removed
 
@@ -24,6 +31,7 @@
 
 - Fixed potential PHP-warning regarding filter in templates
 - Fixed missing usage of colon and line break settings for details template
+- Fixed missing translations
 
 ## [4.1.0] - 06.01.2025
 

@@ -744,22 +744,19 @@ class Helper {
 	 */
 	public static function do_not_load_styles( string $hook ): bool {
 		// bail if function is used in frontend.
-		if( ! is_admin() ) {
+		if ( ! is_admin() ) {
 			return false;
 		}
 
 		// do not load our files outside our own backend pages.
-		if( in_array( $hook, array( 'post.php', 'edit-tags.php'), true ) && function_exists( 'get_current_screen' ) ) {
+		if ( in_array( $hook, array( 'post.php', 'edit-tags.php' ), true ) && function_exists( 'get_current_screen' ) ) {
 			$screen = get_current_screen();
-			if( ! in_array( $screen->post_type, apply_filters( 'personio_integration_light_do_not_load_on_cpt', array( PersonioPosition::get_instance()->get_name() ) ), true ) ) {
+			if ( ! in_array( $screen->post_type, apply_filters( 'personio_integration_light_do_not_load_on_cpt', array( PersonioPosition::get_instance()->get_name() ) ), true ) ) {
 				return true;
 			}
-		}
-		else {
+		} elseif ( ! str_contains( $hook, 'personio' ) && ! str_contains( $hook, 'options-permalink.php' ) ) {
 			// bail if no personio page is used.
-			if ( ! str_contains( $hook, 'personio' ) && ! str_contains( $hook, 'options-permalink.php' ) ) {
-				return true;
-			}
+			return true;
 		}
 
 		// return false to not prevent the loading of styles in backend.
