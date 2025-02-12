@@ -29,6 +29,7 @@ Show application forms on your positions and transfer applications from your web
 - optionally group the lists by categories, departments, offices etc.
 - some [WP CLI commands](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/cli.md) for simplified handling of data
 - compatible with WCAG
+- compatible with Content Security Policy settings
 
 #### Requirements
 
