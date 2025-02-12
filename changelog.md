@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed missing hook on Block Detail
+
 ## [4.2.1] - 03.02.2025
 
 ### Fixed

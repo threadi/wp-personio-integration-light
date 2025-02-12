@@ -112,6 +112,15 @@ class Detail extends Blocks_Basis {
 			$template = $attributes['template'];
 		}
 
+		/**
+		 * Filter the attributes for the output.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 * @param array $attribute_defaults The parameter we use.
+		 * @param array $attributes The attributes from PageBuilder.
+		 */
+		$attributes = apply_filters( 'personio_integration_get_list_attributes', $attributes, $attributes );
+
 		// collect the details in this array.
 		$details = array();
 		$taxonomy_data = array();
