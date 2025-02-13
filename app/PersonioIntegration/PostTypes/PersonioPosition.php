@@ -110,6 +110,7 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'parse_query', array( $this, 'use_filter' ) );
 		add_filter( 'views_edit-' . $this->get_name(), array( $this, 'hide_cpt_filter' ), 10, 0 );
 		add_filter( 'pre_get_posts', array( $this, 'ignore_author' ) );
+		add_filter( 'posts_search', array( $this, 'search_also_in_meta_fields' ), 10, 2);
 
 		// edit positions.
 		add_action( 'admin_init', array( $this, 'remove_cpt_supports' ) );
@@ -2308,5 +2309,60 @@ class PersonioPosition extends Post_Type {
 
 		// return the resulting list.
 		return implode( ' ', $css_classes );
+	}
+
+	/**
+	 * Search in backend also in every postmeta for our positions.
+	 *
+	 * @param string $search The searched keywords.
+	 * @param WP_Query $wp_query The WP_Query-object.
+	 *
+	 * @return string
+	 */
+	public function search_also_in_meta_fields( string $search, WP_Query $wp_query ): string {
+		// bail if we are not in admin.
+		if( ! is_admin() ) {
+			return $search;
+		}
+
+		// bail if search string is empty.
+		if( empty( $search ) ) {
+			return $search;
+		}
+
+		// bail if no keywords are available.
+		if( empty( $wp_query->get( 's' ) ) ) {
+			return $search;
+		}
+
+		// bail if this is not our cpt.
+		if( $this->get_name() !== $wp_query->get( 'post_type' ) ) {
+			return $search;
+		}
+
+		// get db object.
+		global $wpdb;
+
+		// get the search term from the query.
+		$search_term = $wp_query->query['s'];
+		$search = '';
+
+		// build SQL to search post title and content.
+		$search .= "($wpdb->posts.post_title LIKE '%" . $wpdb->esc_like( $search_term ) ."%') OR ($wpdb->posts.post_content LIKE '%" . $wpdb->esc_like( $search_term ) ."%')";
+
+		// add SQL to also search postmeta table for matching custom field values.
+		$search .= " OR EXISTS (
+			SELECT * FROM $wpdb->postmeta
+			WHERE post_id = $wpdb->posts.ID
+			AND meta_value LIKE '%" . $wpdb->esc_like( $search_term ) . "%'
+		)";
+
+		// wrap the search conditions in parentheses and add AND.
+		if ( ! empty( $search ) ) {
+			$search = " AND (" . $search . ") ";
+		}
+
+		// return resulting search SQL string.
+		return $search;
 	}
 }

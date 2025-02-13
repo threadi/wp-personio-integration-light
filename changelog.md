@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Optimized
+
+- Search for post meta fields of our own cpt in backend (e.g. search for Position ID is now possible)
+- Optimized button styles for options in backend
+
 ### Fixed
 
 - Fixed missing hook on Block Detail
