@@ -5,6 +5,8 @@
 ### Fixed
 
 - Fixed missing hook on Block Detail
+- Fixed error on intro usage
+- Fixed canceling of intro on first intro page
 
 ## [4.2.1] - 03.02.2025
 
