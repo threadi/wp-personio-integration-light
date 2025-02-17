@@ -120,17 +120,10 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added default options to hide title and reset link on filter
-- Optimized loading of JS in backend to in order not to influence the loading times there too much
-- Optimized output of positions in WordPress dashboard
-- Changed dialog and handling of extension state changes
-- All external links are now marked with an icon
-- Clearer error text for AJAX errors
-- Show PHP-version-hint only after setup has been run
-- Removed support for filter on archive-widget (please use the filter-widget for this)
-- Removed support for all since version 3.0.0 as deprecated marked functions and attributes
-- Fixed potential PHP-warning regarding filter in templates
-- Fixed missing usage of colon and line break settings for details template
-- Fixed missing translations
+- Search for post meta fields of our own cpt in backend (e.g. search for Position ID is now possible)
+- Optimized button styles for options in backend
+- Fixed missing hook on Block Detail
+- Fixed error on intro usage
+- Fixed canceling of intro on first intro page
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

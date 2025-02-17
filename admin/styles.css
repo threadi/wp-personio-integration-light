@@ -212,12 +212,15 @@ body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text:last-o
 
 body form.personio-integration-settings input.button { margin-right: 1em }
 
-body .review-hint-button:after {
+body.post-type-personioposition a.review-hint-button:after {
 	color: #d4af37;
 	content: "\f155 \f155 \f155 \f155 \f155";
 	display: inline-block;
 	font-family: "dashicons", sans-serif;
 	margin-left: 8px;
+	position: relative;
+	top: -2px;
+	z-index: 1;
 }
 
 .personio-integration-applications-hint button.is-primary:after {

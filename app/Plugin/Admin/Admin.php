@@ -472,13 +472,15 @@ class Admin {
 		// enable intros if set as parameter.
 		$import_intro = filter_input( INPUT_GET, 'import_intro', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		if ( ! empty( $import_intro ) ) {
-			Intro::get_instance()->add_js();
+			global $pagenow;
+			Intro::get_instance()->add_js( $pagenow );
 			$classes .= ' personio-integration-import-intro';
 		}
 		// enable intros if set as parameter.
 		$template_intro = filter_input( INPUT_GET, 'template_intro', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		if ( ! empty( $template_intro ) ) {
-			Intro::get_instance()->add_js();
+			global $pagenow;
+			Intro::get_instance()->add_js( $pagenow );
 			$classes .= ' personio-integration-template-intro';
 		}
 

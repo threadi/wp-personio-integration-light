@@ -749,7 +749,7 @@ class Helper {
 		}
 
 		// do not load our files outside our own backend pages.
-		if ( in_array( $hook, array( 'post.php', 'edit-tags.php' ), true ) && function_exists( 'get_current_screen' ) ) {
+		if ( in_array( $hook, array( 'edit.php', 'post.php', 'edit-tags.php' ), true ) && function_exists( 'get_current_screen' ) ) {
 			$screen = get_current_screen();
 			if ( ! in_array( $screen->post_type, apply_filters( 'personio_integration_light_do_not_load_on_cpt', array( PersonioPosition::get_instance()->get_name() ) ), true ) ) {
 				return true;

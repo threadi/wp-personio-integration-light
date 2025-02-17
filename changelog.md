@@ -1,10 +1,17 @@
 # Changelog
 
-## [Unreleased]
+## [4.2.2] - 17.02.2025
+
+### Optimized
+
+- Search for post meta fields of our own cpt in backend (e.g. search for Position ID is now possible)
+- Optimized button styles for options in backend
 
 ### Fixed
 
 - Fixed missing hook on Block Detail
+- Fixed error on intro usage
+- Fixed canceling of intro on first intro page
 
 ## [4.2.1] - 03.02.2025
 
