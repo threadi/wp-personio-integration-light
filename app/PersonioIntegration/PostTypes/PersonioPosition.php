@@ -1429,6 +1429,12 @@ class PersonioPosition extends Post_Type {
 	public function disable_create_options(): void {
 		global $pagenow, $typenow;
 
+		// bail if requested list is not our cpt.
+		if ( $this->get_name() !== $typenow ) {
+			return;
+		}
+
+		// run further checks and set the edit url.
 		if ( is_admin() && ! empty( $typenow ) && ! empty( $pagenow ) && 'edit.php' === $pagenow && ! empty( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) && stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'edit.php' ) && stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'post_type=' . $typenow ) && ! stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'page' ) ) {
 			$pagenow = 'edit-' . $typenow . '.php';
 		}

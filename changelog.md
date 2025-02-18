@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.3] - 18.02.2025
+
+### Fixed
+
+- Fixed influence on foreign custom post types
+
 ## [4.2.2] - 17.02.2025
 
 ### Optimized

@@ -120,10 +120,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Search for post meta fields of our own cpt in backend (e.g. search for Position ID is now possible)
-- Optimized button styles for options in backend
-- Fixed missing hook on Block Detail
-- Fixed error on intro usage
-- Fixed canceling of intro on first intro page
+- Fixed influence on foreign custom post types
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
