@@ -60,7 +60,7 @@ class Compatibilities {
 				/**
 				 * Filter whether the compatibility-checks should be run (false) or not (true)
 				 *
-				 * @since 3.0.0 Available since 3.0.0
+				 * @since 3.0.0 Available since 3.0.0.
 				 *
 				 * @param bool $false True to prevent compatibility-checks.
 				 */
@@ -97,6 +97,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Pdf_Generator_For_Wp',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Polylang',
 			'PersonioIntegrationLight\Plugin\Compatibilities\RankMath',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Scf',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Seed_Prod',
 			'PersonioIntegrationLight\Plugin\Compatibilities\SiteOrigin',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Themify',

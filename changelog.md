@@ -2,9 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added support for Secure Custom Fields detection
+
 ### Optimized
 
 - Log database errors
+- Renamed support object Secure Custom Fields to Advanced Custom Fields
 
 ## [4.2.3] - 18.02.2025
 
