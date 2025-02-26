@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the compatibility-check for ACF.
+ * File to handle the compatibility-check for SCF.
  *
  * @package personio-integration-light
  */
@@ -17,14 +17,14 @@ use PersonioIntegrationLight\Plugin\Transients;
 /**
  * Object for this check.
  */
-class Acf extends Compatibilities_Base {
+class Scf extends Compatibilities_Base {
 
 	/**
 	 * Name of this object.
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_acf';
+	protected string $name = 'personio_integration_compatibility_scf';
 
 	/**
 	 * Run the check.
@@ -37,7 +37,7 @@ class Acf extends Compatibilities_Base {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Advanced Custom Fields (ACF) - very nice!</strong> <a href="%1$s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to extend the data of your positions with ACF.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Secure Custom Fields (SCF) - very nice!</strong> <a href="%1$s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to extend the data of your positions with SCF.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
 			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
@@ -52,6 +52,6 @@ class Acf extends Compatibilities_Base {
 	 * @return bool
 	 */
 	public function is_active(): bool {
-		return Helper::is_plugin_active( 'advanced-custom-fields/acf.php' );
+		return Helper::is_plugin_active( 'secure-custom-fields/secure-custom-fields.php' );
 	}
 }
