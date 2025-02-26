@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Optimized
+
+- Log database errors
+
 ## [4.2.3] - 18.02.2025
 
 ### Fixed

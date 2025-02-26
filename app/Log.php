@@ -35,7 +35,7 @@ class Log {
 		global $wpdb;
 		$charset_collate = $wpdb->get_charset_collate();
 
-		// table for import-log.
+		// definition for the table for log-entries.
 		$sql = 'CREATE TABLE ' . $wpdb->prefix . "personio_import_logs (
             `id` mediumint(9) NOT NULL AUTO_INCREMENT,
             `time` datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
@@ -48,6 +48,11 @@ class Log {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
+
+		// log error if any occurred.
+		if( ! empty( $wpdb->last_error ) ) {
+			$this->add_log( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
+		}
 	}
 
 	/**
@@ -72,6 +77,8 @@ class Log {
 	 */
 	public function add_log( string $log, string $state, string $category = '', string $md5 = '' ): void {
 		global $wpdb;
+
+		// insert the log entry.
 		$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->prefix . 'personio_import_logs',
 			array(
@@ -82,6 +89,13 @@ class Log {
 				'state'    => $state,
 			)
 		);
+
+		// log if any error occurred.
+		if( ! empty( $wpdb->last_error ) ) {
+			$this->add_log( sprintf( __( 'Database error during saving a log entry: %1$s', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
+		}
+
+		// clean the log.
 		$this->clean_log();
 	}
 
@@ -101,10 +115,15 @@ class Log {
 
 		// run the deletion.
 		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+
+		// log if any error occurred.
+		if( ! empty( $wpdb->last_error ) ) {
+			$this->add_log( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
+		}
 	}
 
 	/**
-	 * Return list of categories with internal name & its label.
+	 * Return list of categories with internal name & their label.
 	 *
 	 * @return array
 	 */
