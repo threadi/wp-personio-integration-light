@@ -781,7 +781,7 @@ class Templates {
 			return;
 		}
 
-		// get the terms of this taxonomy.
+		// get the term object of the calculated term IDs on this taxonomy.
 		$terms = get_terms(
 			array(
 				'taxonomy' => $taxonomy_to_use,
@@ -789,23 +789,35 @@ class Templates {
 			)
 		);
 
-		if ( ! empty( $terms ) ) {
-			// get the value.
-			$value = 0;
-			// -> if filter is set by user in frontend.
-			if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ) {
-				$value = absint( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] );
-			}
+		/**
+		 * Filter the terms to use in filters.
+		 *
+		 * @since 4.3.0 Available since 4.3.0.
+		 * @param array $terms List of terms.
+		 * @param string $taxonomy_to_use The taxonomy of these terms to use for the filter.
+		 */
+		$terms = apply_filters( 'personio_integration_light_filter_terms', $terms, $taxonomy_to_use );
 
-			// get name.
-			$filtername = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_to_use )['name'];
-
-			// get url.
-			$page_url = Helper::get_current_url();
-
-			// output of filter.
-			include $this->get_template( 'parts/term-filter-' . $attributes['filtertype'] . '.php' );
+		// bail if no terms are collected.
+		if ( empty( $terms ) ) {
+			return;
 		}
+
+		// get the value.
+		$value = 0;
+		// -> if filter is set by user in frontend.
+		if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ) {
+			$value = absint( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] );
+		}
+
+		// get name.
+		$filtername = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_to_use )['name'];
+
+		// get url.
+		$page_url = Helper::get_current_url();
+
+		// output of filter.
+		include $this->get_template( 'parts/term-filter-' . $attributes['filtertype'] . '.php' );
 	}
 
 	/**

@@ -6,6 +6,7 @@
 
 - Added support for Secure Custom Fields detection
 - Added link to support forum on plugin in plugin list
+- Added new filter-hook for the terms in any filter
 
 ### Optimized
 
