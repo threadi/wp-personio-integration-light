@@ -638,7 +638,7 @@ class Admin {
 	public function add_meta_boxes_for_help(): void {
 		// box for tours in help.
 		add_meta_box(
-			Helper::get_plugin_name() . '-tours',
+			PersonioPosition::get_instance()->get_name() . '-tours',
 			__( 'Tours', 'personio-integration-light' ),
 			array( $this, 'help_page_tours_box' ),
 			get_current_screen(),
@@ -647,7 +647,7 @@ class Admin {
 
 		// box for links in help.
 		add_meta_box(
-			Helper::get_plugin_name() . '-links',
+			PersonioPosition::get_instance()->get_name() . '-links',
 			__( 'Get help', 'personio-integration-light' ),
 			array( $this, 'help_page_link_box' ),
 			get_current_screen(),

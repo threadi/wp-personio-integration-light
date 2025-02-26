@@ -103,6 +103,7 @@ class Init {
 
 		// add action links on plugin-list.
 		add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_setting_link' ) );
+		add_filter( 'plugin_row_meta', array( $this, 'add_row_meta_links' ), 10, 2 );
 
 		// add update message in plugin list.
 		add_action( 'in_plugin_update_message-' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_plugin_update_hints' ), 10, 2 );
@@ -179,6 +180,37 @@ class Init {
 		}
 
 		return $links;
+	}
+
+	/**
+	 * Add links in row meta.
+	 *
+	 * @param array  $links List of links.
+	 * @param string $file The requested plugin file name.
+	 *
+	 * @return array
+	 */
+	public function add_row_meta_links( array $links, string $file ): array {
+		// bail if this is not our plugin.
+		if( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $file !== WP_PERSONIO_INTEGRATION_PLUGIN ) {
+			return $links;
+		}
+
+		// add our custom links.
+		$row_meta = array(
+			'support' => '<a href="' . esc_url( Helper::get_plugin_support_url() ) . '" target="_blank" title="' . esc_html__( 'Support Forum', 'woocommerce-pdf-invoices-packing-slips' ) . '">' . esc_html__( 'Support Forum', 'personio-integration-light' ) . '</a>',
+		);
+
+		/**
+		 * Filter the links in row meta of our plugin in plugin list.
+		 *
+		 * @since 4.3.0 Available since 4.3.0
+		 * @param array $row_meta List of links.
+		 */
+		$row_meta = apply_filters( 'personio_integration_light_plugin_row_meta', $row_meta );
+
+		// return the resulting list of links.
+		return array_merge( $links, $row_meta );
 	}
 
 	/**
