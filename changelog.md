@@ -5,11 +5,17 @@
 ### Added
 
 - Added support for Secure Custom Fields detection
+- Added link to support forum on plugin in plugin list
+- Added new filter-hook for the terms in any filter
 
 ### Optimized
 
 - Log database errors
 - Renamed support object Secure Custom Fields to Advanced Custom Fields
+
+### Fixed
+
+- Fixed wrong usage of plugin name as ID in backend
 
 ## [4.2.3] - 18.02.2025
 
