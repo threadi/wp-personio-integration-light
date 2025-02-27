@@ -198,13 +198,13 @@ class Init {
 
 		// add our custom links.
 		$row_meta = array(
-			'support' => '<a href="' . esc_url( Helper::get_plugin_support_url() ) . '" target="_blank" title="' . esc_html__( 'Support Forum', 'woocommerce-pdf-invoices-packing-slips' ) . '">' . esc_html__( 'Support Forum', 'personio-integration-light' ) . '</a>',
+			'support' => '<a href="' . esc_url( Helper::get_plugin_support_url() ) . '" target="_blank" title="' . esc_html__( 'Support Forum', 'personio-integration-light' ) . '">' . esc_html__( 'Support Forum', 'personio-integration-light' ) . '</a>',
 		);
 
 		/**
 		 * Filter the links in row meta of our plugin in plugin list.
 		 *
-		 * @since 4.3.0 Available since 4.3.0
+		 * @since 4.3.0 Available since 4.3.0.
 		 * @param array $row_meta List of links.
 		 */
 		$row_meta = apply_filters( 'personio_integration_light_plugin_row_meta', $row_meta );
