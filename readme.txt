@@ -67,6 +67,8 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 The development repository is on [GitHub](https://github.com/threadi/wp-personio-integration-light).
 
+We also provide a number of [hooks](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/hooks.md) as help for developers.
+
 The Personio logo as part of all distributed icons is a trademark of [Personio SE & Co. KG](https://www.personio.com).
 
 == ClassicPress ==
