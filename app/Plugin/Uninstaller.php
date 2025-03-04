@@ -105,6 +105,7 @@ class Uninstaller {
 		// remove transients.
 		foreach ( Transients::get_instance()->get_transients() as $transient_obj ) {
 			$transient_obj->delete();
+			$transient_obj->delete_dismiss();
 		}
 
 		// remove plugin update transient.

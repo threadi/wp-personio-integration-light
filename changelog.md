@@ -12,6 +12,7 @@
 
 - Log database errors
 - Renamed support object Secure Custom Fields to Advanced Custom Fields
+- Delete the dismisses transients on uninstallation
 
 ### Fixed
 
