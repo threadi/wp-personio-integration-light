@@ -50,7 +50,8 @@ class Log {
 		dbDelta( $sql );
 
 		// log error if any occurred.
-		if( ! empty( $wpdb->last_error ) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
+			/* translators: %1$s will be replaced by an DB-error-message. */
 			$this->add_log( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
 		}
 	}
@@ -91,7 +92,8 @@ class Log {
 		);
 
 		// log if any error occurred.
-		if( ! empty( $wpdb->last_error ) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
+			/* translators: %1$s will be replaced by an DB-error-message. */
 			$this->add_log( sprintf( __( 'Database error during saving a log entry: %1$s', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
 		}
 
@@ -117,7 +119,8 @@ class Log {
 		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		// log if any error occurred.
-		if( ! empty( $wpdb->last_error ) ) {
+		if ( ! empty( $wpdb->last_error ) ) {
+			/* translators: %1$s will be replaced by an DB-error-message. */
 			$this->add_log( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
 		}
 	}
