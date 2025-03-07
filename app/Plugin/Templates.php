@@ -792,7 +792,7 @@ class Templates {
 		/**
 		 * Filter the terms to use in filters.
 		 *
-		 * @since 4.3.0 Available since 4.3.0.
+		 * @since 4.2.4 Available since 4.2.4.
 		 * @param array $terms List of terms.
 		 * @param string $taxonomy_to_use The taxonomy of these terms to use for the filter.
 		 */

@@ -192,7 +192,7 @@ class Init {
 	 */
 	public function add_row_meta_links( array $links, string $file ): array {
 		// bail if this is not our plugin.
-		if( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $file !== WP_PERSONIO_INTEGRATION_PLUGIN ) {
+		if ( WP_PERSONIO_INTEGRATION_PLUGIN !== WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $file ) {
 			return $links;
 		}
 
@@ -204,7 +204,7 @@ class Init {
 		/**
 		 * Filter the links in row meta of our plugin in plugin list.
 		 *
-		 * @since 4.3.0 Available since 4.3.0.
+		 * @since 4.2.4 Available since 4.2.4.
 		 * @param array $row_meta List of links.
 		 */
 		$row_meta = apply_filters( 'personio_integration_light_plugin_row_meta', $row_meta );
