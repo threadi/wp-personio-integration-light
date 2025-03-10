@@ -122,6 +122,12 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Fixed influence on foreign custom post types
+- Added support for Secure Custom Fields detection
+- Added link to support forum on plugin in plugin list
+- Added new filter-hook for the terms in any filter
+- Log database errors
+- Renamed support object Secure Custom Fields to Advanced Custom Fields
+- Delete the dismisses transients on uninstallation
+- Fixed wrong usage of plugin name as ID in backend
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
