@@ -91,7 +91,7 @@ jobs:
                   rm readme.md
                   cd ..
                   mv ${{ github.event.repository.name }} personio-integration-light
-                  zip -r -q personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/* -x "*/.git/*" "*/.github/*" "*/blocks/*/src/*" "*/doc/*" "*/legacy-classes/Divi/.yarn/*" "*/phpcs.xml" "*/composer.json" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/ruleset.xml" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "/.editorconfig"
+                  zip -r -q personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/* -x "*/.git/*" "*/.github/*" "*/blocks/*/src/*" "*/doc/*" "*/legacy-classes/Divi/.yarn/*" "*/phpcs.xml" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/ruleset.xml" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "/.editorconfig"
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/autoload.php
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/composer/*
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/*/build/*

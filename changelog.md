@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Optimized
+
+- composer.json is now part of the release
+
 ## [4.2.4] - 10.03.2025
 
 ### Added

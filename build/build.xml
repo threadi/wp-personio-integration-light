@@ -209,6 +209,7 @@
             <zipfileset dir="${src.dir}/node_modules/intro.js/minified/" prefix="${plugin.slug}/node_modules/intro.js/minified/" />
             <zipfileset dir="${src.dir}/inc" prefix="${plugin.slug}/inc" />
             <zipfileset dir="${src.dir}/templates" prefix="${plugin.slug}/templates" />
+            <zipfileset dir="${src.dir}" includes="composer.json" fullpath="${plugin.slug}/composer.json" />
             <zipfileset dir="${src.dir}" includes="wpml-config.xml" fullpath="${plugin.slug}/wpml-config.xml" />
             <zipfileset dir="${src.dir}" includes="readme-release.txt" fullpath="${plugin.slug}/readme.txt" />
             <zipfileset dir="${src.dir}" includes="uninstall-release.php" fullpath="${plugin.slug}/uninstall.php" />
