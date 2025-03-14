@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+###
+
+- Added detection for WP Multilang which is now supported by Pro plugin
+
 ### Optimized
 
 - composer.json is now part of the release
