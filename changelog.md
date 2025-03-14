@@ -2,14 +2,18 @@
 
 ## [Unreleased]
 
-###
+### Added
 
+- Added link to edit positions on Personio
+- Added info about where a position has been imported from
+- Added hint for application forms in Pro on edit page of position
 - Added detection for WP Multilang which is now supported by Pro plugin
 
 ### Optimized
 
 - Pagination of log table is now optimized
 - Small style-optimization for settings page
+- Optimized links to Personio account in edit page of position
 - composer.json is now part of the release
 
 ## [4.2.4] - 10.03.2025
