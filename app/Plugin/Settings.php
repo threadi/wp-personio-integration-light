@@ -159,7 +159,7 @@ class Settings {
 				'key'        => 'help',
 				'url'        => Helper::get_plugin_support_url(),
 				'url_target' => '_blank',
-				'class'      => 'nav-tab-help nav-tab-active',
+				'class'      => 'nav-tab-help',
 				'page'       => 'personioPositions',
 				'order'      => 2000,
 			),
