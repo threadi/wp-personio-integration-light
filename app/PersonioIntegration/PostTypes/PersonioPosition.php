@@ -1094,6 +1094,20 @@ class PersonioPosition extends Post_Type {
 			$this->get_name()
 		);
 
+		add_meta_box(
+			$this->get_name() . '-personio',
+			__( 'Personio Account', 'personio-integration-light' ),
+			array( $this, 'get_meta_box_for_personio' ),
+			$this->get_name()
+		);
+
+		add_meta_box(
+			$this->get_name() . '-pro-form',
+			__( 'Application form', 'personio-integration-light' ),
+			array( $this, 'get_meta_box_for_application_form' ),
+			$this->get_name()
+		);
+
 		// get taxonomies as object.
 		$taxonomies_obj = Taxonomies::get_instance();
 
@@ -1259,19 +1273,24 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// get the position.
-		$position = Positions::get_instance()->get_position( $post->ID );
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
 		// bail if position is not valid.
-		if ( ! $position->is_valid() ) {
+		if ( ! $position_obj->is_valid() ) {
 			return;
 		}
 
-		// get the Personio URL.
-		$url = Helper::get_personio_login_url();
+		// get the edit URL.
+		$url = $position_obj->get_edit_link_on_personio();
+
+		// use main Personio URL if no edit URL could be loaded.
+		if( empty( $url ) ) {
+			$url = Helper::get_personio_login_url();
+		}
 
 		// show hint.
 		/* translators: %1$s will be replaced by the URL for Personio, %2$s will be replaced with the URL for the Personio account. */
-		printf( wp_kses_post( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the position data in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'personio-integration-light' ) ), esc_html( $position->get_title() ), esc_url( $url ) );
+		printf( wp_kses_post( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the position data in your <a href="%2$s" target="_blank">Personio account (opens new window)</a>.', 'personio-integration-light' ) ), esc_html( $position_obj->get_title() ), esc_url( $url ) );
 	}
 
 	/**
@@ -1339,12 +1358,48 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
+	 * Show link to Personio edit page if login URL is given.
+	 *
+	 * @param WP_Post $post Object of the post.
+	 *
+	 * @return void
+	 */
+	public function get_meta_box_for_personio( WP_Post $post ): void {
+		// get the requested position as object.
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+
+		// get the Personio URL.
+		$personio_url = $position_obj->get_personio_account()->get_url();
+
+		// show used Personio URL, if set.
+		if( ! empty( $personio_url ) ) {
+			echo '<p>' . esc_html__( 'Used Personio URL', 'personio-integration-light' ) . ': <a href="' . esc_url( $personio_url ) . '" target="_blank">' . esc_url( $personio_url ) . '</a></p>';
+		}
+
+		// get the configured Personio Login URL.
+		$personio_edit_url = $position_obj->get_edit_link_on_personio();
+
+		// bail if no login URL is given.
+		if( empty( $personio_edit_url ) ) {
+			// show hint.
+			echo '<p>' . sprintf( __( 'Please add your Personio Login URL on <a href="%1$s">the settings page</a> to get a link to the edit-page of this position in Personio.', 'personio-integration-light' ), Helper::get_settings_url() ) . '</p>';
+
+			// do nothing more.
+			return;
+		}
+
+		// show the edit link.
+		echo '<p>' . sprintf( __( '<a href="%1$s" target="_blank">Edit (opens new window)</a> this position on Personio.', 'personio-integration-light' ), esc_url( $personio_edit_url ) ) . '</p>';
+	}
+
+	/**
 	 * Show any taxonomy of position in their own meta box.
 	 *
 	 * @param WP_Post $post Object of the post.
 	 * @param array   $attr The attributes.
+	 *
 	 * @return void
-	 */
+	 **/
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
 		// get the requested position as object.
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
@@ -1357,7 +1412,7 @@ class PersonioPosition extends Post_Type {
 
 		// if no terms could be loaded, show hint.
 		if ( empty( $terms ) ) {
-			echo '<i>' . esc_html__( 'No data available.', 'personio-integration-light' ) . '</i>';
+			echo '<i>' . esc_html__( 'No data received.', 'personio-integration-light' ) . '</i>';
 		} else {
 			// loop through the terms and add them to the list.
 			foreach ( $terms as $index => $term ) {
@@ -2370,5 +2425,16 @@ class PersonioPosition extends Post_Type {
 
 		// return resulting search SQL string.
 		return $search;
+	}
+
+	/**
+	 * Show hint on application forms in Pro plugins.
+	 *
+	 * @return void
+	 */
+	public function get_meta_box_for_application_form(): void {
+		// show the hint.
+		/* translators: %1$s will be replaced with the plugin pro-name */
+		Admin::get_instance()->show_pro_hint( __( 'Use individual application forms for this position with %1$s.', 'personio-integration-light' ) );
 	}
 }

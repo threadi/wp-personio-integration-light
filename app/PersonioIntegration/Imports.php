@@ -45,9 +45,9 @@ class Imports {
 	/**
 	 * WP CLI object.
 	 *
-	 * @var bool|\cli\progress\Bar
+	 * @var bool|\cli\progress\Bar|\WP_CLI\NoOp
 	 */
-	private bool|\cli\progress\Bar $cli_progress = false;
+	private bool|\cli\progress\Bar|\WP_CLI\NoOp $cli_progress = false;
 
 	/**
 	 * Constructor, not used as this a Singleton object.

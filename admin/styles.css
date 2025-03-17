@@ -67,6 +67,7 @@ body.post-type-personioposition {
     border-radius: 4px;
     color: var(--personio-pro-font);
     display: inline-block;
+	line-height: 1.6;
     padding: 0 8px;
 	text-decoration: none
 }
@@ -195,7 +196,11 @@ body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text:last-o
 .nav-tab-help {
 	background-color: var(--personio-pro-hint-bg);
 	float: right;
+	line-height: 1.6;
 	margin-right: 4px;
+	position: relative;
+	bottom: -1px;
+	z-index: 1;
 }
 
 .nav-tab-help:before {

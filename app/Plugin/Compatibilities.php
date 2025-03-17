@@ -93,6 +93,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Brizy',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Divi',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Elementor',
+			'PersonioIntegrationLight\Plugin\Compatibilities\WPMultilang',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Nimble_Builder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Pdf_Generator_For_Wp',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Polylang',

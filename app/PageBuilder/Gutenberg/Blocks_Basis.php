@@ -101,7 +101,7 @@ class Blocks_Basis {
 		if ( function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( 'wp-personio-integration-' . $this->get_name() . '-editor-script', $this->get_text_domain(), $this->get_language_path() );
 
-			// add ja-variables for block editor.
+			// add JavaScript-variables for Block Editor.
 			wp_add_inline_script(
 				'wp-personio-integration-' . $this->get_name() . '-editor-script',
 				'window.personio_integration_config = ' . wp_json_encode(

@@ -159,7 +159,7 @@ class Settings {
 				'key'        => 'help',
 				'url'        => Helper::get_plugin_support_url(),
 				'url_target' => '_blank',
-				'class'      => 'nav-tab-help nav-tab-active',
+				'class'      => 'nav-tab-help',
 				'page'       => 'personioPositions',
 				'order'      => 2000,
 			),
@@ -557,6 +557,7 @@ class Settings {
 					'personioIntegrationShowHelp'          => array(
 						'label'               => __( 'Show help', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
+						'description' => __( 'If enabled we show help tools for Personio widgets in your page builder.', 'personio-integration-light' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
 							'type'    => 'integer',
