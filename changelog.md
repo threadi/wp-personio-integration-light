@@ -14,6 +14,7 @@
 - Pagination of log table is now optimized
 - Small style-optimization for settings page
 - Optimized links to Personio account in edit page of position
+- Optimized help for some setting options
 - composer.json is now part of the release
 
 ## [4.2.4] - 10.03.2025
