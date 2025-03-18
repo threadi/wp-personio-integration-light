@@ -557,7 +557,7 @@ class Settings {
 					'personioIntegrationShowHelp'          => array(
 						'label'               => __( 'Show help', 'personio-integration-light' ),
 						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-						'description' => __( 'If enabled we show help tools for Personio widgets in your page builder.', 'personio-integration-light' ),
+						'description'         => __( 'If enabled we show help tools for Personio widgets in your page builder.', 'personio-integration-light' ),
 						'readonly'            => ! Helper::is_personio_url_set(),
 						'register_attributes' => array(
 							'type'    => 'integer',

@@ -1284,7 +1284,7 @@ class PersonioPosition extends Post_Type {
 		$url = $position_obj->get_edit_link_on_personio();
 
 		// use main Personio URL if no edit URL could be loaded.
-		if( empty( $url ) ) {
+		if ( empty( $url ) ) {
 			$url = Helper::get_personio_login_url();
 		}
 
@@ -1372,7 +1372,7 @@ class PersonioPosition extends Post_Type {
 		$personio_url = $position_obj->get_personio_account()->get_url();
 
 		// show used Personio URL, if set.
-		if( ! empty( $personio_url ) ) {
+		if ( ! empty( $personio_url ) ) {
 			echo '<p>' . esc_html__( 'Used Personio URL', 'personio-integration-light' ) . ': <a href="' . esc_url( $personio_url ) . '" target="_blank">' . esc_url( $personio_url ) . '</a></p>';
 		}
 
@@ -1380,16 +1380,18 @@ class PersonioPosition extends Post_Type {
 		$personio_edit_url = $position_obj->get_edit_link_on_personio();
 
 		// bail if no login URL is given.
-		if( empty( $personio_edit_url ) ) {
+		if ( empty( $personio_edit_url ) ) {
 			// show hint.
-			echo '<p>' . sprintf( __( 'Please add your Personio Login URL on <a href="%1$s">the settings page</a> to get a link to the edit-page of this position in Personio.', 'personio-integration-light' ), Helper::get_settings_url() ) . '</p>';
+			/* translators: %1$s will be replaced by a URL. */
+			echo '<p>' . wp_kses_post( sprintf( __( 'Please add your Personio Login URL on <a href="%1$s">the settings page</a> to get a link to the edit-page of this position in Personio.', 'personio-integration-light' ), Helper::get_settings_url() ) ) . '</p>';
 
 			// do nothing more.
 			return;
 		}
 
 		// show the edit link.
-		echo '<p>' . sprintf( __( '<a href="%1$s" target="_blank">Edit (opens new window)</a> this position on Personio.', 'personio-integration-light' ), esc_url( $personio_edit_url ) ) . '</p>';
+		/* translators: %1$s will be replaced by a URL. */
+		echo '<p>' . wp_kses_post( sprintf( __( '<a href="%1$s" target="_blank">Edit (opens new window)</a> this position on Personio.', 'personio-integration-light' ), esc_url( $personio_edit_url ) ) ) . '</p>';
 	}
 
 	/**
