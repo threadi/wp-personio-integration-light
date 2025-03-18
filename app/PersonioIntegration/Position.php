@@ -835,7 +835,7 @@ class Position {
 		$personio_login_url = get_option( 'personioIntegrationLoginUrl' );
 
 		// bail if no login URL is given.
-		if( empty( $personio_login_url ) ) {
+		if ( empty( $personio_login_url ) ) {
 			return '';
 		}
 
