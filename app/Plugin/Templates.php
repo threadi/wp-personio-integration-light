@@ -1017,7 +1017,7 @@ class Templates {
 		$css_classes = array();
 
 		// add the slug.
-		$css_classes[] = 'term-' . sanitize_html_class( $term->slug );
+		$css_classes[] = 'term-' . sanitize_html_class( str_replace( '_', '-', $term->slug ) );
 
 		// add the taxonomy.
 		$css_classes[] = 'taxonomy-' . sanitize_html_class( $term->taxonomy );

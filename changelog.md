@@ -7,7 +7,7 @@
 - Added link to edit positions on Personio
 - Added info about where a position has been imported from
 - Added hint for application forms in Pro on edit page of position
-- Added detection for WP Multilang which is now supported by Pro plugin
+- Added detection for WP Multilang which could supported by Pro plugin
 
 ### Optimized
 
@@ -18,6 +18,10 @@
 - Optimized WP CLI messages
 - composer.json is now part of the release
 - Prevent any bulk action on position table
+
+### Fixed
+
+- Fixed using underscore in term class names for filter
 
 ## [4.2.4] - 10.03.2025
 
