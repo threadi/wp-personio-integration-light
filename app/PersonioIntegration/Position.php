@@ -140,8 +140,16 @@ class Position {
 			// collect all posts.
 			$posts = array();
 
-			// get all positions with the given Personio ID.
-			foreach ( Positions::get_instance()->get_positions( -1, array( 'personioid' => $this->data['personioId'] ) ) as $position_obj ) {
+			$params = array( 'personioid' => $this->data['personioId'] );
+			/**
+			 * Get all positions for the given Personio ID.
+			 * Filter the query for additional settings.
+			 *
+			 * @since 4.2.5 Available since 4.2.5.
+			 * @param array $params The parameters for the query.
+			 * @param Position $this The actual position.
+			 */
+			foreach ( Positions::get_instance()->get_positions( -1, apply_filters( 'personio_integration_light_import_single_query_for_existing_position', $params, $this ) ) as $position_obj ) {
 				$lang    = $this->get_lang();
 				$post_id = $position_obj->get_id();
 				/**

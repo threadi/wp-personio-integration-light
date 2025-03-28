@@ -840,6 +840,7 @@ class PersonioPosition extends Post_Type {
 		// show languages with its names.
 		if ( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $column ) {
 			// get main-url.
+			// TODO falscher Link?
 			$url = add_query_arg( filter_input( INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_FULL_SPECIAL_CHARS ), '', home_url( $wp->request ) );
 
 			// get languages in the project.

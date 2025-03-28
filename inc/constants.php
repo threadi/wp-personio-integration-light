@@ -81,7 +81,7 @@ const WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT = 'personio_integration_posi
 const WP_PERSONIO_INTEGRATION_TAXONOMY_LANG_TITLE = 'langs';
 
 /**
- * Define each taxonomy
+ * Define each taxonomy.
  */
 const WP_PERSONIO_INTEGRATION_TAXONOMY_RECRUITING_CATEGORY = 'personioRecruitingCategory';
 const WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY = 'personioOccupationCategory';
