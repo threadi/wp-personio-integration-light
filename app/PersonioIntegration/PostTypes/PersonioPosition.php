@@ -104,7 +104,7 @@ class PersonioPosition extends Post_Type {
 		// manage backend columns.
 		add_filter( 'manage_' . $this->get_name() . '_posts_columns', array( $this, 'add_column' ) );
 		add_action( 'manage_' . $this->get_name() . '_posts_custom_column', array( $this, 'add_column_content' ), 10, 2 );
-		add_filter( 'bulk_actions-edit-' . $this->get_name(), array( $this, 'remove_bulk_actions' ), 10, 0 );
+		add_filter( 'bulk_actions-edit-' . $this->get_name(), array( $this, 'remove_bulk_actions' ), PHP_INT_MAX, 0 );
 		add_filter( 'post_row_actions', array( $this, 'remove_actions' ), 10, 2 );
 		add_action( 'restrict_manage_posts', array( $this, 'add_filter' ) );
 		add_filter( 'parse_query', array( $this, 'use_filter' ) );

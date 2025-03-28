@@ -17,6 +17,7 @@
 - Optimized help for some setting options
 - Optimized WP CLI messages
 - composer.json is now part of the release
+- Prevent any bulk action on position table
 
 ## [4.2.4] - 10.03.2025
 
@@ -28,6 +29,7 @@
 
 ### Optimized
 
+- Set compatibility with WordPress 6.8
 - Log database errors
 - Renamed support object Secure Custom Fields to Advanced Custom Fields
 - Delete the dismisses transients on uninstallation
@@ -35,6 +37,7 @@
 ### Fixed
 
 - Fixed wrong usage of plugin name as ID in backend
+- Fixed wrong written hook name
 
 ## [4.2.3] - 18.02.2025
 

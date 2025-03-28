@@ -77,7 +77,7 @@ class Intro {
 		 *
 		 * @param bool $false Return true to hide the intro.
 		 */
-		if ( apply_filters( 'personio_integration_templates_archive', $false ) ) {
+		if ( apply_filters( 'personio_integration_light_hide_intro', $false ) ) {
 			return;
 		}
 
@@ -248,7 +248,7 @@ class Intro {
 		 *
 		 * @param bool $false Return true to hide the intro.
 		 */
-		if ( apply_filters( 'personio_integration_templates_archive', $false ) ) {
+		if ( apply_filters( 'personio_integration_light_hide_intro', $false ) ) {
 			echo esc_html__( 'Intro is disabled via custom hook.', 'personio-integration-light' );
 		} else {
 			$url = add_query_arg(
