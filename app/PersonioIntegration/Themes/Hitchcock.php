@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle support for the theme TwentySeventeen.
+ * File to handle support for the theme Hitchcock.
  *
  * @package personio-integration-light
  */
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\PersonioIntegration\Themes_Base;
 
 /**
- * Handles the support for the theme TwentySeventeen.
+ * Handles the support for the theme Hitchcock.
  */
 class Hitchcock extends Themes_Base {
 	/**
