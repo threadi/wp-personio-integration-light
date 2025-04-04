@@ -30,8 +30,8 @@ jobs:
                   npm run build
                   cd ../../../
                   cd vendor/threadi/easy-setup-for-wordpress/
-                  npm run build
                   npm i
+                  npm run build
                   cd ../../../
                   npm run build:show
                   npm run build:list
