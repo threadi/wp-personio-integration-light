@@ -18,6 +18,8 @@
 - Optimized WP CLI messages
 - composer.json is now part of the release
 - Prevent any bulk action on position table
+- Log import cancellation
+- Renamed help menu entry
 
 ### Fixed
 

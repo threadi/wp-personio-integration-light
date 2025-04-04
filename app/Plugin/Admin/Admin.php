@@ -348,6 +348,14 @@ class Admin {
 			$transient_obj->set_message( __( '<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes to long please check your hosting logfiles for possible restrictions mentioned there.', 'personio-integration-light' ) . ' <br><br><a href="' . esc_url( Helper::get_import_url() ) . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>' );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->save();
+
+			// get active user.
+			$user = wp_get_current_user();
+
+			// log this event.
+			$log = new Log();
+			/* translators: %1$s will be replaced by a user name. */
+			$log->add_log( sprintf( __( 'A running import has been canceled through %1$s.', 'personio-integration-light' ), esc_html( $user->display_name ) ), 'info', 'import' );
 		}
 
 		// redirect user.
@@ -622,7 +630,7 @@ class Admin {
 		add_submenu_page(
 			PersonioPosition::get_instance()->get_link( true ),
 			__( 'Need help with Personio Integration?', 'personio-integration-light' ),
-			'<span class="disable">' . __( 'Help', 'personio-integration-light' ) . '</span>',
+			'<span class="disable">' . __( 'Get help', 'personio-integration-light' ) . '</span>',
 			'read_' . PersonioPosition::get_instance()->get_name(),
 			'personioPositionsHelp',
 			array( $this, 'show_help_page' ),
@@ -636,20 +644,20 @@ class Admin {
 	 * @return void
 	 */
 	public function add_meta_boxes_for_help(): void {
-		// box for tours in help.
-		add_meta_box(
-			PersonioPosition::get_instance()->get_name() . '-tours',
-			__( 'Tours', 'personio-integration-light' ),
-			array( $this, 'help_page_tours_box' ),
-			get_current_screen(),
-			'normal'
-		);
-
 		// box for links in help.
 		add_meta_box(
 			PersonioPosition::get_instance()->get_name() . '-links',
 			__( 'Get help', 'personio-integration-light' ),
 			array( $this, 'help_page_link_box' ),
+			get_current_screen(),
+			'normal'
+		);
+
+		// box for tours in help.
+		add_meta_box(
+			PersonioPosition::get_instance()->get_name() . '-tours',
+			__( 'Tours', 'personio-integration-light' ),
+			array( $this, 'help_page_tours_box' ),
 			get_current_screen(),
 			'normal'
 		);
