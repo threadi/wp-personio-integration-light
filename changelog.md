@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [4.2.5] - 07.04.2025
 
 ### Added
 
@@ -9,7 +9,7 @@
 - Added hint for application forms in Pro on edit page of position
 - Added detection for WP Multilang which could supported by Pro plugin
 
-### Optimized
+### Changed
 
 - Pagination of log table is now optimized
 - Small style-optimization for settings page
@@ -33,7 +33,7 @@
 - Added link to support forum on plugin in plugin list
 - Added new filter-hook for the terms in any filter
 
-### Optimized
+### Changed
 
 - Set compatibility with WordPress 6.8
 - Log database errors
@@ -53,7 +53,7 @@
 
 ## [4.2.2] - 17.02.2025
 
-### Optimized
+### Changed
 
 - Search for post meta fields of our own cpt in backend (e.g. search for Position ID is now possible)
 - Optimized button styles for options in backend
