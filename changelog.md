@@ -5,6 +5,7 @@
 ### Changed
 
 - Use own styles also in terms
+- Removed date filter above positions table in backend
 
 ## [4.2.5] - 07.04.2025
 
