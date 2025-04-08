@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Use own styles also in terms
+
 ## [4.2.5] - 07.04.2025
 
 ### Added
