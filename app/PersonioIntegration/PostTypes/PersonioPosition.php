@@ -140,6 +140,7 @@ class PersonioPosition extends Post_Type {
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
 		add_filter( 'wp_sitemaps_posts_entry', array( $this, 'add_sitemap_data' ), 10, 2 );
+		add_filter( 'months_dropdown_results', array( $this, 'remove_date_filter' ), 10, 2 );
 	}
 
 	/**
@@ -2439,5 +2440,23 @@ class PersonioPosition extends Post_Type {
 		// show the hint.
 		/* translators: %1$s will be replaced with the plugin pro-name */
 		Admin::get_instance()->show_pro_hint( __( 'Use individual application forms for this position with %1$s.', 'personio-integration-light' ) );
+	}
+
+	/**
+	 * Remove date filter on our own cpt.
+	 *
+	 * @param array  $months List of months.
+	 * @param string $post_type The used post type.
+	 *
+	 * @return array
+	 */
+	public function remove_date_filter( array $months, string $post_type ): array {
+		// bail if this is not our post type.
+		if( $this->get_name() !== $post_type ) {
+			return $months;
+		}
+
+		// return empty list.
+		return array();
 	}
 }
