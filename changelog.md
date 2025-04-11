@@ -5,6 +5,7 @@
 ### Changed
 
 - Use own styles also in terms
+- Optimized compatibility with exotic filesystem modes
 - Removed date filter above positions table in backend
 
 ## [4.2.5] - 07.04.2025

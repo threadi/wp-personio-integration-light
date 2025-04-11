@@ -376,9 +376,7 @@ class Template {
 	public function get_content(): string {
 		if ( empty( $this->content ) ) {
 			// get WP Filesystem-handler.
-			require_once ABSPATH . '/wp-admin/includes/file.php';
-			\WP_Filesystem();
-			global $wp_filesystem;
+			$wp_filesystem = Helper::get_wp_filesystem();
 
 			$this->content = $wp_filesystem->get_contents( $this->get_file_path() );
 		}
