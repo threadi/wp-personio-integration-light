@@ -204,9 +204,7 @@ class Settings_Import {
 		}
 
 		// get WP Filesystem-handler for read the file.
-		require_once ABSPATH . '/wp-admin/includes/file.php';
-		\WP_Filesystem();
-		global $wp_filesystem;
+		$wp_filesystem = Helper::get_wp_filesystem();
 		$file_content = $wp_filesystem->get_contents( sanitize_text_field( wp_unslash( $_FILES['file']['tmp_name'] ) ) );
 
 		// convert JSON to array.

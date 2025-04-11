@@ -8,6 +8,8 @@
 namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 
 // prevent direct access.
+use PersonioIntegrationLight\Helper;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -98,9 +100,7 @@ class Patterns {
 		}
 
 		// get WP Filesystem-handler.
-		require_once ABSPATH . '/wp-admin/includes/file.php';
-		\WP_Filesystem();
-		global $wp_filesystem;
+		$wp_filesystem = Helper::get_wp_filesystem();
 
 		// loop through the patterns and add them.
 		foreach ( $this->get_patterns() as $pattern_name => $pattern ) {

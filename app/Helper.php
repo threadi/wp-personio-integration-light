@@ -13,6 +13,9 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
+use WP_Error;
+use WP_Filesystem_Base;
+use WP_Filesystem_Direct;
 use WP_Post;
 use WP_Post_Type;
 use WP_Rewrite;
@@ -407,8 +410,7 @@ class Helper {
 	 */
 	public static function get_files_from_directory( string $path = '.' ): array {
 		// get WP_Filesystem as object.
-		global $wp_filesystem;
-		WP_Filesystem();
+		$wp_filesystem = self::get_wp_filesystem();
 
 		// load files recursive in array and return resulting list.
 		return self::get_files( $wp_filesystem->dirlist( $path, true, true ), $path );
@@ -761,5 +763,43 @@ class Helper {
 
 		// return false to not prevent the loading of styles in backend.
 		return false;
+	}
+
+	/**
+	 * Return the WP Filesystem object.
+	 *
+	 * @param bool $local True to get the local filesystem object.
+	 *
+	 * @return WP_Filesystem_Base
+	 */
+	public static function get_wp_filesystem( bool $local = false ): WP_Filesystem_Base {
+		// get WP Filesystem-handler for local files if requested.
+		if( $local ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+
+			return new WP_Filesystem_Direct( false );
+		}
+
+		// get global WP Filesystem handler.
+		require_once ABSPATH . '/wp-admin/includes/file.php';
+		\WP_Filesystem();
+		global $wp_filesystem;
+
+		// return local object on any error.
+		if( $wp_filesystem->errors instanceof WP_Error && $wp_filesystem->errors->has_errors() ) {
+			// log this event.
+			$log = new Log();
+			$log->add_log( sprintf( __( '<strong>Error during loading the required WordPress-own filesystem object!</strong><br>We will now use the local filesystem object and hope it will work.<br><br>Tipps to solve this:<ul><li>Check the following error and speak to your WordPress administrator about it.</li><li>Check your <em>wp-config.php</em> if you have the constant "FS_METHOD" set there. If yes, remove it and check if your WordPress can save media files.</li><li>Ask the support of your hoster for help.</li></ul>Used filesystem mode: <em>%1$s</em><br>The following errors occurred:', 'personio-integration-light' ), get_filesystem_method() ) . ' <code>' . wp_json_encode( $wp_filesystem->errors ) . '</code>', 'error', 'system' );
+
+			// embed the local directory object.
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+
+			return new WP_Filesystem_Direct( false );
+		}
+
+		// return the requested filesystem object.
+		return $wp_filesystem;
 	}
 }
