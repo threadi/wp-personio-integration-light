@@ -6,6 +6,7 @@
 
 - Use own styles also in terms
 - Optimized compatibility with exotic filesystem modes
+- Hide dashboard widget if setup has not been run
 - Removed date filter above positions table in backend
 
 ## [4.2.5] - 07.04.2025

@@ -205,7 +205,7 @@ class Settings_Import {
 
 		// get WP Filesystem-handler for read the file.
 		$wp_filesystem = Helper::get_wp_filesystem();
-		$file_content = $wp_filesystem->get_contents( sanitize_text_field( wp_unslash( $_FILES['file']['tmp_name'] ) ) );
+		$file_content  = $wp_filesystem->get_contents( sanitize_text_field( wp_unslash( $_FILES['file']['tmp_name'] ) ) );
 
 		// convert JSON to array.
 		$settings_array = json_decode( $file_content, ARRAY_A );
