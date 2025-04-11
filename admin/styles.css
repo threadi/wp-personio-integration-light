@@ -121,6 +121,7 @@ body.post-type-personioposition a[target="_blank"]:after {
 	content: "\f504";
 	display: inline-block;
 	font-family: "dashicons", sans-serif;
+	font-size: .9em;
 	margin-left: 4px;
 	vertical-align: middle;
 }
