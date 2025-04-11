@@ -1671,7 +1671,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function add_dashboard_widget( array $dashboard_widgets ): array {
 		// bail if setup has not been run.
-		if( ! Setup::get_instance()->is_completed() ) {
+		if ( ! Setup::get_instance()->is_completed() ) {
 			return $dashboard_widgets;
 		}
 
@@ -2457,11 +2457,11 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function remove_date_filter( array $months, string $post_type ): array {
 		// bail if this is not our post type.
-		if( $this->get_name() !== $post_type ) {
+		if ( $this->get_name() !== $post_type ) {
 			return $months;
 		}
 
-		// return empty list.
+		// return an empty list.
 		return array();
 	}
 }
