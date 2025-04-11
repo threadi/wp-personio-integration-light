@@ -1670,6 +1670,11 @@ class PersonioPosition extends Post_Type {
 	 * @return array
 	 */
 	public function add_dashboard_widget( array $dashboard_widgets ): array {
+		// bail if setup has not been run.
+		if( ! Setup::get_instance()->is_completed() ) {
+			return $dashboard_widgets;
+		}
+
 		$dashboard_widgets[] = array(
 			'id'       => 'dashboard_personio_integration_positions',
 			'label'    => __( 'Positions imported from Personio', 'personio-integration-light' ),
