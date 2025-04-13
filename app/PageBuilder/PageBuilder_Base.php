@@ -19,13 +19,6 @@ use PersonioIntegrationLight\Plugin\Setup;
  */
 class PageBuilder_Base extends Extensions_Base {
 	/**
-	 * Internal name of the page builder.
-	 *
-	 * @var string
-	 */
-	protected string $name = '';
-
-	/**
 	 * Internal name of the used category.
 	 *
 	 * @var string
@@ -89,15 +82,6 @@ class PageBuilder_Base extends Extensions_Base {
 	 */
 	public function install_templates(): bool {
 		return false;
-	}
-
-	/**
-	 * Return the internal name of the page builder.
-	 *
-	 * @return string
-	 */
-	public function get_name(): string {
-		return $this->name;
 	}
 
 	/**

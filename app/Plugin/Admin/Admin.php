@@ -19,6 +19,7 @@ use PersonioIntegrationLight\Plugin\Intro;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Transients;
 use WP_Admin_Bar;
+use WP_User;
 
 /**
  * Helper-function for tasks in wp-admin.
@@ -352,9 +353,14 @@ class Admin {
 			// get active user.
 			$user = wp_get_current_user();
 
+			// bail if user could not be loaded.
+			if( ! $user instanceof WP_User ) {
+				return;
+			}
+
 			// log this event.
 			$log = new Log();
-			/* translators: %1$s will be replaced by a user name. */
+			/* translators: %1$s will be replaced by a username. */
 			$log->add_log( sprintf( __( 'A running import has been canceled through %1$s.', 'personio-integration-light' ), esc_html( $user->display_name ) ), 'info', 'import' );
 		}
 

@@ -314,7 +314,7 @@ class PersonioPosition extends Post_Type {
 		$position = Positions::get_instance()->get_position_by_personio_id( $personio_attributes['personioid'] );
 
 		// do not show this position if it is not valid or could not be loaded.
-		if ( ( $position && ! $position->is_valid() ) || ! $position ) {
+		if ( ! $position || ! $position->is_valid() ) {
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
 				$message    = __( 'Given Id is not a valid position-Id.', 'personio-integration-light' );
 				$wrapper_id = 'position' . $personio_attributes['personioid'];
@@ -348,7 +348,7 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-		if ( Helper::is_admin_api_request() && ! empty( $personio_attributes['styles'] ) ) {
+		if ( empty( $personio_attributes['styles'] ) && Helper::is_admin_api_request() ) {
 			wp_styles()->print_inline_style( 'wp-block-library' );
 		}
 
@@ -470,11 +470,9 @@ class PersonioPosition extends Post_Type {
 			if ( empty( $taxonomy['slug'] ) ) {
 				continue;
 			}
-			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
-				if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $taxonomy['slug'] ] ) ) {
-					$attribute_defaults[ $taxonomy['slug'] ] = 0;
-					$attribute_settings[ $taxonomy['slug'] ] = 'filter';
-				}
+			if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $taxonomy['slug'] ] ) && ( 1 === absint( $taxonomy['useInFilter'] ) ) ) {
+				$attribute_defaults[ $taxonomy['slug'] ] = 0;
+				$attribute_settings[ $taxonomy['slug'] ] = 'filter';
 			}
 		}
 
@@ -556,7 +554,7 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-		if ( Helper::is_admin_api_request() && ! empty( $personio_attributes['styles'] ) ) {
+		if ( ! empty( $personio_attributes['styles'] ) && Helper::is_admin_api_request() ) {
 			wp_styles()->print_inline_style( 'wp-block-library' );
 		}
 
@@ -991,14 +989,12 @@ class PersonioPosition extends Post_Type {
 		// add filter for each taxonomy.
 		$tax_query = array();
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
-			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
-				if ( absint( wp_unslash( filter_input( INPUT_GET, 'admin_filter_' . $taxonomy_name, FILTER_SANITIZE_NUMBER_INT ) ) ) > 0 ) {
-					$tax_query[] = array(
-						'taxonomy' => $taxonomy_name,
-						'field'    => 'term_id',
-						'terms'    => absint( wp_unslash( filter_input( INPUT_GET, 'admin_filter_' . $taxonomy_name, FILTER_SANITIZE_NUMBER_INT ) ) ),
-					);
-				}
+			if ( ( 1 === absint( $taxonomy['useInFilter'] ) ) && absint( wp_unslash( filter_input( INPUT_GET, 'admin_filter_' . $taxonomy_name, FILTER_SANITIZE_NUMBER_INT ) ) ) > 0 ) {
+				$tax_query[] = array(
+					'taxonomy' => $taxonomy_name,
+					'field'    => 'term_id',
+					'terms'    => absint( wp_unslash( filter_input( INPUT_GET, 'admin_filter_' . $taxonomy_name, FILTER_SANITIZE_NUMBER_INT ) ) ),
+				);
 			}
 		}
 
@@ -1037,7 +1033,13 @@ class PersonioPosition extends Post_Type {
 	 * @return WP_Query
 	 */
 	public function ignore_author( WP_Query $query ): WP_Query {
-		if ( is_admin() && ! empty( $query->query_vars['post_type'] ) && $this->get_name() === $query->query_vars['post_type'] ) {
+		// bail if we are not in wp-admin.
+		if( ! is_admin() ) {
+			return $query;
+		}
+
+		// set to ignore the author.
+		if ( ! empty( $query->query_vars['post_type'] ) && $this->get_name() === $query->query_vars['post_type'] ) {
 			$query->set( 'author', 0 );
 		}
 		return $query;
@@ -1191,24 +1193,15 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Remove all meta boxes which are not part of this post type.
 	 *
+	 * @param string $post_type The used post type.
+	 *
 	 * @return void
 	 */
-	public function remove_third_party_meta_boxes(): void {
+	public function remove_third_party_meta_boxes( string $post_type ): void {
 		global $wp_meta_boxes;
 
-		/**
-		 * Get the actual screen.
-		 */
-		if ( empty( $screen ) ) {
-			$screen = get_current_screen();
-		} elseif ( is_string( $screen ) ) {
-			$screen = convert_to_screen( $screen );
-		}
-
-		$page = $screen->id;
-
 		// bail if this is not our own cpt.
-		if ( $this->get_name() !== $page ) {
+		if ( $this->get_name() !== $post_type ) {
 			return;
 		}
 
@@ -1231,7 +1224,7 @@ class PersonioPosition extends Post_Type {
 		/**
 		 * Loop through the boxes for this cpt and remove all which do not belong to our plugin.
 		 */
-		foreach ( $wp_meta_boxes[ $page ] as $context => $priority_boxes ) {
+		foreach ( $wp_meta_boxes[ $this->get_name() ] as $context => $priority_boxes ) {
 			foreach ( $priority_boxes as $boxes ) {
 				foreach ( $boxes as $box ) {
 					// bail of box is not an array.
@@ -1255,7 +1248,7 @@ class PersonioPosition extends Post_Type {
 
 					// check if box is not from our own plugin.
 					if ( false === str_contains( $box['id'], $this->get_name() ) ) {
-						remove_meta_box( $box['id'], $page, $context );
+						remove_meta_box( $box['id'], $this->get_name(), $context );
 					}
 				}
 			}
@@ -1493,8 +1486,13 @@ class PersonioPosition extends Post_Type {
 			return;
 		}
 
+		// bail if we are not in wp-admin.
+		if( ! is_admin() ) {
+			return;
+		}
+
 		// run further checks and set the edit url.
-		if ( is_admin() && ! empty( $typenow ) && ! empty( $pagenow ) && 'edit.php' === $pagenow && ! empty( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) && stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'edit.php' ) && stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'post_type=' . $typenow ) && ! stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'page' ) ) {
+		if ( ! empty( $typenow ) && ! empty( $pagenow ) && 'edit.php' === $pagenow && ! empty( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) && stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'edit.php' ) && stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'post_type=' . $typenow ) && ! stripos( sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ), 'page' ) ) {
 			$pagenow = 'edit-' . $typenow . '.php';
 		}
 	}
@@ -2320,7 +2318,7 @@ class PersonioPosition extends Post_Type {
 		$content .= '<p>' . __( 'This shortcode will output a single position with the Personio ID 42. The title, the job description and the link to the application form at Personio are output.', 'personio-integration-light' ) . '</p>';
 		$content .= '<code>[personioPosition templates="title,content,formular" personioid="42"]</code>';
 		$content .= '<p><strong>' . __( 'Documentation:', 'personio-integration-light' ) . '</strong></p>';
-		/* translators: %1$s will be replaced by an URL. */
+		/* translators: %1$s will be replaced by a URL. */
 		$content .= '<p>' . sprintf( __( 'The complete documentation on the possibilities with shortcodes can be found <a href="%1$s" target="_blank">here (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_shortcode_documentation_url() ) ) . '</p>';
 		$content .= '<p><strong>' . __( 'Further notes:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';

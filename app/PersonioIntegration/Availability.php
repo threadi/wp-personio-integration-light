@@ -58,7 +58,7 @@ class Availability extends Extensions_Base {
 		add_filter( 'personio_integration_extensions_table_extension', array( $this, 'add_extension' ) );
 
 		// bail if extension is not enabled.
-		if ( ! $this->is_enabled() && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+		if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
 			return;
 		}
 
@@ -371,8 +371,8 @@ class Availability extends Extensions_Base {
 		// remove mark as running.
 		delete_option( 'personio_integration_availability_check_running' );
 
-		// return nothing.
-		wp_die();
+		// return ok-message.
+		wp_send_json_success();
 	}
 
 	/**

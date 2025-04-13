@@ -668,7 +668,7 @@ class Templates {
 		}
 
 		// reset back to list-link.
-		if ( 0 === absint( get_option( 'personioIntegrationTemplateBackToListButton' ) ) || 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) ) {
+		if ( 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) || 0 === absint( get_option( 'personioIntegrationTemplateBackToListButton' ) ) ) {
 			$back_to_list_url = '';
 		}
 
@@ -736,6 +736,11 @@ class Templates {
 		// get the position object.
 		$position_obj = Positions::get_instance()->get_position( absint( $post_id ) );
 
+		// bail if position is not valid.
+		if( ! $position_obj->is_valid() ) {
+			return $post_title;
+		}
+
 		// return resulting title.
 		return $position_obj->get_title();
 	}
@@ -777,7 +782,7 @@ class Templates {
 		}
 
 		// bail if no term as filter is available.
-		if ( 0 === strlen( $taxonomy_to_use ) ) {
+		if ( '' === $taxonomy_to_use ) {
 			return;
 		}
 

@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use JsonException;
 use PersonioIntegrationLight\Helper;
 
 /**
@@ -132,6 +133,7 @@ class Settings_Import {
 	 * Import settings file via AJAX.
 	 *
 	 * @return void
+	 * @throws JsonException
 	 */
 	public function import_settings(): void {
 		// check nonce.
@@ -208,7 +210,7 @@ class Settings_Import {
 		$file_content  = $wp_filesystem->get_contents( sanitize_text_field( wp_unslash( $_FILES['file']['tmp_name'] ) ) );
 
 		// convert JSON to array.
-		$settings_array = json_decode( $file_content, ARRAY_A );
+		$settings_array = json_decode( $file_content, ARRAY_A, 512, JSON_THROW_ON_ERROR );
 
 		// bail if JSON-code does not contain a setting for the Personio URL.
 		if ( ! isset( $settings_array['personioIntegrationUrl'] ) ) {

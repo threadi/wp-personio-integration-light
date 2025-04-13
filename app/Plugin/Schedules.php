@@ -243,6 +243,7 @@ class Schedules {
 	 * Create our schedules per request.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function create_schedules_per_request(): void {
 		check_ajax_referer( 'wp-personio-integration-create-schedules', 'nonce' );
