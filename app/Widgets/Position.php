@@ -158,16 +158,16 @@ class Position extends WP_Widget {
 		// collect the configured templates.
 		$templates = '';
 		if ( 'yes' === $settings['showTitle'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'title';
+			$templates .= ( '' !== $templates ? ',' : '' ) . 'title';
 		}
 		if ( 'yes' === $settings['showExcerpt'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'excerpt';
+			$templates .= ( '' !== $templates ? ',' : '' ) . 'excerpt';
 		}
 		if ( 'yes' === $settings['showContent'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'content';
+			$templates .= ( '' !== $templates ? ',' : '' ) . 'content';
 		}
 		if ( 'yes' === $settings['showApplicationForm'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'formular';
+			$templates .= ( '' !== $templates ? ',' : '' ) . 'formular';
 		}
 
 		// get the excerpt-templates.

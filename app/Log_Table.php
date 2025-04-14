@@ -36,8 +36,7 @@ class Log_Table extends WP_List_Table {
 	 * @return array
 	 */
 	private function table_data(): array {
-		$log = new Log();
-		return $log->get_entries();
+		return ( new Log() )->get_entries();
 	}
 
 	/**

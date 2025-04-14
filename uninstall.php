@@ -32,7 +32,7 @@ const WP_PERSONIO_INTEGRATION_PLUGIN = __FILE__;
 require_once __DIR__ . '/vendor/autoload.php';
 
 // include necessary files.
-require 'inc/constants.php';
+require __DIR__ . '/inc/constants.php';
 
 // run uninstaller.
 Uninstaller::get_instance()->run( array( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ) );

@@ -132,7 +132,7 @@ class Third_Party_Plugins {
 	 * @return string
 	 */
 	public function yoast( string $meta_og_description, Indexable_Presentation $presentation ): string {
-		if ( PersonioPosition::get_instance()->get_name() === $presentation->model->object_sub_type && absint( $presentation->model->object_id ) > 0 ) {
+		if ( absint( $presentation->model->object_id ) > 0 && PersonioPosition::get_instance()->get_name() === $presentation->model->object_sub_type ) {
 			// return resulting text without line breaks.
 			return Helper::replace_linebreaks( $this->get_content( $presentation->model->object_id ) );
 		}
