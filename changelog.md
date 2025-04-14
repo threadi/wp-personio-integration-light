@@ -1,10 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [4.2.6] - 14.04.2025
 
 ### Changed
 
-- Use own styles also in terms
+- Use own styles also in terms management
 - Optimized compatibility with exotic filesystem modes
 - Hide dashboard widget if setup has not been run
 - Removed date filter above positions table in backend

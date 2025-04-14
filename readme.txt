@@ -122,19 +122,9 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added link to edit positions on Personio
-- Added info about where a position has been imported from
-- Added hint for application forms in Pro on edit page of position
-- Added detection for WP Multilang which could supported by Pro plugin
-- Pagination of log table is now optimized
-- Small style-optimization for settings page
-- Optimized links to Personio account in edit page of position
-- Optimized help for some setting options
-- Optimized WP CLI messages
-- composer.json is now part of the release
-- Prevent any bulk action on position table
-- Log import cancellation
-- Renamed help menu entry
-- Fixed using underscore in term class names for filter
+- Use own styles also in terms management
+- Optimized compatibility with exotic filesystem modes
+- Hide dashboard widget if setup has not been run
+- Removed date filter above positions table in backend
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
