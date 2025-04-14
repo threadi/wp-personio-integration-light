@@ -83,8 +83,16 @@ class Blocks_Basis {
 	 * @return void
 	 */
 	public function register(): void {
+		// get block type registry.
+		$block_type_registry = WP_Block_Type_Registry::get_instance();
+
+		// bail if block type registry could not be loaded.
+		if( ! $block_type_registry instanceof WP_Block_Type_Registry ) {
+			return;
+		}
+
 		// bail if block is already registered.
-		if ( WP_Block_Type_Registry::get_instance()->is_registered( 'wp-personio-integration/' . $this->get_name() ) ) {
+		if ( $block_type_registry->is_registered( 'wp-personio-integration/' . $this->get_name() ) ) {
 			return;
 		}
 
@@ -144,16 +152,16 @@ class Blocks_Basis {
 	protected function get_template_parts( array $attributes ): string {
 		$templates = '';
 		if ( $attributes['showTitle'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'title';
+			$templates .= ( '' !== $templates ? ',' : '' ) . 'title';
 		}
 		if ( $attributes['showExcerpt'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'excerpt';
+			$templates .= ( '' !== $templates ? ',' : '' ) . 'excerpt';
 		}
 		if ( $attributes['showContent'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'content';
+			$templates .= ( '' !== $templates ? ',' : '' ) . 'content';
 		}
 		if ( $attributes['showApplicationForm'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'formular';
+			$templates .= ( '' !== $templates ? ',' : '' ) . 'formular';
 		}
 		return $templates;
 	}

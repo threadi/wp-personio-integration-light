@@ -121,8 +121,7 @@ class Archive extends Blocks_Basis {
 				$value = $attributes['style']['spacing']['blockGap'];
 				// convert var-setting to var-style-entity.
 				if ( str_contains( $attributes['style']['spacing']['blockGap'], 'var:' ) ) {
-					$value = str_replace( '|', '--', $value );
-					$value = str_replace( 'var:', '', $value );
+					$value = str_replace( array( '|', 'var:' ), array( '--', '' ), $value );
 					$value = 'var(--wp--' . $value . ')';
 				}
 				$styles_array[] = 'body .' . $class . ' { margin-bottom: ' . $value . '; }';

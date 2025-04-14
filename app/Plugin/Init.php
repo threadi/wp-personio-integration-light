@@ -248,11 +248,10 @@ class Init {
 	 * @param object $response The response-data.
 	 *
 	 * @return void
-	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function add_plugin_update_hints( array $data, object $response ): void {
 		// bail if plugin_data is empty.
-		if ( empty( $plugin_data ) ) {
+		if ( empty( $data ) ) {
 			return;
 		}
 
@@ -371,7 +370,7 @@ class Init {
 		}
 
 		// bail if PHP >= 8.1 is used.
-		if ( version_compare( PHP_VERSION, '8.1', '>' ) ) {
+		if ( PHP_VERSION_ID >= 81000 ) {
 			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
 			return;
 		}
@@ -381,7 +380,7 @@ class Init {
 		$transient_obj->set_type( 'error' );
 		$transient_obj->set_name( 'personio_integration_light_php_hint' );
 		$transient_obj->set_dismissible_days( 90 );
-		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'personio-integration-light' ) . '</strong><br>' . __( 'Future versions of <i>Personio Integration Light</i> will no longer be compatible with PHP 8.0 or older. This versions <a href="https://www.php.net/supported-versions.php" target="_blank">are outdated</a> since December 2023. To continue using the plugins new features, please update your PHP version.', 'personio-integration-light' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'personio-integration-light' ) );
+		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'personio-integration-light' ) . '</strong><br>' . __( 'Future versions of <i>Personio Integration Light</i> will no longer be compatible with PHP 8.0 or older. These versions <a href="https://www.php.net/supported-versions.php" target="_blank">are outdated</a> since December 2023. To continue using the plugins new features, please update your PHP version.', 'personio-integration-light' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'personio-integration-light' ) );
 		$transient_obj->save();
 	}
 

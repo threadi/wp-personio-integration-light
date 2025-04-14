@@ -102,7 +102,7 @@ class Taxonomies {
 						wp_cache_flush();
 					}
 				} elseif ( ! empty( $callback ) && is_callable( $callback ) ) {
-					call_user_func( $callback, count( $taxonomy_obj->defaults ) );
+					$callback( count( $taxonomy_obj->defaults ) );
 				}
 			}
 		}
@@ -554,7 +554,7 @@ class Taxonomies {
 
 			// update steps via callback.
 			if ( ! empty( $callback ) && is_callable( $callback ) ) {
-				call_user_func( $callback, 1 );
+				$callback( 1 );
 			}
 		}
 	}
@@ -583,7 +583,7 @@ class Taxonomies {
 	public function get_taxonomy_defaults_count(): int {
 		$count = 0;
 		foreach ( $this->get_taxonomy_defaults() as $labels ) {
-			$count = $count + count( $labels );
+			$count += count( $labels );
 		}
 		return $count;
 	}

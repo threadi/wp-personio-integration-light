@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use WP_Role;
 
 /**
  * Object to handle roles.
@@ -95,7 +96,15 @@ class Roles {
 		 */
 		global $wp_roles;
 		foreach ( $wp_roles->roles as $role_name => $settings ) {
+			// get the role.
 			$role = get_role( $role_name );
+
+			// bail if object could not be loaded.
+			if( $role instanceof WP_Role) {
+				continue;
+			}
+
+			// remove the capabilities.
 			$role->remove_cap( 'manage_' . PersonioPosition::get_instance()->get_name() );
 			$role->remove_cap( 'read_' . PersonioPosition::get_instance()->get_name() );
 		}

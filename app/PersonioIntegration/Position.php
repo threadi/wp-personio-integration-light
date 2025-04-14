@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use JsonException;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -101,6 +102,7 @@ class Position {
 	 * Saves the actual values of this object in the databases.
 	 *
 	 * @return void
+	 * @throws JsonException
 	 */
 	public function save(): void {
 		// do not save anything without personioId.
@@ -271,7 +273,7 @@ class Position {
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), $this->data['post_title'] );
 
 			// convert the job description from JSON to array.
-			$job_description = json_decode( $this->data['jobdescription'], true );
+			$job_description = json_decode( $this->data['jobdescription'], true, 512, JSON_THROW_ON_ERROR );
 
 			// add all language-specific texts.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), $job_description );
@@ -329,8 +331,8 @@ class Position {
 
 		// import multiple values from given array.
 		if ( is_array( $this->data[ $value ] ) ) {
-			foreach ( $this->data[ $value ] as $value ) {
-				$this->update_term( $value, $taxonomy, $append );
+			foreach ( $this->data[ $value ] as $term_value ) {
+				$this->update_term( $term_value, $taxonomy, $append );
 			}
 		} else {
 			// import single value.

@@ -98,18 +98,13 @@ class Intro {
 	}
 
 	/**
-	 * Prevent cloning of this object.
+	 * Save that intro has been closed.
 	 *
 	 * @return void
 	 */
 	public function closed(): void {
 		// check nonce.
 		check_ajax_referer( 'personio-intro-closed', 'nonce' );
-
-		// bail if function is not called via AJAX.
-		if ( ! defined( 'DOING_AJAX' ) ) {
-			wp_die();
-		}
 
 		// save that intro has been closed.
 		$this->set_closed();

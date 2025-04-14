@@ -29,11 +29,4 @@ class GeneratePress extends Themes_Base {
 	 * @var string
 	 */
 	protected string $css_file = 'generatepress.css';
-
-	/**
-	 * Holds the wrapper-classes of this theme.
-	 *
-	 * @var string
-	 */
-	protected string $wrapper_classes = '';
 }

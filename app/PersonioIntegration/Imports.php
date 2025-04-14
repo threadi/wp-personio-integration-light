@@ -93,7 +93,7 @@ class Imports {
 		define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
 
 		// do not import if it is already running in another process.
-		if ( absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) > 0 ) ) {
+		if ( absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) > 0 ) {
 			$this->errors[] = __( 'Import is already running. Please wait a moment until it is finished.', 'personio-integration-light' );
 		}
 
@@ -166,7 +166,7 @@ class Imports {
 				$this->add_errors( $import_obj->get_errors() );
 
 				// update counter for imported positions.
-				$imported_positions = $imported_positions + count( $import_obj->get_imported_positions() );
+				$imported_positions += count( $import_obj->get_imported_positions() );
 			}
 		}
 

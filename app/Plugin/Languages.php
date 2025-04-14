@@ -127,7 +127,7 @@ class Languages {
 		}
 
 		// return nothing for not supported languages.
-		return self::get_current_lang();
+		return $this->get_current_lang();
 	}
 
 	/**

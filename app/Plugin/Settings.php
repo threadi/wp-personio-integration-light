@@ -773,12 +773,10 @@ class Settings {
 	 */
 	public function register_field_callbacks(): void {
 		foreach ( $this->get_settings() as $section_settings ) {
-			if ( ! empty( $section_settings ) && ! empty( $section_settings['settings_page'] ) ) {
-				if ( ! empty( $section_settings['fields'] ) ) {
-					foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-						if ( ! empty( $field_settings['callback'] ) ) {
-							add_filter( 'pre_update_option_' . $field_name, $field_settings['callback'], 10, 2 );
-						}
+			if ( ! empty( $section_settings ) && ! empty( $section_settings['settings_page'] ) && ! empty( $section_settings['fields'] ) ) {
+				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
+					if ( ! empty( $field_settings['callback'] ) ) {
+						add_filter( 'pre_update_option_' . $field_name, $field_settings['callback'], 10, 2 );
 					}
 				}
 			}
@@ -931,7 +929,7 @@ class Settings {
 			}
 
 			if ( ! empty( $callback ) ) {
-				call_user_func( $callback );
+				$callback();
 			}
 			?>
 			</div>

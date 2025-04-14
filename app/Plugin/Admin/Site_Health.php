@@ -261,9 +261,13 @@ class Site_Health {
 
 		// one check for each Personio URL.
 		foreach ( Imports::get_instance()->get_personio_urls() as $personio_url ) {
-			$statuses['async'][ 'personio_integration_url_availability_check_' . md5( $personio_url ) ] = array(
+			// get the md5.
+			$md5 = md5( $personio_url );
+
+			// add to list.
+			$statuses['async'][ 'personio_integration_url_availability_check_' . $md5 ] = array(
 				'label'    => __( 'Personio Integration URL availability check', 'personio-integration-light' ),
-				'test'     => rest_url( 'personio/v1/url_availability_checks_' . md5( $personio_url ) ),
+				'test'     => rest_url( 'personio/v1/url_availability_checks_' . $md5 ),
 				'has_rest' => true,
 			);
 		}

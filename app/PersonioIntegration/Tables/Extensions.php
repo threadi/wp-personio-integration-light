@@ -149,15 +149,6 @@ class Extensions extends WP_List_Table {
 	}
 
 	/**
-	 * Define the sortable columns
-	 *
-	 * @return array
-	 */
-	public function get_sortable_columns(): array {
-		return array();
-	}
-
-	/**
 	 * Define what data to show on each column of the table.
 	 *
 	 * @param  object $item       Object.
