@@ -102,7 +102,7 @@ class Position {
 	 * Saves the actual values of this object in the databases.
 	 *
 	 * @return void
-	 * @throws JsonException
+	 * @throws JsonException Could throw exception.
 	 */
 	public function save(): void {
 		// do not save anything without personioId.

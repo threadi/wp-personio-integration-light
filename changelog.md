@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [4.2.7] - 16.04.2025
 
 ### Changed
 

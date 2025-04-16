@@ -100,7 +100,7 @@ class Roles {
 			$role = get_role( $role_name );
 
 			// bail if object could not be loaded.
-			if( $role instanceof WP_Role) {
+			if ( $role instanceof WP_Role ) {
 				continue;
 			}
 

@@ -133,7 +133,7 @@ class Settings_Import {
 	 * Import settings file via AJAX.
 	 *
 	 * @return void
-	 * @throws JsonException
+	 * @throws JsonException Could throw exception.
 	 */
 	public function import_settings(): void {
 		// check nonce.

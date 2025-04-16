@@ -737,7 +737,7 @@ class Templates {
 		$position_obj = Positions::get_instance()->get_position( absint( $post_id ) );
 
 		// bail if position is not valid.
-		if( ! $position_obj->is_valid() ) {
+		if ( ! $position_obj->is_valid() ) {
 			return $post_title;
 		}
 

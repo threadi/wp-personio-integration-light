@@ -354,7 +354,7 @@ class Admin {
 			$user = wp_get_current_user();
 
 			// bail if user could not be loaded.
-			if( ! $user instanceof WP_User ) {
+			if ( ! $user instanceof WP_User ) {
 				return;
 			}
 

@@ -1034,7 +1034,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function ignore_author( WP_Query $query ): WP_Query {
 		// bail if we are not in wp-admin.
-		if( ! is_admin() ) {
+		if ( ! is_admin() ) {
 			return $query;
 		}
 
@@ -1487,7 +1487,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// bail if we are not in wp-admin.
-		if( ! is_admin() ) {
+		if ( ! is_admin() ) {
 			return;
 		}
 
