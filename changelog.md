@@ -5,6 +5,7 @@
 ### Changed
 
 - Code optimization on multiple lines
+- Change visibility of schedule entities
 
 ### Fixed
 
