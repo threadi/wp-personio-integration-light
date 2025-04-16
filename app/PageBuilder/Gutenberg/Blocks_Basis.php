@@ -87,7 +87,7 @@ class Blocks_Basis {
 		$block_type_registry = WP_Block_Type_Registry::get_instance();
 
 		// bail if block type registry could not be loaded.
-		if( ! $block_type_registry instanceof WP_Block_Type_Registry ) {
+		if ( ! $block_type_registry instanceof WP_Block_Type_Registry ) {
 			return;
 		}
 

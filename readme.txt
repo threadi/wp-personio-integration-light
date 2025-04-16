@@ -122,9 +122,8 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Use own styles also in terms management
-- Optimized compatibility with exotic filesystem modes
-- Hide dashboard widget if setup has not been run
-- Removed date filter above positions table in backend
+- Code optimization on multiple lines
+- Change visibility of schedule entities
+- Fixed faulty HTML-code in classic widget edit form
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
