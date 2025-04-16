@@ -98,6 +98,7 @@ class Helper {
 	 * Return the URL which starts the import manually.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public static function get_import_url(): string {
 		return add_query_arg(
@@ -113,6 +114,7 @@ class Helper {
 	 * Return the url to remove all positions in local database.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public static function get_delete_url(): string {
 		return add_query_arg(
@@ -238,7 +240,7 @@ class Helper {
 					$attributes[ $name ] = (int) $attribute;
 				}
 				if ( 'bool' === $attribute_settings[ $name ] ) {
-					$attributes[ $name ] = boolval( $attribute );
+					$attributes[ $name ] = (bool) $attribute;
 				}
 				if ( 'filter' === $attribute_settings[ $name ] ) {
 					// if filter is set in config.
@@ -366,7 +368,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_current_url(): string {
-		if ( is_admin() && ! empty( $_SERVER['REQUEST_URI'] ) ) {
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) && is_admin() ) {
 			return admin_url( basename( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) );
 		}
 
@@ -569,6 +571,7 @@ class Helper {
 	 * Return language-depending Personio Login URL example.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public static function get_personio_login_url_example(): string {
 		return Languages::get_instance()->is_german_language() ? 'https://dein-unternehmen.personio.de' : 'https://your-company.personio.com';
@@ -596,6 +599,7 @@ class Helper {
 	 * Return the review-URL.
 	 *
 	 * @return string
+	 * @noinspection PhpUnused
 	 */
 	public static function get_review_url(): string {
 		if ( Languages::get_instance()->is_german_language() ) {
@@ -751,7 +755,7 @@ class Helper {
 		}
 
 		// do not load our files outside our own backend pages.
-		if ( in_array( $hook, array( 'edit.php', 'post.php', 'edit-tags.php', 'term.php' ), true ) && function_exists( 'get_current_screen' ) ) {
+		if ( function_exists( 'get_current_screen' ) && in_array( $hook, array( 'edit.php', 'post.php', 'edit-tags.php', 'term.php' ), true ) ) {
 			$screen = get_current_screen();
 			if ( ! in_array( $screen->post_type, apply_filters( 'personio_integration_light_do_not_load_on_cpt', array( PersonioPosition::get_instance()->get_name() ) ), true ) ) {
 				return true;

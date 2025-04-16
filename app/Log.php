@@ -105,6 +105,7 @@ class Log {
 	 * Delete all entries which are older than X days.
 	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function clean_log(): void {
 		// bail on uninstalling.

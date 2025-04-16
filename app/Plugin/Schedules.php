@@ -286,7 +286,7 @@ class Schedules {
 	 *
 	 * @return false|Schedules_Base
 	 */
-	private function get_schedule_object_by_name( string $name ): false|Schedules_Base {
+	public function get_schedule_object_by_name( string $name ): false|Schedules_Base {
 		foreach ( $this->get_schedule_object_names() as $object_name ) {
 			$obj = new $object_name();
 			if ( $obj instanceof Schedules_Base && $name === $obj->get_name() ) {

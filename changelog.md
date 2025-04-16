@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Code optimization on multiple lines
+- Change visibility of schedule entities
+
+### Fixed
+
+- Fixed faulty HTML-code in classic widget edit form
+
 ## [4.2.6] - 14.04.2025
 
 ### Changed

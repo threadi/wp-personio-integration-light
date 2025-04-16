@@ -61,7 +61,7 @@ class Schedules_Base {
 	 *
 	 * @var array
 	 */
-	private array $args = array();
+	protected array $args = array();
 
 	/**
 	 * Return the name of this schedule.
