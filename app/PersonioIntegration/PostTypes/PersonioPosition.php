@@ -159,9 +159,17 @@ class PersonioPosition extends Post_Type {
 			'view_items'         => __( 'View Positions', 'personio-integration-light' ),
 			'edit_item'          => __( 'View Position in backend', 'personio-integration-light' ),
 			'search_items'       => __( 'Search Position', 'personio-integration-light' ),
-			'not_found'          => __( 'Not Found', 'personio-integration-light' ),
-			'not_found_in_trash' => __( 'Not found in Trash', 'personio-integration-light' ),
+			'not_found'          => __( 'No positions imported', 'personio-integration-light' ),
 		);
+
+		if( Helper::is_personio_url_set() ) {
+			/* translators: %1$s will be replaced by a URL. */
+			$labels['not_found'] .= '. ' . sprintf( __( 'Start import <a href="%1$s" class="personio-integration-import-hint">now</a>.', 'personio-integration-light' ), Helper::get_import_url() );
+		}
+		else {
+			/* translators: %1$s will be replaced by a URL. */
+			$labels['not_found'] .= '. ' . sprintf( __( 'Add your Personio URL <a href="%1$s">in the settings</a>.', 'personio-integration-light' ), Helper::get_settings_url() );
+		}
 
 		// get slugs.
 		$archive_slug = Helper::get_archive_slug();

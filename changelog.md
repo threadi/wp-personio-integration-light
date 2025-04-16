@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Changed text in table of positions if no positions are imported
+
 ## [4.2.7] - 16.04.2025
 
 ### Changed
