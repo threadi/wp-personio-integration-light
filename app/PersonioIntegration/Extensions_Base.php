@@ -322,9 +322,9 @@ class Extensions_Base {
 	/**
 	 * Add the global settings for each extension.
 	 *
-	 * @param array $settings List of settings.
+	 * @param array<array<string,bool|string>> $settings List of settings.
 	 *
-	 * @return array
+	 * @return array<array<string,bool|string>>
 	 */
 	public function add_global_settings( array $settings ): array {
 		// bail if not setting field is set.
@@ -374,5 +374,14 @@ class Extensions_Base {
 	 */
 	protected function get_plugin_source(): string {
 		return WP_PERSONIO_INTEGRATION_PLUGIN;
+	}
+
+	/**
+	 * Return the state.
+	 *
+	 * @return bool
+	 */
+	public function is_active(): bool {
+		return false;
 	}
 }

@@ -167,7 +167,7 @@ class Settings_Export {
 	/**
 	 * Return the array with settings to export.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function get_settings(): array {
 		/**
