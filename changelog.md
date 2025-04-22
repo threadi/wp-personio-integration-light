@@ -5,7 +5,12 @@
 ### Changed
 
 - Changed text in table of positions if no positions are imported
+- Optimized Block Editor loading
 - Extend support for extension regarding its PHP-strict compatibility
+
+### Fixed
+
+- Fixed usage of form filter if simple permalinks are used
 
 ## [4.2.7] - 16.04.2025
 

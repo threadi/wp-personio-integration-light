@@ -84,6 +84,7 @@ class Templates {
 		add_filter( 'personio_integration_light_position_get_classes', array( $this, 'get_classes_of_position' ) );
 		add_filter( 'personio_integration_light_term_get_classes', array( $this, 'get_classes_of_term' ) );
 		add_filter( 'personio_integration_light_filter_url', array( $this, 'format_filter_url' ), 10, 2 );
+		add_action( 'personio_integration_filter_pre', array( $this, 'extend_form_for_simple_permalinks' ) );
 
 		// expand kses-filter.
 		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
@@ -1118,5 +1119,20 @@ class Templates {
 
 		// return resulting attributes.
 		return $attributes;
+	}
+
+	/**
+	 * Extend the form if project is using simple permalinks.
+	 *
+	 * @return void
+	 */
+	public function extend_form_for_simple_permalinks(): void {
+		// bail if simple permalinks are not used.
+		if( ! empty( get_option( 'permalink_structure' ) ) ) {
+			return;
+		}
+
+		// add the current page ID as field.
+		?><input type="hidden" name="page_id" value="<?php echo absint( get_queried_object_id() ); ?>"><?php
 	}
 }
