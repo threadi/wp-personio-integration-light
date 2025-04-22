@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Changed text in table of positions if no positions are imported
+- Extend support for extension regarding its PHP-strict compatibility
+
 ## [4.2.7] - 16.04.2025
 
 ### Changed

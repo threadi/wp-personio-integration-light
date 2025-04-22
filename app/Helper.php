@@ -676,11 +676,11 @@ class Helper {
 	/**
 	 * Add new entry with its key on specific position in array.
 	 *
-	 * @param array|null $fields The array we want to change.
+	 * @param array<string,array<string,mixed>>|null $fields The array we want to change.
 	 * @param int        $position The position where the new array should be added.
-	 * @param array      $array_to_add The new array which should be added.
+	 * @param array<string,array<string,mixed>>      $array_to_add The new array which should be added.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public static function add_array_in_array_on_position( array|null $fields, int $position, array $array_to_add ): array {
 		if ( is_null( $fields ) ) {
