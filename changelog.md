@@ -5,6 +5,7 @@
 ### Changed
 
 - Changed text in table of positions if no positions are imported
+- Optimized Block Editor loading
 - Extend support for extension regarding its PHP-strict compatibility
 
 ### Fixed

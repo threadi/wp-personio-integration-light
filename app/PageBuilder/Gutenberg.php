@@ -146,10 +146,29 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function register_blocks(): void {
 		foreach ( $this->get_widgets() as $block_class_name ) {
-			$obj = call_user_func( $block_class_name . '::get_instance' );
-			if ( $obj instanceof Blocks_Basis ) {
-				$obj->register();
+			// bail if class name is not a string.
+			if( ! is_string( $block_class_name ) ) {
+				continue;
 			}
+
+			// extend the class name to match callable.
+			$class_name = $block_class_name . '::get_instance';
+
+			// bail if it is not callable.
+			if ( ! is_callable( $class_name ) ) {
+				continue;
+			}
+
+			// initiate object.
+			$obj = $class_name();
+
+			// bail if object is not "Blocks_Basis".
+			if ( ! $obj instanceof Blocks_Basis ) {
+				continue;
+			}
+
+			// run registering of this block.
+			$obj->register();
 		}
 	}
 
