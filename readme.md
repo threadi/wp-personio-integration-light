@@ -70,11 +70,11 @@ OR use ant in build/-directory: `ant json-translations`
 
 ### Run
 
-`vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/*,*/legacy/* --standard=ruleset.xml .`
+`vendor/bin/phpcs --standard=ruleset.xml .`
 
 ### Repair
 
-`vendor/bin/phpcbf --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/*,*/legacy/* --standard=ruleset.xml .`
+`vendor/bin/phpcbf --standard=ruleset.xml .`
 
 ## Check for WordPress VIP Coding Standards
 
