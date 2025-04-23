@@ -9,6 +9,7 @@
 - Extend support for extension regarding its PHP-strict compatibility
 - Optimized build process regarding check against WordPress Coding Standards
 - GitHub action does not fail if it automatically fixes code issues
+- Updated dependencies
 
 ### Fixed
 
