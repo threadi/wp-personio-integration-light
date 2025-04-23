@@ -85,6 +85,7 @@ class Templates {
 		add_filter( 'personio_integration_light_term_get_classes', array( $this, 'get_classes_of_term' ) );
 		add_filter( 'personio_integration_light_filter_url', array( $this, 'format_filter_url' ), 10, 2 );
 		add_action( 'personio_integration_filter_pre', array( $this, 'extend_form_for_simple_permalinks' ) );
+		add_action( 'personio_integration_get_template_before', array( $this, 'add_styles' ) );
 
 		// expand kses-filter.
 		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
@@ -1134,5 +1135,32 @@ class Templates {
 
 		// add the current page ID as field.
 		?><input type="hidden" name="page_id" value="<?php echo absint( get_queried_object_id() ); ?>"><?php
+	}
+
+	/**
+	 * Add custom widget styles for classic themes.
+	 *
+	 * @param array<string> $attributes List of attributes.
+	 *
+	 * @return void
+	 */
+	public function add_styles( array $attributes ): void {
+		// bail if this is a block theme.
+		if( Helper::theme_is_fse_theme() ) {
+			return;
+		}
+
+		// bail if this is a REST API request.
+		if( Helper::is_admin_api_request() ) {
+			return;
+		}
+
+		// bail if styles are not set.
+		if ( empty( $attributes['styles'] ) ) {
+			return;
+		}
+
+		// show this styles.
+		include Helper::get_plugin_path() . '/legacy/styles.php';
 	}
 }

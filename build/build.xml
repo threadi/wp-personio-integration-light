@@ -146,10 +146,10 @@
     <!-- check WCS compatibility -->
     <target name="check-wcs" depends="composer-install">
         <exec dir="${src.dir}" failonerror="false" executable="vendor/bin/phpcbf">
-            <arg line="--extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml ."/>
+            <arg line="--extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/*,*/legacy/* --standard=ruleset.xml ."/>
         </exec>
         <exec dir="${src.dir}" failonerror="true" executable="vendor/bin/phpcs">
-            <arg line="--extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=ruleset.xml ."/>
+            <arg line="--extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/*,*/legacy/* --standard=ruleset.xml ."/>
         </exec>
     </target>
 
@@ -201,6 +201,7 @@
             <zipfileset dir="${src.dir}/css" prefix="${plugin.slug}/css" />
             <zipfileset dir="${src.dir}/deprecated" prefix="${plugin.slug}/deprecated" />
             <zipfileset dir="${src.dir}/gfx" prefix="${plugin.slug}/gfx" />
+            <zipfileset dir="${src.dir}/legacy" prefix="${plugin.slug}/legacy" />
             <zipfileset dir="${src.dir}/vendor" includes="autoload.php" fullpath="${plugin.slug}/vendor/autoload.php" />
             <zipfileset dir="${src.dir}/vendor/composer" prefix="${plugin.slug}/vendor/composer" />
             <zipfileset dir="${src.dir}/vendor/threadi/easy-dialog-for-wordpress/build/" prefix="${plugin.slug}/vendor/threadi/easy-dialog-for-wordpress/build/" />

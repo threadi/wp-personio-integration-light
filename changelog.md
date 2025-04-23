@@ -11,6 +11,7 @@
 ### Fixed
 
 - Fixed usage of form filter if simple permalinks are used
+- Fixed missing custom styles for widgets in classic themes
 
 ## [4.2.7] - 16.04.2025
 
