@@ -101,7 +101,7 @@ class Extensions {
 	/**
 	 * Get extensions as list of Extension_Base-objects.
 	 *
-	 * @return array
+	 * @return array<Extensions_Base>
 	 */
 	public function get_extensions_as_objects(): array {
 		// the list of objects.
