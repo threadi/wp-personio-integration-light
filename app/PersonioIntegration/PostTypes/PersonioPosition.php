@@ -150,23 +150,22 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function register(): void {
 		$labels = array(
-			'name'               => __( 'Positions', 'personio-integration-light' ),
-			'singular_name'      => __( 'Position', 'personio-integration-light' ),
-			'menu_name'          => __( 'Positions', 'personio-integration-light' ),
-			'parent_item_colon'  => __( 'Parent Position', 'personio-integration-light' ),
-			'all_items'          => __( 'All Positions', 'personio-integration-light' ),
-			'view_item'          => __( 'View Position in frontend', 'personio-integration-light' ),
-			'view_items'         => __( 'View Positions', 'personio-integration-light' ),
-			'edit_item'          => __( 'View Position in backend', 'personio-integration-light' ),
-			'search_items'       => __( 'Search Position', 'personio-integration-light' ),
-			'not_found'          => __( 'No positions imported', 'personio-integration-light' ),
+			'name'              => __( 'Positions', 'personio-integration-light' ),
+			'singular_name'     => __( 'Position', 'personio-integration-light' ),
+			'menu_name'         => __( 'Positions', 'personio-integration-light' ),
+			'parent_item_colon' => __( 'Parent Position', 'personio-integration-light' ),
+			'all_items'         => __( 'All Positions', 'personio-integration-light' ),
+			'view_item'         => __( 'View Position in frontend', 'personio-integration-light' ),
+			'view_items'        => __( 'View Positions', 'personio-integration-light' ),
+			'edit_item'         => __( 'View Position in backend', 'personio-integration-light' ),
+			'search_items'      => __( 'Search Position', 'personio-integration-light' ),
+			'not_found'         => __( 'No positions imported', 'personio-integration-light' ),
 		);
 
-		if( Helper::is_personio_url_set() ) {
+		if ( Helper::is_personio_url_set() ) {
 			/* translators: %1$s will be replaced by a URL. */
 			$labels['not_found'] .= '. ' . sprintf( __( 'Start import <a href="%1$s" class="personio-integration-import-hint">now</a>.', 'personio-integration-light' ), Helper::get_import_url() );
-		}
-		else {
+		} else {
 			/* translators: %1$s will be replaced by a URL. */
 			$labels['not_found'] .= '. ' . sprintf( __( 'Add your Personio URL <a href="%1$s">in the settings</a>.', 'personio-integration-light' ), Helper::get_settings_url() );
 		}

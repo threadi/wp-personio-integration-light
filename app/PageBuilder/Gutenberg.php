@@ -147,7 +147,7 @@ class Gutenberg extends PageBuilder_Base {
 	public function register_blocks(): void {
 		foreach ( $this->get_widgets() as $block_class_name ) {
 			// bail if class name is not a string.
-			if( ! is_string( $block_class_name ) ) {
+			if ( ! is_string( $block_class_name ) ) {
 				continue;
 			}
 

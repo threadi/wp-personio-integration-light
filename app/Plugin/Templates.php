@@ -1129,12 +1129,13 @@ class Templates {
 	 */
 	public function extend_form_for_simple_permalinks(): void {
 		// bail if simple permalinks are not used.
-		if( ! empty( get_option( 'permalink_structure' ) ) ) {
+		if ( ! empty( get_option( 'permalink_structure' ) ) ) {
 			return;
 		}
 
 		// add the current page ID as field.
-		?><input type="hidden" name="page_id" value="<?php echo absint( get_queried_object_id() ); ?>"><?php
+		?><input type="hidden" name="page_id" value="<?php echo absint( get_queried_object_id() ); ?>">
+		<?php
 	}
 
 	/**
@@ -1146,12 +1147,12 @@ class Templates {
 	 */
 	public function add_styles( array $attributes ): void {
 		// bail if this is a block theme.
-		if( Helper::theme_is_fse_theme() ) {
+		if ( Helper::theme_is_fse_theme() ) {
 			return;
 		}
 
 		// bail if this is a REST API request.
-		if( Helper::is_admin_api_request() ) {
+		if ( Helper::is_admin_api_request() ) {
 			return;
 		}
 
