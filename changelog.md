@@ -5,6 +5,7 @@
 ### Added
 
 - Added some CSS for theme TwentyTwenty for better initial view
+- Add option for required extensions
 
 ### Changed
 

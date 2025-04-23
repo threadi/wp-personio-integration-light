@@ -80,6 +80,13 @@ class Extensions_Base {
 	protected string $extension_category = '';
 
 	/**
+	 * List of extensions this extension requires.
+	 *
+	 * @var array<string>
+	 */
+	protected array $requires = array();
+
+	/**
 	 * Variable for instance of this Singleton object.
 	 *
 	 * @var ?Extensions_Base
@@ -221,6 +228,30 @@ class Extensions_Base {
 		$new_state = 0;
 		if ( 0 === $state ) {
 			$new_state = 1;
+
+			// enable all extension this extension requires.
+			foreach( $this->get_required_extensions() as $extension_class_name ) {
+				// bail if "get_instance" does not exist.
+				if ( ! method_exists( $extension_class_name, 'get_instance' ) ) {
+					continue;
+				}
+
+				// bail if "get_instance" is not callable.
+				if ( ! is_callable( $extension_class_name . '::get_instance' ) ) {
+					continue;
+				}
+
+				// get the object.
+				$obj = call_user_func( $extension_class_name . '::get_instance' );
+
+				// bail if this is not an extension object.
+				if( ! $obj instanceof self ) {
+					continue;
+				}
+
+				// enable this extension as it is required.
+				$obj->set_enabled();
+			}
 		}
 
 		// save it.
@@ -382,6 +413,42 @@ class Extensions_Base {
 	 * @return bool
 	 */
 	public function is_active(): bool {
+		return false;
+	}
+
+	/**
+	 * Return list of required extensions.
+	 *
+	 * @return array<string>
+	 */
+	private function get_required_extensions(): array {
+		return $this->requires;
+	}
+
+	/**
+	 * Return whether this extension is required by another.
+	 *
+	 * @return bool
+	 */
+	protected function is_required(): bool {
+		// get the actual class name.
+		$class_name = get_class($this);
+
+		// get all extension and check if they required the actual one.
+		foreach( Extensions::get_instance()->get_extensions_as_objects() as $extension_obj ) {
+			// bail if this extension does not require the actual one.
+			if( ! in_array( $class_name, $extension_obj->get_required_extensions(), true ) ) {
+				continue;
+			}
+
+			// bail if this extension is not enabled.
+			if( ! $extension_obj->is_enabled() ) {
+				continue;
+			}
+
+			// break the loop as an extension requires this one.
+			return true;
+		}
 		return false;
 	}
 }
