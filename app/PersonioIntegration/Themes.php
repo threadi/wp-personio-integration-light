@@ -81,17 +81,34 @@ class Themes {
 
 		// search for the active theme in the list of supported themes.
 		foreach ( $this->get_themes() as $theme_class_name ) {
-			$obj = new $theme_class_name();
-			if ( $obj instanceof Themes_Base && $obj->get_name() === $theme->get_template() ) {
-				// set theme as active-theme support.
-				$this->set_theme_support( $obj );
-
-				// initialize this support.
-				$obj->init();
-
-				// break the loop.
-				return;
+			// bail if given class name is not a string.
+			if( ! is_string( $theme_class_name ) ) {
+				continue;
 			}
+
+			// bail if it is not callable.
+			if ( ! class_exists( $theme_class_name ) ) {
+				continue;
+			}
+
+			// initiate object.
+			$obj = new $theme_class_name();
+
+			// bail if object is not of type "Themes_Base".
+			if ( ! $obj instanceof Themes_Base ) {
+				continue;
+			}
+
+			// bail if this is not the active theme.
+			if( $obj->get_name() !== $theme->get_template() ) {
+				continue;
+			}
+
+			// set theme as active-theme support.
+			$this->set_theme_support( $obj );
+
+			// initialize this support.
+			$obj->init();
 		}
 	}
 
@@ -110,6 +127,7 @@ class Themes {
 			'\PersonioIntegrationLight\PersonioIntegration\Themes\OceanWp',
 			'\PersonioIntegrationLight\PersonioIntegration\Themes\OpenShop',
 			'\PersonioIntegrationLight\PersonioIntegration\Themes\TwentySeventeen',
+			'\PersonioIntegrationLight\PersonioIntegration\Themes\TwentyTwenty',
 		);
 
 		/**

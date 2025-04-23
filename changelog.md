@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added some CSS for theme TwentyTwenty for better initial view
+
 ### Changed
 
 - Changed text in table of positions if no positions are imported
