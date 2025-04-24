@@ -129,7 +129,7 @@ class Helper {
 	/**
 	 * Get list of available filter types.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public static function get_filter_types(): array {
 		$types = array(
@@ -142,7 +142,7 @@ class Helper {
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *
-		 * @param array $types The list of types.
+		 * @param array<string,string> $types The list of types.
 		 */
 		return apply_filters( 'personio_integration_filter_types', $types );
 	}
@@ -185,10 +185,10 @@ class Helper {
 	/**
 	 * Check and secure the allowed shortcode-attributes.
 	 *
-	 * @param array $attribute_defaults List of attribute defaults.
-	 * @param array $attribute_settings List of attribute settings.
-	 * @param array $attributes List of actual attribute values.
-	 * @return array
+	 * @param array<string,mixed> $attribute_defaults List of attribute defaults.
+	 * @param array<string,mixed> $attribute_settings List of attribute settings.
+	 * @param array<string,mixed> $attributes List of actual attribute values.
+	 * @return array<string,array<string,mixed>>
 	 */
 	public static function get_shortcode_attributes( array $attribute_defaults, array $attribute_settings, array $attributes ): array {
 		$filtered = array(
@@ -408,7 +408,7 @@ class Helper {
 	 * Get all files of directory recursively.
 	 *
 	 * @param string $path The path.
-	 * @return array
+	 * @return array<string>
 	 */
 	public static function get_files_from_directory( string $path = '.' ): array {
 		// get WP_Filesystem as object.
@@ -421,11 +421,11 @@ class Helper {
 	/**
 	 * Recursively load files from given array.
 	 *
-	 * @param array  $files Array of file we iterate through.
+	 * @param array<string>  $files Array of file we iterate through.
 	 * @param string $path Absolute path where the files are located.
-	 * @param array  $file_list List of files.
+	 * @param array<string>  $file_list List of files.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	private static function get_files( array $files, string $path, array $file_list = array() ): array {
 		foreach ( $files as $filename => $settings ) {
@@ -789,6 +789,13 @@ class Helper {
 		require_once ABSPATH . '/wp-admin/includes/file.php';
 		\WP_Filesystem();
 		global $wp_filesystem;
+
+		// bail if wp_filesystem is not of "WP_Filesystem_Base".
+		if ( ! $wp_filesystem instanceof WP_Filesystem_Base ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+			return new WP_Filesystem_Direct( false );
+		}
 
 		// return local object on any error.
 		if ( $wp_filesystem->errors instanceof WP_Error && $wp_filesystem->errors->has_errors() ) {

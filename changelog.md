@@ -5,7 +5,8 @@
 ### Added
 
 - Added some CSS for theme TwentyTwenty for better initial view
-- Add option for required extensions
+- Added setting for required extensions
+- Added possibility to change extension state via URL
 
 ### Changed
 
@@ -14,6 +15,7 @@
 - Extend support for extension regarding its PHP-strict compatibility
 - Optimized build process regarding check against WordPress Coding Standards
 - GitHub action does not fail if it automatically fixes code issues
+- Extension state can now also be changed without JavaScript
 - Updated dependencies
 
 ### Fixed

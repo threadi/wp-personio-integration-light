@@ -87,3 +87,7 @@ Hint: this check runs against the VIP-GO-platform which is not our target for th
 ## Generate documentation
 
 `vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration`
+
+## Analyse with PHPStan
+
+`vendor/bin/phpstan analyse`

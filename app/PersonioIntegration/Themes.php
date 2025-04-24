@@ -82,7 +82,7 @@ class Themes {
 		// search for the active theme in the list of supported themes.
 		foreach ( $this->get_themes() as $theme_class_name ) {
 			// bail if given class name is not a string.
-			if( ! is_string( $theme_class_name ) ) {
+			if ( ! is_string( $theme_class_name ) ) {
 				continue;
 			}
 
@@ -100,7 +100,7 @@ class Themes {
 			}
 
 			// bail if this is not the active theme.
-			if( $obj->get_name() !== $theme->get_template() ) {
+			if ( $obj->get_name() !== $theme->get_template() ) {
 				continue;
 			}
 
