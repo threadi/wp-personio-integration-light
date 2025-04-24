@@ -122,13 +122,16 @@ class Extensions {
 				continue;
 			}
 
+			// get object name.
+			$obj_name = $extension_name . '::get_instance';
+
 			// bail if method is not callable.
-			if ( ! is_callable( $extension_name . '::get_instance' ) ) {
+			if ( ! is_callable( $obj_name ) ) {
 				continue;
 			}
 
 			// get the object.
-			$list[] = call_user_func( $extension_name . '::get_instance' );
+			$list[] = $obj_name();
 		}
 
 		// return resulting list.
