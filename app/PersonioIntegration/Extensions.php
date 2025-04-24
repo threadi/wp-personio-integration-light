@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
+use PersonioIntegrationLight\Plugin\Transients;
 
 /**
  * Object to handle different themes to output templates of our plugin.
@@ -71,6 +72,7 @@ class Extensions {
 		// add admin-actions.
 		add_action( 'admin_action_personio_integration_extension_disable_all', array( $this, 'disable_all_by_request' ) );
 		add_action( 'admin_action_personio_integration_extension_enable_all', array( $this, 'enable_all_by_request' ) );
+		add_action( 'admin_action_personio_integration_change_extension_state', array( $this, 'change_extension_state_by_request' ) );
 
 		// misc.
 		add_action( 'admin_menu', array( $this, 'add_extension_menu' ) );
@@ -294,6 +296,70 @@ class Extensions {
 				'button_title' => $button_title,
 			)
 		);
+	}
+
+	/**
+	 * Change extension state via request.
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function change_extension_state_by_request(): void {
+		// check none.
+		check_admin_referer( 'personio-integration-extension-state', 'nonce' );
+
+		// get transients as object.
+		$transients_obj = Transients::get_instance();
+
+		// get the name of the extension to change.
+		$extension_name = filter_input( INPUT_GET, 'extension', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// bail if no extension name is given.
+		if ( empty( $extension_name ) ) {
+			// show error.
+			$transient_obj = $transients_obj->add();
+			$transient_obj->set_name( 'personio_integration_extension_toggle_state' );
+			$transient_obj->set_type( 'error' );
+			$transient_obj->set_message( __( 'Error when calling the status change of an extension! Extension not specified.', 'personio-integration-light' ) );
+			$transient_obj->save();
+
+			// redirect user.
+			wp_safe_redirect( wp_get_referer() );
+			exit;
+		}
+
+		// get the extension object.
+		$obj = $this->get_extension_by_name( $extension_name );
+
+		// bail if object could not be loaded.
+		if ( ! $obj instanceof Extensions_Base ) {
+			// show error.
+			$transient_obj = $transients_obj->add();
+			$transient_obj->set_name( 'personio_integration_extension_toggle_state' );
+			$transient_obj->set_type( 'error' );
+			/* translators: %1$s will be replaced by a name. */
+			$transient_obj->set_message( sprintf( __( 'Error when calling the status change of an extension! Given extension %1$s could not be loaded.', 'personio-integration-light' ), $extension_name ) );
+			$transient_obj->save();
+
+			// redirect user.
+			wp_safe_redirect( wp_get_referer() );
+			exit;
+		}
+
+		// toggle the state of the extension (this triggers extension-own handlers).
+		$obj->toggle_state();
+
+		// show ok message.
+		$transient_obj = $transients_obj->add();
+		$transient_obj->set_name( 'personio_integration_extension_toggle_state' );
+		$transient_obj->set_type( 'success' );
+		/* translators: %1$s will be replaced by a name, %2$s by "enabled" or "disabled". */
+		$transient_obj->set_message( sprintf( __( 'The extension %1$s has been %2$s.', 'personio-integration-light' ), $obj->get_label(), $obj->is_enabled() ? __( 'enabled', 'personio-integration-light' ) : __( 'disabled', 'personio-integration-light' ) ) );
+		$transient_obj->save();
+
+		// redirect user.
+		wp_safe_redirect( wp_get_referer() );
+		exit;
 	}
 
 	/**

@@ -230,7 +230,7 @@ class Extensions_Base {
 			$new_state = 1;
 
 			// enable all extension this extension requires.
-			foreach( $this->get_required_extensions() as $extension_class_name ) {
+			foreach ( $this->get_required_extensions() as $extension_class_name ) {
 				// bail if "get_instance" does not exist.
 				if ( ! method_exists( $extension_class_name, 'get_instance' ) ) {
 					continue;
@@ -245,7 +245,7 @@ class Extensions_Base {
 				$obj = call_user_func( $extension_class_name . '::get_instance' );
 
 				// bail if this is not an extension object.
-				if( ! $obj instanceof self ) {
+				if ( ! $obj instanceof self ) {
 					continue;
 				}
 
@@ -432,17 +432,17 @@ class Extensions_Base {
 	 */
 	protected function is_required(): bool {
 		// get the actual class name.
-		$class_name = get_class($this);
+		$class_name = get_class( $this );
 
 		// get all extension and check if they required the actual one.
-		foreach( Extensions::get_instance()->get_extensions_as_objects() as $extension_obj ) {
+		foreach ( Extensions::get_instance()->get_extensions_as_objects() as $extension_obj ) {
 			// bail if this extension does not require the actual one.
-			if( ! in_array( $class_name, $extension_obj->get_required_extensions(), true ) ) {
+			if ( ! in_array( $class_name, $extension_obj->get_required_extensions(), true ) ) {
 				continue;
 			}
 
 			// bail if this extension is not enabled.
-			if( ! $extension_obj->is_enabled() ) {
+			if ( ! $extension_obj->is_enabled() ) {
 				continue;
 			}
 
@@ -450,5 +450,21 @@ class Extensions_Base {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Return link to change state of this extension.
+	 *
+	 * @return string
+	 */
+	public function get_toggle_state_link(): string {
+		return add_query_arg(
+			array(
+				'action'    => 'personio_integration_change_extension_state',
+				'extension' => $this->get_name(),
+				'nonce'     => wp_create_nonce( 'personio-integration-extension-state' ),
+			),
+			get_admin_url() . 'admin.php'
+		);
 	}
 }

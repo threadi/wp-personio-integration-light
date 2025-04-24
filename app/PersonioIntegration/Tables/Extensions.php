@@ -258,10 +258,13 @@ class Extensions extends WP_List_Table {
 			return '<a class="pro-marker" href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . __( 'Only in Pro', 'personio-integration-light' ) . '</a>';
 		}
 
+		// get URL to toggle state.
+		$toggle_state_url = $item->get_toggle_state_link();
+
 		// create output depending on state with option to change it.
-		$html = '<a href="#" class="button button-state button-state-disabled" title="' . esc_attr( __( 'Extension could be enabled', 'personio-integration-light' ) ) . '" data-extension="' . esc_attr( $item->get_name() ) . '">' . esc_html__( 'Disabled', 'personio-integration-light' ) . '</a>';
+		$html = '<a href="' . esc_url( $toggle_state_url ) . '" class="button button-state button-state-disabled" title="' . esc_attr( __( 'Extension could be enabled', 'personio-integration-light' ) ) . '" data-extension="' . esc_attr( $item->get_name() ) . '">' . esc_html__( 'Disabled', 'personio-integration-light' ) . '</a>';
 		if ( $item->is_enabled() ) {
-			$html = '<a href="#" class="button button-state button-state-enabled" title="' . esc_attr( __( 'Extension could be disabled', 'personio-integration-light' ) ) . '" data-extension="' . esc_attr( $item->get_name() ) . '">' . __( 'Enabled', 'personio-integration-light' ) . '</a>';
+			$html = '<a href="' . esc_url( $toggle_state_url ) . '" class="button button-state button-state-enabled" title="' . esc_attr( __( 'Extension could be disabled', 'personio-integration-light' ) ) . '" data-extension="' . esc_attr( $item->get_name() ) . '">' . __( 'Enabled', 'personio-integration-light' ) . '</a>';
 		}
 
 		// show just the state if user could not change it.
