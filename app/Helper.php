@@ -602,10 +602,7 @@ class Helper {
 	 * @noinspection PhpUnused
 	 */
 	public static function get_review_url(): string {
-		if ( Languages::get_instance()->is_german_language() ) {
-			return 'https://de.wordpress.org/plugins/personio-integration-light/#reviews';
-		}
-		return 'https://wordpress.org/plugins/personio-integration-light/#reviews';
+		return 'https://wordpress.org/support/plugin/personio-integration-light/reviews/#new-post';
 	}
 
 	/**
