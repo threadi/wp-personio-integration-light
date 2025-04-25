@@ -122,8 +122,18 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Code optimization on multiple lines
-- Change visibility of schedule entities
-- Fixed faulty HTML-code in classic widget edit form
+- Added some CSS for theme TwentyTwenty for better initial view
+- Added setting for required extensions
+- Added possibility to change extension state via URL
+- Changed text in table of positions if no positions are imported
+- Optimized Block Editor loading
+- Extend support for extension regarding its PHP-strict compatibility
+- Optimized build process regarding check against WordPress Coding Standards
+- GitHub action does not fail if it automatically fixes code issues
+- Extension state can now also be changed without JavaScript
+- Updated review URL
+- Updated dependencies
+- Fixed usage of form filter if simple permalinks are used
+- Fixed missing custom styles for widgets in classic themes
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

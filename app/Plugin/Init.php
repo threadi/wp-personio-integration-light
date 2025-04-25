@@ -370,7 +370,7 @@ class Init {
 		}
 
 		// bail if PHP >= 8.1 is used.
-		if ( PHP_VERSION_ID >= 81000 ) {
+		if ( PHP_VERSION_ID >= 80100 ) {
 			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
 			return;
 		}
