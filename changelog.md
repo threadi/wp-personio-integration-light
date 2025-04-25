@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [4.3.0] - 28.04.2025
 
 ### Added
 
@@ -16,6 +16,7 @@
 - Optimized build process regarding check against WordPress Coding Standards
 - GitHub action does not fail if it automatically fixes code issues
 - Extension state can now also be changed without JavaScript
+- Updated review URL
 - Updated dependencies
 
 ### Fixed
