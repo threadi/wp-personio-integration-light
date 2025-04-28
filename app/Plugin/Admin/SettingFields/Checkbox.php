@@ -18,7 +18,7 @@ class Checkbox {
 	/**
 	 * Get the output.
 	 *
-	 * @param array $attributes The settings for this field.
+	 * @param array<string,mixed> $attributes The settings for this field.
 	 *
 	 * @return void
 	 */
@@ -39,6 +39,15 @@ class Checkbox {
 				<?php
 			}
 
+			// format depends.
+			$depends = '';
+			if( ! empty( $attributes['depends'] ) ) {
+				$depends = wp_json_encode( $attributes['depends'] );
+				if( ! $depends ) {
+					$depends = '';
+				}
+			}
+
 			?>
 			<input type="checkbox" id="<?php echo esc_attr( $attributes['fieldId'] ); ?>"
 					name="<?php echo esc_attr( $attributes['fieldId'] ); ?>"
@@ -48,7 +57,7 @@ class Checkbox {
 				?>
 				<?php echo esc_attr( $readonly ); ?>
 					class="personio-field-width"
-					title="<?php echo esc_attr( $title ); ?>" data-depends="<?php echo esc_attr( wp_json_encode( $attributes['depends'] ) ); ?>"
+					title="<?php echo esc_attr( $title ); ?>" data-depends="<?php echo esc_attr( $depends ); ?>"
 			>
 			<?php
 

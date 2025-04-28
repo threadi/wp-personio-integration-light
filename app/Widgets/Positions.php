@@ -38,7 +38,7 @@ class Positions extends WP_Widget {
 	/**
 	 * Get fields for this widget.
 	 *
-	 * @return array[]
+	 * @return array<string,array<string>>
 	 */
 	private function getFields(): array {
 		return array(

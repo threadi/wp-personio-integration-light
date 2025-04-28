@@ -46,10 +46,11 @@ class Third_Party_Plugins {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Third_Party_Plugins {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return static::$instance;
+
+		return self::$instance;
 	}
 
 	/**
@@ -112,9 +113,9 @@ class Third_Party_Plugins {
 	/**
 	 * Plugin Redirection.
 	 *
-	 * @param array $post_types List of post-types the Redirection-plugin supports.
+	 * @param array<string,string> $post_types List of post-types the Redirection-plugin supports.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function redirection( array $post_types ): array {
 		if ( ! empty( $post_types[ PersonioPosition::get_instance()->get_name() ] ) ) {
@@ -158,8 +159,8 @@ class Third_Party_Plugins {
 	 * Optimize output of plugin OG.
 	 *
 	 * @source https://de.wordpress.org/plugins/og/
-	 * @param array $og_array List of OpenGraph-settings from OG-plugin.
-	 * @return array
+	 * @param array<string,array<mixed>> $og_array List of OpenGraph-settings from OG-plugin.
+	 * @return array<string,array<mixed>>
 	 */
 	public function og_optimizer( array $og_array ): array {
 		if ( is_singular( PersonioPosition::get_instance()->get_name() ) ) {
@@ -184,9 +185,9 @@ class Third_Party_Plugins {
 	/**
 	 * Remove our CPTs from list of possible post-types in easy-language-plugin.
 	 *
-	 * @param array $post_types List of post-types.
+	 * @param array<string,string> $post_types List of post-types.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function remove_easy_language_support( array $post_types ): array {
 		if ( ! empty( $post_types[ PersonioPosition::get_instance()->get_name() ] ) ) {
@@ -240,9 +241,9 @@ class Third_Party_Plugins {
 	/**
 	 * Optimize output for description with plugin SEOFramework.
 	 *
-	 * @param array $fields The SEO-fields the framework has collected.
+	 * @param array<string,mixed> $fields The SEO-fields the framework has collected.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function seoframework( array $fields ): array {
 		if ( is_singular( PersonioPosition::get_instance()->get_name() ) ) {
@@ -257,9 +258,9 @@ class Third_Party_Plugins {
 	/**
 	 * Optimize output for schema with plugin SEOFramework.
 	 *
-	 * @param array $graph A list of fields for SEO-output.
+	 * @param array<string,mixed> $graph A list of fields for SEO-output.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function seoframework_schema( array $graph ): array {
 		if ( is_singular( PersonioPosition::get_instance()->get_name() ) ) {
@@ -321,9 +322,9 @@ class Third_Party_Plugins {
 	/**
 	 * Remove Yoast's columns from our own cpt.
 	 *
-	 * @param array $columns List of columns.
+	 * @param array<string,mixed> $columns List of columns.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function remove_yoast_columns( array $columns ): array {
 		if ( isset( $columns['wpseo-score'] ) ) {
@@ -341,9 +342,9 @@ class Third_Party_Plugins {
 	/**
 	 * Remove Rank Math's columns from our own cpt.
 	 *
-	 * @param array $columns List of columns.
+	 * @param array<string,mixed> $columns List of columns.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function remove_rank_math_columns( array $columns ): array {
 		if ( isset( $columns['rank_math_seo_details'] ) ) {
@@ -382,9 +383,9 @@ class Third_Party_Plugins {
 	/**
 	 * Remove WPML translation columns.
 	 *
-	 * @param array $columns List of columns.
+	 * @param array<string,mixed> $columns List of columns.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function remove_wpml_column( array $columns ): array {
 		if ( isset( $columns['icl_translations'] ) ) {
@@ -451,9 +452,9 @@ class Third_Party_Plugins {
 	/**
 	 * Suppress filters for position query if WPML is enabled.
 	 *
-	 * @param array $query The data for WP_Query.
+	 * @param array<string,mixed> $query The data for WP_Query.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function wpml_suppress_filters( array $query ): array {
 		// bail if wpml is not active.
@@ -468,7 +469,7 @@ class Third_Party_Plugins {
 		 * @since 3.0.3 Available since 3.0.3.
 		 *
 		 * @param bool $false Whether optimizations should be prevented (true) or not (false)
-		 * @param array $query The running position query.
+		 * @param array<string,mixed> $query The running position query.
 		 *
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */

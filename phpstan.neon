@@ -1,5 +1,5 @@
 parameters:
-  level: 10
+  level: 8
   reportUnmatchedIgnoredErrors: false
   ignoreErrors:
     - "#^Unsafe usage of new static#"
@@ -11,6 +11,8 @@ parameters:
     - "#rocket_clean_domain#"
     - "#WpFastestCache#"
     - "#wp-admin/includes#"
+    - "#WP_CLI#"
+    - "#Yoast#"
   paths:
     - app
     - personio-integration-light.php

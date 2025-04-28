@@ -18,7 +18,7 @@ class Multiple_Select {
 	/**
 	 * Get the output.
 	 *
-	 * @param array $attributes The settings for this field.
+	 * @param array<string,mixed> $attributes The settings for this field.
 	 *
 	 * @return void
 	 */
@@ -35,7 +35,7 @@ class Multiple_Select {
 
 			// get value from config.
 			$actual_values = get_option( $attributes['fieldId'] );
-			if ( empty( $actual_values ) || ! is_array( $actual_values ) ) {
+			if ( empty( $actual_values ) ) {
 				$actual_values = array();
 			}
 
@@ -88,8 +88,17 @@ class Multiple_Select {
 				<?php
 			}
 
+			// format depends.
+			$depends = '';
+			if( ! empty( $attributes['depends'] ) ) {
+				$depends = wp_json_encode( $attributes['depends'] );
+				if( ! $depends ) {
+					$depends = '';
+				}
+			}
+
 			?>
-			<select id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>[]" multiple class="personio-field-width <?php echo esc_attr( implode( ' ', $classes ) ); ?>"<?php echo isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ? ' disabled="disabled"' : ''; ?> title="<?php echo esc_attr( $title ); ?>" data-depends="<?php echo esc_attr( wp_json_encode( $attributes['depends'] ) ); ?>">
+			<select id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>[]" multiple class="personio-field-width <?php echo esc_attr( implode( ' ', $classes ) ); ?>"<?php echo isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ? ' disabled="disabled"' : ''; ?> title="<?php echo esc_attr( $title ); ?>" data-depends="<?php echo esc_attr( $depends ); ?>">
 				<?php
 				foreach ( $attributes['options'] as $key => $value ) {
 					// set selected attribute.

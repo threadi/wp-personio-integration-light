@@ -18,7 +18,7 @@ class TextHints {
 	/**
 	 * Get the output.
 	 *
-	 * @param array $attributes The settings for this field.
+	 * @param array<string,mixed> $attributes The settings for this field.
 	 *
 	 * @return void
 	 */

@@ -158,7 +158,7 @@ class Position extends WP_Widget {
 		// collect the configured templates.
 		$templates = '';
 		if ( 'yes' === $settings['showTitle'] ) {
-			$templates .= ( '' !== $templates ? ',' : '' ) . 'title';
+			$templates .= 'title';
 		}
 		if ( 'yes' === $settings['showExcerpt'] ) {
 			$templates .= ( '' !== $templates ? ',' : '' ) . 'excerpt';

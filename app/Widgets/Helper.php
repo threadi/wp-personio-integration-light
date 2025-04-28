@@ -29,8 +29,8 @@ trait Helper {
 	/**
 	 * Create output for Widget-fields.
 	 *
-	 * @param array $fields List of fields in this widget.
-	 * @param array $instance Current settings.
+	 * @param array<string,array<string,mixed>> $fields List of fields in this widget.
+	 * @param array<string,mixed> $instance Current settings.
 	 * @return void
 	 */
 	protected function create_widget_field_output( array $fields, array $instance ): void {

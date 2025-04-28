@@ -70,11 +70,11 @@ class Blocks_Basis {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Blocks_Basis {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
 	/**

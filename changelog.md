@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- More code optimizations with PHPStan
+
 ## [4.3.0] - 28.04.2025
 
 ### Added

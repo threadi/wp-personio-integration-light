@@ -18,7 +18,7 @@ class Select {
 	/**
 	 * Get the output.
 	 *
-	 * @param array $attributes The settings for this field.
+	 * @param array<string,mixed> $attributes The settings for this field.
 	 *
 	 * @return void
 	 */
@@ -46,8 +46,17 @@ class Select {
 				<?php
 			}
 
+			// format depends.
+			$depends = '';
+			if( ! empty( $attributes['depends'] ) ) {
+				$depends = wp_json_encode( $attributes['depends'] );
+				if( ! $depends ) {
+					$depends = '';
+				}
+			}
+
 			?>
-			<select id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" class="personio-field-width" title="<?php echo esc_attr( $title ); ?>"<?php echo isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ? ' disabled="disabled"' : ''; ?> data-depends="<?php echo esc_attr( wp_json_encode( $attributes['depends'] ) ); ?>">
+			<select id="<?php echo esc_attr( $attributes['fieldId'] ); ?>" name="<?php echo esc_attr( $attributes['fieldId'] ); ?>" class="personio-field-width" title="<?php echo esc_attr( $title ); ?>"<?php echo isset( $attributes['readonly'] ) && false !== $attributes['readonly'] ? ' disabled="disabled"' : ''; ?> data-depends="<?php echo esc_attr( $depends ); ?>">
 				<?php
 				if ( false === $attributes['hide_empty_option'] ) {
 					?>
