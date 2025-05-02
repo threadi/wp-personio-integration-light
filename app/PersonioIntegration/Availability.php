@@ -49,6 +49,24 @@ class Availability extends Extensions_Base {
 	protected string $extension_category = 'positions';
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Availability
+	 */
+	private static ?Availability $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Availability {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Initialize this plugin.
 	 *
 	 * @return void
@@ -83,9 +101,9 @@ class Availability extends Extensions_Base {
 	/**
 	 * Add settings for this extension.
 	 *
-	 * @param array $settings List of settings.
+	 * @param array<string,mixed> $settings List of settings.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function add_settings( array $settings ): array {
 		if ( empty( $settings['settings_section_import']['fields'] ) ) {
@@ -241,7 +259,7 @@ class Availability extends Extensions_Base {
 				);
 
 				// show icon with helper.
-				$html = '<a class="dashicons dashicons-no personio-integration-availability-check" href="#" data-post-id="' . esc_attr( $position_obj->get_id() ) . '" title="' . __( 'Not available', 'personio-integration-light' ) . '"></a> <a class="pro-marker easy-dialog-for-wordpress" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
+				$html = '<a class="dashicons dashicons-no personio-integration-availability-check" href="#" data-post-id="' . esc_attr( $position_obj->get_id() ) . '" title="' . __( 'Not available', 'personio-integration-light' ) . '"></a> <a class="pro-marker easy-dialog-for-wordpress" data-dialog="' . esc_attr( Helper::get_dialog_for_attribute( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
 				/**
 				 * Filter the availability "no"-output.
 				 *

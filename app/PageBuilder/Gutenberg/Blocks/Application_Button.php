@@ -38,7 +38,7 @@ class Application_Button extends Blocks_Basis {
 	/**
 	 * Attributes this block is using.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected array $attributes = array(
 		'preview' => array(
@@ -52,9 +52,27 @@ class Application_Button extends Blocks_Basis {
 	);
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Application_Button
+	 */
+	private static ?Application_Button $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Application_Button {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Get the content for single position.
 	 *
-	 * @param array $attributes List of attributes for this position.
+	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
@@ -95,6 +113,10 @@ class Application_Button extends Blocks_Basis {
 		// get the output.
 		ob_start();
 		Templates::get_instance()->get_application_link_template( $position, $attributes );
-		return ob_get_clean();
+		$content = ob_get_clean();
+		if( ! $content ) {
+			return '';
+		}
+		return $content;
 	}
 }

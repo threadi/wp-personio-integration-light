@@ -24,14 +24,14 @@ class Languages {
 	/**
 	 * List of languages this plugin supports.
 	 *
-	 * @var array|int[]
+	 * @var array<string>
 	 */
 	private array $languages;
 
 	/**
 	 * List of languages (format: "xx") and their mappings to WP-language (format: "xx_YY")
 	 *
-	 * @var array
+	 * @var array<string,array<string>>
 	 */
 	private array $language_to_wp_lang_mapping = array(
 		'de' => array(
@@ -85,7 +85,7 @@ class Languages {
 	/**
 	 * Return an array of the supported languages.
 	 *
-	 * @return array
+	 * @return array<string>
 	 * @noinspection PhpUnused
 	 */
 	public function get_languages(): array {
@@ -96,7 +96,7 @@ class Languages {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param string $languages List of supported languages.
+		 * @param array<string> $languages List of supported languages.
 		 */
 		return apply_filters( 'personio_integration_supported_languages', $languages );
 	}
@@ -136,7 +136,7 @@ class Languages {
 	 *
 	 * @param bool $with_main_language True to use main language in list.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_active_languages( bool $with_main_language = true ): array {
 		// get active languages from settings.

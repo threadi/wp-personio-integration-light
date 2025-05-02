@@ -30,6 +30,24 @@ class Gutenberg extends PageBuilder_Base {
 	protected string $name = 'gutenberg';
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Gutenberg
+	 */
+	private static ?Gutenberg $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Gutenberg {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Initialize this PageBuilder support.
 	 *
 	 * @return void
@@ -122,7 +140,7 @@ class Gutenberg extends PageBuilder_Base {
 	/**
 	 * Return list of available blocks.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_widgets(): array {
 		$list = array(
@@ -146,11 +164,6 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function register_blocks(): void {
 		foreach ( $this->get_widgets() as $block_class_name ) {
-			// bail if class name is not a string.
-			if ( ! is_string( $block_class_name ) ) {
-				continue;
-			}
-
 			// extend the class name to match callable.
 			$class_name = $block_class_name . '::get_instance';
 
@@ -175,9 +188,9 @@ class Gutenberg extends PageBuilder_Base {
 	/**
 	 * Remove the FSE-hint from settings.
 	 *
-	 * @param array $settings Array with the settings.
+	 * @param array<string,mixed> $settings Array with the settings.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function remove_fse_hint( array $settings ): array {
 		if ( isset( $settings['settings_section_template_list']['fields']['personio_integration_fse_theme_hint'] ) ) {
@@ -243,9 +256,9 @@ class Gutenberg extends PageBuilder_Base {
 	/**
 	 * Add position specific classes in body class for single view.
 	 *
-	 * @param array $css_classes List of classes.
+	 * @param array<string> $css_classes List of classes.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function add_body_classes( array $css_classes ): array {
 		// bail if this is not a single page.

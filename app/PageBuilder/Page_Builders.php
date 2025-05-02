@@ -25,6 +25,24 @@ class Page_Builders extends Extensions_Base {
 	protected string $name = 'Page Builders';
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Page_Builders
+	 */
+	private static ?Page_Builders $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Page_Builders {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Initialize this object.
 	 *
 	 * @return void
@@ -45,7 +63,7 @@ class Page_Builders extends Extensions_Base {
 	/**
 	 * Return list of page builders.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_page_builders(): array {
 		$list = array(
@@ -55,7 +73,7 @@ class Page_Builders extends Extensions_Base {
 		/**
 		 * Filter the possible page builders.
 		 *
-		 * @param array $list List of the handler.
+		 * @param array<string> $list List of the handler.
 		 */
 		return apply_filters( 'personio_integration_pagebuilder', $list );
 	}
@@ -74,9 +92,9 @@ class Page_Builders extends Extensions_Base {
 	/**
 	 * Add categories for this extension type.
 	 *
-	 * @param array $categories List of categories.
+	 * @param array<string,string> $categories List of categories.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function add_log_categories( array $categories ): array {
 		// add category for this extension type.

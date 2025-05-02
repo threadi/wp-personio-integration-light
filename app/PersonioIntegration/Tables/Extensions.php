@@ -26,7 +26,7 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Override the parent columns method. Defines the columns to use in your listing table
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_columns(): array {
 		$columns = array(
@@ -41,7 +41,7 @@ class Extensions extends WP_List_Table {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $columns List of columns.
+		 * @param array<string,string> $columns List of columns.
 		 */
 		return apply_filters( 'personio_integration_extensions_table_columns', $columns );
 	}
@@ -49,7 +49,7 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Get the table data
 	 *
-	 * @return array
+	 * @return array<Extensions_Base>
 	 */
 	private function table_data(): array {
 		// get filter.
@@ -75,7 +75,7 @@ class Extensions extends WP_List_Table {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $extensions List of unsorted extensions.
+		 * @param array<Extensions_Base> $extensions List of unsorted extensions.
 		 */
 		$extensions = apply_filters( 'personio_integration_extensions_table_extensions', $extensions );
 
@@ -142,7 +142,7 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Define which columns are hidden
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_hidden_columns(): array {
 		return array();
@@ -151,17 +151,12 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Define what data to show on each column of the table.
 	 *
-	 * @param  object $item       Object.
+	 * @param  Extensions_Base $item       Object.
 	 * @param  string $column_name Current column name.
 	 *
 	 * @return string
 	 */
 	public function column_default( $item, $column_name ): string {
-		// bail if $item is not our object.
-		if ( ! ( $item instanceof Extensions_Base ) ) {
-			return '';
-		}
-
 		// show category.
 		if ( 'category' === $column_name ) {
 			$extension_categories = $this->get_extension_categories();
@@ -183,7 +178,7 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Get the available categories.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	private function get_extension_categories(): array {
 		$categories = array(
@@ -199,7 +194,7 @@ class Extensions extends WP_List_Table {
 		 * Filter the extension categories.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array $categories List of categories.
+		 * @param array<string,string> $categories List of categories.
 		 */
 		return apply_filters( 'personio_integration_extension_categories', $categories );
 	}
@@ -287,9 +282,9 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Allow input-field in kses for on/off-toggle.
 	 *
-	 * @param array $allowed_tags The allowed tags.
+	 * @param array<string,array<string,bool>> $allowed_tags The allowed tags.
 	 *
-	 * @return array
+	 * @return array<string,array<string,bool>>
 	 */
 	public function add_kses_html( array $allowed_tags ): array {
 		$allowed_tags['input'] = array(
@@ -303,7 +298,7 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Define filter for categories.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	protected function get_views(): array {
 		// get main url.
@@ -341,7 +336,7 @@ class Extensions extends WP_List_Table {
 		 * Filter the list of possible views in extension table.
 		 *
 		 * @since 4.0.0 Available since 4.0.0.
-		 * @param array $list List of views.
+		 * @param array<string,string> $list List of views.
 		 */
 		return apply_filters( 'personio_integration_light_extension_table_views', $list );
 	}
@@ -417,8 +412,8 @@ class Extensions extends WP_List_Table {
 			);
 
 			// output buttons.
-			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_disable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable all', 'personio-integration-light' ) . '</a>';
-			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_enable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable all', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( Helper::get_dialog_for_attribute( $dialog_disable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable all', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( Helper::get_dialog_for_attribute( $dialog_enable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable all', 'personio-integration-light' ) . '</a>';
 		}
 	}
 }

@@ -514,6 +514,9 @@ class Position {
 		$url = '#';
 		if ( ! empty( $this->data['ID'] ) ) {
 			$url = get_permalink( $this->data['ID'] );
+			if( ! is_string( $url ) ) {
+				$url = '';
+			}
 		}
 
 		/**

@@ -114,7 +114,7 @@ class Help_System {
 	/**
 	 * Return the list of help tabs.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	private function get_help_tabs(): array {
 		$list = array();
@@ -123,7 +123,7 @@ class Help_System {
 		 * Filter the list of help tabs with its contents.
 		 *
 		 * @since 4.0.0 Available since 4.0.0.
-		 * @param array $list List of help tabs.
+		 * @param array<string,mixed> $list List of help tabs.
 		 */
 		return apply_filters( 'personio_integration_light_help_tabs', $list );
 	}
@@ -131,9 +131,9 @@ class Help_System {
 	/**
 	 * Add help for using applications.
 	 *
-	 * @param array $help_list List of help tabs.
+	 * @param array<string,mixed> $help_list List of help tabs.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function add_applications_help( array $help_list ): array {
 		// add menu entry for applications (with hint to pro).
@@ -143,7 +143,7 @@ class Help_System {
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param array $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the buttons.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {

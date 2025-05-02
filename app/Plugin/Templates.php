@@ -75,8 +75,8 @@ class Templates {
 
 		// our own hooks.
 		add_action( 'personio_integration_get_title', array( $this, 'get_title_template' ), 10, 2 );
-		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt' ), 10, 2 );
-		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 );
+		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt' ), 10, 2 ); // @phpstan-ignore return.void
+		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 ); // @phpstan-ignore return.void
 		add_action( 'personio_integration_get_formular', array( $this, 'get_application_link_template' ), 10, 2 );
 		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
@@ -741,7 +741,7 @@ class Templates {
 		// set back to list-link.
 		$back_to_list_url = get_option( 'personioIntegrationTemplateBackToListUrl', '' );
 		if ( empty( $back_to_list_url ) ) {
-			$back_to_list_url = get_post_type_archive_link( PersonioPosition::get_instance()->get_name() );
+			$back_to_list_url = PersonioPosition::get_instance()->get_archive_url();
 		}
 
 		// reset back to list-link.

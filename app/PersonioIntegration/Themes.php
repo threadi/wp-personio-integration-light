@@ -81,11 +81,6 @@ class Themes {
 
 		// search for the active theme in the list of supported themes.
 		foreach ( $this->get_themes() as $theme_class_name ) {
-			// bail if given class name is not a string.
-			if ( ! is_string( $theme_class_name ) ) {
-				continue;
-			}
-
 			// bail if it is not callable.
 			if ( ! class_exists( $theme_class_name ) ) {
 				continue;
@@ -115,7 +110,7 @@ class Themes {
 	/**
 	 * Return list of supported themes.
 	 *
-	 * @return array
+	 * @return array<int,string>
 	 */
 	private function get_themes(): array {
 		$theme_list = array(
@@ -134,7 +129,7 @@ class Themes {
 		 * Filter the list of supported themes.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array $theme_list The list of supported themes.
+		 * @param array<int,string> $theme_list The list of supported themes.
 		 */
 		return apply_filters( 'personio_integration_supported_themes', $theme_list );
 	}

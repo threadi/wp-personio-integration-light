@@ -20,15 +20,15 @@ class Languages {
 	/**
 	 * Validate the usage of languages.
 	 *
-	 * @param array|null $values List of configured languages.
+	 * @param array<string,string>|null $values List of configured languages.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public static function validate( array|null $values ): array {
 		// if empty set fallback language.
 		if ( empty( $values ) ) {
 			add_settings_error( 'personioIntegrationLanguages', 'personioIntegrationLanguages', __( 'You must enable one language. English will be set.', 'personio-integration-light' ) );
-			$values = array( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_fallback_language_name() => 1 );
+			return array( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_fallback_language_name() => '1' );
 		}
 
 		// check if new configuration would change anything.

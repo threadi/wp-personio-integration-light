@@ -129,7 +129,7 @@ class Log {
 	/**
 	 * Return list of categories with internal name & their label.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_categories(): array {
 		$list = array(
@@ -141,7 +141,7 @@ class Log {
 		 *
 		 * @since 3.1.0 Available since 3.1.0.
 		 *
-		 * @param array $list List of categories.
+		 * @param array<string,string> $list List of categories.
 		 */
 		return apply_filters( 'personio_integration_log_categories', $list );
 	}
@@ -151,7 +151,7 @@ class Log {
 	 *
 	 * Use for each possible condition own statements to match WCS.
 	 *
-	 * @return array
+	 * @return array<int,mixed>
 	 */
 	public function get_entries(): array {
 		global $wpdb;
@@ -178,7 +178,7 @@ class Log {
 		$limit = apply_filters( 'personio_integration_light_log_limit', $limit );
 
 		// get filter.
-		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$category = (string) filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		/**
 		 * Filter the used category.
@@ -186,10 +186,10 @@ class Log {
 		 * @since 4.1.0 Available since 4.1.0.
 		 * @param string $category The category to use.
 		 */
-		$category = apply_filters( 'personio_integration_light_log_category', $category );
+		$category = (string) apply_filters( 'personio_integration_light_log_category', $category );
 
 		// get md5.
-		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$md5 = (string) filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// if request is empty, get md5 from object if set.
 		if ( empty( $md5 ) ) {
@@ -202,7 +202,7 @@ class Log {
 		 * @since 4.1.0 Available since 4.1.0.
 		 * @param string $md5 The md5 to use.
 		 */
-		$md5 = apply_filters( 'personio_integration_light_log_md5', $md5 );
+		$md5 = (string) apply_filters( 'personio_integration_light_log_md5', $md5 );
 
 		// get errors.
 		$errors = absint( filter_input( INPUT_GET, 'errors', FILTER_SANITIZE_NUMBER_INT ) );
@@ -222,7 +222,7 @@ class Log {
 		}
 
 		// if only category is set.
-		if ( ! is_null( $category ) && is_null( $md5 ) ) {
+		if ( ! empty( $category ) && empty( $md5 ) ) {
 			// get and return the entries.
 			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
@@ -238,7 +238,7 @@ class Log {
 		}
 
 		// if only md5 is set.
-		if ( is_null( $category ) && ! is_null( $md5 ) ) {
+		if ( empty( $category ) && ! empty( $md5 ) ) {
 			// get and return the entries.
 			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
@@ -254,7 +254,7 @@ class Log {
 		}
 
 		// if both are set.
-		if ( ! is_null( $category ) && ! is_null( $md5 ) ) {
+		if ( ! empty( $category ) && ! empty( $md5 ) ) {
 			// get and return the entries.
 			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(

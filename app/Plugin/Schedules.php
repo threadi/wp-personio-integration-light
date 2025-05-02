@@ -91,9 +91,9 @@ class Schedules {
 	/**
 	 * Add settings for this extension.
 	 *
-	 * @param array $settings List of settings.
+	 * @param array<string,mixed> $settings List of settings.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function add_settings( array $settings ): array {
 		if ( empty( $settings['settings_section_advanced']['fields'] ) ) {

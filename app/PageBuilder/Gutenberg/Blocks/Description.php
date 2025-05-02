@@ -38,7 +38,7 @@ class Description extends Blocks_Basis {
 	/**
 	 * Attributes this block is using.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected array $attributes = array(
 		'template' => array(
@@ -56,9 +56,27 @@ class Description extends Blocks_Basis {
 	);
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Description
+	 */
+	private static ?Description $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Description {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Get the content for single position.
 	 *
-	 * @param array $attributes List of attributes for this position.
+	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
@@ -100,6 +118,10 @@ class Description extends Blocks_Basis {
 		// get the output.
 		ob_start();
 		Templates::get_instance()->get_content_template( $position, $attributes );
-		return ob_get_clean();
+		$content = ob_get_clean();
+		if( ! $content ) {
+			return '';
+		}
+		return $content;
 	}
 }

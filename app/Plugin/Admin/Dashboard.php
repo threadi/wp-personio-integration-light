@@ -76,7 +76,7 @@ class Dashboard {
 	/**
 	 * Get the dashboard-widgets.
 	 *
-	 * @return array
+	 * @return array<string,array<string,string>>
 	 */
 	private function get_dashboard_widgets(): array {
 		$dashboard_widgets = array();

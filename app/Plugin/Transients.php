@@ -94,7 +94,7 @@ class Transients {
 	/**
 	 * Get all known transients as objects.
 	 *
-	 * @return array[Transient]
+	 * @return array<string,Transient>
 	 */
 	public function get_transients(): array {
 		$transients = array();
@@ -230,15 +230,14 @@ class Transients {
 	 *
 	 * @return void
 	 * @noinspection PhpUnused
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function dismiss_transient_via_ajax(): void {
 		// check nonce.
 		check_ajax_referer( 'personio-integration-dismiss-nonce', 'nonce' );
 
 		// get values.
-		$option_name        = isset( $_POST['option_name'] ) ? sanitize_text_field( wp_unslash( $_POST['option_name'] ) ) : false;
-		$dismissible_length = isset( $_POST['dismissible_length'] ) ? sanitize_text_field( wp_unslash( $_POST['dismissible_length'] ) ) : 14;
+		$option_name        = filter_input( INPUT_POST, 'option_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$dismissible_length = filter_input( INPUT_POST, 'dismissible_length', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		if ( 'forever' !== $dismissible_length ) {
 			// if $dismissible_length is not an integer default to 14.
@@ -260,9 +259,9 @@ class Transients {
 	/**
 	 * Add URLs to the list where transients are hidden by default.
 	 *
-	 * @param array $urls List of URLs where the transients are hidden.
+	 * @param array<int,string> $urls List of URLs where the transients are hidden.
 	 *
-	 * @return array
+	 * @return array<int,string>
 	 */
 	public function set_default_pages_where_transients_are_hidden( array $urls ): array {
 		// add some URLs to the list.

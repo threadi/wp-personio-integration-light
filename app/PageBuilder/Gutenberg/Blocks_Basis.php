@@ -43,7 +43,7 @@ class Blocks_Basis {
 	/**
 	 * Attributes this block is using.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected array $attributes = array();
 
@@ -57,14 +57,14 @@ class Blocks_Basis {
 	/**
 	 * Constructor, not used as this a Singleton object.
 	 */
-	private function __construct() {}
+	protected function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.
 	 *
 	 * @return void
 	 */
-	private function __clone() {}
+	protected function __clone() {}
 
 	/**
 	 * Return the instance of this Singleton object.
@@ -87,7 +87,7 @@ class Blocks_Basis {
 		$block_type_registry = WP_Block_Type_Registry::get_instance();
 
 		// bail if block type registry could not be loaded.
-		if ( ! $block_type_registry instanceof WP_Block_Type_Registry ) {
+		if ( ! $block_type_registry instanceof WP_Block_Type_Registry ) { // @phpstan-ignore instanceof.alwaysTrue
 			return;
 		}
 
@@ -99,6 +99,7 @@ class Blocks_Basis {
 		// register the block.
 		register_block_type(
 			$this->get_path(),
+			// @phpstan-ignore argument.type
 			array(
 				'render_callback' => array( $this, 'render' ),
 				'attributes'      => $this->get_attributes(),
@@ -132,7 +133,7 @@ class Blocks_Basis {
 	/**
 	 * Return the block class depending on its blockId.
 	 *
-	 * @param array $attributes List of attributes.
+	 * @param array<string,mixed> $attributes List of attributes.
 	 *
 	 * @return string
 	 */
@@ -146,13 +147,13 @@ class Blocks_Basis {
 	/**
 	 * Generate template-string from given attributes.
 	 *
-	 * @param array $attributes List of attributes.
+	 * @param array<string,mixed> $attributes List of attributes.
 	 * @return string
 	 */
 	protected function get_template_parts( array $attributes ): string {
 		$templates = '';
 		if ( $attributes['showTitle'] ) {
-			$templates .= ( '' !== $templates ? ',' : '' ) . 'title';
+			$templates .= 'title';
 		}
 		if ( $attributes['showExcerpt'] ) {
 			$templates .= ( '' !== $templates ? ',' : '' ) . 'excerpt';
@@ -169,7 +170,7 @@ class Blocks_Basis {
 	/**
 	 * Get detail-templates from attributes-array.
 	 *
-	 * @param array $attributes List of attributes.
+	 * @param array<string,array<string,mixed>> $attributes List of attributes.
 	 * @return string
 	 */
 	protected function get_details_array( array $attributes ): string {
@@ -182,7 +183,7 @@ class Blocks_Basis {
 	/**
 	 * Return the list of attributes for this block.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	protected function get_attributes(): array {
 		$single_attributes = $this->attributes;
@@ -191,7 +192,7 @@ class Blocks_Basis {
 		 *
 		 * @since 2.0.0 Available since 2.0.0
 		 *
-		 * @param array $single_attributes The settings as array.
+		 * @param array<string,mixed> $single_attributes The settings as array.
 		 */
 		$filtername = 'personio_integration_gutenberg_block_' . $this->get_name() . '_attributes';
 		return apply_filters( $filtername, $single_attributes );
@@ -274,16 +275,17 @@ class Blocks_Basis {
 	private function get_language_path(): string {
 		$language_path = Helper::get_plugin_path() . 'languages/';
 
+		$instance = $this;
 		/**
 		 * Return the language path this plugin should use.
 		 *
 		 * @since 3.2.0 Available since 3.2.0.
 		 *
 		 * @param string $language_path The path to the languages.
-		 * @param Blocks_Basis $this The Block object.
+		 * @param Blocks_Basis $instance The Block object.
 		 *
 		 * @return string
 		 */
-		return apply_filters( 'personio_integration_light_block_language_path', $language_path, $this );
+		return apply_filters( 'personio_integration_light_block_language_path', $language_path, $instance );
 	}
 }

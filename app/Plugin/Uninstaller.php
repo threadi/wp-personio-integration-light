@@ -58,7 +58,7 @@ class Uninstaller {
 	 *
 	 * Either via uninstall or via cli.
 	 *
-	 * @param array $delete_data Marker to delete all data.
+	 * @param array<int,array<string>> $delete_data Marker to delete all data.
 	 * @return void
 	 */
 	public function run( array $delete_data = array() ): void {
@@ -70,9 +70,9 @@ class Uninstaller {
 			$original_blog_id = get_current_blog_id();
 
 			// loop through the blogs.
-			foreach ( Helper::get_blogs() as $blog_id ) {
+			foreach ( Helper::get_blogs() as $blog ) {
 				// switch to the blog.
-				switch_to_blog( $blog_id->blog_id );
+				switch_to_blog( $blog->blog_id );
 
 				// run tasks for deactivation in this single blog.
 				$this->deactivation_tasks( $delete_data );
@@ -89,7 +89,7 @@ class Uninstaller {
 	/**
 	 * Define the tasks to run during deactivation.
 	 *
-	 * @param array $delete_data Whether all data should be removed or not (should be an array with value 1 for yes).
+	 * @param array<int,array<string>> $delete_data Whether all data should be removed or not (should be an array with value 1 for yes).
 	 *
 	 * @return void
 	 */
@@ -112,7 +112,7 @@ class Uninstaller {
 		delete_transient( 'personio_integration_light_plugin_update_notices' );
 
 		// delete all plugin-data.
-		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
+		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) { // @phpstan-ignore identical.alwaysTrue
 			// initialize the extensions to call their uninstall routines later.
 			Extensions::get_instance()->init();
 
@@ -144,10 +144,29 @@ class Uninstaller {
 
 			// remove user meta for each cpt we provide.
 			foreach ( Post_Types::get_instance()->get_post_types() as $post_type ) {
-				$obj = call_user_func( $post_type . '::get_instance' );
-				if ( $obj instanceof Post_Type && $obj->is_from_plugin( WP_PERSONIO_INTEGRATION_PLUGIN ) ) {
-					$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => $obj->get_name() ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				// create classname
+				$classname = $post_type . '::get_instance';
+
+				// bail if classname is not callable.
+				if( ! is_callable( $classname ) ) {
+					continue;
 				}
+
+				// get the object.
+				$obj = $classname();
+
+				// bail if object is not our own post_type.
+				if ( ! $obj instanceof Post_Type ) {
+					continue;
+				}
+
+				// bail if post type is not from this plugin.
+				if( ! $obj->is_from_plugin( WP_PERSONIO_INTEGRATION_PLUGIN ) ) {
+					continue;
+				}
+
+				// delete the settings of this object from user meta.
+				$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => $obj->get_name() ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			}
 
 			// uninstall extensions.
@@ -164,7 +183,7 @@ class Uninstaller {
 	/**
 	 * Return list of options this plugin is using which are not configured via @file Settings.php.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	private function get_options(): array {
 		return array(

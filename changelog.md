@@ -5,6 +5,7 @@
 ### Changed
 
 - More code optimizations with PHPStan
+- Style optimization for extension table
 
 ## [4.3.0] - 28.04.2025
 

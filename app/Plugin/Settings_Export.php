@@ -68,9 +68,9 @@ class Settings_Export {
 	/**
 	 * Add settings for export of settings.
 	 *
-	 * @param array $settings List of settings.
+	 * @param array<string,mixed> $settings List of settings.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function add_settings( array $settings ): array {
 		// bail if advanced section is not available.
@@ -131,7 +131,7 @@ class Settings_Export {
 
 		// output button.
 		?>
-		<a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog ) ); ?>"><?php echo esc_html__( 'Export settings', 'personio-integration-light' ); ?></a>
+		<a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $dialog ) ); ?>"><?php echo esc_html__( 'Export settings', 'personio-integration-light' ); ?></a>
 		<?php
 	}
 

@@ -19,6 +19,7 @@ use PersonioIntegrationLight\Plugin\Intro;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Transients;
 use WP_Admin_Bar;
+use WP_Screen;
 use WP_User;
 
 /**
@@ -159,7 +160,7 @@ class Admin {
 				'lbl_ok'                             => __( 'OK', 'personio-integration-light' ),
 				'title_import_success'               => __( 'Positions has been imported', 'personio-integration-light' ),
 				/* translators: %1$s is replaced with "string", %2$s is replaced with "string" */
-				'txt_import_success'                 => sprintf( __( '<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ), esc_url( get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ) ) ),
+				'txt_import_success'                 => sprintf( __( '<strong>The import has been manually run.</strong> Please check the list of positions <a href="%1$s">in backend</a> and <a href="%2$s">frontend</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ), esc_url( PersonioPosition::get_instance()->get_archive_url() ) ),
 				'title_settings_import_file_missing' => __( 'Import file missing', 'personio-integration-light' ),
 				'title_settings_import_file_result'  => __( 'Import file uploaded', 'personio-integration-light' ),
 				'text_settings_import_file_missing'  => __( 'Please choose a file for the import.', 'personio-integration-light' ),
@@ -295,7 +296,7 @@ class Admin {
 				'personio-integration-light'
 			),
 			esc_url( PersonioPosition::get_instance()->get_link() ),
-			get_post_type_archive_link( PersonioPosition::get_instance()->get_name() )
+			esc_url( PersonioPosition::get_instance()->get_archive_url() )
 		);
 		$transient_obj = Transients::get_instance()->add();
 		$transient_obj->set_name( 'personio_integration_import_run' );
@@ -354,7 +355,7 @@ class Admin {
 			$user = wp_get_current_user();
 
 			// bail if user could not be loaded.
-			if ( ! $user instanceof WP_User ) {
+			if ( ! $user instanceof WP_User ) { // @phpstan-ignore instanceof.alwaysTrue
 				return;
 			}
 
@@ -413,7 +414,7 @@ class Admin {
 			 *
 			 * @since 3.0.0 Available since 3.0.0
 			 *
-			 * @param array $false Set true to hide the buttons.
+			 * @param bool $false Set true to hide the buttons.
 			 */
 		} elseif ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) && absint( get_option( 'personioIntegrationPositionCount', 0 ) ) > 10 ) {
 			$transient_obj = $transients_obj->add();
@@ -477,7 +478,7 @@ class Admin {
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param array $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the buttons.
 		 */
 		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) || ! Helper::is_personio_url_set() ) {
 			$classes .= ' personio-integration-hide-buttons';
@@ -527,7 +528,7 @@ class Admin {
 				'id'     => PersonioPosition::get_instance()->get_name() . '-archive',
 				'parent' => 'site-name',
 				'title'  => __( 'Personio Positions', 'personio-integration-light' ),
-				'href'   => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ),
+				'href'   => PersonioPosition::get_instance()->get_archive_url(),
 			)
 		);
 
@@ -569,7 +570,7 @@ class Admin {
 						'parent' => null,
 						'group'  => null,
 						'title'  => __( 'View Positions in frontend', 'personio-integration-light' ),
-						'href'   => get_post_type_archive_link( PersonioPosition::get_instance()->get_name() ),
+						'href'   => PersonioPosition::get_instance()->get_archive_url(),
 					)
 				);
 			}
@@ -587,13 +588,21 @@ class Admin {
 		// add the boxes.
 		$this->add_meta_boxes_for_help();
 
+		// get screen.
+		$screen = get_current_screen();
+
+		// bail if screen could not be loaded.
+		if( ! $screen instanceof WP_Screen ) {
+			return;
+		}
+
 		// output.
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline"><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<div id="poststuff">
 				<?php
-				do_meta_boxes( get_current_screen(), 'normal', null );
+				do_meta_boxes( $screen, 'normal', null );
 				?>
 			</div>
 		</div>
@@ -618,7 +627,9 @@ class Admin {
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param array $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the buttons.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			add_submenu_page(
@@ -627,17 +638,20 @@ class Admin {
 				__( 'Applications', 'personio-integration-light' ),
 				'manage_' . PersonioPosition::get_instance()->get_name(),
 				'#',
-				false,
+				'__return_true',
 				2
 			);
 		}
+
+		// create the callback as string.
+		$callback = 'read_' . PersonioPosition::get_instance()->get_name();
 
 		// add help link.
 		add_submenu_page(
 			PersonioPosition::get_instance()->get_link( true ),
 			__( 'Need help with Personio Integration?', 'personio-integration-light' ),
 			'<span class="disable">' . __( 'Get help', 'personio-integration-light' ) . '</span>',
-			'read_' . PersonioPosition::get_instance()->get_name(),
+			$callback,
 			'personioPositionsHelp',
 			array( $this, 'show_help_page' ),
 			9
@@ -700,7 +714,7 @@ class Admin {
 			),
 		);
 		?>
-		<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_import ) ); ?>"><?php echo esc_html__( 'How to change the import of positions?', 'personio-integration-light' ); ?></a></p>
+		<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $dialog_import ) ); ?>"><?php echo esc_html__( 'How to change the import of positions?', 'personio-integration-light' ); ?></a></p>
 																							<?php
 
 																							// button to show template options as intro.
@@ -723,7 +737,7 @@ class Admin {
 																								),
 																							);
 																							?>
-		<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to configure templates?', 'personio-integration-light' ); ?></a></p>
+		<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to configure templates?', 'personio-integration-light' ); ?></a></p>
 																							<?php
 
 																							// button to show how to get the pro-version.
@@ -733,7 +747,7 @@ class Admin {
 																							 *
 																							 * @since 3.0.0 Available since 3.0.0
 																							 *
-																							 * @param array $false Set true to hide the buttons.
+																							 * @param bool $false Set true to hide the buttons.
 																							 *
 																							 * @noinspection PhpConditionAlreadyCheckedInspection
 																							 */
@@ -753,7 +767,7 @@ class Admin {
 																									),
 																								);
 																								?>
-			<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p>
+			<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p>
 																								<?php
 																							}
 
@@ -809,11 +823,11 @@ class Admin {
 		// create filename for JSON-download-file.
 		$filename = gmdate( 'YmdHi' ) . '_' . get_option( 'blogname' ) . '_Personio_Integration_Light_Logs.csv';
 		/**
-		 * File the filename for CSV-download.
+		 * Filter the filename for CSV-download.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param string $filename The generated filename.
+		 * @param string $filename The generated filename for CSV-download.
 		 */
 		$filename = apply_filters( 'personio_integration_log_export_filename', $filename );
 
@@ -823,8 +837,19 @@ class Admin {
 
 		// generate CSV-output.
 		$fp       = fopen( 'php://output', 'w' );
+
+		// bail if file could not be opened.
+		if( ! $fp ) {
+			exit;
+		}
+
+		// get the header.
 		$head_row = $entries[0];
+
+		// add the header.
 		fputcsv( $fp, array_keys( $head_row ) );
+
+		// add the entries.
 		foreach ( $entries as $data ) {
 			fputcsv( $fp, $data );
 		}

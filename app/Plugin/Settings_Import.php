@@ -69,9 +69,9 @@ class Settings_Import {
 	/**
 	 * Add settings for the import of settings.
 	 *
-	 * @param array $settings List of settings.
+	 * @param array<string,mixed> $settings List of settings.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function add_settings( array $settings ): array {
 		// bail if advanced section is not available.
@@ -125,7 +125,7 @@ class Settings_Import {
 
 		// output button.
 		?>
-		<a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( wp_json_encode( $dialog ) ); ?>"><?php echo esc_html__( 'Import settings', 'personio-integration-light' ); ?></a>
+		<a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $dialog ) ); ?>"><?php echo esc_html__( 'Import settings', 'personio-integration-light' ); ?></a>
 		<?php
 	}
 
@@ -140,13 +140,14 @@ class Settings_Import {
 		check_ajax_referer( 'personio-integration-settings-import-file', 'nonce' );
 
 		// bail if no file is given.
-		if ( ! isset( $_FILES ) ) {
+		if ( 0 === count( $_FILES ) ) {
 			wp_send_json(
 				array(
 					'success' => false,
 					'html'    => __( 'No file uploaded.', 'personio-integration-light' ),
 				)
 			);
+			exit; // @phpstan-ignore deadCode.unreachable
 		}
 
 		// bail if file has no size.
@@ -157,6 +158,7 @@ class Settings_Import {
 					'html'    => __( 'The uploaded file is no size.', 'personio-integration-light' ),
 				)
 			);
+			exit; // @phpstan-ignore deadCode.unreachable
 		}
 
 		// bail if file type is not JSON.
@@ -167,6 +169,7 @@ class Settings_Import {
 					'html'    => __( 'The uploaded file is not a valid JSON-file.', 'personio-integration-light' ),
 				)
 			);
+			exit; // @phpstan-ignore deadCode.unreachable
 		}
 
 		// allow JSON-files.
@@ -182,6 +185,7 @@ class Settings_Import {
 						'html'    => __( 'The uploaded file does not have the file extension <i>.json</i>.', 'personio-integration-light' ),
 					)
 				);
+				exit; // @phpstan-ignore deadCode.unreachable
 			}
 		}
 
@@ -193,6 +197,7 @@ class Settings_Import {
 					'html'    => __( 'The uploaded file could not be saved. Contact your hoster about this problem.', 'personio-integration-light' ),
 				)
 			);
+			exit; // @phpstan-ignore  deadCode.unreachable
 		}
 
 		// bail if uploaded file is not readable.
@@ -203,14 +208,26 @@ class Settings_Import {
 					'html'    => __( 'The uploaded file could not be saved. Contact your hoster about this problem.', 'personio-integration-light' ),
 				)
 			);
+			exit; // @phpstan-ignore deadCode.unreachable
 		}
 
 		// get WP Filesystem-handler for read the file.
 		$wp_filesystem = Helper::get_wp_filesystem();
 		$file_content  = $wp_filesystem->get_contents( sanitize_text_field( wp_unslash( $_FILES['file']['tmp_name'] ) ) );
 
+		// bail if content could not be read.
+		if( ! $file_content ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'html'    => __( 'The uploaded file is not a valid JSON-file with settings for this plugin.', 'personio-integration-light' ),
+				)
+			);
+			exit; // @phpstan-ignore deadCode.unreachable
+		}
+
 		// convert JSON to array.
-		$settings_array = json_decode( $file_content, ARRAY_A, 512, JSON_THROW_ON_ERROR );
+		$settings_array = json_decode( $file_content, true, 512, JSON_THROW_ON_ERROR );
 
 		// bail if JSON-code does not contain a setting for the Personio URL.
 		if ( ! isset( $settings_array['personioIntegrationUrl'] ) ) {
@@ -220,6 +237,7 @@ class Settings_Import {
 					'html'    => __( 'The uploaded file is not a valid JSON-file with settings for this plugin.', 'personio-integration-light' ),
 				)
 			);
+			exit; // @phpstan-ignore deadCode.unreachable
 		}
 
 		/**
@@ -246,9 +264,9 @@ class Settings_Import {
 	/**
 	 * Allow SVG as file-type.
 	 *
-	 * @param array $file_types List of file types.
+	 * @param array<string,string> $file_types List of file types.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function allow_json( array $file_types ): array {
 		$new_filetypes         = array();

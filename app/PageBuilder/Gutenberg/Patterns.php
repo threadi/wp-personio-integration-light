@@ -60,7 +60,7 @@ class Patterns {
 	/**
 	 * Return the in this plugin available pattern.
 	 *
-	 * @return array[]
+	 * @return array<string,mixed>
 	 */
 	private function get_patterns(): array {
 		$patterns = array(
@@ -84,7 +84,7 @@ class Patterns {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $patterns List of patterns.
+		 * @param array<string,mixed> $patterns List of patterns.
 		 */
 		return apply_filters( 'personio_integration_gutenberg_pattern', $patterns );
 	}

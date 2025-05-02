@@ -19,7 +19,7 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Override the parent columns method. Defines the columns to use in your listing table
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_columns(): array {
 		return array(
@@ -33,7 +33,7 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Get the table data
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	private function table_data(): array {
 		return ( new Log() )->get_entries();
@@ -71,7 +71,7 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Define which columns are hidden
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_hidden_columns(): array {
 		return array();
@@ -80,7 +80,7 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Define the sortable columns
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function get_sortable_columns(): array {
 		return array( 'date' => array( 'date', false ) );
@@ -89,8 +89,8 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Define what data to show on each column of the table
 	 *
-	 * @param  array  $item        Data.
-	 * @param  String $column_name - Current column name.
+	 * @param  array<string,string>  $item        Data.
+	 * @param  string $column_name - Current column name.
 	 *
 	 * @return string
 	 */
@@ -211,8 +211,8 @@ class Log_Table extends WP_List_Table {
 			);
 
 			?>
-			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( wp_json_encode( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
-			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( wp_json_encode( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
 			<?php
 		}
 	}
@@ -245,7 +245,7 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Define filter for categories.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	protected function get_views(): array {
 		// get main url without filter.
@@ -274,7 +274,7 @@ class Log_Table extends WP_List_Table {
 		 * Filter the list before output.
 		 *
 		 * @since 3.1.0 Available since 3.1.0.
-		 * @param array $list List of filter.
+		 * @param array<string,string> $list List of filter.
 		 */
 		return apply_filters( 'personio_integration_log_table_filter', $list );
 	}

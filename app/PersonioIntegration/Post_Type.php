@@ -86,4 +86,18 @@ class Post_Type {
 	public function is_from_plugin( string $cpt ): bool {
 		return WP_PERSONIO_INTEGRATION_PLUGIN === $cpt;
 	}
+
+	/**
+	 * Return the archive URL of this post type.
+	 *
+	 * @return string
+	 */
+	public function get_archive_url(): string {
+		// get the archive URL.
+		$url = get_post_type_archive_link( $this->get_name() );
+		if( ! $url ) {
+			$url = '';
+		}
+		return $url;
+	}
 }

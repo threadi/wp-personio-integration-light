@@ -186,7 +186,7 @@ class Template {
 	/**
 	 * Return this object as object.
 	 *
-	 * @return mixed
+	 * @return object
 	 */
 	public function get_object(): object {
 		$new_template_item = array(
@@ -251,7 +251,7 @@ class Template {
 		$new_content         = '';
 		$template_blocks     = parse_blocks( $template_content );
 
-		$blocks = $this->flatten_blocks( $template_blocks );
+		$blocks = $this->flatten_blocks( $template_blocks ); // @phpstan-ignore argument.type
 		foreach ( $blocks as &$block ) {
 			if (
 				'core/template-part' === $block['blockName'] &&
@@ -288,7 +288,7 @@ class Template {
 		$new_content         = '';
 		$template_blocks     = parse_blocks( $template_content );
 
-		$blocks = $this->flatten_blocks( $template_blocks );
+		$blocks = $this->flatten_blocks( $template_blocks ); // @phpstan-ignore argument.type
 		foreach ( $blocks as &$block ) {
 			if ( 'core/template-part' === $block['blockName'] ) {
 				$block['attrs']['theme'] = $theme;
@@ -312,8 +312,8 @@ class Template {
 	 * the passed blocks and their inner blocks.
 	 *
 	 * @source WooCommerce BlockTemplateUtils.php
-	 * @param array $blocks List of blocks.
-	 * @return array block references to the passed blocks and their inner blocks.
+	 * @param array<int,mixed> $blocks List of blocks.
+	 * @return array<int,mixed> block references to the passed blocks and their inner blocks.
 	 */
 	private function flatten_blocks( array &$blocks ): array {
 		$all_blocks = array();
@@ -378,7 +378,13 @@ class Template {
 			// get WP Filesystem-handler.
 			$wp_filesystem = Helper::get_wp_filesystem();
 
-			$this->content = $wp_filesystem->get_contents( $this->get_file_path() );
+			// get the template content.
+			$content = $wp_filesystem->get_contents( $this->get_file_path() );
+
+			// add content to object.
+			if( $content ) {
+				$this->content = $content;
+			}
 		}
 		return $this->content;
 	}

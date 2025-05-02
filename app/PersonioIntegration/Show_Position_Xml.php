@@ -41,6 +41,24 @@ class Show_Position_Xml extends Extensions_Base {
 	protected string $extension_category = 'positions';
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Show_Position_Xml
+	 */
+	private static ?Show_Position_Xml $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Show_Position_Xml {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Initialize this plugin.
 	 *
 	 * @return void

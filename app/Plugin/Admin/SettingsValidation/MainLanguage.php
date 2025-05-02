@@ -50,7 +50,7 @@ class MainLanguage extends Settings_Validation_Base {
 	 *
 	 * @param string $value The configured URL.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 * @noinspection PhpUnused
 	 */
 	public static function rest_validate( string $value ): array {
@@ -59,8 +59,10 @@ class MainLanguage extends Settings_Validation_Base {
 			return array(
 				'error' => 'no_size',
 			);
-		} elseif ( ! self::check_language( $value ) ) {
-			// return error if language is not available.
+		}
+
+		// return error if language is not available.
+		if ( ! self::check_language( $value ) ) {
 			return array(
 				'error' => 'language_not_available',
 			);

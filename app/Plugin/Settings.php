@@ -14,6 +14,7 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use WP_User;
 
 /**
  * Object tot handle settings.
@@ -52,14 +53,14 @@ class Settings {
 	/**
 	 * Variable for complete settings.
 	 *
-	 * @var array
+	 * @var array<string,mixed>
 	 */
 	private array $settings = array();
 
 	/**
 	 * Variable for tab settings.
 	 *
-	 * @var array
+	 * @var array<int,mixed>
 	 */
 	private array $tabs = array();
 
@@ -940,7 +941,7 @@ class Settings {
 	/**
 	 * Return the settings and save them on the object.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function get_settings(): array {
 		$settings = $this->settings;
@@ -973,9 +974,9 @@ class Settings {
 	 * Return settings for single field.
 	 *
 	 * @param string $field The requested fiel.
-	 * @param array  $settings The settings to use.
+	 * @param array<string,mixed>  $settings The settings to use.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function get_settings_for_field( string $field, array $settings = array() ): array {
 		foreach ( ( empty( $settings ) ? $this->get_settings() : $settings ) as $section_settings ) {
@@ -1000,7 +1001,7 @@ class Settings {
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param array $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the buttons.
 		 */
 		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			add_filter( 'personio_integration_settings', array( $this, 'remove_pro_hints_from_settings' ) );
@@ -1012,9 +1013,9 @@ class Settings {
 	/**
 	 * Remove the pro hints in the settings.
 	 *
-	 * @param array $settings List of settings.
+	 * @param array<string,mixed> $settings List of settings.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function remove_pro_hints_from_settings( array $settings ): array {
 		foreach ( $settings as $section_name => $section_settings ) {
@@ -1032,7 +1033,7 @@ class Settings {
 	/**
 	 * Return the tabs for the settings page.
 	 *
-	 * @return array
+	 * @return array<int,mixed>
 	 */
 	public function get_tabs(): array {
 		$tabs = $this->tabs;
@@ -1041,7 +1042,7 @@ class Settings {
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param array $false Set true to hide the buttons.
+		 * @param array<int,mixed> $tabs List of tabs.
 		 */
 		$tabs = apply_filters( 'personio_integration_settings_tabs', $tabs );
 
@@ -1055,8 +1056,8 @@ class Settings {
 	/**
 	 * Sort the tabs by 'order'-field.
 	 *
-	 * @param array $a Tab 1 to check.
-	 * @param array $b Tab 2 to compare with tab 1.
+	 * @param array<string,int> $a Tab 1 to check.
+	 * @param array<string,int> $b Tab 2 to compare with tab 1.
 	 *
 	 * @return int
 	 */
@@ -1073,9 +1074,9 @@ class Settings {
 	/**
 	 * Remove tabs with pro hints from tab-listing.
 	 *
-	 * @param array $tabs List of tabs.
+	 * @param array<int,mixed> $tabs List of tabs.
 	 *
-	 * @return array
+	 * @return array<int,mixed>
 	 */
 	public function remove_pro_hints_from_tabs( array $tabs ): array {
 		// loop through the tabs and remove the pro hints.
@@ -1148,9 +1149,9 @@ class Settings {
 	/**
 	 * Remove the sort column from positions table.
 	 *
-	 * @param array $columns List of columns.
+	 * @param array<string,string> $columns List of columns.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function remove_pro_hints_from_columns( array $columns ): array {
 		unset( $columns['sort'] );
@@ -1221,7 +1222,7 @@ class Settings {
 			// get the user.
 			$user      = wp_get_current_user();
 			$user_name = __( 'Unknown', 'personio-integration-light' );
-			if ( ! is_null( $user ) ) {
+			if ( $user instanceof WP_User ) { // @phpstan-ignore instanceof.alwaysTrue
 				$user_name = $user->display_name;
 			}
 
@@ -1235,9 +1236,9 @@ class Settings {
 	/**
 	 * Add import categories.
 	 *
-	 * @param array $categories List of categories.
+	 * @param array<string,string> $categories List of categories.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function add_log_categories( array $categories ): array {
 		// add categories we need for our settings.
@@ -1287,9 +1288,9 @@ class Settings {
 	/**
 	 * Add help for the cpt.
 	 *
-	 * @param array $help_list List of help tabs.
+	 * @param array<int,array<string,string>> $help_list List of help tabs.
 	 *
-	 * @return array
+	 * @return array<int,array<string,string>>
 	 */
 	public function add_help( array $help_list ): array {
 		// collect the content for the help.
@@ -1307,7 +1308,7 @@ class Settings {
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param array $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the buttons.
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */

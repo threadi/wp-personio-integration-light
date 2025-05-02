@@ -26,7 +26,7 @@ class Positions {
 	 *
 	 * @var ?Positions
 	 */
-	protected static ?Positions $instance = null;
+	private static ?Positions $instance = null;
 
 	/**
 	 * Variable to hold the results of a query.
@@ -45,7 +45,7 @@ class Positions {
 	/**
 	 * Constructor, not used as this a Singleton object.
 	 */
-	private function __construct() {}
+	protected function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.
@@ -64,6 +64,13 @@ class Positions {
 
 		return self::$instance;
 	}
+
+	/**
+	 * Initialize the positions in Light.
+	 *
+	 * @return void
+	 */
+	public function init(): void {}
 
 	/**
 	 * Return Position object of given id.
@@ -97,9 +104,9 @@ class Positions {
 	 * Optionally limited by a number.
 	 *
 	 * @param int   $limit The limit, defaults to -1 for default-limiting.
-	 * @param array $parameter_to_add The parameter to add.
+	 * @param array<string,mixed> $parameter_to_add The parameter to add.
 	 *
-	 * @return array
+	 * @return array<Position>
 	 */
 	public function get_positions( int $limit = -1, array $parameter_to_add = array() ): array {
 		$query = array(
@@ -340,7 +347,7 @@ class Positions {
 		$transient_obj = Transients::get_instance()->add();
 		$transient_obj->set_name( 'personio_integration_reimport_hint' );
 		$transient_obj->set_type( 'success' );
-		$transient_obj->set_message( __( 'You have changed settings that would make it advisable to re-import the positions from Personio. Click on the following button: ', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $url ) . '" class="button button-primary easy-dialog-for-wordpress" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '">' . __( 'Re-Import all positions', 'personio-integration-light' ) . '</a>' );
+		$transient_obj->set_message( __( 'You have changed settings that would make it advisable to re-import the positions from Personio. Click on the following button: ', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $url ) . '" class="button button-primary easy-dialog-for-wordpress" data-dialog="' . esc_attr( Helper::get_dialog_for_attribute( $dialog ) ) . '">' . __( 'Re-Import all positions', 'personio-integration-light' ) . '</a>' );
 		$transient_obj->save();
 	}
 }

@@ -13,12 +13,12 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
-use WP_Error;
 use WP_Filesystem_Base;
 use WP_Filesystem_Direct;
 use WP_Post;
 use WP_Post_Type;
 use WP_Rewrite;
+use WP_Screen;
 
 /**
  * The helper class itself.
@@ -176,7 +176,7 @@ class Helper {
 		// Case #4.
 		$rest_url    = wp_parse_url( trailingslashit( rest_url() ) );
 		$current_url = wp_parse_url( add_query_arg( array() ) );
-		if ( is_array( $current_url ) && isset( $current_url['path'] ) ) {
+		if ( is_array( $current_url ) && is_array( $rest_url ) && isset( $current_url['path'], $rest_url['path'] ) ) {
 			return str_starts_with( $current_url['path'], $rest_url['path'] );
 		}
 		return false;
@@ -188,7 +188,7 @@ class Helper {
 	 * @param array<string,mixed> $attribute_defaults List of attribute defaults.
 	 * @param array<string,mixed> $attribute_settings List of attribute settings.
 	 * @param array<string,mixed> $attributes List of actual attribute values.
-	 * @return array<string,array<string,mixed>>
+	 * @return array<string,array<int,mixed>>
 	 */
 	public static function get_shortcode_attributes( array $attribute_defaults, array $attribute_settings, array $attributes ): array {
 		$filtered = array(
@@ -341,8 +341,8 @@ class Helper {
 	 * Check if Settings-Errors-entry already exists in array.
 	 *
 	 * @param string $entry The entry.
-	 * @param array  $errors The list of errors.
-	 * @return false
+	 * @param array<string|int,mixed>  $errors The list of errors.
+	 * @return bool
 	 */
 	public static function check_if_setting_error_entry_exists_in_array( string $entry, array $errors ): bool {
 		foreach ( $errors as $error ) {
@@ -384,6 +384,11 @@ class Helper {
 			$page_url = get_permalink( $object->ID );
 		}
 
+		// return empty string if no URL could be loaded.
+		if( ! $page_url ) {
+			return '';
+		}
+
 		// return result.
 		return $page_url;
 	}
@@ -391,13 +396,13 @@ class Helper {
 	/**
 	 * Regex to get html tag attribute value.
 	 *
-	 * @param string $attrib The attribute.
+	 * @param string $attribute The attribute.
 	 * @param string $tag The tag.
-	 * @return string
+	 * @return string|false
 	 */
-	public static function get_attribute_value_from_html( string $attrib, string $tag ): string {
+	public static function get_attribute_value_from_html( string $attribute, string $tag ): string|false {
 		// get attribute from html tag.
-		$re = '/' . preg_quote( $attrib, null ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
+		$re = '/' . preg_quote( $attribute, null ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
 		if ( preg_match( $re, $tag, $match ) ) {
 			return urldecode( $match[2] );
 		}
@@ -408,20 +413,29 @@ class Helper {
 	 * Get all files of directory recursively.
 	 *
 	 * @param string $path The path.
+	 *
 	 * @return array<string>
 	 */
 	public static function get_files_from_directory( string $path = '.' ): array {
 		// get WP_Filesystem as object.
 		$wp_filesystem = self::get_wp_filesystem();
 
+		// get the file list.
+		$files = $wp_filesystem->dirlist( $path, true, true );
+
+		// bail if no files could be loaded.
+		if( ! $files ) {
+			return array();
+		}
+
 		// load files recursive in array and return resulting list.
-		return self::get_files( $wp_filesystem->dirlist( $path, true, true ), $path );
+		return self::get_files( $files, $path );
 	}
 
 	/**
 	 * Recursively load files from given array.
 	 *
-	 * @param array<string>  $files Array of file we iterate through.
+	 * @param array<string,array<string,mixed>> $files Array of file we iterate through.
 	 * @param string $path Absolute path where the files are located.
 	 * @param array<string>  $file_list List of files.
 	 *
@@ -494,7 +508,7 @@ class Helper {
 	/**
 	 * Get list of blogs in a multisite-installation.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public static function get_blogs(): array {
 		if ( false === is_multisite() ) {
@@ -513,7 +527,7 @@ class Helper {
             AND spam = '0'
             AND deleted = '0'
             AND archived = '0'
-        "
+        	"
 		);
 	}
 
@@ -542,11 +556,16 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_plugin_name(): string {
+		// get the plugin data.
 		$plugin_data = get_plugin_data( WP_PERSONIO_INTEGRATION_PLUGIN );
-		if ( ! empty( $plugin_data ) && ! empty( $plugin_data['Name'] ) ) {
-			return $plugin_data['Name'];
+
+		// bail if no 'Name' is in the result.
+		if ( empty( $plugin_data['Name'] ) ) {
+			return '';
 		}
-		return '';
+
+		// return the plugin name.
+		return $plugin_data['Name'];
 	}
 
 	/**
@@ -608,7 +627,7 @@ class Helper {
 	/**
 	 * Return list of our own cpts as names.
 	 *
-	 * @return array
+	 * @return array<int,string>
 	 */
 	public static function get_list_of_our_cpts(): array {
 		$list = array(
@@ -620,7 +639,7 @@ class Helper {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $list The list of post types.
+		 * @param array<int,string> $list The list of post types.
 		 */
 		return apply_filters( 'personio_integration_list_of_cpts', $list );
 	}
@@ -633,7 +652,16 @@ class Helper {
 	 * @return string
 	 */
 	public static function replace_linebreaks( string $text_to_parse ): string {
-		return preg_replace( '/\s+/', ' ', $text_to_parse );
+		// get the result.
+		$result = preg_replace( '/\s+/', ' ', $text_to_parse );
+
+		// bail if result is not a string.
+		if( ! is_string( $result ) ) {
+			return '';
+		}
+
+		// return the resulting string.
+		return $result;
 	}
 
 	/**
@@ -649,12 +677,12 @@ class Helper {
 	public static function get_file_version( string $filepath ): string {
 		// check for WP_DEBUG.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			return filemtime( $filepath );
+			return (string) filemtime( $filepath );
 		}
 
 		// check for own debug.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-			return filemtime( $filepath );
+			return (string) filemtime( $filepath );
 		}
 
 		$plugin_version = WP_PERSONIO_INTEGRATION_VERSION;
@@ -673,11 +701,11 @@ class Helper {
 	/**
 	 * Add new entry with its key on specific position in array.
 	 *
-	 * @param array<string,array<string,mixed>>|null $fields The array we want to change.
+	 * @param array<int|string,mixed>|null $fields The array we want to change.
 	 * @param int                                    $position The position where the new array should be added.
-	 * @param array<string,array<string,mixed>>      $array_to_add The new array which should be added.
+	 * @param array<int|string,mixed>      $array_to_add The new array which should be added.
 	 *
-	 * @return array<string,array<string,mixed>>
+	 * @return array<int|string,mixed>
 	 */
 	public static function add_array_in_array_on_position( array|null $fields, int $position, array $array_to_add ): array {
 		if ( is_null( $fields ) ) {
@@ -754,6 +782,10 @@ class Helper {
 		// do not load our files outside our own backend pages.
 		if ( function_exists( 'get_current_screen' ) && in_array( $hook, array( 'edit.php', 'post.php', 'edit-tags.php', 'term.php' ), true ) ) {
 			$screen = get_current_screen();
+			// bail if screen could not be loaded.
+			if( ! $screen instanceof WP_Screen ) {
+				return false;
+			}
 			if ( ! in_array( $screen->post_type, apply_filters( 'personio_integration_light_do_not_load_on_cpt', array( PersonioPosition::get_instance()->get_name() ) ), true ) ) {
 				return true;
 			}
@@ -795,7 +827,7 @@ class Helper {
 		}
 
 		// return local object on any error.
-		if ( $wp_filesystem->errors instanceof WP_Error && $wp_filesystem->errors->has_errors() ) {
+		if ( $wp_filesystem->errors->has_errors() ) {
 			// log this event.
 			$log = new Log();
 			/* translators: %1$s will be replaced by a name. */
@@ -810,5 +842,25 @@ class Helper {
 
 		// return the requested filesystem object.
 		return $wp_filesystem;
+	}
+
+	/**
+	 * Convert dialog array to JSON-string for usage in esc_attr().)
+	 *
+	 * @param array<string,mixed> $dialog The dialog.
+	 *
+	 * @return string
+	 */
+	public static function get_dialog_for_attribute( array $dialog ): string {
+		// get as JSON.
+		$json = wp_json_encode( $dialog );
+
+		// bail if string could not be converted.
+		if( ! $json ) {
+			return '';
+		}
+
+		// return the JSON for the attribute-usage.
+		return $json;
 	}
 }

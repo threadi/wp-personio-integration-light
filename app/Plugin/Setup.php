@@ -29,7 +29,7 @@ class Setup {
 	/**
 	 * Define setup as array with steps.
 	 *
-	 * @var array
+	 * @var array<int,array<string,mixed>>
 	 */
 	private array $setup = array();
 
@@ -172,7 +172,7 @@ class Setup {
 	/**
 	 * Return the configured setup.
 	 *
-	 * @return array
+	 * @return array<int,array<string,mixed>>
 	 */
 	private function get_setup(): array {
 		$setup = $this->setup;
@@ -186,7 +186,7 @@ class Setup {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $setup The setup-configuration.
+		 * @param array<int,array<string,mixed>> $setup The setup-configuration.
 		 */
 		return apply_filters( 'personio_integration_setup', $setup );
 	}
@@ -242,9 +242,9 @@ class Setup {
 	/**
 	 * Convert options array to react-compatible array-list with label and value.
 	 *
-	 * @param array $options The list of options to convert.
+	 * @param array<string,string> $options The list of options to convert.
 	 *
-	 * @return array
+	 * @return array<int,array<string,string>>
 	 */
 	public function convert_options_for_react( array $options ): array {
 		// define resulting list.
@@ -267,7 +267,7 @@ class Setup {
 	 *
 	 * Here we define which steps and texts are used by wp-easy-setup.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	private function get_config(): array {
 		// get setup.
@@ -289,7 +289,7 @@ class Setup {
 		 * Filter the setup configuration.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array $config List of configuration for the setup.
+		 * @param array<string,mixed> $config List of configuration for the setup.
 		 */
 		return apply_filters( 'personio_integration_setup_config', $config );
 	}

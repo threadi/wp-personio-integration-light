@@ -91,7 +91,7 @@ class Extensions_Base {
 	 *
 	 * @var ?Extensions_Base
 	 */
-	protected static ?Extensions_Base $instance = null;
+	private static ?Extensions_Base $instance = null;
 
 	/**
 	 * Constructor, not used as this a Singleton object.

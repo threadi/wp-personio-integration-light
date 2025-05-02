@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use WP_Block_Template;
+use WP_Post;
 use WP_Query;
 
 /**
@@ -64,11 +65,11 @@ class Templates {
 	 *
 	 * @source BlockTemplatesController.php from WooCommerce
 	 *
-	 * @param array  $template_list Resulting list of block templates.
-	 * @param array  $query The query.
+	 * @param array<WP_Block_Template>  $template_list Resulting list of block templates.
+	 * @param array<string,mixed>  $query The query.
 	 * @param string $template_type The template type.
 	 *
-	 * @return array
+	 * @return array<WP_Block_Template>
 	 * @noinspection PhpIssetCanBeReplacedWithCoalesceInspection
 	 **/
 	public function add_block_templates( array $template_list, array $query, string $template_type ): array {
@@ -82,7 +83,7 @@ class Templates {
 		// loop through the templates and add them to the resulting list if they are valid.
 		foreach ( $templates as $template ) {
 			$block_template = $template->get_object();
-			// hide template if post-types doesnt match.
+			// hide template if post-types does not match.
 			if ( $post_type &&
 				isset( $block_template->post_types ) &&
 				! in_array( $post_type, $block_template->post_types, true )
@@ -100,10 +101,10 @@ class Templates {
 	/**
 	 * Get the supported block templates from file system (plugin-source) AND database (custom templates from user).
 	 *
-	 * @param array  $slugs List of slugs.
+	 * @param array<string>  $slugs List of slugs.
 	 * @param string $template_type The template.
 	 *
-	 * @return array
+	 * @return array<string,Template>
 	 */
 	private function get_block_templates( array $slugs, string $template_type ): array {
 		// initialize return array.
@@ -138,7 +139,7 @@ class Templates {
 	 * @param null|WP_Block_Template $template The template.
 	 * @param string                 $id The id of the template.
 	 * @param string                 $template_type The template type.
-	 * @return array|null
+	 * @return null|WP_Block_Template
 	 */
 	public function get_block_file_template( null|WP_Block_Template $template, string $id, string $template_type ): null|WP_Block_Template {
 		$template_name_parts = explode( '//', $id );
@@ -185,7 +186,7 @@ class Templates {
 	/**
 	 * Return list of available block templates.
 	 *
-	 * @return array
+	 * @return array<string,array<string,string>>
 	 */
 	private function get_templates(): array {
 		// define the list.
@@ -207,7 +208,7 @@ class Templates {
 		 *
 		 * @since 2.2.0 Available since 2.2.0.
 		 *
-		 * @param array $templates The list of templates.
+		 * @param array<string,array<string,string>> $templates The list of templates.
 		 */
 		return apply_filters( 'personio_integration_block_templates', $templates );
 	}
@@ -215,10 +216,12 @@ class Templates {
 	/**
 	 * Get templates from DB to override the template from files.
 	 *
-	 * @param array  $slugs The slugs.
+	 * @param array<string>  $slugs The slugs.
 	 * @param string $template_type The template type.
-	 * @return array
-	 */
+	 *
+	 * @return array<string,Template>
+	 * @noinspection PhpUnused
+	 **/
 	public function get_templates_from_db( array $slugs, string $template_type ): array {
 		// define query for custom template in db.
 		$query = array(
@@ -238,11 +241,20 @@ class Templates {
 			$query['post_name__in'] = $slugs;
 		}
 
+		// run the query.
 		$check_query      = new WP_Query( $query );
-		$custom_templates = $check_query->posts;
 
+		// create list for return values.
 		$templates = array();
-		foreach ( $custom_templates as $post ) {
+
+		// loop through the results.
+		foreach ( $check_query->get_posts() as $post ) {
+			// bail if this is not a WP_Post object.
+			if( ! $post instanceof WP_Post ) {
+				continue;
+			}
+
+			// create template object and add the settings.
 			$template_obj = new Template();
 			$template_obj->set_post_id( $post->ID );
 			$template_obj->set_template( $post->post_name );
@@ -255,7 +267,7 @@ class Templates {
 			$templates[ $post->post_name ] = $template_obj;
 		}
 
-		// return list of templates.
+		// return the list of templates.
 		return $templates;
 	}
 

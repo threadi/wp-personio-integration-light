@@ -62,7 +62,7 @@ class Extensions {
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 40 );
 
 		// bail if setup is not completed.
-		if ( ! Setup::get_instance()->is_completed() && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+		if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! Setup::get_instance()->is_completed() ) {
 			return;
 		}
 
@@ -112,7 +112,7 @@ class Extensions {
 		// loop through them.
 		foreach ( $this->get_extensions() as $extension_name ) {
 			// bail if name is not a string.
-			if ( ! is_string( $extension_name ) && $extension_name instanceof Extensions_Base ) {
+			if ( $extension_name instanceof Extensions_Base ) {
 				$list[] = $extension_name;
 				continue;
 			}
@@ -155,11 +155,11 @@ class Extensions {
 	}
 
 	/**
-	 * Set list of extensions.
+	 * Set list of extensions we deliver in Light.
 	 *
-	 * @param array $extension_list List of extensions.
+	 * @param array<string> $extension_list List of extensions.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function add_extensions( array $extension_list ): array {
 		// add extensions we deliver in this plugin.
@@ -172,11 +172,11 @@ class Extensions {
 	}
 
 	/**
-	 * Return the list of available extensions.
+	 * Return the list of all available extensions.
 	 *
 	 * Hint: list contains only the class-name, not the objects.
 	 *
-	 * @return array
+	 * @return array<string|Extensions_Base>
 	 */
 	public function get_extensions(): array {
 		$list = array();
@@ -185,7 +185,7 @@ class Extensions {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $list List of extensions.
+		 * @param array<string|Extensions_Base> $list List of extensions.
 		 */
 		return apply_filters( 'personio_integration_extend_position_object', $list );
 	}
@@ -523,9 +523,9 @@ class Extensions {
 	/**
 	 * Add help for extensions.
 	 *
-	 * @param array $help_list List of help tabs.
+	 * @param array<int,array<string,string>> $help_list List of help tabs.
 	 *
-	 * @return array
+	 * @return array<int,array<string,string>>
 	 */
 	public function add_help( array $help_list ): array {
 		// collect the content for the help.
@@ -542,8 +542,8 @@ class Extensions {
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param array $false Set true to hide the buttons.
-		 *                     @noinspection PhpConditionAlreadyCheckedInspection
+		 * @param bool $false Set true to hide the buttons.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */

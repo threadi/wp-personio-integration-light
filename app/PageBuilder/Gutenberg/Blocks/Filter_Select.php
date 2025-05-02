@@ -36,7 +36,7 @@ class Filter_Select extends Blocks_Basis {
 	/**
 	 * Attributes this block is using.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected array $attributes = array(
 		'preview'          => array(
@@ -74,9 +74,27 @@ class Filter_Select extends Blocks_Basis {
 	);
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Filter_Select
+	 */
+	private static ?Filter_Select $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Filter_Select {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Get the content for single position.
 	 *
-	 * @param array $attributes List of attributes for this position.
+	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
 	 */
 	public function render( array $attributes ): string {

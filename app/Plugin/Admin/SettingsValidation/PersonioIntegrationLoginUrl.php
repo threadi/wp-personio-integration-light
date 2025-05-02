@@ -74,7 +74,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function validate_url( string $value ): bool {
-		return wp_http_validate_url( $value );
+		return ! is_string( wp_http_validate_url( $value ) );
 	}
 
 	/**
