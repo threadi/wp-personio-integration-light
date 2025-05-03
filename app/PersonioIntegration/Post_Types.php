@@ -62,10 +62,10 @@ class Post_Types {
 	public function register_post_type(): void {
 		foreach ( $this->get_post_types() as $post_type ) {
 			// get the class name.
-			$class_name =  $post_type . '::get_instance';
+			$class_name = $post_type . '::get_instance';
 
 			// check if it is callable.
-			if( ! is_callable( $class_name ) ) {
+			if ( ! is_callable( $class_name ) ) {
 				continue;
 			}
 

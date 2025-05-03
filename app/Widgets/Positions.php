@@ -38,7 +38,7 @@ class Positions extends WP_Widget {
 	/**
 	 * Get fields for this widget.
 	 *
-	 * @return array<string,array<string>>
+	 * @return array<string,array<string,mixed>>
 	 */
 	private function getFields(): array {
 		return array(
@@ -141,7 +141,7 @@ class Positions extends WP_Widget {
 	/**
 	 * Add entry-formular with settings for the widget.
 	 *
-	 * @param array $instance The instance.
+	 * @param array<string,mixed> $instance The instance.
 	 *
 	 * @return void
 	 * @noinspection PhpMissingReturnTypeInspection
@@ -153,9 +153,9 @@ class Positions extends WP_Widget {
 	/**
 	 * Save updated settings from the formular.
 	 *
-	 * @param array $new_instance The new instance.
-	 * @param array $old_instance The old instance.
-	 * @return array
+	 * @param array<string,mixed> $new_instance The new instance.
+	 * @param array<string,mixed> $old_instance The old instance.
+	 * @return array<string,mixed>
 	 */
 	public function update( $new_instance, $old_instance ): array {
 		return $this->secure_widget_fields( $this->getFields(), $new_instance, $old_instance );
@@ -164,8 +164,8 @@ class Positions extends WP_Widget {
 	/**
 	 * Output of the widget in frontend.
 	 *
-	 * @param array $args List of arguments.
-	 * @param array $settings List of settings.
+	 * @param array<string,mixed> $args List of arguments.
+	 * @param array<string,mixed> $settings List of settings.
 	 *
 	 * @return void
 	 * @noinspection PhpParameterNameChangedDuringInheritanceInspection
@@ -176,7 +176,7 @@ class Positions extends WP_Widget {
 		// collect the configured templates.
 		$templates = '';
 		if ( 'yes' === $settings['showTitle'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'title';
+			$templates .= 'title';
 		}
 		if ( 'yes' === $settings['showExcerpt'] ) {
 			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'excerpt';

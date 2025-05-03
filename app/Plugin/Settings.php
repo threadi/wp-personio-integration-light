@@ -973,8 +973,8 @@ class Settings {
 	/**
 	 * Return settings for single field.
 	 *
-	 * @param string $field The requested fiel.
-	 * @param array<string,mixed>  $settings The settings to use.
+	 * @param string              $field The requested fiel.
+	 * @param array<string,mixed> $settings The settings to use.
 	 *
 	 * @return array<string,mixed>
 	 */

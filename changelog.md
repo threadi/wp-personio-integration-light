@@ -2,10 +2,21 @@
 
 ## [Unreleased]
 
+### Added
+
+- Plugin structure revised with modern security mechanisms and design
+
 ### Changed
 
+- Changed application hint in menu to be more stabil
+- Extensions for positions replaced with less complex way
 - More code optimizations with PHPStan
+- Optimized output of some log entries
 - Style optimization for extension table
+
+### Removed
+
+- Removed Position_Extension_Base in favor of less complex way to extend the position data
 
 ## [4.3.0] - 28.04.2025
 

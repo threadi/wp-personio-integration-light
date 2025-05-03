@@ -20,7 +20,7 @@ use SimpleXMLElement;
 use WP_Term;
 
 /**
- * Represents a single position.
+ * Object with represents a single position.
  *
  * $data is an array which holds all contents for a position:
  * - post-data-rows (saved by their post-table-row-names)
@@ -34,7 +34,7 @@ class Position {
 	/**
 	 * Array for all properties of this object.
 	 *
-	 * @var array
+	 * @var array<string,mixed>
 	 */
 	protected array $data = array(
 		'ID' => 0,
@@ -43,7 +43,7 @@ class Position {
 	/**
 	 * List of all taxonomy-terms of this object.
 	 *
-	 * @var array
+	 * @var array<string,mixed>
 	 */
 	private array $taxonomy_terms = array();
 
@@ -118,17 +118,18 @@ class Position {
 			return;
 		}
 
-		$false = false;
+		$false    = false;
+		$instance = $this;
 		/**
 		 * Filter if position should be imported.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param bool $false Return false to import this position.
-		 * @param Position $this The object of the position.
+		 * @param Position $instance The object of the position.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
-		if ( apply_filters( 'personio_integration_check_requirement_to_import_single_position', $false, $this ) ) {
+		if ( apply_filters( 'personio_integration_check_requirement_to_import_single_position', $false, $instance ) ) {
 			return;
 		}
 
@@ -149,9 +150,9 @@ class Position {
 			 *
 			 * @since 4.2.5 Available since 4.2.5.
 			 * @param array $params The parameters for the query.
-			 * @param Position $this The actual position.
+			 * @param Position $instance The actual position.
 			 */
-			foreach ( Positions::get_instance()->get_positions( -1, apply_filters( 'personio_integration_light_import_single_query_for_existing_position', $params, $this ) ) as $position_obj ) {
+			foreach ( Positions::get_instance()->get_positions( -1, apply_filters( 'personio_integration_light_import_single_query_for_existing_position', $params, $instance ) ) as $position_obj ) {
 				$lang    = $this->get_lang();
 				$post_id = $position_obj->get_id();
 				/**
@@ -192,11 +193,11 @@ class Position {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param bool $false Return false to import this position.
-		 * @param Position $this The object of the position.
+		 * @param Position $instance The object of the position.
 		 *
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
-		if ( apply_filters( 'personio_integration_prevent_import_of_single_position', $false, $this ) ) {
+		if ( apply_filters( 'personio_integration_prevent_import_of_single_position', $false, $instance ) ) {
 			return;
 		}
 
@@ -210,7 +211,7 @@ class Position {
 		);
 		if ( Languages::get_instance()->get_main_language() === $this->get_lang() ) {
 			$array['post_title']   = $this->data['post_title'];
-			$array['post_content'] = Templates::get_instance()->get_content_template( $this, array(), true );
+			$array['post_content'] = Templates::get_instance()->get_direct_content_template( $this, array() );
 		} else {
 			$array['post_title']   = get_post_field( 'post_title', $this->data['ID'] );
 			$array['post_content'] = get_post_field( 'post_content', $this->data['ID'] );
@@ -222,21 +223,21 @@ class Position {
 		 * @since 1.0.0 Available since first release.
 		 *
 		 * @param array $array The position data as array.
-		 * @param Position $this The object we are in.
+		 * @param Position $instance The object we are in.
 		 */
-		$array = apply_filters( 'personio_integration_import_single_position_filter_before_saving', $array, $this );
+		$array = apply_filters( 'personio_integration_import_single_position_filter_before_saving', $array, $instance );
 
 		// save the position.
 		$result = wp_insert_post( $array );
 
 		// if error occurred log it.
-		if ( is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType
 			// log this event.
 			$this->log->add_log( 'Position with personioId ' . $this->data['personioId'] . ' could not be saved! Error: ' . $result->get_error_message(), 'error', 'import' );
 		} elseif ( 0 === absint( $result ) ) {
 			// log this event.
 			$this->log->add_log( 'Position with personioId ' . $this->data['personioId'] . ' could not be saved! Got no error from WordPress.', 'error', 'import' );
-		} elseif ( absint( $result ) > 0 ) {
+		} elseif ( absint( $result ) > 0 ) { // @phpstan-ignore greater.alwaysTrue
 			// save the post-ID in the object.
 			$this->data['ID'] = absint( $result );
 
@@ -245,9 +246,9 @@ class Position {
 			 *
 			 * @since 2.0.0 Available since 2.0.0.
 			 *
-			 * @param Position $this The object of this position.
+			 * @param Position $instance The object of this position.
 			 */
-			do_action( 'personio_integration_import_single_position_save', $this );
+			do_action( 'personio_integration_import_single_position_save', $instance );
 
 			// add the Personio ID.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, $this->data['personioId'] );
@@ -279,7 +280,7 @@ class Position {
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), $job_description );
 
 			// get count of split texts to delete the existing ones.
-			$max = absint( get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', 0 ) );
+			$max = absint( get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', true ) );
 			for ( $i = 0;$i < $max;$i++ ) {
 				delete_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_' . $i );
 			}
@@ -299,9 +300,9 @@ class Position {
 			 *
 			 * @since 3.0.0 Available since 3.0.0.
 			 *
-			 * @param Position $this The object of this position.
+			 * @param Position $instance The object of this position.
 			 */
-			do_action( 'personio_integration_import_single_position_save_finished', $this );
+			do_action( 'personio_integration_import_single_position_save_finished', $instance );
 
 			// mark as changed.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, 1 );
@@ -381,13 +382,13 @@ class Position {
 	public function get_term_by_field( string $taxonomy, string $field, bool $no_list = false ): string {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$taxonomy_terms = get_the_terms( $this->get_id(), $taxonomy );
-			if ( ! is_wp_error( $taxonomy_terms ) ) {
+			if ( is_array( $taxonomy_terms ) ) {
 				$this->taxonomy_terms[ $taxonomy ] = $taxonomy_terms;
 			}
 		}
 		if ( ! empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$term_string = '';
-			if ( false === $no_list ) {
+			if ( false === $no_list && is_array( $this->taxonomy_terms[ $taxonomy ] ) ) {
 				foreach ( $this->taxonomy_terms[ $taxonomy ] as $term ) {
 					if ( ! empty( $term_string ) ) {
 						$term_string .= ', ';
@@ -407,7 +408,7 @@ class Position {
 	 *
 	 * @param string $taxonomy The taxonomy.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function get_terms_by_field( string $taxonomy ): array {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
@@ -432,16 +433,17 @@ class Position {
 			$this->set_title( get_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), true ) );
 		}
 
-		$title = $this->data['post_title'];
+		$title    = $this->data['post_title'];
+		$instance = $this;
 		/**
 		 * Filter the title of the position.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
 		 * @param string $title The title.
-		 * @param Position $this The position object.
+		 * @param Position $instance The position object.
 		 */
-		return apply_filters( 'position_integration_position_title', $title, $this );
+		return apply_filters( 'position_integration_position_title', $title, $instance );
 	}
 
 	/**
@@ -514,20 +516,21 @@ class Position {
 		$url = '#';
 		if ( ! empty( $this->data['ID'] ) ) {
 			$url = get_permalink( $this->data['ID'] );
-			if( ! is_string( $url ) ) {
+			if ( ! is_string( $url ) ) {
 				$url = '';
 			}
 		}
 
+		$instance = $this;
 		/**
 		 * Filter the public url of a single position.
 		 *
 		 * @since 3.2.0 Available since 3.2.0.
 		 *
 		 * @param string $url The URL.
-		 * @param Position $this The object of the position.
+		 * @param Position $instance The object of the position.
 		 */
-		return apply_filters( 'personio_integration_single_url', $url, $this );
+		return apply_filters( 'personio_integration_single_url', $url, $instance );
 	}
 
 	/**
@@ -575,7 +578,7 @@ class Position {
 	/**
 	 * Return the language-specific job description.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public function get_content(): array {
 		return (array) get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
@@ -584,7 +587,7 @@ class Position {
 	/**
 	 * Get the language-specific content of this position (aka jobDescriptions).
 	 *
-	 * @return array<string,array<string,string>>
+	 * @return array<string,mixed>
 	 */
 	public function get_content_as_array(): array {
 		$content = $this->get_content();
@@ -754,41 +757,25 @@ class Position {
 	public function get_personio_account(): Personio {
 		$url = Helper::get_personio_url();
 
+		$instance = $this;
 		/**
 		 * Filter the Personio account URL to use for the Personio object.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param string $url The main URL.
-		 * @param Position $this The object of the requested position.
+		 * @param Position $instance The object of the requested position.
 		 */
-		return new Personio( apply_filters( 'personio_integration_get_personio_url', $url, $this ) );
+		return new Personio( apply_filters( 'personio_integration_get_personio_url', $url, $instance ) );
 	}
 
 	/**
 	 * Return all settings.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function get_settings(): array {
 		return $this->data;
-	}
-
-	/**
-	 * Return a registered extension for this position.
-	 *
-	 * @param string $name Class-name of extension based on Position_Extends_Base.
-	 *
-	 * @return false|Position_Extensions_Base
-	 */
-	public function get_extension( string $name ): false|Position_Extensions_Base {
-		// bail if name does not exist.
-		if ( ! class_exists( $name ) ) {
-			return false;
-		}
-
-		// return the object.
-		return new $name( $this->get_id() );
 	}
 
 	/**

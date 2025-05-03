@@ -71,8 +71,8 @@ class Cli {
 	 *
 	 * @since        1.0.0
 	 *
-	 * @param array $attributes Marker to delete all data or not.
-	 * @param array $options List of options.
+	 * @param array<string,string> $attributes Marker to delete all data or not.
+	 * @param array<string,string> $options List of options.
 	 *
 	 * @return void
 	 * @noinspection PhpUnused

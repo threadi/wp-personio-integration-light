@@ -115,7 +115,6 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'posts_search', array( $this, 'search_also_in_meta_fields' ), 10, 2 );
 
 		// edit positions.
-		add_action( 'admin_init', array( $this, 'remove_cpt_supports' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
@@ -245,7 +244,7 @@ class PersonioPosition extends Post_Type {
 		$position_obj = $positions->get_position( $post->ID );
 
 		// get content of the position.
-		$content = Templates::get_instance()->get_content_template( $position_obj, array(), true );
+		$content = Templates::get_instance()->get_direct_content_template( $position_obj, array() );
 
 		// generate except.
 		$excerpt = $position_obj->get_excerpt();
@@ -299,7 +298,7 @@ class PersonioPosition extends Post_Type {
 	 * - content => show language-specific content
 	 * - formular => show application-button
 	 *
-	 * @param array<string,string> $attributes The shortcode attributes.
+	 * @param array<string,mixed> $attributes The shortcode attributes.
 	 * @return string
 	 */
 	public function shortcode_single( array $attributes = array() ): string {
@@ -315,7 +314,7 @@ class PersonioPosition extends Post_Type {
 				ob_start();
 				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
 				$content = ob_get_contents();
-				if( ! $content ) {
+				if ( ! $content ) {
 					return '';
 				}
 				return $content;
@@ -335,7 +334,7 @@ class PersonioPosition extends Post_Type {
 				ob_start();
 				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
 				$content = ob_get_contents();
-				if( ! $content ) {
+				if ( ! $content ) {
 					return '';
 				}
 				return $content;
@@ -376,7 +375,7 @@ class PersonioPosition extends Post_Type {
 		$content = ob_get_contents();
 
 		// return the content.
-		if( ! $content ) {
+		if ( ! $content ) {
 			return '';
 		}
 		return $content;
@@ -418,7 +417,7 @@ class PersonioPosition extends Post_Type {
 	 * - content => show language-specific content
 	 * - formular => show application-button
 	 *
-	 * @param array<string,string> $attributes The shortcode attributes.
+	 * @param array<string,mixed> $attributes The shortcode attributes.
 	 *
 	 * @return string
 	 */
@@ -591,7 +590,7 @@ class PersonioPosition extends Post_Type {
 		$content = ob_get_contents();
 
 		// return the content.
-		if( ! $content ) {
+		if ( ! $content ) {
 			return '';
 		}
 		return $content;
@@ -832,9 +831,9 @@ class PersonioPosition extends Post_Type {
 		 * Filter the resulting columns.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array<int|string,mixed> $columns List of columns.
+		 * @param array<string,string> $columns List of columns.
 		 */
-		return apply_filters( 'personio_integration_personioposition_columns', $columns );
+		return apply_filters( 'personio_integration_personioposition_columns', $columns ); // @phpstan-ignore parameter.phpDocType
 	}
 
 	/**
@@ -907,8 +906,8 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Remove all actions except "view" and "edit" for our own cpt.
 	 *
-	 * @param array<string,string>   $actions List of actions.
-	 * @param WP_Post $post Object of the post.
+	 * @param array<string,string> $actions List of actions.
+	 * @param WP_Post              $post Object of the post.
 	 * @return array<string,string>
 	 */
 	public function remove_actions( array $actions, WP_Post $post ): array {
@@ -943,10 +942,10 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function add_filter(): void {
 		// get requested post type.
-		$post_type = sanitize_text_field( wp_unslash( filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
+		$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// bail if no post type is given.
-		if ( empty( $post_type ) ) {
+		if ( is_null( $post_type ) ) {
 			return;
 		}
 
@@ -966,7 +965,7 @@ class PersonioPosition extends Post_Type {
 			$taxonomy = get_taxonomy( $taxonomy_name );
 
 			// bail if taxonomy could not be loaded.
-			if( ! $taxonomy instanceof WP_Taxonomy ) {
+			if ( ! $taxonomy instanceof WP_Taxonomy ) {
 				continue;
 			}
 
@@ -1080,34 +1079,6 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Remove supports from our own cpt and change our taxonomies.
-	 * Goal: edit-page without any generic settings.
-	 *
-	 * @return void
-	 */
-	public function remove_cpt_supports(): void {
-		// remove generic meta box for slug.
-		remove_meta_box( 'slugdiv', $this->get_name(), 'normal' );
-
-		// remove generic taxonomy-meta-boxes.
-		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $settings ) {
-			// get the taxonomy object.
-			$taxonomy              = get_taxonomy( $taxonomy_name );
-
-			// bail if object could not be loaded.
-			if( ! $taxonomy instanceof WP_Taxonomy ) {
-				continue;
-			}
-
-			// change the support.
-			$taxonomy->meta_box_cb = false;
-
-			// update the taxonomy registration.
-			register_taxonomy( $taxonomy_name, $this->get_name(), $settings );
-		}
-	}
-
-	/**
 	 * Add Box with hints for editing.
 	 * Add Open Graph Meta-box für edit-page of positions.
 	 *
@@ -1195,6 +1166,7 @@ class PersonioPosition extends Post_Type {
 
 				/**
 				 * Change this hint if Loco Translate is enabled.
+				 * TODO move to Loco Translate support object.
 				 */
 				if ( Loco::get_instance()->is_active() ) {
 					$url = add_query_arg(
@@ -1436,8 +1408,8 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Show any taxonomy of position in their own meta box.
 	 *
-	 * @param WP_Post $post Object of the post.
-	 * @param array<string,string>   $attr The attributes.
+	 * @param WP_Post              $post Object of the post.
+	 * @param array<string,string> $attr The attributes.
 	 *
 	 * @return void
 	 **/
@@ -1500,8 +1472,8 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Show any taxonomy of position in their own meta box.
 	 *
-	 * @param WP_Post $post Object of the post.
-	 * @param array<string,string>   $attr The attributes.
+	 * @param WP_Post              $post Object of the post.
+	 * @param array<string,string> $attr The attributes.
 	 *
 	 * @return void
 	 * @noinspection PhpUnused
@@ -1674,8 +1646,8 @@ class PersonioPosition extends Post_Type {
 	 *
 	 * Add last modification date and priority.
 	 *
-	 * @param array<string,mixed>   $entry The entry-data.
-	 * @param WP_Post $post The post-object.
+	 * @param array<string,mixed> $entry The entry-data.
+	 * @param WP_Post             $post The post-object.
 	 *
 	 * @return array<string,mixed>
 	 */
@@ -1731,8 +1703,8 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Output the contents of the dashboard widget
 	 *
-	 * @param string $post The post as object.
-	 * @param array<string,string>  $callback_args List of arguments.
+	 * @param string               $post The post as object.
+	 * @param array<string,string> $callback_args List of arguments.
 	 */
 	public function get_dashboard_widget_content( string $post, array $callback_args ): void {
 		// bail if we miss data.
@@ -2495,8 +2467,8 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Remove date filter on our own cpt.
 	 *
-	 * @param array<string>  $months List of months.
-	 * @param string $post_type The used post type.
+	 * @param array<string> $months List of months.
+	 * @param string        $post_type The used post type.
 	 *
 	 * @return array<string>
 	 */

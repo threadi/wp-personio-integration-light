@@ -65,9 +65,9 @@ class Templates {
 	 *
 	 * @source BlockTemplatesController.php from WooCommerce
 	 *
-	 * @param array<WP_Block_Template>  $template_list Resulting list of block templates.
-	 * @param array<string,mixed>  $query The query.
-	 * @param string $template_type The template type.
+	 * @param array<WP_Block_Template> $template_list Resulting list of block templates.
+	 * @param array<string,mixed>      $query The query.
+	 * @param string                   $template_type The template type.
 	 *
 	 * @return array<WP_Block_Template>
 	 * @noinspection PhpIssetCanBeReplacedWithCoalesceInspection
@@ -101,8 +101,8 @@ class Templates {
 	/**
 	 * Get the supported block templates from file system (plugin-source) AND database (custom templates from user).
 	 *
-	 * @param array<string>  $slugs List of slugs.
-	 * @param string $template_type The template.
+	 * @param array<string> $slugs List of slugs.
+	 * @param string        $template_type The template.
 	 *
 	 * @return array<string,Template>
 	 */
@@ -216,8 +216,8 @@ class Templates {
 	/**
 	 * Get templates from DB to override the template from files.
 	 *
-	 * @param array<string>  $slugs The slugs.
-	 * @param string $template_type The template type.
+	 * @param array<string> $slugs The slugs.
+	 * @param string        $template_type The template type.
 	 *
 	 * @return array<string,Template>
 	 * @noinspection PhpUnused
@@ -242,7 +242,7 @@ class Templates {
 		}
 
 		// run the query.
-		$check_query      = new WP_Query( $query );
+		$check_query = new WP_Query( $query );
 
 		// create list for return values.
 		$templates = array();
@@ -250,7 +250,7 @@ class Templates {
 		// loop through the results.
 		foreach ( $check_query->get_posts() as $post ) {
 			// bail if this is not a WP_Post object.
-			if( ! $post instanceof WP_Post ) {
+			if ( ! $post instanceof WP_Post ) {
 				continue;
 			}
 

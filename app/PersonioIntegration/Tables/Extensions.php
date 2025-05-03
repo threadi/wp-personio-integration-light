@@ -152,7 +152,7 @@ class Extensions extends WP_List_Table {
 	 * Define what data to show on each column of the table.
 	 *
 	 * @param  Extensions_Base $item       Object.
-	 * @param  string $column_name Current column name.
+	 * @param  string          $column_name Current column name.
 	 *
 	 * @return string
 	 */

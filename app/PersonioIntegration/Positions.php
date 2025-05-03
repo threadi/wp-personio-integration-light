@@ -38,7 +38,7 @@ class Positions {
 	/**
 	 * Variable to hold the list of initialized Positions.
 	 *
-	 * @var array[Position]
+	 * @var array<Position>
 	 */
 	private array $positions = array();
 
@@ -103,7 +103,7 @@ class Positions {
 	 * Get positions from database as Position-objects.
 	 * Optionally limited by a number.
 	 *
-	 * @param int   $limit The limit, defaults to -1 for default-limiting.
+	 * @param int                 $limit The limit, defaults to -1 for default-limiting.
 	 * @param array<string,mixed> $parameter_to_add The parameter to add.
 	 *
 	 * @return array<Position>
@@ -214,7 +214,10 @@ class Positions {
 		// get the positions as object in array
 		// -> optionally grouped by a given taxonomy.
 		$resulting_position_list = array();
-		foreach ( $this->results->posts as $post_id ) {
+		foreach ( $this->results->get_posts() as $post_id ) {
+			// get the int value.
+			$post_id = absint( $post_id );
+
 			/**
 			 * Filter the resulting ID / object.
 			 *

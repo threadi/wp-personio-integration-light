@@ -58,7 +58,7 @@ class Uninstaller {
 	 *
 	 * Either via uninstall or via cli.
 	 *
-	 * @param array<int,array<string>> $delete_data Marker to delete all data.
+	 * @param array<int> $delete_data Marker to delete all data.
 	 * @return void
 	 */
 	public function run( array $delete_data = array() ): void {
@@ -89,7 +89,7 @@ class Uninstaller {
 	/**
 	 * Define the tasks to run during deactivation.
 	 *
-	 * @param array<int,array<string>> $delete_data Whether all data should be removed or not (should be an array with value 1 for yes).
+	 * @param array<int> $delete_data Whether all data should be removed or not (should be an array with value 1 for yes).
 	 *
 	 * @return void
 	 */
@@ -112,7 +112,7 @@ class Uninstaller {
 		delete_transient( 'personio_integration_light_plugin_update_notices' );
 
 		// delete all plugin-data.
-		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) { // @phpstan-ignore identical.alwaysTrue
+		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
 			// initialize the extensions to call their uninstall routines later.
 			Extensions::get_instance()->init();
 
@@ -144,11 +144,11 @@ class Uninstaller {
 
 			// remove user meta for each cpt we provide.
 			foreach ( Post_Types::get_instance()->get_post_types() as $post_type ) {
-				// create classname
+				// create classname.
 				$classname = $post_type . '::get_instance';
 
 				// bail if classname is not callable.
-				if( ! is_callable( $classname ) ) {
+				if ( ! is_callable( $classname ) ) {
 					continue;
 				}
 
@@ -161,7 +161,7 @@ class Uninstaller {
 				}
 
 				// bail if post type is not from this plugin.
-				if( ! $obj->is_from_plugin( WP_PERSONIO_INTEGRATION_PLUGIN ) ) {
+				if ( ! $obj->is_from_plugin( WP_PERSONIO_INTEGRATION_PLUGIN ) ) {
 					continue;
 				}
 

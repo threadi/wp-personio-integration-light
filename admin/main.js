@@ -141,7 +141,7 @@ jQuery(document).ready(function($) {
     /**
      * Add hint for applications in Pro-version in menu.
      */
-    $("#menu-posts-personioposition a[href='#']").on( 'click', function(e) {
+    $("#menu-posts-personioposition a[href*='personioApplication']").on( 'click', function(e) {
       e.preventDefault();
 
       let dialog_config = {

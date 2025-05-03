@@ -95,7 +95,7 @@ class Post_Type {
 	public function get_archive_url(): string {
 		// get the archive URL.
 		$url = get_post_type_archive_link( $this->get_name() );
-		if( ! $url ) {
+		if ( ! $url ) {
 			$url = '';
 		}
 		return $url;

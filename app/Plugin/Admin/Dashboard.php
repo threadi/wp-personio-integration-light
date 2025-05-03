@@ -76,7 +76,7 @@ class Dashboard {
 	/**
 	 * Get the dashboard-widgets.
 	 *
-	 * @return array<string,array<string,string>>
+	 * @return array<string,array<string,mixed>>
 	 */
 	private function get_dashboard_widgets(): array {
 		$dashboard_widgets = array();
@@ -85,7 +85,7 @@ class Dashboard {
 		 * Filter the dashboard-widgets used by this plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array $dashboard_widgets List of widgets.
+		 * @param array<string,array<string,mixed>> $dashboard_widgets List of widgets.
 		 */
 		return apply_filters( 'personio_integration_dashboard_widgets', $dashboard_widgets );
 	}

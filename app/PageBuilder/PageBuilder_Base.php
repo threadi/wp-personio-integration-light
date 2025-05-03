@@ -58,9 +58,10 @@ class PageBuilder_Base extends Extensions_Base {
 	/**
 	 * Return widgets this page builder supports.
 	 *
-	 * This means any widgets, block, component ... name it.
+	 * This means any widgets, block, component ... name it. The returning strings should contain their
+	 * class names incl. namespace.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_widgets(): array {
 		return array();
@@ -87,9 +88,9 @@ class PageBuilder_Base extends Extensions_Base {
 	/**
 	 * Add global Elementor-settings, used by setup.
 	 *
-	 * @param array $settings List of settings.
+	 * @param array<array<string,mixed>> $settings List of settings.
 	 *
-	 * @return array
+	 * @return array<array<string,mixed>>
 	 */
 	public function add_global_settings( array $settings ): array {
 		// bail if page builder does not support templates.

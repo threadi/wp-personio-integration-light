@@ -168,8 +168,8 @@ class Init {
 	/**
 	 * Add link to plugin-settings in plugin-list.
 	 *
-	 * @param array $links List of links.
-	 * @return array
+	 * @param array<int,string> $links List of links.
+	 * @return array<int,string>
 	 */
 	public function add_setting_link( array $links ): array {
 		// if setup has not been completed, show link here.
@@ -186,10 +186,10 @@ class Init {
 	/**
 	 * Add links in row meta.
 	 *
-	 * @param array  $links List of links.
-	 * @param string $file The requested plugin file name.
+	 * @param array<string,string> $links List of links.
+	 * @param string               $file The requested plugin file name.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function add_row_meta_links( array $links, string $file ): array {
 		// bail if this is not our plugin.
@@ -206,7 +206,7 @@ class Init {
 		 * Filter the links in row meta of our plugin in plugin list.
 		 *
 		 * @since 4.2.4 Available since 4.2.4.
-		 * @param array $row_meta List of links.
+		 * @param array<string,string> $row_meta List of links.
 		 */
 		$row_meta = apply_filters( 'personio_integration_light_plugin_row_meta', $row_meta );
 
@@ -232,9 +232,9 @@ class Init {
 	/**
 	 * Register our custom query_vars for frontend.
 	 *
-	 * @param array $query_vars List of query vars.
+	 * @param array<int,string> $query_vars List of query vars.
 	 *
-	 * @return array
+	 * @return array<int,string>
 	 */
 	public function add_query_vars( array $query_vars ): array {
 		// variable for filter.
@@ -245,8 +245,8 @@ class Init {
 	/**
 	 * Show info from update_notice-section in readme.txt in the WordPress-repository.
 	 *
-	 * @param array  $data List of plugin-infos.
-	 * @param object $response The response-data.
+	 * @param array<string,mixed> $data List of plugin-infos.
+	 * @param object              $response The response-data.
 	 *
 	 * @return void
 	 */

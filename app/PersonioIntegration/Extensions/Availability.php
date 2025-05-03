@@ -10,19 +10,12 @@ namespace PersonioIntegrationLight\PersonioIntegration\Extensions;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\PersonioIntegration\Position_Extensions_Base;
+use PersonioIntegrationLight\PersonioIntegration\Position;
 
 /**
- * Handles the settings multiple files assigned to a single position.
+ * Handles the availability of a single position.
  */
-class Availability extends Position_Extensions_Base {
-	/**
-	 * Internal name for this object.
-	 *
-	 * @var string
-	 */
-	protected string $name = 'availability';
-
+class Availability extends Position {
 	/**
 	 * Return the availability of the Personio page of this position.
 	 *

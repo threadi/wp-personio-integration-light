@@ -36,6 +36,9 @@
         <exclude name="WordPress.WP.GlobalVariablesOverride"/>
         <exclude name="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase"/>
         <exclude name="WordPress.WP.I18n.NonSingularStringLiteralText" />
+
+        <!-- prevent WCS hint for list types which are necessary for PHPStan -->
+        <exclude name="Squiz.Commenting.FunctionComment.IncorrectTypeHint"/>
     </rule>
 
 </ruleset>

@@ -376,7 +376,7 @@ class Templates {
 		$post_id = get_the_ID();
 
 		// bail if post ID could not be loaded.
-		if( ! $post_id ) {
+		if ( ! $post_id ) {
 			return $single_template;
 		}
 
@@ -384,7 +384,7 @@ class Templates {
 		$post_type = get_post_type( $post_id );
 
 		// bail if post type could not be loaded.
-		if( ! is_string( $post_type ) ) {
+		if ( ! is_string( $post_type ) ) {
 			return $single_template;
 		}
 
@@ -401,6 +401,7 @@ class Templates {
 		 *
 		 * @param bool $false Return true if our own single template should not be used.
 		 * @param string $single_template The single template which will be used instead.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_load_single_template', $false, $single_template ) ) {
 			return $single_template;
@@ -421,7 +422,7 @@ class Templates {
 		$post_id = get_the_ID();
 
 		// bail if post ID could not be loaded.
-		if( ! $post_id ) {
+		if ( ! $post_id ) {
 			return $archive_template;
 		}
 
@@ -429,7 +430,7 @@ class Templates {
 		$post_type = get_post_type( $post_id );
 
 		// bail if post type could not be loaded.
-		if( ! is_string( $post_type ) ) {
+		if ( ! is_string( $post_type ) ) {
 			return $archive_template;
 		}
 
@@ -446,6 +447,7 @@ class Templates {
 		 *
 		 * @param bool $false Return true if our own archive template should not be used.
 		 * @param string $archive_template The archive template which will be used instead.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_load_archive_template', $false, $archive_template ) ) {
 			return $archive_template;
@@ -467,7 +469,7 @@ class Templates {
 		$post_id = get_the_ID();
 
 		// bail if post ID could not be loaded.
-		if( ! $post_id ) {
+		if ( ! $post_id ) {
 			return $content;
 		}
 
@@ -475,7 +477,7 @@ class Templates {
 		$post_type = get_post_type( $post_id );
 
 		// bail if post type could not be loaded.
-		if( ! is_string( $post_type ) ) {
+		if ( ! is_string( $post_type ) ) {
 			return $content;
 		}
 
@@ -489,6 +491,7 @@ class Templates {
 		 * Filter whether the content template should be used (false) or not (true).
 		 *
 		 * @param bool $true False if content template should not be used.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_show_content', $true ) ) {
 			return $content;
@@ -515,7 +518,7 @@ class Templates {
 		$post_id = get_the_ID();
 
 		// bail if post ID could not be loaded.
-		if( ! $post_id ) {
+		if ( ! $post_id ) {
 			return $content;
 		}
 
@@ -523,7 +526,7 @@ class Templates {
 		$post_type = get_post_type( $post_id );
 
 		// bail if post type could not be loaded.
-		if( ! is_string( $post_type ) ) {
+		if ( ! is_string( $post_type ) ) {
 			return $content;
 		}
 
@@ -583,9 +586,9 @@ class Templates {
 	/**
 	 * Get the position details as excerpt via template.
 	 *
-	 * @param Position $position   The position as object.
-	 * @param array<string,mixed>    $attributes The attributes.
-	 * @param bool     $use_return True if this function should return and not echo for output.
+	 * @param Position            $position   The position as object.
+	 * @param array<string,mixed> $attributes The attributes.
+	 * @param bool                $use_return True if this function should return and not echo for output.
 	 *
 	 * @return string
 	 */
@@ -630,7 +633,7 @@ class Templates {
 				$terms = get_the_terms( $position->get_id(), $taxonomy_name );
 
 				// bail on error.
-				if( is_wp_error( $terms ) ) {
+				if ( is_wp_error( $terms ) ) {
 					return '';
 				}
 
@@ -641,6 +644,7 @@ class Templates {
 				 * @since 3.0.8 Available since 3.0.8.
 				 * @param bool $false True to show the list.
 				 * @param array<WP_Term>|false $terms List of terms.
+				 * @noinspection PhpConditionAlreadyCheckedInspection
 				 */
 				$show_term_list = apply_filters( 'personio_integration_show_term_list', $false, $terms );
 
@@ -687,7 +691,7 @@ class Templates {
 			include $this->get_template( 'parts/details/' . $template . '.php' );
 			$content = ob_get_clean();
 
-			if( ! $content ) {
+			if ( ! $content ) {
 				return '';
 			}
 
@@ -706,8 +710,8 @@ class Templates {
 	/**
 	 * Get position application-link-button for list.
 	 *
-	 * @param Position $position The position as object.
-	 * @param array<string,mixed>    $attributes The attributes.
+	 * @param Position            $position The position as object.
+	 * @param array<string,mixed> $attributes The attributes.
 	 *
 	 * @return void
 	 */
@@ -724,6 +728,7 @@ class Templates {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param bool $false Return true to prevent button-output.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_hide_button', $false ) ) {
 			return;
@@ -788,7 +793,7 @@ class Templates {
 		$post_id = get_the_ID();
 
 		// bail if not post ID is given.
-		if( ! $post_id ) {
+		if ( ! $post_id ) {
 			return;
 		}
 
@@ -807,7 +812,7 @@ class Templates {
 	 *
 	 * Necessary primary for FSE-themes.
 	 *
-	 * @param string             $post_title The title.
+	 * @param string           $post_title The title.
 	 * @param int|WP_Post|null $post_id The post ID.
 	 *
 	 * @return string
@@ -838,8 +843,8 @@ class Templates {
 	/**
 	 * Show a filter in frontend restricted to positions which are visible in list.
 	 *
-	 * @param string $filter     Name of the filter (taxonomy-slug).
-	 * @param array<string,mixed>  $attributes List of attributes for the filter.
+	 * @param string              $filter     Name of the filter (taxonomy-slug).
+	 * @param array<string,mixed> $attributes List of attributes for the filter.
 	 *
 	 * @return void
 	 */
@@ -916,16 +921,27 @@ class Templates {
 	}
 
 	/**
+	 * Output the content with configured template.
+	 *
+	 * @param Position            $position   The position as object.
+	 * @param array<string,mixed> $attributes The attributes used for output the template.
+	 *
+	 * @return void
+	 */
+	public function get_content_template( Position $position, array $attributes ): void {
+		echo wp_kses_post( $this->get_direct_content_template( $position, $attributes ) );
+	}
+
+	/**
 	 * Return the content with configured template.
 	 *
-	 * @param Position $position   The position as object.
-	 * @param array<string,mixed>    $attributes The attributes used for output the template.
-	 * @param bool     $use_return True if this function should return and not echo for output.
+	 * @param Position            $position   The position as object.
+	 * @param array<string,mixed> $attributes The attributes used for output the template.
 	 *
 	 * @return string
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function get_content_template( Position $position, array $attributes, bool $use_return = false ): string {
+	public function get_direct_content_template( Position $position, array $attributes ): string {
 		// use old template if it exists.
 		$template_file = 'parts/properties-content.php';
 
@@ -934,10 +950,6 @@ class Templates {
 			// get configured template if none has been set for this output.
 			if ( empty( $attributes['jobdescription_template'] ) ) {
 				$template = Settings::get_instance()->get_setting( is_singular() ? 'personioIntegrationTemplateJobDescription' : 'personioIntegrationTemplateListingContentTemplate' );
-				if ( ! $this->has_template( $template_file ) ) {
-					// set default template if none has been configured (should never happen).
-					$template = 'default';
-				}
 			} else {
 				$template = $attributes['jobdescription_template'];
 			}
@@ -953,23 +965,18 @@ class Templates {
 		include $this->get_template( $template_file );
 		$content = ob_get_clean();
 
-		if( ! $content && $use_return ) {
+		if ( ! $content ) {
 			return '';
 		}
 
-		// return content depending on setting.
-		if ( $use_return ) {
-			return $content;
-		}
-		echo wp_kses_post( $content );
-		return '';
+		return $content;
 	}
 
 	/**
 	 * Extend kses-filter for form-element if our own cpt is called.
 	 *
-	 * @param array<string,mixed>  $allowed_tags List of allowed tags and attributes.
-	 * @param string $context The context where this is called.
+	 * @param array<string,mixed> $allowed_tags List of allowed tags and attributes.
+	 * @param string              $context The context where this is called.
 	 *
 	 * @return array<string,mixed>
 	 */
@@ -1179,7 +1186,7 @@ class Templates {
 		$filter_json = wp_json_encode( $attributes['filter'] );
 
 		// bail if json could not be generated.
-		if( ! $filter_json ) {
+		if ( ! $filter_json ) {
 			return $attributes;
 		}
 
@@ -1215,8 +1222,16 @@ class Templates {
 			return $attributes;
 		}
 
+		// get JSON of filter configuration.
+		$json = wp_json_encode( $attributes['filter'] );
+
+		// bail if JSON could not be created.
+		if ( ! $json ) {
+			return $attributes;
+		}
+
 		// add the default value.
-		$attributes['link_to_anchor'] = 'pif' . md5( wp_json_encode( $attributes['filter'] ) );
+		$attributes['link_to_anchor'] = 'pif' . md5( $json );
 
 		// return resulting attributes.
 		return $attributes;

@@ -382,7 +382,7 @@ class Template {
 			$content = $wp_filesystem->get_contents( $this->get_file_path() );
 
 			// add content to object.
-			if( $content ) {
+			if ( $content ) {
 				$this->content = $content;
 			}
 		}

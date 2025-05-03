@@ -592,7 +592,7 @@ class Admin {
 		$screen = get_current_screen();
 
 		// bail if screen could not be loaded.
-		if( ! $screen instanceof WP_Screen ) {
+		if ( ! $screen instanceof WP_Screen ) {
 			return;
 		}
 
@@ -637,7 +637,7 @@ class Admin {
 				__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Settings', 'personio-integration-light' ),
 				__( 'Applications', 'personio-integration-light' ),
 				'manage_' . PersonioPosition::get_instance()->get_name(),
-				'#',
+				'personioApplication',
 				'__return_true',
 				2
 			);
@@ -836,10 +836,10 @@ class Admin {
 		header( 'Content-Disposition: attachment; filename=' . sanitize_file_name( $filename ) );
 
 		// generate CSV-output.
-		$fp       = fopen( 'php://output', 'w' );
+		$fp = fopen( 'php://output', 'w' );
 
 		// bail if file could not be opened.
-		if( ! $fp ) {
+		if ( ! $fp ) {
 			exit;
 		}
 

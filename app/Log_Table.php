@@ -33,7 +33,7 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Get the table data
 	 *
-	 * @return array<string,string>
+	 * @return array<int,mixed>
 	 */
 	private function table_data(): array {
 		return ( new Log() )->get_entries();
@@ -89,8 +89,8 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Define what data to show on each column of the table
 	 *
-	 * @param  array<string,string>  $item        Data.
-	 * @param  string $column_name - Current column name.
+	 * @param  array<string,string> $item        Data.
+	 * @param  string               $column_name - Current column name.
 	 *
 	 * @return string
 	 */

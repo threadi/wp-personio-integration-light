@@ -340,8 +340,8 @@ class Helper {
 	/**
 	 * Check if Settings-Errors-entry already exists in array.
 	 *
-	 * @param string $entry The entry.
-	 * @param array<string|int,mixed>  $errors The list of errors.
+	 * @param string                  $entry The entry.
+	 * @param array<string|int,mixed> $errors The list of errors.
 	 * @return bool
 	 */
 	public static function check_if_setting_error_entry_exists_in_array( string $entry, array $errors ): bool {
@@ -385,7 +385,7 @@ class Helper {
 		}
 
 		// return empty string if no URL could be loaded.
-		if( ! $page_url ) {
+		if ( ! $page_url ) {
 			return '';
 		}
 
@@ -424,7 +424,7 @@ class Helper {
 		$files = $wp_filesystem->dirlist( $path, true, true );
 
 		// bail if no files could be loaded.
-		if( ! $files ) {
+		if ( ! $files ) {
 			return array();
 		}
 
@@ -436,8 +436,8 @@ class Helper {
 	 * Recursively load files from given array.
 	 *
 	 * @param array<string,array<string,mixed>> $files Array of file we iterate through.
-	 * @param string $path Absolute path where the files are located.
-	 * @param array<string>  $file_list List of files.
+	 * @param string                            $path Absolute path where the files are located.
+	 * @param array<string>                     $file_list List of files.
 	 *
 	 * @return array<string>
 	 */
@@ -656,7 +656,7 @@ class Helper {
 		$result = preg_replace( '/\s+/', ' ', $text_to_parse );
 
 		// bail if result is not a string.
-		if( ! is_string( $result ) ) {
+		if ( ! is_string( $result ) ) {
 			return '';
 		}
 
@@ -702,7 +702,7 @@ class Helper {
 	 * Add new entry with its key on specific position in array.
 	 *
 	 * @param array<int|string,mixed>|null $fields The array we want to change.
-	 * @param int                                    $position The position where the new array should be added.
+	 * @param int                          $position The position where the new array should be added.
 	 * @param array<int|string,mixed>      $array_to_add The new array which should be added.
 	 *
 	 * @return array<int|string,mixed>
@@ -783,7 +783,7 @@ class Helper {
 		if ( function_exists( 'get_current_screen' ) && in_array( $hook, array( 'edit.php', 'post.php', 'edit-tags.php', 'term.php' ), true ) ) {
 			$screen = get_current_screen();
 			// bail if screen could not be loaded.
-			if( ! $screen instanceof WP_Screen ) {
+			if ( ! $screen instanceof WP_Screen ) {
 				return false;
 			}
 			if ( ! in_array( $screen->post_type, apply_filters( 'personio_integration_light_do_not_load_on_cpt', array( PersonioPosition::get_instance()->get_name() ) ), true ) ) {
@@ -856,7 +856,7 @@ class Helper {
 		$json = wp_json_encode( $dialog );
 
 		// bail if string could not be converted.
-		if( ! $json ) {
+		if ( ! $json ) {
 			return '';
 		}
 

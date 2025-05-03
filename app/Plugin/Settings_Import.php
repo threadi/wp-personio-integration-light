@@ -216,7 +216,7 @@ class Settings_Import {
 		$file_content  = $wp_filesystem->get_contents( sanitize_text_field( wp_unslash( $_FILES['file']['tmp_name'] ) ) );
 
 		// bail if content could not be read.
-		if( ! $file_content ) {
+		if ( ! $file_content ) {
 			wp_send_json(
 				array(
 					'success' => false,

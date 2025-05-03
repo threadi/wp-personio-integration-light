@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\PersonioIntegration\Extensions\Show_Xml;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Settings;
 use SimpleXMLElement;
@@ -59,13 +60,13 @@ class Show_Position_Xml extends Extensions_Base {
 	}
 
 	/**
-	 * Initialize this plugin.
+	 * Initialize this extension.
 	 *
 	 * @return void
 	 */
 	public function init(): void {
 		// bail if extension is not enabled.
-		if ( ! $this->is_enabled() && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+		if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
 			return;
 		}
 
@@ -74,12 +75,10 @@ class Show_Position_Xml extends Extensions_Base {
 
 		// use our own hooks.
 		add_filter( 'personio_integration_import_single_position_xml', array( $this, 'add_xml_to_position_object_on_import' ), 10, 2 );
-		add_action( 'personio_integration_import_single_position_save', array( $this, 'save_xml_on_position' ) );
 	}
 
 	/**
-	 * Add Box with hints for editing.
-	 * Add Open Graph Meta-box für edit-page of positions.
+	 * Add box to show the XML-code.
 	 *
 	 * @return void
 	 */
@@ -95,7 +94,7 @@ class Show_Position_Xml extends Extensions_Base {
 	}
 
 	/**
-	 * Show the XML.
+	 * Show the XML in meta box.
 	 *
 	 * @param WP_Post $post The called post object.
 	 *
@@ -144,25 +143,24 @@ class Show_Position_Xml extends Extensions_Base {
 	}
 
 	/**
-	 * Whether this extension is enabled by default (true) or not (false).
-	 *
-	 * @return bool
-	 */
-	protected function is_default_enabled(): bool {
-		return false;
-	}
-
-	/**
 	 * Remove inline styles on job description during import, if enabled.
 	 *
-	 * @param Position              $position_obj The Position object we want to change.
-	 * @param SimpleXMLElement|null $position The XML-object.
+	 * @param Position         $position_obj The Position object we want to change.
+	 * @param SimpleXMLElement $xml_object The XML-object.
 	 *
 	 * @return Position
 	 */
-	public function add_xml_to_position_object_on_import( Position $position_obj, ?SimpleXMLElement $position ): Position {
+	public function add_xml_to_position_object_on_import( Position $position_obj, SimpleXMLElement $xml_object ): Position {
+		// get the XML-code from the object.
+		$xml = $xml_object->asXML();
+
+		// bail if no XML code given.
+		if ( ! is_string( $xml ) ) {
+			return $position_obj;
+		}
+
 		// set the xml on position, convert from object to xml.
-		$this->get_extension( $position_obj )->set_xml( $position_obj, $position->asXML() );
+		$this->get_extension( $position_obj )->set_xml( $xml );
 
 		// return resulting object.
 		return $position_obj;
@@ -173,20 +171,9 @@ class Show_Position_Xml extends Extensions_Base {
 	 *
 	 * @param Position $position_obj The object of the position.
 	 *
-	 * @return Position_Extensions_Base
+	 * @return Show_Xml
 	 */
-	private function get_extension( Position $position_obj ): Position_Extensions_Base {
-		return $position_obj->get_extension( 'PersonioIntegrationLight\PersonioIntegration\Extensions\Show_Xml' );
-	}
-
-	/**
-	 * Save the xml on position via extension.
-	 *
-	 * @param Position $position_obj The object of the position.
-	 *
-	 * @return void
-	 */
-	public function save_xml_on_position( Position $position_obj ): void {
-		$this->get_extension( $position_obj )->save( $position_obj );
+	private function get_extension( Position $position_obj ): Show_Xml {
+		return new Show_Xml( $position_obj->get_id() );
 	}
 }

@@ -131,9 +131,9 @@ class Help_System {
 	/**
 	 * Add help for using applications.
 	 *
-	 * @param array<string,mixed> $help_list List of help tabs.
+	 * @param array<int,array<string,mixed>> $help_list List of help tabs.
 	 *
-	 * @return array<string,mixed>
+	 * @return array<int,array<string,mixed>>
 	 */
 	public function add_applications_help( array $help_list ): array {
 		// add menu entry for applications (with hint to pro).
@@ -175,9 +175,9 @@ class Help_System {
 	/**
 	 * Add help for using applications.
 	 *
-	 * @param array $help_list List of help tabs.
+	 * @param array<int,array<string,mixed>> $help_list List of help tabs.
 	 *
-	 * @return array
+	 * @return array<int,array<string,mixed>>
 	 */
 	public function add_documentation_help( array $help_list ): array {
 		// collect the content for the help.

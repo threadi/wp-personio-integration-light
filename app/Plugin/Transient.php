@@ -362,7 +362,7 @@ class Transient {
 	 * @return array<int,string>
 	 */
 	public function get_hide_on(): array {
-		$hide_on = $this->hide_on;
+		$hide_on  = $this->hide_on;
 		$instance = $this;
 		/**
 		 * Filter where a single transient should be hidden.

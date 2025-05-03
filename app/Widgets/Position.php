@@ -37,7 +37,7 @@ class Position extends WP_Widget {
 	/**
 	 * Get the fields for this widget.
 	 *
-	 * @return array[]
+	 * @return array<string,array<string,mixed>>
 	 */
 	private function getFields(): array {
 		// get the actual positions.
@@ -124,7 +124,7 @@ class Position extends WP_Widget {
 	/**
 	 * Add entry-formular with settings for the widget.
 	 *
-	 * @param array $instance The instance of the widget.
+	 * @param array<string,mixed> $instance The instance of the widget.
 	 *
 	 * @return void
 	 * @noinspection PhpMissingReturnTypeInspection*/
@@ -135,9 +135,9 @@ class Position extends WP_Widget {
 	/**
 	 * Save updated settings from the formular.
 	 *
-	 * @param array $new_instance The new instance.
-	 * @param array $old_instance The old instance.
-	 * @return array
+	 * @param array<string,mixed> $new_instance The new instance.
+	 * @param array<string,mixed> $old_instance The old instance.
+	 * @return array<string,mixed>
 	 */
 	public function update( $new_instance, $old_instance ): array {
 		return $this->secure_widget_fields( $this->getFields(), $new_instance, $old_instance );
@@ -146,8 +146,8 @@ class Position extends WP_Widget {
 	/**
 	 * Output of the widget in frontend.
 	 *
-	 * @param array $args List of arguments.
-	 * @param array $settings List of settings.
+	 * @param array<string,mixed> $args List of arguments.
+	 * @param array<string,mixed> $settings List of settings.
 	 *
 	 * @return void
 	 * @noinspection PhpParameterNameChangedDuringInheritanceInspection

@@ -115,13 +115,7 @@ class Description extends Blocks_Basis {
 			'classes'                 => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 		);
 
-		// get the output.
-		ob_start();
-		Templates::get_instance()->get_content_template( $position, $attributes );
-		$content = ob_get_clean();
-		if( ! $content ) {
-			return '';
-		}
-		return $content;
+		// return the output of the template.
+		return Templates::get_instance()->get_direct_content_template( $position, $attributes );
 	}
 }

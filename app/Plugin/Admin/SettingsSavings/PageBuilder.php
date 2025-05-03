@@ -26,6 +26,11 @@ class PageBuilder {
 	 * @return string
 	 */
 	public static function save( string|null $value ): string {
+		// convert value to string.
+		if ( is_null( $value ) ) {
+			$value = '';
+		}
+
 		// bail if value is not 1.
 		if ( 1 !== absint( $value ) ) {
 			return $value;
@@ -45,10 +50,29 @@ class PageBuilder {
 		// get the page builder object.
 		$page_builder_obj_to_use = false;
 		foreach ( Page_Builders::get_instance()->get_page_builders() as $page_builder ) {
-			$page_builder_obj = call_user_func( $page_builder . '::get_instance' );
-			if ( $page_builder_obj instanceof PageBuilder_Base && $page_builder_obj->get_name() === $field_settings['page_builder'] ) {
-				$page_builder_obj_to_use = $page_builder_obj;
+			// get the class name.
+			$classname = $page_builder . '::get_instance';
+
+			// bail if it is not callable.
+			if ( ! is_callable( $classname ) ) {
+				continue;
 			}
+
+			// get the object.
+			$page_builder_obj = $classname();
+
+			// bail if it is not PageBuilder_Base.
+			if ( ! $page_builder_obj instanceof PageBuilder_Base ) {
+				continue;
+			}
+
+			// bail if name does not match.
+			if ( $page_builder_obj->get_name() !== $field_settings['page_builder'] ) {
+				continue;
+			}
+
+			// set this object as pagebuilder object to use.
+			$page_builder_obj_to_use = $page_builder_obj;
 		}
 
 		// bail if no page builder could be found.

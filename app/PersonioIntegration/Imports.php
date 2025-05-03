@@ -31,7 +31,7 @@ class Imports {
 	/**
 	 * List of errors during an import run.
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	private array $errors = array();
 
@@ -286,7 +286,7 @@ class Imports {
 	 *
 	 * The array contains the URLs as strings.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_personio_urls(): array {
 		// define list of Personio URLs.
@@ -302,7 +302,7 @@ class Imports {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $personio_urls List of Personio URLs.
+		 * @param array<string> $personio_urls List of Personio URLs.
 		 */
 		return apply_filters( 'personio_integration_personio_urls', $personio_urls );
 	}
@@ -413,7 +413,7 @@ class Imports {
 	/**
 	 * Add collection of errors to the list.
 	 *
-	 * @param array $errors List of errors.
+	 * @param array<string> $errors List of errors.
 	 *
 	 * @return void
 	 */
@@ -433,7 +433,7 @@ class Imports {
 	/**
 	 * Return errors that happened during imports.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	private function get_errors(): array {
 		return $this->errors;
@@ -478,45 +478,45 @@ class Imports {
 	 * This is the main function which defines the object during import of position data.
 	 * It calls the save-function to add all in the DB.
 	 *
-	 * @param SimpleXMLElement|null $position      The XML-object of a single position.
-	 * @param string                $language_name The language-name.
-	 * @param string                $personio_url The used Personio URL.
+	 * @param SimpleXMLElement $xml_object      The XML-object of a single position.
+	 * @param string           $language_name The language-name.
+	 * @param string           $personio_url The used Personio URL.
 	 *
 	 * @return Position
 	 * @noinspection PhpUnused
 	 */
-	public function import_single_position( ?SimpleXMLElement $position, string $language_name, string $personio_url ): Position {
+	public function import_single_position( SimpleXMLElement $xml_object, string $language_name, string $personio_url ): Position {
 		// create position object to handle all values and save them to database.
 		$position_object = new Position( 0 );
 		$position_object->set_lang( $language_name );
-		$position_object->set_title( (string) $position->name );
-		$position_object->set_content( $position->jobDescriptions );
-		if ( ! empty( $position->department ) ) {
-			$position_object->set_department( (string) $position->department );
+		$position_object->set_title( (string) $xml_object->name );
+		$position_object->set_content( $xml_object->jobDescriptions );
+		if ( ! empty( $xml_object->department ) ) {
+			$position_object->set_department( (string) $xml_object->department );
 		}
-		if ( ! empty( $position->keywords ) ) {
-			$position_object->set_keywords( (string) $position->keywords );
+		if ( ! empty( $xml_object->keywords ) ) {
+			$position_object->set_keywords( (string) $xml_object->keywords );
 		}
-		$position_object->set_office( (string) $position->office );
-		$position_object->set_personio_id( (int) $position->id );
-		$position_object->set_recruiting_category( (string) $position->recruitingCategory );
-		$position_object->set_employment_type( (string) $position->employmentType );
-		$position_object->set_seniority( (string) $position->seniority );
-		$position_object->set_schedule( (string) $position->schedule );
-		$position_object->set_years_of_experience( (string) $position->yearsOfExperience );
-		$position_object->set_occupation( (string) $position->occupation );
-		$position_object->set_occupation_category( (string) $position->occupationCategory );
-		$position_object->set_created_at( (string) $position->createdAt );
+		$position_object->set_office( (string) $xml_object->office );
+		$position_object->set_personio_id( (string) $xml_object->id );
+		$position_object->set_recruiting_category( (string) $xml_object->recruitingCategory );
+		$position_object->set_employment_type( (string) $xml_object->employmentType );
+		$position_object->set_seniority( (string) $xml_object->seniority );
+		$position_object->set_schedule( (string) $xml_object->schedule );
+		$position_object->set_years_of_experience( (string) $xml_object->yearsOfExperience );
+		$position_object->set_occupation( (string) $xml_object->occupation );
+		$position_object->set_occupation_category( (string) $xml_object->occupationCategory );
+		$position_object->set_created_at( (string) $xml_object->createdAt );
 		/**
 		 * Change the XML-object before saving the position.
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *
 		 * @param Position $position_object The object of this position.
-		 * @param object $position The XML-object with the data from Personio.
+		 * @param SimpleXMLElement $xml_object The XML-object with the data from Personio.
 		 * @param string $personio_url The used Personio-URL.
 		 */
-		$position_object = apply_filters( 'personio_integration_import_single_position_xml', $position_object, $position, $personio_url );
+		$position_object = apply_filters( 'personio_integration_import_single_position_xml', $position_object, $xml_object, $personio_url );
 		$position_object->save();
 
 		// return the resulting position object.

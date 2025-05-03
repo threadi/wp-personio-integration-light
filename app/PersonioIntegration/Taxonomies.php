@@ -60,7 +60,7 @@ class Taxonomies {
 	 * @return void
 	 */
 	public function init(): void {
-		// register taxonomies.
+		// register our own taxonomies.
 		add_action( 'init', array( $this, 'register' ), 0 );
 
 		// use REST hooks.
@@ -95,7 +95,7 @@ class Taxonomies {
 			$taxonomy_obj = get_taxonomy( $taxonomy_name );
 
 			// bail if object could not be loaded.
-			if( ! $taxonomy_obj instanceof WP_Taxonomy ) {
+			if ( ! $taxonomy_obj instanceof WP_Taxonomy ) {
 				continue;
 			}
 
@@ -134,8 +134,8 @@ class Taxonomies {
 		// loop through the taxonomies of our own plugin.
 		foreach ( $this->get_taxonomies() as $taxonomy_name => $settings ) {
 			// get properties.
-			$taxonomy_array             = array_merge( $this->get_default_settings(), $settings['attr'] );
-			$taxonomy_array['labels']   = $this->get_taxonomy_label( $taxonomy_name );
+			$taxonomy_array           = array_merge( $this->get_default_settings(), $settings['attr'] );
+			$taxonomy_array['labels'] = $this->get_taxonomy_label( $taxonomy_name );
 
 			// remove slugs for not logged-in users.
 			if ( ! is_user_logged_in() ) {
@@ -325,6 +325,7 @@ class Taxonomies {
 			'show_in_quick_edit' => true,
 			'show_in_rest'       => true,
 			'query_var'          => true,
+			'meta_box_cb'        => false,
 			'capabilities'       => array(
 				'manage_terms' => 'read_' . PersonioPosition::get_instance()->get_name(),
 				'edit_terms'   => 'read_' . PersonioPosition::get_instance()->get_name(),
@@ -558,8 +559,8 @@ class Taxonomies {
 	/**
 	 * Add terms from an array to a taxonomy.
 	 *
-	 * @param array<string,string>  $list_or_terms List of terms to add.
-	 * @param string $taxonomy_name Name of the taxonomy.
+	 * @param array<string,string> $list_or_terms List of terms to add.
+	 * @param string               $taxonomy_name Name of the taxonomy.
 	 * @param array<mixed,string>  $callback Callback if term has been processed.
 	 *
 	 * @return void
@@ -1008,15 +1009,15 @@ class Taxonomies {
 	/**
 	 * Hide some taxonomy-columns in our own cpt-table.
 	 *
-	 * @param array<int,string>     $hidden List of columns to hide.
-	 * @param WP_Screen $screen Actual screen-object.
-	 * @param bool      $use_defaults If defaults should be used.
+	 * @param array<int,string> $hidden List of columns to hide.
+	 * @param WP_Screen         $screen Actual screen-object.
+	 * @param bool              $use_defaults If defaults should be used.
 	 *
 	 * @return array<int,string>
 	 */
 	public function hide_columns( array $hidden, WP_Screen $screen, bool $use_defaults ): array {
 		// bail if we do not want to use the defaults.
-		if( ! $use_defaults ) {
+		if ( ! $use_defaults ) {
 			return $hidden;
 		}
 
@@ -1115,7 +1116,7 @@ class Taxonomies {
 			$terms_as_objects = get_terms( array( 'taxonomy' => $taxonomy_name ) );
 
 			// bail if terms is not an array.
-			if( ! is_array( $terms_as_objects ) ) {
+			if ( ! is_array( $terms_as_objects ) ) {
 				continue;
 			}
 
@@ -1123,10 +1124,10 @@ class Taxonomies {
 			++$count;
 
 			// set term counter.
-			$term_count       = 0;
+			$term_count = 0;
 
 			// add initial list entry.
-			$terms            = array(
+			$terms = array(
 				array(
 					'id'    => $term_count,
 					'label' => __( 'Please choose', 'personio-integration-light' ),
@@ -1220,7 +1221,7 @@ class Taxonomies {
 	/**
 	 * Set filter for taxonomies through attributes from the used PageBuilder.
 	 *
-	 * @param array<string,int> $attributes List of pre-filtered attributes.
+	 * @param array<string,int>    $attributes List of pre-filtered attributes.
 	 * @param array<string,string> $attributes_set_by_pagebuilder List of unfiltered attributes, set by used pagebuilder.
 	 *
 	 * @return array<string,int>

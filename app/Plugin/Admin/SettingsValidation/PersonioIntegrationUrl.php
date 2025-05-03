@@ -41,7 +41,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 			}
 
 			$error = false;
-			if ( 0 === strlen( $value ) ) {
+			if ( '' === $value ) {
 				add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'The specification of the Personio URL is mandatory.', 'personio-integration-light' ) );
 				$error = true;
 			}
@@ -180,7 +180,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function validate_url( string $value ): bool {
-		return ! is_string( wp_http_validate_url( $value ) );
+		return is_string( wp_http_validate_url( $value ) );
 	}
 
 	/**

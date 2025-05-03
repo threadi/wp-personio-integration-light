@@ -153,6 +153,13 @@
         </exec>
     </target>
 
+    <!-- check PHPStan -->
+    <target name="check-phpstan" depends="composer-install">
+        <exec dir="${src.dir}" failonerror="false" executable="vendor/bin/phpstan">
+            <arg line="analyse"/>
+        </exec>
+    </target>
+
     <!-- Minify CSS-files -->
     <target name="minify-css" depends="composer-install">
         <for param="file">
@@ -178,7 +185,7 @@
     <target name="init" description="initialize the project" depends="composer-install,npm-build" />
 
     <!-- create release-zip -->
-    <target name="build" description="builds a new release" depends="init,minify-css,generate-documentation,autoloader-generation,check-wcs,setVersionNumber">
+    <target name="build" description="builds a new release" depends="init,minify-css,generate-documentation,autoloader-generation,check-phpstan,check-wcs,setVersionNumber">
         <delete file="${build.dir}/${plugin.slug}_${plugin.version}.zip"/>
         <zip destfile="${build.dir}/${plugin.slug}_${plugin.version}.zip" comment="${plugin.slug} ${plugin.version} release">
             <zipfileset dir="${src.dir}/admin" prefix="${plugin.slug}/admin" />

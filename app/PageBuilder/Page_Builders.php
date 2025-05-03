@@ -53,10 +53,24 @@ class Page_Builders extends Extensions_Base {
 
 		// register the known pagebuilder.
 		foreach ( $this->get_page_builders() as $page_builder ) {
-			$obj = call_user_func( $page_builder . '::get_instance' );
-			if ( $obj instanceof PageBuilder_Base ) {
-				$obj->init();
+			// get the classname.
+			$classname = $page_builder . '::get_instance';
+
+			// bail if it is not callable.
+			if ( ! is_callable( $classname ) ) {
+				continue;
 			}
+
+			// get the object.
+			$obj = $classname();
+
+			// bail if object is not PageBuilder_Base.
+			if ( ! $obj instanceof PageBuilder_Base ) {
+				continue;
+			}
+
+			// initialize the object.
+			$obj->init();
 		}
 	}
 
@@ -81,9 +95,9 @@ class Page_Builders extends Extensions_Base {
 	/**
 	 * Add page builder as extensions.
 	 *
-	 * @param array $extensions List of extensions.
+	 * @param array<string> $extensions List of extensions.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function add_page_builder_as_extension( array $extensions ): array {
 		return array_merge( $this->get_page_builders(), $extensions );

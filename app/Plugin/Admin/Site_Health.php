@@ -68,7 +68,7 @@ class Site_Health {
 	/**
 	 * Get list of endpoints the site health should use for our plugin.
 	 *
-	 * @return array
+	 * @return array<int,array<string,mixed>>
 	 */
 	private function get_endpoints(): array {
 		$list = array(
@@ -95,7 +95,7 @@ class Site_Health {
 		 *
 		 * Hint: these are just arrays which define the endpoints.
 		 *
-		 * @param array $list List of endpoints.
+		 * @param array<int,array<string,mixed>> $list List of endpoints.
 		 */
 		return apply_filters( 'personio_integration_site_health_endpoints', $list );
 	}
@@ -136,7 +136,7 @@ class Site_Health {
 	/**
 	 * Return result after checking cronjob-states.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 * @noinspection PhpUnused
 	 */
 	public function import_cron_checks(): array {
@@ -176,7 +176,7 @@ class Site_Health {
 		}
 
 		// if scheduled event exist, check if next run is in the past.
-		if ( $scheduled_event->timestamp < time() ) {
+		if ( $scheduled_event->timestamp < time() ) { // @phpstan-ignore property.notFound
 			$result['status'] = 'recommended';
 			/* translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past) */
 			$result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ) );
@@ -194,7 +194,7 @@ class Site_Health {
 	 *
 	 * @param WP_REST_Request $request The request-object.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function url_availability_checks( WP_REST_Request $request ): array {
 		// get attributes to detect the requested Personio URL.
@@ -247,8 +247,8 @@ class Site_Health {
 	 * Add custom status-check for running cronjobs of our own plugin.
 	 * Only if Personio-URL is set.
 	 *
-	 * @param array $statuses List of tests to run.
-	 * @return array
+	 * @param array<string,mixed> $statuses List of tests to run.
+	 * @return array<string,mixed>
 	 */
 	public function add_checks( array $statuses ): array {
 		if ( Helper::is_personio_url_set() ) {

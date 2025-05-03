@@ -54,36 +54,54 @@ class Compatibilities {
 		add_filter( 'personio_integration_run_compatibility_checks', array( $this, 'prevent_checks_outside_of_admin' ) );
 
 		// check each compatibility.
-		add_action(
-			'init',
-			function () {
-				$false = false;
-				/**
-				 * Filter whether the compatibility-checks should be run (false) or not (true)
-				 *
-				 * @since 3.0.0 Available since 3.0.0.
-				 *
-				 * @param bool $false True to prevent compatibility-checks.
-				 */
-				if ( apply_filters( 'personio_integration_run_compatibility_checks', $false ) ) {
-					return;
-				}
+		add_action( 'init', array( $this, 'check' ) );
+	}
 
-				// loop through our compatibility-checks.
-				foreach ( $this->get_compatibility_checks() as $compatibility_check ) {
-					$obj = call_user_func( $compatibility_check . '::get_instance' );
-					if ( $obj instanceof Compatibilities_Base ) {
-						$obj->check();
-					}
-				}
+	/**
+	 * Check the compatibility of all supported third party products.
+	 *
+	 * @return void
+	 */
+	public function check(): void {
+		$false = false;
+		/**
+		 * Filter whether the compatibility-checks should be run (false) or not (true)
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param bool $false True to prevent compatibility-checks.
+		 */
+		if ( apply_filters( 'personio_integration_run_compatibility_checks', $false ) ) {
+			return;
+		}
+
+		// loop through our compatibility-checks.
+		foreach ( $this->get_compatibility_checks() as $compatibility_check ) {
+			// get the class name.
+			$class_name = $compatibility_check . '::get_instance';
+
+			// bail if it is not callable.
+			if ( ! is_callable( $class_name ) ) {
+				continue;
 			}
-		);
+
+			// get the object.
+			$obj = $class_name();
+
+			// bail if object is not a Compatibilities_Base.
+			if ( ! $obj instanceof Compatibilities_Base ) {
+				continue;
+			}
+
+			// run the check.
+			$obj->check();
+		}
 	}
 
 	/**
 	 * Return array of compatibility-objects.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_compatibility_checks(): array {
 		$list = array(
@@ -117,7 +135,7 @@ class Compatibilities {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $list List of compatibility-checks.
+		 * @param array<string> $list List of compatibility-checks.
 		 */
 		return apply_filters( 'personio_integration_compatibility_checks', $list );
 	}

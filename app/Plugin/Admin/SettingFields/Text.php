@@ -62,9 +62,9 @@ class Text {
 
 			// format depends.
 			$depends = '';
-			if( ! empty( $attributes['depends'] ) ) {
+			if ( ! empty( $attributes['depends'] ) ) {
 				$depends = wp_json_encode( $attributes['depends'] );
-				if( ! $depends ) {
+				if ( ! $depends ) {
 					$depends = '';
 				}
 			}

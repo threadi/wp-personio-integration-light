@@ -16,6 +16,8 @@ parameters:
     - "#wp_safe_redirect#"
     - "#with generic class WP_REST_Request but does not specify its types#"
     - "#extends generic class WP_Widget but does not specify its types#"
+    - "#ARRAY_A#"
+    - "#WP_PLUGIN_DIR#"
   paths:
     - app
     - personio-integration-light.php

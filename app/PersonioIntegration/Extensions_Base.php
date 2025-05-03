@@ -231,18 +231,16 @@ class Extensions_Base {
 
 			// enable all extension this extension requires.
 			foreach ( $this->get_required_extensions() as $extension_class_name ) {
-				// bail if "get_instance" does not exist.
-				if ( ! method_exists( $extension_class_name, 'get_instance' ) ) {
-					continue;
-				}
+				// get the classname.
+				$classname = $extension_class_name . '::get_instance';
 
 				// bail if "get_instance" is not callable.
-				if ( ! is_callable( $extension_class_name . '::get_instance' ) ) {
+				if ( ! is_callable( $classname ) ) {
 					continue;
 				}
 
 				// get the object.
-				$obj = call_user_func( $extension_class_name . '::get_instance' );
+				$obj = $classname();
 
 				// bail if this is not an extension object.
 				if ( ! $obj instanceof self ) {
@@ -353,9 +351,9 @@ class Extensions_Base {
 	/**
 	 * Add the global settings for each extension.
 	 *
-	 * @param array<array<string,bool|string>> $settings List of settings.
+	 * @param array<array<string,mixed>> $settings List of settings.
 	 *
-	 * @return array<array<string,bool|string>>
+	 * @return array<array<string,mixed>>
 	 */
 	public function add_global_settings( array $settings ): array {
 		// bail if not setting field is set.
