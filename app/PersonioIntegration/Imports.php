@@ -10,10 +10,12 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use cli\progress\Bar;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\Plugin\Languages;
 use SimpleXMLElement;
+use WP_CLI\NoOp;
 use WP_Post;
 
 /**
@@ -45,9 +47,9 @@ class Imports {
 	/**
 	 * WP CLI object.
 	 *
-	 * @var bool|\cli\progress\Bar|\WP_CLI\NoOp
+	 * @var bool|Bar|NoOp
 	 */
-	private bool|\cli\progress\Bar|\WP_CLI\NoOp $cli_progress = false;
+	private bool|Bar|NoOp $cli_progress = false;
 
 	/**
 	 * Constructor, not used as this a Singleton object.
@@ -109,7 +111,7 @@ class Imports {
 			$this->errors[] = __( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' );
 		}
 
-		// get the languages.
+		// get the active languages.
 		$languages = Languages::get_instance()->get_active_languages();
 
 		// check if languages are enabled.
@@ -166,7 +168,7 @@ class Imports {
 				$this->add_errors( $import_obj->get_errors() );
 
 				// update counter for imported positions.
-				$imported_positions += count( $import_obj->get_imported_positions() );
+				$imported_positions += (int) count( $import_obj->get_imported_positions() );
 			}
 		}
 
@@ -197,7 +199,7 @@ class Imports {
 			}
 
 			/**
-			 * Run custom actions before cleanup of positions after import.
+			 * Run custom actions before cleanup of positions but after import.
 			 *
 			 * @since 3.0.0 Available since release 3.0.0.
 			 */
@@ -216,28 +218,34 @@ class Imports {
 				 * @param bool $do_delete Marker to delete the position (must be true to check for deletion).
 				 * @param Position $position_obj The position as object.
 				 */
-				if ( false !== apply_filters( 'personio_integration_delete_single_position', $do_delete, $position_obj ) ) {
-					// get Personio ID.
-					$personio_id = $position_obj->get_personio_id();
-					if ( 1 === absint( get_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, true ) ) ) {
-						if ( false === delete_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED ) ) {
-							// log event.
-							/* translators: %1$s will be replaced by the PersonioId. */
-							$this->log->add_log( sprintf( __( 'Removing updated flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
-						}
-					} else {
-						// delete this position from database without using trash.
-						$result = wp_delete_post( $position_obj->get_id(), true );
+				if ( false === apply_filters( 'personio_integration_delete_single_position', $do_delete, $position_obj ) ) {
+					continue;
+				}
 
-						if ( $result instanceof WP_Post ) {
-							// log this event.
-							/* translators: %1$s will be replaced by the PersonioID. */
-							$this->log->add_log( sprintf( __( 'Position %1$s has been deleted as it was not updated during the last import run.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'success', 'import' );
-						} else {
-							// log event.
-							/* translators: %1$s will be replaced by the PersonioID. */
-							$this->log->add_log( sprintf( __( 'Removing of not updated position %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
-						}
+				// get Personio ID.
+				$personio_id = $position_obj->get_personio_id();
+
+				// if this postion has been changed.
+				if ( 1 === absint( get_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, true ) ) ) {
+					// delete the marker.
+					if ( false === delete_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED ) ) {
+						// log this event.
+						/* translators: %1$s will be replaced by the PersonioId. */
+						$this->log->add_log( sprintf( __( 'Removing updated flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
+					}
+				} else {
+					// delete this position from database without using trash.
+					$result = wp_delete_post( $position_obj->get_id(), true );
+
+					// if result is WP_Post, it has been deleted successfully.
+					if ( $result instanceof WP_Post ) {
+						// log this event.
+						/* translators: %1$s will be replaced by the PersonioID. */
+						$this->log->add_log( sprintf( __( 'Position %1$s has been deleted as it was not updated during the last import run.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'success', 'import' );
+					} else {
+						// deletion failed, so log this event.
+						/* translators: %1$s will be replaced by the PersonioID. */
+						$this->log->add_log( sprintf( __( 'Removing of not updated position %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
 					}
 				}
 			}

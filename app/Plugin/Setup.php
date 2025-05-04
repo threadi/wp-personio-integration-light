@@ -267,7 +267,7 @@ class Setup {
 	 *
 	 * Here we define which steps and texts are used by wp-easy-setup.
 	 *
-	 * @return array<string,mixed>
+	 * @return array<string,array<int,mixed>|string>
 	 */
 	private function get_config(): array {
 		// get setup.
@@ -289,7 +289,7 @@ class Setup {
 		 * Filter the setup configuration.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array<string,mixed> $config List of configuration for the setup.
+		 * @param array<string,array<int,mixed>|string> $config List of configuration for the setup.
 		 */
 		return apply_filters( 'personio_integration_setup_config', $config );
 	}

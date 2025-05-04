@@ -790,7 +790,7 @@ class Helper {
 				return true;
 			}
 		} elseif ( ! str_contains( $hook, 'personio' ) && ! str_contains( $hook, 'options-permalink.php' ) ) {
-			// bail if no personio page is used.
+			// bail if none of our pages is used.
 			return true;
 		}
 
@@ -845,7 +845,7 @@ class Helper {
 	}
 
 	/**
-	 * Convert dialog array to JSON-string for usage in esc_attr().)
+	 * Convert dialog array to JSON-string for usage in esc_attr().
 	 *
 	 * @param array<string,mixed> $dialog The dialog.
 	 *

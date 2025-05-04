@@ -70,10 +70,27 @@ class Compatibilities {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param bool $false True to prevent compatibility-checks.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_run_compatibility_checks', $false ) ) {
 			return;
 		}
+
+		// loop through our compatibility-checks.
+		foreach ( $this->get_compatibility_checks_as_object() as $compatibility_check_obj ) {
+			$compatibility_check_obj->check();
+		}
+	}
+
+	/**
+	 * Return list of compatibility-checks as objects.
+	 *
+	 * @return array<Compatibilities_Base>
+	 */
+	public function get_compatibility_checks_as_object(): array {
+		// define the list for the objects.
+		$list = array();
 
 		// loop through our compatibility-checks.
 		foreach ( $this->get_compatibility_checks() as $compatibility_check ) {
@@ -93,9 +110,12 @@ class Compatibilities {
 				continue;
 			}
 
-			// run the check.
-			$obj->check();
+			// add to the list.
+			$list[] = $obj;
 		}
+
+		// return the resulting list.
+		return $list;
 	}
 
 	/**
