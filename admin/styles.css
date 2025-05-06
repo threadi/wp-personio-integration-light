@@ -212,7 +212,7 @@ body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text:last-o
 	margin-right: 8px;
 }
 
-#menu-posts-personioposition a[href*='personioApplication'], #menu-posts-personioposition a[href*='personioApplication']:hover, #menu-posts-personioposition a[href='#']:visited, #menu-posts-personioposition a[href='#']:active, #menu-posts-personioposition a[href*='personioApplication']:focus {
+body:not(.personio-integration-sort) #menu-posts-personioposition a[href*='personioApplication'], body:not(.personio-integration-sort) #menu-posts-personioposition a[href*='personioApplication']:hover, body:not(.personio-integration-sort) #menu-posts-personioposition a[href='#']:visited, body:not(.personio-integration-sort) #menu-posts-personioposition a[href='#']:active, body:not(.personio-integration-sort) #menu-posts-personioposition a[href*='personioApplication']:focus {
 	color: var(--personio-pro-hint-bg);
 }
 
