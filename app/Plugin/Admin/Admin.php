@@ -638,7 +638,7 @@ class Admin {
 				__( 'Applications', 'personio-integration-light' ),
 				'manage_' . PersonioPosition::get_instance()->get_name(),
 				'personioApplication',
-				'__return_true',
+				array( $this, 'show_application_hint' ),
 				2
 			);
 		}
@@ -876,5 +876,23 @@ class Admin {
 		// redirect user.
 		wp_safe_redirect( wp_get_referer() );
 		exit;
+	}
+
+	/**
+	 * Show hint for applications on application page which are usable with Pro-plugin.
+	 *
+	 * @return void
+	 */
+	public function show_application_hint(): void {
+	// output.
+	?>
+	<div class="wrap">
+		<h1 class="wp-heading-inline"><?php echo esc_html__( 'Applications for your positions', 'personio-integration-light' ); ?></h1>
+		<?php
+			/* translators: %1$s will be replaced with the plugin pro-name */
+			$this->show_pro_hint( __( 'Collect and manage applications for your positions at this point with %1$s', 'personio-integration-light' ) );
+		?>
+	</div>
+	<?php
 	}
 }

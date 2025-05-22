@@ -5,6 +5,7 @@
 ### Added
 
 - Plugin structure revised with modern security mechanisms and design
+- Added backend page for list of applications as hint for using the Pro
 
 ### Changed
 
