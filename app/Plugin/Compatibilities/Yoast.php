@@ -27,6 +27,24 @@ class Yoast extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_yoast';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Yoast
+	 */
+	private static ?Yoast $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Yoast {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

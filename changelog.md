@@ -8,6 +8,7 @@
 
 ### Changed
 
+- Get actual language via get_locale()
 - Changed application hint in menu to be more stabil
 - Extensions for positions replaced with less complex way
 - More code optimizations with PHPStan

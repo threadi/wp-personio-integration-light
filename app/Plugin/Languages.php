@@ -231,7 +231,7 @@ class Languages {
 	 * @return string
 	 */
 	public function get_current_lang(): string {
-		$wp_language = substr( get_bloginfo( 'language' ), 0, 2 );
+		$wp_language = substr( get_locale(), 0, 2 );
 
 		// if language is not known, use fallback language.
 		if ( ! $this->is_language_supported( $wp_language ) ) {

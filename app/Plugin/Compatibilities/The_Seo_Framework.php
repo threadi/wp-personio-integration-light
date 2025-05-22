@@ -27,6 +27,24 @@ class The_Seo_Framework extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_the_seo_framework';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?The_Seo_Framework
+	 */
+	private static ?The_Seo_Framework $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): The_Seo_Framework {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

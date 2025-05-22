@@ -27,6 +27,24 @@ class Nimble_Builder extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_bold_page_builder';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Nimble_Builder
+	 */
+	private static ?Nimble_Builder $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Nimble_Builder {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

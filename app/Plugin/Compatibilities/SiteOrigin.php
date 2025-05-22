@@ -27,6 +27,24 @@ class SiteOrigin extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_siteorigin';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?SiteOrigin
+	 */
+	private static ?SiteOrigin $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): SiteOrigin {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

@@ -27,6 +27,24 @@ class Visual_Composer extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_bold_page_builder';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Visual_Composer
+	 */
+	private static ?Visual_Composer $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Visual_Composer {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

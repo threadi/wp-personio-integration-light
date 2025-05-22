@@ -25,6 +25,24 @@ class WpPageBuilder extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_wp_page_builder';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?WpPageBuilder
+	 */
+	private static ?WpPageBuilder $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): WpPageBuilder {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Do nothing on check as we can not support this builder with functions.
 	 *
 	 * @return void

@@ -38,8 +38,7 @@ class Compatibilities_Base {
 	/**
 	 * Constructor for Init-Handler.
 	 */
-	private function __construct() {
-	}
+	protected function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.

@@ -33,6 +33,24 @@ class Loco extends Compatibilities_Base {
 	protected string $plugin_url = 'https://wordpress.org/plugins/loco-translate/';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Loco
+	 */
+	private static ?Loco $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Loco {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Check if Avada and its necessary plugins are active.
 	 *
 	 * @return bool
