@@ -10,7 +10,7 @@
 
 ### Changed
 
-- Get actual language via get_locale()
+- Get actual language via get_locale() and reduce usage of unnecessary additional hooks for multilingual plugins
 - Changed application hint in menu to be more stabil
 - Extensions for positions replaced with less complex way
 - More code optimizations with PHPStan

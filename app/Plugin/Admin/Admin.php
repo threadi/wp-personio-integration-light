@@ -282,10 +282,19 @@ class Admin {
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function import_positions(): void {
-		check_ajax_referer( 'personio-integration-import', 'nonce' );
+		check_admin_referer( 'personio-integration-import', 'nonce' );
+
+		// get the import object.
+		$imports_obj = Imports::get_instance()->get_import_extension();
+
+		// bail if no import is enabled.
+		if ( ! $imports_obj ) {
+			// redirect user.
+			wp_safe_redirect( wp_get_referer() );
+			exit;
+		}
 
 		// run import.
-		$imports_obj = Imports::get_instance();
 		$imports_obj->run();
 
 		// add hint.
@@ -321,8 +330,17 @@ class Admin {
 		// delete positions.
 		PersonioPosition::get_instance()->delete_positions();
 
-		// run import.
-		$imports_obj = Imports::get_instance();
+		// get the import object.
+		$imports_obj = Imports::get_instance()->get_import_extension();
+
+		// bail if no import is enabled.
+		if ( ! $imports_obj ) {
+			// redirect user.
+			wp_safe_redirect( wp_get_referer() );
+			exit;
+		}
+
+		// run the import.
 		$imports_obj->run();
 
 		// redirect user.
@@ -884,8 +902,8 @@ class Admin {
 	 * @return void
 	 */
 	public function show_application_hint(): void {
-	// output.
-	?>
+		// output.
+		?>
 	<div class="wrap">
 		<h1 class="wp-heading-inline"><?php echo esc_html__( 'Applications for your positions', 'personio-integration-light' ); ?></h1>
 		<?php
@@ -893,6 +911,6 @@ class Admin {
 			$this->show_pro_hint( __( 'Collect and manage applications for your positions at this point with %1$s', 'personio-integration-light' ) );
 		?>
 	</div>
-	<?php
+		<?php
 	}
 }

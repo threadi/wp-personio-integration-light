@@ -103,7 +103,7 @@ class Availability extends Extensions_Base {
 	 * @return array<string,mixed>
 	 */
 	public function add_settings( array $settings ): array {
-		if ( empty( $settings['settings_section_import']['fields'] ) ) {
+		if ( ! isset( $settings['settings_section_import_other']['fields'] ) ) {
 			return $settings;
 		}
 		$settings['settings_section_import_other']['fields']['personioIntegrationEnableAvailabilityCheck'] = array(

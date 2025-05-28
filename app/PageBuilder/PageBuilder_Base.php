@@ -146,13 +146,4 @@ class PageBuilder_Base extends Extensions_Base {
 		// set steps to max steps to end the process.
 		update_option( 'esfw_steps', $setup_obj->get_max_step() );
 	}
-
-	/**
-	 * Return whether this page builder is active.
-	 *
-	 * @return bool
-	 */
-	public function is_active(): bool {
-		return false;
-	}
 }

@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
-use PersonioIntegrationLight\PersonioIntegration\Imports;
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -117,7 +117,7 @@ class Uninstaller {
 			Extensions::get_instance()->init();
 
 			// reset Personio- and language-specific settings.
-			Imports::get_instance()->reset_personio_settings();
+			Personio_Accounts::get_instance()->reset_personio_settings();
 
 			// delete taxonomies.
 			Taxonomies::get_instance()->delete_all();

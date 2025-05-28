@@ -12,14 +12,14 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
-use PersonioIntegrationLight\PersonioIntegration\Import;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
-use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Themes;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
@@ -1836,7 +1836,7 @@ class PersonioPosition extends Post_Type {
 		$position_count = count( $positions );
 
 		// get Personio URLs and languages.
-		$personio_urls = Imports::get_instance()->get_personio_urls();
+		$personio_urls = Personio_Accounts::get_instance()->get_personio_urls();
 		$languages     = Languages::get_instance()->get_languages();
 
 		// set max count.
@@ -1973,12 +1973,20 @@ class PersonioPosition extends Post_Type {
 		// check nonce.
 		check_ajax_referer( 'personio-run-import', 'nonce' );
 
+		// get the import object.
+		$imports_obj = Imports::get_instance()->get_import_extension();
+
+		// bail if no extension is enabled.
+		if ( ! $imports_obj ) {
+			// return error message.
+			wp_send_json_error();
+		}
+
 		// run import.
-		$imports_obj = Imports::get_instance();
 		$imports_obj->run();
 
-		// return nothing.
-		wp_die();
+		// return success message.
+		wp_send_json_success();
 	}
 
 	/**

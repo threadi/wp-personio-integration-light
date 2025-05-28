@@ -284,7 +284,9 @@ class Extensions_Base {
 	}
 
 	/**
-	 * Return whether this is a pro-extension.
+	 * Return whether this is a extension of the Pro-plugin.
+	 *
+	 * TODO remove and use the plugin-marker.
 	 *
 	 * @return bool
 	 */
@@ -294,6 +296,8 @@ class Extensions_Base {
 
 	/**
 	 * Mark this extension as pro-extension.
+	 *
+	 * TODO remove.
 	 *
 	 * @param bool $pro True to mark as pro.
 	 *

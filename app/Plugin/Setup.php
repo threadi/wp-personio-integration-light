@@ -12,6 +12,8 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
+use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 
@@ -390,7 +392,7 @@ class Setup {
 		}
 
 		// update the max steps for this process.
-		$this->update_max_step( Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Imports::get_instance()->get_personio_urls() ) );
+		$this->update_max_step( Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Personio_Accounts::get_instance()->get_personio_urls() ) );
 
 		// step 1: Run import of taxonomies.
 		$this->set_process_label( __( 'Import of Personio labels running.', 'personio-integration-light' ) );
@@ -398,8 +400,12 @@ class Setup {
 
 		// step 2: Run import of positions.
 		$this->set_process_label( __( 'Import of your Personio positions running.', 'personio-integration-light' ) );
-		$imports_obj = Imports::get_instance();
-		$imports_obj->run();
+
+		// get the import extension.
+		$imports_obj = Imports::get_instance()->get_import_extension();
+		if ( $imports_obj instanceof Imports_Base ) {
+			$imports_obj->run();
+		}
 	}
 
 	/**

@@ -10,7 +10,7 @@ namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\PersonioIntegration\Imports;
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 
 /**
@@ -38,7 +38,7 @@ class Languages {
 		}
 		if ( $values !== $actual_languages ) {
 			// reset Personio- and language-specific settings.
-			Imports::get_instance()->reset_personio_settings();
+			Personio_Accounts::get_instance()->reset_personio_settings();
 
 			// then set the activated languages.
 			foreach ( $values as $language_name => $active ) {
