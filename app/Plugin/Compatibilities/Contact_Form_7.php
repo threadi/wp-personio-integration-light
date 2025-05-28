@@ -27,6 +27,24 @@ class Contact_Form_7 extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_cf7';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Contact_Form_7
+	 */
+	private static ?Contact_Form_7 $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Contact_Form_7 {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

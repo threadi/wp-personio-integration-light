@@ -27,6 +27,24 @@ class Avada extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_avada';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Avada
+	 */
+	private static ?Avada $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Avada {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

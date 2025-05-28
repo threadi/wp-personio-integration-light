@@ -27,6 +27,24 @@ class RankMath extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_rankmath';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?RankMath
+	 */
+	private static ?RankMath $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): RankMath {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

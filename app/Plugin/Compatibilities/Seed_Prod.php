@@ -27,6 +27,24 @@ class Seed_Prod extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_bold_page_builder';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Seed_Prod
+	 */
+	private static ?Seed_Prod $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Seed_Prod {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

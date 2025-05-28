@@ -27,6 +27,24 @@ class Wpml extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_wpml';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Wpml
+	 */
+	private static ?Wpml $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Wpml {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

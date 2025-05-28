@@ -27,6 +27,24 @@ class Elementor extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_elementor';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Elementor
+	 */
+	private static ?Elementor $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Elementor {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

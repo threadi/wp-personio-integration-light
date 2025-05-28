@@ -5,21 +5,25 @@
  * @package personio-integration-light
  */
 
-namespace PersonioIntegrationLight\PersonioIntegration;
+namespace PersonioIntegrationLight\PersonioIntegration\Imports\Xml;
 
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use Exception;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
-use Exception;
+use PersonioIntegrationLight\PersonioIntegration\Imports\Xml;
+use PersonioIntegrationLight\PersonioIntegration\Personio;
+use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Languages;
 use SimpleXMLElement;
 
 /**
- * Import-handling for positions from Personio.
+ * Import-handling for positions from single Personio URL in given language.
  */
-class Import {
+class Import_Single_Personio_Url {
 
 	/**
 	 * Debug-marker.
@@ -71,11 +75,11 @@ class Import {
 	private SimpleXMLElement $xml_positions;
 
 	/**
-	 * The Imports object.
+	 * The XML-Imports object.
 	 *
-	 * @var ?Imports
+	 * @var ?Xml
 	 */
-	private ?Imports $imports_obj = null;
+	private ?Xml $imports_obj = null;
 
 	/**
 	 * Constructor which runs the import of position for single Personio-account.
@@ -145,7 +149,7 @@ class Import {
 	public function run(): void {
 		// get imports-object to update stats during import.
 		$imports_obj = $this->get_imports_object();
-		if ( ! $imports_obj instanceof Imports ) {
+		if ( ! $imports_obj instanceof Xml ) {
 			// log this event (should never happen).
 			$this->log->add_log( __( 'Object for imports could not be loaded.', 'personio-integration-light' ), 'error', 'import' );
 			exit;
@@ -159,7 +163,7 @@ class Import {
 		libxml_use_internal_errors( true );
 
 		// get language name (e.g. "en").
-		$language_name  = $this->get_language();
+		$language_name = $this->get_language();
 
 		// get the language title for log entries.
 		$language_title = Languages::get_instance()->get_language_title( $language_name );
@@ -175,7 +179,7 @@ class Import {
 		 * Run action on start of import of single URL.
 		 *
 		 * @since 3.0.5 Available since 3.0.5
-		 * @param Import $instance The import-object.
+		 * @param Import_Single_Personio_Url $instance The import-object.
 		 */
 		do_action( 'personio_integration_import_of_url_starting', $instance );
 
@@ -247,7 +251,7 @@ class Import {
 				 *
 				 * @since 3.0.4 Available since 3.0.4.
 				 *
-				 * @param Import $instance The import-object.
+				 * @param Import_Single_Personio_Url $instance The import-object.
 				 * @param int $last_modified_timestamp The timestamp.
 				 */
 				do_action( 'personio_integration_import_timestamp_no_changed', $instance, $last_modified_timestamp );
@@ -284,7 +288,7 @@ class Import {
 					 *
 					 * @since 3.0.4 Available since 3.0.4.
 					 *
-					 * @param Import $instance The import-object.
+					 * @param Import_Single_Personio_Url $instance The import-object.
 					 * @param string $md5hash The md5-hash from body.
 					 */
 					do_action( 'personio_integration_import_content_not_changed', $instance, $md5hash );
@@ -392,7 +396,7 @@ class Import {
 		 * Run action on end of import of single URL.
 		 *
 		 * @since 3.0.5 Available since 3.0.5
-		 * @param Import $instance The import-object.
+		 * @param Import_Single_Personio_Url $instance The import-object.
 		 */
 		do_action( 'personio_integration_import_of_url_ended', $instance );
 
@@ -439,28 +443,28 @@ class Import {
 
 		// update max counter.
 		$imports_obj = $this->get_imports_object();
-		if ( $imports_obj instanceof Imports ) {
+		if ( $imports_obj instanceof Xml ) {
 			$imports_obj->set_import_max_count( $imports_obj->get_import_max_count() + count( $this->get_xml_positions() ) );
 		}
 	}
 
 	/**
-	 * Return the Imports-object for this import of positions.
+	 * Return the XML-Imports-object for this import of positions.
 	 *
-	 * @return ?Imports
+	 * @return ?Xml
 	 */
-	private function get_imports_object(): ?Imports {
+	private function get_imports_object(): ?Xml {
 		return $this->imports_obj;
 	}
 
 	/**
-	 * Set Imports-object to update counter on it.
+	 * Set Xml-Imports-object to update counter on it.
 	 *
-	 * @param Imports $imports_obj The object for the imports.
+	 * @param Xml $imports_obj The object for the imports.
 	 *
 	 * @return void
 	 */
-	public function set_imports_object( Imports $imports_obj ): void {
+	public function set_imports_object( Xml $imports_obj ): void {
 		$this->imports_obj = $imports_obj;
 	}
 }

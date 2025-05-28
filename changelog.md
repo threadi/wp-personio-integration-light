@@ -5,9 +5,13 @@
 ### Added
 
 - Plugin structure revised with modern security mechanisms and design
+- Added backend page for list of applications as hint for using the Pro
+- Added support for Say What for hint to translate taxonomy terms
 
 ### Changed
 
+- Get actual language via get_locale() and reduce usage of unnecessary additional hooks for multilingual plugins
+- Import of position is now also handled as extension
 - Changed application hint in menu to be more stabil
 - Extensions for positions replaced with less complex way
 - More code optimizations with PHPStan

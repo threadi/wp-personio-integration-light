@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
@@ -71,6 +72,9 @@ class Init {
 
 		// register our post-type and dependent taxonomies.
 		Post_Types::get_instance()->init();
+
+		// init imports.
+		Imports::get_instance()->init();
 
 		// init classic widget support.
 		Widgets::get_instance()->init();

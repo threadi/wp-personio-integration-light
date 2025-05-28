@@ -120,13 +120,6 @@ class Settings {
 				'order'         => 20,
 			),
 			array(
-				'label'         => __( 'Import', 'personio-integration-light' ),
-				'key'           => 'import',
-				'settings_page' => 'personioIntegrationPositionsImport',
-				'page'          => 'personioPositions',
-				'order'         => 30,
-			),
-			array(
 				'label'    => __( 'Applications, SEO & more', 'personio-integration-light' ),
 				'key'      => 'use_pro',
 				'only_pro' => true,
@@ -586,43 +579,6 @@ class Settings {
 						),
 					),
 				),
-			),
-			'settings_section_import'          => array(
-				'label'         => __( 'Import of positions from Personio', 'personio-integration-light' ),
-				'settings_page' => 'personioIntegrationPositionsImport',
-				'callback'      => '__return_true',
-				'fields'        => array(
-					'personioIntegrationImportNow' => array(
-						'label' => __( 'Get open positions from Personio', 'personio-integration-light' ),
-						'field' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\ImportPositions', 'get' ),
-						'class' => 'personio-integration-import-now',
-					),
-					'personioIntegrationDeleteNow' => array(
-						'label' => __( 'Delete local positions', 'personio-integration-light' ),
-						'field' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\DeletePositions', 'get' ),
-						'class' => 'personio-integration-delete-now',
-					),
-					'personioIntegrationEnablePositionSchedule' => array(
-						'label'               => __( 'Enable automatic import', 'personio-integration-light' ),
-						'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-						'readonly'            => ! Helper::is_personio_url_set(),
-						'description'         => __( 'The automatic import is run once per day. You don\'t have to worry about updating your jobs on the website yourself.', 'personio-integration-light' ),
-						/* translators: %1$s will be replaced with the Pro-plugin-URL. */
-						'pro_hint'            => __( 'Use more import options with the %1$s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' ),
-						'register_attributes' => array(
-							'type'    => 'integer',
-							'default' => 1,
-						),
-						'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Import', 'save' ),
-						'class'               => 'personio-integration-automatic-import',
-					),
-				),
-			),
-			'settings_section_import_other'    => array(
-				'label'         => __( 'Other settings', 'personio-integration-light' ),
-				'settings_page' => 'personioIntegrationPositionsImport',
-				'callback'      => '__return_true',
-				'fields'        => array(),
 			),
 			'hidden_section'                   => array(
 				'settings_page' => 'hidden_personio_page',

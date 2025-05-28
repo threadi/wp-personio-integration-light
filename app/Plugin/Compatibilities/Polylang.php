@@ -27,6 +27,24 @@ class Polylang extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_polylang';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Polylang
+	 */
+	private static ?Polylang $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Polylang {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

@@ -12,18 +12,19 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
-use PersonioIntegrationLight\PersonioIntegration\Import;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
-use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Themes;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Plugin\Compatibilities\Loco;
+use PersonioIntegrationLight\Plugin\Compatibilities\SayWhat;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
@@ -1150,7 +1151,7 @@ class PersonioPosition extends Post_Type {
 					'texts'   => array(
 						'<p><strong>' . __( 'The texts of this taxonomy could be changed.', 'personio-integration-light' ) . '</strong></p>',
 						/* translators: %1$s will be replaced by the plugin URL for Loco Translate. */
-						'<p>' . sprintf( __( 'They are in the language file of the plugin and can be changed with any plugin that supports their editing, e.g. with <a href="%1$s" target="_blank">Loco Translate (opens new window)</a>.', 'personio-integration-light' ), esc_url( Loco::get_instance()->get_plugin_url() ) ) . '</p>',
+						'<p>' . sprintf( __( 'They are in the language file of the plugin and can be changed with any plugin that supports their editing,<br>e.g. with <a href="%1$s" target="_blank">Loco Translate (opens new window)</a> or <a href="%2$s" target="_blank">Say What (opens new window)</a>.', 'personio-integration-light' ), esc_url( Loco::get_instance()->get_plugin_url() ), esc_url( SayWhat::get_instance()->get_plugin_url() ) ) . '</p>',
 					),
 					'buttons' => array(
 						array(
@@ -1835,7 +1836,7 @@ class PersonioPosition extends Post_Type {
 		$position_count = count( $positions );
 
 		// get Personio URLs and languages.
-		$personio_urls = Imports::get_instance()->get_personio_urls();
+		$personio_urls = Personio_Accounts::get_instance()->get_personio_urls();
 		$languages     = Languages::get_instance()->get_languages();
 
 		// set max count.
@@ -1972,12 +1973,20 @@ class PersonioPosition extends Post_Type {
 		// check nonce.
 		check_ajax_referer( 'personio-run-import', 'nonce' );
 
+		// get the import object.
+		$imports_obj = Imports::get_instance()->get_import_extension();
+
+		// bail if no extension is enabled.
+		if ( ! $imports_obj ) {
+			// return error message.
+			wp_send_json_error();
+		}
+
 		// run import.
-		$imports_obj = Imports::get_instance();
 		$imports_obj->run();
 
-		// return nothing.
-		wp_die();
+		// return success message.
+		wp_send_json_success();
 	}
 
 	/**

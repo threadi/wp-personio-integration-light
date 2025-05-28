@@ -81,7 +81,7 @@ body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
 	margin-left: 0.4em;
 }
 
-.post-type-personioposition .personio-pro-hint, .personioposition_page_personioPositions .personio-pro-hint {
+.post-type-personioposition .personio-pro-hint, .personioposition_page_personioPositions .personio-pro-hint, .personioposition_page_personioApplication .personio-pro-hint {
     background-color: var(--personio-pro-hint-bg);
     color: var(--personio-pro-hint-font);
 	margin-top: 12px;
@@ -103,7 +103,7 @@ body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
 	margin-top: 0;
 }
 
-.post-type-personioposition div.wrap > .personio-pro-hint {
+.post-type-personioposition:not(.personioposition_page_personioApplication) div.wrap > .personio-pro-hint {
     padding: 0 8px;
 }
 
@@ -212,7 +212,7 @@ body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text:last-o
 	margin-right: 8px;
 }
 
-body:not(.personio-integration-sort) #menu-posts-personioposition a[href*='personioApplication'], body:not(.personio-integration-sort) #menu-posts-personioposition a[href*='personioApplication']:hover, body:not(.personio-integration-sort) #menu-posts-personioposition a[href='#']:visited, body:not(.personio-integration-sort) #menu-posts-personioposition a[href='#']:active, body:not(.personio-integration-sort) #menu-posts-personioposition a[href*='personioApplication']:focus {
+body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication'], body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication']:hover, body:not(.personio-integration) #menu-posts-personioposition a[href='#']:visited, body:not(.personio-integration) #menu-posts-personioposition a[href='#']:active, body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication']:focus {
 	color: var(--personio-pro-hint-bg);
 }
 

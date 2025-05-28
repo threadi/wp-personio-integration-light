@@ -11,8 +11,8 @@ namespace PersonioIntegrationLight\Plugin\Admin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl;
 use PersonioIntegrationLight\Plugin\Schedules\Import;
 use WP_REST_Request;
@@ -81,7 +81,7 @@ class Site_Health {
 		);
 
 		// add one check for each Personio URL.
-		foreach ( Imports::get_instance()->get_personio_urls() as $personio_url ) {
+		foreach ( Personio_Accounts::get_instance()->get_personio_urls() as $personio_url ) {
 			$list[] = array(
 				'namespace' => 'personio/v1',
 				'route'     => '/url_availability_checks_' . md5( $personio_url ) . '/',
@@ -260,7 +260,7 @@ class Site_Health {
 		}
 
 		// one check for each Personio URL.
-		foreach ( Imports::get_instance()->get_personio_urls() as $personio_url ) {
+		foreach ( Personio_Accounts::get_instance()->get_personio_urls() as $personio_url ) {
 			// get the md5.
 			$md5 = md5( $personio_url );
 

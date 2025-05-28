@@ -27,6 +27,24 @@ class Wpforms extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_wpforms';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Wpforms
+	 */
+	private static ?Wpforms $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Wpforms {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

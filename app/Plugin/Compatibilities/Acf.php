@@ -27,6 +27,24 @@ class Acf extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_acf';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Acf
+	 */
+	private static ?Acf $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Acf {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

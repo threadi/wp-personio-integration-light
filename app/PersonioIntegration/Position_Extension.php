@@ -40,7 +40,7 @@ class Position_Extension extends Position {
 		$title = get_post_meta( $this->get_id(), 'pi_' . $this->get_extension_name() . '_title', true );
 
 		// bail if title could not be loaded.
-		if( ! is_string( $title ) ) {
+		if ( ! is_string( $title ) ) {
 			return '';
 		}
 
@@ -96,5 +96,4 @@ class Position_Extension extends Position {
 	public function set_extension_image_id( int $attachment_id ): void {
 		update_post_meta( $this->get_id(), 'pi_' . $this->get_extension_name() . '_image', $attachment_id );
 	}
-
 }

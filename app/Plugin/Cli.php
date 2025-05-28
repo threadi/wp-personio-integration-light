@@ -27,7 +27,15 @@ class Cli {
 	 * @noinspection PhpUnused
 	 */
 	public function import_positions(): void {
-		$imports_obj = Imports::get_instance();
+		// get the import object.
+		$imports_obj = Imports::get_instance()->get_import_extension();
+
+		// bail if no import extension is enabled.
+		if ( ! $imports_obj ) {
+			return;
+		}
+
+		// run the import.
 		$imports_obj->run();
 	}
 

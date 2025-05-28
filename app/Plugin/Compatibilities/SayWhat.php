@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the compatibility-check for WpPageBuilder.
+ * File to handle the compatibility-check for Loco Translate.
  *
  * @package personio-integration-light
  */
@@ -10,31 +10,39 @@ namespace PersonioIntegrationLight\Plugin\Compatibilities;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Compatibilities_Base;
 
 /**
  * Object for this check.
  */
-class WpPageBuilder extends Compatibilities_Base {
+class SayWhat extends Compatibilities_Base {
 
 	/**
 	 * Name of this object.
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_wp_page_builder';
+	protected string $name = 'personio_integration_compatibility_saywhat';
+
+	/**
+	 * URL of this plugin.
+	 *
+	 * @var string
+	 */
+	protected string $plugin_url = 'https://wordpress.org/plugins/say-what/';
 
 	/**
 	 * Instance of this object.
 	 *
-	 * @var ?WpPageBuilder
+	 * @var ?SayWhat
 	 */
-	private static ?WpPageBuilder $instance = null;
+	private static ?SayWhat $instance = null;
 
 	/**
 	 * Return the instance of this Singleton object.
 	 */
-	public static function get_instance(): WpPageBuilder {
+	public static function get_instance(): SayWhat {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -43,18 +51,11 @@ class WpPageBuilder extends Compatibilities_Base {
 	}
 
 	/**
-	 * Do nothing on check as we can not support this builder with functions.
-	 *
-	 * @return void
-	 */
-	public function check(): void {}
-
-	/**
-	 * Return whether this component is active (true) or not (false).
+	 * Check if Avada and its necessary plugins are active.
 	 *
 	 * @return bool
 	 */
 	public function is_active(): bool {
-		return defined( 'WPPB_VERSION' );
+		return Helper::is_plugin_active( 'say-what/say-what.php' );
 	}
 }

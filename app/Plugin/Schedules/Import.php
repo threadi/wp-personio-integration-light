@@ -79,10 +79,25 @@ class Import extends Schedules_Base {
 		if ( ! $this->is_enabled() ) {
 			$log = new Log();
 			$log->add_log( __( 'Automatic import of positions is not enabled.', 'personio-integration-light' ), 'success', 'import' );
+
+			// do nothing more.
+			return;
+		}
+
+		// get the import object.
+		$import_objects = Imports::get_instance()->get_import_extension();
+
+		// bail if no import object is enabled.
+		if ( ! $import_objects ) {
+			$log = new Log();
+			$log->add_log( __( 'No import extension enabled.', 'personio-integration-light' ), 'success', 'import' );
+
+			// do nothing more.
+			return;
 		}
 
 		// run the import.
-		Imports::get_instance()->run();
+		$import_objects->run();
 
 		// if debug mode is enabled log this event.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {

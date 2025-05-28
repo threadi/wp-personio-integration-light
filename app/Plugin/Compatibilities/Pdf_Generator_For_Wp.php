@@ -28,6 +28,24 @@ class Pdf_Generator_For_Wp extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_pdf_generator_for_wp';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Pdf_Generator_For_Wp
+	 */
+	private static ?Pdf_Generator_For_Wp $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Pdf_Generator_For_Wp {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

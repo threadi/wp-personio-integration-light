@@ -27,6 +27,24 @@ class Bold_Page_Builder extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_bold_page_builder';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Bold_Page_Builder
+	 */
+	private static ?Bold_Page_Builder $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Bold_Page_Builder {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

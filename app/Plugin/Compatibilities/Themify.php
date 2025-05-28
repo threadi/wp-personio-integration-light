@@ -27,6 +27,24 @@ class Themify extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_themify';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Themify
+	 */
+	private static ?Themify $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Themify {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void

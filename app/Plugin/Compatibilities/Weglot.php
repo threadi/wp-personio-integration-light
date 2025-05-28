@@ -27,6 +27,24 @@ class Weglot extends Compatibilities_Base {
 	protected string $name = 'personio_integration_compatibility_polylang';
 
 	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Weglot
+	 */
+	private static ?Weglot $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Weglot {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * @return void
