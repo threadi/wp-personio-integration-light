@@ -119,6 +119,14 @@ class Transient {
 	 * @return void
 	 */
 	public function set_name( string $name ): void {
+		// trigger warning if name has more than 172 chars.
+		if( strlen( $name ) > 172 ) {
+			try {
+				wp_trigger_error( 'PersonioIntegrationLight\Plugin\Transient::set_name', sprintf( __( 'The name %1$s for the transient exceeds limits by WordPress.', 'personio-integration-light' ), esc_html( $name ) ) );
+			} catch ( \WP_Exception $e ) {
+				// $e will hold the error object.
+			}
+		}
 		$this->name = $name;
 	}
 
