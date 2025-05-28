@@ -71,6 +71,9 @@ class Imports {
 			return;
 		}
 
+		// remove transient with warning.
+		Transients::get_instance()->delete_transient( Transients::get_instance()->get_transient_by_name( 'personio_import_extension_not_enabled' ) );
+
 		// add settings.
 		add_filter( 'personio_integration_settings_tabs', array( $this, 'add_tab' ) );
 		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ), 20 );
