@@ -275,6 +275,9 @@ class Position {
 
 			// convert the job description from JSON to array.
 			$job_description = json_decode( $this->data['jobdescription'], true, 512, JSON_THROW_ON_ERROR );
+			if ( is_null( $job_description ) ) {
+				$job_description = array( 'jobDescription' => array() );
+			}
 
 			// add all language-specific texts.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), $job_description );
@@ -290,10 +293,13 @@ class Position {
 				foreach ( $job_description['jobDescription'] as $index => $description_part ) {
 					update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_' . $index, $description_part );
 				}
-			}
 
-			// save the count of split texts.
-			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', count( $job_description['jobDescription'] ) );
+				// save the count of split texts.
+				update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', count( $job_description['jobDescription'] ) );
+			} else {
+				// save the count of split texts.
+				update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', 0 );
+			}
 
 			/**
 			 * Run hook for individual settings after all settings for the position have been saved.
@@ -615,6 +621,19 @@ class Position {
 			}
 		}
 		$this->data['jobdescription'] = wp_json_encode( $value );
+	}
+
+	/**
+	 * Set the content (as string from API).
+	 *
+	 * TODO must be checked.
+	 *
+	 * @param string $description The description as string.
+	 *
+	 * @return void
+	 */
+	public function set_content_as_string( string $description ): void {
+		$this->data['jobdescription'] = $description;
 	}
 
 	/**

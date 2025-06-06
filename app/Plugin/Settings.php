@@ -647,7 +647,14 @@ class Settings {
 						$field_name,
 						$args
 					);
+
+					// add sanitize for each option.
 					add_filter( 'option_' . $field_name, array( $this, 'sanitize_option' ), 10, 2 );
+
+					// add read callback, if set.
+					if ( ! empty( $field_settings['read_callback'] ) ) {
+						add_filter( 'option_' . $field_name, $field_settings['read_callback'], 15 );
+					}
 				}
 			}
 		}

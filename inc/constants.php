@@ -116,3 +116,13 @@ const WP_PERSONIO_INTEGRATION_DELETE_MAX   = 'piDeleteMax';
  * Define the Gutenberg-template-parent-ID which should reflect the plugin-directory.
  */
 const WP_PERSONIO_GUTENBERG_PARENT_ID = 'personio-integration-light/personio-integration-light';
+
+/**
+ * Hash-name for openssl (old).
+ */
+const WP_PERSONIO_INTEGRATION_HASH = 'personioIntegrationHash';
+
+/**
+ * Hash-name for sodium (old).
+ */
+const WP_PERSONIO_INTEGRATION_HASH_SODIUM = 'personioIntegrationHashSodium';

@@ -10,7 +10,6 @@ namespace PersonioIntegrationLight\PersonioIntegration\Imports;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use cli\progress\Bar;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Imports\Xml\Import_Single_Personio_Url;
@@ -21,11 +20,10 @@ use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
 use SimpleXMLElement;
-use WP_CLI\NoOp;
 use WP_Post;
 
 /**
- * Object to handle positions.
+ * Object to handle import of positions from Personio via XML.
  */
 class Xml extends Imports_Base {
 	/**
@@ -64,13 +62,6 @@ class Xml extends Imports_Base {
 	protected static ?Xml $instance = null;
 
 	/**
-	 * WP CLI object.
-	 *
-	 * @var bool|Bar|NoOp
-	 */
-	private bool|Bar|NoOp $cli_progress = false;
-
-	/**
 	 * Prevent cloning of this object.
 	 *
 	 * @return void
@@ -97,7 +88,7 @@ class Xml extends Imports_Base {
 		// if debug mode is enabled log this event.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 			$log = new Log();
-			$log->add_log( __( 'Automatic import of positions is now running.', 'personio-integration-light' ), 'success', 'import' );
+			$log->add_log( __( 'Import of positions is now running.', 'personio-integration-light' ), 'success', 'import' );
 		}
 
 		// set mark that import is running in WP.
@@ -108,19 +99,19 @@ class Xml extends Imports_Base {
 
 		// do not import if it is already running in another process.
 		if ( absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) > 0 ) {
-			$this->errors[] = __( 'Import is already running. Please wait a moment until it is finished.', 'personio-integration-light' );
+			$this->add_error( __( 'Import is already running. Please wait a moment until it is finished.', 'personio-integration-light' ) );
 		}
 
 		// get and check the Personio URLs.
 		$personio_urls = Personio_Accounts::get_instance()->get_personio_urls();
 		if ( empty( $personio_urls ) ) {
 			/* translators: %1$s will be replaced by the URL for main settings. */
-			$this->errors[] = sprintf( __( 'Personio URL not configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) );
+			$this->add_error( sprintf( __( 'Personio URL not configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
 		}
 
 		// check if PHP-extension SimpleXML exists.
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
-			$this->errors[] = __( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' );
+			$this->add_error( __( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' ) );
 		}
 
 		// get the active languages.
@@ -129,7 +120,7 @@ class Xml extends Imports_Base {
 		// check if languages are enabled.
 		if ( empty( $languages ) ) {
 			/* translators: %1$s will be replaced by the URL for main settings. */
-			$this->errors[] = sprintf( __( 'No active language configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) );
+			$this->add_error( sprintf( __( 'No active language configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
 		}
 
 		// bail if any error occurred.
@@ -153,12 +144,14 @@ class Xml extends Imports_Base {
 		// reset import counter.
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 );
 
+		$instance = $this;
 		/**
 		 * Run custom actions before import of positions is running.
 		 *
 		 * @since 3.0.0 Available since release 3.0.0.
+		 * @param Imports_Base $instance The import object.
 		 */
-		do_action( 'personio_integration_import_starting' );
+		do_action( 'personio_integration_import_starting', $instance );
 
 		// set some counter.
 		$imported_positions = 0;
@@ -177,7 +170,9 @@ class Xml extends Imports_Base {
 				$import_obj->run();
 
 				// add errors from import to global list.
-				$this->add_errors( $import_obj->get_errors() );
+				foreach ( $import_obj->get_errors() as $error ) {
+					$this->add_error( $error );
+				}
 
 				// update counter for imported positions.
 				$imported_positions += (int) count( $import_obj->get_imported_positions() );
@@ -302,171 +297,6 @@ class Xml extends Imports_Base {
 	}
 
 	/**
-	 * Handle errors during the import.
-	 *
-	 * Logs resulting errors.
-	 *
-	 * Send list of errors via email to configured admin-e-mail if debug is not enabled.
-	 *
-	 * @return void
-	 */
-	private function handle_errors(): void {
-		// bail on no errors.
-		if ( empty( $this->errors ) ) {
-			return;
-		}
-
-		// convert array to string for output.
-		$ausgabe = implode( "\n", $this->errors );
-
-		// save results in database.
-		$log = new Log();
-		$log->add_log( $ausgabe, 'error', 'import' );
-
-		// output results in WP-CLI.
-		if ( Helper::is_cli() ) {
-			\WP_CLI::error( trim( $ausgabe ) );
-		}
-
-		// set errors in list for response.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, $this->errors );
-
-		// send info to admin about the problem if debug is disabled.
-		if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
-			/* translators: %1$s will be replaced by a URL. */
-			$support_part  = '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="%1$s">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
-			$support_part .= '<br><br>' . __( 'This hint was sent to by the WordPress-plugin Personio Integration Light', 'personio-integration-light' );
-			/**
-			 * Filter the support part of the email on import error.
-			 *
-			 * @since 4.1.0 Available since 4.1.0.
-			 * @param string $support_part The text to use.
-			 */
-			$support_part = apply_filters( 'personio_integration_light_import_error_support_hint', $support_part );
-
-			// set recipient.
-			$send_to = get_bloginfo( 'admin_email' );
-
-			// set subject.
-			$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
-
-			// set email text.
-			$body  = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br><em>' . nl2br( $ausgabe ) . '</em>';
-			$body .= $support_part;
-
-			// set headers.
-			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
-
-			// send email.
-			wp_mail( $send_to, $subject, $body, $headers );
-		}
-
-		/**
-		 * Run additional tasks for processing errors during import of positions.
-		 *
-		 * @since 4.0.0 Available since 4.0.0.
-		 * @param array $errors List of errors.
-		 */
-		do_action( 'personio_integration_light_import_error', $this->errors );
-	}
-
-	/**
-	 * Return actual import count.
-	 *
-	 * @return int
-	 * @noinspection PhpUnused
-	 */
-	public function get_import_count(): int {
-		return absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT ) );
-	}
-
-	/**
-	 * Add up the import count.
-	 *
-	 * @param int $count The value to add.
-	 *
-	 * @return void
-	 */
-	public function set_import_count( int $count ): void {
-		// update for frontend.
-		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, $this->get_import_count() + $count );
-
-		// update for WP CLI.
-		$this->cli_progress ? $this->cli_progress->tick() : false;
-
-		/**
-		 * Add actual count on third party components (like Setup).
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 *
-		 * @param int $count The value to add.
-		 */
-		do_action( 'personio_integration_import_count', $count );
-	}
-
-	/**
-	 * Add collection of errors to the list.
-	 *
-	 * @param array<string> $errors List of errors.
-	 *
-	 * @return void
-	 */
-	private function add_errors( array $errors ): void {
-		$this->errors = array_merge( $this->get_errors(), $errors );
-	}
-
-	/**
-	 * Return whether errors occurred during the running import (true) or not (false).
-	 *
-	 * @return bool
-	 */
-	private function has_errors(): bool {
-		return ! empty( $this->get_errors() );
-	}
-
-	/**
-	 * Return errors that happened during imports.
-	 *
-	 * @return array<string>
-	 */
-	private function get_errors(): array {
-		return $this->errors;
-	}
-
-	/**
-	 * Return max count for the running import.
-	 *
-	 * @return int
-	 */
-	public function get_import_max_count(): int {
-		return absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) );
-	}
-
-	/**
-	 * Set max count for the running import.
-	 *
-	 * @param int $max_count New count value.
-	 *
-	 * @return void
-	 */
-	public function set_import_max_count( int $max_count ): void {
-		// set it in DB for frontend.
-		update_option( WP_PERSONIO_INTEGRATION_OPTION_MAX, $max_count );
-
-		// set it in object for WP CLI.
-		$this->cli_progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Get positions from Personio by language', $this->get_import_max_count() ) : false;
-
-		/**
-		 * Add max count on third party components (like Setup).
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 *
-		 * @param int $max_count The max count to set.
-		 */
-		do_action( 'personio_integration_import_max_count', $max_count );
-	}
-
-	/**
 	 * Import single position.
 	 *
 	 * This is the main function which defines the object during import of position data.
@@ -523,7 +353,7 @@ class Xml extends Imports_Base {
 	 * @return string
 	 */
 	public function get_label(): string {
-		return __( 'XML Import', 'personio-integration-light' );
+		return __( 'Import via XML', 'personio-integration-light' );
 	}
 
 	/**

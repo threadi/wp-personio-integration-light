@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the availability-schedule.
+ * File to handle the schedule to update the access token for the Personio API v2.
  *
  * @package personio-integration-light
  */
@@ -10,33 +10,34 @@ namespace PersonioIntegrationLight\Plugin\Schedules;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\Plugin\Schedules_Base;
 
 /**
  * Object for this schedule.
  */
-class Availability extends Schedules_Base {
+class ApiAccessToken extends Schedules_Base {
 
 	/**
 	 * Name of this event.
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_schedule_availability';
+	protected string $name = 'personio_integration_schedule_api_access_token';
 
 	/**
 	 * Name of the option used to enable this event.
 	 *
 	 * @var string
 	 */
-	protected string $option_name = 'personioIntegrationEnableAvailabilityCheck';
+	protected string $option_name = 'personioIntegrationEnableApiAccessToken';
 
 	/**
 	 * Name of the log category.
 	 *
 	 * @var string
 	 */
-	protected string $log_category = 'availability';
+	protected string $log_category = 'api';
 
 	/**
 	 * Initialize this schedule.
@@ -52,7 +53,7 @@ class Availability extends Schedules_Base {
 	 */
 	public function run(): void {
 		if ( $this->is_enabled() ) {
-			\PersonioIntegrationLight\PersonioIntegration\Availability::get_instance()->run();
+			Api::get_instance()->update_access_token();
 		}
 	}
 }

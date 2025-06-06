@@ -5,6 +5,8 @@
 ### Added
 
 - Plugin structure revised with modern security mechanisms and design
+- Prepared support for new Personio API V2, which is still in beta and not usable for productive systems
+- Added encryption for sensible data like API credentials
 - Added backend page for list of applications as hint for using the Pro
 - Added support for Say What for hint to translate taxonomy terms
 
@@ -17,6 +19,7 @@
 - More code optimizations with PHPStan
 - Optimized output of some log entries
 - Style optimization for extension table
+- Using WP_Error for any error handling
 
 ### Removed
 

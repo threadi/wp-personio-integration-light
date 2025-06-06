@@ -120,7 +120,7 @@ class Schedules_Base {
 		}
 
 		if ( ! wp_next_scheduled( $this->get_name() ) ) {
-			wp_schedule_event( time(), $this->get_interval(), $this->get_name() );
+			wp_schedule_event( time(), $this->get_interval(), $this->get_name(), $this->get_args() );
 		}
 	}
 

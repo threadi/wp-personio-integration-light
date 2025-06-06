@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Api;
 
 /**
  * Helper-function for plugin-activation and -deactivation.
@@ -91,6 +92,9 @@ class Installer {
 			$transient_obj->save();
 			return;
 		}
+
+		// initialize API.
+		Api::get_instance()->init();
 
 		// install tables.
 		Init::get_instance()->install_db_tables();

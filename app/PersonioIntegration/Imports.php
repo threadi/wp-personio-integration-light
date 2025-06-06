@@ -97,6 +97,7 @@ class Imports {
 	 */
 	private function get_import_extensions(): array {
 		$import_extensions = array(
+			'\PersonioIntegrationLight\PersonioIntegration\Imports\Api',
 			'\PersonioIntegrationLight\PersonioIntegration\Imports\Xml',
 		);
 
@@ -118,7 +119,7 @@ class Imports {
 	 */
 	public function add_category( array $categories ): array {
 		// add category for this extension type.
-		$categories['imports'] = __( 'Imports', 'wp-personio-integration' );
+		$categories['imports'] = __( 'Imports', 'personio-integration-light' );
 
 		// return resulting list.
 		return $categories;

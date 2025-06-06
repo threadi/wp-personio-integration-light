@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
@@ -66,6 +67,9 @@ class Init {
 
 		// check setup state.
 		Setup::get_instance()->init();
+
+		// initialize the API support.
+		Api::get_instance()->init();
 
 		// check intro state.
 		Intro::get_instance()->init();
