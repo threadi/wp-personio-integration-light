@@ -1189,10 +1189,9 @@ class Settings {
 				$user_name = $user->display_name;
 			}
 
-			// finally lot it.
-			$log = new Log();
+			// finally log it.
 			/* translators: %1$s will be replaced by the setting label, %2$s by the username, %3$s by the old value, %4$s by the new value. */
-			$log->add_log( sprintf( __( 'Setting for <i>%1$s</i> has been changed by %2$s.<br>Old: %3$s<br>New: %4$s', 'personio-integration-light' ), esc_html( $setting['label'] ), esc_html( $user_name ), esc_html( $old_value ), esc_html( $new_value ) ), 'success', 'settings' );
+			Log::get_instance()->add( sprintf( __( 'Setting for <i>%1$s</i> has been changed by %2$s.<br>Old: %3$s<br>New: %4$s', 'personio-integration-light' ), esc_html( $setting['label'] ), esc_html( $user_name ), esc_html( $old_value ), esc_html( $new_value ) ), 'success', 'settings' );
 		}
 	}
 

@@ -113,7 +113,7 @@ class Imports_Base extends Extensions_Base {
 		}
 
 		// get the log object.
-		$log = new Log();
+		$log = Log::get_instance();
 
 		// collect the string for the email and WP_CLI.
 		$message = '';
@@ -134,7 +134,7 @@ class Imports_Base extends Extensions_Base {
 			}
 
 			// add log entry.
-			$log->add_log( $text, 'error', 'import' );
+			$log->add( $text, 'error', 'import' );
 
 			// add text to string for email and WP_CLI.
 			$message .= "\n\n" . $text;

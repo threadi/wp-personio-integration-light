@@ -237,8 +237,7 @@ class Api_Request {
 		$log_text .= '<br><br>' . __( 'Request:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $args ) . '</code>';
 		$log_text .= '<br><br>' . __( 'HTTP-Status:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $this->get_http_status() ) . '</code>';
 		$log_text .= '<br><br>' . __( 'Response:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $this->get_response() ) . '</code>';
-		$log       = new Log();
-		$log->add_log( $log_text, 'info', 'api', $this->get_md5() );
+		Log::get_instance()->add( $log_text, 'info', 'api', $this->get_md5() );
 
 		// return true as request itself was successful.
 		return true;

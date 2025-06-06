@@ -163,9 +163,8 @@ class Sodium extends Crypt_Base {
 			return sodium_bin2base64( $nonce . ':' . sodium_crypto_aead_aes256gcm_encrypt( $plain_text, '', $nonce, $this->get_hash() ), $this->get_coding_id() );
 		} catch ( Exception $e ) {
 			// log this event.
-			$log = new Log();
 			/* translators: %1$s will nbe replaced by our support-URL. */
-			$log->add_log( sprintf( __( 'Error on encrypting with PHP-sodium. Please contact <a href="%1$s">our support</a> about this problem.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ), 'error', 'system' );
+			Log::get_instance()->add( sprintf( __( 'Error on encrypting with PHP-sodium. Please contact <a href="%1$s">our support</a> about this problem.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ), 'error', 'system' );
 
 			// return nothing.
 			return '';
@@ -197,9 +196,8 @@ class Sodium extends Crypt_Base {
 			return $decrypted;
 		} catch ( Exception $e ) {
 			// log this event.
-			$log = new Log();
 			/* translators: %1$s will nbe replaced by our support-URL. */
-			$log->add_log( sprintf( __( 'Error on decrypting with PHP-sodium. Please contact <a href="%1$s">our support</a> about this problem. Occurred error:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>', esc_url( Helper::get_plugin_support_url() ) ), 'error', 'system' );
+			Log::get_instance()->add( sprintf( __( 'Error on decrypting with PHP-sodium. Please contact <a href="%1$s">our support</a> about this problem. Occurred error:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>', esc_url( Helper::get_plugin_support_url() ) ), 'error', 'system' );
 
 			// return nothing.
 			return '';

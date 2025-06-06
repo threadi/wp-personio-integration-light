@@ -56,7 +56,6 @@ class Imports {
 		// use our own hooks.
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_import_extensions' ) );
 		add_filter( 'personio_integration_extension_categories', array( $this, 'add_category' ) );
-		add_filter( 'personio_integration_log_categories', array( $this, 'add_category' ) );
 
 		// bail of no import extension is enabled.
 		if ( ! $this->is_one_extension_enabled() ) {

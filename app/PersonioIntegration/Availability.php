@@ -396,9 +396,6 @@ class Availability extends Extensions_Base {
 	 * @return void
 	 */
 	private function run_single_check( Position $position_obj ): void {
-		// get log object.
-		$log = new Log();
-
 		// define settings for second request to get the contents.
 		$args     = array(
 			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
@@ -408,7 +405,7 @@ class Availability extends Extensions_Base {
 
 		if ( is_wp_error( $response ) ) {
 			// log possible error.
-			$log->add_log( 'Error on request to get position availability: ' . $response->get_error_message(), 'error', 'availability' );
+			Log::get_instance()->add( 'Error on request to get position availability: ' . $response->get_error_message(), 'error', 'availability' );
 		} else {
 			// get the http-status to check if call results in acceptable results.
 			$http_status = $response['http_response']->get_status();

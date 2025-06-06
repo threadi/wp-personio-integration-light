@@ -181,9 +181,8 @@ class Schedules {
 
 					// log this event if debug-mode is enabled.
 					if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-						$log = new Log();
 						/* translators: %1$s will be replaced by the event name. */
-						$log->add_log( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
+						Log::get_instance()->add( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 					}
 
 					// re-run the check for WP-cron-events.
@@ -196,9 +195,8 @@ class Schedules {
 
 					// log this event if debug-mode is enabled.
 					if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-						$log = new Log();
 						/* translators: %1$s will be replaced by the event name. */
-						$log->add_log( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
+						Log::get_instance()->add( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 					}
 
 					// re-run the check for WP-cron-events.

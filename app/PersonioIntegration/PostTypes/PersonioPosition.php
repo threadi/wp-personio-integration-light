@@ -796,8 +796,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// log the deletion.
-		$log = new Log();
-		$log->add_log( sprintf( 'Position %1$s has been deleted by %2$s.', esc_html( $position_obj->get_personio_id() ), esc_html( $username ) ), 'success', 'import' );
+		Log::get_instance()->add( sprintf( 'Position %1$s has been deleted by %2$s.', esc_html( $position_obj->get_personio_id() ), esc_html( $username ) ), 'success', 'import' );
 	}
 
 	/**
@@ -1893,8 +1892,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// log this event.
-		$logs = new Log();
-		$logs->add_log( sprintf( 'Positions has been deleted by %1$s.', esc_html( $username ) ), 'success', 'import' );
+		Log::get_instance()->add( sprintf( 'Positions has been deleted by %1$s.', esc_html( $username ) ), 'success', 'import' );
 
 		/**
 		 * Run custom actions after deletion of all positions has been done.

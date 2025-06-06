@@ -123,9 +123,8 @@ class Transient {
 	public function set_name( string $name ): void {
 		// trigger warning if name has more than 172 chars.
 		if ( strlen( $name ) > 172 ) {
-			$log = new Log();
 			/* translators: %1$s will be replaced by a transient name. */
-			$log->add_log( sprintf( __( 'The name %1$s for the transient exceeds limits by WordPress.', 'personio-integration-light' ), esc_html( $name ) ), 'error', 'system' );
+			Log::get_instance()->add( sprintf( __( 'The name %1$s for the transient exceeds limits by WordPress.', 'personio-integration-light' ), esc_html( $name ) ), 'error', 'system' );
 		}
 		$this->name = $name;
 	}

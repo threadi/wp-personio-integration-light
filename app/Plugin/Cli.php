@@ -47,8 +47,7 @@ class Cli {
 	 */
 	public function delete_all(): void {
 		// log this event.
-		$logs = new Log();
-		$logs->add_log( 'WP CLI-command delete_all has been used.', 'success', 'cli' );
+		Log::get_instance()->add( 'WP CLI-command delete_all has been used.', 'success', 'cli' );
 
 		// delete all taxonomies.
 		Taxonomies::get_instance()->delete_all();

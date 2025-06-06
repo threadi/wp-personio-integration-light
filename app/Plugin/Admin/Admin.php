@@ -378,9 +378,8 @@ class Admin {
 			}
 
 			// log this event.
-			$log = new Log();
 			/* translators: %1$s will be replaced by a username. */
-			$log->add_log( sprintf( __( 'A running import has been canceled through %1$s.', 'personio-integration-light' ), esc_html( $user->display_name ) ), 'info', 'import' );
+			Log::get_instance()->add( sprintf( __( 'A running import has been canceled through %1$s.', 'personio-integration-light' ), esc_html( $user->display_name ) ), 'info', 'import' );
 		}
 
 		// redirect user.
@@ -835,7 +834,7 @@ class Admin {
 		check_admin_referer( 'personio-integration-log-export', 'nonce' );
 
 		// get entries.
-		$log     = new Log();
+		$log     = Log::get_instance();
 		$entries = $log->get_entries();
 
 		// create filename for JSON-download-file.
