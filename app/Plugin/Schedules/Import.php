@@ -60,7 +60,7 @@ class Import extends Schedules_Base {
 	 */
 	public function __construct() {
 		// get interval from settings.
-		$this->interval = Settings::get_instance()->get_setting( $this->get_interval_option_name() );
+		$this->interval = get_option( $this->get_interval_option_name() );
 	}
 
 	/**

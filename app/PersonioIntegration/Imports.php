@@ -10,6 +10,8 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Transients;
 
@@ -74,8 +76,7 @@ class Imports {
 		Transients::get_instance()->delete_transient( Transients::get_instance()->get_transient_by_name( 'personio_import_extension_not_enabled' ) );
 
 		// add settings.
-		add_filter( 'personio_integration_settings_tabs', array( $this, 'add_tab' ) );
-		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ), 20 );
+		add_filter( 'init', array( $this, 'add_settings' ) );
 	}
 
 	/**
@@ -125,85 +126,59 @@ class Imports {
 	}
 
 	/**
-	 * Extend the list of tabs in settings-view.
-	 *
-	 * @param array<int,array<string,mixed>> $tabs List of tabs.
-	 *
-	 * @return array<int,array<string,mixed>>
-	 */
-	public function add_tab( array $tabs ): array {
-		// bail if Personio URL is not set.
-		if ( ! Helper::is_personio_url_set() ) {
-			return $tabs;
-		}
-
-		// add the permission tab in settings.
-		$tabs[] = array(
-			'label'         => __( 'Import', 'personio-integration-light' ),
-			'key'           => 'import',
-			'settings_page' => 'personioIntegrationPositionsImport',
-			'page'          => 'personioPositions',
-			'order'         => 30,
-		);
-
-		// return resulting list of tabs.
-		return $tabs;
-	}
-
-	/**
 	 * Add and change the settings for the plugin.
 	 *
-	 * @param array<string,array<string,mixed>> $settings List of settings.
-	 *
-	 * @return array<string,array<string,mixed>>
+	 * @return void
 	 */
-	public function add_settings( array $settings ): array {
-		// prevent double running.
-		if ( ! empty( $settings['settings_section_import'] ) ) {
-			return $settings;
-		}
+	public function add_settings(): void {
+		// get settings object.
+		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 
-		// add main settings.
-		$settings['settings_section_import'] = array(
-			'label'         => __( 'Import of positions from Personio', 'personio-integration-light' ),
-			'settings_page' => 'personioIntegrationPositionsImport',
-			'callback'      => '__return_true',
-			'fields'        => array(
-				'personioIntegrationImportNow' => array(
-					'label' => __( 'Get open positions from Personio', 'personio-integration-light' ),
-					'field' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\ImportPositions', 'get' ),
-					'class' => 'personio-integration-import-now',
-				),
-				'personioIntegrationDeleteNow' => array(
-					'label' => __( 'Delete local positions', 'personio-integration-light' ),
-					'field' => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\DeletePositions', 'get' ),
-					'class' => 'personio-integration-delete-now',
-				),
-				'personioIntegrationEnablePositionSchedule' => array(
-					'label'               => __( 'Enable automatic import', 'personio-integration-light' ),
-					'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-					'readonly'            => ! Helper::is_personio_url_set(),
-					'description'         => __( 'The automatic import is run once per day. You don\'t have to worry about updating your jobs on the website yourself.', 'personio-integration-light' ),
-					/* translators: %1$s will be replaced with the Pro-plugin-URL. */
-					'pro_hint'            => __( 'Use more import options with the %1$s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' ),
-					'register_attributes' => array(
-						'type'    => 'integer',
-						'default' => 1,
-					),
-					'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Import', 'save' ),
-					'class'               => 'personio-integration-automatic-import',
-				),
-			),
-		);
-		$settings['settings_section_import_other'] = array(
-			'label'         => __( 'Other settings', 'personio-integration-light' ),
-			'settings_page' => 'personioIntegrationPositionsImport',
-			'callback'      => '__return_true',
-			'fields'        => array(),
-		);
+		// add the import tab.
+		$import_tab = $settings_obj->add_tab( 'import' );
+		$import_tab->set_title( __( 'Import', 'personio-integration-light' ) );
 
-		// return resulting settings.
-		return $settings;
+		// add main section.
+		$import_section = $import_tab->add_section( 'settings_section_import' );
+		$import_section->set_title( __( 'Import of positions from Personio', 'personio-integration-light' ) );
+		$import_section->set_setting( $settings_obj );
+
+		// add other section.
+		$import_other_section = $import_tab->add_section( 'settings_section_import_other' );
+		$import_other_section->set_title( __( 'Other settings', 'personio-integration-light' ) );
+		$import_other_section->set_setting( $settings_obj );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationImportNow' );
+		$setting->set_section( $import_section );
+		$setting->set_autoload( false );
+		$setting->prevent_export( true );
+		$field = new Button();
+		$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
+		$field->set_button_title( __( 'Run import of positions now', 'personio-integration-light' ) );
+		$field->add_class( 'personio-integration-import-hint' );
+		$setting->set_field( $field );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationDeleteNow' );
+		$setting->set_section( $import_section );
+		$setting->set_autoload( false );
+		$setting->prevent_export( true );
+		$field = new Button();
+		$field->set_title( __( 'Delete local positions', 'personio-integration-light' ) );
+		$field->set_button_title( __( 'Delete all positions', 'personio-integration-light' ) );
+		$field->add_class( 'personio-integration-delete-all' );
+		$setting->set_field( $field );
+
+		// add setting.
+		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnablePositionSchedule' );
+		$automatic_import_setting->set_section( $import_section );
+		$automatic_import_setting->set_type( 'integer' );
+		$automatic_import_setting->set_default( 1 );
+		$field = new Checkbox();
+		$field->set_title( __( 'Enable automatic import', 'personio-integration-light' ) );
+		$field->set_description( __( 'The automatic import is run once per day. You don\'t have to worry about updating your jobs on the website yourself.', 'personio-integration-light' ) );
+		$automatic_import_setting->set_field( $field );
 	}
 
 	/**

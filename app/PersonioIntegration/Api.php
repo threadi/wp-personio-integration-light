@@ -12,6 +12,8 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Crypt;
 use PersonioIntegrationLight\Plugin\Schedules\ApiAccessToken;
@@ -67,63 +69,56 @@ class Api {
 		// use our own hooks.
 		add_filter( 'personio_integration_objects_with_db_tables', array( $this, 'add_table' ) );
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_category' ) );
-		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
+		add_filter( 'init', array( $this, 'add_settings' ), 20 );
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 	}
 
 	/**
 	 * Add settings for API.
 	 *
-	 * @param array<string,mixed> $settings List of settings.
-	 *
-	 * @return array<string,mixed>
+	 * @return void
 	 */
-	public function add_settings( array $settings ): array {
-		$settings['settings_section_api'] = array(
-			'label'         => __( 'Settings for API', 'personio-integration-light' ),
-			'settings_page' => 'personioIntegrationMainSettings',
-			'callback'      => array( $this, 'show_api_settings_hint' ),
-			'fields'        => array(
-				'personioIntegrationClientId'  => array(
-					'label'               => __( 'Your Client-ID', 'personio-integration-light' ),
-					'field'               => array(
-						'PersonioIntegrationLight\Plugin\Admin\SettingFields\Text',
-						'get',
-					),
-					'register_attributes' => array(
-						'type'         => 'string',
-						'default'      => '',
-						'show_in_rest' => true,
-					),
-					'callback'            => array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ),
-					'read_callback'       => array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ),
-				),
-				'personioIntegrationApiSecret' => array(
-					'label'               => __( 'Access token', 'personio-integration-light' ),
-					'field'               => array(
-						'PersonioIntegrationLight\Plugin\Admin\SettingFields\Text',
-						'get',
-					),
-					'register_attributes' => array(
-						'type'         => 'string',
-						'default'      => '',
-						'show_in_rest' => true,
-					),
-					'callback'            => array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ),
-					'read_callback'       => array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ),
-				),
-			),
-		);
+	public function add_settings(): void {
+		// get settings object.
+		$settings_obj = Settings::get_instance();
 
-		$settings['hidden_section']['fields']['personioIntegrationEnableApiAccessToken'] = array(
-			'register_attributes' => array(
-				'type'    => 'integer',
-				'default' => 0,
-			),
-		);
+		// get the general tab.
+		$general_tab = $settings_obj->get_tab( 'basic' );
 
-		// return resulting list of settings.
-		return $settings;
+		// create the section.
+		$api_section = $general_tab->add_section( 'settings_section_api' );
+		$api_section->set_title( __( 'Settings for API', 'personio-integration-light' ) );
+		$api_section->set_setting( $settings_obj );
+		$api_section->set_callback( array( $this, 'show_api_settings_hint' ) );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationClientId' );
+		$setting->set_section( $api_section );
+		$setting->set_show_in_rest( true );
+		$setting->set_type( 'string' );
+		$setting->set_default( '' );
+		$field = new Text();
+		$field->set_title( __( 'Your Client-ID', 'personio-integration-light' ) );
+		$setting->set_field( $field );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationApiSecret' );
+		$setting->set_section( $api_section );
+		$setting->set_show_in_rest( true );
+		$setting->set_type( 'string' );
+		$setting->set_default( '' );
+		$field = new Text();
+		$field->set_title( __( 'Access token', 'personio-integration-light' ) );
+		$setting->set_field( $field );
+
+		// get the hidden section.
+		$hidden = $settings_obj->get_section( 'hidden_section' );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationEnableApiAccessToken' );
+		$setting->set_section( $hidden );
+		$setting->set_type( 'integer' );
+		$setting->set_default( 0 );
 	}
 
 	/**

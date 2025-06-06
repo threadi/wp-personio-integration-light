@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -80,7 +81,7 @@ class Availability extends Extensions_Base {
 		// use our own hooks.
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'run' ) );
-		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
+		add_filter( 'init', array( $this, 'add_settings' ), 20 );
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 
 		// extend the position table.
@@ -98,27 +99,29 @@ class Availability extends Extensions_Base {
 	/**
 	 * Add settings for this extension.
 	 *
-	 * @param array<string,mixed> $settings List of settings.
-	 *
-	 * @return array<string,mixed>
+	 * @return void
 	 */
-	public function add_settings( array $settings ): array {
-		if ( ! isset( $settings['settings_section_import_other']['fields'] ) ) {
-			return $settings;
-		}
-		$settings['settings_section_import_other']['fields']['personioIntegrationEnableAvailabilityCheck'] = array(
-			'label'               => __( 'Enable availability checks', 'personio-integration-light' ),
-			'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-			'description'         => __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ),
-			'register_attributes' => array(
-				'type'    => 'integer',
-				'default' => 1,
-			),
-			'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ),
-		);
+	public function add_settings(): void {
+		// get settings object.
+		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 
-		// return resulting list of settings.
-		return $settings;
+		// get the section.
+		$import_other_section = $settings_obj->get_section( 'settings_section_import_other' );
+
+		// bail if tab does not exist.
+		if( ! $import_other_section ) {
+			return;
+		}
+
+		// add setting.
+		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnableAvailabilityCheck' );
+		$automatic_import_setting->set_section( $import_other_section );
+		$automatic_import_setting->set_type( 'integer' );
+		$automatic_import_setting->set_default( 1 );
+		$field = new Checkbox();
+		$field->set_title( __( 'Enable availability checks', 'personio-integration-light' ) );
+		$field->set_description( __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ) );
+		$automatic_import_setting->set_field( $field );
 	}
 
 	/**
@@ -128,7 +131,7 @@ class Availability extends Extensions_Base {
 	 */
 	public function run(): void {
 		// bail if settings is not enabled.
-		if ( 1 !== absint( Settings::get_instance()->get_setting( 'personioIntegrationEnableAvailabilityCheck' ) ) ) {
+		if ( 1 !== absint( get_option( 'personioIntegrationEnableAvailabilityCheck' ) ) ) {
 			return;
 		}
 
@@ -283,7 +286,7 @@ class Availability extends Extensions_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		return 1 === absint( Settings::get_instance()->get_setting( $this->get_settings_field_name() ) );
+		return 1 === absint( get_option( $this->get_settings_field_name() ) );
 	}
 
 	/**

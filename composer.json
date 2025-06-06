@@ -1,6 +1,6 @@
 {
     "name": "threadi/personio-integration-light",
-    "version": "4.2.8",
+    "version": "5.0.0",
     "description": "This plugin supports the embedding of Personio in WordPress.",
     "authors": [
         {
@@ -13,11 +13,26 @@
     "minimum-stability": "stable",
     "scripts": {
         "post-install-cmd": [
-            "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra,vendor/sirbrillig/phpcs-variable-analysis,vendor/automattic/vipwpcs"
+            "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra,vendor/sirbrillig/phpcs-variable-analysis,vendor/automattic/vipwpcs",
+            "\"vendor/bin/mozart\" compose",
+            "composer dump-autoload"
         ],
         "post-update-cmd": [
-            "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra,vendor/sirbrillig/phpcs-variable-analysis,vendor/automattic/vipwpcs"
+            "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra,vendor/sirbrillig/phpcs-variable-analysis,vendor/automattic/vipwpcs",
+            "\"vendor/bin/mozart\" compose",
+            "composer dump-autoload"
         ]
+    },
+    "extra": {
+        "mozart": {
+            "dep_namespace": "PersonioIntegrationLight\\Dependencies\\",
+            "dep_directory": "/app/Dependencies/",
+            "classmap_directory": "/libs/classes/dependencies/",
+            "classmap_prefix": "PersonioIntegrationLight",
+            "packages": [
+                "threadi/easy-settings-for-wordpress"
+            ]
+        }
     },
     "config": {
         "allow-plugins": {
@@ -39,6 +54,7 @@
         "php": "^8.0",
         "threadi/easy-dialog-for-wordpress": "^1.0.1",
         "threadi/easy-setup-for-wordpress": "^1.1.1",
+        "threadi/easy-settings-for-wordpress": "^1.2.2",
         "ext-simplexml": "*",
         "ext-libxml": "*"
     },
@@ -50,6 +66,7 @@
         "phpstan/phpstan": "^2.1",
         "szepeviktor/phpstan-wordpress": "^2.0",
         "phpstan/extension-installer": "^1.4",
-        "php-stubs/wp-cli-stubs": "^2.11"
+        "php-stubs/wp-cli-stubs": "^2.11",
+        "coenjacobs/mozart": "^0.7.1"
     }
 }

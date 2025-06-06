@@ -457,7 +457,7 @@ class Api extends Imports_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		return 1 === absint( Settings::get_instance()->get_setting( $this->get_settings_field_name() ) );
+		return 1 === absint( get_option( $this->get_settings_field_name() ) );
 	}
 
 	/**
