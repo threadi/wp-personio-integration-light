@@ -97,6 +97,7 @@ class Api {
 		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
+		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
 		$field = new Text();
 		$field->set_title( __( 'Your Client-ID', 'personio-integration-light' ) );
 		$setting->set_field( $field );
@@ -107,6 +108,7 @@ class Api {
 		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
+		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
 		$field = new Text();
 		$field->set_title( __( 'Access token', 'personio-integration-light' ) );
 		$setting->set_field( $field );

@@ -24,7 +24,7 @@ class Languages {
 	 *
 	 * @return array<string,string>
 	 */
-	public static function validate( array|null $values ): array {
+	public static function validate( mixed $values ): array {
 		// if empty set fallback language.
 		if ( empty( $values ) ) {
 			add_settings_error( 'personioIntegrationLanguages', 'personioIntegrationLanguages', __( 'You must enable one language. English will be set.', 'personio-integration-light' ) );

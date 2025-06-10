@@ -36,7 +36,7 @@ body.post-type-personioposition {
     display: block;
 }
 
-.personio-field-width { width: 280px }
+.personio_integration_light-field-width { width: 100% }
 
 .personio-integration-transient {
     position: relative;

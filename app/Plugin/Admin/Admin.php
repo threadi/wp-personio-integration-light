@@ -76,7 +76,7 @@ class Admin {
 		Help_System::get_instance()->init();
 
 		// show hint for Pro-version.
-		add_action( 'personio_integration_admin_show_pro_hint', array( $this, 'show_pro_hint' ) );
+		add_filter( 'personio_integration_admin_show_pro_hint', array( $this, 'get_pro_hint' ), 10, 2 );
 		add_filter( 'admin_body_class', array( $this, 'add_body_classes' ) );
 
 		// add our own checks in wp-admin.
@@ -236,9 +236,11 @@ class Admin {
 	 * Every $hint should use %1$s where the link to the Pro-info-page is set.
 	 *
 	 * @param string $hint The individual hint to show before pro-hint.
-	 * @return void
+	 * @param bool   $do_not_use_ending_p Marker to do not use the ending p-element.
+	 *
+	 * @return string
 	 */
-	public function show_pro_hint( string $hint ): void {
+	public function get_pro_hint( string $hint, bool $do_not_use_ending_p ): string {
 		$text = '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . esc_html__( 'Personio Integration Pro (opens new window)', 'personio-integration-light' ) . '</a>';
 		/**
 		 * Filter the pro hint text.
@@ -247,7 +249,7 @@ class Admin {
 		 *
 		 * @param string $text The text.
 		 */
-		echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( $hint, apply_filters( 'personio_integration_pro_hint_text', $text ) ) ) . '</p>';
+		return '<p class="personio-pro-hint">' . wp_kses_post( sprintf( $hint, apply_filters( 'personio_integration_pro_hint_text', $text ) ) ) . ( $do_not_use_ending_p ? '' : '</p>' );
 	}
 
 	/**
