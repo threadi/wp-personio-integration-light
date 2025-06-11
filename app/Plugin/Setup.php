@@ -10,6 +10,9 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Radio;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
@@ -119,7 +122,14 @@ class Setup {
 	 * @return bool
 	 */
 	public function is_completed(): bool {
-		return \easySetupForWordPress\Setup::get_instance()->is_completed( $this->get_setup_name() );
+		$completed = \easySetupForWordPress\Setup::get_instance()->is_completed( $this->get_setup_name() );
+		/**
+		 * Filter the setup complete marker.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param bool $completed True if setup has been completed.
+		 */
+		return apply_filters( 'personio_integration_light_setup_is_completed', $completed );
 	}
 
 	/**
@@ -325,31 +335,56 @@ class Setup {
 	 */
 	public function set_config(): void {
 		// get properties from settings.
-		$settings = Settings::get_instance();
-		$settings->set_settings();
+		$settings = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 
 		// get URL-settings.
-		$url_settings = $settings->get_settings_for_field( 'personioIntegrationUrl' );
+		$url_settings = $settings->get_setting( 'personioIntegrationUrl' );
+
+		// bail if URL setting could not be loaded.
+		if ( ! $url_settings instanceof Setting ) {
+			return;
+		}
+
+		// get field for URL settings.
+		$url_field = $url_settings->get_field();
+
+		// bail if field is not available.
+		if ( ! $url_field instanceof Text ) {
+			return;
+		}
 
 		// get main language setting.
-		$language_setting = $settings->get_settings_for_field( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );
+		$language_setting = $settings->get_setting( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );
+
+		// bail if language setting could not be loaded.
+		if ( ! $language_setting instanceof Setting ) {
+			return;
+		}
+
+		// get field for URL settings.
+		$language_field = $language_setting->get_field();
+
+		// bail if field is not available.
+		if ( ! $language_field instanceof Radio ) {
+			return;
+		}
 
 		// define setup.
 		$this->setup = array(
 			1 => array(
 				'personioIntegrationUrl'              => array(
 					'type'                => 'TextControl',
-					'label'               => $url_settings['label'],
-					'help'                => $url_settings['description'],
-					'placeholder'         => $url_settings['placeholder'],
+					'label'               => $url_field->get_title(),
+					'help'                => $url_field->get_description(),
+					'placeholder'         => $url_field->get_placeholder(),
 					'required'            => true,
 					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::rest_validate',
 				),
 				WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
 					'type'                => 'RadioControl',
-					'label'               => $language_setting['label'],
-					'help'                => $language_setting['description'],
-					'options'             => $this->convert_options_for_react( $language_setting['options'] ),
+					'label'               => $language_field->get_title(),
+					'help'                => $language_field->get_description(),
+					'options'             => $this->convert_options_for_react( $language_field->get_options() ),
 					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate',
 				),
 				'help'                                => array(
@@ -449,7 +484,7 @@ class Setup {
 		}
 
 		// bail if this is not a request from API.
-		if ( ! Helper::is_admin_api_request() ) {
+		if ( ! Helper::is_rest_request() ) {
 			return;
 		}
 

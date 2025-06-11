@@ -247,7 +247,7 @@ class Blocks_Basis {
 		}
 
 		// fallback: get a random position, only during AJAX-request (e.g. in Gutenberg).
-		if ( Helper::is_admin_api_request() ) {
+		if ( Helper::is_rest_request() ) {
 			$position_array = $positions->get_positions( 1 );
 			if ( ! empty( $position_array ) ) {
 				return $position_array[0];

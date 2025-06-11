@@ -30,7 +30,7 @@ class Site_Health {
 	private static ?Site_Health $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 

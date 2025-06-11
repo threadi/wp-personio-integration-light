@@ -13,7 +13,9 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Crypt;
 use PersonioIntegrationLight\Plugin\Schedules\ApiAccessToken;
@@ -69,7 +71,7 @@ class Api {
 		// use our own hooks.
 		add_filter( 'personio_integration_objects_with_db_tables', array( $this, 'add_table' ) );
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_category' ) );
-		add_filter( 'init', array( $this, 'add_settings' ), 20 );
+		add_action( 'init', array( $this, 'add_settings' ), 20 );
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 	}
 
@@ -84,6 +86,11 @@ class Api {
 
 		// get the general tab.
 		$general_tab = $settings_obj->get_tab( 'basic' );
+
+		// bail if basic tab does not exist.
+		if ( ! $general_tab instanceof Tab ) {
+			return;
+		}
 
 		// create the section.
 		$api_section = $general_tab->add_section( 'settings_section_api' );
@@ -100,6 +107,7 @@ class Api {
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
 		$field = new Text();
 		$field->set_title( __( 'Your Client-ID', 'personio-integration-light' ) );
+		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 
 		// add setting.
@@ -111,10 +119,16 @@ class Api {
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
 		$field = new Text();
 		$field->set_title( __( 'Access token', 'personio-integration-light' ) );
+		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 
 		// get the hidden section.
 		$hidden = $settings_obj->get_section( 'hidden_section' );
+
+		// bail if hidden section does not exist.
+		if ( ! $hidden instanceof Section ) {
+			return;
+		}
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationEnableApiAccessToken' );
@@ -278,9 +292,6 @@ class Api {
 	public function create_table(): void {
 		global $wpdb;
 
-		// get db-functions.
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
 		// initialize the database-tables.
 		$charset_collate = $wpdb->get_charset_collate();
 
@@ -293,6 +304,8 @@ class Api {
                 UNIQUE KEY id (id)
             ) $charset_collate;";
 
+		// get db-functions.
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 	}
 

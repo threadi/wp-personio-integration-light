@@ -31,7 +31,7 @@ class Init {
 	private static ?Init $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -68,6 +68,9 @@ class Init {
 		// check setup state.
 		Setup::get_instance()->init();
 
+		// init wp-admin-support.
+		Admin::get_instance()->init();
+
 		// initialize the API support.
 		Api::get_instance()->init();
 
@@ -77,17 +80,11 @@ class Init {
 		// register our post-type and dependent taxonomies.
 		Post_Types::get_instance()->init();
 
-		// init imports.
-		Imports::get_instance()->init();
-
 		// init classic widget support.
 		Widgets::get_instance()->init();
 
 		// init templates.
 		Templates::get_instance()->init();
-
-		// init wp-admin-support.
-		Admin::get_instance()->init();
 
 		// init roles.
 		Roles::get_instance()->init();
@@ -124,15 +121,6 @@ class Init {
 
 			// misc.
 		add_action( 'admin_init', array( $this, 'check_php' ) );
-	}
-
-	/**
-	 * Tasks to run on activation.
-	 *
-	 * @return void
-	 */
-	public function activation(): void {
-		Installer::get_instance()->activation();
 	}
 
 	/**
@@ -321,16 +309,36 @@ class Init {
 	}
 
 	/**
-	 * Install db-table of registered objects.
+	 * Install db-tables of registered objects.
+	 *
+	 * Hint: the objects must just have a function "create_table".
 	 *
 	 * @return void
 	 */
 	public function install_db_tables(): void {
-		foreach ( apply_filters( 'personio_integration_objects_with_db_tables', array( 'PersonioIntegrationLight\Log' ) ) as $obj_name ) {
-			$obj = new $obj_name();
-			if ( method_exists( $obj, 'create_table' ) ) {
-				$obj->create_table();
+		$objects = array( '\PersonioIntegrationLight\Log' );
+		/**
+		 * Add additional objects for this plugin which use custom tables.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 * @param array<int,string> $objects List of objects.
+		 */
+		foreach ( apply_filters( 'personio_integration_objects_with_db_tables', $objects ) as $obj_name ) {
+			// bail if class does not exist.
+			if ( ! class_exists( $obj_name ) ) {
+				continue;
 			}
+
+			// get the object.
+			$obj = new $obj_name();
+
+			// bail if object does not have a function "create_table".
+			if ( ! method_exists( $obj, 'create_table' ) ) {
+				continue;
+			}
+
+			// call the function to create its table(s).
+			$obj->create_table();
 		}
 	}
 
@@ -340,12 +348,12 @@ class Init {
 	 * @return void
 	 */
 	public function delete_db_tables(): void {
-		$objects = array( 'PersonioIntegrationLight\Log' );
+		$objects = array( '\PersonioIntegrationLight\Log' );
 		/**
 		 * Add additional objects for this plugin which use custom tables.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array $objects List of objects.
+		 * @param array<int,string> $objects List of objects.
 		 */
 		foreach ( apply_filters( 'personio_integration_objects_with_db_tables', $objects ) as $obj_name ) {
 			if ( str_contains( $obj_name, 'PersonioIntegrationLight\\' ) ) {

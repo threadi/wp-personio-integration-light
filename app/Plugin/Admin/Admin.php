@@ -34,7 +34,7 @@ class Admin {
 	private static ?Admin $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -240,7 +240,7 @@ class Admin {
 	 *
 	 * @return string
 	 */
-	public function get_pro_hint( string $hint, bool $do_not_use_ending_p ): string {
+	public function get_pro_hint( string $hint, bool $do_not_use_ending_p = false ): string {
 		$text = '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . esc_html__( 'Personio Integration Pro (opens new window)', 'personio-integration-light' ) . '</a>';
 		/**
 		 * Filter the pro hint text.
@@ -909,7 +909,7 @@ class Admin {
 		<h1 class="wp-heading-inline"><?php echo esc_html__( 'Applications for your positions', 'personio-integration-light' ); ?></h1>
 		<?php
 			/* translators: %1$s will be replaced with the plugin pro-name */
-			$this->show_pro_hint( __( 'Collect and manage applications for your positions at this point with %1$s', 'personio-integration-light' ) );
+			echo wp_kses_post( $this->get_pro_hint( __( 'Collect and manage applications for your positions at this point with %1$s', 'personio-integration-light' ) ) );
 		?>
 	</div>
 		<?php

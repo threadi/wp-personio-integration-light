@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 
 /**
@@ -100,7 +101,7 @@ class Extensions_Base {
 	 */
 	public function __construct() {
 		// add global settings for each extension.
-		add_filter( 'init', array( $this, 'add_global_settings' ), 20 );
+		add_action( 'init', array( $this, 'add_global_settings' ), 20 );
 	}
 
 	/**
@@ -127,6 +128,13 @@ class Extensions_Base {
 	 * @return void
 	 */
 	public function init(): void {}
+
+	/**
+	 * Tasks to run during plugin activation for this extension.
+	 *
+	 * @return void
+	 */
+	public function activation(): void {}
 
 	/**
 	 * Return internal name of this extension.
@@ -371,6 +379,11 @@ class Extensions_Base {
 		// get hidden section.
 		$hidden = $settings_obj->get_section( 'hidden_section' );
 
+		// bail if hidden section does not exist.
+		if ( ! $hidden instanceof Section ) {
+			return;
+		}
+
 		// add setting.
 		$setting = $settings_obj->add_setting( $this->get_settings_field_name() );
 		$setting->set_section( $hidden );
@@ -378,6 +391,13 @@ class Extensions_Base {
 		$setting->set_type( 'integer' );
 		$setting->set_default( $this->is_default_enabled() ? 1 : 0 );
 	}
+
+	/**
+	 * Add settings for this extension.
+	 *
+	 * @return void
+	 */
+	public function add_settings(): void {}
 
 	/**
 	 * Whether this extension is enabled by default (true) or not (false).

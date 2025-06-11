@@ -32,7 +32,7 @@ class Taxonomies {
 	private static ?Taxonomies $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 

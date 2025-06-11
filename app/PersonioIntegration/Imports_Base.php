@@ -9,6 +9,9 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
 use cli\progress\Bar;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use WP_CLI\NoOp;
@@ -50,6 +53,90 @@ class Imports_Base extends Extensions_Base {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Tasks to run during plugin activation for this extension.
+	 *
+	 * @return void
+	 */
+	public function activation(): void {
+		$this->add_settings();
+	}
+
+	/**
+	 * Initialize this object.
+	 *
+	 * @return void
+	 */
+	public function init(): void {
+		add_action( 'init', array( $this, 'add_settings' ), 20 );
+	}
+
+	/**
+	 * Tasks to run during plugin activation for this extension.
+	 *
+	 * @return void
+	 */
+	public function add_settings(): void {
+		// get settings object.
+		$settings_obj = Settings::get_instance();
+
+		// bail if import tab is already set.
+		if ( $settings_obj->get_tab( 'import' ) ) {
+			return;
+		}
+
+		// add the import tab.
+		$import_tab = $settings_obj->add_tab( 'import' );
+		$import_tab->set_title( __( 'Import', 'personio-integration-light' ) );
+		$import_tab->set_position( 1 );
+
+		// add main section.
+		$import_section = $import_tab->add_section( 'settings_section_import' );
+		$import_section->set_title( __( 'Import of positions from Personio', 'personio-integration-light' ) );
+		$import_section->set_setting( $settings_obj );
+
+		// add other section.
+		$import_other_section = $import_tab->add_section( 'settings_section_import_other' );
+		$import_other_section->set_title( __( 'Other settings', 'personio-integration-light' ) );
+		$import_other_section->set_setting( $settings_obj );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationImportNow' );
+		$setting->set_section( $import_section );
+		$setting->set_autoload( false );
+		$setting->prevent_export( true );
+		$field = new Button();
+		$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
+		$field->set_button_title( __( 'Run import of positions now', 'personio-integration-light' ) );
+		$field->add_class( 'personio-integration-import-hint' );
+		$setting->set_field( $field );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationDeleteNow' );
+		$setting->set_section( $import_section );
+		$setting->set_autoload( false );
+		$setting->prevent_export( true );
+		$field = new Button();
+		$field->set_title( __( 'Delete local positions', 'personio-integration-light' ) );
+		$field->set_button_title( __( 'Delete all positions', 'personio-integration-light' ) );
+		$field->add_class( 'personio-integration-delete-all' );
+		$setting->set_field( $field );
+
+		// add setting.
+		/* translators: %1$s will be replaced by a link to the Pro plugin page. */
+		$pro_hint                 = __( 'Use more import options with the %1$s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' );
+		$true                     = true;
+		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnablePositionSchedule' );
+		$automatic_import_setting->set_section( $import_section );
+		$automatic_import_setting->set_type( 'integer' );
+		$automatic_import_setting->set_default( 1 );
+		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Import', 'save' ) );
+		$field = new Checkbox();
+		$field->set_title( __( 'Enable automatic import', 'personio-integration-light' ) );
+		$field->set_description( __( 'The automatic import is run once per day. You don\'t have to worry about updating your jobs on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
+		$automatic_import_setting->set_field( $field );
 	}
 
 	/**

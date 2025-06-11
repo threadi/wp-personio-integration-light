@@ -12,7 +12,8 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
-use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Transients;
 
 /**
@@ -61,22 +62,12 @@ class Imports {
 
 		// bail of no import extension is enabled.
 		if ( ! $this->is_one_extension_enabled() ) {
-			// show warning about missing enabled import extension.
-			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_name( 'personio_import_extension_not_enabled' );
-			$transient_obj->set_dismissible_days( 30 );
-			$transient_obj->set_type( 'error' );
-			/* translators: %1$s will be replaced by a URL. */
-			$transient_obj->set_message( sprintf( __( 'There is no import extension for Personio positions enabled. Please <a href="%1$s">go to the list of import extensions</a> and enable one to import and update your positions in your website.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link( 'imports' ) ) ) );
-			$transient_obj->save();
+			add_action( 'init', array( $this, 'trigger_no_extension_hint' ) );
 			return;
 		}
 
 		// remove transient with warning.
 		Transients::get_instance()->delete_transient( Transients::get_instance()->get_transient_by_name( 'personio_import_extension_not_enabled' ) );
-
-		// add settings.
-		add_filter( 'init', array( $this, 'add_settings' ) );
 	}
 
 	/**
@@ -87,7 +78,7 @@ class Imports {
 	 * @return array<string>
 	 */
 	public function add_import_extensions( array $extensions ): array {
-		return array_merge( $extensions, $this->get_import_extensions() );
+		return array_merge( $this->get_import_extensions(), $extensions );
 	}
 
 	/**
@@ -123,66 +114,6 @@ class Imports {
 
 		// return resulting list.
 		return $categories;
-	}
-
-	/**
-	 * Add and change the settings for the plugin.
-	 *
-	 * @return void
-	 */
-	public function add_settings(): void {
-		// get settings object.
-		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
-
-		// add the import tab.
-		$import_tab = $settings_obj->add_tab( 'import' );
-		$import_tab->set_title( __( 'Import', 'personio-integration-light' ) );
-		$import_tab->set_position( 1 );
-
-		// add main section.
-		$import_section = $import_tab->add_section( 'settings_section_import' );
-		$import_section->set_title( __( 'Import of positions from Personio', 'personio-integration-light' ) );
-		$import_section->set_setting( $settings_obj );
-
-		// add other section.
-		$import_other_section = $import_tab->add_section( 'settings_section_import_other' );
-		$import_other_section->set_title( __( 'Other settings', 'personio-integration-light' ) );
-		$import_other_section->set_setting( $settings_obj );
-
-		// add setting.
-		$setting = $settings_obj->add_setting( 'personioIntegrationImportNow' );
-		$setting->set_section( $import_section );
-		$setting->set_autoload( false );
-		$setting->prevent_export( true );
-		$field = new Button();
-		$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
-		$field->set_button_title( __( 'Run import of positions now', 'personio-integration-light' ) );
-		$field->add_class( 'personio-integration-import-hint' );
-		$setting->set_field( $field );
-
-		// add setting.
-		$setting = $settings_obj->add_setting( 'personioIntegrationDeleteNow' );
-		$setting->set_section( $import_section );
-		$setting->set_autoload( false );
-		$setting->prevent_export( true );
-		$field = new Button();
-		$field->set_title( __( 'Delete local positions', 'personio-integration-light' ) );
-		$field->set_button_title( __( 'Delete all positions', 'personio-integration-light' ) );
-		$field->add_class( 'personio-integration-delete-all' );
-		$setting->set_field( $field );
-
-		// add setting.
-		/* translators: %1$s will be replaced by a link to the Pro plugin page. */
-		$pro_hint = __( 'Use more import options with the %1$s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' );
-		$true = true;
-		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnablePositionSchedule' );
-		$automatic_import_setting->set_section( $import_section );
-		$automatic_import_setting->set_type( 'integer' );
-		$automatic_import_setting->set_default( 1 );
-		$field = new Checkbox();
-		$field->set_title( __( 'Enable automatic import', 'personio-integration-light' ) );
-		$field->set_description( __( 'The automatic import is run once per day. You don\'t have to worry about updating your jobs on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
-		$automatic_import_setting->set_field( $field );
 	}
 
 	/**
@@ -244,5 +175,26 @@ class Imports {
 
 		// return false if no import extension is enabled.
 		return false;
+	}
+
+	/**
+	 * Trigger the "no extension enabled" hint.
+	 *
+	 * @return void
+	 */
+	public function trigger_no_extension_hint(): void {
+		// bail if setup has not been run.
+		if ( ! Setup::get_instance()->is_completed() ) {
+			return;
+		}
+
+		// show warning about missing enabled import extension.
+		$transient_obj = Transients::get_instance()->add();
+		$transient_obj->set_name( 'personio_import_extension_not_enabled' );
+		$transient_obj->set_dismissible_days( 30 );
+		$transient_obj->set_type( 'error' );
+		/* translators: %1$s will be replaced by a URL. */
+		$transient_obj->set_message( sprintf( __( 'There is no import extension for Personio positions enabled. Please <a href="%1$s">go to the list of import extensions</a> and enable one to import and update your positions in your website.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link( 'imports' ) ) ) );
+		$transient_obj->save();
 	}
 }

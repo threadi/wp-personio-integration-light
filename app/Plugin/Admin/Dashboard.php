@@ -22,7 +22,7 @@ class Dashboard {
 	private static ?Dashboard $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 

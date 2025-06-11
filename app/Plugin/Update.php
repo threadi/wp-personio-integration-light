@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
+use PersonioIntegrationLight\PersonioIntegration\Imports\Xml;
 
 /**
  * Helper-function for updates of this plugin.
@@ -25,7 +26,7 @@ class Update {
 	private static ?Update $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -57,22 +58,6 @@ class Update {
 	}
 
 	/**
-	 * Wrapper to run all version-specific updates, which are in this class.
-	 *
-	 * @return void
-	 */
-	public static function run_all_updates(): void {
-		$obj = self::get_instance();
-		$obj->version300();
-		$obj->version310();
-		$obj->version320();
-		$obj->version400();
-
-		// reset import-flag.
-		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
-	}
-
-	/**
 	 * Run check for updates.
 	 *
 	 * @return void
@@ -101,6 +86,7 @@ class Update {
 			$this->version310();
 			$this->version320();
 			$this->version400();
+			$this->version500();
 
 			// save new plugin-version in DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
@@ -136,16 +122,8 @@ class Update {
 			delete_transient( $transient );
 		}
 
-		// set default settings for new options.
-		$settings_obj = Settings::get_instance();
-		$settings_obj->set_settings();
-		foreach ( $settings_obj->get_settings() as $section_settings ) {
-			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-				if ( ! empty( $field_settings['register_attributes']['default'] ) && ! get_option( $field_name ) ) {
-					update_option( $field_name, $field_settings['register_attributes']['default'], true );
-				}
-			}
-		}
+		// initialize the settings.
+		\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->activation();
 
 		// create our schedules.
 		Schedules::get_instance()->create_schedules();
@@ -209,5 +187,15 @@ class Update {
 		delete_option( 'wp_easy_setup_step' );
 		delete_option( 'wp_easy_setup_step_label' );
 		delete_option( 'wp_easy_setup_running' );
+	}
+
+	/**
+	 * To run on update to version 5.0.0 or newer.
+	 *
+	 * @return void
+	 */
+	private function version500(): void {
+		// enable the Import XML extension.
+		Xml::get_instance()->set_enabled();
 	}
 }

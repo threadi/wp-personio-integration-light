@@ -29,9 +29,9 @@ class Log {
 	private static ?Log $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
-	private function __construct() {}
+	public function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.
@@ -73,12 +73,6 @@ class Log {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
-
-		// log error if any occurred.
-		if ( ! empty( $wpdb->last_error ) ) {
-			/* translators: %1$s will be replaced by an DB-error-message. */
-			$this->add( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
-		}
 	}
 
 	/**

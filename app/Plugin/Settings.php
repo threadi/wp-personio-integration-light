@@ -114,8 +114,10 @@ class Settings {
 		$settings_obj->set_url( Helper::get_plugin_url() . '/app/Dependencies/easySettingsForWordPress/' );
 		$settings_obj->set_path( Helper::get_plugin_path() . '/app/Dependencies/easySettingsForWordPress/' );
 
-		// initialize this settings object.
-		$settings_obj->init();
+		// initialize this settings object, if setup has been completed or if this is a REST API request.
+		if ( Helper::is_rest_request() || Setup::get_instance()->is_completed() ) {
+			$settings_obj->init();
+		}
 
 		/**
 		 * Configure all tabs for this object.
@@ -197,7 +199,7 @@ class Settings {
 		 */
 		/* translators: %1$s will be replaced by a link to the Pro plugin page. */
 		$pro_hint = __( 'Use multiple Personio accounts in one website with %1$s.', 'personio-integration-light' );
-		$true = true;
+		$true     = true;
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationUrl' );
@@ -211,6 +213,7 @@ class Settings {
 		/* translators: %1$s is replaced with the URL to Personio login for account access, %2$s is replaced with the url to the Personio support */
 		$field->set_description( sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br><strong>Hint:</strong> You have to enable the XML-feed under Settings > Recruiting > Career in your Personio account.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s" target="_blank">Personio support (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ), esc_url( Helper::get_personio_support_url() ) ) . '</p>' . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
 		$field->set_placeholder( Helper::get_personio_url_example() );
+		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ) );
 		$setting->set_field( $field );
 
 		// add setting.
@@ -224,15 +227,14 @@ class Settings {
 		$field->set_title( __( 'Main language', 'personio-integration-light' ) );
 		$field->set_description( __( 'Set the main language you will use for your open positions.', 'personio-integration-light' ) );
 		$field->set_options( Languages::get_instance()->get_languages() );
-		$field->set_readonly( ! Helper::is_personio_url_set() );
+		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage', 'validate' ) );
 		$setting->set_field( $field );
 
 		// add setting.
 		/* translators: %1$s will be replaced by a link to the Pro plugin page. */
 		$pro_hint = __( 'Use all languages supported by Personio with %1$s.', 'personio-integration-light' );
-		$setting = $settings_obj->add_setting( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION );
+		$setting  = $settings_obj->add_setting( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION );
 		$setting->set_section( $general_tab_main );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( Languages::get_instance()->get_current_lang() => 1 ) );
 		$setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\Languages', 'validate' ) );
@@ -240,13 +242,12 @@ class Settings {
 		$field->set_title( __( 'Used languages', 'personio-integration-light' ) );
 		$field->set_description( __( 'Activate the languages in which your positions should be displayed on the website.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
 		$field->set_options( Languages::get_instance()->get_languages() );
-		$field->set_readonly( ! Helper::is_personio_url_set() );
+		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\Languages', 'validate' ) );
 		$setting->set_field( $field );
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationLoginUrl' );
 		$setting->set_section( $general_tab_main );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
 		$setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationLoginUrl', 'validate' ) );
@@ -256,6 +257,7 @@ class Settings {
 		$field->set_description( sprintf( __( 'This URL is used by Personio to give you a unique login URL to your Personio account. It will be communicated to you when you register with Personio.<br>This is NOT the URL where your open positions are visible.<br>If you have any questions about this URL, please contact the <a href="%1$s" target="_blank">Personio support (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_support_url() ) ) );
 		$field->set_placeholder( Helper::get_personio_login_url_example() );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
+		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationLoginUrl', 'validate' ) );
 		$setting->set_field( $field );
 
 		/**
@@ -275,7 +277,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateFilter' );
 		$setting->set_section( $template_list );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( 'recruitingCategory', 'schedule', 'office' ) );
 		$field = new MultiSelect();
@@ -289,7 +290,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationFilterType' );
 		$setting->set_section( $template_list );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( 'linklist' );
 		$field = new Select();
@@ -303,7 +303,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationHideFilterTitle' );
 		$setting->set_section( $template_list );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
 		$setting->set_default( 1 );
 		$field = new Checkbox();
@@ -315,7 +314,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationHideFilterReset' );
 		$setting->set_section( $template_list );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
 		$setting->set_default( 0 );
 		$field = new Checkbox();
@@ -327,7 +325,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateContentListingTemplate' );
 		$setting->set_section( $template_list );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( 'default' );
 		$field = new Select();
@@ -341,7 +338,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateContentList' );
 		$setting->set_section( $template_list );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( 'title', 'excerpt' ) );
 		$field = new MultiSelect();
@@ -354,7 +350,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateListingExcerptsTemplate' );
 		$setting->set_section( $template_list );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( 'default' );
 		$field = new Select();
@@ -368,7 +363,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateExcerptDefaults' );
 		$setting->set_section( $template_list );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( 'recruitingCategory', 'schedule', 'office' ) );
 		$field = new MultiSelect();
@@ -409,7 +403,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateContentDefaults' );
 		$setting->set_section( $template_detail );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( 'title', 'content', 'formular' ) );
 		$field = new MultiSelect();
@@ -422,7 +415,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateDetailsExcerptsTemplate' );
 		$setting->set_section( $template_detail );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( 'default' );
 		$field = new Select();
@@ -436,7 +428,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateExcerptDetail' );
 		$setting->set_section( $template_detail );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( 'recruitingCategory', 'schedule', 'office' ) );
 		$field = new MultiSelect();
@@ -449,7 +440,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateJobDescription' );
 		$setting->set_section( $template_detail );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( 'default' );
 		$field = new Select();
@@ -463,7 +453,6 @@ class Settings {
 		// add setting.
 		$setting_back_to_list_button = $settings_obj->add_setting( 'personioIntegrationTemplateBackToListButton' );
 		$setting_back_to_list_button->set_section( $template_detail );
-		$setting_back_to_list_button->set_show_in_rest( true );
 		$setting_back_to_list_button->set_type( 'integer' );
 		$setting_back_to_list_button->set_default( 0 );
 		$field = new Checkbox();
@@ -474,7 +463,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateBackToListUrl' );
 		$setting->set_section( $template_detail );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
 		$field = new Text();
@@ -489,7 +477,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateExcerptSeparator' );
 		$setting->set_section( $template_other );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( ', ' );
 		$field = new Text();
@@ -503,18 +490,17 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationExtendSearch' );
 		$setting->set_section( $advanced );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
 		$setting->set_default( 0 );
 		$field = new Checkbox();
 		$field->set_title( __( 'Note the position-keywords in search in frontend', 'personio-integration-light' ) );
+		$field->set_description( __( 'If activated, the keywords stored at the locations in Personio are taken into account within the WordPress full-text search.', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationMaxAgeLogEntries' );
 		$setting->set_section( $advanced );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
 		$setting->set_default( 20 );
 		$field = new Number();
@@ -525,22 +511,22 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationUrlTimeout' );
 		$setting->set_section( $advanced );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
 		$setting->set_default( 30 );
 		$field = new Number();
 		$field->set_title( __( 'Timeout for URL-request in Seconds', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
+		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\UrlTimeout', 'validate' ) );
 		$setting->set_field( $field );
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationShowHelp' );
 		$setting->set_section( $advanced );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
 		$setting->set_default( 1 );
 		$field = new Checkbox();
 		$field->set_title( __( 'Show help', 'personio-integration-light' ) );
+		$field->set_description( __( 'If enabled you will get help texts on your page builder if you edit positions.', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 
@@ -553,7 +539,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationDeleteOnUninstall' );
 		$setting->set_section( $advanced );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
 		$setting->set_default( 1 );
 		$field = new Checkbox();
@@ -564,9 +549,8 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegration_debug' );
 		$setting->set_section( $advanced );
-		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
-		$setting->set_default( 1 );
+		$setting->set_default( 0 );
 		$field = new Checkbox();
 		$field->set_title( __( 'Debug-Mode', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
@@ -688,7 +672,7 @@ class Settings {
 	 */
 	public function add_pro_on_title( string $title, Tab $tab ): string {
 		// bail if tab is not "use_pro".
-		if( 'use_pro' !== $tab->get_name() ) {
+		if ( 'use_pro' !== $tab->get_name() ) {
 			return $title;
 		}
 
@@ -699,9 +683,9 @@ class Settings {
 	/**
 	 * Add import categories.
 	 *
-	 * @param array $categories List of categories.
+	 * @param array<string,string> $categories List of categories.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function add_log_categories( array $categories ): array {
 		// add categories we need for our settings.
@@ -738,6 +722,6 @@ class Settings {
 	 */
 	public function show_advanced_hint(): void {
 		/* translators: %1$s will be replaced with the plugin Pro name */
-		echo wp_kses_post( apply_filters( 'personio_integration_admin_show_pro_hint',  __( 'With %1$s you get more advanced options, e.g. to change the URL of archives with positions.', 'personio-integration-light' ), false ) );
+		echo wp_kses_post( apply_filters( 'personio_integration_admin_show_pro_hint', __( 'With %1$s you get more advanced options, e.g. to change the URL of archives with positions.', 'personio-integration-light' ), false ) );
 	}
 }

@@ -18,6 +18,7 @@
     <exclude-pattern>*/example/*</exclude-pattern>
     <exclude-pattern>*/deprecated/*</exclude-pattern>
     <exclude-pattern>*/legacy/*</exclude-pattern>
+    <exclude-pattern>*/app/Dependencies/*</exclude-pattern>
 
     <!-- Use additional rulesets -->
 	<rule ref="WordPress-Docs"/>

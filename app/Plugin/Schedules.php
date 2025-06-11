@@ -10,7 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
 use PersonioIntegrationLight\Log;
 
 /**
@@ -53,11 +53,16 @@ class Schedules {
 	 * @return void
 	 */
 	public function init(): void {
+		// bail if setup has not been run.
+		if ( ! Setup::get_instance()->is_completed() ) {
+			return;
+		}
+
 		// use our own hooks.
 		if ( is_admin() ) {
 			add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
 		}
-		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
+		add_action( 'init', array( $this, 'add_settings' ), 20 );
 		add_action( 'init', array( $this, 'init_schedules' ) );
 
 		// action to create all registered schedules.
@@ -91,32 +96,29 @@ class Schedules {
 	/**
 	 * Add settings for this extension.
 	 *
-	 * @param array<string,mixed> $settings List of settings.
-	 *
-	 * @return array<string,mixed>
+	 * @return void
 	 */
-	public function add_settings( array $settings ): array {
-		if ( empty( $settings['settings_section_advanced']['fields'] ) ) {
-			return $settings;
-		}
-		$settings['settings_section_advanced']['fields'] = Helper::add_array_in_array_on_position(
-			$settings['settings_section_advanced']['fields'],
-			8,
-			array(
-				'personioIntegrationEnableCronCheckInFrontend' => array(
-					'label'               => __( 'Check for schedules in frontend', 'personio-integration-light' ),
-					'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-					'description'         => __( 'If enabled the plugin will check our own schedules on each request in frontend. This could be slow the performance of your website.', 'personio-integration-light' ),
-					'register_attributes' => array(
-						'type'    => 'integer',
-						'default' => 0,
-					),
-				),
-			)
-		);
+	public function add_settings(): void {
+		// get settings object.
+		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 
-		// return resulting list of settings.
-		return $settings;
+		// get the section.
+		$advanced_section = $settings_obj->get_section( 'settings_section_advanced' );
+
+		// bail if tab does not exist.
+		if ( ! $advanced_section ) {
+			return;
+		}
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationEnableCronCheckInFrontend' );
+		$setting->set_section( $advanced_section );
+		$setting->set_type( 'integer' );
+		$setting->set_default( 0 );
+		$field = new Checkbox();
+		$field->set_title( __( 'Check for schedules in frontend', 'personio-integration-light' ) );
+		$field->set_description( __( 'If enabled the plugin will check our own schedules on each request in frontend. This could be slow the performance of your website.', 'personio-integration-light' ) );
+		$setting->set_field( $field );
 	}
 
 	/**

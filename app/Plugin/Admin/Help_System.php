@@ -26,7 +26,7 @@ class Help_System {
 	private static ?Help_System $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 

@@ -11,10 +11,11 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\Plugin\Setup;
 
 /**
@@ -74,14 +75,16 @@ class Availability extends Extensions_Base {
 	 */
 	public function init(): void {
 		// bail if extension is not enabled.
-		if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
+		if ( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
 			return;
 		}
+
+		// add the settings.
+		add_action( 'init', array( $this, 'add_settings' ), 20 );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'run' ) );
-		add_filter( 'init', array( $this, 'add_settings' ), 20 );
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 
 		// extend the position table.
@@ -103,13 +106,13 @@ class Availability extends Extensions_Base {
 	 */
 	public function add_settings(): void {
 		// get settings object.
-		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_obj = Settings::get_instance();
 
 		// get the section.
 		$import_other_section = $settings_obj->get_section( 'settings_section_import_other' );
 
 		// bail if tab does not exist.
-		if( ! $import_other_section ) {
+		if ( ! $import_other_section instanceof Section ) {
 			return;
 		}
 
@@ -118,6 +121,7 @@ class Availability extends Extensions_Base {
 		$automatic_import_setting->set_section( $import_other_section );
 		$automatic_import_setting->set_type( 'integer' );
 		$automatic_import_setting->set_default( 1 );
+		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ) );
 		$field = new Checkbox();
 		$field->set_title( __( 'Enable availability checks', 'personio-integration-light' ) );
 		$field->set_description( __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ) );

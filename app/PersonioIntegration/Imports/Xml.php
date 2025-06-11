@@ -17,7 +17,6 @@ use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Languages;
-use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
 use SimpleXMLElement;
 use WP_Post;

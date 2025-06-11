@@ -31,7 +31,7 @@ class Uninstaller {
 	private static ?Uninstaller $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -125,14 +125,9 @@ class Uninstaller {
 			// delete position.
 			PersonioPosition::get_instance()->delete_positions();
 
-			// remove options from settings.
-			$settings_obj = Settings::get_instance();
-			$settings_obj->set_settings();
-			foreach ( $settings_obj->get_settings() as $section_settings ) {
-				foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-					delete_option( $field_name );
-				}
-			}
+			// remove options used by settings.
+			$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+			$settings_obj->delete_settings();
 
 			// remove custom options.
 			foreach ( $this->get_options() as $option ) {

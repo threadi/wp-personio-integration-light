@@ -72,7 +72,7 @@ class Gutenberg extends PageBuilder_Base {
 		// bail if theme is not an FSE-theme with Block support.
 		if ( ! $this->theme_support_block_templates() ) {
 			// remove hint from settings.
-			add_filter( 'personio_integration_settings', array( $this, 'remove_fse_hint' ) );
+			add_action( 'personio_integration_settings', array( $this, 'remove_fse_hint' ) );
 			return;
 		}
 
@@ -188,7 +188,8 @@ class Gutenberg extends PageBuilder_Base {
 
 	/**
 	 * Remove the FSE-hint from settings.
-	 **
+	 * *
+	 *
 	 * @return void
 	 */
 	public function remove_fse_hint(): void {

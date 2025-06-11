@@ -25,7 +25,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	 * @return string
 	 */
 	public static function validate( string $value ): string {
-		if ( ! Helper::is_admin_api_request() ) {
+		if ( ! Helper::is_rest_request() ) {
 			$errors = get_settings_errors();
 			/**
 			 * If a result-entry already exists, do nothing here.

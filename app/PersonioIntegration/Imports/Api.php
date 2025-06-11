@@ -19,7 +19,6 @@ use PersonioIntegrationLight\PersonioIntegration\Api_Request;
 use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
-use PersonioIntegrationLight\Plugin\Settings;
 use WP_Post;
 
 /**

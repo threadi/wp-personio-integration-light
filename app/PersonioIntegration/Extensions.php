@@ -61,11 +61,6 @@ class Extensions {
 		add_action( 'esfw_process_init', array( $this, 'initialize_extensions_in_setup' ), 30 );
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 40 );
 
-		// bail if setup is not completed.
-		if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! Setup::get_instance()->is_completed() ) {
-			return;
-		}
-
 		// add AJAX-actions.
 		add_action( 'wp_ajax_personio_extension_state', array( $this, 'change_extension_state' ) );
 
@@ -82,7 +77,7 @@ class Extensions {
 	}
 
 	/**
-	 * Initialize extensions for this object.
+	 * Initialize extensions for this plugin.
 	 *
 	 * @return void
 	 */
@@ -97,6 +92,21 @@ class Extensions {
 			 * @param Extensions_Base $extension_obj The extension object.
 			 */
 			do_action( 'personio_integration_light_extension_initialized', $extension_obj );
+		}
+	}
+
+	/**
+	 * Initialize extensions during plugin activation.
+	 *
+	 * @return void
+	 */
+	public function activation(): void {
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			// initialize the main settings for this extension.
+			$extension_obj->add_global_settings();
+
+			// and the custom settings for each extension.
+			$extension_obj->add_settings();
 		}
 	}
 
@@ -399,7 +409,7 @@ class Extensions {
 			'manage_' . PersonioPosition::get_instance()->get_name(),
 			'personioPositionExtensions',
 			array( $this, 'display' ),
-			160
+			2
 		);
 	}
 

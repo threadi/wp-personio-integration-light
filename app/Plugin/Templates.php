@@ -31,7 +31,7 @@ class Templates {
 	private static ?Templates $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -1267,7 +1267,7 @@ class Templates {
 		}
 
 		// bail if this is a REST API request.
-		if ( Helper::is_admin_api_request() ) {
+		if ( Helper::is_rest_request() ) {
 			return;
 		}
 
