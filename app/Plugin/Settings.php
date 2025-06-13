@@ -125,26 +125,31 @@ class Settings {
 		// the basic tab.
 		$general_tab = $settings_obj->add_tab( 'basic' );
 		$general_tab->set_title( __( 'Basic Settings', 'personio-integration-light' ) );
+		$general_tab->set_page( 'personioPositions' );
 		$settings_obj->set_default_tab( $general_tab );
 
 		// the templates tab.
 		$templates_tab = $settings_obj->add_tab( 'templates' );
 		$templates_tab->set_title( __( 'Templates', 'personio-integration-light' ) );
+		$templates_tab->set_page( 'personioPositions' );
 
 		// the pro tab.
 		$pro_tab = $settings_obj->add_tab( 'use_pro' );
 		$pro_tab->set_title( __( 'Applications, SEO & more', 'personio-integration-light' ) );
 		$pro_tab->set_not_linked( true );
+		$pro_tab->set_page( 'personioPositions' );
 
 		// the advanced tab.
 		$advanced_tab = $settings_obj->add_tab( 'advanced' );
 		$advanced_tab->set_title( __( 'Advanced', 'personio-integration-light' ) );
+		$advanced_tab->set_page( 'personioPositions' );
 
 		// the logs tab.
 		$logs_tab = $settings_obj->add_tab( 'logs' );
 		$logs_tab->set_title( __( 'Logs', 'personio-integration-light' ) );
 		$logs_tab->set_hide_save( true );
 		$logs_tab->set_callback( array( '\PersonioIntegrationLight\Plugin\Admin\Logs', 'show' ) );
+		$logs_tab->set_page( 'personioPositions' );
 
 		// the copyright tab.
 		$copyright_tab = $settings_obj->add_tab( 'copyright' );
@@ -152,6 +157,7 @@ class Settings {
 		$copyright_tab->set_tab_class( 'copyright' );
 		$copyright_tab->set_hide_save( true );
 		$copyright_tab->set_callback( array( $this, 'show_copyright' ) );
+		$copyright_tab->set_page( 'personioPositions' );
 
 		// the help tab.
 		$help_tab = $settings_obj->add_tab( 'help' );
@@ -159,6 +165,7 @@ class Settings {
 		$help_tab->set_tab_class( 'nav-tab-help' );
 		$help_tab->set_url( Helper::get_plugin_support_url() );
 		$help_tab->set_url_target( '_blank' );
+		$help_tab->set_page( 'personioPositions' );
 
 		/**
 		 * Create sections for this settings object.

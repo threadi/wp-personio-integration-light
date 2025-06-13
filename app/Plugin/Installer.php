@@ -113,7 +113,7 @@ class Installer {
 		// add the settings from all extensions.
 		Extensions::get_instance()->activation();
 
-		// initiate the sections.
+		// initiate the settings.
 		\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->activation();
 
 		// set marker to refresh permalinks.
