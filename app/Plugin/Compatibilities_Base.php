@@ -36,7 +36,7 @@ class Compatibilities_Base {
 	private static ?Compatibilities_Base $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	protected function __construct() {}
 

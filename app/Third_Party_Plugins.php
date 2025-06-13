@@ -31,7 +31,7 @@ class Third_Party_Plugins {
 	private static ?Third_Party_Plugins $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 

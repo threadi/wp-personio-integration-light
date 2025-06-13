@@ -22,9 +22,34 @@ class Log {
 	private string $md5 = '';
 
 	/**
-	 * Constructor for Logging-Handler.
+	 * Instance of this object.
+	 *
+	 * @var ?Log
+	 */
+	private static ?Log $instance = null;
+
+	/**
+	 * Constructor for this object.
 	 */
 	public function __construct() {}
+
+	/**
+	 * Prevent cloning of this object.
+	 *
+	 * @return void
+	 */
+	private function __clone() { }
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Log {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Create the logging-table in the database.
@@ -48,12 +73,6 @@ class Log {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
-
-		// log error if any occurred.
-		if ( ! empty( $wpdb->last_error ) ) {
-			/* translators: %1$s will be replaced by an DB-error-message. */
-			$this->add_log( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
-		}
 	}
 
 	/**
@@ -76,7 +95,7 @@ class Log {
 	 *
 	 * @return void
 	 */
-	public function add_log( string $log, string $state, string $category = '', string $md5 = '' ): void {
+	public function add( string $log, string $state, string $category = '', string $md5 = '' ): void {
 		global $wpdb;
 
 		// insert the log entry.
@@ -94,7 +113,7 @@ class Log {
 		// log if any error occurred.
 		if ( ! empty( $wpdb->last_error ) ) {
 			/* translators: %1$s will be replaced by an DB-error-message. */
-			$this->add_log( sprintf( __( 'Database error during saving a log entry: %1$s', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
+			$this->add( sprintf( __( 'Database error during saving a log entry: %1$s', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
 		}
 
 		// clean the log.
@@ -122,7 +141,7 @@ class Log {
 		// log if any error occurred.
 		if ( ! empty( $wpdb->last_error ) ) {
 			/* translators: %1$s will be replaced by an DB-error-message. */
-			$this->add_log( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
+			$this->add( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
 		}
 	}
 

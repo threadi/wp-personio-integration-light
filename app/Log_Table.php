@@ -36,7 +36,7 @@ class Log_Table extends WP_List_Table {
 	 * @return array<int,mixed>
 	 */
 	private function table_data(): array {
-		return ( new Log() )->get_entries();
+		return Log::get_instance()->get_entries();
 	}
 
 	/**
@@ -113,8 +113,7 @@ class Log_Table extends WP_List_Table {
 	 */
 	private function get_category( string $category ): string {
 		// get list of categories.
-		$log_obj    = new Log();
-		$categories = $log_obj->get_categories();
+		$categories = Log::get_instance()->get_categories();
 
 		// bail if search category is not found.
 		if ( empty( $categories[ $category ] ) ) {
@@ -229,8 +228,7 @@ class Log_Table extends WP_List_Table {
 		// if filter is set show other text.
 		if ( ! empty( $category ) ) {
 			// get all categories to get the title.
-			$log_obj    = new Log();
-			$categories = $log_obj->get_categories();
+			$categories = Log::get_instance()->get_categories();
 
 			// show text.
 			/* translators: %1$s will be replaced by the category name. */
@@ -260,7 +258,7 @@ class Log_Table extends WP_List_Table {
 		);
 
 		// get all log categories.
-		$log_obj = new Log();
+		$log_obj = Log::get_instance();
 		foreach ( $log_obj->get_categories() as $key => $label ) {
 			$url          = add_query_arg( array( 'category' => $key ) );
 			$list[ $key ] = '<a href="' . esc_url( $url ) . '"' . ( $category === $key ? ' class="current"' : '' ) . '>' . esc_html( $label ) . '</a>';

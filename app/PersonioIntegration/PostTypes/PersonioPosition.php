@@ -54,7 +54,7 @@ class PersonioPosition extends Post_Type {
 	private static ?PersonioPosition $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -87,6 +87,9 @@ class PersonioPosition extends Post_Type {
 
 		// enable theme-support.
 		Themes::get_instance()->init();
+
+		// init imports.
+		Imports::get_instance()->init();
 
 		// enable extensions.
 		Extensions::get_instance()->init();
@@ -365,7 +368,7 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-		if ( empty( $personio_attributes['styles'] ) && Helper::is_admin_api_request() ) {
+		if ( empty( $personio_attributes['styles'] ) && Helper::is_rest_request() ) {
 			wp_styles()->print_inline_style( 'wp-block-library' );
 		}
 
@@ -577,7 +580,7 @@ class PersonioPosition extends Post_Type {
 
 		// collect the output.
 		ob_start();
-		if ( ! empty( $personio_attributes['styles'] ) && Helper::is_admin_api_request() ) {
+		if ( ! empty( $personio_attributes['styles'] ) && Helper::is_rest_request() ) {
 			wp_styles()->print_inline_style( 'wp-block-library' );
 		}
 
@@ -796,8 +799,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// log the deletion.
-		$log = new Log();
-		$log->add_log( sprintf( 'Position %1$s has been deleted by %2$s.', esc_html( $position_obj->get_personio_id() ), esc_html( $username ) ), 'success', 'import' );
+		Log::get_instance()->add( sprintf( 'Position %1$s has been deleted by %2$s.', esc_html( $position_obj->get_personio_id() ), esc_html( $username ) ), 'success', 'import' );
 	}
 
 	/**
@@ -1488,7 +1490,7 @@ class PersonioPosition extends Post_Type {
 
 		// show the hint.
 		/* translators: %1$s will be replaced with the plugin pro-name */
-		Admin::get_instance()->show_pro_hint( __( 'Use this taxonomy with %1$s.', 'personio-integration-light' ) );
+		echo wp_kses_post( Admin::get_instance()->get_pro_hint( __( 'Use this taxonomy with %1$s.', 'personio-integration-light' ) ) );
 	}
 
 	/**
@@ -1893,8 +1895,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// log this event.
-		$logs = new Log();
-		$logs->add_log( sprintf( 'Positions has been deleted by %1$s.', esc_html( $username ) ), 'success', 'import' );
+		Log::get_instance()->add( sprintf( 'Positions has been deleted by %1$s.', esc_html( $username ) ), 'success', 'import' );
 
 		/**
 		 * Run custom actions after deletion of all positions has been done.
@@ -1967,7 +1968,6 @@ class PersonioPosition extends Post_Type {
 	 *
 	 * @return void
 	 * @noinspection PhpUnused
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function run_import(): void {
 		// check nonce.
@@ -2470,7 +2470,7 @@ class PersonioPosition extends Post_Type {
 	public function get_meta_box_for_application_form(): void {
 		// show the hint.
 		/* translators: %1$s will be replaced with the plugin pro-name */
-		Admin::get_instance()->show_pro_hint( __( 'Use individual application forms for this position with %1$s.', 'personio-integration-light' ) );
+		echo wp_kses_post( Admin::get_instance()->get_pro_hint( __( 'Use individual application forms for this position with %1$s.', 'personio-integration-light' ) ) );
 	}
 
 	/**

@@ -31,7 +31,7 @@ class Templates {
 	private static ?Templates $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -681,7 +681,7 @@ class Templates {
 		if ( ! empty( $details ) ) {
 			// get configured template of none has been set for this output.
 			if ( empty( $attributes['excerpt_template'] ) ) {
-				$template = Settings::get_instance()->get_setting( is_singular() ? 'personioIntegrationTemplateDetailsExcerptsTemplate' : 'personioIntegrationTemplateListingExcerptsTemplate' );
+				$template = get_option( is_singular() ? 'personioIntegrationTemplateDetailsExcerptsTemplate' : 'personioIntegrationTemplateListingExcerptsTemplate' );
 			} else {
 				$template = $attributes['excerpt_template'];
 			}
@@ -949,7 +949,7 @@ class Templates {
 		if ( ! $this->has_template( $template_file ) ) {
 			// get configured template if none has been set for this output.
 			if ( empty( $attributes['jobdescription_template'] ) ) {
-				$template = Settings::get_instance()->get_setting( is_singular() ? 'personioIntegrationTemplateJobDescription' : 'personioIntegrationTemplateListingContentTemplate' );
+				$template = get_option( is_singular() ? 'personioIntegrationTemplateJobDescription' : 'personioIntegrationTemplateListingContentTemplate' );
 			} else {
 				$template = $attributes['jobdescription_template'];
 			}
@@ -1267,7 +1267,7 @@ class Templates {
 		}
 
 		// bail if this is a REST API request.
-		if ( Helper::is_admin_api_request() ) {
+		if ( Helper::is_rest_request() ) {
 			return;
 		}
 

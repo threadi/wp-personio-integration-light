@@ -60,7 +60,7 @@ class Import extends Schedules_Base {
 	 */
 	public function __construct() {
 		// get interval from settings.
-		$this->interval = Settings::get_instance()->get_setting( $this->get_interval_option_name() );
+		$this->interval = get_option( $this->get_interval_option_name() );
 	}
 
 	/**
@@ -71,14 +71,12 @@ class Import extends Schedules_Base {
 	public function run(): void {
 		// if debug mode is enabled log this event.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-			$log = new Log();
-			$log->add_log( __( 'Automatic import of positions starting.', 'personio-integration-light' ), 'success', 'import' );
+			Log::get_instance()->add( __( 'Automatic import of positions starting.', 'personio-integration-light' ), 'success', 'import' );
 		}
 
 		// bail if import is not enabled.
 		if ( ! $this->is_enabled() ) {
-			$log = new Log();
-			$log->add_log( __( 'Automatic import of positions is not enabled.', 'personio-integration-light' ), 'success', 'import' );
+			Log::get_instance()->add( __( 'Automatic import of positions is not enabled.', 'personio-integration-light' ), 'success', 'import' );
 
 			// do nothing more.
 			return;
@@ -89,8 +87,7 @@ class Import extends Schedules_Base {
 
 		// bail if no import object is enabled.
 		if ( ! $import_objects ) {
-			$log = new Log();
-			$log->add_log( __( 'No import extension enabled.', 'personio-integration-light' ), 'success', 'import' );
+			Log::get_instance()->add( __( 'No import extension enabled.', 'personio-integration-light' ), 'success', 'import' );
 
 			// do nothing more.
 			return;
@@ -101,8 +98,7 @@ class Import extends Schedules_Base {
 
 		// if debug mode is enabled log this event.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-			$log = new Log();
-			$log->add_log( __( 'Automatic import of positions ended.', 'personio-integration-light' ), 'success', 'import' );
+			Log::get_instance()->add( __( 'Automatic import of positions ended.', 'personio-integration-light' ), 'success', 'import' );
 		}
 	}
 }

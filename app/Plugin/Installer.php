@@ -11,6 +11,9 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Api;
+use PersonioIntegrationLight\PersonioIntegration\Extensions;
+use PersonioIntegrationLight\PersonioIntegration\Imports;
 
 /**
  * Helper-function for plugin-activation and -deactivation.
@@ -25,7 +28,7 @@ class Installer {
 	private static ?Installer $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -55,7 +58,7 @@ class Installer {
 	 * @return void
 	 */
 	public function activation(): void {
-		// set activation runner to enable.
+		// mark activation runner as running.
 		define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 1 );
 
 		if ( is_multisite() ) {
@@ -77,12 +80,15 @@ class Installer {
 	}
 
 	/**
-	 * Define the tasks to run during activation.
+	 * Define the tasks to run during activation of the plugin.
+	 *
+	 * Hint: do not run anything regarding extensions. This will be done at the end of the setup.
 	 *
 	 * @return void
 	 */
 	private function activation_tasks(): void {
-		// bail if SimpleXML is not available on this system.
+		// bail if required PHP-SimpleXML extension is not available on this system.
+		// TODO move to Xml-Import-Extension and add check for requirements for extensions.
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_no_simplexml' );
@@ -92,25 +98,25 @@ class Installer {
 			return;
 		}
 
-		// install tables.
+		// mimik that setup has been completed.
+		add_filter( 'personio_integration_light_setup_is_completed', '__return_true' );
+
+		// run normal plugin init.
+		Init::get_instance()->init();
+
+		// install our db tables.
 		Init::get_instance()->install_db_tables();
 
-		// initialize the default settings.
-		Settings::get_instance()->initialize_options();
+		// add the main settings.
+		Settings::get_instance()->add_settings();
 
-		// install schedules.
-		Schedules::get_instance()->create_schedules();
+		// add the settings from all extensions.
+		Extensions::get_instance()->activation();
 
-		// install the roles we use.
-		Roles::get_instance()->install();
+		// initiate the settings.
+		\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->activation();
 
-		// run all updates.
-		Update::run_all_updates();
-
-		// enable setup.
-		\easySetupForWordPress\Setup::get_instance()->activation();
-
-		// refresh permalinks.
+		// set marker to refresh permalinks.
 		update_option( 'personio_integration_update_slugs', 1 );
 
 		// show success message on cli.

@@ -18,6 +18,8 @@ parameters:
     - "#extends generic class WP_Widget but does not specify its types#"
     - "#ARRAY_A#"
     - "#WP_PLUGIN_DIR#"
+    - "#WPMU_PLUGIN_DIR#"
+    - "#PERSONIO_INTEGRATION_LIGHT#"
   paths:
     - app
     - personio-integration-light.php

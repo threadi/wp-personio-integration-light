@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PageBuilder;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Patterns;
@@ -55,7 +56,7 @@ class Gutenberg extends PageBuilder_Base {
 	public function init(): void {
 		// bail if Gutenberg is disabled.
 		if ( ! $this->is_enabled() ) {
-			add_filter( 'personio_integration_settings', array( $this, 'remove_fse_hint' ) );
+			$this->remove_fse_hint();
 			return;
 		}
 
@@ -71,7 +72,7 @@ class Gutenberg extends PageBuilder_Base {
 		// bail if theme is not an FSE-theme with Block support.
 		if ( ! $this->theme_support_block_templates() ) {
 			// remove hint from settings.
-			add_filter( 'personio_integration_settings', array( $this, 'remove_fse_hint' ) );
+			add_action( 'personio_integration_settings', array( $this, 'remove_fse_hint' ) );
 			return;
 		}
 
@@ -187,17 +188,22 @@ class Gutenberg extends PageBuilder_Base {
 
 	/**
 	 * Remove the FSE-hint from settings.
+	 * *
 	 *
-	 * @param array<string,mixed> $settings Array with the settings.
-	 *
-	 * @return array<string,mixed>
+	 * @return void
 	 */
-	public function remove_fse_hint( array $settings ): array {
-		if ( isset( $settings['settings_section_template_list']['fields']['personio_integration_fse_theme_hint'] ) ) {
-			unset( $settings['settings_section_template_list']['fields']['personio_integration_fse_theme_hint'] );
-		}
-		return $settings;
+	public function remove_fse_hint(): void {
+		$settings_obj = Settings::get_instance();
+		$settings_obj->get_section( '' );
+		$settings_obj->set_callback( array( $this, 'fse_hint_replacement' ) );
 	}
+
+	/**
+	 * Replacement for FSE hint in template settings.
+	 *
+	 * @return void
+	 */
+	public function fse_hint_replacement(): void {}
 
 	/**
 	 * Initialize the pattern-object to register them.

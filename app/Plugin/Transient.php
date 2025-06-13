@@ -11,6 +11,8 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
+use WP_Exception;
 
 /**
  * Initialize a single transient-object.
@@ -119,6 +121,11 @@ class Transient {
 	 * @return void
 	 */
 	public function set_name( string $name ): void {
+		// trigger warning if name has more than 172 chars.
+		if ( strlen( $name ) > 172 ) {
+			/* translators: %1$s will be replaced by a transient name. */
+			Log::get_instance()->add( sprintf( __( 'The name %1$s for the transient exceeds limits by WordPress.', 'personio-integration-light' ), esc_html( $name ) ), 'error', 'system' );
+		}
 		$this->name = $name;
 	}
 

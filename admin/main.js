@@ -89,56 +89,6 @@ jQuery(document).ready(function($) {
     });
 
     /**
-     * Handle depending settings on settings page.
-     *
-     * Get all fields which depends from another.
-     * Hide fields where the dependends does not match.
-     * Set handler on depending fields to show or hide the dependend fields.
-     *
-     * Hint: hide the surrounding "tr"-element.
-     */
-    $('body.post-type-personioposition input[type="checkbox"], body.post-type-personioposition input[type="hidden"], body.post-type-personioposition select').each( function() {
-        let form_field = $(this);
-
-        // check on load to hide some fields.
-        $('body.post-type-personioposition [data-depends]').each( function() {
-          let depending_field = $(this);
-          $.each( $(this).data('depends'), function( i, v ) {
-             if( i === form_field.attr('name')
-               && (
-                 ( form_field.attr('type') === 'checkbox' && ! form_field.is(':checked') )
-                 || ( form_field.attr('type') !== 'checkbox' && v.toString() !== form_field.val() )
-               ) ) {
-               depending_field.closest('tr').addClass('hide');
-               depending_field.closest('tr').removeClass('show_with_animation');
-             }
-          });
-        });
-
-        // add event-listener to changed depending fields.
-        form_field.on('change', function() {
-          $('body.post-type-personioposition [data-depends]').each( function() {
-            let depending_field = $(this);
-            $.each( $(this).data('depends'), function( i, v ) {
-              if( i === form_field.attr('name') ) {
-                if(
-                  (form_field.attr('type') !== 'checkbox' && v.toString() === form_field.val() )
-                  || (form_field.attr('type') === 'checkbox' && form_field.is(':checked') )
-                ) {
-                  depending_field.closest('tr').removeClass('hide');
-                  depending_field.closest( 'tr' ).addClass('show_with_animation')
-                }
-                else {
-                  depending_field.closest('tr').addClass('hide');
-                  depending_field.closest('tr').removeClass('show_with_animation');
-                }
-              }
-            });
-          });
-        })
-    });
-
-    /**
      * Add hint for applications in Pro-version in menu.
      */
     $("body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication']").on( 'click', function(e) {

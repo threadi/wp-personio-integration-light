@@ -25,7 +25,7 @@ class Roles {
 	private static ?Roles $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 

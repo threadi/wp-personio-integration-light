@@ -22,7 +22,7 @@ class Widgets {
 	private static ?Widgets $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 

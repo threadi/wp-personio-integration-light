@@ -55,7 +55,7 @@ class Languages {
 	private string $fallback_language_name = 'en';
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {
 		$this->languages = array(

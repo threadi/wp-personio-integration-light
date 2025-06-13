@@ -13,6 +13,8 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
+use SimpleXMLElement;
+use WP_Error;
 use WP_Filesystem_Base;
 use WP_Filesystem_Direct;
 use WP_Post;
@@ -160,7 +162,7 @@ class Helper {
 	 * @returns boolean
 	 * @author matzeeable
 	 */
-	public static function is_admin_api_request(): bool {
+	public static function is_rest_request(): bool {
 		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) // Case #1.
 			|| ( isset( $GLOBALS['wp']->query_vars['rest_route'] ) // (#2)
 				&& str_starts_with( $GLOBALS['wp']->query_vars['rest_route'], '/' ) ) ) {
@@ -829,9 +831,8 @@ class Helper {
 		// return local object on any error.
 		if ( $wp_filesystem->errors->has_errors() ) {
 			// log this event.
-			$log = new Log();
 			/* translators: %1$s will be replaced by a name. */
-			$log->add_log( sprintf( __( '<strong>Error during loading the required WordPress-own filesystem object!</strong><br>We will now use the local filesystem object and hope it will work.<br><br>Tipps to solve this:<ul><li>Check the following error and speak to your WordPress administrator about it.</li><li>Check your <em>wp-config.php</em> if you have the constant "FS_METHOD" set there. If yes, remove it and check if your WordPress can save media files.</li><li>Ask the support of your hoster for help.</li></ul>Used filesystem mode: <em>%1$s</em><br>The following errors occurred:', 'personio-integration-light' ), get_filesystem_method() ) . ' <code>' . wp_json_encode( $wp_filesystem->errors ) . '</code>', 'error', 'system' );
+			Log::get_instance()->add( sprintf( __( '<strong>Error during loading the required WordPress-own filesystem object!</strong><br>We will now use the local filesystem object and hope it will work.<br><br>Tipps to solve this:<ul><li>Check the following error and speak to your WordPress administrator about it.</li><li>Check your <em>wp-config.php</em> if you have the constant "FS_METHOD" set there. If yes, remove it and check if your WordPress can save media files.</li><li>Ask the support of your hoster for help.</li></ul>Used filesystem mode: <em>%1$s</em><br>The following errors occurred:', 'personio-integration-light' ), get_filesystem_method() ) . ' <code>' . wp_json_encode( $wp_filesystem->errors ) . '</code>', 'error', 'system' );
 
 			// embed the local directory object.
 			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
@@ -862,5 +863,85 @@ class Helper {
 
 		// return the JSON for the attribute-usage.
 		return $json;
+	}
+
+	/**
+	 * Return the writable wp-config.php path.
+	 *
+	 * @return string
+	 */
+	public static function get_wp_config_path(): string {
+		$wp_config_php = 'wp-config';
+		/**
+		 * Filter to change the filename of the used wp-config.php without its extension .php.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param string $wp_config_php The filename.
+		 */
+		$wp_config_php = apply_filters( 'personio_integration_light_wp_config_name', $wp_config_php );
+
+		// get path for wp-config.php.
+		$wp_config_php_path = ABSPATH . $wp_config_php . '.php';
+
+		/**
+		 * Filter the path for the wp-config.php before we return it.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param string $wp_config_php_path The path.
+		 */
+		return apply_filters( 'personio_integration_light_wp_config_path', $wp_config_php_path );
+	}
+
+	/**
+	 * Return whether a given file is writable.
+	 *
+	 * @param string $file The file with absolute path.
+	 *
+	 * @return bool
+	 */
+	public static function is_writable( string $file ): bool {
+		return self::get_wp_filesystem()->is_writable( $file );
+	}
+
+	/**
+	 * Create JSON from given array.
+	 *
+	 * @param array<string|int,mixed>|WP_Error|SimpleXMLElement $source The source array.
+	 * @param int                                               $flag Flags to use for this JSON.
+	 *
+	 * @return string
+	 */
+	public static function get_json( array|WP_Error|SimpleXMLElement $source, int $flag = 0 ): string {
+		// create JSON.
+		$json = wp_json_encode( $source, $flag );
+
+		// bail if creating the JSON failed.
+		if ( ! $json ) {
+			return '';
+		}
+
+		// return resulting JSON-string.
+		return $json;
+	}
+
+	/**
+	 * Return the URL where the user could manage its API integrations in Personio.
+	 *
+	 * @return string
+	 */
+	public static function get_personio_api_management_url(): string {
+		return get_option( 'personioIntegrationLoginUrl' ) . '/configuration/marketplace/connected';
+	}
+
+	/**
+	 * Return the Personio documentation about API credentials.
+	 *
+	 * @return string
+	 */
+	public static function get_personio_api_documentation_url(): string {
+		if ( Languages::get_instance()->is_german_language() ) {
+			return 'https://support.personio.de/hc/de/articles/4404623630993-API-Zugriffsdaten-generieren-und-verwalten';
+		}
+		return 'https://support.personio.de/hc/en-us/articles/4404623630993-Generate-and-manage-API-credentials';
 	}
 }

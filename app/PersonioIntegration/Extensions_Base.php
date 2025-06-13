@@ -10,6 +10,9 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+
 /**
  * Object to handle positions.
  */
@@ -98,7 +101,7 @@ class Extensions_Base {
 	 */
 	public function __construct() {
 		// add global settings for each extension.
-		add_filter( 'personio_integration_settings', array( $this, 'add_global_settings' ) );
+		add_action( 'init', array( $this, 'add_global_settings' ), 20 );
 	}
 
 	/**
@@ -125,6 +128,13 @@ class Extensions_Base {
 	 * @return void
 	 */
 	public function init(): void {}
+
+	/**
+	 * Tasks to run during plugin activation for this extension.
+	 *
+	 * @return void
+	 */
+	public function activation(): void {}
 
 	/**
 	 * Return internal name of this extension.
@@ -355,34 +365,39 @@ class Extensions_Base {
 	/**
 	 * Add the global settings for each extension.
 	 *
-	 * @param array<array<string,mixed>> $settings List of settings.
-	 *
-	 * @return array<array<string,mixed>>
+	 * @return void
 	 */
-	public function add_global_settings( array $settings ): array {
+	public function add_global_settings(): void {
 		// bail if not setting field is set.
 		if ( empty( $this->get_settings_field_name() ) ) {
-			return $settings;
+			return;
 		}
 
-		// bail if setting does already exist.
-		if ( ! empty( $settings['hidden_section']['fields'][ $this->get_settings_field_name() ] ) ) {
-			return $settings;
+		// get settings object.
+		$settings_obj = Settings::get_instance();
+
+		// get hidden section.
+		$hidden = $settings_obj->get_section( 'hidden_section' );
+
+		// bail if hidden section does not exist.
+		if ( ! $hidden instanceof Section ) {
+			return;
 		}
 
-		// add global setting to enable or disable this extension.
-		$settings['hidden_section']['fields'][ $this->get_settings_field_name() ] = array(
-			'register_attributes' => array(
-				'type'         => 'integer',
-				'default'      => $this->is_default_enabled() ? 1 : 0,
-				'show_in_rest' => true,
-			),
-			'source'              => $this->get_plugin_source(),
-		);
-
-		// return resulting list.
-		return $settings;
+		// add setting.
+		$setting = $settings_obj->add_setting( $this->get_settings_field_name() );
+		$setting->set_section( $hidden );
+		$setting->set_show_in_rest( true );
+		$setting->set_type( 'integer' );
+		$setting->set_default( $this->is_default_enabled() ? 1 : 0 );
 	}
+
+	/**
+	 * Add settings for this extension.
+	 *
+	 * @return void
+	 */
+	public function add_settings(): void {}
 
 	/**
 	 * Whether this extension is enabled by default (true) or not (false).

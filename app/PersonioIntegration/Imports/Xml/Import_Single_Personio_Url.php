@@ -86,7 +86,7 @@ class Import_Single_Personio_Url {
 	 */
 	public function __construct() {
 		// get log-object.
-		$this->log = new Log();
+		$this->log = Log::get_instance();
 
 		// get debug-mode.
 		$this->debug = 1 === absint( get_option( 'personioIntegration_debug' ) );
@@ -151,7 +151,7 @@ class Import_Single_Personio_Url {
 		$imports_obj = $this->get_imports_object();
 		if ( ! $imports_obj instanceof Xml ) {
 			// log this event (should never happen).
-			$this->log->add_log( __( 'Object for imports could not be loaded.', 'personio-integration-light' ), 'error', 'import' );
+			$this->log->add( __( 'Object for imports could not be loaded.', 'personio-integration-light' ), 'error', 'import' );
 			exit;
 		}
 
@@ -206,7 +206,7 @@ class Import_Single_Personio_Url {
 
 		if ( is_wp_error( $response ) ) {
 			// log possible error.
-			$this->log->add_log( __( 'Error on request to get Personio timestamp: ', 'personio-integration-light' ) . ' <code>' . $response->get_error_message() . '</code>', 'error', 'import' );
+			$this->log->add( __( 'Error on request to get Personio timestamp: ', 'personio-integration-light' ) . ' <code>' . $response->get_error_message() . '</code>', 'error', 'import' );
 		} else {
 			// get the http-status to check if call results in acceptable results.
 			$http_status = $response['http_response']->get_status();
@@ -217,7 +217,7 @@ class Import_Single_Personio_Url {
 			// log timestamp if debug is enabled.
 			if ( ! is_null( $last_modified_timestamp ) && false !== $this->debug ) {
 				/* translators: %1$s will be replaced by the Personio URL. */
-				$this->log->add_log( sprintf( __( 'Last modified timestamp for %1$s from Personio: ', 'personio-integration-light' ), wp_kses_post( $this->get_link() ) ) . Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', absint( strtotime( $last_modified_timestamp ) ) ) ), 'success', 'import' );
+				$this->log->add( sprintf( __( 'Last modified timestamp for %1$s from Personio: ', 'personio-integration-light' ), wp_kses_post( $this->get_link() ) ) . Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', absint( strtotime( $last_modified_timestamp ) ) ) ), 'success', 'import' );
 			}
 
 			// if timestamp and xml api are not available set 404 as state.
@@ -244,7 +244,7 @@ class Import_Single_Personio_Url {
 
 				// log event.
 				/* translators: %1$s will be replaced by the language title. */
-				$this->log->add_log( sprintf( __( 'No changes in positions for language %1$s according to the timestamp we got from Personio account %2$s. Timestamp: %3$s. No import run.', 'personio-integration-light' ), esc_html( $language_title ), wp_kses_post( $this->get_link() ), esc_html( Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $last_modified_timestamp ) ) ) ), 'success', 'import' );
+				$this->log->add( sprintf( __( 'No changes in positions for language %1$s according to the timestamp we got from Personio account %2$s. Timestamp: %3$s. No import run.', 'personio-integration-light' ), esc_html( $language_title ), wp_kses_post( $this->get_link() ), esc_html( Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $last_modified_timestamp ) ) ) ), 'success', 'import' );
 
 				/**
 				 * Run actions for this case.
@@ -268,7 +268,7 @@ class Import_Single_Personio_Url {
 			// bail if any error occurred.
 			if ( is_wp_error( $response ) ) {
 				// log possible error.
-				$this->log->add_log( sprintf( 'Error on request to get Personio positions from %1$s: ', wp_kses_post( $this->get_link() ) ) . $response->get_error_message(), 'error', 'import' );
+				$this->log->add( sprintf( 'Error on request to get Personio positions from %1$s: ', wp_kses_post( $this->get_link() ) ) . $response->get_error_message(), 'error', 'import' );
 			} else {
 				// get the body with the contents.
 				$body = wp_remote_retrieve_body( $response );
@@ -281,7 +281,7 @@ class Import_Single_Personio_Url {
 				if ( ! $this->debug && $positions_count > 0 && $personio_obj->get_md5( $language_name ) === $md5hash ) {
 					// log event.
 					/* translators: %1$s will be replaced by a URL, %2$s by the language name. */
-					$this->log->add_log( sprintf( __( 'No changes in positions from %1$s for language %2$s according to the content we got from Personio. No import run.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
+					$this->log->add( sprintf( __( 'No changes in positions from %1$s for language %2$s according to the content we got from Personio. No import run.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
 
 					/**
 					 * Run actions for this case.
@@ -328,7 +328,7 @@ class Import_Single_Personio_Url {
 
 				// log event.
 				/* translators: %1$s will be replaced by the PersonioId, %2$s by the language title. */
-				$this->log->add_log( sprintf( __( 'Import of positions from %1$s for language %2$s starting.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
+				$this->log->add( sprintf( __( 'Import of positions from %1$s for language %2$s starting.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
 
 				// loop through the positions and import them.
 				foreach ( $this->get_xml_positions() as $xml_object ) {
@@ -352,7 +352,7 @@ class Import_Single_Personio_Url {
 						$this->imported_postions[] = $imports_obj->import_single_position( $xml_object, $language_name, $personio_obj->get_url() );
 					} elseif ( false !== $this->debug ) {
 						/* translators: %1$s will be replaced by the Personio ID, %2$s by a URL, %3$s by the name of the language. */
-						$this->log->add_log( sprintf( __( 'Position %1$s has not been imported from %2$s in language %3$s.', 'personio-integration-light' ), esc_html( $xml_object->id ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'info', 'import' );
+						$this->log->add( sprintf( __( 'Position %1$s has not been imported from %2$s in language %3$s.', 'personio-integration-light' ), esc_html( $xml_object->id ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'info', 'import' );
 					}
 
 					// update progress.
@@ -372,7 +372,7 @@ class Import_Single_Personio_Url {
 
 				// log ok.
 				/* translators: %1$d will be replaced by a number, %2$s by the Personio account URL and %3$s by the language title. */
-				$this->log->add_log( sprintf( __( '%1$d positions from Personio account %2$s in language %3$s imported.', 'personio-integration-light' ), count( $this->imported_postions ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
+				$this->log->add( sprintf( __( '%1$d positions from Personio account %2$s in language %3$s imported.', 'personio-integration-light' ), count( $this->imported_postions ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
 
 				// re-enable taxonomy-counting.
 				wp_defer_term_counting( false );

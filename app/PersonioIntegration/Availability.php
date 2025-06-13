@@ -10,10 +10,12 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\Plugin\Setup;
 
 /**
@@ -73,14 +75,16 @@ class Availability extends Extensions_Base {
 	 */
 	public function init(): void {
 		// bail if extension is not enabled.
-		if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
+		if ( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
 			return;
 		}
+
+		// add the settings.
+		add_action( 'init', array( $this, 'add_settings' ), 20 );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'run' ) );
-		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 
 		// extend the position table.
@@ -98,27 +102,30 @@ class Availability extends Extensions_Base {
 	/**
 	 * Add settings for this extension.
 	 *
-	 * @param array<string,mixed> $settings List of settings.
-	 *
-	 * @return array<string,mixed>
+	 * @return void
 	 */
-	public function add_settings( array $settings ): array {
-		if ( ! isset( $settings['settings_section_import_other']['fields'] ) ) {
-			return $settings;
-		}
-		$settings['settings_section_import_other']['fields']['personioIntegrationEnableAvailabilityCheck'] = array(
-			'label'               => __( 'Enable availability checks', 'personio-integration-light' ),
-			'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-			'description'         => __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ),
-			'register_attributes' => array(
-				'type'    => 'integer',
-				'default' => 1,
-			),
-			'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ),
-		);
+	public function add_settings(): void {
+		// get settings object.
+		$settings_obj = Settings::get_instance();
 
-		// return resulting list of settings.
-		return $settings;
+		// get the section.
+		$import_other_section = $settings_obj->get_section( 'settings_section_import_other' );
+
+		// bail if tab does not exist.
+		if ( ! $import_other_section instanceof Section ) {
+			return;
+		}
+
+		// add setting.
+		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnableAvailabilityCheck' );
+		$automatic_import_setting->set_section( $import_other_section );
+		$automatic_import_setting->set_type( 'integer' );
+		$automatic_import_setting->set_default( 1 );
+		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ) );
+		$field = new Checkbox();
+		$field->set_title( __( 'Enable availability checks', 'personio-integration-light' ) );
+		$field->set_description( __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ) );
+		$automatic_import_setting->set_field( $field );
 	}
 
 	/**
@@ -128,7 +135,7 @@ class Availability extends Extensions_Base {
 	 */
 	public function run(): void {
 		// bail if settings is not enabled.
-		if ( 1 !== absint( Settings::get_instance()->get_setting( 'personioIntegrationEnableAvailabilityCheck' ) ) ) {
+		if ( 1 !== absint( get_option( 'personioIntegrationEnableAvailabilityCheck' ) ) ) {
 			return;
 		}
 
@@ -283,7 +290,7 @@ class Availability extends Extensions_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		return 1 === absint( Settings::get_instance()->get_setting( $this->get_settings_field_name() ) );
+		return 1 === absint( get_option( $this->get_settings_field_name() ) );
 	}
 
 	/**
@@ -396,9 +403,6 @@ class Availability extends Extensions_Base {
 	 * @return void
 	 */
 	private function run_single_check( Position $position_obj ): void {
-		// get log object.
-		$log = new Log();
-
 		// define settings for second request to get the contents.
 		$args     = array(
 			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
@@ -408,7 +412,7 @@ class Availability extends Extensions_Base {
 
 		if ( is_wp_error( $response ) ) {
 			// log possible error.
-			$log->add_log( 'Error on request to get position availability: ' . $response->get_error_message(), 'error', 'availability' );
+			Log::get_instance()->add( 'Error on request to get position availability: ' . $response->get_error_message(), 'error', 'availability' );
 		} else {
 			// get the http-status to check if call results in acceptable results.
 			$http_status = $response['http_response']->get_status();

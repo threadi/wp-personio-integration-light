@@ -32,7 +32,7 @@ class Taxonomies {
 	private static ?Taxonomies $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -1204,8 +1204,7 @@ class Taxonomies {
 
 			// log in debug-mode.
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-				$log = new Log();
-				$log->add_log( 'Taxonomy ' . $taxonomy_name . ' has been deleted.', 'success', 'import' );
+				Log::get_instance()->add( 'Taxonomy ' . $taxonomy_name . ' has been deleted.', 'success', 'import' );
 			}
 
 			// show progress.

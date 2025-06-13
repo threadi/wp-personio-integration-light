@@ -12,7 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Extensions\Show_Xml;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-use PersonioIntegrationLight\Plugin\Settings;
 use SimpleXMLElement;
 use WP_Post;
 
@@ -129,7 +128,7 @@ class Show_Position_Xml extends Extensions_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		return 1 === absint( Settings::get_instance()->get_setting( $this->get_settings_field_name() ) );
+		return 1 === absint( get_option( $this->get_settings_field_name() ) );
 	}
 
 	/**
