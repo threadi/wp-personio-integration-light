@@ -82,36 +82,33 @@ class Imports_Base extends Extensions_Base {
 		// get settings object.
 		$settings_obj = Settings::get_instance();
 
-		// bail if import tab is already set.
-		if ( $settings_obj->get_tab( 'import' ) ) {
-			return;
-		}
+		// get settings page.
+		$settings_page = $settings_obj->get_page( 'personioPositions' );
 
 		// add the import tab.
-		$import_tab = $settings_obj->add_tab( 'import' );
+		$import_tab = $settings_page->add_tab( 'import', 20 );
 		$import_tab->set_title( __( 'Import', 'personio-integration-light' ) );
-		$import_tab->set_position( 1 );
 
 		// add main section.
-		$import_section = $import_tab->add_section( 'settings_section_import' );
+		$import_section = $import_tab->add_section( 'settings_section_import', 10 );
 		$import_section->set_title( __( 'Import of positions from Personio', 'personio-integration-light' ) );
 		$import_section->set_setting( $settings_obj );
 
 		// add other section.
-		$import_other_section = $import_tab->add_section( 'settings_section_import_other' );
+		$import_other_section = $import_tab->add_section( 'settings_section_import_other', 20 );
 		$import_other_section->set_title( __( 'Other settings', 'personio-integration-light' ) );
 		$import_other_section->set_setting( $settings_obj );
 
 		// add setting.
-		$setting = $settings_obj->add_setting( 'personioIntegrationImportNow' );
-		$setting->set_section( $import_section );
-		$setting->set_autoload( false );
-		$setting->prevent_export( true );
+		$import_now_setting = $settings_obj->add_setting( 'personioIntegrationImportNow' );
+		$import_now_setting->set_section( $import_section );
+		$import_now_setting->set_autoload( false );
+		$import_now_setting->prevent_export( true );
 		$field = new Button();
 		$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 		$field->set_button_title( __( 'Run import of positions now', 'personio-integration-light' ) );
 		$field->add_class( 'personio-integration-import-hint' );
-		$setting->set_field( $field );
+		$import_now_setting->set_field( $field );
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationDeleteNow' );
