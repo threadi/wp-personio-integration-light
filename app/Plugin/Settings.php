@@ -104,6 +104,7 @@ class Settings {
 		 * Configure the basic settings object.
 		 */
 		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_page = $settings_obj->add_page( 'personioPositions' );
 		$settings_obj->set_slug( 'personio_integration_light' );
 		$settings_obj->set_plugin_slug( WP_PERSONIO_INTEGRATION_PLUGIN );
 		$settings_obj->set_menu_title( __( 'Settings', 'personio-integration-light' ) );
@@ -123,82 +124,81 @@ class Settings {
 		 * Configure all tabs for this object.
 		 */
 		// the basic tab.
-		$general_tab = $settings_obj->add_tab( 'basic' );
+		$general_tab = $settings_page->add_tab( 'basic', 10 );
 		$general_tab->set_title( __( 'Basic Settings', 'personio-integration-light' ) );
-		$general_tab->set_page( 'personioPositions' );
-		$settings_obj->set_default_tab( $general_tab );
+		$settings_page->set_default_tab( $general_tab );
 
 		// the templates tab.
-		$templates_tab = $settings_obj->add_tab( 'templates' );
+		$templates_tab = $settings_page->add_tab( 'templates', 20 );
 		$templates_tab->set_title( __( 'Templates', 'personio-integration-light' ) );
-		$templates_tab->set_page( 'personioPositions' );
 
 		// the pro tab.
-		$pro_tab = $settings_obj->add_tab( 'use_pro' );
+		$pro_tab = $settings_page->add_tab( 'use_pro', 30 );
 		$pro_tab->set_title( __( 'Applications, SEO & more', 'personio-integration-light' ) );
 		$pro_tab->set_not_linked( true );
-		$pro_tab->set_page( 'personioPositions' );
 
 		// the advanced tab.
-		$advanced_tab = $settings_obj->add_tab( 'advanced' );
+		$advanced_tab = $settings_page->add_tab( 'advanced', 40 );
 		$advanced_tab->set_title( __( 'Advanced', 'personio-integration-light' ) );
-		$advanced_tab->set_page( 'personioPositions' );
 
 		// the logs tab.
-		$logs_tab = $settings_obj->add_tab( 'logs' );
+		$logs_tab = $settings_page->add_tab( 'logs', 50 );
 		$logs_tab->set_title( __( 'Logs', 'personio-integration-light' ) );
 		$logs_tab->set_hide_save( true );
 		$logs_tab->set_callback( array( '\PersonioIntegrationLight\Plugin\Admin\Logs', 'show' ) );
-		$logs_tab->set_page( 'personioPositions' );
 
 		// the copyright tab.
-		$copyright_tab = $settings_obj->add_tab( 'copyright' );
+		$copyright_tab = $settings_page->add_tab( 'copyright', 900 );
 		$copyright_tab->set_title( '&nbsp;' );
 		$copyright_tab->set_tab_class( 'copyright' );
 		$copyright_tab->set_hide_save( true );
 		$copyright_tab->set_callback( array( $this, 'show_copyright' ) );
-		$copyright_tab->set_page( 'personioPositions' );
 
 		// the help tab.
-		$help_tab = $settings_obj->add_tab( 'help' );
+		$help_tab = $settings_page->add_tab( 'help', 1000 );
 		$help_tab->set_title( __( 'Questions? Check our forum!', 'personio-integration-light' ) );
 		$help_tab->set_tab_class( 'nav-tab-help' );
 		$help_tab->set_url( Helper::get_plugin_support_url() );
 		$help_tab->set_url_target( '_blank' );
-		$help_tab->set_page( 'personioPositions' );
 
 		/**
 		 * Create sections for this settings object.
 		 */
 		// the main section.
-		$general_tab_main = $general_tab->add_section( 'settings_section_main' );
+		$general_tab_main = $general_tab->add_section( 'settings_section_main', 10 );
 		$general_tab_main->set_title( __( 'General Settings', 'personio-integration-light' ) );
 		$general_tab_main->set_setting( $settings_obj );
 
 		// the template list section.
-		$template_list = $templates_tab->add_section( 'settings_section_template_list' );
+		$template_list = $templates_tab->add_section( 'settings_section_template_list', 10 );
 		$template_list->set_title( __( 'List View', 'personio-integration-light' ) );
 		$template_list->set_setting( $settings_obj );
 		$template_list->set_callback( array( $this, 'show_fse_hint' ) );
 
 		// the template detail section.
-		$template_detail = $templates_tab->add_section( 'settings_section_template_detail' );
+		$template_detail = $templates_tab->add_section( 'settings_section_template_detail', 20 );
 		$template_detail->set_title( __( 'Detail View', 'personio-integration-light' ) );
 		$template_detail->set_setting( $settings_obj );
 
 		// the template other section.
-		$template_other = $templates_tab->add_section( 'settings_section_template_other' );
+		$template_other = $templates_tab->add_section( 'settings_section_template_other', 30 );
 		$template_other->set_title( __( 'Other settings', 'personio-integration-light' ) );
 		$template_other->set_setting( $settings_obj );
 
 		// the advanced section.
-		$advanced = $advanced_tab->add_section( 'settings_section_advanced' );
+		$advanced = $advanced_tab->add_section( 'settings_section_advanced', 10 );
 		$advanced->set_title( __( 'Advanced settings', 'personio-integration-light' ) );
 		$advanced->set_setting( $settings_obj );
 		$advanced->set_callback( array( $this, 'show_advanced_hint' ) );
 
-		// the hidden section.
-		$hidden = $advanced_tab->add_section( 'hidden_section' );
+		// create a hidden page for hidden settings.
+		$hidden_page = $settings_obj->add_page( 'hidden_page' );
+
+		// create a hidden tab on this page.
+		$hidden_tab = $hidden_page->add_tab( 'hidden_tab', 10 );
+
+		// the hidden section for any not visible settings.
+		$hidden = $hidden_tab->add_section( 'hidden_section', 20 );
 		$hidden->set_setting( $settings_obj );
 
 		/**
@@ -209,19 +209,19 @@ class Settings {
 		$true     = true;
 
 		// add setting.
-		$setting = $settings_obj->add_setting( 'personioIntegrationUrl' );
-		$setting->set_section( $general_tab_main );
-		$setting->set_show_in_rest( true );
-		$setting->set_type( 'string' );
-		$setting->set_default( '' );
-		$setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ) );
+		$personio_url_setting = $settings_obj->add_setting( 'personioIntegrationUrl' );
+		$personio_url_setting->set_section( $general_tab_main );
+		$personio_url_setting->set_show_in_rest( true );
+		$personio_url_setting->set_type( 'string' );
+		$personio_url_setting->set_default( '' );
+		$personio_url_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ) );
 		$field = new Text();
 		$field->set_title( __( 'Personio URL', 'personio-integration-light' ) );
 		/* translators: %1$s is replaced with the URL to Personio login for account access, %2$s is replaced with the url to the Personio support */
 		$field->set_description( sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br><strong>Hint:</strong> You have to enable the XML-feed under Settings > Recruiting > Career in your Personio account.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s" target="_blank">Personio support (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ), esc_url( Helper::get_personio_support_url() ) ) . '</p>' . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
 		$field->set_placeholder( Helper::get_personio_url_example() );
 		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ) );
-		$setting->set_field( $field );
+		$personio_url_setting->set_field( $field );
 
 		// add setting.
 		$setting = $settings_obj->add_setting( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );

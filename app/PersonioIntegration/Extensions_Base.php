@@ -390,6 +390,7 @@ class Extensions_Base {
 		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
 		$setting->set_default( $this->is_default_enabled() ? 1 : 0 );
+		$setting->add_custom_var( 'source', $this->get_plugin_source() );
 	}
 
 	/**

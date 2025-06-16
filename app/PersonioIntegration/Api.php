@@ -93,7 +93,7 @@ class Api {
 		}
 
 		// create the section.
-		$api_section = $general_tab->add_section( 'settings_section_api' );
+		$api_section = $general_tab->add_section( 'settings_section_api', 70 );
 		$api_section->set_title( __( 'Settings for API', 'personio-integration-light' ) );
 		$api_section->set_setting( $settings_obj );
 		$api_section->set_callback( array( $this, 'show_api_settings_hint' ) );
