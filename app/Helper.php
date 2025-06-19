@@ -537,17 +537,21 @@ class Helper {
 	 * Return the settings-URL.
 	 *
 	 * @param string $page The page to call (e.g. "personioPositions").
-	 * @param string $tab String which represents the tab to link to.
+	 * @param string $tab  String which represents the tab to link to.
+	 * @param string $sub_tab String for the sub-tab to link to.
 	 *
 	 * @return string
 	 */
-	public static function get_settings_url( string $page = 'personioPositions', string $tab = '' ): string {
+	public static function get_settings_url( string $page = 'personioPositions', string $tab = '', string $sub_tab = '' ): string {
 		$params = array(
 			'post_type' => PersonioPosition::get_instance()->get_name(),
 			'page'      => $page,
 		);
 		if ( ! empty( $tab ) ) {
 			$params['tab'] = $tab;
+		}
+		if ( ! empty( $sub_tab ) ) {
+			$params['subtab'] = $sub_tab;
 		}
 		return add_query_arg( $params, get_admin_url() . 'edit.php' );
 	}
