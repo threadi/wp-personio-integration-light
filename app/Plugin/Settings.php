@@ -137,12 +137,17 @@ class Settings {
 		$pro_tab->set_title( __( 'Applications, SEO & more', 'personio-integration-light' ) );
 		$pro_tab->set_not_linked( true );
 
+		// add the extension tab.
+		$extensions_tab = $settings_page->add_tab( 'extensions', 40 );
+		$extensions_tab->set_title( __( 'Extensions', 'personio-integration-light' ) );
+		$extensions_tab->set_hide_save( true );
+
 		// the advanced tab.
-		$advanced_tab = $settings_page->add_tab( 'advanced', 40 );
-		$advanced_tab->set_title( __( 'Advanced', 'personio-integration-light' ) );
+		$advanced_tab = $settings_page->add_tab( 'advanced', 50 );
+		$advanced_tab->set_title( __( 'Additional settings', 'personio-integration-light' ) );
 
 		// the logs tab.
-		$logs_tab = $settings_page->add_tab( 'logs', 50 );
+		$logs_tab = $settings_page->add_tab( 'logs', 60 );
 		$logs_tab->set_title( __( 'Logs', 'personio-integration-light' ) );
 		$logs_tab->set_hide_save( true );
 		$logs_tab->set_callback( array( '\PersonioIntegrationLight\Plugin\Admin\Logs', 'show' ) );
@@ -187,7 +192,7 @@ class Settings {
 
 		// the advanced section.
 		$advanced = $advanced_tab->add_section( 'settings_section_advanced', 10 );
-		$advanced->set_title( __( 'Advanced settings', 'personio-integration-light' ) );
+		$advanced->set_title( __( 'Additional settings', 'personio-integration-light' ) );
 		$advanced->set_setting( $settings_obj );
 		$advanced->set_callback( array( $this, 'show_advanced_hint' ) );
 

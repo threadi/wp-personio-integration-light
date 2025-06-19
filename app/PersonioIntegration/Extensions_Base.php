@@ -10,8 +10,10 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 
 /**
  * Object to handle positions.
@@ -73,7 +75,14 @@ class Extensions_Base {
 	 *
 	 * @var string
 	 */
-	protected string $setting_tab = '';
+	protected string $setting_tab = 'extensions';
+
+	/**
+	 * Name of the setting tab where the setting field is visible.
+	 *
+	 * @var string
+	 */
+	protected string $setting_sub_tab = '';
 
 	/**
 	 * Internal name of the used category.
@@ -336,6 +345,15 @@ class Extensions_Base {
 	}
 
 	/**
+	 * Return the name of the setting-tab.
+	 *
+	 * @return string
+	 */
+	public function get_setting_sub_tab(): string {
+		return $this->setting_sub_tab;
+	}
+
+	/**
 	 * Return whether this extension has a custom state.
 	 *
 	 * @return bool
@@ -484,5 +502,26 @@ class Extensions_Base {
 			),
 			get_admin_url() . 'admin.php'
 		);
+	}
+
+	/**
+	 * Return the extension tab where we add our settings for extensions.
+	 *
+	 * @return Tab|false
+	 */
+	protected function get_extension_tab(): Tab|false {
+		// get settings object.
+		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+
+		// get the main settings page.
+		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
+
+		// bail if page could not be loaded.
+		if( ! $main_settings_page instanceof Page ) {
+			return false;
+		}
+
+		// get and return the extension tab.
+		return $main_settings_page->get_tab( 'extensions' );
 	}
 }

@@ -11,8 +11,9 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -41,7 +42,7 @@ class Availability extends Extensions_Base {
 	 *
 	 * @var string
 	 */
-	protected string $setting_tab = 'import';
+	protected string $setting_sub_tab = 'availability';
 
 	/**
 	 * Internal name of the used category.
@@ -108,17 +109,34 @@ class Availability extends Extensions_Base {
 		// get settings object.
 		$settings_obj = Settings::get_instance();
 
-		// get the section.
-		$import_other_section = $settings_obj->get_section( 'settings_section_import_other' );
+		// get the main settings page.
+		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
 
-		// bail if tab does not exist.
-		if ( ! $import_other_section instanceof Section ) {
+		// bail if page could not be loaded.
+		if( ! $main_settings_page instanceof Page ) {
 			return;
 		}
 
+		// get the extensions tab.
+		$extension_tab = $main_settings_page->get_tab( $this->get_setting_tab() );
+
+		// bail if tab could not be loaded.
+		if( ! $extension_tab instanceof Tab ) {
+			return;
+		}
+
+		// add our own tab.
+		$availability_tab = $extension_tab->add_tab( $this->get_setting_sub_tab(), 10 );
+		$availability_tab->set_title( __( 'Availability', 'personio-integration-light' ) );
+		$extension_tab->set_default_tab( $availability_tab );
+
+		// add the section.
+		$availability_section = $availability_tab->add_section( 'settings_section_availability', 10 );
+		$availability_section->set_title( __( 'Settings for availability check', 'personio-integration-light' ) );
+
 		// add setting.
 		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnableAvailabilityCheck' );
-		$automatic_import_setting->set_section( $import_other_section );
+		$automatic_import_setting->set_section( $availability_section );
 		$automatic_import_setting->set_type( 'integer' );
 		$automatic_import_setting->set_default( 1 );
 		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ) );
