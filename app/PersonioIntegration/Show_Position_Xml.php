@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions\Show_Xml;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use SimpleXMLElement;
@@ -64,6 +65,8 @@ class Show_Position_Xml extends Extensions_Base {
 	 * @return void
 	 */
 	public function init(): void {
+		add_filter( 'personio_integration_light_extension_state_changed_dialog', array( $this, 'add_hint_after_enabling' ), 10, 2 );
+
 		// bail if extension is not enabled.
 		if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
 			return;
@@ -174,5 +177,38 @@ class Show_Position_Xml extends Extensions_Base {
 	 */
 	private function get_extension( Position $position_obj ): Show_Xml {
 		return new Show_Xml( $position_obj->get_id() );
+	}
+
+	/**
+	 * Extend the dialog after enabling this extension with hints to usage.
+	 *
+	 * @param array $dialog The dialog.
+	 * @param Extensions_Base $extension The changed extension.
+	 *
+	 * @return array
+	 */
+	public function add_hint_after_enabling( array $dialog, Extensions_Base $extension ): array {
+		// bail if this is not this extension.
+		if( $this->get_name() !== $extension->get_name() ) {
+			return $dialog;
+		}
+
+		// bail if status is disabled.
+		if( ! $extension->is_enabled() ) {
+			return $dialog;
+		}
+
+		// add hint.
+		$dialog['texts'][] = '<p>' . __( 'Follow these steps to be able to see the XML which has been published by Personio for each position:', 'wp-personio-integration' ) . '</></p>';
+		/* translators: %1$s will be replaced by a URL. */
+		$list = '<ol><li>' . sprintf( __( 'Import the positions as usual, e.g. <a href="%1$s">here</a>, to update its data.', 'wp-personio-integration' ), esc_url( Helper::get_settings_url( 'personioPostions', 'import' ) ) ) . '</li>';
+		/* translators: %1$s will be replaced by a URL. */
+		$list .= '<li>' . sprintf( __( 'Go to the <a href="%1$s">list of positions</a>.', 'wp-personio-integration' ), esc_url( PersonioPosition::get_instance()->get_link() ) ) . '</li>';
+		$list .= '<li>' . __( 'Edit the individual positions to see the XML output there.', 'wp-personio-integration' ) . '</li></ol>';
+
+		$dialog['texts'][] = $list;
+
+		// return resulting dialog.
+		return $dialog;
 	}
 }

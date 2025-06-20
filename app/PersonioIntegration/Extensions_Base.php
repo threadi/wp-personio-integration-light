@@ -14,6 +14,7 @@ use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
+use PersonioIntegrationLight\Helper;
 
 /**
  * Object to handle positions.
@@ -523,5 +524,14 @@ class Extensions_Base {
 
 		// get and return the extension tab.
 		return $main_settings_page->get_tab( 'extensions' );
+	}
+
+	/**
+	 * Return the URL for the form handler settings.
+	 *
+	 * @return string
+	 */
+	public function get_settings_link(): string {
+		return Helper::get_settings_url( $this->get_settings_page(), $this->get_setting_tab(), $this->get_setting_sub_tab() );
 	}
 }
