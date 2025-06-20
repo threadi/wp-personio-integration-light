@@ -5,6 +5,7 @@
 ### Added
 
 - Plugin structure revised with modern security mechanisms and design
+- Added new object to handle all settings
 - Prepared support for new Personio API V2, which is still in beta and not usable for productive systems
 - Added encryption for sensible data like API credentials
 - Added backend page for list of applications as hint for using the Pro
@@ -14,7 +15,7 @@
 
 - Now requires PHP 8.1 or newer
 - Get actual language via get_locale() and reduce usage of unnecessary additional hooks for multilingual plugins
-- Import of position is now also handled as extension
+- Import of positions are now also handled as extension
 - Changed application hint in menu to be more stabil
 - Extensions for positions replaced with less complex way
 - More code optimizations with PHPStan

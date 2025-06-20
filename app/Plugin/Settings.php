@@ -19,8 +19,11 @@ use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Radio;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Select;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Import;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 
@@ -141,6 +144,7 @@ class Settings {
 		$extensions_tab = $settings_page->add_tab( 'extensions', 40 );
 		$extensions_tab->set_title( __( 'Extensions', 'personio-integration-light' ) );
 		$extensions_tab->set_hide_save( true );
+		$extensions_tab->set_callback( array( $this, 'show_extensions_hint' ) );
 
 		// the advanced tab.
 		$advanced_tab = $settings_page->add_tab( 'advanced', 50 );
@@ -611,6 +615,19 @@ class Settings {
 		$setting->set_section( $hidden );
 		$setting->set_type( 'array' );
 		$setting->set_default( array() );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationPositionCount' );
+		$setting->set_section( $hidden );
+		$setting->set_type( 'integer' );
+		$setting->set_default( 0 );
+		$setting->prevent_export( true );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personio_integration_schedules' );
+		$setting->set_section( $hidden );
+		$setting->set_type( 'array' );
+		$setting->set_default( array() );
 	}
 
 	/**
@@ -735,5 +752,51 @@ class Settings {
 	public function show_advanced_hint(): void {
 		/* translators: %1$s will be replaced with the plugin Pro name */
 		echo wp_kses_post( apply_filters( 'personio_integration_admin_show_pro_hint', __( 'With %1$s you get more advanced options, e.g. to change the URL of archives with positions.', 'personio-integration-light' ), false ) );
+	}
+
+	/**
+	 * Return the hidden section of the settings object.
+	 *
+	 * @return false|Section
+	 */
+	public function get_hidden_section(): Section|false {
+		// get settings object.
+		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+
+		// create a hidden page for hidden settings.
+		$hidden_page = $settings_obj->get_page( 'hidden_page' );
+
+		// bail if page could not be found.
+		if( ! $hidden_page instanceof Page ) {
+			return false;
+		}
+
+		// create a hidden tab on this page.
+		$hidden_tab = $hidden_page->get_tab( 'hidden_tab' );
+
+		// bail if tab could not be found.
+		if( ! $hidden_tab instanceof Tab ) {
+			return false;
+		}
+
+		// the hidden section for any not visible settings.
+		$hidden_section = $hidden_tab->get_section( 'hidden_section' );
+
+		// bail if section could not be found.
+		if( ! $hidden_section instanceof Section ) {
+			return false;
+		}
+
+		// return the hidden section object.
+		return $hidden_section;
+	}
+
+	/**
+	 * Show hint where extensions could be managed.
+	 *
+	 * @return void
+	 */
+	public function show_extensions_hint(): void {
+		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'Manage your active extensions <a href="%1$s">here</a>. Depending on the active extensions, your setting options will expand here.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link() ) ) ) . '</p>';
 	}
 }
