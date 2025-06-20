@@ -192,8 +192,6 @@ class Uninstaller {
 			WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST,
 			'personioIntegrationLightInstallDate',
 			'personio_integration_settings',
-			'personio_integration_schedules',
-			'personioIntegrationPositionCount',
 			'personio_integration_intro',
 		);
 	}

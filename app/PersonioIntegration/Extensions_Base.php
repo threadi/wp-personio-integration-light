@@ -395,7 +395,7 @@ class Extensions_Base {
 		$settings_obj = Settings::get_instance();
 
 		// get hidden section.
-		$hidden = $settings_obj->get_section( 'hidden_section' );
+		$hidden = \PersonioIntegrationLight\Plugin\Settings::get_instance()->get_hidden_section();
 
 		// bail if hidden section does not exist.
 		if ( ! $hidden instanceof Section ) {

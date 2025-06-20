@@ -11,9 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
-use PersonioIntegrationLight\PersonioIntegration\Imports;
 
 /**
  * Helper-function for plugin-activation and -deactivation.
@@ -106,6 +104,12 @@ class Installer {
 
 		// install our db tables.
 		Init::get_instance()->install_db_tables();
+
+		// install schedules.
+		Schedules::get_instance()->create_schedules();
+
+		// add roles during installation.
+		Roles::get_instance()->install();
 
 		// add the main settings.
 		Settings::get_instance()->add_settings();

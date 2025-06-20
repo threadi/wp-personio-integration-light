@@ -241,7 +241,7 @@ class Setup {
 			PersonioPosition::get_instance()->get_name(),
 			__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
 			__( 'Setup', 'personio-integration-light' ),
-			'manage_' . PersonioPosition::get_instance()->get_name(),
+			'manage_options',
 			'personioPositions',
 			array( $this, 'display' ),
 			1
