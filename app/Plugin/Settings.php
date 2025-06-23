@@ -175,7 +175,7 @@ class Settings {
 		 */
 		// the main section.
 		$general_tab_main = $general_tab->add_section( 'settings_section_main', 10 );
-		$general_tab_main->set_title( __( 'General Settings', 'personio-integration-light' ) );
+		$general_tab_main->set_title( __( 'General settings', 'personio-integration-light' ) );
 		$general_tab_main->set_setting( $settings_obj );
 
 		// the template list section.
@@ -710,7 +710,7 @@ class Settings {
 	}
 
 	/**
-	 * Add import categories.
+	 * Add import category for log view.
 	 *
 	 * @param array<string,string> $categories List of categories.
 	 *

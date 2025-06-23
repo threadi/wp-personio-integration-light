@@ -324,7 +324,7 @@ function personio_get_import_info() {
           personio_get_import_info()
         }, 500 );
       } else if (errors.length > 0) {
-        let message = '<p>' + personioIntegrationLightJsVars.import_txt_error + '</p>';
+        let message = '<p><strong>' + personioIntegrationLightJsVars.import_txt_error + '</strong></p>';
         message = message + '<ul>';
         for (error of errors) {
           message = message + '<li>' + error + '</li>';
@@ -332,6 +332,7 @@ function personio_get_import_info() {
         message = message + '</ul>';
         let dialog_config = {
           detail: {
+            className: 'personio-integration-import-error',
             title: personioIntegrationLightJsVars.import_title_error,
             texts: [
               message

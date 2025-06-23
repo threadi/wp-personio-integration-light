@@ -212,7 +212,7 @@ class Position {
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *
-		 * @param array $array The position data as array.
+		 * @param array<string,mixed> $array The position data as array.
 		 * @param Position $instance The object we are in.
 		 */
 		$array = apply_filters( 'personio_integration_import_single_position_filter_before_saving', $array, $instance );

@@ -10,6 +10,11 @@
 - Added encryption for sensible data like API credentials
 - Added backend page for list of applications as hint for using the Pro
 - Added support for Say What for hint to translate taxonomy terms
+- Added new email object which handles all emails this plugin is sending
+- Added new email trigger: if position has been deleted, if new position has been imported, if any error occurred during import
+- Added new statistic about the plugin data, which could also be sent via email on regular base
+- Added option to change the from-email in each email
+- Added email-template for all emails
 
 ### Changed
 

@@ -47,13 +47,6 @@ class Xml extends Imports_Base {
 	protected string $extension_category = 'imports';
 
 	/**
-	 * List of errors during an import run.
-	 *
-	 * @var array<string>
-	 */
-	private array $errors = array();
-
-	/**
 	 * Variable for instance of this Singleton object.
 	 *
 	 * @var ?Xml
@@ -244,6 +237,15 @@ class Xml extends Imports_Base {
 
 					// if result is WP_Post, it has been deleted successfully.
 					if ( $result instanceof WP_Post ) {
+						/**
+						 * Run tasks if a position has been deleted.
+						 *
+						 * @since 5.0.0 Available since 5.0.0.
+						 * @param string $personio_id The Personio ID of the position which has been deleted.
+						 * @param Position $position_obj The position which has been deleted. Hint: do not use any DB-request via this object.
+						 */
+						do_action( 'personio_integration_light_import_deleted_position', $personio_id, $position_obj );
+
 						// log this event.
 						/* translators: %1$s will be replaced by the PersonioID. */
 						Log::get_instance()->add( sprintf( __( 'Position %1$s has been deleted as it was not updated during the last import run.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'success', 'import' );
@@ -266,7 +268,7 @@ class Xml extends Imports_Base {
 			Helper::is_cli() ? \WP_CLI::success( $language_count . ' languages grabbed, ' . $imported_positions . ' positions imported.' ) : false;
 		} else {
 			// document errors.
-			update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, $this->errors );
+			update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, $this->get_errors() );
 
 			// handle errors.
 			$this->handle_errors();
