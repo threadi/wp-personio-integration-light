@@ -97,6 +97,9 @@ class Init {
 		// init compatibility-checks.
 		Compatibilities::get_instance()->init();
 
+		// init email support.
+		Emails::get_instance()->init();
+
 		// install db tables on plugin-installation.
 		add_action( 'personio_integration_install_db_tables', array( $this, 'install_db_tables' ) );
 

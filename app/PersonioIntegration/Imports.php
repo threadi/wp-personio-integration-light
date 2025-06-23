@@ -71,6 +71,11 @@ class Imports {
 
 		// remove transient with warning.
 		Transients::get_instance()->delete_transient( Transients::get_instance()->get_transient_by_name( 'personio_import_extension_not_enabled' ) );
+
+		// use our own hooks.
+		add_action( 'personio_integration_import_starting', array( $this, 'reset_new_position_list' ) );
+		add_filter( 'personio_integration_import_single_position_filter_before_saving', array( $this, 'check_if_position_is_new' ), 10, 2 );
+		add_action( 'personio_integration_light_import_deleted_position', array( $this, 'add_to_list_of_deleted_positions' ) );
 	}
 
 	/**
@@ -257,5 +262,69 @@ class Imports {
 		/* translators: %1$s will be replaced by a URL. */
 		$transient_obj->set_message( sprintf( __( 'There is no import extension for Personio positions enabled. Please <a href="%1$s">go to the list of import extensions</a> and enable one to import and update your positions in your website.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link( 'imports' ) ) ) );
 		$transient_obj->save();
+	}
+
+	/**
+	 * Reset the list of newly imported positions.
+	 *
+	 * @return void
+	 */
+	public function reset_new_position_list(): void {
+		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS );
+	}
+
+	/**
+	 * Check if we have a new position. This is detected if "ID" is 0.
+	 *
+	 * @param array<string,mixed> $post_array List of data.
+	 * @param Position $position_obj The position object.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function check_if_position_is_new( array $post_array, Position $position_obj ): array {
+		// bail if ID is given.
+		if( absint( $post_array['ID'] ) > 0 ) {
+			return $post_array;
+		}
+
+		// get the actual list of new position from this import.
+		$new_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, array() );
+
+		// bail if list is empty.
+		if( empty( $new_positions ) ) {
+			$new_positions = array();
+		}
+
+		// add this position.
+		$new_positions[] = $position_obj;
+
+		// save the list of new positions.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, $new_positions );
+
+		// return the post array.
+		return $post_array;
+	}
+
+	/**
+	 * Add entry to the list of deleted positions.
+	 *
+	 * @param string $personio_id The Personio ID of the position which has been deleted.
+	 *
+	 * @return void
+	 */
+	public function add_to_list_of_deleted_positions( string $personio_id ): void {
+		// get the actual list of deleted position from this import.
+		$deleted_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, array() );
+
+		// bail if list is empty.
+		if( empty( $deleted_positions ) ) {
+			$deleted_positions = array();
+		}
+
+		// add this position.
+		$deleted_positions[] = $personio_id;
+
+		// save the list of new positions.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, $deleted_positions );
 	}
 }

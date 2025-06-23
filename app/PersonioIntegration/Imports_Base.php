@@ -8,16 +8,15 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
+defined( 'ABSPATH' ) || exit;
+
 use cli\progress\Bar;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\Plugin\Email_Base;
+use PersonioIntegrationLight\Plugin\Emails\ImportError;
 use WP_CLI\NoOp;
 use WP_Error;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Handles import extensions for this plugin.
@@ -134,8 +133,8 @@ class Imports_Base extends Extensions_Base {
 		// get the log object.
 		$log = Log::get_instance();
 
-		// collect the string for the email and WP_CLI.
-		$message = '';
+		// collect the error texts for the email and WP_CLI.
+		$message = array();
 
 		// loop through the errors.
 		foreach ( $this->get_errors() as $error ) {
@@ -156,7 +155,7 @@ class Imports_Base extends Extensions_Base {
 			$log->add( $text, 'error', 'import' );
 
 			// add text to string for email and WP_CLI.
-			$message .= "\n\n" . $text;
+			$message[] = $text;
 		}
 
 		// output results in WP-CLI.
@@ -165,37 +164,12 @@ class Imports_Base extends Extensions_Base {
 		}
 
 		// set errors in list for response.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, nl2br( $message ) );
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, $message );
 
-		// send info to admin about the problem if debug is disabled.
-		if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
-			/* translators: %1$s will be replaced by a URL. */
-			$support_part  = '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="%1$s">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
-			$support_part .= '<br><br>' . __( 'This hint was sent to by the WordPress-plugin Personio Integration Light', 'personio-integration-light' );
-			/**
-			 * Filter the support part of the email on import error.
-			 *
-			 * @since 4.1.0 Available since 4.1.0.
-			 * @param string $support_part The text to use.
-			 */
-			$support_part = apply_filters( 'personio_integration_light_import_error_support_hint', $support_part );
-
-			// set recipient.
-			$send_to = get_bloginfo( 'admin_email' );
-
-			// set subject.
-			$subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
-
-			// set email text.
-			$body  = __( 'The following error occurred when importing positions provided by Personio:', 'personio-integration-light' ) . '<br><br><em>' . nl2br( $message ) . '</em>';
-			$body .= $support_part;
-
-			// set headers.
-			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
-
-			// send email.
-			wp_mail( $send_to, $subject, $body, $headers );
-		}
+		// create the email object.
+		$email = new ImportError();
+		$email->set_errors( $message );
+		$email->send();
 
 		/**
 		 * Run additional tasks for processing errors during import of positions.

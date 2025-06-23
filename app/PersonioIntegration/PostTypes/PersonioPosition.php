@@ -20,6 +20,7 @@ use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
+use PersonioIntegrationLight\PersonioIntegration\Statistics;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Themes;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
@@ -93,6 +94,9 @@ class PersonioPosition extends Post_Type {
 
 		// enable extensions.
 		Extensions::get_instance()->init();
+
+		// initialize the statistics.
+		Statistics::get_instance()->init();
 
 		// register this cpt.
 		add_action( 'init', array( $this, 'register' ) );

@@ -103,6 +103,10 @@ body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
 	margin-top: 0;
 }
 
+.post-type-personioposition .tab-content > .personio-integration-hint:first-child:first-child {
+	margin-top: 1em;
+}
+
 .post-type-personioposition:not(.personioposition_page_personioApplication) div.wrap > .personio-pro-hint {
     padding: 0 8px;
 }
@@ -359,4 +363,14 @@ body.post-type-personioposition .button span.dashicons {
 #dashboard_personio_integration_positions p:last-child:after {
 	content: url(../gfx/personio_icon.png);
 	float: right;
+}
+
+.easy-dialog.personio-integration-import-error ul {
+	list-style: disc;
+	padding-left: 1em;
+	max-width: 320px;
+}
+
+.personioposition_page_personioPositions table th {
+	text-align: left;
 }

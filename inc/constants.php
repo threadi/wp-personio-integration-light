@@ -46,6 +46,16 @@ const WP_PERSONIO_INTEGRATION_IMPORT_ERRORS = 'personioIntegrationImportErrors';
 const WP_PERSONIO_INTEGRATION_IMPORT_STATUS = 'personioIntegrationImportStatus';
 
 /**
+ * List of newly imported positions.
+ */
+const WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS = 'personioIntegrationImportNewPositions';
+
+/**
+ * List of deleted positions after import.
+ */
+const WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS = 'personioIntegrationImportDeletedPositions';
+
+/**
  * Marker for running deletion.
  */
 const WP_PERSONIO_INTEGRATION_DELETE_RUNNING = 'personioIntegrationDeleteRunning';

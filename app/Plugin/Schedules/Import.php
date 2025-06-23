@@ -13,7 +13,6 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\Plugin\Schedules_Base;
-use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object for this schedule.
