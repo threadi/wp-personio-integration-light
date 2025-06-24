@@ -129,9 +129,9 @@ class Email_Base {
 		$setting->set_default( get_option( 'admin_email' ) );
 		$setting->set_read_callback( array( $this, 'set_from' ) );
 		$field = new Text();
-		$text_field->set_placeholder( 'info@example.com' );
 		$field->set_title( __( 'Sender Email', 'personio-integration-light' ) );
 		$field->set_description( sprintf( __( 'If no email is set we use the admin-email %1$s as recipient. You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'wp-personio-integration' ), '<code>' . get_option( 'admin_email' ) . '</code>', $wp_general_settings_url ));
+		$field->set_placeholder( 'info@example.com' );
 		$field->add_depend( $enable_setting, 1 );
 		$setting->set_field( $field );
 
@@ -389,6 +389,13 @@ class Email_Base {
 	protected function prepare_for_test(): void {}
 
 	/**
+	 * Cleanup the object after test email.
+	 *
+	 * @return void
+	 */
+	protected function cleanup_after_test(): void {}
+
+	/**
 	 * Trigger a test email with default content.
 	 *
 	 * @return void
@@ -402,6 +409,9 @@ class Email_Base {
 
 		// send the email.
 		$this->send();
+
+		// cleanup after test.
+		$this->cleanup_after_test();
 	}
 
 	/**

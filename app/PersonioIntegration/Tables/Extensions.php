@@ -215,7 +215,7 @@ class Extensions extends WP_List_Table {
 	public function column_name( Extensions_Base $item ): string {
 		// define actions.
 		$actions = array();
-		if ( ! empty( $item->get_setting_tab() ) && ! empty( $item->get_setting_sub_tab() ) ) {
+		if ( ! empty( $item->get_setting_tab() ) ) {
 			$actions['settings'] = '<a href="' . esc_url( $item->get_settings_link() ) . '">' . esc_html__( 'Settings', 'personio-integration-light' ) . '</a>';
 		}
 

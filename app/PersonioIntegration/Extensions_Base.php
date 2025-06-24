@@ -532,6 +532,9 @@ class Extensions_Base {
 	 * @return string
 	 */
 	public function get_settings_link(): string {
+		if( empty( $this->get_setting_sub_tab() ) ) {
+			return Helper::get_settings_url( $this->get_settings_page(), $this->get_setting_tab() );
+		}
 		return Helper::get_settings_url( $this->get_settings_page(), $this->get_setting_tab(), $this->get_setting_sub_tab() );
 	}
 }
