@@ -620,6 +620,18 @@ function personio_integration_extension_state_button() {
       error: function( jqXHR, textStatus, errorThrown ) {
         personio_integration_ajax_error_dialog( errorThrown )
       },
+      beforeSend: function() {
+        // show wait window as dialog.
+        let dialog_config = {
+          detail: {
+            title: personioIntegrationLightJsVars.title_please_wait,
+            texts: [
+              '<p>' + personioIntegrationLightJsVars.txt_please_wait + '</p>',
+            ],
+          }
+        }
+        personio_integration_create_dialog(dialog_config);
+      },
       success: function (dialog_config) {
         if( dialog_config.success ) {
           button.removeClass( 'button-state-disabled' );
