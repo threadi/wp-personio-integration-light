@@ -67,8 +67,15 @@ class Help_System {
 	 * @return void
 	 */
 	public function add_help( WP_Screen $screen ): void {
-		// bail if we are not in our cpt.
-		if ( PersonioPosition::get_instance()->get_name() !== $screen->post_type ) {
+		$allowed = PersonioPosition::get_instance()->get_name() === $screen->post_type;
+		/**
+		 * Prevent to add the WordPress-internal help for our plugin.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param bool $allowed True if the help should be visible.
+		 * @param WP_Screen $screen The actual visible screen.
+		 */
+		if ( ! apply_filters( 'personio_integration_light_shop_help', $allowed, $screen ) ) {
 			return;
 		}
 
@@ -151,7 +158,7 @@ class Help_System {
 		}
 
 		// collect the content for the help.
-		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Applications', 'personio-integration-light' ) . '</h2><p>' . __( 'We enable you to advertise your jobs on your own website. Applicants can find them and apply for them.', 'personio-integration-light' ) . '</p>';
+		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Applications', 'personio-integration-light' ) . '</h2><p>' . __( 'We enable you to advertise your positions on your own website. Applicants can find them and apply for them.', 'personio-integration-light' ) . '</p>';
 		$content .= '<p><strong>' . __( 'How to get applications:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		$content .= '<li>' . __( 'Publish your open positions in your website.', 'personio-integration-light' ) . '</li>';
