@@ -317,7 +317,7 @@ class Email_Base {
 		}
 
 		// log that mail could not be sent.
-		Log::get_instance()->add( __( 'Sent could not be sent:', 'personio-integration-light' ) . ' <code>' . $configuration_json . '</code>', 'error', 'emails' );
+		Log::get_instance()->add( __( 'Email could not be sent:', 'personio-integration-light' ) . ' <code>' . $configuration_json . '</code>', 'error', 'emails' );
 	}
 
 	/**

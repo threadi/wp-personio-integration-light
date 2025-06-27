@@ -445,7 +445,7 @@ class Extensions_Base {
 	}
 
 	/**
-	 * Return the state.
+	 * Return the state of the dependent plugin/theme.
 	 *
 	 * @return bool
 	 */

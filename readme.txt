@@ -47,7 +47,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish
 - Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
 - Support for subcompanies and additional offices in positions
-- Support for multiple form handler like Contact Form 7, Elementor Forms, Forminator and WPForms
+- Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Fluent Forms, Forminator and WPForms
 - Use custom feature image on each position
 - Unlimited custom files for download on each single position
 - Support for tracking of events with Google Analytics 4
@@ -60,7 +60,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Shortcode generator for individual views of lists and details
 - Extensions for the following PageBuilders: Avada, Beaver Builder, Divi, Elementor, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery
 - Also compatible with Avia (from Enfold) and Kubio AI
-- Every privacy values are encrypted (e.g. applicant data and API credentials)
+- Every privacy values is encrypted (e.g. applicant data and API credentials)
 - ... and much more
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)

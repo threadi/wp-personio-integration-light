@@ -51,7 +51,7 @@ class Loco extends Compatibilities_Base {
 	}
 
 	/**
-	 * Check if Avada and its necessary plugins are active.
+	 * Check if the plugin is active.
 	 *
 	 * @return bool
 	 */
