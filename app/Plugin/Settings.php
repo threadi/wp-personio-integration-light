@@ -369,7 +369,7 @@ class Settings {
 		$setting->set_type( 'string' );
 		$setting->set_default( 'default' );
 		$field = new Select();
-		$field->set_title( __( 'Choose template for listing', 'personio-integration-light' ) );
+		$field->set_title( __( 'Choose template for position details', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced with the documentation-URL */
 		$field->set_description( sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ) );
 		$field->set_options( Templates::get_instance()->get_excerpts_templates() );

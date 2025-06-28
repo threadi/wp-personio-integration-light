@@ -88,6 +88,7 @@ class Templates {
 		add_filter( 'personio_integration_light_filter_url', array( $this, 'format_filter_url' ), 10, 2 );
 		add_action( 'personio_integration_filter_pre', array( $this, 'extend_form_for_simple_permalinks' ) );
 		add_action( 'personio_integration_get_template_before', array( $this, 'add_styles' ) );
+		add_filter( 'personio_integration_show_content', array( $this, 'prevent_content_via_excerpt_loading' ) );
 
 		// expand kses-filter.
 		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
@@ -1278,5 +1279,14 @@ class Templates {
 
 		// show this styles.
 		include Helper::get_plugin_path() . '/legacy/styles.php';
+	}
+
+	/**
+	 * Prevent loading of our own content via excerpt-filter.
+	 *
+	 * @return bool
+	 */
+	public function prevent_content_via_excerpt_loading(): bool {
+		return ! doing_filter( 'get_the_excerpt' );
 	}
 }
