@@ -160,7 +160,7 @@ class Imports_Base extends Extensions_Base {
 
 		// output results in WP-CLI.
 		if ( Helper::is_cli() ) {
-			\WP_CLI::error( trim( $message ) );
+			\WP_CLI::error( wp_json_encode( $message ) );
 		}
 
 		// set errors in list for response.

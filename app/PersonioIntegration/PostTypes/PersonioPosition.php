@@ -840,7 +840,10 @@ class PersonioPosition extends Post_Type {
 		 * @since 3.0.0 Available since 3.0.0.
 		 * @param array<string,string> $columns List of columns.
 		 */
-		return apply_filters( 'personio_integration_personioposition_columns', $columns ); // @phpstan-ignore parameter.phpDocType
+		apply_filters_deprecated( 'personio_integration_personioposition_columns', array( $columns ), '5.0.0' ); // @phpstan-ignore parameter.phpDocType
+
+		// return the columns.
+		return $columns;
 	}
 
 	/**
@@ -1190,7 +1193,7 @@ class PersonioPosition extends Post_Type {
 				}
 
 				// add link.
-				$changeable_hint = '<a href="' . esc_url( $url ) . '" class="easy-dialog-for-wordpress" data-dialog="' . esc_attr( Helper::get_dialog_for_attribute( $dialog ) ) . '"><span class="dashicons dashicons-translation"></span></a>';
+				$changeable_hint = '<a href="' . esc_url( $url ) . '" class="easy-dialog-for-wordpress" data-dialog="' . esc_attr( Helper::get_json( $dialog ) ) . '"><span class="dashicons dashicons-translation"></span></a>';
 			}
 
 			// add a box for single taxonomy.

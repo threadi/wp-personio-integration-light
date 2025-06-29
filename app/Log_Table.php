@@ -210,8 +210,8 @@ class Log_Table extends WP_List_Table {
 			);
 
 			?>
-			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
-			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
 			<?php
 		}
 	}

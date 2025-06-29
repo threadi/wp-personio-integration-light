@@ -412,8 +412,8 @@ class Extensions extends WP_List_Table {
 			);
 
 			// output buttons.
-			echo '<a data-dialog="' . esc_attr( Helper::get_dialog_for_attribute( $dialog_disable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable all', 'personio-integration-light' ) . '</a>';
-			echo '<a data-dialog="' . esc_attr( Helper::get_dialog_for_attribute( $dialog_enable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable all', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( Helper::get_json( $dialog_disable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable all', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( Helper::get_json( $dialog_enable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable all', 'personio-integration-light' ) . '</a>';
 		}
 	}
 }

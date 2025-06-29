@@ -88,18 +88,18 @@ body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
     padding: 12px;
 }
 
-.post-type-personioposition .personio-integration-hint, .personioposition_page_personioPositions .personio-integration-hint {
+.post-type-personioposition .personio-integration-hint, .personioposition_page_personioPositions .personio-integration-hint, .post-type-personioformtemplate .personio-integration-hint {
 	background-color: var(--personio-hint-bg);
 	color: var(--personio-hint-font);
 	margin-top: 12px;
 	padding: 12px;
 }
 
-.post-type-personioposition .personio-integration-hint a, .personioposition_page_personioPositions .personio-integration-hint a {
+.post-type-personioposition .personio-integration-hint a, .personioposition_page_personioPositions .personio-integration-hint a, .post-type-personioformtemplate .personio-integration-hint a {
 	color: inherit;
 }
 
-.post-type-personioposition .personio-pro-hint:first-child, .post-type-personioposition .personio-integration-hint:first-child {
+.post-type-personioposition .personio-pro-hint:first-child, .post-type-personioposition .personio-integration-hint:first-child, .post-type-personioformtemplate .personio-integration-hint:first-child {
 	margin-top: 0;
 }
 

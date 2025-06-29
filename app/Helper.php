@@ -850,26 +850,6 @@ class Helper {
 	}
 
 	/**
-	 * Convert dialog array to JSON-string for usage in esc_attr().
-	 *
-	 * @param array<string,mixed> $dialog The dialog.
-	 *
-	 * @return string
-	 */
-	public static function get_dialog_for_attribute( array $dialog ): string {
-		// get as JSON.
-		$json = wp_json_encode( $dialog );
-
-		// bail if string could not be converted.
-		if ( ! $json ) {
-			return '';
-		}
-
-		// return the JSON for the attribute-usage.
-		return $json;
-	}
-
-	/**
 	 * Return the writable wp-config.php path.
 	 *
 	 * @return string
