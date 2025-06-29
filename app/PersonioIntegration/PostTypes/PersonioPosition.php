@@ -840,7 +840,10 @@ class PersonioPosition extends Post_Type {
 		 * @since 3.0.0 Available since 3.0.0.
 		 * @param array<string,string> $columns List of columns.
 		 */
-		return apply_filters( 'personio_integration_personioposition_columns', $columns ); // @phpstan-ignore parameter.phpDocType
+		apply_filters_deprecated( 'personio_integration_personioposition_columns', array( $columns ), '5.0.0' ); // @phpstan-ignore parameter.phpDocType
+
+		// return the columns.
+		return $columns;
 	}
 
 	/**
