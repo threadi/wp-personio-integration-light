@@ -735,7 +735,7 @@ class Admin {
 			),
 		);
 		?>
-		<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $dialog_import ) ); ?>"><?php echo esc_html__( 'How to change the import of positions?', 'personio-integration-light' ); ?></a></p>
+		<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_json( $dialog_import ) ); ?>"><?php echo esc_html__( 'How to change the import of positions?', 'personio-integration-light' ); ?></a></p>
 																							<?php
 
 																							// button to show template options as intro.
@@ -758,7 +758,7 @@ class Admin {
 																								),
 																							);
 																							?>
-		<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to configure templates?', 'personio-integration-light' ); ?></a></p>
+		<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_json( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to configure templates?', 'personio-integration-light' ); ?></a></p>
 																							<?php
 
 																							// button to show how to get the pro-version.
@@ -788,7 +788,7 @@ class Admin {
 																									),
 																								);
 																								?>
-			<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_dialog_for_attribute( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p>
+			<p><a href="#" class="button button-primary easy-dialog-for-wordpress" data-dialog="<?php echo esc_attr( Helper::get_json( $dialog_templates ) ); ?>"><?php echo esc_html__( 'How to get the Pro-version?', 'personio-integration-light' ); ?></a></p>
 																								<?php
 																							}
 
