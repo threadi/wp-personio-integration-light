@@ -813,15 +813,23 @@ class Templates {
 	 *
 	 * Necessary primary for FSE-themes.
 	 *
+	 * Hint: according to https://developer.wordpress.org/reference/hooks/the_title/ the 2nd parameter should be int.
+	 * Reality is that other plugins use here all but not int ...
+	 *
 	 * @param string           $post_title The title.
-	 * @param int|WP_Post|null $post_id The post ID.
+	 * @param string|int|WP_Post|null $post_id The post ID.
 	 *
 	 * @return string
 	 */
-	public function update_post_title( string $post_title, int|WP_Post|null $post_id = 0 ): string {
+	public function update_post_title( string $post_title, string|int|WP_Post|null $post_id = 0 ): string {
 		// bail if this is not our cpt.
 		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( $post_id ) ) {
 			return $post_title;
+		}
+
+		// get the post id as int, if it is a string.
+		if( is_string( $post_id ) ) {
+			$post_id = absint( $post_id );
 		}
 
 		// get the post id from object.
