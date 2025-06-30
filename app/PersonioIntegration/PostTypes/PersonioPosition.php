@@ -321,7 +321,7 @@ class PersonioPosition extends Post_Type {
 				$type       = '';
 				ob_start();
 				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
-				$content = ob_get_contents();
+				$content = ob_get_clean();
 				if ( ! $content ) {
 					return '';
 				}
@@ -341,7 +341,7 @@ class PersonioPosition extends Post_Type {
 				$type       = '';
 				ob_start();
 				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
-				$content = ob_get_contents();
+				$content = ob_get_clean();
 				if ( ! $content ) {
 					return '';
 				}
@@ -380,7 +380,7 @@ class PersonioPosition extends Post_Type {
 		include Templates::get_instance()->get_template( 'parts/content.php' );
 
 		// get the content.
-		$content = ob_get_contents();
+		$content = ob_get_clean();
 
 		// return the content.
 		if ( ! $content ) {
@@ -595,7 +595,7 @@ class PersonioPosition extends Post_Type {
 		include Templates::get_instance()->get_template( 'parts/listing.php' );
 
 		// get the content.
-		$content = ob_get_contents();
+		$content = ob_get_clean();
 
 		// return the content.
 		if ( ! $content ) {
