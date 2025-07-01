@@ -76,7 +76,7 @@ export default function Edit( object ) {
 			]);
 		}, []);
 		archive_templates = useSelect((select) => {
-				return select('core').getEntityRecords('personio/v1', 'archive-templates') || [];
+				return select('core').getEntityRecords('personio/v1', 'archive-templates', { per_page: 20 }) || [];
 			}
 		);
 	}
@@ -101,7 +101,7 @@ export default function Edit( object ) {
 			]);
 		}, []);
 		personioTaxonomies = useSelect((select) => {
-				return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
+				return select('core').getEntityRecords('personio/v1', 'taxonomies', { per_page: 20 }) || [];
 			}
 		);
     personioTaxonomiesGrouped = personioTaxonomies.map((x) => x);

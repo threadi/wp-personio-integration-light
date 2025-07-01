@@ -283,7 +283,7 @@ class Api extends Imports_Base {
 			$this->positions[ $personio_id ] = $data;
 
 			/**
-			 * As of June 2025, we unfortunately receive almost no information on vacancies relevant to the website
+			 * As of June 2025, we unfortunately receive almost no information on positions relevant to the website
 			 * from API V2. As soon as this is available, it should be read out and imported here.
 			 */
 
@@ -305,6 +305,16 @@ class Api extends Imports_Base {
 			// set the job description.
 			// TODO is not provided by API atm.
 			$position_obj->set_content_as_string( '{}' );
+
+			/**
+			 * Change the position-object before saving it.
+			 *
+			 * @since 5.0.0 Available since 5.0.0.
+			 *
+			 * @param Position $position_obj The object of this position.
+			 * @param array $data The data from Personio.
+			 */
+			$position_obj = apply_filters( 'personio_integration_import_single_position_api', $position_obj, $data ) ;
 
 			// save the position object.
 			try {

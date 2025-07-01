@@ -600,6 +600,9 @@ class Templates {
 
 		// get the configured separator.
 		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator' ) . ' ';
+		if ( ! empty( $attributes['separator'] ) ) {
+			$separator = $attributes['separator'];
+		}
 
 		// get colon setting.
 		$colon = ':';
@@ -615,19 +618,21 @@ class Templates {
 
 		// get the excerpts for this position.
 		if ( ! empty( $attributes['excerpt'] ) ) {
+
+			// loop through each configured detail taxonomy.
 			foreach ( $attributes['excerpt'] as $taxonomy_slug ) {
-				// get taxonomy name by given slug.
+				// get taxonomy name by given slug (e.g. office => personioOffice).
 				$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $taxonomy_slug );
 
-				// bail if taxonomy could not be found.
+				// bail if taxonomy for the given slug could not be found.
 				if ( ! $taxonomy_name ) {
 					continue;
 				}
 
-				// get taxonomy label.
+				// get the taxonomy plural label.
 				$taxonomy_label = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name, $attributes['lang'] )['name'];
 
-				// get label in for this output configured language.
+				// get the default terms for the terms of this taxonomy.
 				$terms_label = Taxonomies::get_instance()->get_default_terms_for_taxonomy( $taxonomy_name, $attributes['lang'] );
 
 				// get terms this position is using on this taxonomy.
@@ -642,6 +647,8 @@ class Templates {
 				/**
 				 * Filter whether to show terms of single taxonomy as list or not.
 				 *
+				 * TODO remove this?
+				 *
 				 * @since 3.0.8 Available since 3.0.8.
 				 * @param bool $false True to show the list.
 				 * @param array<WP_Term>|false $terms List of terms.
@@ -651,36 +658,38 @@ class Templates {
 
 				// if term exist, get the corresponding term-label.
 				if ( ! empty( $terms ) ) {
-					$added  = false;
 					$values = '';
 					foreach ( $terms as $term ) {
+						// set the name to use.
+						$name = $term->name;
+
+						// if terms slug is in list of default term labels, use this.
 						if ( ! empty( $terms_label[ $term->slug ] ) ) {
-							$details[ $taxonomy_label ] = $terms_label[ $term->slug ];
-							$added                      = true;
-						} elseif ( $show_term_list ) {
-							if ( ! empty( $values ) ) {
-								$values .= $separator;
-							}
-							$values .= $term->name;
+							$name = $terms_label[ $term->slug ];
 						}
+
+						// for terms without default term labels, we add them to the list.
+						if ( ! empty( $values ) ) {
+							$values .= $separator;
+						}
+
+						// add terms name to the list.
+						$values .= $term->name;
 					}
 
+					// set collected values as detail content.
 					if ( ! empty( $values ) ) {
 						$details[ $taxonomy_label ] = $values;
-						$added                      = true;
-					}
-
-					// for not translated label.
-					if ( ! $added && ! isset( $terms[0] ) ) {
-						$details[ $taxonomy_label ] = $terms[0]->name;
 					}
 				}
+
+				// add the taxonomy itself to the list.
 				$taxonomy_data[ $taxonomy_label ] = get_taxonomy( $taxonomy_name );
 			}
 		}
 
 		if ( ! empty( $details ) ) {
-			// get configured template of none has been set for this output.
+			// get configured template if none has been set for this output.
 			if ( empty( $attributes['excerpt_template'] ) ) {
 				$template = get_option( is_singular() ? 'personioIntegrationTemplateDetailsExcerptsTemplate' : 'personioIntegrationTemplateListingExcerptsTemplate' );
 			} else {

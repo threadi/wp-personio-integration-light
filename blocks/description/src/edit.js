@@ -58,7 +58,7 @@ export default function Edit( object ) {
 			]);
 		}, []);
 		templates = useSelect((select) => {
-				return select('core').getEntityRecords('personio/v1', 'jobdescription-templates') || [];
+				return select('core').getEntityRecords('personio/v1', 'jobdescription-templates', { per_page: 20 }) || [];
 			}
 		);
 	}

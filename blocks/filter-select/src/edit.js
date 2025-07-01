@@ -68,7 +68,7 @@ export default function Edit( object ) {
 			]);
 		}, []);
 		personioTaxonomies = useSelect((select) => {
-				return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
+				return select('core').getEntityRecords('personio/v1', 'taxonomies', { per_page: 20 } ) || [];
 			}
 		);
 	}
