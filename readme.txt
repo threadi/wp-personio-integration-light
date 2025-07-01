@@ -4,6 +4,7 @@ Tags: personio, jobs, recruitment, employee
 Requires at least: 4.9.24
 Tested up to: 6.8
 Requires PHP: 8.0
+Requires CP:  2.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: @@VersionNumber@@
