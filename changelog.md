@@ -15,6 +15,7 @@
 - Added new statistic about the plugin data, which could also be sent via email on regular base
 - Added option to change the from-email in each email
 - Added email-template for all emails
+- Added hint for additional offices which are usable in Pro-plugin
 
 ### Changed
 

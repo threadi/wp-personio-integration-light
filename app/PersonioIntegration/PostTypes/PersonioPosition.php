@@ -145,6 +145,7 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'personio_integration_limit', array( $this, 'set_limit' ), 10, 2 );
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 20 );
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_shortcode_help' ), 60 );
+		add_filter( 'personio_integration_light_edit_position_box_taxonomy', array( $this, 'show_hint_for_additional_offices' ), 10, 2 );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
@@ -1475,8 +1476,9 @@ class PersonioPosition extends Post_Type {
 		 *
 		 * @since 4.1.0 Available since 4.1.0.
 		 * @param Position $position_obj The position as object.
+		 * @param array $attr Attributes used for this meta box.
 		 */
-		do_action( 'personio_integration_light_edit_position_box_taxonomy', $position_obj );
+		do_action( 'personio_integration_light_edit_position_box_taxonomy', $position_obj, $attr );
 	}
 
 	/**
@@ -2101,14 +2103,13 @@ class PersonioPosition extends Post_Type {
 	 * @return array<int,array<string,string>>
 	 */
 	private function get_pro_extensions(): array {
-		$false = false;
+		$false    = false;
 		/**
-		 * Hide the extensions for pro-version.
+		 * Hide hint for Pro-plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param bool $false Set true to hide the extensions.
-		 *
+		 * @param bool $false Set true to hide the hint.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
@@ -2297,13 +2298,14 @@ class PersonioPosition extends Post_Type {
 		/* translators: %1$s will be replaced by a URL. */
 		$content .= '<li>' . sprintf( __( 'Change settings <a href="%1$s">for the template</a> to optimize the view.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
 		// add menu entry for applications (with hint to pro).
-		$false = false;
+		$false    = false;
 		/**
-		 * Hide pro hint in help.
+		 * Hide hint for Pro-plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param bool $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the hint.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */
@@ -2336,11 +2338,12 @@ class PersonioPosition extends Post_Type {
 		$content .= '<p>' . __( 'Shortcodes should only be used if your own theme or PageBuilder do not offer any other options.', 'personio-integration-light' ) . '</p>';
 		$false    = false;
 		/**
-		 * Hide pro hint in help.
+		 * Hide hint for Pro-plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param bool $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the hint.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			$content .= '<p>' . __( 'With <i>Personio Integration Light</i>, we only support the Block Editor in this regard.', 'personio-integration-light' ) . '</p>';
@@ -2365,11 +2368,12 @@ class PersonioPosition extends Post_Type {
 		$content .= '<li>' . __( 'If you want to customize the output of shortcodes in terms of styling, you have to write and store the necessary style properties yourself. If necessary, contact the person responsible for your project.', 'personio-integration-light' ) . '</li>';
 		$false    = false;
 		/**
-		 * Hide pro hint in help.
+		 * Hide hint for Pro-plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param bool $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the hint.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */
@@ -2496,5 +2500,39 @@ class PersonioPosition extends Post_Type {
 
 		// return an empty list.
 		return array();
+	}
+
+	/**
+	 * Show hint about additional offices, usable in Pro-plugin.
+	 *
+	 * @param Position $position_obj The called position object.
+	 * @param array    $attr The attributes of the meta box.
+	 *
+	 * @return void
+	 * @noinspection PhpUnusedParameterInspection
+	 */
+	public function show_hint_for_additional_offices( Position $position_obj, array $attr ): void {
+		$false    = false;
+		/**
+		 * Hide hint for Pro-plugin.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param bool $false Set true to hide the hint.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			return;
+		}
+
+		// get the requested taxonomy from the box ID as string.
+		$taxonomy_name = str_replace( $this->get_name() . '-taxonomy-', '', $attr['id'] );
+
+		// bail if taxonomy name is not office.
+		if( $taxonomy_name !== WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE ) {
+			return;
+		}
+
+		echo wp_kses_post( Admin::get_instance()->get_pro_hint( __( 'Use additional offices with %1$s', 'personio-integration-light' ) ) );
 	}
 }
