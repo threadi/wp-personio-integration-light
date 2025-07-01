@@ -85,8 +85,6 @@ export default function Edit( object ) {
     );
   }
 
-  console.log(personioTaxonomies);
-
 	/**
 	 * On change of colon setting.
 	 *
