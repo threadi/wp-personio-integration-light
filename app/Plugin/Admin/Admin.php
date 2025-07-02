@@ -663,15 +663,15 @@ class Admin {
 			);
 		}
 
-		// create the callback as string.
-		$callback = 'read_' . PersonioPosition::get_instance()->get_name();
+		// create the capability as string.
+		$capability = 'read_' . PersonioPosition::get_instance()->get_name();
 
 		// add help link.
 		add_submenu_page(
 			PersonioPosition::get_instance()->get_link( true ),
 			__( 'Need help with Personio Integration?', 'personio-integration-light' ),
 			'<span class="disable">' . __( 'Get help', 'personio-integration-light' ) . '</span>',
-			$callback,
+			$capability,
 			'personioPositionsHelp',
 			array( $this, 'show_help_page' ),
 			9

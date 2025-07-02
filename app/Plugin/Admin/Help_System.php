@@ -75,7 +75,7 @@ class Help_System {
 		 * @param bool $allowed True if the help should be visible.
 		 * @param WP_Screen $screen The actual visible screen.
 		 */
-		if ( ! apply_filters( 'personio_integration_light_shop_help', $allowed, $screen ) ) {
+		if ( ! apply_filters( 'personio_integration_light_show_help', $allowed, $screen ) ) {
 			return;
 		}
 
