@@ -409,6 +409,11 @@ class Extensions {
 	 * @return void
 	 */
 	public function add_extension_menu(): void {
+		// only if Setup has been completed.
+		if( ! Setup::get_instance()->is_completed() ) {
+			return;
+		}
+
 		// add main menu as setup entry.
 		add_submenu_page(
 			PersonioPosition::get_instance()->get_link( true ),

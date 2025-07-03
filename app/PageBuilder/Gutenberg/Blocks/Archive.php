@@ -12,7 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
  * Object to handle this block.
@@ -112,7 +111,7 @@ class Archive extends Blocks_Basis {
 	}
 
 	/**
-	 * Get the content for single position.
+	 * Return the content for single position.
 	 *
 	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
@@ -170,6 +169,6 @@ class Archive extends Blocks_Basis {
 		 * @param array $attribute_defaults List of attributes to use.
 		 * @param array $attributes List of attributes vom PageBuilder.
 		 */
-		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
+		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Archive::get_instance()->render( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
 	}
 }

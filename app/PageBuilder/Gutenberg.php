@@ -144,15 +144,7 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return array<string>
 	 */
 	public function get_widgets(): array {
-		$list = array(
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Application_Button',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Archive',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Description',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Detail',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Filter_List',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Filter_Select',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Single',
-		);
+		$list = array();
 
 		// return resulting list.
 		return apply_filters( 'personio_integration_gutenberg_blocks', $list );
@@ -188,7 +180,6 @@ class Gutenberg extends PageBuilder_Base {
 
 	/**
 	 * Remove the FSE-hint from settings.
-	 * *
 	 *
 	 * @return void
 	 */
