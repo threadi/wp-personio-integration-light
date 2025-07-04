@@ -18,6 +18,7 @@
 - New centralized widget handling for every supported PageBuilder
 - Added new extension category "Widgets"
 - Added hint for additional offices which are usable in Pro-plugin
+- Added new compatibility check for Oxygen
 
 ### Changed
 
@@ -36,6 +37,7 @@
 ### Removed
 
 - Removed Position_Extension_Base in favor of less complex way to extend the position data
+- Removed check for WpPageBuilder compatibility
 
 ## [4.3.0] - 28.04.2025
 

@@ -135,6 +135,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Fluent_Forms',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WPMultilang',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Nimble_Builder',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Oxygen',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Pdf_Generator_For_Wp',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Polylang',
 			'PersonioIntegrationLight\Plugin\Compatibilities\RankMath',
@@ -147,7 +148,6 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Salient_WpBakery',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpBakery',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Wpml',
-			'PersonioIntegrationLight\Plugin\Compatibilities\WpPageBuilder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Yoast',
 		);
 
