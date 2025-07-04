@@ -331,7 +331,16 @@ body.post-type-personioposition #post-body-content { display: none }
 
 #easy-setup-for-wordpress .components-panel__body details summary { cursor: pointer }
 
-body.post-type-personioposition summary { cursor: pointer }
+body.post-type-personioposition summary {
+	cursor: pointer;
+	text-indent: -14px;
+	padding-left: 14px;
+}
+
+body.post-type-personioposition details > div {
+	padding-left: 14px;
+	line-height: 1.8;
+}
 
 body.post-type-personioposition .icl_subsubsub { display: none !important; }
 

@@ -55,7 +55,7 @@ export default function Edit( object ) {
 		object.setAttributes({blockId: object.clientId});
 	});
 
-	// useSelect to retrieve all post types
+	// useSelect to retrieve all entries on our own cpt
 	const positions = useSelect(
 		(select) => select('core').getEntityRecords('postType', 'personioposition', { per_page: -1 }), []
 	);
@@ -73,7 +73,7 @@ export default function Edit( object ) {
       ]);
     }, []);
     personioTaxonomies = useSelect((select) => {
-        return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
+        return select('core').getEntityRecords('personio/v1', 'taxonomies', { per_page: 20 }) || [];
       }
     );
   }

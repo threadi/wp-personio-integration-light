@@ -12,7 +12,9 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\TextInfo;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Transients;
 
@@ -115,10 +117,17 @@ class Imports {
 		$setting->set_section( $import_section );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
-		$field = new Button();
-		$field->set_title( __( 'Clear positions', 'personio-integration-light' ) );
-		$field->set_button_title( __( 'Delete all positions', 'personio-integration-light' ) );
-		$field->add_class( 'personio-integration-delete-all' );
+		if( Positions::get_instance()->get_positions_count() > 0 ) {
+			$field = new Button();
+			$field->set_title( __( 'Clear positions', 'personio-integration-light' ) );
+			$field->set_button_title( __( 'Delete all positions', 'personio-integration-light' ) );
+			$field->add_class( 'personio-integration-delete-all' );
+		}
+		else {
+			$field = new TextInfo();
+			$field->set_title( __( 'Clear positions', 'personio-integration-light' ) );
+			$field->set_description( __( 'There are currently no positions imported.', 'personio-integration-light' ) );
+		}
 		$setting->set_field( $field );
 
 		// add setting.

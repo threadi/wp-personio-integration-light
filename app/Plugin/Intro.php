@@ -18,7 +18,7 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
- * Initialize this plugin.
+ * Initialize this object.
  */
 class Intro {
 	/**

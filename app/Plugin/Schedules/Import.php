@@ -45,7 +45,7 @@ class Import extends Schedules_Base {
 	 *
 	 * @var string
 	 */
-	protected string $default_interval = 'daily';
+	protected string $default_interval = 'personio_integration_daily';
 
 	/**
 	 * Name of the log category.

@@ -349,6 +349,7 @@ class Taxonomies {
 				'edit_item'     => __( 'Edit category', 'personio-integration-light' ),
 				'update_item'   => __( 'Update category', 'personio-integration-light' ),
 				'menu_name'     => __( 'Categories', 'personio-integration-light' ),
+				'back_to_items' => '&larr; ' . __( 'Go to all categories', 'wp-personio-integration' ),
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY => array(
 				'name'          => _x( 'Job types', 'taxonomy general name', 'personio-integration-light' ),
@@ -357,6 +358,7 @@ class Taxonomies {
 				'edit_item'     => __( 'Edit Job type', 'personio-integration-light' ),
 				'update_item'   => __( 'Update Job type', 'personio-integration-light' ),
 				'menu_name'     => __( 'Job types', 'personio-integration-light' ),
+				'back_to_items' => '&larr; ' . __( 'Go to all job types', 'wp-personio-integration' ),
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION => array(
 				'name'          => _x( 'Job type details', 'taxonomy general name', 'personio-integration-light' ),
@@ -365,14 +367,16 @@ class Taxonomies {
 				'edit_item'     => __( 'Edit Job type detail', 'personio-integration-light' ),
 				'update_item'   => __( 'Update Job type detail', 'personio-integration-light' ),
 				'menu_name'     => __( 'Job type details', 'personio-integration-light' ),
+				'back_to_items' => '&larr; ' . __( 'Go to all job type details', 'wp-personio-integration' ),
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE     => array(
-				'name'          => _x( 'Locations', 'taxonomy general name', 'personio-integration-light' ),
-				'singular_name' => _x( 'Location', 'taxonomy singular name', 'personio-integration-light' ),
-				'search_items'  => __( 'Search location', 'personio-integration-light' ),
-				'edit_item'     => __( 'Edit location', 'personio-integration-light' ),
-				'update_item'   => __( 'Update location', 'personio-integration-light' ),
-				'menu_name'     => __( 'Locations', 'personio-integration-light' ),
+				'name'          => _x( 'Main workplaces', 'taxonomy general name', 'personio-integration-light' ),
+				'singular_name' => _x( 'Main workplace', 'taxonomy singular name', 'personio-integration-light' ),
+				'search_items'  => __( 'Search main workplace', 'personio-integration-light' ),
+				'edit_item'     => __( 'Edit main workplace', 'personio-integration-light' ),
+				'update_item'   => __( 'Update main workplace', 'personio-integration-light' ),
+				'menu_name'     => __( 'Main workplaces', 'personio-integration-light' ),
+				'back_to_items' => '&larr; ' . __( 'Go to all main workplace', 'wp-personio-integration' ),
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT => array(
 				'name'          => _x( 'Departments', 'taxonomy general name', 'personio-integration-light' ),

@@ -15,6 +15,10 @@
 - Added new statistic about the plugin data, which could also be sent via email on regular base
 - Added option to change the from-email in each email
 - Added email-template for all emails
+- New centralized widget handling for every supported PageBuilder
+- Added new extension category "Widgets"
+- Added hint for additional offices which are usable in Pro-plugin
+- Added new compatibility check for Oxygen
 
 ### Changed
 
@@ -28,10 +32,13 @@
 - Optimized output of some log entries
 - Style optimization for extension table
 - Using WP_Error for any error handling
+- Extended the limitation for REST API requests regarding our own Block Editor blocks
+- Now using our own intervals for WordPress cronjobs
 
 ### Removed
 
 - Removed Position_Extension_Base in favor of less complex way to extend the position data
+- Removed check for WpPageBuilder compatibility
 
 ## [4.3.0] - 28.04.2025
 

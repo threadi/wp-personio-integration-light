@@ -51,7 +51,7 @@ class Emails {
 	}
 
 	/**
-	 * Initialize this plugin.
+	 * Initialize this object.
 	 *
 	 * @return void
 	 */

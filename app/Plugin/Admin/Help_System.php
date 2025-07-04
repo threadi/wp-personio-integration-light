@@ -75,7 +75,7 @@ class Help_System {
 		 * @param bool $allowed True if the help should be visible.
 		 * @param WP_Screen $screen The actual visible screen.
 		 */
-		if ( ! apply_filters( 'personio_integration_light_shop_help', $allowed, $screen ) ) {
+		if ( ! apply_filters( 'personio_integration_light_show_help', $allowed, $screen ) ) {
 			return;
 		}
 
@@ -144,13 +144,13 @@ class Help_System {
 	 */
 	public function add_applications_help( array $help_list ): array {
 		// add menu entry for applications (with hint to pro).
-		$false = false;
+		$false    = false;
 		/**
-		 * Hide the application help with its pro hint.
+		 * Hide hint for Pro-plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param bool $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the hint.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {

@@ -70,7 +70,7 @@ class Availability extends Extensions_Base {
 	}
 
 	/**
-	 * Initialize this plugin.
+	 * Initialize this object.
 	 *
 	 * @return void
 	 */

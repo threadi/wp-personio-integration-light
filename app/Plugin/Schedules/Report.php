@@ -43,7 +43,7 @@ class Report extends Schedules_Base {
 	 *
 	 * @var string
 	 */
-	protected string $default_interval = 'weekly';
+	protected string $default_interval = 'personio_integration_weekly';
 
 	/**
 	 * Initialize this schedule.

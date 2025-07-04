@@ -642,14 +642,13 @@ class Admin {
 		}
 
 		// add menu entry for applications (with hint to pro).
-		$false = false;
+		$false    = false;
 		/**
-		 * Hide the additional the sort column which is only filled in Pro.
+		 * Hide hint for Pro-plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param bool $false Set true to hide the buttons.
-		 *
+		 * @param bool $false Set true to hide the hint.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
@@ -664,15 +663,15 @@ class Admin {
 			);
 		}
 
-		// create the callback as string.
-		$callback = 'read_' . PersonioPosition::get_instance()->get_name();
+		// create the capability as string.
+		$capability = 'read_' . PersonioPosition::get_instance()->get_name();
 
 		// add help link.
 		add_submenu_page(
 			PersonioPosition::get_instance()->get_link( true ),
 			__( 'Need help with Personio Integration?', 'personio-integration-light' ),
 			'<span class="disable">' . __( 'Get help', 'personio-integration-light' ) . '</span>',
-			$callback,
+			$capability,
 			'personioPositionsHelp',
 			array( $this, 'show_help_page' ),
 			9
@@ -762,14 +761,13 @@ class Admin {
 																							<?php
 
 																							// button to show how to get the pro-version.
-																							$false = false;
+																							$false    = false;
 																							/**
-																							 * Hide the additional the sort column which is only filled in Pro.
+																							 * Hide hint for Pro-plugin.
 																							 *
 																							 * @since 3.0.0 Available since 3.0.0
 																							 *
-																							 * @param bool $false Set true to hide the buttons.
-																							 *
+																							 * @param bool $false Set true to hide the hint.
 																							 * @noinspection PhpConditionAlreadyCheckedInspection
 																							 */
 																							if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {

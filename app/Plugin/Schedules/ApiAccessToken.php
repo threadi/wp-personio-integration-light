@@ -43,7 +43,7 @@ class ApiAccessToken extends Schedules_Base {
 	 * Initialize this schedule.
 	 */
 	public function __construct() {
-		$this->interval = 'daily';
+		$this->interval = 'personio_integration_daily';
 	}
 
 	/**

@@ -409,6 +409,11 @@ class Extensions {
 	 * @return void
 	 */
 	public function add_extension_menu(): void {
+		// only if Setup has been completed.
+		if( ! Setup::get_instance()->is_completed() ) {
+			return;
+		}
+
 		// add main menu as setup entry.
 		add_submenu_page(
 			PersonioPosition::get_instance()->get_link( true ),
@@ -556,11 +561,11 @@ class Extensions {
 		$content .= '<li>' . __( 'Check whether the extension still offers settings. Follow the instructions that are displayed.', 'personio-integration-light' ) . '</li>';
 		$false    = false;
 		/**
-		 * Hide pro hint in help.
+		 * Hide hint for Pro-plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param bool $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the hint.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
