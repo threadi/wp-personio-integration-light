@@ -10,7 +10,11 @@ namespace PersonioIntegrationLight\PersonioIntegration\Widgets;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
+use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Templates;
 
 /**
  * Object to handle the description widget.
@@ -97,6 +101,123 @@ class Single extends Widget_Base {
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		return Archive::get_instance()->render( $attributes );
+		// convert single shortcode attributes.
+		$personio_attributes = $this->get_single_shortcode_attributes( $attributes );
+
+		// do not output anything without ID.
+		if ( $personio_attributes['personioid'] <= 0 ) {
+			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+				$message    = __( 'Single-view called without the PersonioId for a position.', 'personio-integration-light' );
+				$wrapper_id = 'position' . $personio_attributes['personioid'];
+				$type       = '';
+				ob_start();
+				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
+				return ob_get_clean();
+			}
+			return '';
+		}
+
+		// get the position by its PersonioId.
+		$position = Positions::get_instance()->get_position_by_personio_id( $personio_attributes['personioid'] );
+
+		// do not show this position if it is not valid or could not be loaded.
+		if ( ! $position || ! $position->is_valid() ) {
+			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+				$message    = __( 'Given Id is not a valid position-Id.', 'personio-integration-light' );
+				$wrapper_id = 'position' . $personio_attributes['personioid'];
+				$type       = '';
+				ob_start();
+				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
+				return ob_get_clean();
+			}
+			return '';
+		}
+
+		// get the attributes defaults.
+		$default_attributes = $this->get_single_shortcode_attributes_defaults();
+
+		/**
+		 * Change settings for output.
+		 *
+		 * @since 2.0.0 Available since 2.0.0.
+		 *
+		 * @param array $personio_attributes The attributes used for this output.
+		 * @param array $default_attributes The default attributes.
+		 */
+		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $default_attributes );
+
+		// set language.
+		$position->set_lang( $personio_attributes['lang'] );
+		$position->set_title( '' );
+
+		// generate styling.
+		Helper::add_inline_style( $personio_attributes['styles'] );
+
+		// collect the output.
+		ob_start();
+		if ( empty( $personio_attributes['styles'] ) && Helper::is_rest_request() ) {
+			wp_styles()->print_inline_style( 'wp-block-library' );
+		}
+
+		// embed content.
+		include Templates::get_instance()->get_template( 'parts/content.php' );
+
+		// return resulting code.
+		return ob_get_clean();
+	}
+
+	/**
+	 * Convert attributes for shortcodes.
+	 *
+	 * @param array $attributes List of attributes.
+	 *
+	 * @return array
+	 */
+	public function get_single_shortcode_attributes( array $attributes ): array {
+		// define the default values for each attribute.
+		$attribute_defaults = $this->get_single_shortcode_attributes_defaults();
+
+		// define the settings for each attribute (array or string).
+		$attribute_settings = array(
+			'personioid'              => 'int',
+			'lang'                    => 'string',
+			'templates'               => 'array',
+			'excerpt'                 => 'array',
+			'donotlink'               => 'bool',
+			'styles'                  => 'string',
+			'classes'                 => 'string',
+			'excerpt_template'        => 'excerpt_template',
+			'jobdescription_template' => 'jobdescription_template',
+		);
+		return Helper::get_shortcode_attributes( $attribute_defaults, $attribute_settings, $attributes );
+	}
+
+	/**
+	 * Return attribute defaults for shortcode in single-view.
+	 *
+	 * @return array
+	 */
+	private function get_single_shortcode_attributes_defaults(): array {
+		$default_values = array(
+			'personioid'              => 0,
+			'lang'                    => Languages::get_instance()->get_main_language(),
+			'template'                => '',
+			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults' ) ),
+			'excerpt_template'        => get_option( 'personioIntegrationTemplateDetailsExcerptsTemplate' ),
+			'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription' ),
+			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDetail' ) ),
+			'donotlink'               => 1,
+			'styles'                  => '',
+			'classes'                 => '',
+		);
+
+		/**
+		 * Filter the attribute-defaults.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array $default_values The list of default values for each attribute used to display positions in frontend.
+		 */
+		return apply_filters( 'personio_integration_position_attribute_defaults', $default_values );
 	}
 }

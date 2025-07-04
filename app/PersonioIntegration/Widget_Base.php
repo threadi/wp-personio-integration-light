@@ -29,13 +29,6 @@ class Widget_Base extends Extensions_Base {
 	protected string $gutenberg = '';
 
 	/**
-	 * Dynamic properties.
-	 *
-	 * @var array
-	 */
-	private array $properties = array();
-
-	/**
 	 * Variable for instance of this Singleton object.
 	 *
 	 * @var ?Widget_Base
@@ -82,18 +75,6 @@ class Widget_Base extends Extensions_Base {
 	}
 
 	/**
-	 * Add dynamic property for this widget.
-	 *
-	 * @param string $key
-	 * @param string $value
-	 *
-	 * @return void
-	 */
-	public function add_property( string $key, string $value ): void {
-		$this->properties[$key] = $value;
-	}
-
-	/**
 	 * Whether this extension is enabled by default (true) or not (false).
 	 *
 	 * @return bool
@@ -117,7 +98,7 @@ class Widget_Base extends Extensions_Base {
 	 * @return bool
 	 */
 	public function can_be_enabled_by_user(): bool {
-		return true; // TODO change.
+		return false;
 	}
 
 	/**
@@ -171,5 +152,14 @@ class Widget_Base extends Extensions_Base {
 	 */
 	public function get_params(): array {
 		return array();
+	}
+
+	/**
+	 * Return a shortcode description.
+	 *
+	 * @return string
+	 */
+	public function get_shortcode_description(): string {
+		return '';
 	}
 }
