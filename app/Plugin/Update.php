@@ -197,5 +197,9 @@ class Update {
 	private function version500(): void {
 		// enable the Import XML extension.
 		Xml::get_instance()->set_enabled();
+
+		// re-initiate each schedule to set the new intervals.
+		Schedules::get_instance()->delete_all();
+		Schedules::get_instance()->create_schedules();
 	}
 }

@@ -58,6 +58,9 @@ class Schedules {
 			return;
 		}
 
+		// initialize the intervals.
+		Intervals::get_instance()->init();
+
 		// use our own hooks.
 		if ( is_admin() ) {
 			add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );

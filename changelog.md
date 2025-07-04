@@ -33,6 +33,7 @@
 - Style optimization for extension table
 - Using WP_Error for any error handling
 - Extended the limitation for REST API requests regarding our own Block Editor blocks
+- Now using our own intervals for WordPress cronjobs
 
 ### Removed
 

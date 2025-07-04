@@ -98,7 +98,7 @@ class Widget_Base extends Extensions_Base {
 	 * @return bool
 	 */
 	public function can_be_enabled_by_user(): bool {
-		return false;
+		return true;
 	}
 
 	/**
