@@ -210,6 +210,12 @@ class Positions {
 		remove_filter( 'posts_join', array( $this, 'add_taxonomy_table_to_position_query' ) );
 		remove_filter( 'posts_orderby', array( $this, 'set_position_query_order_by_for_group' ) );
 
+		// get the grouped taxonomy name from given slug.
+		$grouped_taxonomy_name = '';
+		if( ! empty( $parameter_to_add['groupby'] ) ) {
+			$grouped_taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
+		}
+
 		// get the positions as object in array
 		// -> optionally grouped by a given taxonomy.
 		$resulting_position_list = array();
@@ -231,8 +237,8 @@ class Positions {
 			}
 
 			// consider grouping of entries in list.
-			if ( ! empty( $parameter_to_add['groupby'] ) ) {
-				$resulting_position_list[ $position_object->get_term_by_field( $parameter_to_add['groupby'], 'name' ) ] = $position_object;
+			if ( ! empty( $grouped_taxonomy_name ) ) {
+				$resulting_position_list[ $position_object->get_term_by_field( $grouped_taxonomy_name, 'name' ) ] = $position_object;
 			} else {
 				// ungrouped simply add the position to the list.
 				$resulting_position_list[] = $position_object;
