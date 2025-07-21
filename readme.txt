@@ -126,6 +126,7 @@ Major update with many new features and optimizations! We recommend that you do 
 == Changelog ==
 
 = @@VersionNumber@@ =
-* Fixed missing non-german initial setup
+- Optimized output of update hints in plugin list
+- Fixed grouped list of position which has been missing its key
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
