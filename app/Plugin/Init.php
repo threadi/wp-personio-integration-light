@@ -285,7 +285,7 @@ class Init {
 
 		// show hint, if set.
 		if ( ! empty( $notice_hint ) ) {
-			echo '<div class="personio-integration-plugin-update-notice">' . wp_kses_post( $notice_hint ) . '</div>';
+			echo '</p></div><div class="notice inline notice-warning notice-alt personio-integration-plugin-update-notice"><p>' . wp_kses_post( $notice_hint ) . '</p></div><div><p>';
 		}
 	}
 

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Optimized output of update hints in plugin list
+
 ### Fixed
 
 - Fixed grouped list of position which has been missing its key
