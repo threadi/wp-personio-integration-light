@@ -15,6 +15,9 @@ use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Application_Button;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Description;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Details;
 use WP_Error;
 use WP_Post;
 use WP_Term;
@@ -504,7 +507,7 @@ class Templates {
 		$arguments = array(
 			'personioid' => get_post_meta( $post_id, WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, true ),
 		);
-		return wp_kses_post( PersonioPosition::get_instance()->shortcode_single( $arguments ) );
+		return wp_kses_post( \PersonioIntegrationLight\PersonioIntegration\Widgets\Single::get_instance()->render( $arguments ) );
 	}
 
 	/**
@@ -585,135 +588,21 @@ class Templates {
 	}
 
 	/**
-	 * Get the position details as excerpt via template.
+	 * Get or return the position details as excerpt via template.
 	 *
 	 * @param Position            $position   The position as object.
 	 * @param array<string,mixed> $attributes The attributes.
 	 * @param bool                $use_return True if this function should return and not echo for output.
 	 *
 	 * @return string
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function get_excerpt( Position $position, array $attributes, bool $use_return = false ): string {
-		// collect the details in this array.
-		$details       = array();
-		$taxonomy_data = array();
-
-		// get the configured separator.
-		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator' ) . ' ';
-		if ( ! empty( $attributes['separator'] ) ) {
-			$separator = $attributes['separator'];
+		$content = Details::get_instance()->render( $attributes );
+		if( $use_return ) {
+			return $content;
 		}
-
-		// get colon setting.
-		$colon = ':';
-		if ( isset( $attributes['colon'] ) && '' === $attributes['colon'] ) {
-			$colon = '';
-		}
-
-		// get line break from setting.
-		$line_break = '<br>';
-		if ( isset( $attributes['line_break'] ) && '' === $attributes['line_break'] ) {
-			$line_break = ' ';
-		}
-
-		// get the excerpts for this position.
-		if ( ! empty( $attributes['excerpt'] ) ) {
-
-			// loop through each configured detail taxonomy.
-			foreach ( $attributes['excerpt'] as $taxonomy_slug ) {
-				// get taxonomy name by given slug (e.g. office => personioOffice).
-				$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $taxonomy_slug );
-
-				// bail if taxonomy for the given slug could not be found.
-				if ( ! $taxonomy_name ) {
-					continue;
-				}
-
-				// get the taxonomy plural label.
-				$taxonomy_label = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name, $attributes['lang'] )['name'];
-
-				// get the default terms for the terms of this taxonomy.
-				$terms_label = Taxonomies::get_instance()->get_default_terms_for_taxonomy( $taxonomy_name, $attributes['lang'] );
-
-				// get terms this position is using on this taxonomy.
-				$terms = get_the_terms( $position->get_id(), $taxonomy_name );
-
-				// bail on error.
-				if ( is_wp_error( $terms ) ) {
-					return '';
-				}
-
-				$false = false;
-				/**
-				 * Filter whether to show terms of single taxonomy as list or not.
-				 *
-				 * TODO remove this?
-				 *
-				 * @since 3.0.8 Available since 3.0.8.
-				 * @param bool $false True to show the list.
-				 * @param array<WP_Term>|false $terms List of terms.
-				 * @noinspection PhpConditionAlreadyCheckedInspection
-				 */
-				$show_term_list = apply_filters( 'personio_integration_show_term_list', $false, $terms );
-
-				// if term exist, get the corresponding term-label.
-				if ( ! empty( $terms ) ) {
-					$values = '';
-					foreach ( $terms as $term ) {
-						// set the name to use.
-						$name = $term->name;
-
-						// if terms slug is in list of default term labels, use this.
-						if ( ! empty( $terms_label[ $term->slug ] ) ) {
-							$name = $terms_label[ $term->slug ];
-						}
-
-						// for terms without default term labels, we add them to the list.
-						if ( ! empty( $values ) ) {
-							$values .= $separator;
-						}
-
-						// add terms name to the list.
-						$values .= $term->name;
-					}
-
-					// set collected values as detail content.
-					if ( ! empty( $values ) ) {
-						$details[ $taxonomy_label ] = $values;
-					}
-				}
-
-				// add the taxonomy itself to the list.
-				$taxonomy_data[ $taxonomy_label ] = get_taxonomy( $taxonomy_name );
-			}
-		}
-
-		if ( ! empty( $details ) ) {
-			// get configured template if none has been set for this output.
-			if ( empty( $attributes['excerpt_template'] ) ) {
-				$template = get_option( is_singular() ? 'personioIntegrationTemplateDetailsExcerptsTemplate' : 'personioIntegrationTemplateListingExcerptsTemplate' );
-			} else {
-				$template = $attributes['excerpt_template'];
-			}
-
-			// get template and return it.
-			ob_start();
-			include $this->get_template( 'parts/details/' . $template . '.php' );
-			$content = ob_get_clean();
-
-			if ( ! $content ) {
-				return '';
-			}
-
-			// return content depending on setting.
-			if ( $use_return ) {
-				return $content;
-			}
-			echo wp_kses_post( $content );
-			return '';
-		}
-
-		// return nothing.
+		echo wp_kses_post( $content );
 		return '';
 	}
 
@@ -726,64 +615,7 @@ class Templates {
 	 * @return void
 	 */
 	public function get_application_link_template( Position $position, array $attributes ): void {
-		// bail if we are in admin.
-		if ( is_admin() ) {
-			return;
-		}
-
-		$false = false;
-		/**
-		 * Bail if no button should be visible.
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 *
-		 * @param bool $false Return true to prevent button-output.
-		 * @noinspection PhpConditionAlreadyCheckedInspection
-		 */
-		if ( apply_filters( 'personio_integration_hide_button', $false ) ) {
-			return;
-		}
-
-		// convert attributes.
-		$attributes = PersonioPosition::get_instance()->get_single_shortcode_attributes( $attributes );
-
-		// define where this application-link is displayed.
-		$text_position = 'archive';
-		if ( is_single() ) {
-			$text_position = 'single';
-		}
-
-		// set back to list-link.
-		$back_to_list_url = get_option( 'personioIntegrationTemplateBackToListUrl', '' );
-		if ( empty( $back_to_list_url ) ) {
-			$back_to_list_url = PersonioPosition::get_instance()->get_archive_url();
-		}
-
-		// reset back to list-link.
-		if ( 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) || 0 === absint( get_option( 'personioIntegrationTemplateBackToListButton' ) ) ) {
-			$back_to_list_url = '';
-		}
-
-		// generate styling.
-		Helper::add_inline_style( $attributes['styles'] );
-
-		// get application URL.
-		$link = $position->get_application_url();
-
-		$target = '_blank';
-		/**
-		 * Set and filter the value for the target-attribute.
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 *
-		 * @param string $target The target value.
-		 * @param Position $position The Position as object.
-		 * @param array<string,mixed> $attributes List of attributes used for the output.
-		 */
-		$target = apply_filters( 'personio_integration_back_to_list_target_attribute', $target, $position, $attributes );
-
-		// get and output template.
-		include $this->get_template( 'parts/properties-application-button.php' );
+		echo wp_kses_post( Application_Button::get_instance()->render( $attributes ) );
 	}
 
 	/**
@@ -947,7 +779,7 @@ class Templates {
 	 * @return void
 	 */
 	public function get_content_template( Position $position, array $attributes ): void {
-		echo wp_kses_post( $this->get_direct_content_template( $position, $attributes ) );
+		echo wp_kses_post( Description::get_instance()->render( $attributes ) );
 	}
 
 	/**

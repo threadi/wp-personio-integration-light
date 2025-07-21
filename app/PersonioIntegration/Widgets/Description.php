@@ -10,7 +10,11 @@ namespace PersonioIntegrationLight\PersonioIntegration\Widgets;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
+use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Templates;
 
 /**
  * Object to handle the description widget.
@@ -97,6 +101,25 @@ class Description extends Widget_Base {
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		return Archive::get_instance()->render( $attributes );
+		$position = $this->get_position_by_request();
+		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! ( $position instanceof Position ) ) {
+			return '';
+		}
+
+		// set actual language.
+		$position->set_lang( Languages::get_instance()->get_current_lang() );
+
+		// collect the attributes.
+		$attributes = array_merge( $attributes, array(
+			'personioid'              => absint( $position->get_personio_id() ),
+			'jobdescription_template' => empty( $attributes['template'] ) ? get_option( 'personioIntegrationTemplateJobDescription' ) : $attributes['template'],
+			'templates'               => array( 'content' ),
+		));
+
+		// generate styling.
+		Helper::add_inline_style( $attributes['styles'] );
+
+		// return the output of the template.
+		return Templates::get_instance()->get_direct_content_template( $position, $attributes );
 	}
 }

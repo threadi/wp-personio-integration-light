@@ -10,8 +10,8 @@ namespace PersonioIntegrationLight\Widgets;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Archive;
 use PersonioIntegrationLight\Plugin\Templates;
 use WP_Widget;
 
@@ -222,7 +222,7 @@ class Positions extends WP_Widget {
 		echo wp_kses_post( $args['before_widget'] );
 
 		// get the output.
-		echo wp_kses_post( PersonioPosition::get_instance()->shortcode_archive( $attribute_defaults ) );
+		echo wp_kses_post( Archive::get_instance()->render( $attribute_defaults ) );
 
 		// add wrapper from template around widget-content.
 		echo wp_kses_post( $args['after_widget'] );
