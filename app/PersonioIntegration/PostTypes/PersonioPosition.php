@@ -1507,9 +1507,9 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Convert attributes for shortcodes.
 	 *
-	 * @param array $attributes List of attributes.
+	 * @param array<string,string> $attributes List of attributes.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_single_shortcode_attributes( array $attributes ): array {
 		// define the default values for each attribute.
@@ -1533,7 +1533,7 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Return attribute defaults for shortcode in single-view.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	private function get_single_shortcode_attributes_defaults(): array {
 		$default_values = array(
@@ -1554,7 +1554,7 @@ class PersonioPosition extends Post_Type {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $default_values The list of default values for each attribute used to display positions in frontend.
+		 * @param array<string,mixed> $default_values The list of default values for each attribute used to display positions in frontend.
 		 */
 		return apply_filters( 'personio_integration_position_attribute_defaults', $default_values );
 	}
