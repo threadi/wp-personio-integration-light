@@ -115,13 +115,18 @@ Yes, it is without any further settings.
 
 == Upgrade Notice ==
 
-= 4.0.0 =
+= @@VersionNumber@@ =
 
-Complete revision of the plugin. Please create a backup before installing version 4.0.0 or newer.
+One of the next updates, version 5.0.0, will bring many new features and options. We recommend that you do not install it automatically. Please also always create a backup of your project.
+
+= 5.0.0 =
+
+Major update with many new features and optimizations! We recommend that you do not install it automatically. Please create a backup before installing version 5.0.0 or newer.
 
 == Changelog ==
 
 = @@VersionNumber@@ =
-* Fixed missing non-german initial setup
+- Optimized output of update hints in plugin list
+- Fixed grouped list of position which has been missing its key
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

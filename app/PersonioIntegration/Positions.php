@@ -222,7 +222,7 @@ class Positions {
 
 			// consider grouping of entries in list.
 			if ( ! empty( $parameter_to_add['groupby'] ) ) {
-				$resulting_position_list[ $position_object->get_term_by_field( $parameter_to_add['groupby'], 'name' ) ] = $position_object;
+				$resulting_position_list[ $position_object->get_term_by_field( Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] ), 'name' ) ] = $position_object;
 			} else {
 				// ungrouped simply add the position to the list.
 				$resulting_position_list[] = $position_object;

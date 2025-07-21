@@ -1,10 +1,20 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Optimized output of update hints in plugin list
+
+### Fixed
+
+- Fixed grouped list of position which has been missing its key
+
 ## [4.3.1] - 05.05.2025
 
 ### Fixed
 
-* Fixed missing non-german initial setup
+- Fixed missing non-german initial setup
 
 ## [4.3.0] - 28.04.2025
 
