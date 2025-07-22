@@ -12,9 +12,9 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
-use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 use WP_Term;
 
@@ -211,7 +211,9 @@ class Details extends Widget_Base {
 			}
 
 			// generate styling.
-			Helper::add_inline_style( $attributes['styles'] );
+			if( ! empty( $attributes['styles'] ) ) {
+				Helper::add_inline_style( $attributes['styles'] );
+			}
 
 			// get template and return it.
 			ob_start();
@@ -225,5 +227,65 @@ class Details extends Widget_Base {
 
 		// return nothing.
 		return '';
+	}
+
+	/**
+	 * Return the list of params this widget requires.
+	 *
+	 * @return array<string,array<string,mixed>>
+	 */
+	public function get_params(): array {
+		// get the possible field values.
+		$values = array();
+		foreach ( PersonioPosition::get_instance()->get_details_templates_via_rest_api() as $template ) {
+			$values[] = $template['value'];
+		}
+
+		// generate the list.
+		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
+
+		// get the taxonomies.
+		$taxonomies = array();
+		foreach( Taxonomies::get_instance()->get_taxonomies() as $settings ) {
+			// bail if it is not used for filter.
+			if( empty( $settings['useInFilter'] ) ) {
+				continue;
+			}
+
+			// add to the list.
+			$taxonomies[] = $settings['slug'];
+		}
+
+		// generate the detail-list.
+		$detail_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . implode( '</code>, <code>', $taxonomies ) . '</code>';
+
+		// return the list of params for this widget.
+		return array(
+			'template' => array(
+				'label'         => __( 'Name of chosen template, one of these values:', 'personio-integration-light' ) . $list,
+				'example_value' => $values[0],
+				'required'      => false,
+			),
+			'excerptTemplates' => array(
+				'label'         => __( 'List of details to show, any of these values, comma-separated as list:', 'personio-integration-light' ) . $detail_list,
+				'example_value' => $detail_list[0],
+				'required'      => false,
+			),
+			'colon' => array(
+				'label'         => __( 'With colon', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+			'wrap' => array(
+				'label'         => __( 'With line break', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+			'separator' => array(
+				'label'         => __( 'Separator', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+		);
 	}
 }

@@ -157,15 +157,6 @@ class Widget_Base extends Extensions_Base {
 	}
 
 	/**
-	 * Return a shortcode description.
-	 *
-	 * @return string
-	 */
-	public function get_shortcode_description(): string {
-		return '';
-	}
-
-	/**
 	 * Return position as object by request.
 	 *
 	 * Hints:
@@ -196,5 +187,62 @@ class Widget_Base extends Extensions_Base {
 
 		// return the object.
 		return false;
+	}
+
+	/**
+	 * Return a shortcode description.
+	 *
+	 * @return string
+	 */
+	public function get_shortcode_description(): string {
+		// concat the returning text.
+		$text = '<code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">[personio_integration_' . $this->get_name() . ']</code><br>';
+
+		// get the params.
+		$params = $this->get_params();
+
+		// add them if they are filled.
+		if ( ! empty( $params ) ) {
+			$text .= '<i>' . __( 'Attributes:', 'personio-integration-light' ) . '</i><ul>';
+			foreach ( $params as $name => $param ) {
+				$text .= '<li><code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . $name . '</code> ' . $param['label'] . ( $param['required'] ? ' <em>' . __( 'required', 'personio-integration-light' ) . '</em>' : '' ) . '</li>';
+			}
+			$text .= '</ul>';
+			$text .= '<i>' . __( 'Example:', 'personio-integration-light' ) . '</i><br>' . $this->get_shortcode_example();
+		} else {
+			$text .= '<i>' . __( 'Does not have any attributes.', 'personio-integration-light' ) . '</i>';
+		}
+
+		// return the resulting text.
+		return '<div>' . $text . '</div>';
+	}
+
+	/**
+	 * Return a shortcode example.
+	 *
+	 * @return string
+	 */
+	private function get_shortcode_example(): string {
+		// collect the params here.
+		$params = '';
+
+		// get all required params.
+		foreach ( $this->get_params() as $name => $param ) {
+			// bail if it is not required.
+			if ( empty( $param['required'] ) ) {
+				continue;
+			}
+
+			// bail if no example value is set.
+			if ( empty( $param['example_value'] ) ) {
+				continue;
+			}
+
+			// add this to the list with the configured example value.
+			$params .= ' ' . $name . '="' . $param['example_value'] . '"';
+		}
+
+		// return resulting example.
+		return '<code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">[personio_integration_' . $this->get_name() . $params . ']</code>';
 	}
 }

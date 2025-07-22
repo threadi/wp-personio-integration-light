@@ -12,6 +12,8 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
@@ -117,9 +119,36 @@ class Description extends Widget_Base {
 		));
 
 		// generate styling.
-		Helper::add_inline_style( $attributes['styles'] );
+		if( ! empty( $attributes['styles'] ) ) {
+			Helper::add_inline_style( $attributes['styles'] );
+		}
 
 		// return the output of the template.
 		return Templates::get_instance()->get_direct_content_template( $position, $attributes );
+	}
+
+	/**
+	 * Return the list of params this widget requires.
+	 *
+	 * @return array<string,array<string,mixed>>
+	 */
+	public function get_params(): array {
+		// get the possible field values.
+		$templates = array();
+		foreach ( PersonioPosition::get_instance()->get_jobdescription_templates_via_rest_api() as $template ) {
+			$templates[] = $template['value'];
+		}
+
+		// generate the template-list.
+		$template_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $templates ) . '</code>';
+
+		// return the list of params for this widget.
+		return array(
+			'template' => array(
+				'label'         => __( 'Name of chosen template, one of these values:', 'wp-personio-integration' ) . $template_list,
+				'example_value' => $template_list[0],
+				'required'      => true,
+			),
+		);
 	}
 }
