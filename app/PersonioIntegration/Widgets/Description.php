@@ -13,7 +13,6 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
@@ -146,8 +145,8 @@ class Description extends Widget_Base {
 		return array(
 			'template' => array(
 				'label'         => __( 'Name of chosen template, one of these values:', 'wp-personio-integration' ) . $template_list,
-				'example_value' => $template_list[0],
-				'required'      => true,
+				'example_value' => $templates[0],
+				'required'      => false,
 			),
 		);
 	}

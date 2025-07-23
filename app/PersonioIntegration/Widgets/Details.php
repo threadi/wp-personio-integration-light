@@ -268,7 +268,7 @@ class Details extends Widget_Base {
 			),
 			'excerptTemplates' => array(
 				'label'         => __( 'List of details to show, any of these values, comma-separated as list:', 'personio-integration-light' ) . $detail_list,
-				'example_value' => $detail_list[0],
+				'example_value' => $taxonomies[0],
 				'required'      => false,
 			),
 			'colon' => array(

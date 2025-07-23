@@ -91,7 +91,7 @@ class Application_Button extends Widget_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __('Provides a widget to show filter as link-based dropdown-list for Personio positions.', 'personio-integration-light');
+		return __('Provides a widget to show the application button for single position.', 'personio-integration-light');
 	}
 
 	/**
