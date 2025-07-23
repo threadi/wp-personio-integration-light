@@ -10,7 +10,12 @@ namespace PersonioIntegrationLight\PersonioIntegration\Widgets;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
+use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Templates;
 
 /**
  * Object to handle the application button widget.
@@ -86,7 +91,7 @@ class Application_Button extends Widget_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __('Provides a widget to show filter as link-based dropdown-list for Personio positions.', 'personio-integration-light');
+		return __('Provides a widget to show the application button for single position.', 'personio-integration-light');
 	}
 
 	/**
@@ -97,6 +102,80 @@ class Application_Button extends Widget_Base {
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		return Archive::get_instance()->render( $attributes );
+		// bail if we are in admin.
+		if ( is_admin() ) {
+			return '';
+		}
+
+		$false = false;
+		/**
+		 * Bail if no button should be visible.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param bool $false Return true to prevent button-output.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		if ( apply_filters( 'personio_integration_hide_button', $false ) ) {
+			return '';
+		}
+
+		$position = $this->get_position_by_request();
+		if ( ! ( $position instanceof Position ) || ! $position->is_valid() ) {
+			return '';
+		}
+
+		// get the Personio ID for attributes.
+		$attributes['personioid'] = absint( $position->get_personio_id() );
+
+		// set actual language.
+		$position->set_lang( Languages::get_instance()->get_current_lang() );
+
+		// convert attributes.
+		$attributes = PersonioPosition::get_instance()->get_single_shortcode_attributes( $attributes );
+
+		// define where this application-link is displayed.
+		$text_position = 'archive';
+		if ( is_single() ) {
+			$text_position = 'single';
+		}
+
+		// set back to list-link.
+		$back_to_list_url = get_option( 'personioIntegrationTemplateBackToListUrl', '' );
+		if ( empty( $back_to_list_url ) ) {
+			$back_to_list_url = PersonioPosition::get_instance()->get_archive_url();
+		}
+
+		// reset back to list-link.
+		if ( 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) || 0 === absint( get_option( 'personioIntegrationTemplateBackToListButton' ) ) ) {
+			$back_to_list_url = '';
+		}
+
+		// generate styling.
+		Helper::add_inline_style( $attributes['styles'] );
+
+		// get application URL.
+		$link = $position->get_application_url();
+
+		$target = '_blank';
+		/**
+		 * Set and filter the value for the target-attribute.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param string $target The target value.
+		 * @param Position $position The Position as object.
+		 * @param array<string,mixed> $attributes List of attributes used for the output.
+		 */
+		$target = apply_filters( 'personio_integration_back_to_list_target_attribute', $target, $position, $attributes );
+
+		// get and output template.
+		ob_start();
+		include Templates::get_instance()->get_template( 'parts/properties-application-button.php' );
+		$content = ob_get_clean();
+		if( ! $content ) {
+			return '';
+		}
+		return $content;
 	}
 }

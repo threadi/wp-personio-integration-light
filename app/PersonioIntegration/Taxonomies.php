@@ -14,6 +14,7 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
+use WP_REST_Request;
 use WP_REST_Server;
 use WP_Screen;
 use WP_Taxonomy;
@@ -1103,10 +1104,11 @@ class Taxonomies {
 	/**
 	 * Return list of available taxonomies for REST-API.
 	 *
+	 * @param WP_REST_Request $data The request.
 	 * @return array<int,array<string,mixed>>
 	 * @noinspection PhpUnused
 	 */
-	public function get_taxonomies_via_rest_api(): array {
+	public function get_taxonomies_via_rest_api( WP_REST_Request $data ): array {
 		$taxonomies_labels_array = $this->get_taxonomy_labels_for_settings();
 		$taxonomies              = array();
 		$count                   = 0;
@@ -1158,8 +1160,14 @@ class Taxonomies {
 			}
 		}
 
-		// return resulting list of taxonomies.
-		return $taxonomies;
+		/**
+		 * Filter the resulting list of taxonomies for REST API response.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param array<int,array<string,mixed>> $taxonomies List of taxonomies.
+		 * @param WP_REST_Request $data The REST API request.
+		 */
+		return apply_filters( 'personio_integration_light_rest_taxonomies', $taxonomies, $data );
 	}
 
 	/**

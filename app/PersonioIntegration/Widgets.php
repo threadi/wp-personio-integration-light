@@ -10,6 +10,9 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Archive;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Single;
+
 /**
  * Object to handle widgets we add with this plugin.
  */
@@ -53,6 +56,8 @@ class Widgets {
 		// use our own hooks.
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_widgets' ) );
 		add_filter( 'personio_integration_extension_categories', array( $this, 'add_extension_categories' ) );
+		add_action( 'personio_integration_light_widgets_widget_archive', array( $this, 'add_old_archive_shortcode' ) );
+		add_action( 'personio_integration_light_widgets_widget_single', array( $this, 'add_old_single_shortcode' ) );
 	}
 
 	/**
@@ -128,5 +133,31 @@ class Widgets {
 	public function add_extension_categories( array $categories ): array {
 		$categories['widgets'] = __( 'Widgets', 'wp-personio-integration' );
 		return $categories;
+	}
+
+	/**
+	 * Add alias for use the old archive shortcode.
+	 *
+	 * Hint: we will never deprecate this as it is used on many projects.
+	 *
+	 * @param Archive $widget The archive widget which renders this shortcode.
+	 *
+	 * @return void
+	 */
+	public function add_old_archive_shortcode( Archive $widget ): void {
+		add_shortcode( 'personioPositions', array( $widget, 'get_shortcode' ) );
+	}
+
+	/**
+	 * Add alias for use the old archive shortcode.
+	 *
+	 * Hint: we will never deprecate this as it is used on many projects.
+	 *
+	 * @param Single $widget The archive widget which renders this shortcode.
+	 *
+	 * @return void
+	 */
+	public function add_old_single_shortcode( Single $widget ): void {
+		add_shortcode( 'personioPosition', array( $widget, 'get_shortcode' ) );
 	}
 }

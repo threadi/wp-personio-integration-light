@@ -12,9 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\Position;
-use PersonioIntegrationLight\Plugin\Languages;
-use PersonioIntegrationLight\Plugin\Templates;
 
 /**
  * Object to handle this block.
@@ -80,18 +77,10 @@ class Description extends Blocks_Basis {
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		$position = $this->get_position_by_request();
-		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! ( $position instanceof Position ) ) {
-			return '';
-		}
-
-		// set actual language.
-		$position->set_lang( Languages::get_instance()->get_current_lang() );
-
 		// set ID as class.
-		$class = '';
+		$classes = '';
 		if ( ! empty( $attributes['blockId'] ) ) {
-			$class = 'personio-integration-block-' . $attributes['blockId'];
+			$classes = 'personio-integration-block-' . $attributes['blockId'];
 		}
 
 		// get block-classes.
@@ -103,19 +92,15 @@ class Description extends Blocks_Basis {
 			// get styles.
 			$styles = Helper::get_attribute_value_from_html( 'style', $block_html_attributes );
 			if ( ! empty( $styles ) ) {
-				$styles_array[] = '.entry.' . $class . ' { ' . $styles . ' }';
+				$styles_array[] = '.entry-content.' . $classes . ' { ' . $styles . ' }';
 			}
 		}
 
-		$attributes = array(
-			'personioid'              => absint( $position->get_personio_id() ),
-			'jobdescription_template' => empty( $attributes['template'] ) ? get_option( 'personioIntegrationTemplateJobDescription' ) : $attributes['template'],
-			'templates'               => array( 'content' ),
-			'styles'                  => implode( PHP_EOL, $styles_array ),
-			'classes'                 => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
-		);
+		// add the attributes.
+		$attributes['styles'] = implode( PHP_EOL, $styles_array );
+		$attributes['classes'] = $classes . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes );
 
-		// return the output of the template.
-		return Templates::get_instance()->get_direct_content_template( $position, $attributes );
+		// return the rendered template.
+		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Description::get_instance()->render( $attributes );
 	}
 }

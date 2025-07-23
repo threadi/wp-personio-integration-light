@@ -36,9 +36,6 @@ import {
 	onChangeApplicationFormVisibility,
 	onChangeExcerptTemplates,
 	onChangeLinkingTitle,
-	onChangeFilter,
-	onChangeFilterType,
-	onChangeShowFilter,
 	onChangeSortBy,
 	onChangeGroupBy,
 	onChangeTemplate,
@@ -145,8 +142,8 @@ export default function Edit( object ) {
 						label={__('Sort direction', 'personio-integration-light')}
 						value={ object.attributes.sort }
 						options={ [
-							{ label: __('ascending', 'personio-integration-light'), value: 'asc' },
-							{ label: __('descending', 'personio-integration-light'), value: 'desc' }
+							{ label: __('Ascending', 'personio-integration-light'), value: 'asc' },
+							{ label: __('Descending', 'personio-integration-light'), value: 'desc' }
 						] }
 						onChange={ value => onChangeSort( value, object ) }
 					/>
@@ -154,8 +151,8 @@ export default function Edit( object ) {
 						label={__('Sort by', 'personio-integration-light')}
 						value={ object.attributes.sortby }
 						options={ [
-							{ label: __('title', 'personio-integration-light'), value: 'title' },
-							{ label: __('date', 'personio-integration-light'), value: 'date' }
+							{ label: __('Title', 'personio-integration-light'), value: 'title' },
+							{ label: __('Date', 'personio-integration-light'), value: 'date' }
 						] }
 						onChange={ value => onChangeSortBy( value, object ) }
 					/>

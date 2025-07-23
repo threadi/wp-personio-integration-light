@@ -35,10 +35,15 @@
 - Extended the limitation for REST API requests regarding our own Block Editor blocks
 - Now using our own intervals for WordPress cronjobs
 
+### Fixed
+
+- Fixed missing usage of some block styles (like margin and padding) in block themes
+
 ### Removed
 
 - Removed Position_Extension_Base in favor of less complex way to extend the position data
 - Removed check for WpPageBuilder compatibility
+- Removed already deprecated hook "personio_integration_personioposition_columns"
 
 ## [4.3.0] - 28.04.2025
 

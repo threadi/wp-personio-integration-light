@@ -144,6 +144,6 @@ class Filter_Select extends Blocks_Basis {
 		 * @param array $attribute_defaults List of attributes to use.
 		 * @param array $attributes List of attributes vom PageBuilder.
 		 */
-		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
+		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Filter_Select::get_instance()->render( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
 	}
 }

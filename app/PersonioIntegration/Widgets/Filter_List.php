@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PersonioIntegration\Widgets;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
 
 /**
@@ -98,5 +99,45 @@ class Filter_List extends Widget_Base {
 	 */
 	public function render( array $attributes ): string {
 		return Archive::get_instance()->render( $attributes );
+	}
+
+	/**
+	 * Return the list of params this widget requires.
+	 *
+	 * @return array<string,array<string,mixed>>
+	 */
+	public function get_params(): array {
+		// get the possible field values.
+		$values = array();
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy ) {
+			$values[] = $taxonomy['slug'];
+		}
+
+		// generate the list.
+		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
+
+		// return the list of params for this widget.
+		return array(
+			'filter' => array(
+				'label'         => __( 'Name of chosen template, one of these values:', 'personio-integration-light' ) . $list,
+				'example_value' => $values[0],
+				'required'      => false,
+			),
+			'hideFilterTitle' => array(
+				'label'         => __( 'Hide filter title', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+			'hideSubmitButton' => array(
+				'label'         => __( 'Hide submit button', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+			'hideResetLink' => array(
+				'label'         => __( 'Hide reset link', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+		);
 	}
 }

@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
@@ -219,5 +220,70 @@ class Single extends Widget_Base {
 		 * @param array $default_values The list of default values for each attribute used to display positions in frontend.
 		 */
 		return apply_filters( 'personio_integration_position_attribute_defaults', $default_values );
+	}
+
+	/**
+	 * Return the list of params this widget requires.
+	 *
+	 * @return array<string,array<string,mixed>>
+	 */
+	public function get_params(): array {
+		// get the possible field values.
+		$values = array();
+		foreach ( Positions::get_instance()->get_positions() as $position_obj ) {
+			$values[] = $position_obj->get_personio_id();
+		}
+
+		// generate the list.
+		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
+
+		// get the possible field values.
+		$excerpts = array();
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy ) {
+			$excerpts[] = $taxonomy['slug'];
+		}
+
+		// generate the list.
+		$excerpts_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $excerpts ) . '</code>';
+
+
+		// return the list of params for this widget.
+		return array(
+			'id' => array(
+				'label'         => __( 'Personio ID of the position to show', 'personio-integration-light' ) . $list,
+				'example_value' => $values[0],
+				'required'      => false,
+			),
+			'showTitle' => array(
+				'label'         => __( 'Show title', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+			'linkTitle' => array(
+				'label'         => __( 'Link title', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+			'showExcerpt' => array(
+				'label'         => __( 'Show excerpt', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+			'excerptTemplates' => array(
+				'label'         => __( 'Choose details', 'personio-integration-light' ) . $excerpts_list,
+				'example_value' => $excerpts[0],
+				'required'      => false,
+			),
+			'showContent' => array(
+				'label'         => __( 'View content', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+			'showApplicationForm' => array(
+				'label'         => __( 'View application link', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
+		);
 	}
 }

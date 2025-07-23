@@ -226,39 +226,6 @@ class Blocks_Basis {
 	}
 
 	/**
-	 * Get Position as object by request.
-	 *
-	 * Hints:
-	 * - Bug https://github.com/WordPress/gutenberg/issues/40714 prevents clean usage in Query Loop (backend bad, frontend ok)
-	 *
-	 * @return Position|false
-	 */
-	public function get_position_by_request(): Position|false {
-		// get positions object.
-		$positions = Positions::get_instance();
-
-		// return the position as object if the called ID is valid.
-		$post_id = get_the_ID();
-		if ( $post_id > 0 ) {
-			$position_obj = $positions->get_position( $post_id );
-			if ( $position_obj->is_valid() ) {
-				return $position_obj;
-			}
-		}
-
-		// fallback: get a random position, only during AJAX-request (e.g. in Gutenberg).
-		if ( Helper::is_rest_request() ) {
-			$position_array = $positions->get_positions( 1 );
-			if ( ! empty( $position_array ) ) {
-				return $position_array[0];
-			}
-		}
-
-		// return the object.
-		return false;
-	}
-
-	/**
 	 * Return the text domain this block is using.
 	 *
 	 * @return string

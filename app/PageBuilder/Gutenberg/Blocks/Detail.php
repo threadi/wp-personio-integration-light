@@ -14,6 +14,7 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Details;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 
@@ -91,15 +92,16 @@ class Detail extends Blocks_Basis {
 	}
 
 	/**
-	 * Get the content for single position.
+	 * Return the content for single position.
 	 *
 	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		$position = $this->get_position_by_request();
-		if ( ! ( $position instanceof Position ) || ! $position->is_valid() ) {
-			return '';
+		// set ID as class.
+		$classes = '';
+		if ( ! empty( $attributes['blockId'] ) ) {
+			$classes = 'personio-integration-block-' . $attributes['blockId'];
 		}
 
 		// map the settings.
@@ -109,17 +111,23 @@ class Detail extends Blocks_Basis {
 		$attributes['excerpt_template'] = $attributes['template'];
 
 		// get block-classes.
+		$styles_array          = array();
+		$block_html_attributes = '';
 		if ( function_exists( 'get_block_wrapper_attributes' ) ) {
-			$attributes['classes'] =  Helper::get_attribute_value_from_html( 'class', get_block_wrapper_attributes() );
+			$block_html_attributes = get_block_wrapper_attributes();
+
+			// get styles.
+			$styles = Helper::get_attribute_value_from_html( 'style', $block_html_attributes );
+			if ( ! empty( $styles ) ) {
+				$styles_array[] = '.entry-content.' . $classes . ' { ' . $styles . ' }';
+			}
 		}
 
-		// get content for output.
-		ob_start();
-		Templates::get_instance()->get_excerpt( $position, $attributes );
-		$content = ob_get_clean();
-		if( ! $content ) {
-			return '';
-		}
-		return $content;
+		// add the attributes.
+		$attributes['styles'] = implode( PHP_EOL, $styles_array );
+		$attributes['classes'] = $classes . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes );
+		
+		// return the rendered template.
+		return Details::get_instance()->render( $attributes );
 	}
 }

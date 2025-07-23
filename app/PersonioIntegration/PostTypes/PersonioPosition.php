@@ -30,7 +30,6 @@ use PersonioIntegrationLight\Plugin\Compatibilities\SayWhat;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
-use \PersonioIntegrationLight\PersonioIntegration\Widgets\Archive;
 use WP_Post;
 use WP_Query;
 use WP_REST_Request;
@@ -109,9 +108,6 @@ class PersonioPosition extends Post_Type {
 		// REST-API-hooks.
 		add_filter( 'rest_prepare_' . $this->get_name(), array( $this, 'rest_prepare' ), 12, 2 );
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
-
-		// define our 2 shortcodes.
-		add_action( 'init', array( $this, 'shortcodes' ) );
 
 		// log deletion of position.
 		add_action( 'before_delete_post', array( $this, 'delete' ) );
@@ -249,6 +245,7 @@ class PersonioPosition extends Post_Type {
 	 * @param WP_Post          $post The requested object.
 	 *
 	 * @return WP_REST_Response
+	 * @noinspection PhpUnused
 	 */
 	public function rest_prepare( WP_REST_Response $data, WP_Post $post ): WP_REST_Response {
 		// get positions-object.
@@ -281,163 +278,6 @@ class PersonioPosition extends Post_Type {
 
 		// set response.
 		return $data;
-	}
-
-	/**
-	 * Define our 2 shortcodes.
-	 *
-	 * @return void
-	 */
-	public function shortcodes(): void {
-		add_shortcode( 'personioPosition', array( $this, 'shortcode_single' ) );
-		add_shortcode( 'personioPositions', array( $this, 'shortcode_archive' ) );
-	}
-
-	/**
-	 * Output of single positions via shortcode and any PageBuilder.
-	 * Example: [personioPosition lang="de" personioid="96" templates="title,content,formular" excerpt="recruitingCategory,schedule,office,department,seniority,experience,occupation"]
-	 *
-	 * Parameter:
-	 * - personioid => PersonioId of the position (required)
-	 * - lang => sets the language for the output, defaults to default-language from plugin-settings
-	 * - templates => comma-separated list of template to use, defaults to title and excerpt
-	 * - excerpt => comma-separated list of details to display, defaults to "recruitingCategory, schedule, office"
-	 * - donotlink => if position-title should be linked (0) or not (1), defaults to link (0)
-	 * - excerpt_template => define specific template for details (defaults to "default")
-	 * - jobdescription_template => define specific template for job description (defaults to setting under positions > settings > templates)
-	 *
-	 * Templates:
-	 * - title => show position title
-	 * - excerpt => show detail configured by excerpt-parameter
-	 * - content => show language-specific content
-	 * - formular => show application-button
-	 *
-	 * @param array<string,mixed> $attributes The shortcode attributes.
-	 * @return string
-	 */
-	public function shortcode_single( array $attributes = array() ): string {
-		// convert single shortcode attributes.
-		$personio_attributes = $this->get_single_shortcode_attributes( $attributes );
-
-		// do not output anything without ID.
-		if ( $personio_attributes['personioid'] <= 0 ) {
-			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-				$message    = __( 'Single-view called without the PersonioId for a position.', 'personio-integration-light' );
-				$wrapper_id = 'position' . $personio_attributes['personioid'];
-				$type       = '';
-				ob_start();
-				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
-				$content = ob_get_clean();
-				if ( ! $content ) {
-					return '';
-				}
-				return $content;
-			}
-			return '';
-		}
-
-		// get the position by its PersonioId.
-		$position = Positions::get_instance()->get_position_by_personio_id( $personio_attributes['personioid'] );
-
-		// do not show this position if it is not valid or could not be loaded.
-		if ( ! $position || ! $position->is_valid() ) {
-			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-				$message    = __( 'Given Id is not a valid position-Id.', 'personio-integration-light' );
-				$wrapper_id = 'position' . $personio_attributes['personioid'];
-				$type       = '';
-				ob_start();
-				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
-				$content = ob_get_clean();
-				if ( ! $content ) {
-					return '';
-				}
-				return $content;
-			}
-			return '';
-		}
-
-		// get the attributes defaults.
-		$default_attributes = $this->get_single_shortcode_attributes_defaults();
-
-		/**
-		 * Change settings for output.
-		 *
-		 * @since 2.0.0 Available since 2.0.0.
-		 *
-		 * @param array $personio_attributes The attributes used for this output.
-		 * @param array $default_attributes The default attributes.
-		 */
-		$personio_attributes = apply_filters( 'personio_integration_get_template', $personio_attributes, $default_attributes );
-
-		// set language.
-		$position->set_lang( $personio_attributes['lang'] );
-		$position->set_title( '' );
-
-		// generate styling.
-		Helper::add_inline_style( $personio_attributes['styles'] );
-
-		// collect the output.
-		ob_start();
-		if ( empty( $personio_attributes['styles'] ) && Helper::is_rest_request() ) {
-			wp_styles()->print_inline_style( 'wp-block-library' );
-		}
-
-		// embed content.
-		include Templates::get_instance()->get_template( 'parts/content.php' );
-
-		// get the content.
-		$content = ob_get_clean();
-
-		// return the content.
-		if ( ! $content ) {
-			return '';
-		}
-		return $content;
-	}
-
-	/**
-	 * Output of list of positions via shortcode and any PageBuilder.
-	 * Example: [personioPositions filter="office,recruitingCategory,occupationCategory,department,employmenttype,seniority,schedule,experience,language" filtertype="select" lang="de" templates="title,excerpt,content" excerpt="recruitingCategory,schedule,office,department,seniority,experience,occupation" ids="96,97"]
-	 *
-	 * Parameter:
-	 * - lang => sets the language for the output, defaults to default-language from plugin-settings
-	 * - showfilter => enables the filter for this list-view, default: disabled
-	 * - filter => comma-separated list of filter which will be visible above the list, default: empty
-	 * - filtertype => sets the type of filter to use (select or linklist), default: select
-	 * - template => set the main template to use for listing
-	 * - templates => comma-separated list of template to use, defaults to title and excerpt
-	 * - excerpt_template => define specific template for details (defaults to 'default')
-	 * - jobdescription_template => define specific template for job description (defaults to setting under positions > settings > templates)
-	 * - excerpt => comma-separated list of details to display, defaults to recruitingCategory, schedule, office
-	 * - ids => comma-separated list of PositionIDs to display, default: empty
-	 * - sort => direction for sorting the resulting list (asc or desc), default: asc
-	 * - sortby => Field to be sorted by (title or date), default: title
-	 * - limit => limit the items in the list (-1 for unlimited, 0 for pagination-setting), default: 0
-	 * - listing_template => template to use for archive, default: default
-	 *
-	 * Filter:
-	 * - office
-	 * - recruitingCategory
-	 * - occupationCategory
-	 * - department
-	 * - employmenttype
-	 * - seniority
-	 * - schedule
-	 * - experience
-	 *
-	 * Templates for each position:
-	 * - title => show position title
-	 * - excerpt => show details configured by excerpt-parameter
-	 * - content => show language-specific content
-	 * - formular => show application-button
-	 *
-	 * @param array<string,mixed> $attributes The shortcode attributes.
-	 *
-	 * @return string
-	 */
-	public function shortcode_archive( array $attributes = array() ): string {
-		_deprecated_function( 'PersonioPosition::shortcode_archive()', '5.0.0', __( 'our widget objects', 'personio-integration-light' ) );
-		return Archive::get_instance()->render( $attributes );
 	}
 
 	/**
@@ -667,19 +507,8 @@ class PersonioPosition extends Post_Type {
 		// remove checkbox.
 		unset( $columns['cb'] );
 
-		// merge the lists.
-		$columns = array_merge( $new_columns, $columns );
-
-		/**
-		 * Filter the resulting columns.
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array<string,string> $columns List of columns.
-		 */
-		apply_filters_deprecated( 'personio_integration_personioposition_columns', array( $columns ), '5.0.0' ); // @phpstan-ignore parameter.phpDocType
-
-		// return the columns.
-		return $columns;
+		// merge the lists and return them.
+		return array_merge( $new_columns, $columns );
 	}
 
 	/**
@@ -1367,6 +1196,7 @@ class PersonioPosition extends Post_Type {
 	 * @param array<string,string> $attributes List of attributes.
 	 *
 	 * @return array<string,mixed>
+	 * @noinspection PhpUnused
 	 */
 	public function get_single_shortcode_attributes( array $attributes ): array {
 		// define the default values for each attribute.
@@ -1649,6 +1479,7 @@ class PersonioPosition extends Post_Type {
 	 * Terms the positions have been used are not deleted in this step.
 	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function delete_positions(): void {
 		// bail if deletion is actual running.

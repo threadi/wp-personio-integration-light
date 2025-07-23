@@ -10,6 +10,8 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
+
 /**
  * Object which handles the base functions for widget extensions.
  */
@@ -71,7 +73,7 @@ class Widget_Base extends Extensions_Base {
 		 * @since 5.0.0 Available since 5.0.0.
 		 * @param Widget_Base $instance The widget object.
 		 */
-		do_action( 'personio_integration_light_widget_' . $this->get_name(), $instance );
+		do_action( 'personio_integration_light_widgets_' . $this->get_name(), $instance );
 	}
 
 	/**
@@ -155,11 +157,92 @@ class Widget_Base extends Extensions_Base {
 	}
 
 	/**
+	 * Return position as object by request.
+	 *
+	 * Hints:
+	 * - Bug https://github.com/WordPress/gutenberg/issues/40714 prevents clean usage in Query Loop (backend bad, frontend ok)
+	 *
+	 * @return Position|false
+	 */
+	public function get_position_by_request(): Position|false {
+		// get positions object.
+		$positions = Positions::get_instance();
+
+		// return the position as object if the called ID is valid.
+		$post_id = get_the_ID();
+		if ( $post_id > 0 ) {
+			$position_obj = $positions->get_position( $post_id );
+			if ( $position_obj->is_valid() ) {
+				return $position_obj;
+			}
+		}
+
+		// fallback: get a random position, only during AJAX-request (e.g. in Gutenberg).
+		if ( Helper::is_rest_request() ) {
+			$position_array = $positions->get_positions( 1 );
+			if ( ! empty( $position_array ) ) {
+				return $position_array[0];
+			}
+		}
+
+		// return the object.
+		return false;
+	}
+
+	/**
 	 * Return a shortcode description.
 	 *
 	 * @return string
 	 */
 	public function get_shortcode_description(): string {
-		return '';
+		// concat the returning text.
+		$text = '<code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">[personio_integration_' . $this->get_name() . ']</code><br>';
+
+		// get the params.
+		$params = $this->get_params();
+
+		// add them if they are filled.
+		if ( ! empty( $params ) ) {
+			$text .= '<i>' . __( 'Attributes:', 'personio-integration-light' ) . '</i><ul>';
+			foreach ( $params as $name => $param ) {
+				$text .= '<li><code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . $name . '</code> ' . $param['label'] . ( $param['required'] ? ' <em>' . __( 'required', 'personio-integration-light' ) . '</em>' : '' ) . '</li>';
+			}
+			$text .= '</ul>';
+			$text .= '<i>' . __( 'Example:', 'personio-integration-light' ) . '</i><br>' . $this->get_shortcode_example();
+		} else {
+			$text .= '<i>' . __( 'Does not have any attributes.', 'personio-integration-light' ) . '</i>';
+		}
+
+		// return the resulting text.
+		return '<div>' . $text . '</div>';
+	}
+
+	/**
+	 * Return a shortcode example.
+	 *
+	 * @return string
+	 */
+	private function get_shortcode_example(): string {
+		// collect the params here.
+		$params = '';
+
+		// get all required params.
+		foreach ( $this->get_params() as $name => $param ) {
+			// bail if it is not required.
+			if ( empty( $param['required'] ) ) {
+				continue;
+			}
+
+			// bail if no example value is set.
+			if ( empty( $param['example_value'] ) ) {
+				continue;
+			}
+
+			// add this to the list with the configured example value.
+			$params .= ' ' . $name . '="' . $param['example_value'] . '"';
+		}
+
+		// return resulting example.
+		return '<code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">[personio_integration_' . $this->get_name() . $params . ']</code>';
 	}
 }
