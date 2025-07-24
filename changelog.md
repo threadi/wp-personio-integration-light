@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [4.3.2] - 24.07.2025
 
 ### Changed
 
