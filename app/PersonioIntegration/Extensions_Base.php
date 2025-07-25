@@ -490,6 +490,47 @@ class Extensions_Base {
 	}
 
 	/**
+	 * Return whether this extension does require other extensions.
+	 *
+	 * @return bool
+	 */
+	private function has_required_extensions(): bool {
+		return ! empty( $this->get_required_extensions() );
+	}
+
+	/**
+	 * Return whether a required extension is enabled.
+	 *
+	 * @return bool
+	 */
+	protected function is_required_extension_enabled(): bool {
+		// bail if this extension does not require any extension.
+		if( ! $this->has_required_extensions() ) {
+			return true;
+		}
+
+		// check each required extension.
+		$enabled_extensions = 0;
+		foreach ( Extensions::get_instance()->get_extensions_as_objects() as $extension_obj ) {
+			// bail if this extension does not require the actual one.
+			if ( ! in_array( get_class( $extension_obj ), $this->get_required_extensions(), true ) ) {
+				continue;
+			}
+
+			// bail if extension is not enabled.
+			if( ! $extension_obj->is_enabled() ) {
+				continue;
+			}
+
+			// update enabled counter.
+			$enabled_extensions++;
+		}
+
+		// return true if enabled extension matches the count of extensions.
+		return $enabled_extensions === count( $this->get_required_extensions() );
+	}
+
+	/**
 	 * Return link to change state of this extension.
 	 *
 	 * @return string

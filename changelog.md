@@ -28,6 +28,7 @@
 - Import of positions are now also handled as extension
 - Changed application hint in menu to be more stabil
 - Extensions for positions replaced with less complex way
+- Extensions can now check if other extension they require are enabled
 - More code optimizations with PHPStan
 - Optimized output of some log entries
 - Style optimization for extension table
