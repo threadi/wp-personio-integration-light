@@ -37,6 +37,20 @@ class Imports_Base extends Extensions_Base {
 	protected bool|Bar|NoOp $cli_progress = false;
 
 	/**
+	 * Name of the settings-page where the tab resides.
+	 *
+	 * @var string
+	 */
+	protected string $setting_page = 'personioPositions';
+
+	/**
+	 * Name if the setting tab where the setting field is visible.
+	 *
+	 * @var string
+	 */
+	protected string $setting_tab = 'import';
+
+	/**
 	 * Variable for instance of this Singleton object.
 	 *
 	 * @var ?Imports_Base

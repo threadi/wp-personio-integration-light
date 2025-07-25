@@ -154,6 +154,7 @@ class Schedules {
 	 * @param array<string,array<string,mixed>> $our_events List of our own events.
 	 *
 	 * @return array<string,array<string,mixed>>
+	 * @noinspection PhpUnused
 	 */
 	public function check_events( array $our_events ): array {
 		// bail if check should be disabled.
@@ -177,36 +178,46 @@ class Schedules {
 
 		// check the schedule objects if they are set.
 		foreach ( $this->get_schedule_object_names() as $object_name ) {
+			// bail if class name does not exist.
+			if( ! class_exists( $object_name ) ) {
+				continue;
+			}
+
+			// get the object.
 			$obj = new $object_name();
-			if ( $obj instanceof Schedules_Base ) {
-				// install if schedule is enabled and not in list of our schedules.
-				if ( $obj->is_enabled() && ! isset( $our_events[ $obj->get_name() ] ) ) {
-					// reinstall the missing event.
-					$obj->install();
 
-					// log this event if debug-mode is enabled.
-					if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-						/* translators: %1$s will be replaced by the event name. */
-						Log::get_instance()->add( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
-					}
+			// bail if object is not Schedules_Base.
+			if ( ! $obj instanceof Schedules_Base ) {
+				continue;
+			}
 
-					// re-run the check for WP-cron-events.
-					$our_events = $this->get_wp_events();
+			// install if schedule is enabled and not in list of our schedules.
+			if ( $obj->is_enabled() && ! isset( $our_events[ $obj->get_name() ] ) ) {
+				// reinstall the missing event.
+				$obj->install();
+
+				// log this event if debug-mode is enabled.
+				if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+					/* translators: %1$s will be replaced by the event name. */
+					Log::get_instance()->add( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 				}
 
-				// delete if schedule is in list of our events and not enabled.
-				if ( ! $obj->is_enabled() && isset( $our_events[ $obj->get_name() ] ) ) {
-					$obj->delete();
+				// re-run the check for WP-cron-events.
+				$our_events = $this->get_wp_events();
+			}
 
-					// log this event if debug-mode is enabled.
-					if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-						/* translators: %1$s will be replaced by the event name. */
-						Log::get_instance()->add( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
-					}
+			// delete if schedule is in list of our events and not enabled.
+			if ( ! $obj->is_enabled() && isset( $our_events[ $obj->get_name() ] ) ) {
+				$obj->delete();
 
-					// re-run the check for WP-cron-events.
-					$our_events = $this->get_wp_events();
+				// log this event if debug-mode is enabled.
+				if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+					/* translators: %1$s will be replaced by the event name. */
+					Log::get_instance()->add( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 				}
+
+				// re-run the check for WP-cron-events.
+				$our_events = $this->get_wp_events();
 			}
 		}
 
@@ -292,10 +303,26 @@ class Schedules {
 	 */
 	public function get_schedule_object_by_name( string $name ): false|Schedules_Base {
 		foreach ( $this->get_schedule_object_names() as $object_name ) {
-			$obj = new $object_name();
-			if ( $obj instanceof Schedules_Base && $name === $obj->get_name() ) {
-				return $obj;
+			// bail if class does not exist.
+			if( ! class_exists( $object_name ) ) {
+				continue;
 			}
+
+			// get the object.
+			$obj = new $object_name();
+
+			// bail if object is not a Schedule_Base object.
+			if( ! $obj instanceof Schedules_Base ) {
+				continue;
+			}
+
+			// bail if name does not match.
+			if ( $name !== $obj->get_name() ) {
+				continue;
+			}
+
+			// return this object.
+			return $obj;
 		}
 		return false;
 	}
@@ -343,6 +370,7 @@ class Schedules {
 	 * @param object|bool $event The event properties.
 	 *
 	 * @return object|bool
+	 * @noinspection PhpUnused
 	 */
 	public function add_schedule_to_list( object|bool $event ): object|bool {
 		// bail if event is not an object.
