@@ -13,6 +13,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
@@ -84,8 +85,16 @@ class Api {
 		// get settings object.
 		$settings_obj = Settings::get_instance();
 
+		// get the main settings page.
+		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
+
+		// bail if page could not be loaded.
+		if( ! $main_settings_page instanceof Page ) {
+			return;
+		}
+
 		// get the general tab.
-		$general_tab = $settings_obj->get_tab( 'basic' );
+		$general_tab = $main_settings_page->get_tab( 'basic' );
 
 		// bail if basic tab does not exist.
 		if ( ! $general_tab instanceof Tab ) {
@@ -105,6 +114,7 @@ class Api {
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
+		$setting->set_save_callback(  array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
 		$field = new Text();
 		$field->set_title( __( 'Your Client-ID', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
@@ -117,6 +127,7 @@ class Api {
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
+		$setting->set_save_callback(  array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
 		$field = new Text();
 		$field->set_title( __( 'Access token', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
@@ -159,7 +170,7 @@ class Api {
 	 * @return bool
 	 */
 	private function is_credential_prepared(): bool {
-		return ! empty( get_option( 'personioIntegrationCompanyId' ) ) && ! empty( get_option( 'personioIntegrationAccessToken' ) );
+		return ! empty( get_option( 'personioIntegrationClientId' ) ) && ! empty( get_option( 'personioIntegrationApiSecret' ) );
 	}
 
 	/**

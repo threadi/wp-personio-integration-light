@@ -553,7 +553,7 @@ class Extensions_Base {
 	 */
 	protected function get_extension_tab(): Tab|false {
 		// get settings object.
-		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_obj = Settings::get_instance();
 
 		// get the main settings page.
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
