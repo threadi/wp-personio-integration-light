@@ -274,6 +274,8 @@ class Templates {
 	/**
 	 * Update the db-based templates if theme has been switched to another block-theme.
 	 *
+	 * TODO testen!
+	 *
 	 * E.g. necessary to adjust header- and footer-templates.
 	 *
 	 * @return void
