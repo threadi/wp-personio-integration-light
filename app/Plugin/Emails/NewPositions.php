@@ -28,7 +28,7 @@ class NewPositions extends Email_Base {
 	/**
 	 * List of new positions.
 	 *
-	 * @var array
+	 * @var array<int,Position>
 	 */
 	private array $new_positions = array();
 
@@ -85,13 +85,8 @@ class NewPositions extends Email_Base {
 	public function get_body(): string {
 		// create the body.
 		$body = __( 'New positions from Personio have been imported into your WordPress. These are the following:', 'personio-integration-light' );
-		foreach( $this->get_new_positions() as $position_obj ) {
-			// bail if this is not a position object.
-			if( ! $position_obj instanceof Position ) {
-				continue;
-			}
-
-			$body .= "<br>" . $position_obj->get_title() . ' (Personio ID: ' . $position_obj->get_personio_id() . ')';
+		foreach ( $this->get_new_positions() as $position_obj ) {
+			$body .= '<br>' . $position_obj->get_title() . ' (Personio ID: ' . $position_obj->get_personio_id() . ')';
 		}
 
 		// set the body.
@@ -113,7 +108,7 @@ class NewPositions extends Email_Base {
 	/**
 	 * Set the new positions.
 	 *
-	 * @param array $new_positions List of new positions.
+	 * @param array<int,Position> $new_positions List of new positions.
 	 *
 	 * @return void
 	 */
@@ -131,7 +126,7 @@ class NewPositions extends Email_Base {
 		$positions = Positions::get_instance()->get_positions( 1 );
 
 		// bail if no position could be found.
-		if( empty( $positions ) ) {
+		if ( empty( $positions ) ) {
 			return;
 		}
 

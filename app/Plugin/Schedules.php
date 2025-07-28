@@ -179,7 +179,7 @@ class Schedules {
 		// check the schedule objects if they are set.
 		foreach ( $this->get_schedule_object_names() as $object_name ) {
 			// bail if class name does not exist.
-			if( ! class_exists( $object_name ) ) {
+			if ( ! class_exists( $object_name ) ) {
 				continue;
 			}
 
@@ -304,7 +304,7 @@ class Schedules {
 	public function get_schedule_object_by_name( string $name ): false|Schedules_Base {
 		foreach ( $this->get_schedule_object_names() as $object_name ) {
 			// bail if class does not exist.
-			if( ! class_exists( $object_name ) ) {
+			if ( ! class_exists( $object_name ) ) {
 				continue;
 			}
 
@@ -312,7 +312,7 @@ class Schedules {
 			$obj = new $object_name();
 
 			// bail if object is not a Schedule_Base object.
-			if( ! $obj instanceof Schedules_Base ) {
+			if ( ! $obj instanceof Schedules_Base ) {
 				continue;
 			}
 

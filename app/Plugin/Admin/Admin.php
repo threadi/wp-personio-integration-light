@@ -170,8 +170,8 @@ class Admin {
 				'title_error'                        => __( 'Error', 'personio-integration-light' ),
 				'txt_error'                          => __( '<strong>An unexpected error occurred.</strong> The error was:', 'personio-integration-light' ),
 				'generate_error_text'                => __( 'Unknown error during AJAX-request', 'personio-integration-light' ),
-				'title_please_wait'                => __( 'Please wait', 'personio-integration-light' ),
-				'txt_please_wait'                  => __( 'The data will be loaded. This may take a few moments.', 'personio-integration-light' ),
+				'title_please_wait'                  => __( 'Please wait', 'personio-integration-light' ),
+				'txt_please_wait'                    => __( 'The data will be loaded. This may take a few moments.', 'personio-integration-light' ),
 			)
 		);
 
@@ -642,7 +642,7 @@ class Admin {
 		}
 
 		// add menu entry for applications (with hint to pro).
-		$false    = false;
+		$false = false;
 		/**
 		 * Hide hint for Pro-plugin.
 		 *
@@ -761,7 +761,7 @@ class Admin {
 																							<?php
 
 																							// button to show how to get the pro-version.
-																							$false    = false;
+																							$false = false;
 																							/**
 																							 * Hide hint for Pro-plugin.
 																							 *

@@ -144,7 +144,7 @@ class Help_System {
 	 */
 	public function add_applications_help( array $help_list ): array {
 		// add menu entry for applications (with hint to pro).
-		$false    = false;
+		$false = false;
 		/**
 		 * Hide hint for Pro-plugin.
 		 *

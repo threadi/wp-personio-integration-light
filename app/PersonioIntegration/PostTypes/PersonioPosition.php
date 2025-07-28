@@ -146,7 +146,7 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'personio_integration_limit', array( $this, 'set_limit' ), 10, 2 );
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 20 );
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_shortcode_help' ), 60 );
-		add_filter( 'personio_integration_light_edit_position_box_taxonomy', array( $this, 'show_hint_for_additional_offices' ), 10, 2 );
+		add_action( 'personio_integration_light_edit_position_box_taxonomy', array( $this, 'show_hint_for_additional_offices' ), 10, 2 );
 
 		// misc hooks.
 		add_filter( 'posts_search', array( $this, 'extend_search' ), 10, 2 );
@@ -485,8 +485,8 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Add columns to position-table in backend.
 	 *
-	 * @param array<string,string> $columns List of columns.
-	 * @return array<string,string>
+	 * @param array<string|int,string> $columns List of columns.
+	 * @return array<string|int,string>
 	 */
 	public function add_column( array $columns ): array {
 		// create new column-array.
@@ -1769,7 +1769,7 @@ class PersonioPosition extends Post_Type {
 	 * @return array<int,array<string,string>>
 	 */
 	private function get_pro_extensions(): array {
-		$false    = false;
+		$false = false;
 		/**
 		 * Hide hint for Pro-plugin.
 		 *
@@ -1964,7 +1964,7 @@ class PersonioPosition extends Post_Type {
 		/* translators: %1$s will be replaced by a URL. */
 		$content .= '<li>' . sprintf( __( 'Change settings <a href="%1$s">for the template</a> to optimize the view.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
 		// add menu entry for applications (with hint to pro).
-		$false    = false;
+		$false = false;
 		/**
 		 * Hide hint for Pro-plugin.
 		 *
@@ -2140,14 +2140,14 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Show hint about additional offices, usable in Pro-plugin.
 	 *
-	 * @param Position $position_obj The called position object.
-	 * @param array    $attr The attributes of the meta box.
+	 * @param Position            $position_obj The called position object.
+	 * @param array<string,mixed> $attr The attributes of the meta box.
 	 *
 	 * @return void
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function show_hint_for_additional_offices( Position $position_obj, array $attr ): void {
-		$false    = false;
+		$false = false;
 		/**
 		 * Hide hint for Pro-plugin.
 		 *
@@ -2164,10 +2164,11 @@ class PersonioPosition extends Post_Type {
 		$taxonomy_name = str_replace( $this->get_name() . '-taxonomy-', '', $attr['id'] );
 
 		// bail if taxonomy name is not office.
-		if( $taxonomy_name !== WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE ) {
+		if ( WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE !== $taxonomy_name ) {
 			return;
 		}
 
+		/* translators: %1$s will be replaced by the Pro-plugin name. */
 		echo wp_kses_post( Admin::get_instance()->get_pro_hint( __( 'Use additional offices with %1$s', 'personio-integration-light' ) ) );
 	}
 }

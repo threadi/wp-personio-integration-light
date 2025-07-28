@@ -314,7 +314,7 @@ class Api extends Imports_Base {
 			 * @param Position $position_obj The object of this position.
 			 * @param array $data The data from Personio.
 			 */
-			$position_obj = apply_filters( 'personio_integration_import_single_position_api', $position_obj, $data ) ;
+			$position_obj = apply_filters( 'personio_integration_import_single_position_api', $position_obj, $data );
 
 			// save the position object.
 			try {

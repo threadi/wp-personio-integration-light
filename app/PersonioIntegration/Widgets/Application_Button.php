@@ -91,7 +91,7 @@ class Application_Button extends Widget_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __('Provides a widget to show the application button for single position.', 'personio-integration-light');
+		return __( 'Provides a widget to show the application button for single position.', 'personio-integration-light' );
 	}
 
 	/**
@@ -173,7 +173,7 @@ class Application_Button extends Widget_Base {
 		ob_start();
 		include Templates::get_instance()->get_template( 'parts/properties-application-button.php' );
 		$content = ob_get_clean();
-		if( ! $content ) {
+		if ( ! $content ) {
 			return '';
 		}
 		return $content;

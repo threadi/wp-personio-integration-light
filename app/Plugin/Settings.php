@@ -106,7 +106,7 @@ class Settings {
 		/**
 		 * Configure the basic settings object.
 		 */
-		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_obj  = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 		$settings_page = $settings_obj->add_page( 'personioPositions' );
 		$settings_obj->set_slug( 'personio_integration_light' );
 		$settings_obj->set_plugin_slug( WP_PERSONIO_INTEGRATION_PLUGIN );
@@ -768,7 +768,7 @@ class Settings {
 		$hidden_page = $settings_obj->get_page( 'hidden_page' );
 
 		// bail if page could not be found.
-		if( ! $hidden_page instanceof Page ) {
+		if ( ! $hidden_page instanceof Page ) {
 			return false;
 		}
 
@@ -776,7 +776,7 @@ class Settings {
 		$hidden_tab = $hidden_page->get_tab( 'hidden_tab' );
 
 		// bail if tab could not be found.
-		if( ! $hidden_tab instanceof Tab ) {
+		if ( ! $hidden_tab instanceof Tab ) {
 			return false;
 		}
 
@@ -784,7 +784,7 @@ class Settings {
 		$hidden_section = $hidden_tab->get_section( 'hidden_section' );
 
 		// bail if section could not be found.
-		if( ! $hidden_section instanceof Section ) {
+		if ( ! $hidden_section instanceof Section ) {
 			return false;
 		}
 
@@ -798,6 +798,7 @@ class Settings {
 	 * @return void
 	 */
 	public function show_extensions_hint(): void {
+		/* translators: %1$s will be replaced by a URL. */
 		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'Manage your active extensions <a href="%1$s">here</a>. Depending on the active extensions, your setting options will expand here.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link() ) ) ) . '</p>';
 	}
 }

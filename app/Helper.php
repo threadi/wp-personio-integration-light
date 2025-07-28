@@ -190,7 +190,7 @@ class Helper {
 	 * @param array<string,mixed> $attribute_defaults List of attribute defaults.
 	 * @param array<string,mixed> $attribute_settings List of attribute settings.
 	 * @param array<string,mixed> $attributes List of actual attribute values.
-	 * @return array<string,array<int,mixed>>
+	 * @return array<string,string|array<int,mixed>>
 	 */
 	public static function get_shortcode_attributes( array $attribute_defaults, array $attribute_settings, array $attributes ): array {
 		$filtered = array(

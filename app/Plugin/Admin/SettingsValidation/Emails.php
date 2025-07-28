@@ -64,8 +64,8 @@ class Emails {
 			}
 
 			// check if given string is a valid email.
-			if( ! filter_var($value, FILTER_VALIDATE_EMAIL) ) {
-				add_settings_error( $option, $option, __( 'The value entered does not appear to be an email address!', 'wp-personio-integration' ) );
+			if ( ! filter_var( $value, FILTER_VALIDATE_EMAIL ) ) {
+				add_settings_error( $option, $option, __( 'The value entered does not appear to be an email address!', 'personio-integration-light' ) );
 				unset( $values[ $index ] );
 			}
 		}

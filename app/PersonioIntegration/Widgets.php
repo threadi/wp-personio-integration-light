@@ -84,7 +84,7 @@ class Widgets {
 			'\PersonioIntegrationLight\PersonioIntegration\Widgets\Details',
 			'\PersonioIntegrationLight\PersonioIntegration\Widgets\Filter_List',
 			'\PersonioIntegrationLight\PersonioIntegration\Widgets\Filter_Select',
-			'\PersonioIntegrationLight\PersonioIntegration\Widgets\Single'
+			'\PersonioIntegrationLight\PersonioIntegration\Widgets\Single',
 		);
 	}
 
@@ -131,7 +131,7 @@ class Widgets {
 	 * @return array<string,string>
 	 */
 	public function add_extension_categories( array $categories ): array {
-		$categories['widgets'] = __( 'Widgets', 'wp-personio-integration' );
+		$categories['widgets'] = __( 'Widgets', 'personio-integration-light' );
 		return $categories;
 	}
 

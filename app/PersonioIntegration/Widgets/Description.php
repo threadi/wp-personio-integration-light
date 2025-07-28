@@ -91,7 +91,7 @@ class Description extends Widget_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __('Provides a widget to show the description of a single Personio position.', 'personio-integration-light');
+		return __( 'Provides a widget to show the description of a single Personio position.', 'personio-integration-light' );
 	}
 
 	/**
@@ -111,14 +111,17 @@ class Description extends Widget_Base {
 		$position->set_lang( Languages::get_instance()->get_current_lang() );
 
 		// collect the attributes.
-		$attributes = array_merge( $attributes, array(
-			'personioid'              => absint( $position->get_personio_id() ),
-			'jobdescription_template' => empty( $attributes['template'] ) ? get_option( 'personioIntegrationTemplateJobDescription' ) : $attributes['template'],
-			'templates'               => array( 'content' ),
-		));
+		$attributes = array_merge(
+			$attributes,
+			array(
+				'personioid'              => absint( $position->get_personio_id() ),
+				'jobdescription_template' => empty( $attributes['template'] ) ? get_option( 'personioIntegrationTemplateJobDescription' ) : $attributes['template'],
+				'templates'               => array( 'content' ),
+			)
+		);
 
 		// generate styling.
-		if( ! empty( $attributes['styles'] ) ) {
+		if ( ! empty( $attributes['styles'] ) ) {
 			Helper::add_inline_style( $attributes['styles'] );
 		}
 
@@ -139,12 +142,12 @@ class Description extends Widget_Base {
 		}
 
 		// generate the template-list.
-		$template_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $templates ) . '</code>';
+		$template_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . implode( '</code>, <code>', $templates ) . '</code>';
 
 		// return the list of params for this widget.
 		return array(
 			'template' => array(
-				'label'         => __( 'Name of chosen template, one of these values:', 'wp-personio-integration' ) . $template_list,
+				'label'         => __( 'Name of chosen template, one of these values:', 'personio-integration-light' ) . $template_list,
 				'example_value' => $templates[0],
 				'required'      => false,
 			),

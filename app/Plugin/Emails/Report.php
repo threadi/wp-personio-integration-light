@@ -60,14 +60,15 @@ class Report extends Email_Base {
 	 * @return void
 	 */
 	public function show_description(): void {
-		echo wp_kses_post( sprintf( __( 'The report contains information about the number of jobs on your website, the number of locations where they are advertised and the categories in which they are located. The report can also be viewed <a href="$1%s">here</a> at any time.', 'personio-integration-light' ), '' ) );
+		/* translators: %1$s will be replaced a link. */
+		echo wp_kses_post( sprintf( __( 'The report contains information about the number of positions on your website, the number of locations where they are advertised and the categories in which they are located. The report can also be viewed <a href="$1%s">here</a> at any time.', 'personio-integration-light' ), '' ) );
 	}
 
 	/**
 	 * Add settings for this email.
 	 *
-	 * @param Settings $settings_obj
-	 * @param Tab                                                                  $email_tab
+	 * @param Settings $settings_obj The settings object.
+	 * @param Tab      $email_tab The email tab in the settings.
 	 *
 	 * @return void
 	 */
@@ -87,7 +88,7 @@ class Report extends Email_Base {
 		$email_tab_main = $email_tab->get_section( 'settings_section_email_' . $this->get_name() );
 
 		// bail if section does not exist.
-		if( ! $email_tab_main instanceof Section ) {
+		if ( ! $email_tab_main instanceof Section ) {
 			return;
 		}
 
@@ -95,7 +96,7 @@ class Report extends Email_Base {
 		$main_setting = $settings_obj->get_setting( 'personio_integration_email_' . $this->get_name() );
 
 		// bail if settings could not be loaded.
-		if( ! $main_setting instanceof Setting ) {
+		if ( ! $main_setting instanceof Setting ) {
 			return;
 		}
 
@@ -103,7 +104,7 @@ class Report extends Email_Base {
 		$main_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\ReportInterval', 'save' ) );
 
 		// add setting.
-		$setting  = $settings_obj->add_setting( 'personio_integration_email_interval_' . $this->get_name() );
+		$setting = $settings_obj->add_setting( 'personio_integration_email_interval_' . $this->get_name() );
 		$setting->set_section( $email_tab_main );
 		$setting->set_type( 'string' );
 		$setting->set_default( 'weekly' );

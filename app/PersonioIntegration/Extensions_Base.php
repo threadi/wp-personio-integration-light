@@ -505,7 +505,7 @@ class Extensions_Base {
 	 */
 	protected function is_required_extension_enabled(): bool {
 		// bail if this extension does not require any extension.
-		if( ! $this->has_required_extensions() ) {
+		if ( ! $this->has_required_extensions() ) {
 			return true;
 		}
 
@@ -518,16 +518,16 @@ class Extensions_Base {
 			}
 
 			// bail if extension is not enabled.
-			if( ! $extension_obj->is_enabled() ) {
+			if ( ! $extension_obj->is_enabled() ) {
 				continue;
 			}
 
 			// update enabled counter.
-			$enabled_extensions++;
+			++$enabled_extensions;
 		}
 
 		// return true if enabled extension matches the count of extensions.
-		return $enabled_extensions === count( $this->get_required_extensions() );
+		return count( $this->get_required_extensions() ) === $enabled_extensions;
 	}
 
 	/**
@@ -559,7 +559,7 @@ class Extensions_Base {
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
 
 		// bail if page could not be loaded.
-		if( ! $main_settings_page instanceof Page ) {
+		if ( ! $main_settings_page instanceof Page ) {
 			return false;
 		}
 
@@ -573,7 +573,7 @@ class Extensions_Base {
 	 * @return string
 	 */
 	public function get_settings_link(): string {
-		if( empty( $this->get_setting_sub_tab() ) ) {
+		if ( empty( $this->get_setting_sub_tab() ) ) {
 			return Helper::get_settings_url( $this->get_settings_page(), $this->get_setting_tab() );
 		}
 		return Helper::get_settings_url( $this->get_settings_page(), $this->get_setting_tab(), $this->get_setting_sub_tab() );

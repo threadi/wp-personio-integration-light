@@ -212,7 +212,7 @@ class Positions {
 
 		// get the grouped taxonomy name from given slug.
 		$grouped_taxonomy_name = '';
-		if( ! empty( $parameter_to_add['groupby'] ) ) {
+		if ( ! empty( $parameter_to_add['groupby'] ) ) {
 			$grouped_taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
 		}
 

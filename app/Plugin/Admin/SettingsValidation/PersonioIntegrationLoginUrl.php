@@ -26,7 +26,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	 */
 	public static function validate( ?string $value ): string {
 		// set value as string if null is given.
-		if( is_null( $value ) ) {
+		if ( is_null( $value ) ) {
 			$value = '';
 		}
 
