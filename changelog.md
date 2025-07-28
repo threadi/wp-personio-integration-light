@@ -35,6 +35,8 @@
 - Using WP_Error for any error handling
 - Extended the limitation for REST API requests regarding our own Block Editor blocks
 - Now using our own intervals for WordPress cronjobs
+- Renamed "Application link" to "Option to apply"
+- Renamed "Content" to "Description"
 
 ### Fixed
 

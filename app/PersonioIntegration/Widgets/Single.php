@@ -280,7 +280,7 @@ class Single extends Widget_Base {
 				'required'      => false,
 			),
 			'showApplicationForm' => array(
-				'label'         => __( 'View application link', 'personio-integration-light' ),
+				'label'         => __( 'View option to apply', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),

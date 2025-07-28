@@ -203,8 +203,8 @@ class Templates {
 		$templates = array(
 			'title'    => esc_html__( 'Title', 'personio-integration-light' ),
 			'excerpt'  => esc_html__( 'Details', 'personio-integration-light' ),
-			'content'  => esc_html__( 'Content', 'personio-integration-light' ),
-			'formular' => esc_html__( 'Application link', 'personio-integration-light' ),
+			'content'  => esc_html__( 'Description', 'personio-integration-light' ),
+			'formular' => esc_html__( 'Option to apply', 'personio-integration-light' ),
 		);
 
 		/**

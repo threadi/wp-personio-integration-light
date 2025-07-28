@@ -3,9 +3,9 @@
 	"apiVersion": 2,
 	"name": "wp-personio-integration/application-button",
 	"version": "@@VersionNumber@@",
-	"title": "Personio Position Application Button",
+	"title": "Personio option to apply",
 	"category": "widgets",
-	"description": "Provides a Gutenberg Block to show the application button for single position.",
+	"description": "Provides a Gutenberg Block to show the option to apply for single position.",
 	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {
 		"color": {
