@@ -16,6 +16,7 @@ use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Intro;
+use PersonioIntegrationLight\Plugin\License;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Transients;
 use WP_Admin_Bar;
@@ -74,6 +75,9 @@ class Admin {
 
 		// initialize help system.
 		Help_System::get_instance()->init();
+
+		// initialize the license handler.
+		License::get_instance()->init();
 
 		// show hint for Pro-version.
 		add_filter( 'personio_integration_admin_show_pro_hint', array( $this, 'get_pro_hint' ), 10, 2 );
@@ -529,8 +533,10 @@ class Admin {
 	 * Only if Personio URL is given and list-view is not disabled.
 	 *
 	 * @param WP_Admin_Bar $admin_bar The object of the Admin-Bar.
+	 *
 	 * @return void
-	 */
+	 * @noinspection PhpUnused
+	 **/
 	public function add_custom_toolbar( WP_Admin_Bar $admin_bar ): void {
 		$true = Helper::is_personio_url_set();
 		/**
@@ -905,13 +911,13 @@ class Admin {
 	public function show_application_hint(): void {
 		// output.
 		?>
-	<div class="wrap">
-		<h1 class="wp-heading-inline"><?php echo esc_html__( 'Applications for your positions', 'personio-integration-light' ); ?></h1>
-		<?php
-			/* translators: %1$s will be replaced with the plugin pro-name */
-			echo wp_kses_post( $this->get_pro_hint( __( 'Collect and manage applications for your positions at this point with %1$s', 'personio-integration-light' ) ) );
-		?>
-	</div>
+			<div class="wrap">
+				<h1 class="wp-heading-inline"><?php echo esc_html__( 'Applications for your positions', 'personio-integration-light' ); ?></h1>
+				<?php
+					/* translators: %1$s will be replaced with the plugin pro-name */
+					echo wp_kses_post( $this->get_pro_hint( __( 'Collect and manage applications for your positions at this point with %1$s', 'personio-integration-light' ) ) );
+				?>
+			</div>
 		<?php
 	}
 }

@@ -19,6 +19,7 @@
 - Added new extension category "Widgets"
 - Added hint for additional offices which are usable in Pro-plugin
 - Added new compatibility check for Oxygen
+- Added info-page for Pro plugin with option to install the Pro-plugin with valid license key
 
 ### Changed
 

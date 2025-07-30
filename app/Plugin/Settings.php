@@ -182,7 +182,6 @@ class Settings {
 		$template_list = $templates_tab->add_section( 'settings_section_template_list', 10 );
 		$template_list->set_title( __( 'List View', 'personio-integration-light' ) );
 		$template_list->set_setting( $settings_obj );
-		$template_list->set_callback( array( $this, 'show_fse_hint' ) );
 
 		// the template detail section.
 		$template_detail = $templates_tab->add_section( 'settings_section_template_detail', 20 );
@@ -723,26 +722,6 @@ class Settings {
 
 		// return resulting list.
 		return $categories;
-	}
-
-	/**
-	 * Show fse hint above template list.
-	 *
-	 * Will be removed if no FSE-theme is used.
-	 *
-	 * @return void
-	 */
-	public function show_fse_hint(): void {
-		// get Block Editor URL.
-		$editor_url = add_query_arg(
-			array(
-				'path' => '/wp_template/all',
-			),
-			admin_url( 'site-editor.php' )
-		);
-
-		/* translators: %1$s will be replaced with the name of the theme, %2$s will be replaced by the URL for the editor */
-		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'You are using with <i>%1$s</i> a modern block theme. The settings here will therefore might not work. Edit the archive- and single-template under <a href="%2$s">Appearance > Editor > Templates > Manage</a>.', 'personio-integration-light' ), esc_html( Helper::get_theme_title() ), esc_url( $editor_url ) ) ) . '</p>';
 	}
 
 	/**

@@ -136,3 +136,24 @@ const WP_PERSONIO_INTEGRATION_HASH = 'personioIntegrationHash';
  * Hash-name for sodium (old).
  */
 const WP_PERSONIO_INTEGRATION_HASH_SODIUM = 'personioIntegrationHashSodium';
+
+/**
+ * License-URL.
+ *
+ * TODO dynmisch einfügen.
+ */
+const WP_PERSONIO_INTEGRATION_LIGHT_LICENCE_URL = 'https://laolaweb.com/wp-json/lwlicences/personio-integration/';
+
+/**
+ * Update-URL.
+ *
+ * TODO dynmisch einfügen.
+ */
+const WP_PERSONIO_INTEGRATION_PRO_UPDATE_URL = 'https://laolaweb.com/wp-json/lwreleases/personio-integration/';
+
+/**
+ * Costs-URL.
+ *
+ * TODO dynmisch einfügen.
+ */
+const WP_PERSONIO_INTEGRATION_LIGHT_COSTS_URL = 'https://laolaweb.com/wp-json/lwlicences/personio-integration/costs';

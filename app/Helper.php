@@ -13,7 +13,9 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
+use Plugin_Upgrader;
 use SimpleXMLElement;
+use WP_Ajax_Upgrader_Skin;
 use WP_Error;
 use WP_Filesystem_Base;
 use WP_Filesystem_Direct;
@@ -298,6 +300,16 @@ class Helper {
 	 */
 	public static function is_plugin_active( string $plugin ): bool {
 		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true );
+	}
+
+	/**
+	 * Checks whether a given plugin is installed.
+	 *
+	 * @param string $plugin Path to the requested plugin relative to plugin-directory.
+	 * @return bool
+	 */
+	public static function is_plugin_installed( string $plugin ): bool {
+		return file_exists( trailingslashit( WP_PLUGIN_DIR ) . $plugin );
 	}
 
 	/**
@@ -927,5 +939,79 @@ class Helper {
 			return 'https://support.personio.de/hc/de/articles/4404623630993-API-Zugriffsdaten-generieren-und-verwalten';
 		}
 		return 'https://support.personio.de/hc/en-us/articles/4404623630993-Generate-and-manage-API-credentials';
+	}
+
+	/**
+	 * Install a plugin by given download URL.
+	 *
+	 * @param string $download_url The download URL.
+	 * @param string $plugin_slug The plugin slug.
+	 *
+	 * @return int|null|bool|WP_Error
+	 */
+	public static function install_plugin( string $download_url, string $plugin_slug ): int|null|bool|WP_Error {
+		// include required libs for installation.
+		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-ajax-upgrader-skin.php';
+		require_once ABSPATH . 'wp-admin/includes/class-plugin-upgrader.php';
+
+		// run the installer.
+		$skin     = new WP_Ajax_Upgrader_Skin();
+		$upgrader = new Plugin_Upgrader( $skin );
+		$result   = $upgrader->install( $download_url ); // @phpstan-ignore property.nonObject
+
+		// bail if error occurred.
+		if ( is_wp_error( $result ) ) {
+			// log this event.
+			Log::get_instance()->add( __( 'Following during installing Personio Integration Pro:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $result ) . '</code>', 'error', 'system' );
+
+			// do nothing more.
+			return false;
+		}
+
+		// get plugin path.
+		$plugin_path = self::get_plugin_path_from_slug( $plugin_slug );
+
+		// bail if no path could be found.
+		if ( false === $plugin_path ) {
+			// log this event.
+			Log::get_instance()->add( __( 'Personio Integration Pro plugin path could not be read.', 'personio-integration-light' ), 'error', 'system' );
+
+			// do nothing more.
+			return false;
+		}
+
+		// activate the plugin.
+		require_once ABSPATH . 'wp-admin/includes/admin.php';
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		return activate_plugin( $plugin_path );
+	}
+
+	/**
+	 * Return plugin path from slug.
+	 *
+	 * @source WooCommerce
+	 *
+	 * @param string $slug The requested slug.
+	 *
+	 * @return false|string
+	 */
+	public static function get_plugin_path_from_slug( string $slug ): false|string {
+		$plugins = get_plugins();
+
+		if ( str_contains( $slug, '/' ) ) {
+			// The slug is already a plugin path.
+			return $slug;
+		}
+
+		foreach ( $plugins as $plugin_path => $data ) {
+			$path_parts = explode( '/', $plugin_path );
+			if ( $path_parts[0] === $slug ) {
+				return $plugin_path;
+			}
+		}
+
+		return false;
 	}
 }
