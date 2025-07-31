@@ -19,6 +19,8 @@
 - Added new extension category "Widgets"
 - Added hint for additional offices which are usable in Pro-plugin
 - Added new compatibility check for Oxygen
+- Added info-page for Pro plugin with option to install the Pro-plugin with valid license key
+- Added new handling for admin notices for better overview over messages from the plugin
 
 ### Changed
 
@@ -35,6 +37,8 @@
 - Using WP_Error for any error handling
 - Extended the limitation for REST API requests regarding our own Block Editor blocks
 - Now using our own intervals for WordPress cronjobs
+- Renamed "Application link" to "Option to apply"
+- Renamed "Content" to "Description"
 
 ### Fixed
 

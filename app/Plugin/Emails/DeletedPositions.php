@@ -28,7 +28,7 @@ class DeletedPositions extends Email_Base {
 	/**
 	 * List of deleted positions.
 	 *
-	 * @var array
+	 * @var array<int,Position>
 	 */
 	private array $deleted_positions = array();
 
@@ -85,13 +85,8 @@ class DeletedPositions extends Email_Base {
 	public function get_body(): string {
 		// create the body.
 		$body = __( 'The following positions have been deleted in WordPress after import from Personio:', 'personio-integration-light' );
-		foreach( $this->get_deleted_positions() as $position_obj ) {
-			// bail if this is not a position object.
-			if( ! $position_obj instanceof Position ) {
-				continue;
-			}
-
-			$body .= "<br>" . $position_obj->get_title() . ' (Personio ID: ' . $position_obj->get_personio_id() . ')';
+		foreach ( $this->get_deleted_positions() as $position_obj ) {
+			$body .= '<br>' . $position_obj->get_title() . ' (Personio ID: ' . $position_obj->get_personio_id() . ')';
 		}
 		$body .= '<br><br>' . __( 'They were deleted because they were no longer made available as positions by Personio.', 'personio-integration-light' );
 
@@ -114,7 +109,7 @@ class DeletedPositions extends Email_Base {
 	/**
 	 * Set the new positions.
 	 *
-	 * @param array $deleted_positions List of deleted positions.
+	 * @param array<int,Position> $deleted_positions List of deleted positions.
 	 *
 	 * @return void
 	 */
@@ -132,7 +127,7 @@ class DeletedPositions extends Email_Base {
 		$positions = Positions::get_instance()->get_positions( 1 );
 
 		// bail if no position could be found.
-		if( empty( $positions ) ) {
+		if ( empty( $positions ) ) {
 			return;
 		}
 

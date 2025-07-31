@@ -27,7 +27,7 @@ class ScheduleInterval {
 
 		// bail if value is empty.
 		if ( empty( $value ) ) {
-			add_settings_error( $option, $option, __( 'An interval has to be set.', 'wp-personio-integration' ) );
+			add_settings_error( $option, $option, __( 'An interval has to be set.', 'personio-integration-light' ) );
 			return '';
 		}
 
@@ -35,7 +35,7 @@ class ScheduleInterval {
 		$intervals = wp_get_schedules();
 		if ( empty( $intervals[ $value ] ) ) {
 			/* translators: %1$s will be replaced by the name of the used interval */
-			add_settings_error( $option, $option, sprintf( __( 'The given interval %1$s does not exists.', 'wp-personio-integration' ), esc_html( $value ) ) );
+			add_settings_error( $option, $option, sprintf( __( 'The given interval %1$s does not exists.', 'personio-integration-light' ), esc_html( $value ) ) );
 		}
 
 		// return the value.

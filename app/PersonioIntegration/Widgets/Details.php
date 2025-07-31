@@ -92,7 +92,7 @@ class Details extends Widget_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __('Provides a widget to show the details of a single Personio position.', 'personio-integration-light');
+		return __( 'Provides a widget to show the details of a single Personio position.', 'personio-integration-light' );
 	}
 
 	/**
@@ -211,7 +211,7 @@ class Details extends Widget_Base {
 			}
 
 			// generate styling.
-			if( ! empty( $attributes['styles'] ) ) {
+			if ( ! empty( $attributes['styles'] ) ) {
 				Helper::add_inline_style( $attributes['styles'] );
 			}
 
@@ -242,13 +242,13 @@ class Details extends Widget_Base {
 		}
 
 		// generate the list.
-		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
+		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
 
 		// get the taxonomies.
 		$taxonomies = array();
-		foreach( Taxonomies::get_instance()->get_taxonomies() as $settings ) {
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $settings ) {
 			// bail if it is not used for filter.
-			if( empty( $settings['useInFilter'] ) ) {
+			if ( empty( $settings['useInFilter'] ) ) {
 				continue;
 			}
 
@@ -261,7 +261,7 @@ class Details extends Widget_Base {
 
 		// return the list of params for this widget.
 		return array(
-			'template' => array(
+			'template'         => array(
 				'label'         => __( 'Name of chosen template, one of these values:', 'personio-integration-light' ) . $list,
 				'example_value' => $values[0],
 				'required'      => false,
@@ -271,17 +271,17 @@ class Details extends Widget_Base {
 				'example_value' => $taxonomies[0],
 				'required'      => false,
 			),
-			'colon' => array(
+			'colon'            => array(
 				'label'         => __( 'With colon', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'wrap' => array(
+			'wrap'             => array(
 				'label'         => __( 'With line break', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'separator' => array(
+			'separator'        => array(
 				'label'         => __( 'Separator', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,

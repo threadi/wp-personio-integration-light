@@ -89,7 +89,7 @@ class Api {
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
 
 		// bail if page could not be loaded.
-		if( ! $main_settings_page instanceof Page ) {
+		if ( ! $main_settings_page instanceof Page ) {
 			return;
 		}
 
@@ -114,7 +114,7 @@ class Api {
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
-		$setting->set_save_callback(  array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
+		$setting->set_save_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
 		$field = new Text();
 		$field->set_title( __( 'Your Client-ID', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
@@ -127,7 +127,7 @@ class Api {
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
-		$setting->set_save_callback(  array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
+		$setting->set_save_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
 		$field = new Text();
 		$field->set_title( __( 'Access token', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );

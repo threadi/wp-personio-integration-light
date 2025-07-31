@@ -195,7 +195,7 @@ export default function Edit( object ) {
 						onChange={ value => onChangeContentVisibility( value, object )  }
 					/>
 					<ToggleControl
-						label={__('View application link', 'personio-integration-light')}
+						label={__('View option to apply', 'personio-integration-light')}
 						checked={ object.attributes.showApplicationForm }
 						onChange={ value => onChangeApplicationFormVisibility( value, object )  }
 					/>

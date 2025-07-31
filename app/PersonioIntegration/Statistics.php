@@ -8,22 +8,14 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
-use function Breakdance\Util\WP\get_terms_in_taxonomy;
-
 defined( 'ABSPATH' ) || exit;
+
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
 
 /**
  * Object to handle statistics about the positions.
  */
 class Statistics {
-
-	/**
-	 * Object.
-	 *
-	 * @var Statistics|null
-	 */
-	private ?Statistics $theme = null;
 
 	/**
 	 * Variable for instance of this Singleton object.
@@ -80,7 +72,7 @@ class Statistics {
 		$settings_page = $settings_obj->get_page( 'personioPositions' );
 
 		// bail if page does not exist.
-		if( ! $settings_page instanceof Page ) {
+		if ( ! $settings_page instanceof Page ) {
 			return;
 		}
 
@@ -99,7 +91,7 @@ class Statistics {
 	 * Example:
 	 * Count of positions => 42
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	private function get(): array {
 		// create the statistic array.
@@ -109,16 +101,20 @@ class Statistics {
 		$positions = Positions::get_instance()->get_positions();
 
 		// add entry about the positions.
-		$statistics[__( 'Count of positions:', 'personio-integration-light' )] = count( $positions );
+		$statistics[ __( 'Count of positions:', 'personio-integration-light' ) ] = count( $positions );
 
 		// get all taxonomies.
 		$taxonomies = Taxonomies::get_instance()->get_taxonomies();
 
 		// add entry about the taxonomies.
-		$statistics[__( 'Count of taxonomies:', 'personio-integration-light' )] = count( $taxonomies );
+		$statistics[ __( 'Count of taxonomies:', 'personio-integration-light' ) ] = count( $taxonomies );
 
 		// add entry about the used locations.
-		$statistics[__( 'Used offices:', 'personio-integration-light' )] = count( get_terms( array( 'taxonomy' => WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE ) ) );
+		$terms = get_terms( array( 'taxonomy' => WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE ) );
+		if ( ! is_array( $terms ) ) {
+			$terms = array();
+		}
+		$statistics[ __( 'Used offices:', 'personio-integration-light' ) ] = count( $terms );
 
 		/**
 		 * Filter the statistics.
@@ -139,14 +135,16 @@ class Statistics {
 		?>
 		<table>
 			<?php
-			foreach( $this->get() as $label => $value ) {
-				?><tr><th><?php echo esc_html( $label ); ?></th><td><?php echo esc_html( $value ); ?></td></tr><?php
+			foreach ( $this->get() as $label => $value ) {
+				?>
+				<tr><th><?php echo esc_html( $label ); ?></th><td><?php echo esc_html( $value ); ?></td></tr>
+				<?php
 			}
 			?>
 		</table>
 		<?php
 		$content = ob_get_clean();
-		if( ! $content ) {
+		if ( ! $content ) {
 			return '';
 		}
 		return $content;
@@ -159,8 +157,8 @@ class Statistics {
 	 */
 	public function show_statistic(): void {
 		?>
-			<h2><?php echo esc_html__( 'Statistics', 'personio-integration-light' ); ?></h2>
-			<?php echo wp_kses_post( $this->get_table() ); ?>
+		<h2><?php echo esc_html__( 'Statistics', 'personio-integration-light' ); ?></h2>
+		<?php echo wp_kses_post( $this->get_table() ); ?>
 		<?php
 	}
 }

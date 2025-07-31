@@ -59,14 +59,21 @@ class Intervals {
 	/**
 	 * Return list of our own intervals.
 	 *
-	 * @return array
+	 * @return array<int,string>
 	 */
 	private function get_intervals(): array {
+		// add the list.
 		$list = array(
 			'\PersonioIntegrationLight\Plugin\Intervals\Daily',
 			'\PersonioIntegrationLight\Plugin\Intervals\Weekly',
 		);
 
+		/**
+		 * Filter the list of possible intervals.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param array<int,string> $list List of our interval objects.
+		 */
 		return apply_filters( 'personio_integration_light_intervals', $list );
 	}
 
@@ -110,13 +117,13 @@ class Intervals {
 	 *
 	 * Sorted by its time.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_intervals_for_settings(): array {
 		// define the list for the entries.
 		$list = array();
 
-		foreach( $this->get_intervals_as_objects() as $obj ) {
+		foreach ( $this->get_intervals_as_objects() as $obj ) {
 			$list[ $this->get_prefix() . $obj->get_name() ] = $obj->get_title();
 		}
 
@@ -132,12 +139,15 @@ class Intervals {
 	 * @return array<string,array<string,mixed>>
 	 */
 	public function add_intervals( array $intervals ): array {
-		foreach( $this->get_intervals_as_objects() as $obj ) {
+		// loop through our own intervals and add them to the list..
+		foreach ( $this->get_intervals_as_objects() as $obj ) {
 			$intervals[ $this->get_prefix() . $obj->get_name() ] = array(
 				'interval' => $obj->get_time(),
-				'display' => $obj->get_title()
+				'display'  => $obj->get_title(),
 			);
 		}
+
+		// return resulting list of intervals.
 		return $intervals;
 	}
 

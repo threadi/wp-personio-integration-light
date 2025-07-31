@@ -10,7 +10,10 @@ namespace PersonioIntegrationLight\PageBuilder;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Patterns;
@@ -54,12 +57,6 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return void
 	 */
 	public function init(): void {
-		// bail if Gutenberg is disabled.
-		if ( ! $this->is_enabled() ) {
-			$this->remove_fse_hint();
-			return;
-		}
-
 		// add our custom blocks.
 		add_action( 'init', array( $this, 'register_blocks' ) );
 
@@ -71,13 +68,12 @@ class Gutenberg extends PageBuilder_Base {
 
 		// bail if theme is not an FSE-theme with Block support.
 		if ( ! $this->theme_support_block_templates() ) {
-			// remove hint from settings.
-			add_action( 'personio_integration_settings', array( $this, 'remove_fse_hint' ) );
 			return;
 		}
 
 		// add our custom templates and set to use them.
 		add_action( 'init', array( $this, 'add_templates' ) );
+		add_action( 'init', array( $this, 'add_settings' ), 50 );
 		add_filter( 'personio_integration_load_single_template', '__return_true' );
 		add_filter( 'personio_integration_load_archive_template', '__return_true' );
 
@@ -179,14 +175,40 @@ class Gutenberg extends PageBuilder_Base {
 	}
 
 	/**
-	 * Remove the FSE-hint from settings.
+	 * Add FSE-hint in settings.
 	 *
 	 * @return void
 	 */
-	public function remove_fse_hint(): void {
+	public function add_settings(): void {
+		// get settings object.
 		$settings_obj = Settings::get_instance();
-		$settings_obj->get_section( '' );
-		$settings_obj->set_callback( array( $this, 'fse_hint_replacement' ) );
+
+		// get the settings page.
+		$settings_page = $settings_obj->get_page( 'personioPositions' );
+
+		// bail if page could not be found.
+		if( ! $settings_page instanceof Page ) {
+			return;
+		}
+
+		// get template tab.
+		$template_tab = $settings_page->get_tab( 'templates' );
+
+		// bail if template tab could not be found.
+		if( ! $template_tab instanceof Tab ) {
+			return;
+		}
+
+		// get the section.
+		$section = $template_tab->get_section( 'settings_section_template_list' );
+
+		// bail if section could not be found.
+		if( ! $section instanceof Section ) {
+			return;
+		}
+
+		// override the callback.
+		$section->set_callback( array( $this, 'show_fse_hint' ) );
 	}
 
 	/**
@@ -281,5 +303,25 @@ class Gutenberg extends PageBuilder_Base {
 
 		// return resulting classes.
 		return $css_classes;
+	}
+
+	/**
+	 * Show fse hint above template list.
+	 *
+	 * Will be removed if no FSE-theme is used.
+	 *
+	 * @return void
+	 */
+	public function show_fse_hint(): void {
+		// get Block Editor URL.
+		$editor_url = add_query_arg(
+			array(
+				'path' => '/wp_template/all',
+			),
+			admin_url( 'site-editor.php' )
+		);
+
+		/* translators: %1$s will be replaced with the name of the theme, %2$s will be replaced by the URL for the editor */
+		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'You are using with <i>%1$s</i> a modern block theme. The settings here will therefore might not work. Edit the archive- and single-template under <a href="%2$s">Appearance > Editor > Templates > Manage</a>.', 'personio-integration-light' ), esc_html( Helper::get_theme_title() ), esc_url( $editor_url ) ) ) . '</p>';
 	}
 }

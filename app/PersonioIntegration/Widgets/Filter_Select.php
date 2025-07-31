@@ -48,7 +48,7 @@ class Filter_Select extends Widget_Base {
 	/**
 	 * Instance of this object.
 	 *
-	 * @var ?Filter_List
+	 * @var ?Filter_Select
 	 */
 	private static ?Filter_Select $instance = null;
 
@@ -87,7 +87,7 @@ class Filter_Select extends Widget_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __('Provides a widget to show filter as select-based dropdown-list for Personio positions.', 'personio-integration-light');
+		return __( 'Provides a widget to show filter as select-based dropdown-list for Personio positions.', 'personio-integration-light' );
 	}
 
 	/**
@@ -114,11 +114,11 @@ class Filter_Select extends Widget_Base {
 		}
 
 		// generate the list.
-		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
+		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
 
 		// return the list of params for this widget.
 		return array(
-			'filter' => array(
+			'filter'          => array(
 				'label'         => __( 'Name of chosen template, one of these values:', 'personio-integration-light' ) . $list,
 				'example_value' => $values[0],
 				'required'      => false,
@@ -128,12 +128,12 @@ class Filter_Select extends Widget_Base {
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'hideResetLink' => array(
+			'hideResetLink'   => array(
 				'label'         => __( 'Hide reset link', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'space_between' => array(
+			'space_between'   => array(
 				'label'         => __( 'Space between filters, number between 0 and 100', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,

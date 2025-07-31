@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Compatibilities_Base;
-use PersonioIntegrationLight\Plugin\Transients;
+use easyTransientsForWordPress\Transients;
 
 /**
  * Object for this check.

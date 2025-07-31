@@ -111,7 +111,7 @@ class Position extends WP_Widget {
 			),
 			'showApplicationForm' => array(
 				'type'   => 'select',
-				'title'  => __( 'Show application link', 'personio-integration-light' ),
+				'title'  => __( 'Show option to apply', 'personio-integration-light' ),
 				'std'    => 'yes',
 				'values' => array(
 					'yes' => esc_html__( 'Show', 'personio-integration-light' ),

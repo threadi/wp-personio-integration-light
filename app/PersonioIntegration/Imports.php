@@ -13,10 +13,11 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\TextInfo;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
-use PersonioIntegrationLight\Plugin\Transients;
+use easyTransientsForWordPress\Transients;
 
 /**
  * Object to handle all import extensions.
@@ -92,6 +93,11 @@ class Imports {
 		// get settings page.
 		$settings_page = $settings_obj->get_page( 'personioPositions' );
 
+		// bail if page could not be loaded.
+		if ( ! $settings_page instanceof Page ) {
+			return;
+		}
+
 		// add the import tab.
 		$import_tab = $settings_page->add_tab( 'import', 20 );
 		$import_tab->set_title( __( 'Import', 'personio-integration-light' ) );
@@ -117,13 +123,12 @@ class Imports {
 		$setting->set_section( $import_section );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
-		if( Positions::get_instance()->get_positions_count() > 0 ) {
+		if ( Positions::get_instance()->get_positions_count() > 0 ) {
 			$field = new Button();
 			$field->set_title( __( 'Clear positions', 'personio-integration-light' ) );
 			$field->set_button_title( __( 'Delete all positions', 'personio-integration-light' ) );
 			$field->add_class( 'personio-integration-delete-all' );
-		}
-		else {
+		} else {
 			$field = new TextInfo();
 			$field->set_title( __( 'Clear positions', 'personio-integration-light' ) );
 			$field->set_description( __( 'There are currently no positions imported.', 'personio-integration-light' ) );
@@ -286,13 +291,13 @@ class Imports {
 	 * Check if we have a new position. This is detected if "ID" is 0.
 	 *
 	 * @param array<string,mixed> $post_array List of data.
-	 * @param Position $position_obj The position object.
+	 * @param Position            $position_obj The position object.
 	 *
 	 * @return array<string,mixed>
 	 */
 	public function check_if_position_is_new( array $post_array, Position $position_obj ): array {
 		// bail if ID is given.
-		if( absint( $post_array['ID'] ) > 0 ) {
+		if ( absint( $post_array['ID'] ) > 0 ) {
 			return $post_array;
 		}
 
@@ -300,7 +305,7 @@ class Imports {
 		$new_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, array() );
 
 		// bail if list is empty.
-		if( empty( $new_positions ) ) {
+		if ( empty( $new_positions ) ) {
 			$new_positions = array();
 		}
 
@@ -326,7 +331,7 @@ class Imports {
 		$deleted_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, array() );
 
 		// bail if list is empty.
-		if( empty( $deleted_positions ) ) {
+		if ( empty( $deleted_positions ) ) {
 			$deleted_positions = array();
 		}
 

@@ -38,26 +38,6 @@ body.post-type-personioposition {
 
 .personio_integration_light-field-width { width: 100% }
 
-.personio-integration-transient {
-    position: relative;
-    z-index: 1;
-}
-
-.personio-integration-transient h3 img {
-    vertical-align: middle;
-    display: inline-block;
-    margin-right: 8px;
-}
-
-.personio-integration-transient .notice-dismiss:before {
-	display: inline-block;
-	float: right;
-}
-
-.personio-integration-transient .notice-dismiss:hover {
-	color: #d63638;
-}
-
 .column-dragdrop { width: 20px }
 
 .ui-sortable-handle { cursor: pointer; }
@@ -258,7 +238,7 @@ body.post-type-personioposition a.review-hint-button:after {
 	width: 120px;
 }
 
-body.post-type-personioposition #post-body-content { display: none }
+body.post-php.post-type-personioposition #post-body-content { display: none }
 
 .personio-integration-dialog-error .easy-dialog-for-wordpress-text p:before {
 	content: "\f14c";
@@ -358,4 +338,80 @@ body.post-type-personioposition .button span.dashicons {
 
 .personioposition_page_personioPositions table th {
 	text-align: left;
+}
+
+.personio-integration-field {
+	margin-bottom: 8px;
+	width: 100% !important;
+}
+
+.personio-integration-field label {
+	display: block;
+	font-weight: 600;
+	line-height: 1.8;
+}
+
+.personio-integration-field input:not(.customformfieldrequired), .personio-integration-field select, .personio-integration-field textarea {
+	display: inline-block;
+	width: 240px;
+}
+
+.personio-integration-field input[type="checkbox"] {
+	width: auto;
+}
+
+.wp-core-ui .personio-integration-field button {
+	margin-right: 1em;
+	vertical-align: middle
+}
+.wp-core-ui .personio-integration-field button + p { display: inline-block }
+
+#personioposition-pro-infos {
+	.hndle { cursor: default }
+	.inside { overflow: hidden }
+	img {
+		float: right;
+		width: 240px;
+	}
+
+	li:before {
+		color: green;
+		content: "\f12a";
+		font-family: dashicons, sans-serif;
+		margin: 0 .4em 0 0;
+		font-size: 16px;
+		vertical-align: middle;
+		position: relative;
+		top: -2px;
+		z-index: 1;
+	}
+}
+
+#personioposition-pro-costs {
+	.hndle { cursor: default }
+	.inside { overflow: hidden }
+	img {
+		float: right;
+		width: 120px;
+	}
+	table {
+		margin-bottom: 2em;
+		width: 100%;
+	}
+	td {
+		text-align: center;
+	}
+	td img {
+		display: block;
+		float: none;
+		margin: 0 auto;
+		max-width: 300px;
+		width: auto;
+	}
+	label { cursor: pointer }
+}
+
+#personioposition-pro-license-key {
+	.hndle { cursor: default }
+	label { cursor: pointer }
 }

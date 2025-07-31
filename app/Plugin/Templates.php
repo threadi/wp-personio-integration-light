@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
@@ -203,8 +204,8 @@ class Templates {
 		$templates = array(
 			'title'    => esc_html__( 'Title', 'personio-integration-light' ),
 			'excerpt'  => esc_html__( 'Details', 'personio-integration-light' ),
-			'content'  => esc_html__( 'Content', 'personio-integration-light' ),
-			'formular' => esc_html__( 'Application link', 'personio-integration-light' ),
+			'content'  => esc_html__( 'Description', 'personio-integration-light' ),
+			'formular' => esc_html__( 'Option to apply', 'personio-integration-light' ),
 		);
 
 		/**
@@ -599,7 +600,7 @@ class Templates {
 	 */
 	public function get_excerpt( Position $position, array $attributes, bool $use_return = false ): string {
 		$content = Details::get_instance()->render( $attributes );
-		if( $use_return ) {
+		if ( $use_return ) {
 			return $content;
 		}
 		echo wp_kses_post( $content );
@@ -657,19 +658,19 @@ class Templates {
 	 * Hint: according to https://developer.wordpress.org/reference/hooks/the_title/ the 2nd parameter should be int.
 	 * Reality is that other plugins use here all but not int ...
 	 *
-	 * @param string           $post_title The title.
+	 * @param string                  $post_title The title.
 	 * @param string|int|WP_Post|null $post_id The post ID.
 	 *
 	 * @return string
 	 */
 	public function update_post_title( string $post_title, string|int|WP_Post|null $post_id = 0 ): string {
 		// bail if this is not our cpt.
-		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( $post_id ) ) {
+		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( $post_id ) ) { // @phpstan-ignore argument.type
 			return $post_title;
 		}
 
 		// get the post id as int, if it is a string.
-		if( is_string( $post_id ) ) {
+		if ( is_string( $post_id ) ) {
 			$post_id = absint( $post_id );
 		}
 

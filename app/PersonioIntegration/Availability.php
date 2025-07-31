@@ -113,7 +113,7 @@ class Availability extends Extensions_Base {
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
 
 		// bail if page could not be loaded.
-		if( ! $main_settings_page instanceof Page ) {
+		if ( ! $main_settings_page instanceof Page ) {
 			return;
 		}
 
@@ -121,7 +121,7 @@ class Availability extends Extensions_Base {
 		$extension_tab = $main_settings_page->get_tab( $this->get_setting_tab() );
 
 		// bail if tab could not be loaded.
-		if( ! $extension_tab instanceof Tab ) {
+		if ( ! $extension_tab instanceof Tab ) {
 			return;
 		}
 

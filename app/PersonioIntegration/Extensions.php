@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
-use PersonioIntegrationLight\Plugin\Transients;
+use easyTransientsForWordPress\Transients;
 
 /**
  * Object to handle different themes to output templates of our plugin.
@@ -270,12 +270,12 @@ class Extensions {
 		);
 		$button_title = __( 'Disabled', 'personio-integration-light' );
 		if ( $obj->is_enabled() ) {
-			$title        = __( 'Extension has been enabled', 'personio-integration-light' );
-			$text         = array(
+			$title = __( 'Extension has been enabled', 'personio-integration-light' );
+			$text  = array(
 				/* translators: %1$s will be replaced by the name of the extension. */
 				'<p><strong>' . sprintf( __( 'The extension %1$s has been successfully enabled.', 'personio-integration-light' ), '<i>' . esc_html( $obj->get_label() ) . '</i>' ) . '</strong></p>',
 			);
-			if( ! empty( $obj->get_setting_sub_tab() ) ) {
+			if ( ! empty( $obj->get_setting_sub_tab() ) ) {
 				/* translators: %1$s will be replaced by a URL. */
 				$text[] = '<p>' . sprintf( __( 'Now <a href="%1$s">go to the settings</a> to configure the extension.', 'personio-integration-light' ), esc_url( $obj->get_settings_link() ) ) . '</p>';
 			}
@@ -410,7 +410,7 @@ class Extensions {
 	 */
 	public function add_extension_menu(): void {
 		// only if Setup has been completed.
-		if( ! Setup::get_instance()->is_completed() ) {
+		if ( ! Setup::get_instance()->is_completed() ) {
 			return;
 		}
 

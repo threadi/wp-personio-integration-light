@@ -75,7 +75,7 @@ class Archive extends Widget_Base {
 	 * @return string
 	 */
 	public function get_label(): string {
-		return __( 'Archive', 'wp-personio-integration' );
+		return __( 'Archive', 'personio-integration-light' );
 	}
 
 	/**
@@ -93,7 +93,7 @@ class Archive extends Widget_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __( 'Show a list of positions.', 'wp-personio-integration' );
+		return __( 'Show a list of positions.', 'personio-integration-light' );
 	}
 
 	/**
@@ -187,7 +187,7 @@ class Archive extends Widget_Base {
 		$positions_obj = Positions::get_instance();
 
 		// filter for specific ids.
-		if ( ! empty( $personio_attributes['ids'][0] ) ) {
+		if ( is_array( $personio_attributes['ids'] ) && ! empty( $personio_attributes['ids'][0] ) ) {
 			// convert id-list from PersonioId in post_id.
 			$resulting_list = array();
 			foreach ( $personio_attributes['ids'] as $personio_id ) {
@@ -320,27 +320,27 @@ class Archive extends Widget_Base {
 		foreach ( PersonioPosition::get_instance()->get_archive_templates_via_rest_api() as $template ) {
 			$values[] = $template['value'];
 		}
-		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
+		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
 
 		// sort values.
-		$sort = array(
+		$sort      = array(
 			'asc',
-			'desc'
+			'desc',
 		);
-		$sort_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $sort ) . '</code>';
+		$sort_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . implode( '</code>, <code>', $sort ) . '</code>';
 
 		// sort by values.
-		$sortby = array(
+		$sortby      = array(
 			'title',
-			'date'
+			'date',
 		);
-		$sortby_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $sort ) . '</code>';
+		$sortby_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . implode( '</code>, <code>', $sort ) . '</code>';
 
 		// get the taxonomies.
 		$taxonomies = array();
-		foreach( Taxonomies::get_instance()->get_taxonomies() as $settings ) {
+		foreach ( Taxonomies::get_instance()->get_taxonomies() as $settings ) {
 			// bail if it is not used for filter.
-			if( empty( $settings['useInFilter'] ) ) {
+			if ( empty( $settings['useInFilter'] ) ) {
 				continue;
 			}
 
@@ -354,62 +354,62 @@ class Archive extends Widget_Base {
 		foreach ( Templates::get_instance()->get_excerpts_templates() as $key => $value ) {
 			$excerpts[] = $key;
 		}
-		$excerpt_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $excerpts ) . '</code>';
+		$excerpt_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . implode( '</code>, <code>', $excerpts ) . '</code>';
 
 		// return the list of params for this widget.
 		return array(
-			'template' => array(
+			'template'            => array(
 				'label'         => __( 'Name of chosen template, one of these values:', 'personio-integration-light' ) . $list,
 				'example_value' => $values[0],
 				'required'      => false,
 			),
-			'limit' => array(
+			'limit'               => array(
 				'label'         => __( 'Amount of entries in the list. "0" for unlimited.', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'sort' => array(
+			'sort'                => array(
 				'label'         => __( 'Sort direction, one of these values:', 'personio-integration-light' ) . $sort_list,
 				'example_value' => $sort[0],
 				'required'      => false,
 			),
-			'sortby' => array(
+			'sortby'              => array(
 				'label'         => __( 'Sort by, one of these values:', 'personio-integration-light' ) . $sortby_list,
 				'example_value' => $sortby[0],
 				'required'      => false,
 			),
-			'groupby' => array(
+			'groupby'             => array(
 				'label'         => __( 'Group by, one of these values:', 'personio-integration-light' ) . $groupby_list,
 				'example_value' => $groupby_list[0],
 				'required'      => false,
 			),
-			'showTitle' => array(
+			'showTitle'           => array(
 				'label'         => __( 'Show title', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'linkTitle' => array(
+			'linkTitle'           => array(
 				'label'         => __( 'Link title', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'showExcerpt' => array(
+			'showExcerpt'         => array(
 				'label'         => __( 'Show excerpt', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'excerptTemplates' => array(
+			'excerptTemplates'    => array(
 				'label'         => __( 'Choose details, any of these values:', 'personio-integration-light' ) . $excerpt_list,
 				'example_value' => $excerpts[0],
 				'required'      => false,
 			),
-			'showContent' => array(
+			'showContent'         => array(
 				'label'         => __( 'View content', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
 			'showApplicationForm' => array(
-				'label'         => __( 'View application link', 'personio-integration-light' ),
+				'label'         => __( 'View option to apply', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),

@@ -8,8 +8,8 @@
  * @package personio-integration-light
  * @version : 5.0.0
  */
-?>
 
+?>
 <!DOCTYPE html>
 <html>
 <head>

@@ -106,7 +106,7 @@ class Settings {
 		/**
 		 * Configure the basic settings object.
 		 */
-		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_obj  = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 		$settings_page = $settings_obj->add_page( 'personioPositions' );
 		$settings_obj->set_slug( 'personio_integration_light' );
 		$settings_obj->set_plugin_slug( WP_PERSONIO_INTEGRATION_PLUGIN );
@@ -182,7 +182,6 @@ class Settings {
 		$template_list = $templates_tab->add_section( 'settings_section_template_list', 10 );
 		$template_list->set_title( __( 'List View', 'personio-integration-light' ) );
 		$template_list->set_setting( $settings_obj );
-		$template_list->set_callback( array( $this, 'show_fse_hint' ) );
 
 		// the template detail section.
 		$template_detail = $templates_tab->add_section( 'settings_section_template_detail', 20 );
@@ -726,26 +725,6 @@ class Settings {
 	}
 
 	/**
-	 * Show fse hint above template list.
-	 *
-	 * Will be removed if no FSE-theme is used.
-	 *
-	 * @return void
-	 */
-	public function show_fse_hint(): void {
-		// get Block Editor URL.
-		$editor_url = add_query_arg(
-			array(
-				'path' => '/wp_template/all',
-			),
-			admin_url( 'site-editor.php' )
-		);
-
-		/* translators: %1$s will be replaced with the name of the theme, %2$s will be replaced by the URL for the editor */
-		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'You are using with <i>%1$s</i> a modern block theme. The settings here will therefore might not work. Edit the archive- and single-template under <a href="%2$s">Appearance > Editor > Templates > Manage</a>.', 'personio-integration-light' ), esc_html( Helper::get_theme_title() ), esc_url( $editor_url ) ) ) . '</p>';
-	}
-
-	/**
 	 * Show pro hint for advanced options.
 	 *
 	 * @return void
@@ -768,7 +747,7 @@ class Settings {
 		$hidden_page = $settings_obj->get_page( 'hidden_page' );
 
 		// bail if page could not be found.
-		if( ! $hidden_page instanceof Page ) {
+		if ( ! $hidden_page instanceof Page ) {
 			return false;
 		}
 
@@ -776,7 +755,7 @@ class Settings {
 		$hidden_tab = $hidden_page->get_tab( 'hidden_tab' );
 
 		// bail if tab could not be found.
-		if( ! $hidden_tab instanceof Tab ) {
+		if ( ! $hidden_tab instanceof Tab ) {
 			return false;
 		}
 
@@ -784,7 +763,7 @@ class Settings {
 		$hidden_section = $hidden_tab->get_section( 'hidden_section' );
 
 		// bail if section could not be found.
-		if( ! $hidden_section instanceof Section ) {
+		if ( ! $hidden_section instanceof Section ) {
 			return false;
 		}
 
@@ -798,6 +777,7 @@ class Settings {
 	 * @return void
 	 */
 	public function show_extensions_hint(): void {
+		/* translators: %1$s will be replaced by a URL. */
 		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'Manage your active extensions <a href="%1$s">here</a>. Depending on the active extensions, your setting options will expand here.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link() ) ) ) . '</p>';
 	}
 }

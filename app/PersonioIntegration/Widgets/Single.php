@@ -91,7 +91,7 @@ class Single extends Widget_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __('Provides a widget to show a single Personio position.', 'personio-integration-light');
+		return __( 'Provides a widget to show a single Personio position.', 'personio-integration-light' );
 	}
 
 	/**
@@ -105,15 +105,24 @@ class Single extends Widget_Base {
 		// convert single shortcode attributes.
 		$personio_attributes = $this->get_single_shortcode_attributes( $attributes );
 
+		// check if Personio ID is given and a string.
+		if ( ! is_string( $personio_attributes['personioid'] ) ) {
+			$personio_attributes['personioid'] = '';
+		}
+
 		// do not output anything without ID.
-		if ( $personio_attributes['personioid'] <= 0 ) {
+		if ( empty( $personio_attributes['personioid'] ) ) {
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
 				$message    = __( 'Single-view called without the PersonioId for a position.', 'personio-integration-light' );
-				$wrapper_id = 'position' . $personio_attributes['personioid'];
+				$wrapper_id = 'position-no-id';
 				$type       = '';
 				ob_start();
 				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
-				return ob_get_clean();
+				$content = ob_get_clean();
+				if ( ! $content ) {
+					return '';
+				}
+				return $content;
 			}
 			return '';
 		}
@@ -129,7 +138,11 @@ class Single extends Widget_Base {
 				$type       = '';
 				ob_start();
 				include_once Templates::get_instance()->get_template( 'parts/properties-hint.php' );
-				return ob_get_clean();
+				$content = ob_get_clean();
+				if ( ! $content ) {
+					return '';
+				}
+				return $content;
 			}
 			return '';
 		}
@@ -164,15 +177,19 @@ class Single extends Widget_Base {
 		include Templates::get_instance()->get_template( 'parts/content.php' );
 
 		// return resulting code.
-		return ob_get_clean();
+		$content = ob_get_clean();
+		if ( ! $content ) {
+			return '';
+		}
+		return $content;
 	}
 
 	/**
 	 * Convert attributes for shortcodes.
 	 *
-	 * @param array $attributes List of attributes.
+	 * @param array<string,mixed> $attributes List of attributes.
 	 *
-	 * @return array
+	 * @return array<string,string|array<int,mixed>>
 	 */
 	public function get_single_shortcode_attributes( array $attributes ): array {
 		// define the default values for each attribute.
@@ -196,7 +213,7 @@ class Single extends Widget_Base {
 	/**
 	 * Return attribute defaults for shortcode in single-view.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	private function get_single_shortcode_attributes_defaults(): array {
 		$default_values = array(
@@ -217,7 +234,7 @@ class Single extends Widget_Base {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $default_values The list of default values for each attribute used to display positions in frontend.
+		 * @param array<string,mixed> $default_values The list of default values for each attribute used to display positions in frontend.
 		 */
 		return apply_filters( 'personio_integration_position_attribute_defaults', $default_values );
 	}
@@ -235,7 +252,7 @@ class Single extends Widget_Base {
 		}
 
 		// generate the list.
-		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
+		$list = ' <code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . implode( '</code>, <code>', $values ) . '</code>';
 
 		// get the possible field values.
 		$excerpts = array();
@@ -244,43 +261,42 @@ class Single extends Widget_Base {
 		}
 
 		// generate the list.
-		$excerpts_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'wp-personio-integration' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . implode( '</code>, <code>', $excerpts ) . '</code>';
-
+		$excerpts_list = ' <code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . implode( '</code>, <code>', $excerpts ) . '</code>';
 
 		// return the list of params for this widget.
 		return array(
-			'id' => array(
+			'id'                  => array(
 				'label'         => __( 'Personio ID of the position to show', 'personio-integration-light' ) . $list,
 				'example_value' => $values[0],
 				'required'      => false,
 			),
-			'showTitle' => array(
+			'showTitle'           => array(
 				'label'         => __( 'Show title', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'linkTitle' => array(
+			'linkTitle'           => array(
 				'label'         => __( 'Link title', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'showExcerpt' => array(
+			'showExcerpt'         => array(
 				'label'         => __( 'Show excerpt', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'excerptTemplates' => array(
+			'excerptTemplates'    => array(
 				'label'         => __( 'Choose details', 'personio-integration-light' ) . $excerpts_list,
 				'example_value' => $excerpts[0],
 				'required'      => false,
 			),
-			'showContent' => array(
+			'showContent'         => array(
 				'label'         => __( 'View content', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
 			'showApplicationForm' => array(
-				'label'         => __( 'View application link', 'personio-integration-light' ),
+				'label'         => __( 'View option to apply', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),

@@ -205,7 +205,7 @@ class Widget_Base extends Extensions_Base {
 		if ( ! empty( $params ) ) {
 			$text .= '<i>' . __( 'Attributes:', 'personio-integration-light' ) . '</i><ul>';
 			foreach ( $params as $name => $param ) {
-				$text .= '<li><code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'wp-personio-integration' ) . '">' . $name . '</code> ' . $param['label'] . ( $param['required'] ? ' <em>' . __( 'required', 'personio-integration-light' ) . '</em>' : '' ) . '</li>';
+				$text .= '<li><code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">' . $name . '</code> ' . $param['label'] . ( $param['required'] ? ' <em>' . __( 'required', 'personio-integration-light' ) . '</em>' : '' ) . '</li>';
 			}
 			$text .= '</ul>';
 			$text .= '<i>' . __( 'Example:', 'personio-integration-light' ) . '</i><br>' . $this->get_shortcode_example();

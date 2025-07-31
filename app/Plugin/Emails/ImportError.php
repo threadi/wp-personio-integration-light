@@ -33,7 +33,7 @@ class ImportError extends Email_Base {
 	/**
 	 * The list of errors
 	 *
-	 * @var array
+	 * @var array<int,string>
 	 */
 	private array $errors = array();
 
@@ -119,7 +119,7 @@ class ImportError extends Email_Base {
 	/**
 	 * Set list of errors.
 	 *
-	 * @param array $errors The list of errors.
+	 * @param array<int,string> $errors The list of errors.
 	 *
 	 * @return void
 	 */
@@ -135,7 +135,7 @@ class ImportError extends Email_Base {
 	protected function prepare_for_test(): void {
 		// create a list of pseudo-errors.
 		$errors = array(
-			__( 'This is a test-error.', 'personio-integration-light' )
+			__( 'This is a test-error.', 'personio-integration-light' ),
 		);
 
 		// set this position as new position for the test.

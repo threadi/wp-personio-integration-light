@@ -263,7 +263,8 @@ class Intro {
 
 	/**
 	 * Add settings for the intro.
-	 **
+	 * *
+	 *
 	 * @return void
 	 */
 	public function add_settings(): void {
@@ -274,7 +275,7 @@ class Intro {
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
 
 		// bail if page could not be loaded.
-		if( ! $main_settings_page instanceof Page ) {
+		if ( ! $main_settings_page instanceof Page ) {
 			return;
 		}
 
@@ -282,12 +283,17 @@ class Intro {
 		$advanced_tab = $main_settings_page->get_tab( 'advanced' );
 
 		// bail if page could not be loaded.
-		if( ! $advanced_tab instanceof Tab ) {
+		if ( ! $advanced_tab instanceof Tab ) {
 			return;
 		}
 
 		// get the advanced section.
 		$advanced_section = $advanced_tab->get_section( 'settings_section_advanced' );
+
+		// bail if section could not be loaded.
+		if ( ! $advanced_section instanceof Section ) {
+			return;
+		}
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationResetIntro' );
@@ -297,13 +303,15 @@ class Intro {
 		$field = new Button();
 		$field->set_title( __( 'Reset intro', 'easy-settings-for-wordpress' ) );
 		$field->set_button_title( __( 'Rerun the intro', 'easy-settings-for-wordpress' ) );
-		$field->set_button_url( add_query_arg(
-			array(
-				'action' => 'personioPositionsIntroReset',
-				'nonce'  => wp_create_nonce( 'personio-integration-intro-reset' ),
-			),
-			get_admin_url() . 'admin.php'
-		));
+		$field->set_button_url(
+			add_query_arg(
+				array(
+					'action' => 'personioPositionsIntroReset',
+					'nonce'  => wp_create_nonce( 'personio-integration-intro-reset' ),
+				),
+				get_admin_url() . 'admin.php'
+			)
+		);
 		$field->add_class( 'personio-integration-reset-intro' );
 		$setting->set_field( $field );
 
@@ -311,7 +319,7 @@ class Intro {
 		$hidden_section = Settings::get_instance()->get_hidden_section();
 
 		// bail if hidden section could not be found.
-		if( ! $hidden_section instanceof Section ) {
+		if ( ! $hidden_section instanceof Section ) {
 			return;
 		}
 

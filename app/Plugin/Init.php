@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
@@ -120,9 +121,6 @@ class Init {
 		add_action( 'wp', array( $this, 'update_slugs' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 		add_action( 'parse_query', array( $this, 'check_static_front_filter' ) );
-
-			// misc.
-		add_action( 'admin_init', array( $this, 'check_php' ) );
 	}
 
 	/**
@@ -365,42 +363,6 @@ class Init {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Check if website is using an old PHP version and show warning if is it using such.
-	 *
-	 * @return void
-	 */
-	public function check_php(): void {
-		// get transients object.
-		$transients_obj = Transients::get_instance();
-
-		// bail if setup has not been run yet.
-		if ( ! Setup::get_instance()->is_completed() ) {
-			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
-			return;
-		}
-
-		// bail if WordPress is in developer mode.
-		if ( function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' ) ) {
-			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
-			return;
-		}
-
-		// bail if PHP >= 8.1 is used.
-		if ( PHP_VERSION_ID >= 80100 ) {
-			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
-			return;
-		}
-
-		// show hint for necessary configuration to restrict access to application files.
-		$transient_obj = Transients::get_instance()->add();
-		$transient_obj->set_type( 'error' );
-		$transient_obj->set_name( 'personio_integration_light_php_hint' );
-		$transient_obj->set_dismissible_days( 90 );
-		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'personio-integration-light' ) . '</strong><br>' . __( 'Future versions of <i>Personio Integration Light</i> will no longer be compatible with PHP 8.0 or older. These versions <a href="https://www.php.net/supported-versions.php" target="_blank">are outdated</a> since December 2023. To continue using the plugins new features, please update your PHP version.', 'personio-integration-light' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'personio-integration-light' ) );
-		$transient_obj->save();
 	}
 
 	/**

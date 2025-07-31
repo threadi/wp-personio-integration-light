@@ -70,7 +70,7 @@ class Emails {
 		add_action( 'admin_action_personioPositionsEmailTest', array( $this, 'send_test_email_by_request' ) );
 
 		// add our email template.
-		add_filter('wp_mail', array( $this, 'set_email_template' ) );
+		add_filter( 'wp_mail', array( $this, 'set_email_template' ) );
 	}
 
 	/**
@@ -86,7 +86,7 @@ class Emails {
 		$settings_page = $settings_obj->get_page( 'personioPositions' );
 
 		// bail if page does not exist.
-		if( ! $settings_page instanceof Page ) {
+		if ( ! $settings_page instanceof Page ) {
 			return;
 		}
 
@@ -95,14 +95,9 @@ class Emails {
 		$email_tab->set_title( __( 'Emails', 'personio-integration-light' ) );
 
 		// add setting for each supported trigger.
-		foreach( $this->get_email_trigger() as $email_class_name ) {
-			// bail if it is not a string.
-			if( ! is_string( $email_class_name ) ) {
-				continue;
-			}
-
+		foreach ( $this->get_email_trigger() as $email_class_name ) {
 			// bail if class does not exist.
-			if( ! class_exists( $email_class_name ) ) {
+			if ( ! class_exists( $email_class_name ) ) {
 				continue;
 			}
 
@@ -110,7 +105,7 @@ class Emails {
 			$obj = new $email_class_name();
 
 			// bail if object is not Email_Base.
-			if( ! $obj instanceof Email_Base ) {
+			if ( ! $obj instanceof Email_Base ) {
 				continue;
 			}
 
@@ -150,12 +145,7 @@ class Emails {
 	 */
 	private function get_email_trigger_by_name( string $name ): Email_Base|false {
 		// add setting for each supported trigger.
-		foreach( $this->get_email_trigger() as $email_class_name ) {
-			// bail if it is not a string.
-			if ( ! is_string( $email_class_name ) ) {
-				continue;
-			}
-
+		foreach ( $this->get_email_trigger() as $email_class_name ) {
 			// bail if class does not exist.
 			if ( ! class_exists( $email_class_name ) ) {
 				continue;
@@ -165,12 +155,12 @@ class Emails {
 			$obj = new $email_class_name();
 
 			// bail if object is not Email_Base.
-			if( ! $obj instanceof Email_Base ) {
+			if ( ! $obj instanceof Email_Base ) {
 				continue;
 			}
 
 			// bail if name does not match.
-			if( $name !== $obj->get_name() ) {
+			if ( $name !== $obj->get_name() ) {
 				continue;
 			}
 
@@ -221,7 +211,7 @@ class Emails {
 		$deleted_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, array() );
 
 		// bail if no new positions have been imported.
-		if( empty( $deleted_positions ) ) {
+		if ( empty( $deleted_positions ) ) {
 			return;
 		}
 
@@ -249,6 +239,7 @@ class Emails {
 		$content .= '</ol>';
 		$content .= '<p><strong>' . __( 'Important notes:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ul>';
+		/* translators: %1$s will be replaced by a URL. */
 		$content .= '<li>' . sprintf( __( 'Check and test whether you can send emails to the recipients from your project. This depends on many factors that our plugin does not influence. <a href="%1$s" target="_blank">SMTP plugins (opens new window)</a> may help here.', 'personio-integration-light' ), 'https://wordpress.org/plugins/tags/smtp/' ) . '</li>';
 		$content .= '</ul>';
 
@@ -270,7 +261,7 @@ class Emails {
 	 *
 	 * @return array<string>
 	 */
-	public function add_schedules( array $list_of_schedules  ): array {
+	public function add_schedules( array $list_of_schedules ): array {
 		// add the schedule-objekt, if report is enabled.
 		$list_of_schedules[] = '\PersonioIntegrationLight\Plugin\Schedules\Report';
 
@@ -291,7 +282,7 @@ class Emails {
 		$email_object_name = filter_input( INPUT_GET, 'object', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// bail if no object name is given.
-		if( empty( $email_object_name ) ) {
+		if ( empty( $email_object_name ) ) {
 			wp_safe_redirect( wp_get_referer() );
 			exit;
 		}
@@ -300,7 +291,7 @@ class Emails {
 		$email_obj = $this->get_email_trigger_by_name( $email_object_name );
 
 		// bail if no object could be found.
-		if( ! $email_obj instanceof Email_Base ) {
+		if ( ! $email_obj instanceof Email_Base ) {
 			wp_safe_redirect( wp_get_referer() );
 			exit;
 		}
@@ -324,50 +315,50 @@ class Emails {
 	/**
 	 * Add our own email template for emails we send.
 	 *
-	 * @param mixed $args
+	 * @param mixed $args List of arguments.
 	 *
 	 * @return mixed
 	 */
 	public function set_email_template( mixed $args ): mixed {
 		// bail if args is not an array.
-		if( ! is_array( $args ) ) {
+		if ( ! is_array( $args ) ) {
 			return $args;
 		}
 
 		// bail if no header is set.
-		if( ! isset( $args['headers'] ) ) {
+		if ( ! isset( $args['headers'] ) ) {
 			return $args;
 		}
 
 		// bail if header "X-Mailer" is not set.
-		if( ! isset( $args['headers']['X-Mailer'] ) ) {
+		if ( ! isset( $args['headers']['X-Mailer'] ) ) {
 			return $args;
 		}
 
 		// bail if header "X-Mailer" is not our plugin.
-		if( $args['headers']['X-Mailer'] !== Helper::get_plugin_name() ) {
+		if ( Helper::get_plugin_name() !== $args['headers']['X-Mailer'] ) {
 			return $args;
 		}
 
 		// bail if email is already HTML.
-		if( str_contains($args["message"], '<html') || str_contains($args["message"], '<HTML') || str_contains($args["message"], '<body') ) {
+		if ( str_contains( $args['message'], '<html' ) || str_contains( $args['message'], '<HTML' ) || str_contains( $args['message'], '<body' ) ) {
 			return $args;
 		}
 
 		// get the contents.
-		$subject = $args["subject"];
-		$body = wpautop( $args["message"] );
+		$subject = $args['subject'];
+		$body    = wpautop( $args['message'] );
 
 		// load your custom email template file.
 		ob_start();
 		include Templates::get_instance()->get_template( 'emails/default.php' );
 		$body = ob_get_clean();
-		if( ! $body ) {
+		if ( ! $body ) {
 			return $args;
 		}
 
 		// set the new HTML-formatted body.
-		$args["message"] = $body;
+		$args['message'] = $body;
 
 		// return resulting mail configuration.
 		return $args;

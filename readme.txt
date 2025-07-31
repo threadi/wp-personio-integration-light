@@ -3,7 +3,7 @@ Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
 Requires at least: 4.9.24
 Tested up to: 6.8
-Requires PHP: 8.0
+Requires PHP: 8.1
 Requires CP:  2.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -48,6 +48,8 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish
 - Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
 - Support for subcompanies and additional offices in positions
+- Support for salaries for open positions
+- Use GoogleMaps or OpenStreetMap for show you locations with open positions
 - Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Fluent Forms, Forminator and WPForms
 - Use custom feature image on each position
 - Unlimited custom files for download on each single position
