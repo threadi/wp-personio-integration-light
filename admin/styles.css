@@ -38,26 +38,6 @@ body.post-type-personioposition {
 
 .personio_integration_light-field-width { width: 100% }
 
-.personio-integration-transient {
-    position: relative;
-    z-index: 1;
-}
-
-.personio-integration-transient h3 img {
-    vertical-align: middle;
-    display: inline-block;
-    margin-right: 8px;
-}
-
-.personio-integration-transient .notice-dismiss:before {
-	display: inline-block;
-	float: right;
-}
-
-.personio-integration-transient .notice-dismiss:hover {
-	color: #d63638;
-}
-
 .column-dragdrop { width: 20px }
 
 .ui-sortable-handle { cursor: pointer; }

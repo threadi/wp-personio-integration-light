@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Radio;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;

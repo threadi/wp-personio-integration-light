@@ -13,30 +13,6 @@ jQuery(document).ready(function($) {
       this.after(button);
     })
 
-    // save to hide transient-messages via ajax-request
-    $('div[data-dismissible] button.notice-dismiss').on('click',
-        function (event) {
-            event.preventDefault();
-            let $this = $(this);
-            let attr_value, option_name, dismissible_length, data;
-            attr_value = $this.closest('div[data-dismissible]').attr('data-dismissible').split('-');
-
-            // Remove the dismissible length from the attribute value and rejoin the array.
-            dismissible_length = attr_value.pop();
-            option_name = attr_value.join('-');
-            data = {
-                'action': 'personio_integration_dismiss_admin_notice',
-                'option_name': option_name,
-                'dismissible_length': dismissible_length,
-                'nonce': personioIntegrationLightJsVars.dismiss_nonce
-            };
-
-            // run ajax request to save this setting
-            $.post(personioIntegrationLightJsVars.ajax_url, data);
-            $this.closest('div[data-dismissible]').hide('slow');
-        }
-    );
-
     /**
      * Create dialog before import is running.
      * Get the content for the dialog via AJAX for dynamic content-changes.

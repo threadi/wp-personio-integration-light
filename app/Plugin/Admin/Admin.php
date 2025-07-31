@@ -18,7 +18,7 @@ use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Intro;
 use PersonioIntegrationLight\Plugin\License;
 use PersonioIntegrationLight\Plugin\Setup;
-use PersonioIntegrationLight\Plugin\Transients;
+use easyTransientsForWordPress\Transients;
 use WP_Admin_Bar;
 use WP_Screen;
 use WP_User;
@@ -87,10 +87,12 @@ class Admin {
 		add_action( 'admin_init', array( $this, 'check_config' ) );
 		add_action( 'admin_init', array( $this, 'show_review_hint' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
+		add_action( 'init', array( $this, 'configure_transients' ) );
 		add_action( 'admin_bar_menu', array( $this, 'add_custom_toolbar' ), 100 );
 
 		// register our own importer in backend.
 		add_action( 'admin_init', array( $this, 'add_importer' ) );
+		add_action( 'admin_init', array( $this, 'check_php' ) );
 		add_action( 'load-importer-personio-integration-importer', array( $this, 'forward_importer_to_settings' ) );
 
 		// add admin_actions.
@@ -134,8 +136,6 @@ class Admin {
 				'rest_personioposition_delete'       => rest_url( 'wp/v2/personioposition' ),
 				'pro_url'                            => Helper::get_pro_url(),
 				'review_url'                         => Helper::get_review_url(),
-				'dismiss_nonce'                      => wp_create_nonce( 'personio-integration-dismiss-nonce' ),
-				'dismiss_url_nonce'                  => wp_create_nonce( 'personio-integration-dismiss-url' ),
 				'run_import_nonce'                   => wp_create_nonce( 'personio-run-import' ),
 				'get_import_nonce'                   => wp_create_nonce( 'personio-get-import-info' ),
 				'get_import_dialog_nonce'            => wp_create_nonce( 'personio-import-dialog' ),
@@ -919,5 +919,56 @@ class Admin {
 				?>
 			</div>
 		<?php
+	}
+
+	/**
+	 * Check if website is using an old PHP version and show warning if is it using such.
+	 *
+	 * @return void
+	 */
+	public function check_php(): void {
+		// get transients object.
+		$transients_obj = \easyTransientsForWordPress\Transients::get_instance();
+
+		// bail if setup has not been run yet.
+		if ( ! Setup::get_instance()->is_completed() ) {
+			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
+			return;
+		}
+
+		// bail if WordPress is in developer mode.
+		if ( function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' ) ) {
+			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
+			return;
+		}
+
+		// bail if PHP >= 8.1 is used.
+		if ( PHP_VERSION_ID >= 80100 ) {
+			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
+			return;
+		}
+
+		// show hint for necessary configuration to restrict access to application files.
+		$transient_obj = Transients::get_instance()->add();
+		$transient_obj->set_type( 'error' );
+		$transient_obj->set_name( 'personio_integration_light_php_hint' );
+		$transient_obj->set_dismissible_days( 90 );
+		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'personio-integration-light' ) . '</strong><br>' . __( 'Future versions of <i>Personio Integration Light</i> will no longer be compatible with PHP 8.0 or older. These versions <a href="https://www.php.net/supported-versions.php" target="_blank">are outdated</a> since December 2023. To continue using the plugins new features, please update your PHP version.', 'personio-integration-light' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'personio-integration-light' ) );
+		$transient_obj->save();
+	}
+
+	/**
+	 * Set base configuration for each transient.
+	 *
+	 * @return void
+	 */
+	public function configure_transients(): void {
+		$transients_obj = Transients::get_instance();
+		$transients_obj->set_slug( 'pi' );
+		$transients_obj->set_path( Helper::get_plugin_path() );
+		$transients_obj->set_url( Helper::get_plugin_url() );
+		$transients_obj->set_capability( 'manage_' . PersonioPosition::get_instance()->get_name() );
+		$transients_obj->set_template( 'single.php' );
+		$transients_obj->set_display_method( 'grouped' );
 	}
 }

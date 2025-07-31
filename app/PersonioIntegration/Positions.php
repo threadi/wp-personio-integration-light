@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-use PersonioIntegrationLight\Plugin\Transients;
+use easyTransientsForWordPress\Transients;
 use WP_Query;
 
 /**

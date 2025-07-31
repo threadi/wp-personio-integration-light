@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
-use PersonioIntegrationLight\Plugin\Transients;
+use easyTransientsForWordPress\Transients;
 
 /**
  * Object to handle different themes to output templates of our plugin.
