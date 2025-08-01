@@ -1046,13 +1046,16 @@ class PersonioPosition extends Post_Type {
 		// get the content array.
 		$content_array = $position_obj->get_content();
 
-		// bail if array is empty.
+		// bail if array is empty and show hint.
 		if( empty( $content_array ) ) {
+			/* translators: %1$s will be replaced by a URL. */
+			echo '<p class="personio-pro-hint">' . sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), $url ) . '</p>';
 			return;
 		}
 
 		// bail if jobdescription entry is empty and show hint.
 		if( empty( $content_array['jobDescription'] ) ) {
+			/* translators: %1$s will be replaced by a URL. */
 			echo '<p class="personio-pro-hint">' . sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), $url ) . '</p>';
 			return;
 		}
