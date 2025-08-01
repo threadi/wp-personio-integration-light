@@ -45,7 +45,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 - Customization of slugs (URLs) for list and detailed views of positions
 - Multiple and customizable application forms incl. export of them via Personio API
-- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish
+- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech
 - Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
 - Support for subcompanies and additional offices in positions
 - Support for salaries for open positions

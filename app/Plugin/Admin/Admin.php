@@ -239,7 +239,7 @@ class Admin {
 	/**
 	 * Show hint for our Pro-version.
 	 *
-	 * Every $hint should use %1$s where the link to the Pro-info-page is set.
+	 * Every $hint should use %1$s where the link to the Pro-info-page and the plugin name is set.
 	 *
 	 * @param string $hint The individual hint to show before pro-hint.
 	 * @param bool   $do_not_use_ending_p Marker to do not use the ending p-element.
@@ -249,7 +249,7 @@ class Admin {
 	public function get_pro_hint( string $hint, bool $do_not_use_ending_p = false ): string {
 		$text = '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . esc_html__( 'Personio Integration Pro (opens new window)', 'personio-integration-light' ) . '</a>';
 		/**
-		 * Filter the pro hint text.
+		 * Filter the hint text for Pro-plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
