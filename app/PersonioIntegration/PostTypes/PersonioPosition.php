@@ -1032,6 +1032,32 @@ class PersonioPosition extends Post_Type {
 	 * @noinspection PhpUnusedParameterInspection
 	 **/
 	public function get_meta_box_for_description( WP_Post $post ): void {
+		// get the requested position as object.
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+
+		// get the edit URL.
+		$url = $position_obj->get_edit_link_on_personio();
+
+		// use main Personio URL if no edit URL could be loaded.
+		if ( empty( $url ) ) {
+			$url = Helper::get_personio_login_url();
+		}
+
+		// get the content array.
+		$content_array = $position_obj->get_content();
+
+		// bail if array is empty.
+		if( empty( $content_array ) ) {
+			return;
+		}
+
+		// bail if jobdescription entry is empty and show hint.
+		if( empty( $content_array['jobDescription'] ) ) {
+			echo '<p class="personio-pro-hint">' . sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), $url ) . '</p>';
+			return;
+		}
+
+		// show the description.
 		the_content();
 
 		/**

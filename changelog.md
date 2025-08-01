@@ -39,6 +39,7 @@
 - Now using our own intervals for WordPress cronjobs
 - Renamed "Application link" to "Option to apply"
 - Renamed "Content" to "Description"
+- Show hint in backend if no description is available for single position
 
 ### Fixed
 
