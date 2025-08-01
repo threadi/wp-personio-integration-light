@@ -5,6 +5,7 @@
 ### Added
 
 - Plugin structure revised with modern security mechanisms and design
+- Added new extension for manual import of positions from Personio
 - Added new object to handle all settings
 - Prepared support for new Personio API V2, which is still in beta and not usable for productive systems
 - Added encryption for sensible data like API credentials

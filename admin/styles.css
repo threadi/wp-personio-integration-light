@@ -420,3 +420,7 @@ body.post-type-personioposition .button span.dashicons {
 	.hndle { cursor: default }
 	label { cursor: pointer }
 }
+
+body.easy-dialog-for-wordpress.wp-core-ui .personio-integration-manual-import-selection .easy-dialog-for-wordpress-text label {
+	font-weight: normal;
+}

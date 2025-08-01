@@ -17,8 +17,10 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Api_Request;
 use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
+use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
+use stdClass;
 use WP_Post;
 
 /**
@@ -76,6 +78,15 @@ class Api extends Imports_Base {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Return whether this import can be run.
+	 *
+	 * @return bool
+	 */
+	public function can_be_run(): bool {
+		return true;
 	}
 
 	/**
@@ -279,6 +290,30 @@ class Api extends Imports_Base {
 				continue;
 			}
 
+			// marker to run import.
+			$run_import = true;
+			$language_name = 'de'; // TODO change this if language support is given by API.
+			$object = new stdClass(); // TODO change this is API supports all necessary fields.
+			$personio_obj = new Personio( get_option( 'personioIntegrationUrl' ) );
+			$imports_obj = $this;
+
+			/**
+			 * Check the position before import.
+			 *
+			 * @noinspection PhpConditionAlreadyCheckedInspection
+			 *
+			 * @since 1.0.0 Available since first release.
+			 *
+			 * @param bool $run_import The individual text.
+			 * @param object $xml_object The XML-object of the Position.
+			 * @param string $language_name The language-marker.
+			 * @param Personio $personio_obj The used Personio-account-object.
+			 * @param Imports_Base $imports_obj The used imports object.
+			 */
+			if ( false !== apply_filters( 'personio_integration_import_single_position', $run_import, $object, $language_name, $personio_obj, $imports_obj ) ) {
+				continue;
+			}
+
 			// add the result to the array.
 			$this->positions[ $personio_id ] = $data;
 
@@ -329,6 +364,19 @@ class Api extends Imports_Base {
 
 		// finalize progress for WP CLI.
 		$this->cli_progress ? $this->cli_progress->finish() : false;
+
+		$false = false;
+		/**
+		 * Cancel the import before cleanup the database.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param bool $false True to prevent the cleanup tasks.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		if( apply_filters( 'personio_integration_light_import_bail_before_cleanup', $false ) ) {
+			return;
+		}
 
 		// handle the errors.
 		if ( $this->has_errors() ) {

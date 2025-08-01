@@ -1732,6 +1732,7 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function get_import_dialog(): void {
+		// check nonce.
 		check_ajax_referer( 'personio-import-dialog', 'nonce' );
 
 		// define dialog.

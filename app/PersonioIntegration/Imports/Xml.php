@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PersonioIntegration\Imports;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use JsonException;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Imports\Xml\Import_Single_Personio_Url;
@@ -72,6 +73,15 @@ class Xml extends Imports_Base {
 	}
 
 	/**
+	 * Return whether this import can be run.
+	 *
+	 * @return bool
+	 */
+	public function can_be_run(): bool {
+		return 0 === absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) );
+	}
+
+	/**
 	 * Run the import of positions.
 	 *
 	 * @return void
@@ -89,7 +99,7 @@ class Xml extends Imports_Base {
 		define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
 
 		// do not import if it is already running in another process.
-		if ( absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) > 0 ) {
+		if ( ! $this->can_be_run() ) {
 			$this->add_error( __( 'Import is already running. Please wait a moment until it is finished.', 'personio-integration-light' ) );
 		}
 
@@ -172,6 +182,23 @@ class Xml extends Imports_Base {
 
 		// finalize progress for WP CLI.
 		$this->cli_progress ? $this->cli_progress->finish() : false;
+
+		$false = false;
+		/**
+		 * Cancel the import before cleanup the database.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param bool $false True to prevent the cleanup tasks.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		if( apply_filters( 'personio_integration_light_import_bail_before_cleanup', $false ) ) {
+			// mark import as not running anymore.
+			update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+
+			// do nothing more.
+			return;
+		}
 
 		// clean-up the database if no errors occurred.
 		if ( ! $this->has_errors() ) {
@@ -310,6 +337,30 @@ class Xml extends Imports_Base {
 	 * @noinspection PhpUnused
 	 */
 	public function import_single_position( SimpleXMLElement $xml_object, string $language_name, string $personio_url ): Position {
+		// get the position object from XML-
+		$position_object = $this->get_position_from_object( $xml_object, $language_name, $personio_url );
+
+		// and save it.
+		try {
+			$position_object->save();
+		} catch ( JsonException $e ) {
+			Log::get_instance()->add( __( 'Error during saving a position. The following error occurred:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>', 'error', 'import' );
+		}
+
+		// return the resulting position object.
+		return $position_object;
+	}
+
+	/**
+	 * Return a complete position object with data from source object.
+	 *
+	 * @param object $xml_object The source object.
+	 * @param string           $language_name The used language.
+	 * @param string           $personio_url The used Personio URL.
+	 *
+	 * @return Position
+	 */
+	public function get_position_from_object( object $xml_object, string $language_name, string $personio_url ): Position {
 		// create position object to handle all values and save them to database.
 		$position_object = new Position( 0 );
 		$position_object->set_lang( $language_name );
@@ -340,11 +391,7 @@ class Xml extends Imports_Base {
 		 * @param SimpleXMLElement $xml_object The XML-object with the data from Personio.
 		 * @param string $personio_url The used Personio-URL.
 		 */
-		$position_object = apply_filters( 'personio_integration_import_single_position_xml', $position_object, $xml_object, $personio_url );
-		$position_object->save();
-
-		// return the resulting position object.
-		return $position_object;
+		return apply_filters( 'personio_integration_import_single_position_xml', $position_object, $xml_object, $personio_url );
 	}
 
 	/**
