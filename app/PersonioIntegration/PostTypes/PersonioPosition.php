@@ -2038,9 +2038,9 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function add_shortcode_help( array $help_list ): array {
 		// collect the content for the help.
-		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Shortcodes', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide 2 shortcodes with numerous options. These can be used to output the positions.', 'personio-integration-light' ) . '</p>';
+		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Shortcodes', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide multiple shortcodes with numerous options. These can be used to output the open positions.', 'personio-integration-light' ) . '</p>';
 		$content .= '<p><strong>' . __( 'When to use:', 'personio-integration-light' ) . '</strong></p>';
-		$content .= '<p>' . __( 'Shortcodes should only be used if your own theme or PageBuilder do not offer any other options.', 'personio-integration-light' ) . '</p>';
+		$content .= '<p>' . __( 'Shortcodes should only be used if your own theme or PageBuilder is not supported by this plugin.', 'personio-integration-light' ) . '</p>';
 		$false    = false;
 		/**
 		 * Hide hint for Pro-plugin.
@@ -2052,7 +2052,7 @@ class PersonioPosition extends Post_Type {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			$content .= '<p>' . __( 'With <i>Personio Integration Light</i>, we only support the Block Editor in this regard.', 'personio-integration-light' ) . '</p>';
-			$content .= '<p>' . __( 'With <i>Personio Integration Pro</i> you can also manage your positions with Elementor, Divi, Avada and many other PageBuilders and do not have to use shortcodes.', 'personio-integration-light' ) . '</p>';
+			$content .= '<p>' . __( 'With <i>Personio Integration Pro</i> you can also manage your positions with Avada, Avia/Enfold, Elementor, Divi and many other PageBuilders and do not have to use shortcodes.', 'personio-integration-light' ) . '</p>';
 		}
 		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';

@@ -685,6 +685,7 @@ class Settings {
 			'id'      => PersonioPosition::get_instance()->get_name() . '-settings',
 			'title'   => __( 'Settings', 'personio-integration-light' ),
 			'content' => $content,
+			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url() ) ? 1 : 20
 		);
 
 		// return resulting list.

@@ -42,6 +42,7 @@
 - Renamed "Application link" to "Option to apply"
 - Renamed "Content" to "Description"
 - Show hint in backend if no description is available for single position
+- The help will show primary the help for the actual called page in backend
 
 ### Fixed
 

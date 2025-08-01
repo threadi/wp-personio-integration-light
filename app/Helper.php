@@ -378,7 +378,7 @@ class Helper {
 	}
 
 	/**
-	 * Get current URL in frontend and backend.
+	 * Return current URL in frontend and backend.
 	 *
 	 * @return string
 	 */
