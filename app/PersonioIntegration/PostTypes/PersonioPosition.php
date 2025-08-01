@@ -127,6 +127,7 @@ class PersonioPosition extends Post_Type {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10 , 2 );
 		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
+		add_filter( 'admin_footer_text', array( $this, 'show_plugin_hint_in_footer' ) );
 
 		// add ajax-hooks.
 		add_action( 'wp_ajax_personio_get_deletion_info', array( $this, 'get_deletion_info' ) );
@@ -1492,7 +1493,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Return whether a single page of our own custom post type is called.
+	 * Return whether a single page of our own custom post type is called in frontend.
 	 *
 	 * @return bool
 	 */
@@ -2208,5 +2209,29 @@ class PersonioPosition extends Post_Type {
 
 		/* translators: %1$s will be replaced by the Pro-plugin name. */
 		echo wp_kses_post( Admin::get_instance()->get_pro_hint( __( 'Use additional offices with %1$s', 'personio-integration-light' ) ) );
+	}
+
+	/**
+	 * Show hint in footer in backend on listing and single view of positions there.
+	 *
+	 * @param string $content The actual footer content.
+	 *
+	 * @return string
+	 */
+	public function show_plugin_hint_in_footer( string $content ): string {
+		// get requested post type.
+		$post_type = filter_input(INPUT_GET, 'post_type');
+
+		// get requested post.
+		$post = filter_input(INPUT_GET, 'post');
+
+		// bail if this is not the listing or the single view of a position in backend.
+		if( $post_type !== $this->get_name() && get_post_type( $post ) !== $this->get_name() ) {
+			return $content;
+		}
+
+		// show hint for our plugin.
+		/* translators: %1$s will be replaced by the plugin name. */
+		return $content . ' ' . sprintf( __( 'This page is provided by the plugin %1$s.', 'personio-integration-light' ), '<em>' . Helper::get_plugin_name() . '</em>' );
 	}
 }

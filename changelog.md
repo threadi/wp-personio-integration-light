@@ -22,6 +22,7 @@
 - Added info-page for Pro plugin with option to install the Pro-plugin with valid license key
 - Added new handling for admin notices for better overview over messages from the plugin
 - Added links to edit position settings in Personio if login URL is given
+- Added info in admin footer if a page from our plugin is loaded
 
 ### Changed
 
