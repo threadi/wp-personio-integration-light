@@ -476,7 +476,7 @@ class License {
 			<ul>
 				<li><?php echo __( 'Customization of slugs (URLs) for list and detailed views of positions', 'personio-integration-light' ); ?></li>
 				<li><?php echo __( 'Multiple and customizable application forms incl. export of them via Personio API', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish', 'personio-integration-light' ); ?></li>
+				<li><?php echo __( 'Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech', 'personio-integration-light' ); ?></li>
 				<li><?php echo __( 'Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress', 'personio-integration-light' ); ?></li>
 				<li><?php echo __( 'Support for subcompanies and additional offices in positions', 'personio-integration-light' ); ?></li>
 				<li><?php echo __( 'Support for salaries for open positions', 'personio-integration-light' ); ?></li>

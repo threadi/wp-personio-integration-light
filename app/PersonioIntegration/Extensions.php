@@ -174,6 +174,7 @@ class Extensions {
 	public function add_extensions( array $extension_list ): array {
 		// add extensions we deliver in this plugin.
 		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Availability';
+		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Manual_Import';
 		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Show_Position_Xml';
 		$extension_list[] = '\PersonioIntegrationLight\PageBuilder\Page_Builders';
 
@@ -579,6 +580,7 @@ class Extensions {
 			'id'      => PersonioPosition::get_instance()->get_name() . '-extensions',
 			'title'   => __( 'Extensions', 'personio-integration-light' ),
 			'content' => $content,
+			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url( 'personioPositionExtensions' ) ) ? 1 : 30
 		);
 
 		// return resulting list.

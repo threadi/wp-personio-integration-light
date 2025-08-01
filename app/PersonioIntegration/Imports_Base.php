@@ -260,4 +260,26 @@ class Imports_Base extends Extensions_Base {
 		 */
 		do_action( 'personio_integration_import_max_count', $max_count );
 	}
+
+	/**
+	 * Return whether this import can be run.
+	 *
+	 * @return bool
+	 */
+	public function can_be_run(): bool {
+		return false;
+	}
+
+	/**
+	 * Return a complete position object with data from source object.
+	 *
+	 * @param object $xml_object The source object.
+	 * @param string           $language_name The used language.
+	 * @param string           $personio_url The used Personio URL.
+	 *
+	 * @return Position
+	 */
+	public function get_position_from_object( object $xml_object, string $language_name, string $personio_url ): Position {
+		return new Position( 0 );
+	}
 }

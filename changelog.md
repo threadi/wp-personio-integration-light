@@ -5,6 +5,7 @@
 ### Added
 
 - Plugin structure revised with modern security mechanisms and design
+- Added new extension for manual import of positions from Personio
 - Added new object to handle all settings
 - Prepared support for new Personio API V2, which is still in beta and not usable for productive systems
 - Added encryption for sensible data like API credentials
@@ -21,6 +22,8 @@
 - Added new compatibility check for Oxygen
 - Added info-page for Pro plugin with option to install the Pro-plugin with valid license key
 - Added new handling for admin notices for better overview over messages from the plugin
+- Added links to edit position settings in Personio if login URL is given
+- Added info in admin footer if a page from our plugin is loaded
 
 ### Changed
 
@@ -39,6 +42,8 @@
 - Now using our own intervals for WordPress cronjobs
 - Renamed "Application link" to "Option to apply"
 - Renamed "Content" to "Description"
+- Show hint in backend if no description is available for single position
+- The help will show primary the help for the actual called page in backend
 
 ### Fixed
 

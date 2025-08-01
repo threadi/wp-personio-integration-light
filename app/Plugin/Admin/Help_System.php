@@ -81,6 +81,7 @@ class Help_System {
 
 		// get the help tabs.
 		$help_tabs = $this->get_help_tabs();
+
 		// bail if list is empty.
 		if ( empty( $help_tabs ) ) {
 			return;

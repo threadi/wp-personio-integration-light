@@ -108,14 +108,35 @@ class Imports {
 		$import_section->set_setting( $settings_obj );
 
 		// add setting.
+		$running_import = absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) );
 		$import_now_setting = $settings_obj->add_setting( 'personioIntegrationImportNow' );
 		$import_now_setting->set_section( $import_section );
 		$import_now_setting->set_autoload( false );
 		$import_now_setting->prevent_export( true );
-		$field = new Button();
-		$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
-		$field->set_button_title( __( 'Run import of positions now', 'personio-integration-light' ) );
-		$field->add_class( 'personio-integration-import-hint' );
+		if( $running_import > 0 && ( $running_import + HOUR_IN_SECONDS ) < time() ) {
+			$url = add_query_arg(
+				array(
+					'action' => 'personioPositionsCancelImport',
+					'nonce'  => wp_create_nonce( 'personio-integration-cancel-import' ),
+				),
+				get_admin_url() . 'admin.php'
+			);
+			$field = new Button();
+			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
+			$field->set_button_title( __( 'Cancel running import', 'personio-integration-light' ) );
+			$field->set_button_url( $url );
+		}
+		elseif( $running_import > 0 ) {
+			$field = new TextInfo();
+			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
+			$field->set_description( __( 'The import is already running. Please wait some moments.', 'personio-integration-light' ) );
+		}
+		else {
+			$field = new Button();
+			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
+			$field->set_button_title( __( 'Run import of positions now', 'personio-integration-light' ) );
+			$field->add_class( 'personio-integration-import-hint' );
+		}
 		$import_now_setting->set_field( $field );
 
 		// add setting.

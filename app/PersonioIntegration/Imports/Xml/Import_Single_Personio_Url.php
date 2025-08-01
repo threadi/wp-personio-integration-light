@@ -14,6 +14,7 @@ use Exception;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Imports\Xml;
+use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
@@ -193,6 +194,17 @@ class Import_Single_Personio_Url {
 		 */
 		$url = apply_filters( 'personio_integration_import_url', $url, $language_name );
 
+		$check_for_changes = $this->debug;
+		/**
+		 * Set marker to check for timestamp and md5-hash-compare.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param bool $check_for_changes False to prevent this checks.
+		 *
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		$check_for_changes = apply_filters( 'personio_integration_light_import_of_url_starting', $check_for_changes );
+
 		// define settings for first request to Personio XML to get the last-modified-date.
 		$args     = array(
 			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
@@ -238,7 +250,7 @@ class Import_Single_Personio_Url {
 		$http_status = absint( apply_filters( 'personio_integration_import_header_status', $http_status ) );
 		if ( 200 === $http_status ) {
 			// timestamp did not change -> do nothing if we already have positions in the DB.
-			if ( $positions_count > 0 && ! $this->debug && $last_modified_timestamp > 0 && $personio_obj->get_timestamp( $this->get_language() ) === $last_modified_timestamp ) {
+			if ( $positions_count > 0 && $check_for_changes && $last_modified_timestamp > 0 && $personio_obj->get_timestamp( $this->get_language() ) === $last_modified_timestamp ) {
 				// set import count to actual max to show that it has been run.
 				$imports_obj->set_import_count( $imports_obj->get_import_max_count() );
 
@@ -278,7 +290,7 @@ class Import_Single_Personio_Url {
 
 				// check if md5-hash of body content has not been changed.
 				// md5-hash did not change -> do nothing if we already have positions in the DB.
-				if ( ! $this->debug && $positions_count > 0 && $personio_obj->get_md5( $language_name ) === $md5hash ) {
+				if ( $check_for_changes && $positions_count > 0 && $personio_obj->get_md5( $language_name ) === $md5hash ) {
 					// log event.
 					/* translators: %1$s will be replaced by a URL, %2$s by the language name. */
 					$this->log->add( sprintf( __( 'No changes in positions from %1$s for language %2$s according to the content we got from Personio. No import run.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
@@ -346,8 +358,9 @@ class Import_Single_Personio_Url {
 					 * @param object $xml_object The XML-object of the Position.
 					 * @param string $language_name The language-marker.
 					 * @param Personio $personio_obj The used Personio-account-object.
+					 * @param Imports_Base $imports_obj The used imports object.
 					 */
-					if ( false !== apply_filters( 'personio_integration_import_single_position', $run_import, $xml_object, $language_name, $personio_obj ) ) {
+					if ( false !== apply_filters( 'personio_integration_import_single_position', $run_import, $xml_object, $language_name, $personio_obj, $imports_obj ) ) {
 						// import the position and add it to the list.
 						$this->imported_postions[] = $imports_obj->import_single_position( $xml_object, $language_name, $personio_obj->get_url() );
 					} elseif ( false !== $this->debug ) {

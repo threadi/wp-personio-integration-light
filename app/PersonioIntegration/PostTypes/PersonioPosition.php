@@ -124,9 +124,10 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'posts_search', array( $this, 'search_also_in_meta_fields' ), 10, 2 );
 
 		// edit positions.
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10 , 2 );
 		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
+		add_filter( 'admin_footer_text', array( $this, 'show_plugin_hint_in_footer' ) );
 
 		// add ajax-hooks.
 		add_action( 'wp_ajax_personio_get_deletion_info', array( $this, 'get_deletion_info' ) );
@@ -757,9 +758,15 @@ class PersonioPosition extends Post_Type {
 	 * Add Box with hints for editing.
 	 * Add Open Graph Meta-box für edit-page of positions.
 	 *
+	 * @param string  $post_type The requested post type.
+	 * @param WP_Post $post The post object.
+	 *
 	 * @return void
 	 */
-	public function add_meta_boxes(): void {
+	public function add_meta_boxes( string $post_type, WP_Post $post ): void {
+		// get the requested position as object.
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+
 		add_meta_box(
 			$this->get_name() . '-edit-hints',
 			__( 'About this page', 'personio-integration-light' ),
@@ -776,14 +783,14 @@ class PersonioPosition extends Post_Type {
 
 		add_meta_box(
 			$this->get_name() . '-title',
-			__( 'Title', 'personio-integration-light' ),
+			__( 'Title', 'personio-integration-light' ) . Helper::get_personio_edit_link( $position_obj ),
 			array( $this, 'get_meta_box_for_title' ),
 			$this->get_name()
 		);
 
 		add_meta_box(
 			$this->get_name() . '-text',
-			__( 'Description', 'personio-integration-light' ),
+			__( 'Description', 'personio-integration-light' ) . Helper::get_personio_edit_link( $position_obj ),
 			array( $this, 'get_meta_box_for_description' ),
 			$this->get_name()
 		);
@@ -860,6 +867,9 @@ class PersonioPosition extends Post_Type {
 				// add link.
 				$changeable_hint = '<a href="' . esc_url( $url ) . '" class="easy-dialog-for-wordpress" data-dialog="' . esc_attr( Helper::get_json( $dialog ) ) . '"><span class="dashicons dashicons-translation"></span></a>';
 			}
+
+			// add edit link.
+			$changeable_hint .= Helper::get_personio_edit_link( $position_obj );
 
 			// add a box for single taxonomy.
 			add_meta_box(
@@ -1032,6 +1042,35 @@ class PersonioPosition extends Post_Type {
 	 * @noinspection PhpUnusedParameterInspection
 	 **/
 	public function get_meta_box_for_description( WP_Post $post ): void {
+		// get the requested position as object.
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+
+		// get the edit URL.
+		$url = $position_obj->get_edit_link_on_personio();
+
+		// use main Personio URL if no edit URL could be loaded.
+		if ( empty( $url ) ) {
+			$url = Helper::get_personio_login_url();
+		}
+
+		// get the content array.
+		$content_array = $position_obj->get_content();
+
+		// bail if array is empty and show hint.
+		if( empty( $content_array ) ) {
+			/* translators: %1$s will be replaced by a URL. */
+			echo '<p class="personio-pro-hint">' . sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), $url ) . '</p>';
+			return;
+		}
+
+		// bail if jobdescription entry is empty and show hint.
+		if( empty( $content_array['jobDescription'] ) ) {
+			/* translators: %1$s will be replaced by a URL. */
+			echo '<p class="personio-pro-hint">' . sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), $url ) . '</p>';
+			return;
+		}
+
+		// show the description.
 		the_content();
 
 		/**
@@ -1454,7 +1493,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Return whether a single page of our own custom post type is called.
+	 * Return whether a single page of our own custom post type is called in frontend.
 	 *
 	 * @return bool
 	 */
@@ -1693,6 +1732,7 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function get_import_dialog(): void {
+		// check nonce.
 		check_ajax_referer( 'personio-import-dialog', 'nonce' );
 
 		// define dialog.
@@ -1999,9 +2039,9 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function add_shortcode_help( array $help_list ): array {
 		// collect the content for the help.
-		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Shortcodes', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide 2 shortcodes with numerous options. These can be used to output the positions.', 'personio-integration-light' ) . '</p>';
+		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Shortcodes', 'personio-integration-light' ) . '</h2><p>' . __( 'We provide multiple shortcodes with numerous options. These can be used to output the open positions.', 'personio-integration-light' ) . '</p>';
 		$content .= '<p><strong>' . __( 'When to use:', 'personio-integration-light' ) . '</strong></p>';
-		$content .= '<p>' . __( 'Shortcodes should only be used if your own theme or PageBuilder do not offer any other options.', 'personio-integration-light' ) . '</p>';
+		$content .= '<p>' . __( 'Shortcodes should only be used if your own theme or PageBuilder is not supported by this plugin.', 'personio-integration-light' ) . '</p>';
 		$false    = false;
 		/**
 		 * Hide hint for Pro-plugin.
@@ -2013,7 +2053,7 @@ class PersonioPosition extends Post_Type {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			$content .= '<p>' . __( 'With <i>Personio Integration Light</i>, we only support the Block Editor in this regard.', 'personio-integration-light' ) . '</p>';
-			$content .= '<p>' . __( 'With <i>Personio Integration Pro</i> you can also manage your positions with Elementor, Divi, Avada and many other PageBuilders and do not have to use shortcodes.', 'personio-integration-light' ) . '</p>';
+			$content .= '<p>' . __( 'With <i>Personio Integration Pro</i> you can also manage your positions with Avada, Avia/Enfold, Elementor, Divi and many other PageBuilders and do not have to use shortcodes.', 'personio-integration-light' ) . '</p>';
 		}
 		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
@@ -2170,5 +2210,29 @@ class PersonioPosition extends Post_Type {
 
 		/* translators: %1$s will be replaced by the Pro-plugin name. */
 		echo wp_kses_post( Admin::get_instance()->get_pro_hint( __( 'Use additional offices with %1$s', 'personio-integration-light' ) ) );
+	}
+
+	/**
+	 * Show hint in footer in backend on listing and single view of positions there.
+	 *
+	 * @param string $content The actual footer content.
+	 *
+	 * @return string
+	 */
+	public function show_plugin_hint_in_footer( string $content ): string {
+		// get requested post type.
+		$post_type = filter_input(INPUT_GET, 'post_type');
+
+		// get requested post.
+		$post = filter_input(INPUT_GET, 'post');
+
+		// bail if this is not the listing or the single view of a position in backend.
+		if( $post_type !== $this->get_name() && get_post_type( $post ) !== $this->get_name() ) {
+			return $content;
+		}
+
+		// show hint for our plugin.
+		/* translators: %1$s will be replaced by the plugin name. */
+		return $content . ' ' . sprintf( __( 'This page is provided by the plugin %1$s.', 'personio-integration-light' ), '<em>' . Helper::get_plugin_name() . '</em>' );
 	}
 }
