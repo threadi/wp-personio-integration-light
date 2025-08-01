@@ -101,7 +101,7 @@ body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
     color: var(--personio-hint-font);
 }
 
-body.post-type-personioposition a[target="_blank"]:after {
+body.post-type-personioposition a:not(.personio-integration-icon-link):not(.review-hint-button)[target="_blank"]:after {
 	content: "\f504";
 	display: inline-block;
 	font-family: "dashicons", sans-serif;
@@ -208,9 +208,6 @@ body.post-type-personioposition a.review-hint-button:after {
 	display: inline-block;
 	font-family: "dashicons", sans-serif;
 	margin-left: 8px;
-	position: relative;
-	top: -2px;
-	z-index: 1;
 }
 
 .personio-integration-applications-hint button.is-primary:after {
@@ -303,13 +300,21 @@ body.post-type-personioposition .icl_subsubsub { display: none !important; }
 body.personioposition_page_personioPositions .state .dashicons-yes { color: green }
 body.personioposition_page_personioPositions .state .dashicons-no { color: red }
 
-body.post-type-personioposition .postbox-header a { text-decoration: none }
+body.post-type-personioposition .postbox-header a {
+	float: right;
+	margin-left: 6px;
+	text-decoration: none
+}
 
 body.post-type-personioposition #minor-publishing-actions, body.post-type-personioposition #misc-publishing-actions { display: none }
 
 body.post-type-personioposition #poststuff header h2 {
 	font-size: 23px;
 	padding-left: 0;
+}
+
+body.post-type-personioposition #poststuff .postbox-header h2 {
+	display: block;
 }
 
 body.post-type-personioposition .button span.dashicons {

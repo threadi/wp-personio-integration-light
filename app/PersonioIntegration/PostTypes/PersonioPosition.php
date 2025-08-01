@@ -124,7 +124,7 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'posts_search', array( $this, 'search_also_in_meta_fields' ), 10, 2 );
 
 		// edit positions.
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10 , 2 );
 		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
 
@@ -757,9 +757,15 @@ class PersonioPosition extends Post_Type {
 	 * Add Box with hints for editing.
 	 * Add Open Graph Meta-box für edit-page of positions.
 	 *
+	 * @param string  $post_type The requested post type.
+	 * @param WP_Post $post The post object.
+	 *
 	 * @return void
 	 */
-	public function add_meta_boxes(): void {
+	public function add_meta_boxes( string $post_type, WP_Post $post ): void {
+		// get the requested position as object.
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+
 		add_meta_box(
 			$this->get_name() . '-edit-hints',
 			__( 'About this page', 'personio-integration-light' ),
@@ -776,14 +782,14 @@ class PersonioPosition extends Post_Type {
 
 		add_meta_box(
 			$this->get_name() . '-title',
-			__( 'Title', 'personio-integration-light' ),
+			__( 'Title', 'personio-integration-light' ) . Helper::get_personio_edit_link( $position_obj ),
 			array( $this, 'get_meta_box_for_title' ),
 			$this->get_name()
 		);
 
 		add_meta_box(
 			$this->get_name() . '-text',
-			__( 'Description', 'personio-integration-light' ),
+			__( 'Description', 'personio-integration-light' ) . Helper::get_personio_edit_link( $position_obj ),
 			array( $this, 'get_meta_box_for_description' ),
 			$this->get_name()
 		);
@@ -860,6 +866,9 @@ class PersonioPosition extends Post_Type {
 				// add link.
 				$changeable_hint = '<a href="' . esc_url( $url ) . '" class="easy-dialog-for-wordpress" data-dialog="' . esc_attr( Helper::get_json( $dialog ) ) . '"><span class="dashicons dashicons-translation"></span></a>';
 			}
+
+			// add edit link.
+			$changeable_hint .= Helper::get_personio_edit_link( $position_obj );
 
 			// add a box for single taxonomy.
 			add_meta_box(

@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
@@ -469,7 +470,7 @@ class Helper {
 	}
 
 	/**
-	 * Get language-specific Personio account login url.
+	 * Return language-specific Personio account login url.
 	 *
 	 * @return string
 	 */
@@ -487,6 +488,25 @@ class Helper {
 
 		// return the custom Personio Login URL.
 		return $personio_login_url;
+	}
+
+	/**
+	 * Return HTML-link with icon to edit specific entity in Personio account.
+	 *
+	 * @param Position $position_obj The position object.
+	 *
+	 * @return string
+	 */
+	public static function get_personio_edit_link( Position $position_obj ): string {
+		// get the configured Personio Login URL.
+		$personio_login_url = get_option( 'personioIntegrationLoginUrl' );
+
+		// bail if no login URL is given.
+		if( empty( $personio_login_url ) ) {
+			return '';
+		}
+
+		return ' <a href="' . esc_url( $personio_login_url . '/recruiting/positions/' . $position_obj->get_personio_id() ) . '" target="_blank" class="personio-integration-icon-link"><span class="dashicons dashicons-edit"></span></a>';
 	}
 
 	/**
