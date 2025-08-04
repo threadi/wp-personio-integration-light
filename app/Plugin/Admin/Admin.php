@@ -969,7 +969,7 @@ class Admin {
 		$transients_obj->set_path( Helper::get_plugin_path() );
 		$transients_obj->set_url( Helper::get_plugin_url() );
 		$transients_obj->set_capability( 'manage_' . PersonioPosition::get_instance()->get_name() );
-		$transients_obj->set_template( 'single.php' );
+		$transients_obj->set_template( 'grouped.php' );
 		$transients_obj->set_display_method( 'grouped' );
 	}
 }
