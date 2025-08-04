@@ -213,7 +213,7 @@ class Manual_Import extends Extensions_Base {
 		wp_enqueue_script(
 			'personio-integration-admin-manual-import',
 			Helper::get_plugin_url() . 'admin/manual_import.js',
-			array( 'jquery', 'easy-dialog' ),
+			array( 'jquery', 'easy-dialog-for-wordpress' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/manual_import.js' ),
 			true
 		);

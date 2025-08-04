@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Export;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkboxes;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\MultiSelect;
@@ -21,6 +22,7 @@ use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Import;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
@@ -74,6 +76,9 @@ class Settings {
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 30 );
 		add_filter( 'personio_integration_light_settings_tab_title', array( $this, 'add_pro_on_title' ), 10, 2 );
+
+		// misc.
+		add_action( 'wp_ajax_personio_get_settings_import_dialog', array( $this, 'get_settings_import_dialog_via_ajax' ) );
 	}
 
 	/**
@@ -780,5 +785,48 @@ class Settings {
 	public function show_extensions_hint(): void {
 		/* translators: %1$s will be replaced by a URL. */
 		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'Manage your active extensions <a href="%1$s">here</a>. Depending on the active extensions, your setting options will expand here.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link() ) ) ) . '</p>';
+	}
+
+	/**
+	 * Return the import dialog via AJAX.
+	 *
+	 * @return void
+	 */
+	public function get_settings_import_dialog_via_ajax(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-run-settings-import', 'nonce' );
+
+		// get properties from settings.
+		$settings = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+
+		// get import settings.
+		$import_settings = $settings->get_setting( 'import_settings' );
+
+		// bail if setting could not be loaded.
+		if( ! $import_settings instanceof Setting ) {
+			return;
+		}
+
+		// get its field.
+		$import_field = $import_settings->get_field();
+
+		// bail if field could not be loaded.
+		if( ! $import_field instanceof Button ) {
+			return;
+		}
+
+		// get the custom attributes where the dialog setting is set.
+		$attributes = $import_field->get_custom_attributes_as_array();
+
+		// bail if data-dialog is not set.
+		if( ! $attributes['data-dialog'] ) {
+			return;
+		}
+
+		// get the dialog as array.
+		$dialog = json_decode( $attributes['data-dialog'], true );
+
+		// return the dialog.
+		wp_send_json( array( 'detail' => $dialog ) );
 	}
 }

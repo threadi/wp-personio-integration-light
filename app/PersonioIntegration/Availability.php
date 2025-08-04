@@ -347,7 +347,7 @@ class Availability extends Extensions_Base {
 		wp_enqueue_script(
 			'personio-integration-admin-availability',
 			Helper::get_plugin_url() . 'admin/availability.js',
-			array( 'jquery', 'easy-dialog' ),
+			array( 'jquery', 'easy-dialog-for-wordpress' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/availability.js' ),
 			true
 		);
