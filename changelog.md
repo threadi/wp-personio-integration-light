@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.3.3] - 11.08.2025
+
+### Changed
+
+- Now also compatible with ClassicPress 2.x
+
 ## [4.3.2] - 24.07.2025
 
 ### Changed

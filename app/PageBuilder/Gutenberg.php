@@ -219,7 +219,7 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		return function_exists( 'register_block_type' ) && ! Helper::is_plugin_active( 'classic-editor/classic-editor.php' );
+		return class_exists( 'WP_Block_Type_Registry' ) && function_exists( 'register_block_type' ) && ! Helper::is_plugin_active( 'classic-editor/classic-editor.php' );
 	}
 
 	/**
