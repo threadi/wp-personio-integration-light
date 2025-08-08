@@ -50,7 +50,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Support for subcompanies and additional offices in positions
 - Support for salaries for open positions
 - Use GoogleMaps or OpenStreetMap for show you locations with open positions
-- Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Fluent Forms, Forminator and WPForms
+- Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Everest Forms, Fluent Forms, Forminator and WPForms
 - Use custom feature image on each position
 - Unlimited custom files for download on each single position
 - Support for tracking of events with Google Analytics 4

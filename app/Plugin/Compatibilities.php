@@ -132,6 +132,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Brizy',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Divi',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Elementor',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Everest_Forms',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Fluent_Forms',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WPMultilang',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Nimble_Builder',
