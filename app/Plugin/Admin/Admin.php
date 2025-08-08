@@ -122,7 +122,7 @@ class Admin {
 		wp_enqueue_script(
 			'personio-integration-admin',
 			Helper::get_plugin_url() . 'admin/main.js',
-			array( 'jquery', 'easy-dialog' ),
+			array( 'jquery', 'easy-dialog-for-wordpress' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/main.js' ),
 			true
 		);
@@ -143,6 +143,7 @@ class Admin {
 				'settings_import_file_nonce'         => wp_create_nonce( 'personio-integration-settings-import-file' ),
 				'extension_state_nonce'              => wp_create_nonce( 'personio-integration-extension-state' ),
 				'rest_nonce'                         => wp_create_nonce( 'wp_rest' ),
+				'settings_import_dialog_nonce'   => wp_create_nonce( 'personio-run-settings-import' ),
 				'label_import_is_running'            => __( 'Import is running', 'personio-integration-light' ),
 				'logo_img'                           => Helper::get_logo_img(),
 				'url_example'                        => Helper::get_personio_url_example(),
@@ -218,7 +219,7 @@ class Admin {
 		// embed script.
 		$script_asset = require $script_asset_path;
 		wp_enqueue_script(
-			'easy-dialog',
+			'easy-dialog-for-wordpress',
 			$url . 'build/index.js',
 			$script_asset['dependencies'],
 			$script_asset['version'],
@@ -229,7 +230,7 @@ class Admin {
 		$admin_css      = $url . 'build/style-index.css';
 		$admin_css_path = $path . 'build/style-index.css';
 		wp_enqueue_style(
-			'easy-dialog',
+			'easy-dialog-for-wordpress',
 			$admin_css,
 			array( 'wp-components' ),
 			Helper::get_file_version( $admin_css_path )
@@ -968,7 +969,7 @@ class Admin {
 		$transients_obj->set_path( Helper::get_plugin_path() );
 		$transients_obj->set_url( Helper::get_plugin_url() );
 		$transients_obj->set_capability( 'manage_' . PersonioPosition::get_instance()->get_name() );
-		$transients_obj->set_template( 'single.php' );
+		$transients_obj->set_template( 'grouped.php' );
 		$transients_obj->set_display_method( 'grouped' );
 	}
 }

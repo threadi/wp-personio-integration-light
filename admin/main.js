@@ -625,3 +625,24 @@ function personio_integration_extension_state_button() {
     } )
   });
 }
+
+/**
+ * Return the settings import via AJAX.
+ */
+function personio_integration_settings_import_dialog_via_setup() {
+  // get the dialog via AJAX.
+  jQuery.ajax({
+    type: "POST",
+    url: personioIntegrationLightJsVars.ajax_url,
+    data: {
+      'action': 'personio_get_settings_import_dialog',
+      'nonce': personioIntegrationLightJsVars.settings_import_dialog_nonce
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      personio_integration_ajax_error_dialog( errorThrown )
+    },
+    success: function( result ) {
+      personio_integration_create_dialog( result );
+    }
+  });
+}

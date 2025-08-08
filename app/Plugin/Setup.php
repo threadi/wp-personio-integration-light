@@ -11,8 +11,10 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use easyTransientsForWordPress\Transients;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Radio;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Import;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
@@ -102,6 +104,9 @@ class Setup {
 			// set configuration for setup.
 			$setup_obj->set_config( $this->get_config() );
 
+			// initialize the import object.
+			Import::get_instance()->init();
+
 			// only load setup if it is not completed.
 			add_filter( 'esfw_completed', array( $this, 'check_completed_value' ), 10, 2 );
 			add_action( 'esfw_set_completed', array( $this, 'set_completed' ) );
@@ -110,6 +115,7 @@ class Setup {
 
 			// add hooks to enable the setup of this plugin.
 			add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'add_js_and_css' ) );
 
 			// use own hooks.
 			add_action( 'personio_integration_import_max_count', array( $this, 'update_max_step' ) );
@@ -388,6 +394,13 @@ class Setup {
 					'options'             => $this->convert_options_for_react( $language_field->get_options() ),
 					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate',
 				),
+				'import_settings' => array(
+					'type'                => 'ButtonControl',
+					'variant' => 'secondary',
+					'label'               => __( 'Import configuration', 'personio-integration-light' ),
+					'help'                => __( 'Select a configuration file to quickly save the plugin settings. The setup will be skipped.', 'personio-integration-light' ),
+					'onclick' => '() => personio_integration_settings_import_dialog_via_setup();'
+				),
 				'help'                                => array(
 					'type' => 'Text',
 					/* translators: %1$s will be replaced by our support-forum-URL. */
@@ -550,5 +563,14 @@ class Setup {
 	 */
 	public function uninstall(): void {
 		\easySetupForWordPress\Setup::get_instance()->uninstall( $this->get_setup_name() );
+	}
+
+	/**
+	 * Add own JS and CSS for backend.
+	 *
+	 * @return void
+	 */
+	public function add_js_and_css(): void {
+		Import::get_instance()->add_script( 'appearance_page_easy-settings-for-wordpress' );
 	}
 }
