@@ -59,9 +59,6 @@ class Init {
 	 * @return void
 	 */
 	public function init(): void {
-		// init transients.
-		Transients::get_instance()->init();
-
 		// register settings.
 		Settings::get_instance()->init();
 

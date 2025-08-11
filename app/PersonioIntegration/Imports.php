@@ -15,7 +15,6 @@ use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkb
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\TextInfo;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 
@@ -73,7 +72,9 @@ class Imports {
 		}
 
 		// remove transient with warning.
-		Transients::get_instance()->delete_transient( Transients::get_instance()->get_transient_by_name( 'personio_import_extension_not_enabled' ) );
+		add_action( 'init', function() {
+			Transients::get_instance()->delete_transient( Transients::get_instance()->get_transient_by_name( 'personio_import_extension_not_enabled' ) );
+		});
 
 		// use our own hooks.
 		add_action( 'personio_integration_import_starting', array( $this, 'reset_new_position_list' ) );

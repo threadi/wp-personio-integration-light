@@ -87,7 +87,7 @@ class Admin {
 		add_action( 'admin_init', array( $this, 'check_config' ) );
 		add_action( 'admin_init', array( $this, 'show_review_hint' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
-		add_action( 'init', array( $this, 'configure_transients' ) );
+		add_action( 'init', array( $this, 'configure_transients' ), 5 );
 		add_action( 'admin_bar_menu', array( $this, 'add_custom_toolbar' ), 100 );
 
 		// register our own importer in backend.
@@ -972,5 +972,6 @@ class Admin {
 		$transients_obj->set_url( Helper::get_plugin_url() . '/app/Dependencies/easyTransientsForWordPress/' );
 		$transients_obj->set_path( Helper::get_plugin_path() . '/app/Dependencies/easyTransientsForWordPress/' );
 		$transients_obj->set_vendor_path( Helper::get_plugin_path() . 'vendor/' );
+		$transients_obj->init();
 	}
 }
