@@ -616,8 +616,6 @@ class Position {
 	/**
 	 * Set the content (as string from API).
 	 *
-	 * TODO must be checked.
-	 *
 	 * @param string $description The description as string.
 	 *
 	 * @return void

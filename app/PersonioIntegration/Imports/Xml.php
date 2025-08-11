@@ -409,6 +409,10 @@ class Xml extends Imports_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
+		// show hint if required PHP-modul is missing.
+		if( ! $this->can_be_enabled_by_user() ) {
+			return __( 'The PHP extension simplexml is missing on you hosting. Please contact your hoster about this. This import can only be used if it is available in the hosting.', 'personio-integration-light' );
+		}
 		return esc_html__( 'Provides the import of positions from Personio via XML interface.', 'personio-integration-light' );
 	}
 
@@ -418,7 +422,7 @@ class Xml extends Imports_Base {
 	 * @return bool
 	 */
 	protected function is_default_enabled(): bool {
-		return true;
+		return $this->can_be_enabled_by_user();
 	}
 
 	/**
@@ -427,6 +431,15 @@ class Xml extends Imports_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		return 1 === absint( get_option( $this->get_settings_field_name() ) );
+		return 1 === absint( get_option( $this->get_settings_field_name() ) ) && $this->can_be_enabled_by_user();
+	}
+
+	/**
+	 * Return whether this extension can be enabled by the user (true) or not (false).
+	 *
+	 * @return bool
+	 */
+	public function can_be_enabled_by_user(): bool {
+		return function_exists( 'simplexml_load_string' );
 	}
 }
