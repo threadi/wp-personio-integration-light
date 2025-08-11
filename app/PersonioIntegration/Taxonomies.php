@@ -154,12 +154,6 @@ class Taxonomies {
 			 */
 			$taxonomy_array = apply_filters( 'get_' . $taxonomy_name . '_translate_taxonomy', $taxonomy_array, $taxonomy_name );
 
-			// do not show any taxonomy in menu if Personio URL is not available.
-			// TODO diesen Part zur Pro verschieben.
-			if ( ! Helper::is_personio_url_set() ) {
-				$taxonomy_array['show_in_menu'] = false;
-			}
-
 			// register this taxonomy.
 			register_taxonomy( $taxonomy_name, array( PersonioPosition::get_instance()->get_name() ), $taxonomy_array );
 
@@ -1204,7 +1198,7 @@ class Taxonomies {
 				$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					$wpdb->terms,
 					array(
-						'term_id' => $term->term_id,
+						'term_id' => $term['term_id'],
 					)
 				);
 			}

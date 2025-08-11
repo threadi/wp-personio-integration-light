@@ -227,7 +227,7 @@ class Settings {
 		$personio_url_setting->set_show_in_rest( true );
 		$personio_url_setting->set_type( 'string' );
 		$personio_url_setting->set_default( '' );
-		$personio_url_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ) );
+		$personio_url_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\PersonioIntegrationUrl', 'save' ) );
 		$field = new Text();
 		$field->set_title( __( 'Personio URL', 'personio-integration-light' ) );
 		/* translators: %1$s is replaced with the URL to Personio login for account access, %2$s is replaced with the url to the Personio support */

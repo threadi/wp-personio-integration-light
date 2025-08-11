@@ -401,6 +401,7 @@ class Admin {
 	 *
 	 * @return void
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 * @noinspection PhpUnused
 	 */
 	public function delete_positions(): void {
 		check_ajax_referer( 'personio-integration-delete', 'nonce' );
@@ -417,6 +418,7 @@ class Admin {
 	 * Check plugin configuration and enable hints if necessary.
 	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function check_config(): void {
 		// bail if setup is not completed.

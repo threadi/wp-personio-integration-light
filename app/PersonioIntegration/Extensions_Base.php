@@ -42,11 +42,11 @@ class Extensions_Base {
 	protected string $description = '';
 
 	/**
-	 * Mark this as pro-extension.
+	 * Marker for source of this extension.
 	 *
-	 * @var bool
+	 * @var string
 	 */
-	private bool $pro = false;
+	private string $plugin_source = WP_PERSONIO_INTEGRATION_PLUGIN;
 
 	/**
 	 * This extension can be enabled by user.
@@ -304,30 +304,6 @@ class Extensions_Base {
 	}
 
 	/**
-	 * Return whether this is a extension of the Pro-plugin.
-	 *
-	 * TODO remove and use the plugin-marker.
-	 *
-	 * @return bool
-	 */
-	public function is_pro(): bool {
-		return $this->pro;
-	}
-
-	/**
-	 * Mark this extension as pro-extension.
-	 *
-	 * TODO remove.
-	 *
-	 * @param bool $pro True to mark as pro.
-	 *
-	 * @return void
-	 */
-	public function set_pro( bool $pro ): void {
-		$this->pro = $pro;
-	}
-
-	/**
 	 * Return the name of the settings-page.
 	 *
 	 * @return string
@@ -436,12 +412,23 @@ class Extensions_Base {
 	public function uninstall(): void {}
 
 	/**
-	 * Set the plugin source for this page builder support.
+	 * Return the plugin source for this extension.
 	 *
 	 * @return string
 	 */
-	protected function get_plugin_source(): string {
-		return WP_PERSONIO_INTEGRATION_PLUGIN;
+	public function get_plugin_source(): string {
+		return $this->plugin_source;
+	}
+
+	/**
+	 * Set the plugin source for this extension.
+	 *
+	 * @param string $plugin_source The plugin source.
+	 *
+	 * @return void
+	 */
+	public function set_plugin_source( string $plugin_source ): void {
+		$this->plugin_source = $plugin_source;
 	}
 
 	/**
