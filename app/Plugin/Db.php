@@ -69,6 +69,29 @@ class Db {
 	}
 
 	/**
+	 * Run the update of data in the database.
+	 *
+	 * This function is simply using $wpdb->insert() but also checks for any errors.
+	 *
+	 * @param string              $table The table to use.
+	 * @param array<string,mixed> $data  The data to update.
+	 * @param array               $where The condition to update.
+	 *
+	 * @return void
+	 */
+	public function update( string $table, mixed $data, array $where ): void {
+		global $wpdb;
+
+		// add the data.
+		$wpdb->update( $table, $data, $where );
+
+		// check for any errors, but not if this is the log table itself as it might cause an infinite loop.
+		if( $wpdb->last_error ) {
+			$this->log_error( $wpdb->last_query );
+		}
+	}
+
+	/**
 	 * Return the results for a statement from database.
 	 *
 	 * This function is simply using $wpdb->get_results() but also checks for any errors.
