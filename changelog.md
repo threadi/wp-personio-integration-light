@@ -29,7 +29,7 @@
 ### Changed
 
 - Now requires PHP 8.1 or newer
-- Now supports ClassicPress 2.0 or newer
+- Now using custom database object to get all errors which might be occurred
 - Get actual language via get_locale() and reduce usage of unnecessary additional hooks for multilingual plugins
 - Import of positions are now also handled as extension
 - Changed application hint in menu to be more stabil

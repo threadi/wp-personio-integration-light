@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Db;
 use PersonioIntegrationLight\Plugin\Languages;
 use WP_REST_Request;
 use WP_REST_Server;
@@ -1185,7 +1186,7 @@ class Taxonomies {
 		$progress   = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy_name => $settings ) {
 			// get all terms with direct db access.
-			$terms = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$terms = Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT ' . $wpdb->terms . '.term_id
                     FROM ' . $wpdb->terms . '
