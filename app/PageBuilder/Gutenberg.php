@@ -66,13 +66,15 @@ class Gutenberg extends PageBuilder_Base {
 		// add our custom variations.
 		add_action( 'init', array( $this, 'add_variations' ) );
 
+		// initialize the templates.
+		add_action( 'init', array( $this, 'add_templates' ) );
+
 		// bail if theme is not an FSE-theme with Block support.
 		if ( ! $this->theme_support_block_templates() ) {
 			return;
 		}
 
 		// add our custom templates and set to use them.
-		add_action( 'init', array( $this, 'add_templates' ) );
 		add_action( 'init', array( $this, 'add_settings' ), 50 );
 		add_filter( 'personio_integration_load_single_template', '__return_true' );
 		add_filter( 'personio_integration_load_archive_template', '__return_true' );
