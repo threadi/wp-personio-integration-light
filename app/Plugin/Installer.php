@@ -85,17 +85,6 @@ class Installer {
 	 * @return void
 	 */
 	private function activation_tasks(): void {
-		// bail if required PHP-SimpleXML extension is not available on this system.
-		// TODO move to Xml-Import-Extension and add check for requirements for extensions.
-		if ( ! function_exists( 'simplexml_load_string' ) ) {
-			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_name( 'personio_integration_no_simplexml' );
-			$transient_obj->set_message( '<strong>' . __( 'Plugin was not activated!', 'personio-integration-light' ) . '</strong><br>' . __( 'The PHP extension simplexml is missing on you hosting. Please contact your hoster about this.', 'personio-integration-light' ) );
-			$transient_obj->set_type( 'error' );
-			$transient_obj->save();
-			return;
-		}
-
 		// mimik that setup has been completed.
 		add_filter( 'personio_integration_light_setup_is_completed', '__return_true' );
 

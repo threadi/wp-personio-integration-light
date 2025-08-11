@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Db;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
 use Plugin_Upgrader;
@@ -553,7 +554,7 @@ class Helper {
 		global $wpdb;
 
 		// get blogs in this site-network.
-		return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			"
             SELECT blog_id
             FROM {$wpdb->blogs}

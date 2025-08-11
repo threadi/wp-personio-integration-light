@@ -1913,7 +1913,7 @@ class PersonioPosition extends Post_Type {
 			$obj->set_name( $extension['name'] );
 			$obj->set_label( $extension['label'] );
 			$obj->set_description( $extension['description'] );
-			$obj->set_pro( true );
+			$obj->set_plugin_source( 'pro' );
 			$obj->set_category( $extension['category'] );
 
 			// add it to the list.

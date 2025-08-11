@@ -338,7 +338,6 @@ class Api extends Imports_Base {
 			$position_obj->set_title( $data['name'] );
 
 			// set the job description.
-			// TODO is not provided by API atm.
 			$position_obj->set_content_as_string( '{}' );
 
 			/**

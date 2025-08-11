@@ -8,6 +8,8 @@
 namespace PersonioIntegrationLight;
 
 // prevent direct access.
+use PersonioIntegrationLight\Plugin\Db;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -99,7 +101,7 @@ class Log {
 		global $wpdb;
 
 		// insert the log entry.
-		$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		Db::get_instance()->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->prefix . 'personio_import_logs',
 			array(
 				'time'     => gmdate( 'Y-m-d H:i:s' ),
@@ -109,12 +111,6 @@ class Log {
 				'state'    => $state,
 			)
 		);
-
-		// log if any error occurred.
-		if ( ! empty( $wpdb->last_error ) ) {
-			/* translators: %1$s will be replaced by an DB-error-message. */
-			$this->add( sprintf( __( 'Database error during saving a log entry: %1$s', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
-		}
 
 		// clean the log.
 		$this->clean_log();
@@ -243,12 +239,12 @@ class Log {
 		// if only category is set.
 		if ( ! empty( $category ) && empty( $md5 ) ) {
 			// get and return the entries.
-			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
                     WHERE `category` = %s' . $where . '
-                    ORDER BY ' . $order_by . ' ' . $order . '
+                    ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
                     LIMIT %d',
 					array( $category, $limit )
 				),
@@ -259,12 +255,12 @@ class Log {
 		// if only md5 is set.
 		if ( empty( $category ) && ! empty( $md5 ) ) {
 			// get and return the entries.
-			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
                     WHERE `md5` = %s' . $where . '
-                    ORDER BY ' . $order_by . ' ' . $order . '
+                    ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
                     LIMIT %d',
 					array( $md5, $limit )
 				),
@@ -275,12 +271,12 @@ class Log {
 		// if both are set.
 		if ( ! empty( $category ) && ! empty( $md5 ) ) {
 			// get and return the entries.
-			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
                     WHERE `md5` = %s AND `category` = %s' . $where . '
-                    ORDER BY ' . $order_by . ' ' . $order . '
+                    ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
                     LIMIT %d',
 					array( $md5, $category, $limit )
 				),
@@ -290,12 +286,12 @@ class Log {
 
 		if ( 1 === $errors ) {
 			// return all.
-			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                 FROM `' . $wpdb->prefix . 'personio_import_logs`
                 WHERE `state` = "error"
-                ORDER BY ' . $order_by . ' ' . $order . '
+                ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
                 LIMIT %d',
 					array( $limit )
 				),
@@ -304,7 +300,7 @@ class Log {
 		}
 
 		// return all.
-		return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`, `category`
                 FROM `' . $wpdb->prefix . 'personio_import_logs`

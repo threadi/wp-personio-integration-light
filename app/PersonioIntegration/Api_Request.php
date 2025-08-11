@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\Plugin\Db;
 use WP_Error;
 
 /**
@@ -135,7 +136,7 @@ class Api_Request {
 
 		// check if there has not been 150 request in the last 90 seconds to Personio.
 		// -> we use a puffer of 30 seconds more than the Personio API requires.
-		$results = $wpdb->get_results(
+		$results = Db::get_instance()->get_results(
 			$wpdb->prepare(
 				'SELECT
                 `id`
@@ -218,7 +219,7 @@ class Api_Request {
 
 		// count request if http_status is > 0 (0 would be timeout).
 		if ( $this->get_http_status() > 0 ) {
-			$wpdb->insert(
+			Db::get_instance()->insert(
 				$wpdb->prefix . 'personio_api_requests',
 				array(
 					'insertdate' => current_time( 'mysql', 1 ),

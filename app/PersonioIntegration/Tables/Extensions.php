@@ -220,7 +220,16 @@ class Extensions extends WP_List_Table {
 		}
 
 		// change actions to pro-link only.
-		if ( $item->is_pro() ) {
+		$false = false;
+		/**
+		 * Hide hint for Pro-plugin.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param bool $false Set true to hide the hint.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		if ( $item->get_plugin_source() !== WP_PERSONIO_INTEGRATION_PLUGIN && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			$actions = array(
 				'pro' => '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . esc_html__( 'Get Pro', 'personio-integration-light' ) . '</a>',
 			);
@@ -248,8 +257,17 @@ class Extensions extends WP_List_Table {
 	 * @noinspection PhpUnused
 	 */
 	public function column_state( Extensions_Base $item ): string {
+		$false = false;
+		/**
+		 * Hide hint for Pro-plugin.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param bool $false Set true to hide the hint.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
 		// show simple pro-hint if this is a pro-extension.
-		if ( $item->is_pro() ) {
+		if ( $item->get_plugin_source() !== WP_PERSONIO_INTEGRATION_PLUGIN && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			return '<a class="pro-marker" href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . __( 'Only in Pro', 'personio-integration-light' ) . '</a>';
 		}
 

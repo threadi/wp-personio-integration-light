@@ -10,7 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use easyTransientsForWordPress\Transients;
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
@@ -59,9 +59,6 @@ class Init {
 	 * @return void
 	 */
 	public function init(): void {
-		// init transients.
-		Transients::get_instance()->init();
-
 		// register settings.
 		Settings::get_instance()->init();
 

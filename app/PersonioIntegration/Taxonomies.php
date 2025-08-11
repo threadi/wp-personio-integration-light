@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Db;
 use PersonioIntegrationLight\Plugin\Languages;
 use WP_REST_Request;
 use WP_REST_Server;
@@ -152,12 +153,6 @@ class Taxonomies {
 			 * @param string $taxonomy_name Name of the taxonomy.
 			 */
 			$taxonomy_array = apply_filters( 'get_' . $taxonomy_name . '_translate_taxonomy', $taxonomy_array, $taxonomy_name );
-
-			// do not show any taxonomy in menu if Personio URL is not available.
-			// TODO diesen Part zur Pro verschieben.
-			if ( ! Helper::is_personio_url_set() ) {
-				$taxonomy_array['show_in_menu'] = false;
-			}
 
 			// register this taxonomy.
 			register_taxonomy( $taxonomy_name, array( PersonioPosition::get_instance()->get_name() ), $taxonomy_array );
@@ -1185,7 +1180,7 @@ class Taxonomies {
 		$progress   = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy_name => $settings ) {
 			// get all terms with direct db access.
-			$terms = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$terms = Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT ' . $wpdb->terms . '.term_id
                     FROM ' . $wpdb->terms . '
@@ -1203,7 +1198,7 @@ class Taxonomies {
 				$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					$wpdb->terms,
 					array(
-						'term_id' => $term->term_id,
+						'term_id' => $term['term_id'],
 					)
 				);
 			}
