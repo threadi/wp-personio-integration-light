@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\Plugin\Admin\Settings_Validation_Base;
-use easyTransientsForWordPress\Transients;
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 
 /**
  * Object which validates the given URL.

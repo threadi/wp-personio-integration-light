@@ -18,7 +18,7 @@ use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Intro;
 use PersonioIntegrationLight\Plugin\License;
 use PersonioIntegrationLight\Plugin\Setup;
-use easyTransientsForWordPress\Transients;
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use WP_Admin_Bar;
 use WP_Screen;
 use WP_User;
@@ -929,7 +929,7 @@ class Admin {
 	 */
 	public function check_php(): void {
 		// get transients object.
-		$transients_obj = \easyTransientsForWordPress\Transients::get_instance();
+		$transients_obj = Transients::get_instance();
 
 		// bail if setup has not been run yet.
 		if ( ! Setup::get_instance()->is_completed() ) {
@@ -966,10 +966,11 @@ class Admin {
 	public function configure_transients(): void {
 		$transients_obj = Transients::get_instance();
 		$transients_obj->set_slug( 'pi' );
-		$transients_obj->set_path( Helper::get_plugin_path() );
-		$transients_obj->set_url( Helper::get_plugin_url() );
 		$transients_obj->set_capability( 'manage_' . PersonioPosition::get_instance()->get_name() );
 		$transients_obj->set_template( 'grouped.php' );
 		$transients_obj->set_display_method( 'grouped' );
+		$transients_obj->set_url( Helper::get_plugin_url() . '/app/Dependencies/easyTransientsForWordPress/' );
+		$transients_obj->set_path( Helper::get_plugin_path() . '/app/Dependencies/easyTransientsForWordPress/' );
+		$transients_obj->set_vendor_path( Helper::get_plugin_path() . 'vendor/' );
 	}
 }

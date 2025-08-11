@@ -30,7 +30,8 @@
             "classmap_directory": "/libs/classes/dependencies/",
             "classmap_prefix": "PersonioIntegrationLight",
             "packages": [
-                "threadi/easy-settings-for-wordpress"
+                "threadi/easy-settings-for-wordpress",
+                "threadi/easy-transients-for-wordpress"
             ]
         }
     },
