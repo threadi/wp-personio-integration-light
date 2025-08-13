@@ -47,6 +47,7 @@
 - The help will show primary the help for the actual called page in backend
 - Optimized handling of header and footer settings for our block templates on theme switch
 - Checking whether a required plugin for an extension is installed (without it having to be activated)
+- Optimized HTML-code for grouped archive templates (now allows better styling via custom CSS)
 
 ### Fixed
 
