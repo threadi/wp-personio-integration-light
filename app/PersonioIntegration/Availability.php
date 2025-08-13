@@ -487,4 +487,13 @@ class Availability extends Extensions_Base {
 	private function get_extension( Position $position_obj ): Extensions\Availability {
 		return new Extensions\Availability( $position_obj->get_id() );
 	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
+	}
 }

@@ -615,4 +615,13 @@ class Manual_Import extends Extensions_Base {
 		// return the resulting list.
 		return $new_list;
 	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
+	}
 }

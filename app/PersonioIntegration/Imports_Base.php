@@ -282,4 +282,13 @@ class Imports_Base extends Extensions_Base {
 	public function get_position_from_object( object $xml_object, string $language_name, string $personio_url ): Position {
 		return new Position( 0 );
 	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
+	}
 }

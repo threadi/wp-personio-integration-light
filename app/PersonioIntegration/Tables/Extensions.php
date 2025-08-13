@@ -288,6 +288,11 @@ class Extensions extends WP_List_Table {
 			}
 		}
 
+		// show hint if dependent plugin/theme is not installed.
+		if ( ! $item->is_installed() ) {
+			return '<span class="button button-disabled button-state-disabled" title="' . esc_attr( __( 'Required plugin/theme not installed', 'personio-integration-light' ) ) . '">' . esc_html__( 'Not installed', 'personio-integration-light' ) . '</span>';
+		}
+
 		// show custom state.
 		if ( $item->has_custom_state() ) {
 			$html = $item->get_custom_state();
