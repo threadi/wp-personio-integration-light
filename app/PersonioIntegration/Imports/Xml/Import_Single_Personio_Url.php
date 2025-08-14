@@ -16,6 +16,7 @@ use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Imports\Xml;
 use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Languages;
@@ -400,7 +401,7 @@ class Import_Single_Personio_Url {
 			$this->errors[] = sprintf( __( 'Returned HTTP-Status %1$d.', 'personio-integration-light' ), absint( $http_status ) );
 			$this->errors[] = __( 'Please check the configured URL and if it is available.', 'personio-integration-light' );
 			/* translators: %1$s will be replaced the url for the Personio account login */
-			$this->errors[] = sprintf( __( 'Please also check if the XML-API is enabled in <a href="%1$s" target="_blank">your Personio account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ) );
+			$this->errors[] = sprintf( __( 'Please also check if the XML-API is enabled in <a href="%1$s" target="_blank">your Personio account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) );
 			/* translators: %1$s will be replaced the url for the Personio account login */
 			$this->errors[] = sprintf( __( 'And please check <a href="%1$s" target="_blank">the log (opens new window)</a> in your WordPress-backend under Positions > Settings > Logs.', 'personio-integration-light' ), esc_url( $log_url ) );
 		}

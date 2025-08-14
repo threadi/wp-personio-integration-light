@@ -201,5 +201,8 @@ class Update {
 		// re-initiate each schedule to set the new intervals.
 		Schedules::get_instance()->delete_all();
 		Schedules::get_instance()->create_schedules();
+
+		// enable new extensions.
+		update_option( 'personioIntegrationPersonioAccountsStatus', 1 );
 	}
 }

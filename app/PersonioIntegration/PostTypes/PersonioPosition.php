@@ -782,14 +782,14 @@ class PersonioPosition extends Post_Type {
 
 		add_meta_box(
 			$this->get_name() . '-title',
-			__( 'Title', 'personio-integration-light' ) . Helper::get_personio_edit_link( $position_obj ),
+			__( 'Title', 'personio-integration-light' ) . Personio_Accounts::get_instance()->get_personio_edit_link( $position_obj ),
 			array( $this, 'get_meta_box_for_title' ),
 			$this->get_name()
 		);
 
 		add_meta_box(
 			$this->get_name() . '-text',
-			__( 'Description', 'personio-integration-light' ) . Helper::get_personio_edit_link( $position_obj ),
+			__( 'Description', 'personio-integration-light' ) . Personio_Accounts::get_instance()->get_personio_edit_link( $position_obj ),
 			array( $this, 'get_meta_box_for_description' ),
 			$this->get_name()
 		);
@@ -859,7 +859,7 @@ class PersonioPosition extends Post_Type {
 			}
 
 			// add edit link.
-			$changeable_hint .= Helper::get_personio_edit_link( $position_obj );
+			$changeable_hint .= Personio_Accounts::get_instance()->get_personio_edit_link( $position_obj );
 
 			// add a box for single taxonomy.
 			add_meta_box(
@@ -967,11 +967,11 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// get the edit URL.
-		$url = $position_obj->get_edit_link_on_personio();
+		$url = Personio_Accounts::get_instance()->get_edit_link_on_personio( $position_obj );
 
 		// use main Personio URL if no edit URL could be loaded.
 		if ( empty( $url ) ) {
-			$url = Helper::get_personio_login_url();
+			$url = Personio_Accounts::get_instance()->get_login_url();
 		}
 
 		// show hint.
@@ -1036,11 +1036,11 @@ class PersonioPosition extends Post_Type {
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
 		// get the edit URL.
-		$url = $position_obj->get_edit_link_on_personio();
+		$url = Personio_Accounts::get_instance()->get_edit_link_on_personio( $position_obj );
 
 		// use main Personio URL if no edit URL could be loaded.
 		if ( empty( $url ) ) {
-			$url = Helper::get_personio_login_url();
+			$url = Personio_Accounts::get_instance()->get_login_url();
 		}
 
 		// get the content array.
@@ -1092,7 +1092,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// get the configured Personio Login URL.
-		$personio_edit_url = $position_obj->get_edit_link_on_personio();
+		$personio_edit_url = Personio_Accounts::get_instance()->get_edit_link_on_personio( $position_obj );
 
 		// bail if no login URL is given.
 		if ( empty( $personio_edit_url ) ) {

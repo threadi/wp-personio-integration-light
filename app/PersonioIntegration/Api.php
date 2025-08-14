@@ -161,7 +161,7 @@ class Api {
 		}
 
 		/* translators: %1$s will be replaced by a URL. */
-		echo '<p>' . wp_kses_post( sprintf( __( 'You can find this information <a href="%1$s" target="_blank">in your Personio account (opens in new window)</a> under Marketplace > Integrations. For more information take a look in the <a href="%2$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_api_management_url() ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
+		echo '<p>' . wp_kses_post( sprintf( __( 'You can find this information <a href="%1$s" target="_blank">in your Personio account (opens in new window)</a> under Marketplace > Integrations. For more information take a look in the <a href="%2$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_personio_api_management_url() ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
 	}
 
 	/**
