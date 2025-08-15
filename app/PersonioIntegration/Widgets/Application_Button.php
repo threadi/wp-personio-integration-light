@@ -128,7 +128,7 @@ class Application_Button extends Widget_Base {
 		$position->set_lang( Languages::get_instance()->get_current_lang() );
 
 		// add styles if not set.
-		if( ! isset( $attributes['styles'] ) ) {
+		if ( ! isset( $attributes['styles'] ) ) {
 			$attributes['styles'] = '';
 		}
 

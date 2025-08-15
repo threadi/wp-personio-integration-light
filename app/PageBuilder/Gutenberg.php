@@ -189,7 +189,7 @@ class Gutenberg extends PageBuilder_Base {
 		$settings_page = $settings_obj->get_page( 'personioPositions' );
 
 		// bail if page could not be found.
-		if( ! $settings_page instanceof Page ) {
+		if ( ! $settings_page instanceof Page ) {
 			return;
 		}
 
@@ -197,7 +197,7 @@ class Gutenberg extends PageBuilder_Base {
 		$template_tab = $settings_page->get_tab( 'templates' );
 
 		// bail if template tab could not be found.
-		if( ! $template_tab instanceof Tab ) {
+		if ( ! $template_tab instanceof Tab ) {
 			return;
 		}
 
@@ -205,7 +205,7 @@ class Gutenberg extends PageBuilder_Base {
 		$section = $template_tab->get_section( 'settings_section_template_list' );
 
 		// bail if section could not be found.
-		if( ! $section instanceof Section ) {
+		if ( ! $section instanceof Section ) {
 			return;
 		}
 

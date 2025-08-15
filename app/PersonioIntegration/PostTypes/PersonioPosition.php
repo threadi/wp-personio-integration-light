@@ -125,7 +125,7 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'posts_search', array( $this, 'search_also_in_meta_fields' ), 10, 2 );
 
 		// edit positions.
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10 , 2 );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
 		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
 		add_filter( 'admin_footer_text', array( $this, 'show_plugin_hint_in_footer' ) );
@@ -1048,16 +1048,16 @@ class PersonioPosition extends Post_Type {
 		$content_array = $position_obj->get_content();
 
 		// bail if array is empty and show hint.
-		if( empty( $content_array ) ) {
+		if ( empty( $content_array ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p class="personio-pro-hint">' . sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), $url ) . '</p>';
+			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
 			return;
 		}
 
 		// bail if jobdescription entry is empty and show hint.
-		if( empty( $content_array['jobDescription'] ) ) {
+		if ( empty( $content_array['jobDescription'] ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p class="personio-pro-hint">' . sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), $url ) . '</p>';
+			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
 			return;
 		}
 
@@ -2219,13 +2219,13 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function show_plugin_hint_in_footer( string $content ): string {
 		// get requested post type.
-		$post_type = filter_input(INPUT_GET, 'post_type');
+		$post_type = filter_input( INPUT_GET, 'post_type' );
 
 		// get requested post.
-		$post = filter_input(INPUT_GET, 'post');
+		$post = filter_input( INPUT_GET, 'post' );
 
 		// bail if this is not the listing or the single view of a position in backend.
-		if( $post_type !== $this->get_name() && get_post_type( $post ) !== $this->get_name() ) {
+		if ( $post_type !== $this->get_name() && get_post_type( $post ) !== $this->get_name() ) {
 			return $content;
 		}
 

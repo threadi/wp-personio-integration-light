@@ -63,7 +63,7 @@ class License {
 	 * @return void
 	 */
 	public function init(): void {
-		$false    = false;
+		$false = false;
 		/**
 		 * Hide hint for Pro-plugin.
 		 *
@@ -204,10 +204,10 @@ class License {
 				<label for="licence_key"><?php echo esc_html__( 'Licence key', 'personio-integration-light' ); ?>:</label>
 				<input type="text" id="licence_key" name="licence_key" value="" required>
 				<p>
-					<strong><?php echo esc_html__( 'You do not have a key?', 'personio-integration-light' ) ?></strong>
+					<strong><?php echo esc_html__( 'You do not have a key?', 'personio-integration-light' ); ?></strong>
 					<?php
 					/* translators: %1$s will be replaced by a URL. */
-					echo sprintf(__( 'Get one <a href="%1$s" target="_blank">here</a>.', 'personio-integration-light' ), Helper::get_pro_url() );
+					echo wp_kses_post( sprintf( __( 'Get one <a href="%1$s" target="_blank">here</a>.', 'personio-integration-light' ), Helper::get_pro_url() ) );
 					?>
 				</p>
 			</div>
@@ -235,7 +235,7 @@ class License {
 		$this->key = filter_input( INPUT_POST, 'licence_key', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// bail if no license key is given.
-		if( empty( $this->key ) ) {
+		if ( empty( $this->key ) ) {
 			// show error message.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_license_request_error' );
@@ -287,7 +287,7 @@ class License {
 		$response_array = json_decode( $response_body, true );
 
 		// if HTTP response is 400, show error.
-		if( 400 === $http_status ) {
+		if ( 400 === $http_status ) {
 			// show error message.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_license_error' );
@@ -306,8 +306,8 @@ class License {
 			$url = add_query_arg(
 				array(
 					'action' => 'personio_integration_light_install_pro',
-					'nonce' => wp_create_nonce( 'personio-integration-light-install-pro' ),
-					'key' => $this->key
+					'nonce'  => wp_create_nonce( 'personio-integration-light-install-pro' ),
+					'key'    => $this->key,
 				),
 				get_admin_url() . 'admin.php'
 			);
@@ -343,7 +343,7 @@ class License {
 	 */
 	public function show_pro_licence_costs(): void {
 		// get the flag if user has already acknowledged the loading of the costs.
-		if( 1 !== absint( get_user_meta( get_current_user_id(), 'personio-integration-acknowledge-costs-loading', true ) ) ) {
+		if ( 1 !== absint( get_user_meta( get_current_user_id(), 'personio-integration-acknowledge-costs-loading', true ) ) ) {
 			?>
 			<form method="post" action="<?php echo esc_url( get_admin_url() ); ?>admin.php">
 				<input type="hidden" name="action" value="personio_integration_light_acknowledge_costs_loading">
@@ -386,7 +386,7 @@ class License {
 		$response_array = json_decode( $response_body, true );
 
 		// bail if HTTP status is not 200.
-		if( 200 !== $http_status ) {
+		if ( 200 !== $http_status ) {
 			// log this event.
 			Log::get_instance()->add( __( 'Following error occurred during the request to the license server:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $response ) . '</code>', 'error', 'system' );
 
@@ -403,7 +403,7 @@ class License {
 		}
 
 		// bail if response does not contain "periods".
-		if( empty( $response_array['periods'] ) ) {
+		if ( empty( $response_array['periods'] ) ) {
 			// show success message.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_license_costs_error' );
@@ -420,33 +420,34 @@ class License {
 		<table>
 			<tr>
 			<?php
-				foreach( $response_array['periods'] as $period ) {
-					?>
+			foreach ( $response_array['periods'] as $period ) {
+				?>
 						<td>
-							<?php
-								if( ! empty( $period['image'] ) ) {
-									?><img src="<?php echo esc_url( $period['image'] ); ?>" alt=""><?php
-								}
-								else {
-								?>
+						<?php
+						if ( ! empty( $period['image'] ) ) {
+							?>
+									<img src="<?php echo esc_url( $period['image'] ); ?>" alt="">
+								<?php
+						} else {
+							?>
 									<h3><?php echo esc_html( $period['label'] ); ?></h3>
 								<?php
-								}
-							?>
+						}
+						?>
 						</td>
 					<?php
-				}
+			}
 			?>
 			</tr>
 			<tr>
 				<?php
-					foreach( $response_array['periods'] as $period ) {
-						?>
+				foreach ( $response_array['periods'] as $period ) {
+					?>
 						<td>
 							<a href="<?php echo esc_url( Helper::get_pro_url() ); ?>" title="<?php echo esc_attr( $period['label'] ); ?>" class="button button-primary" target="_blank"><?php echo esc_html__( 'More infos & book', 'personio-integration-light' ); ?></a>
 						</td>
 						<?php
-					}
+				}
 				?>
 			</tr>
 		</table>
@@ -456,7 +457,7 @@ class License {
 			$url = add_query_arg(
 				array(
 					'action' => 'personio_integration_light_revoke_acknowledge_costs_loading',
-					'nonce' => wp_create_nonce( 'personio-integration-license-costs-revoke' )
+					'nonce'  => wp_create_nonce( 'personio-integration-license-costs-revoke' ),
 				),
 				get_admin_url() . 'admin.php'
 			)
@@ -471,31 +472,31 @@ class License {
 	 * @return void
 	 */
 	public function show_pro_infos(): void {
-		echo Helper::get_logo_img( true );
+		echo wp_kses_post( Helper::get_logo_img( true ) );
 		?>
 			<ul>
-				<li><?php echo __( 'Customization of slugs (URLs) for list and detailed views of positions', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Multiple and customizable application forms incl. export of them via Personio API', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Support for subcompanies and additional offices in positions', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Support for salaries for open positions', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Use GoogleMaps or OpenStreetMap for show you locations with open positions', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Fluent Forms, Forminator and WPForms', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Use custom feature image on each position', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Unlimited custom files for download on each single position', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Support for tracking of events with Google Analytics 4', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Support full text search for positions in frontend', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Multiple Personio-accounts per website', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from position descriptions', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'RichSnippets for optimal findability via search engines like Google Jobs', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Support for Open Graph (Facebook, LinkedIn, WhatsApp …), Twitter Cards and Dublin Core (optionally configurable for all or single positions)', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Shortcode generator for individual views of lists and details', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Extensions for the following PageBuilders: Avada, Beaver Builder, Divi, Elementor, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Also compatible with Avia (from Enfold) and Kubio AI', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( 'Every privacy values are encrypted (e.g. applicant data and API credentials)', 'personio-integration-light' ); ?></li>
-				<li><?php echo __( '.. and much more', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Customization of slugs (URLs) for list and detailed views of positions', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Multiple and customizable application forms incl. export of them via Personio API', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Support for subcompanies and additional offices in positions', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Support for salaries for open positions', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Use GoogleMaps or OpenStreetMap for show you locations with open positions', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Fluent Forms, Forminator and WPForms', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Use custom feature image on each position', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Unlimited custom files for download on each single position', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Support for tracking of events with Google Analytics 4', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Support full text search for positions in frontend', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Multiple Personio-accounts per website', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from position descriptions', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'RichSnippets for optimal findability via search engines like Google Jobs', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Support for Open Graph (Facebook, LinkedIn, WhatsApp …), Twitter Cards and Dublin Core (optionally configurable for all or single positions)', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Shortcode generator for individual views of lists and details', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Extensions for the following PageBuilders: Avada, Beaver Builder, Divi, Elementor, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Also compatible with Avia (from Enfold) and Kubio AI', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Every privacy values are encrypted (e.g. applicant data and API credentials)', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( '.. and much more', 'personio-integration-light' ); ?></li>
 			</ul>
 		<?php
 	}
@@ -541,7 +542,7 @@ class License {
 		$this->key = filter_input( INPUT_GET, 'key', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// bail if no license key is given.
-		if( empty( $this->key ) ) {
+		if ( empty( $this->key ) ) {
 			// show error message.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_install_error' );
@@ -555,11 +556,11 @@ class License {
 		}
 
 		// bail if Pro is already installed, but not active.
-		if( Helper::is_plugin_installed( 'personio-integration/personio-integration.php' ) ) {
+		if ( Helper::is_plugin_installed( 'personio-integration/personio-integration.php' ) ) {
 			// activate the plugin.
 			require_once ABSPATH . 'wp-admin/includes/admin.php';
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-			if( ! is_null( activate_plugin( 'personio-integration/personio-integration.php' ) ) ) {
+			if ( ! is_null( activate_plugin( 'personio-integration/personio-integration.php' ) ) ) {
 				// show error message.
 				$transient_obj = Transients::get_instance()->add();
 				$transient_obj->set_name( 'personio_integration_install_error' );
@@ -624,7 +625,7 @@ class License {
 		$response_array = json_decode( $response_body, true );
 
 		// bail if "download_url" is not given.
-		if( empty( $response_array['download_url'] ) ) {
+		if ( empty( $response_array['download_url'] ) ) {
 			// log this event.
 			Log::get_instance()->add( __( 'Faulty response from install server: no download URL given.', 'personio-integration-light' ), 'error', 'system' );
 
@@ -652,7 +653,7 @@ class License {
 		$download_url = apply_filters( 'personio_integration_light_download_pro_url', $download_url );
 
 		// install and activate the plugin.
-		if( ! is_null( Helper::install_plugin( $download_url, 'personio-integration' ) ) ) {
+		if ( ! is_null( Helper::install_plugin( $download_url, 'personio-integration' ) ) ) {
 			// show error message.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_install_error' );

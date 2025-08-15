@@ -57,7 +57,7 @@ class Loco extends Compatibilities_Base {
 	 */
 	public function check(): void {
 		// bail if not active.
-		if( ! $this->is_active() ) {
+		if ( ! $this->is_active() ) {
 			return;
 		}
 
@@ -77,9 +77,9 @@ class Loco extends Compatibilities_Base {
 	/**
 	 * Add hint to use Loco Translate if it is enabled.
 	 *
-	 * @param array $dialog
+	 * @param array<string,mixed> $dialog The dialog.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function add_hint( array $dialog ): array {
 		$url = add_query_arg(

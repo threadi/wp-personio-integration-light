@@ -77,7 +77,7 @@ class Templates {
 	 */
 	public function add_block_templates( array $template_list, array $query, string $template_type ): array {
 		// bail if theme is not a block theme.
-		if( ! Helper::theme_is_fse_theme() ) {
+		if ( ! Helper::theme_is_fse_theme() ) {
 			return array();
 		}
 

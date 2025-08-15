@@ -291,11 +291,11 @@ class Api extends Imports_Base {
 			}
 
 			// marker to run import.
-			$run_import = true;
+			$run_import    = true;
 			$language_name = 'de'; // TODO change this if language support is given by API.
-			$object = new stdClass(); // TODO change this is API supports all necessary fields.
-			$personio_obj = new Personio( get_option( 'personioIntegrationUrl' ) );
-			$imports_obj = $this;
+			$object        = new stdClass(); // TODO change this is API supports all necessary fields.
+			$personio_obj  = new Personio( get_option( 'personioIntegrationUrl' ) );
+			$imports_obj   = $this;
 
 			/**
 			 * Check the position before import.
@@ -373,7 +373,7 @@ class Api extends Imports_Base {
 		 *
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
-		if( apply_filters( 'personio_integration_light_import_bail_before_cleanup', $false ) ) {
+		if ( apply_filters( 'personio_integration_light_import_bail_before_cleanup', $false ) ) {
 			return;
 		}
 

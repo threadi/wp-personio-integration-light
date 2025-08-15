@@ -578,10 +578,10 @@ class Extensions {
 
 		// add help for the positions in general.
 		$help_list[] = array(
-			'id'      => PersonioPosition::get_instance()->get_name() . '-extensions',
-			'title'   => __( 'Extensions', 'personio-integration-light' ),
-			'content' => $content,
-			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url( 'personioPositionExtensions' ) ) ? 1 : 30
+			'id'       => PersonioPosition::get_instance()->get_name() . '-extensions',
+			'title'    => __( 'Extensions', 'personio-integration-light' ),
+			'content'  => $content,
+			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url( 'personioPositionExtensions' ) ) ? 1 : 30,
 		);
 
 		// return resulting list.

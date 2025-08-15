@@ -51,7 +51,7 @@ class Db {
 	 *
 	 * This function is simply using $wpdb->insert() but also checks for any errors.
 	 *
-	 * @param string $table The table to use.
+	 * @param string              $table The table to use.
 	 * @param array<string,mixed> $data The data to insert.
 	 *
 	 * @return void
@@ -63,7 +63,7 @@ class Db {
 		$wpdb->insert( $table, $data );
 
 		// check for any errors, but not if this is the log table itself as it might cause an infinite loop.
-		if( $wpdb->last_error && ( $wpdb->prefix . 'personio_import_logs' ) !== $table && ! isset( $data['log'] ) ) {
+		if ( $wpdb->last_error && ( $wpdb->prefix . 'personio_import_logs' ) !== $table && ! isset( $data['log'] ) ) {
 			$this->log_error( $wpdb->last_query );
 		}
 	}
@@ -86,7 +86,7 @@ class Db {
 		$wpdb->update( $table, $data, $where );
 
 		// check for any errors, but not if this is the log table itself as it might cause an infinite loop.
-		if( $wpdb->last_error ) {
+		if ( $wpdb->last_error ) {
 			$this->log_error( $wpdb->last_query );
 		}
 	}
@@ -105,7 +105,7 @@ class Db {
 		global $wpdb;
 
 		// bail if no statement is given.
-		if( ! is_string( $sql ) ) {
+		if ( ! is_string( $sql ) ) {
 			return array();
 		}
 
@@ -113,7 +113,7 @@ class Db {
 		$results = $wpdb->get_results( $sql, $data_type );
 
 		// check for any errors.
-		if( $wpdb->last_error ) {
+		if ( $wpdb->last_error ) {
 			$this->log_error( $sql );
 		}
 
@@ -132,7 +132,7 @@ class Db {
 		global $wpdb;
 
 		// create the error text.
-		$text = '<strong>' . __( 'Database-error occurred!', 'personio-integration-light' ) . '</strong>';
+		$text  = '<strong>' . __( 'Database-error occurred!', 'personio-integration-light' ) . '</strong>';
 		$text .= '<br><br><em>' . __( 'Statement:', 'personio-integration-light' ) . '</em> <code>' . $sql . '</code>';
 		$text .= '<br><br><em>' . __( 'Error:', 'personio-integration-light' ) . '</em> <code>' . $wpdb->last_error . '</code>';
 

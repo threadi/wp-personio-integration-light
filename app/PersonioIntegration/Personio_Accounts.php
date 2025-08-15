@@ -97,13 +97,13 @@ class Personio_Accounts extends Extensions_Base {
 	 */
 	public function add_settings(): void {
 		// get the settings object.
-		$settings_obj  = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 
 		// get the main page.
 		$main_page = $settings_obj->get_page( $this->get_settings_page() );
 
 		// bail if page could not be loaded.
-		if( ! $main_page instanceof Page ) {
+		if ( ! $main_page instanceof Page ) {
 			return;
 		}
 
@@ -111,7 +111,7 @@ class Personio_Accounts extends Extensions_Base {
 		$main_tab = $main_page->get_tab( $this->get_setting_tab() );
 
 		// bail if main tab could not be loaded.
-		if( ! $main_tab instanceof Tab ) {
+		if ( ! $main_tab instanceof Tab ) {
 			return;
 		}
 
@@ -119,7 +119,7 @@ class Personio_Accounts extends Extensions_Base {
 		$main_section = $main_tab->get_section( 'settings_section_main' );
 
 		// bail if section could not be loaded.
-		if( ! $main_section instanceof Section ) {
+		if ( ! $main_section instanceof Section ) {
 			return;
 		}
 
@@ -186,19 +186,19 @@ class Personio_Accounts extends Extensions_Base {
 	/**
 	 * Add checks for Personio URLs for site health.
 	 *
-	 * @param array<int,array<string,mixed>> $list
+	 * @param array<int,array<string,mixed>> $check_list List of checks.
 	 *
-	 * @return array
+	 * @return array<int,array<string,mixed>>
 	 */
-	public function add_site_health( array $list): array {
+	public function add_site_health( array $check_list ): array {
 		// bail if Availability is not enabled.
-		if( ! Availability::get_instance()->is_enabled() ) {
-			return $list;
+		if ( ! Availability::get_instance()->is_enabled() ) {
+			return $check_list;
 		}
 
 		// add one check for each Personio URL.
-		foreach ( Personio_Accounts::get_instance()->get_personio_urls() as $personio_url ) {
-			$list[] = array(
+		foreach ( self::get_instance()->get_personio_urls() as $personio_url ) {
+			$check_list[] = array(
 				'namespace' => 'personio/v1',
 				'route'     => '/url_availability_checks_' . md5( $personio_url ) . '/',
 				'callback'  => array( Availability::get_instance(), 'url_availability_checks' ),
@@ -207,7 +207,7 @@ class Personio_Accounts extends Extensions_Base {
 		}
 
 		// return the resulting list.
-		return $list;
+		return $check_list;
 	}
 
 	/**
@@ -215,11 +215,12 @@ class Personio_Accounts extends Extensions_Base {
 	 * Only if Personio-URL is set.
 	 *
 	 * @param array<string,mixed> $statuses List of tests to run.
+	 *
 	 * @return array<string,mixed>
 	 */
 	public function add_checks( array $statuses ): array {
 		// one check for each Personio URL.
-		foreach ( Personio_Accounts::get_instance()->get_personio_urls() as $personio_url ) {
+		foreach ( self::get_instance()->get_personio_urls() as $personio_url ) {
 			// get the md5.
 			$md5 = md5( $personio_url );
 
@@ -336,7 +337,7 @@ class Personio_Accounts extends Extensions_Base {
 	/**
 	 * Return HTML-link with icon to edit specific entity in Personio account.
 	 *
-	 * @param Position $position_obj
+	 * @param Position $position_obj The object of the position.
 	 *
 	 * @return string
 	 */
@@ -345,7 +346,7 @@ class Personio_Accounts extends Extensions_Base {
 		$personio_login_url = get_option( 'personioIntegrationLoginUrl' );
 
 		// bail if no login URL is given.
-		if( empty( $personio_login_url ) ) {
+		if ( empty( $personio_login_url ) ) {
 			return '';
 		}
 

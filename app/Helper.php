@@ -502,7 +502,7 @@ class Helper {
 	/**
 	 * Get list of blogs in a multisite-installation.
 	 *
-	 * @return array<string,mixed>
+	 * @return array<int,mixed>
 	 */
 	public static function get_blogs(): array {
 		if ( false === is_multisite() ) {

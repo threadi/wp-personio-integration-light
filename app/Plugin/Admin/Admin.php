@@ -143,7 +143,7 @@ class Admin {
 				'settings_import_file_nonce'         => wp_create_nonce( 'personio-integration-settings-import-file' ),
 				'extension_state_nonce'              => wp_create_nonce( 'personio-integration-extension-state' ),
 				'rest_nonce'                         => wp_create_nonce( 'wp_rest' ),
-				'settings_import_dialog_nonce'   => wp_create_nonce( 'personio-run-settings-import' ),
+				'settings_import_dialog_nonce'       => wp_create_nonce( 'personio-run-settings-import' ),
 				'label_import_is_running'            => __( 'Import is running', 'personio-integration-light' ),
 				'logo_img'                           => Helper::get_logo_img(),
 				'url_example'                        => Helper::get_personio_url_example(),

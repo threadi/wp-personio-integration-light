@@ -394,12 +394,12 @@ class Setup {
 					'options'             => $this->convert_options_for_react( $language_field->get_options() ),
 					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate',
 				),
-				'import_settings' => array(
-					'type'                => 'ButtonControl',
+				'import_settings'                     => array(
+					'type'    => 'ButtonControl',
 					'variant' => 'secondary',
-					'label'               => __( 'Import configuration', 'personio-integration-light' ),
-					'help'                => __( 'Select a configuration file to quickly save the plugin settings. The setup will be skipped.', 'personio-integration-light' ),
-					'onclick' => '() => personio_integration_settings_import_dialog_via_setup();'
+					'label'   => __( 'Import configuration', 'personio-integration-light' ),
+					'help'    => __( 'Select a configuration file to quickly save the plugin settings. The setup will be skipped.', 'personio-integration-light' ),
+					'onclick' => '() => personio_integration_settings_import_dialog_via_setup();',
 				),
 				'help'                                => array(
 					'type' => 'Text',

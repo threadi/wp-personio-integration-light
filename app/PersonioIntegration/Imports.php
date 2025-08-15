@@ -73,9 +73,12 @@ class Imports {
 		}
 
 		// remove transient with warning.
-		add_action( 'init', function() {
-			Transients::get_instance()->delete_transient( Transients::get_instance()->get_transient_by_name( 'personio_import_extension_not_enabled' ) );
-		});
+		add_action(
+			'init',
+			function () {
+				Transients::get_instance()->delete_transient( Transients::get_instance()->get_transient_by_name( 'personio_import_extension_not_enabled' ) );
+			}
+		);
 
 		// use our own hooks.
 		add_action( 'personio_integration_import_starting', array( $this, 'reset_new_position_list' ) );
@@ -110,22 +113,21 @@ class Imports {
 		$import_section->set_setting( $settings_obj );
 
 		// get the import object.
-		$imports_obj = Imports::get_instance()->get_import_extension();
+		$imports_obj = self::get_instance()->get_import_extension();
 
 		// add setting.
-		$running_import = absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) );
+		$running_import     = absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) );
 		$import_now_setting = $settings_obj->add_setting( 'personioIntegrationImportNow' );
 		$import_now_setting->set_section( $import_section );
 		$import_now_setting->set_autoload( false );
 		$import_now_setting->prevent_export( true );
-		if( ! $imports_obj ) {
+		if ( ! $imports_obj ) {
 			$field = new TextInfo();
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 			/* translators: %1$s will be replaced by a URL. */
 			$field->set_description( sprintf( __( 'No import extension enabled! Go to <a href="%1$s">the extensions</a> and enable the import type you want to use.', 'personio-integration-light' ), Extensions::get_instance()->get_link( 'imports' ) ) );
-		}
-		elseif( $running_import > 0 && ( $running_import + HOUR_IN_SECONDS ) < time() ) {
-			$url = add_query_arg(
+		} elseif ( $running_import > 0 && ( $running_import + HOUR_IN_SECONDS ) < time() ) {
+			$url   = add_query_arg(
 				array(
 					'action' => 'personioPositionsCancelImport',
 					'nonce'  => wp_create_nonce( 'personio-integration-cancel-import' ),
@@ -136,13 +138,11 @@ class Imports {
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 			$field->set_button_title( __( 'Cancel running import', 'personio-integration-light' ) );
 			$field->set_button_url( $url );
-		}
-		elseif( $running_import > 0 ) {
+		} elseif ( $running_import > 0 ) {
 			$field = new TextInfo();
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 			$field->set_description( __( 'The import is already running. Please wait some moments.', 'personio-integration-light' ) );
-		}
-		else {
+		} else {
 			$field = new Button();
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 			$field->set_button_title( __( 'Run import of positions now', 'personio-integration-light' ) );

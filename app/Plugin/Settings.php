@@ -673,10 +673,10 @@ class Settings {
 
 		// add help for the positions in general.
 		$help_list[] = array(
-			'id'      => PersonioPosition::get_instance()->get_name() . '-settings',
-			'title'   => __( 'Settings', 'personio-integration-light' ),
-			'content' => $content,
-			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url() ) ? 1 : 20
+			'id'       => PersonioPosition::get_instance()->get_name() . '-settings',
+			'title'    => __( 'Settings', 'personio-integration-light' ),
+			'content'  => $content,
+			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url() ) ? 1 : 20,
 		);
 
 		// return resulting list.
@@ -789,7 +789,7 @@ class Settings {
 		$import_settings = $settings->get_setting( 'import_settings' );
 
 		// bail if setting could not be loaded.
-		if( ! $import_settings instanceof Setting ) {
+		if ( ! $import_settings instanceof Setting ) {
 			return;
 		}
 
@@ -797,7 +797,7 @@ class Settings {
 		$import_field = $import_settings->get_field();
 
 		// bail if field could not be loaded.
-		if( ! $import_field instanceof Button ) {
+		if ( ! $import_field instanceof Button ) {
 			return;
 		}
 
@@ -805,7 +805,7 @@ class Settings {
 		$attributes = $import_field->get_custom_attributes_as_array();
 
 		// bail if data-dialog is not set.
-		if( ! $attributes['data-dialog'] ) {
+		if ( ! $attributes['data-dialog'] ) {
 			return;
 		}
 
