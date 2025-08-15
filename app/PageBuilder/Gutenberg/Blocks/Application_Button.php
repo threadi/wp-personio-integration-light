@@ -67,7 +67,7 @@ class Application_Button extends Blocks_Basis {
 	}
 
 	/**
-	 * Return the content.
+	 * Return the content of the application button.
 	 *
 	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
@@ -92,7 +92,6 @@ class Application_Button extends Blocks_Basis {
 			}
 		}
 
-		// collect the attributes.
 		$attributes = array(
 			'templates'  => array( 'formular' ),
 			'styles'     => implode( PHP_EOL, $styles_array ),

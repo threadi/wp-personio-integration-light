@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use WP_Block_Template;
 use WP_Post;
@@ -61,7 +62,7 @@ class Templates {
 	}
 
 	/**
-	 * Add our own Block templates.
+	 * Add our own Block templates for modern FSE themes.
 	 *
 	 * @source BlockTemplatesController.php from WooCommerce
 	 *
@@ -75,6 +76,11 @@ class Templates {
 	 * @noinspection PhpUnused
 	 */
 	public function add_block_templates( array $template_list, array $query, string $template_type ): array {
+		// bail if theme is not a block theme.
+		if( ! Helper::theme_is_fse_theme() ) {
+			return array();
+		}
+
 		// get post type.
 		$post_type = isset( $query['post_type'] ) ? $query['post_type'] : '';
 		$slugs     = isset( $query['slug__in'] ) ? $query['slug__in'] : array();

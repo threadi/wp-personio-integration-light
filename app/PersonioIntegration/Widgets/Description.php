@@ -103,7 +103,7 @@ class Description extends Widget_Base {
 	 */
 	public function render( array $attributes ): string {
 		$position = $this->get_position_by_request();
-		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! ( $position instanceof Position ) ) {
+		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! $position instanceof Position ) {
 			return '';
 		}
 
