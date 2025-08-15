@@ -15,6 +15,7 @@ use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkb
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\TextInfo;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 
@@ -108,13 +109,22 @@ class Imports {
 		$import_section->set_title( __( 'Import of positions from Personio', 'personio-integration-light' ) );
 		$import_section->set_setting( $settings_obj );
 
+		// get the import object.
+		$imports_obj = Imports::get_instance()->get_import_extension();
+
 		// add setting.
 		$running_import = absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) );
 		$import_now_setting = $settings_obj->add_setting( 'personioIntegrationImportNow' );
 		$import_now_setting->set_section( $import_section );
 		$import_now_setting->set_autoload( false );
 		$import_now_setting->prevent_export( true );
-		if( $running_import > 0 && ( $running_import + HOUR_IN_SECONDS ) < time() ) {
+		if( ! $imports_obj ) {
+			$field = new TextInfo();
+			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
+			/* translators: %1$s will be replaced by a URL. */
+			$field->set_description( sprintf( __( 'No import extension enabled! Go to <a href="%1$s">the extensions</a> and enable the import type you want to use.', 'personio-integration-light' ), Extensions::get_instance()->get_link( 'imports' ) ) );
+		}
+		elseif( $running_import > 0 && ( $running_import + HOUR_IN_SECONDS ) < time() ) {
 			$url = add_query_arg(
 				array(
 					'action' => 'personioPositionsCancelImport',

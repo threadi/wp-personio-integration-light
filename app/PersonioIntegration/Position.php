@@ -367,7 +367,7 @@ class Position {
 	}
 
 	/**
-	 * Get a term field by a given taxonomy for this single position.
+	 * Return a term field by a given taxonomy for this single position.
 	 *
 	 * @param string $taxonomy The taxonomy.
 	 * @param string $field    The field.

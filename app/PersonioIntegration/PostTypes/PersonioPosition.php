@@ -30,6 +30,7 @@ use PersonioIntegrationLight\Plugin\Compatibilities\SayWhat;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
+use WP_Error;
 use WP_Post;
 use WP_Query;
 use WP_REST_Request;
@@ -1682,6 +1683,13 @@ class PersonioPosition extends Post_Type {
 
 		// bail if no extension is enabled.
 		if ( ! $imports_obj ) {
+			// log this.
+			/* translators: %1$s will be replaced by a URL. */
+			Log::get_instance()->add( sprintf( __( 'No import extension enabled! Go to <a href="%1$s">the extensions</a> and enable the import type you want to use.', 'personio-integration-light' ), Extensions::get_instance()->get_link( 'imports' ) ), 'error', 'import' );
+
+			// add this as error.
+			update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array( __( 'No import extension enabled!', 'personio-integration-light' ) ) );
+
 			// return error message.
 			wp_send_json_error();
 		}
