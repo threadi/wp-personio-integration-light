@@ -197,7 +197,7 @@ class Single extends Widget_Base {
 
 		// define the settings for each attribute (array or string).
 		$attribute_settings = array(
-			'personioid'              => 'int',
+			'personioid'              => 'string',
 			'lang'                    => 'string',
 			'templates'               => 'array',
 			'excerpt'                 => 'array',
