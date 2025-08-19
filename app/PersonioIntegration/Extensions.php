@@ -548,9 +548,9 @@ class Extensions {
 	/**
 	 * Add help for extensions.
 	 *
-	 * @param array<int,array<string,string>> $help_list List of help tabs.
+	 * @param array<int,array<string,int|string>> $help_list List of help tabs.
 	 *
-	 * @return array<int,array<string,string>>
+	 * @return array<int,array<string,int|string>>
 	 */
 	public function add_help( array $help_list ): array {
 		// collect the content for the help.

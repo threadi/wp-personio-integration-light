@@ -20,6 +20,7 @@ parameters:
     - "#WP_PLUGIN_DIR#"
     - "#WPMU_PLUGIN_DIR#"
     - "#PERSONIO_INTEGRATION_LIGHT#"
+    - "#WPINC#"
   paths:
     - app
     - personio-integration-light.php

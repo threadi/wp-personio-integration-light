@@ -517,11 +517,19 @@ class License {
 		// get wp-version-data.
 		require ABSPATH . WPINC . '/version.php';
 
+		// get crypt method.
+		$crypt_obj = Crypt::get_instance()->get_method();
+
+		// bail if no crypt method could be loaded.
+		if ( ! $crypt_obj instanceof Crypt_Base ) {
+			return array();
+		}
+
 		// return values as array.
 		return array(
 			'plugin'               => 'personio-integration',
 			'key'                  => $this->key,
-			'hash'                 => Crypt::get_instance()->get_method()->get_hash(),
+			'hash'                 => $crypt_obj->get_hash(),
 			'domain'               => preg_replace( '(^https?://)', '', get_option( 'siteurl' ) ),
 			'plugin_version_light' => $plugin_light_data['Version'],
 			'wp_version'           => $wp_version,
@@ -577,7 +585,7 @@ class License {
 			update_option( 'personioIntegrationLicenseKey', $this->key );
 
 			// set the referrer URL.
-			$url = wp_get_referer();
+			$url = (string) wp_get_referer();
 
 			/**
 			 * Filter the referer URL after Personio Integration Pro has been installed and activated.
@@ -585,7 +593,7 @@ class License {
 			 * @since 5.0.0 Available since 5.0.0.
 			 * @param string $url The URL to use as forward target.
 			 */
-			$url = apply_filters( 'personio_integration_light_url_after_pro_installation', $url );
+			$url = (string) apply_filters( 'personio_integration_light_url_after_pro_installation', $url );
 
 			// forward user.
 			wp_safe_redirect( $url );
@@ -670,7 +678,7 @@ class License {
 		update_option( 'personioIntegrationLicenseKey', $this->key );
 
 		// set the referrer URL.
-		$url = wp_get_referer();
+		$url = (string) wp_get_referer();
 
 		/**
 		 * Filter the referer URL after Personio Integration Pro has been installed and activated.
@@ -678,7 +686,7 @@ class License {
 		 * @since 5.0.0 Available since 5.0.0.
 		 * @param string $url The URL to use as forward target.
 		 */
-		$url = apply_filters( 'personio_integration_light_url_after_pro_installation', $url );
+		$url = (string) apply_filters( 'personio_integration_light_url_after_pro_installation', $url );
 
 		// forward user.
 		wp_safe_redirect( $url );

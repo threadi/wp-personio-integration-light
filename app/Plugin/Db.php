@@ -75,7 +75,7 @@ class Db {
 	 *
 	 * @param string              $table The table to use.
 	 * @param array<string,mixed> $data  The data to update.
-	 * @param array               $where The condition to update.
+	 * @param array<string,mixed> $where The condition to update.
 	 *
 	 * @return void
 	 */

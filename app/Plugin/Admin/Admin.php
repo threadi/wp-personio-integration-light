@@ -946,13 +946,13 @@ class Admin {
 		}
 
 		// bail if PHP >= 8.1 is used.
-		if ( PHP_VERSION_ID >= 80100 ) {
+		if ( PHP_VERSION_ID >= 80100 ) { // @phpstan-ignore greaterOrEqual.alwaysTrue
 			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
 			return;
 		}
 
 		// show hint for necessary configuration to restrict access to application files.
-		$transient_obj = Transients::get_instance()->add();
+		$transient_obj = Transients::get_instance()->add(); // @phpstan-ignore deadCode.unreachable
 		$transient_obj->set_type( 'error' );
 		$transient_obj->set_name( 'personio_integration_light_php_hint' );
 		$transient_obj->set_dismissible_days( 90 );

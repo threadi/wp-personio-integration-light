@@ -361,6 +361,11 @@ class Xml extends Imports_Base {
 	 * @return Position
 	 */
 	public function get_position_from_object( object $xml_object, string $language_name, string $personio_url ): Position {
+		// bail if object is not a SimpleXMLElement.
+		if ( ! $xml_object instanceof SimpleXMLElement ) {
+			return new Position( 0 );
+		}
+
 		// create position object to handle all values and save them to database.
 		$position_object = new Position( 0 );
 		$position_object->set_lang( $language_name );

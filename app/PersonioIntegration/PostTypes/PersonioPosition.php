@@ -2219,10 +2219,10 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function show_plugin_hint_in_footer( string $content ): string {
 		// get requested post type.
-		$post_type = filter_input( INPUT_GET, 'post_type' );
+		$post_type = (string) filter_input( INPUT_GET, 'post_type' );
 
 		// get requested post.
-		$post = filter_input( INPUT_GET, 'post' );
+		$post = absint( filter_input( INPUT_GET, 'post' ) );
 
 		// bail if this is not the listing or the single view of a position in backend.
 		if ( $post_type !== $this->get_name() && get_post_type( $post ) !== $this->get_name() ) {
