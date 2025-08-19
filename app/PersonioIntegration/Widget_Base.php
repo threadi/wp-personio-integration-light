@@ -245,4 +245,13 @@ class Widget_Base extends Extensions_Base {
 		// return resulting example.
 		return '<code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">[personio_integration_' . $this->get_name() . $params . ']</code>';
 	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
+	}
 }

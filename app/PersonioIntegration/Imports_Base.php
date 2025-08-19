@@ -274,12 +274,21 @@ class Imports_Base extends Extensions_Base {
 	 * Return a complete position object with data from source object.
 	 *
 	 * @param object $xml_object The source object.
-	 * @param string           $language_name The used language.
-	 * @param string           $personio_url The used Personio URL.
+	 * @param string $language_name The used language.
+	 * @param string $personio_url The used Personio URL.
 	 *
 	 * @return Position
 	 */
 	public function get_position_from_object( object $xml_object, string $language_name, string $personio_url ): Position {
 		return new Position( 0 );
+	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
 	}
 }

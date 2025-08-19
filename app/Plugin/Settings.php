@@ -26,6 +26,7 @@ use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 
@@ -82,7 +83,7 @@ class Settings {
 	}
 
 	/**
-	 * Define ALL settings for this plugin.
+	 * Define the main settings for this plugin.
 	 *
 	 * @return void
 	 */
@@ -231,7 +232,7 @@ class Settings {
 		$field = new Text();
 		$field->set_title( __( 'Personio URL', 'personio-integration-light' ) );
 		/* translators: %1$s is replaced with the URL to Personio login for account access, %2$s is replaced with the url to the Personio support */
-		$field->set_description( sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br><strong>Hint:</strong> You have to enable the XML-feed under Settings > Recruiting > Career in your Personio account.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s" target="_blank">Personio support (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ), esc_url( Helper::get_personio_support_url() ) ) . '</p>' . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
+		$field->set_description( sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.<br><strong>Hint:</strong> You have to enable the XML-feed under Settings > Recruiting > Career in your Personio account.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s" target="_blank">Personio support (opens new window)</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_login_url() ), esc_url( Helper::get_personio_support_url() ) ) . '</p>' . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
 		$field->set_placeholder( Helper::get_personio_url_example() );
 		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ) );
 		$personio_url_setting->set_field( $field );
@@ -263,21 +264,6 @@ class Settings {
 		$field->set_description( __( 'Activate the languages in which your positions should be displayed on the website.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
 		$field->set_options( Languages::get_instance()->get_languages() );
 		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\Languages', 'validate' ) );
-		$setting->set_field( $field );
-
-		// add setting.
-		$setting = $settings_obj->add_setting( 'personioIntegrationLoginUrl' );
-		$setting->set_section( $general_tab_main );
-		$setting->set_type( 'string' );
-		$setting->set_default( '' );
-		$setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationLoginUrl', 'validate' ) );
-		$field = new Text();
-		$field->set_title( __( 'Personio Login URL', 'personio-integration-light' ) );
-		/* translators: %1$s is replaced with the URL to the Personio support */
-		$field->set_description( sprintf( __( 'This URL is used by Personio to give you a unique login URL to your Personio account. It will be communicated to you when you register with Personio.<br>Entering this URL activates links in the WordPress backend that allow you to quickly switch from WordPress to Personio to edit positions.<br>This is NOT the URL where your open positions are visible.<br>If you have any questions about this URL, please contact the <a href="%1$s" target="_blank">Personio support (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_support_url() ) ) );
-		$field->set_placeholder( Helper::get_personio_login_url_example() );
-		$field->set_readonly( ! Helper::is_personio_url_set() );
-		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationLoginUrl', 'validate' ) );
 		$setting->set_field( $field );
 
 		/**
@@ -656,9 +642,9 @@ class Settings {
 	/**
 	 * Add help for the cpt.
 	 *
-	 * @param array<int,array<string,string>> $help_list List of help tabs.
+	 * @param array<int,array<string,int|string>> $help_list List of help tabs.
 	 *
-	 * @return array<int,array<string,string>>
+	 * @return array<int,array<string,int|string>>
 	 */
 	public function add_help( array $help_list ): array {
 		// collect the content for the help.
@@ -687,10 +673,10 @@ class Settings {
 
 		// add help for the positions in general.
 		$help_list[] = array(
-			'id'      => PersonioPosition::get_instance()->get_name() . '-settings',
-			'title'   => __( 'Settings', 'personio-integration-light' ),
-			'content' => $content,
-			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url() ) ? 1 : 20
+			'id'       => PersonioPosition::get_instance()->get_name() . '-settings',
+			'title'    => __( 'Settings', 'personio-integration-light' ),
+			'content'  => $content,
+			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url() ) ? 1 : 20,
 		);
 
 		// return resulting list.
@@ -803,7 +789,7 @@ class Settings {
 		$import_settings = $settings->get_setting( 'import_settings' );
 
 		// bail if setting could not be loaded.
-		if( ! $import_settings instanceof Setting ) {
+		if ( ! $import_settings instanceof Setting ) {
 			return;
 		}
 
@@ -811,7 +797,7 @@ class Settings {
 		$import_field = $import_settings->get_field();
 
 		// bail if field could not be loaded.
-		if( ! $import_field instanceof Button ) {
+		if ( ! $import_field instanceof Button ) {
 			return;
 		}
 
@@ -819,7 +805,7 @@ class Settings {
 		$attributes = $import_field->get_custom_attributes_as_array();
 
 		// bail if data-dialog is not set.
-		if( ! $attributes['data-dialog'] ) {
+		if ( ! $attributes['data-dialog'] ) {
 			return;
 		}
 

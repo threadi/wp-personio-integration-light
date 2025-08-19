@@ -192,7 +192,7 @@ class Xml extends Imports_Base {
 		 *
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
-		if( apply_filters( 'personio_integration_light_import_bail_before_cleanup', $false ) ) {
+		if ( apply_filters( 'personio_integration_light_import_bail_before_cleanup', $false ) ) {
 			// mark import as not running anymore.
 			update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
 
@@ -337,7 +337,7 @@ class Xml extends Imports_Base {
 	 * @noinspection PhpUnused
 	 */
 	public function import_single_position( SimpleXMLElement $xml_object, string $language_name, string $personio_url ): Position {
-		// get the position object from XML-
+		// get the position object from XML.
 		$position_object = $this->get_position_from_object( $xml_object, $language_name, $personio_url );
 
 		// and save it.
@@ -355,12 +355,17 @@ class Xml extends Imports_Base {
 	 * Return a complete position object with data from source object.
 	 *
 	 * @param object $xml_object The source object.
-	 * @param string           $language_name The used language.
-	 * @param string           $personio_url The used Personio URL.
+	 * @param string $language_name The used language.
+	 * @param string $personio_url The used Personio URL.
 	 *
 	 * @return Position
 	 */
 	public function get_position_from_object( object $xml_object, string $language_name, string $personio_url ): Position {
+		// bail if object is not a SimpleXMLElement.
+		if ( ! $xml_object instanceof SimpleXMLElement ) {
+			return new Position( 0 );
+		}
+
 		// create position object to handle all values and save them to database.
 		$position_object = new Position( 0 );
 		$position_object->set_lang( $language_name );
@@ -410,7 +415,7 @@ class Xml extends Imports_Base {
 	 */
 	public function get_description(): string {
 		// show hint if required PHP-modul is missing.
-		if( ! $this->can_be_enabled_by_user() ) {
+		if ( ! $this->can_be_enabled_by_user() ) {
 			return __( 'The PHP extension simplexml is missing on you hosting. Please contact your hoster about this. This import can only be used if it is available in the hosting.', 'personio-integration-light' );
 		}
 		return esc_html__( 'Provides the import of positions from Personio via XML interface.', 'personio-integration-light' );

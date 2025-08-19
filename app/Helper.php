@@ -10,7 +10,6 @@ namespace PersonioIntegrationLight;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Db;
 use PersonioIntegrationLight\Plugin\Languages;
@@ -471,46 +470,6 @@ class Helper {
 	}
 
 	/**
-	 * Return language-specific Personio account login url.
-	 *
-	 * @return string
-	 */
-	public static function get_personio_login_url(): string {
-		// get the configured Personio Login URL.
-		$personio_login_url = get_option( 'personioIntegrationLoginUrl' );
-
-		// return default URLs, if no Login URL is configured.
-		if ( empty( $personio_login_url ) ) {
-			if ( Languages::get_instance()->is_german_language() ) {
-				return 'https://www.personio.de/login/';
-			}
-			return 'https://www.personio.com/login/';
-		}
-
-		// return the custom Personio Login URL.
-		return $personio_login_url;
-	}
-
-	/**
-	 * Return HTML-link with icon to edit specific entity in Personio account.
-	 *
-	 * @param Position $position_obj The position object.
-	 *
-	 * @return string
-	 */
-	public static function get_personio_edit_link( Position $position_obj ): string {
-		// get the configured Personio Login URL.
-		$personio_login_url = get_option( 'personioIntegrationLoginUrl' );
-
-		// bail if no login URL is given.
-		if( empty( $personio_login_url ) ) {
-			return '';
-		}
-
-		return ' <a href="' . esc_url( $personio_login_url . '/recruiting/positions/' . $position_obj->get_personio_id() ) . '" target="_blank" class="personio-integration-icon-link"><span class="dashicons dashicons-edit"></span></a>';
-	}
-
-	/**
 	 * Get language-specific Personio account support url.
 	 *
 	 * @return string
@@ -543,7 +502,7 @@ class Helper {
 	/**
 	 * Get list of blogs in a multisite-installation.
 	 *
-	 * @return array<string,mixed>
+	 * @return array<int,mixed>
 	 */
 	public static function get_blogs(): array {
 		if ( false === is_multisite() ) {
@@ -623,16 +582,6 @@ class Helper {
 	 */
 	public static function get_template_documentation_url(): string {
 		return Languages::get_instance()->is_german_language() ? 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/templates_de.md' : 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/templates.md';
-	}
-
-	/**
-	 * Return language-depending Personio Login URL example.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public static function get_personio_login_url_example(): string {
-		return Languages::get_instance()->is_german_language() ? 'https://dein-unternehmen.personio.de' : 'https://your-company.personio.com';
 	}
 
 	/**
@@ -939,15 +888,6 @@ class Helper {
 
 		// return resulting JSON-string.
 		return $json;
-	}
-
-	/**
-	 * Return the URL where the user could manage its API integrations in Personio.
-	 *
-	 * @return string
-	 */
-	public static function get_personio_api_management_url(): string {
-		return get_option( 'personioIntegrationLoginUrl' ) . '/configuration/marketplace/connected';
 	}
 
 	/**

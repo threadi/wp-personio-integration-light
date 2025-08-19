@@ -211,4 +211,13 @@ class Show_Position_Xml extends Extensions_Base {
 		// return resulting dialog.
 		return $dialog;
 	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
+	}
 }

@@ -10,9 +10,11 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Imports\Xml;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 
 /**
  * Helper-function for updates of this plugin.
@@ -201,5 +203,11 @@ class Update {
 		// re-initiate each schedule to set the new intervals.
 		Schedules::get_instance()->delete_all();
 		Schedules::get_instance()->create_schedules();
+
+		// enable new extensions.
+		update_option( 'personioIntegrationPersonioAccountsStatus', 1 );
+
+		// show hint to re-import positions.
+		Positions::get_instance()->trigger_reimport_hint();
 	}
 }

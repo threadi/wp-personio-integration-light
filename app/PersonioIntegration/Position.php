@@ -367,7 +367,7 @@ class Position {
 	}
 
 	/**
-	 * Get a term field by a given taxonomy for this single position.
+	 * Return a term field by a given taxonomy for this single position.
 	 *
 	 * @param string $taxonomy The taxonomy.
 	 * @param string $field    The field.
@@ -828,25 +828,5 @@ class Position {
 				)
 			)
 		);
-	}
-
-	/**
-	 * Return the URL to edit this position on Personio.
-	 *
-	 * Needs the login URL to work.
-	 *
-	 * @return string
-	 */
-	public function get_edit_link_on_personio(): string {
-		// get the configured Personio Login URL.
-		$personio_login_url = get_option( 'personioIntegrationLoginUrl' );
-
-		// bail if no login URL is given.
-		if ( empty( $personio_login_url ) ) {
-			return '';
-		}
-
-		// get the URL.
-		return $personio_login_url . '/recruiting/position/' . $this->get_personio_id() . '?tab=job-details';
 	}
 }

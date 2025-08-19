@@ -161,8 +161,6 @@ class Details extends Widget_Base {
 				/**
 				 * Filter whether to show terms of single taxonomy as list or not.
 				 *
-				 * TODO remove this?
-				 *
 				 * @since 3.0.8 Available since 3.0.8.
 				 * @param bool $false True to show the list.
 				 * @param array<WP_Term>|false $terms List of terms.

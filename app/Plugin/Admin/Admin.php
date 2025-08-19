@@ -143,7 +143,7 @@ class Admin {
 				'settings_import_file_nonce'         => wp_create_nonce( 'personio-integration-settings-import-file' ),
 				'extension_state_nonce'              => wp_create_nonce( 'personio-integration-extension-state' ),
 				'rest_nonce'                         => wp_create_nonce( 'wp_rest' ),
-				'settings_import_dialog_nonce'   => wp_create_nonce( 'personio-run-settings-import' ),
+				'settings_import_dialog_nonce'       => wp_create_nonce( 'personio-run-settings-import' ),
 				'label_import_is_running'            => __( 'Import is running', 'personio-integration-light' ),
 				'logo_img'                           => Helper::get_logo_img(),
 				'url_example'                        => Helper::get_personio_url_example(),
@@ -946,13 +946,13 @@ class Admin {
 		}
 
 		// bail if PHP >= 8.1 is used.
-		if ( PHP_VERSION_ID >= 80100 ) {
+		if ( PHP_VERSION_ID >= 80100 ) { // @phpstan-ignore greaterOrEqual.alwaysTrue
 			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
 			return;
 		}
 
 		// show hint for necessary configuration to restrict access to application files.
-		$transient_obj = Transients::get_instance()->add();
+		$transient_obj = Transients::get_instance()->add(); // @phpstan-ignore deadCode.unreachable
 		$transient_obj->set_type( 'error' );
 		$transient_obj->set_name( 'personio_integration_light_php_hint' );
 		$transient_obj->set_dismissible_days( 90 );

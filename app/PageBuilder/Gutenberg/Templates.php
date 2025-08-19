@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use WP_Block_Template;
 use WP_Post;
@@ -61,7 +62,7 @@ class Templates {
 	}
 
 	/**
-	 * Add our own Block templates.
+	 * Add our own Block templates for modern FSE themes.
 	 *
 	 * @source BlockTemplatesController.php from WooCommerce
 	 *
@@ -70,9 +71,16 @@ class Templates {
 	 * @param string                   $template_type The template type.
 	 *
 	 * @return array<WP_Block_Template>
+	 *
 	 * @noinspection PhpIssetCanBeReplacedWithCoalesceInspection
-	 **/
+	 * @noinspection PhpUnused
+	 */
 	public function add_block_templates( array $template_list, array $query, string $template_type ): array {
+		// bail if theme is not a block theme.
+		if ( ! Helper::theme_is_fse_theme() ) {
+			return array();
+		}
+
 		// get post type.
 		$post_type = isset( $query['post_type'] ) ? $query['post_type'] : '';
 		$slugs     = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
@@ -139,8 +147,9 @@ class Templates {
 	 * @param null|WP_Block_Template $template The template.
 	 * @param string                 $id The id of the template.
 	 * @param string                 $template_type The template type.
+	 *
 	 * @return null|WP_Block_Template
-	 */
+	 * @noinspection PhpUnused*/
 	public function get_block_file_template( null|WP_Block_Template $template, string $id, string $template_type ): null|WP_Block_Template {
 		$template_name_parts = explode( '//', $id );
 
@@ -274,11 +283,10 @@ class Templates {
 	/**
 	 * Update the db-based templates if theme has been switched to another block-theme.
 	 *
-	 * TODO testen!
-	 *
 	 * E.g. necessary to adjust header- and footer-templates.
 	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function update_db_templates(): void {
 		// loop through the templates and update their template-parts in content to the new theme.
@@ -296,6 +304,7 @@ class Templates {
 	 * Remove our templates from DB.
 	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function remove_db_templates(): void {
 		// loop through the templates and update their template-parts in content to the new theme.

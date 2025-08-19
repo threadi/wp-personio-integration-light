@@ -45,6 +45,10 @@
 - Renamed "Content" to "Description"
 - Show hint in backend if no description is available for single position
 - The help will show primary the help for the actual called page in backend
+- Optimized handling of header and footer settings for our block templates on theme switch
+- Checking whether a required plugin for an extension is installed (without it having to be activated)
+- Optimized HTML-code for grouped archive templates (now allows better styling via custom CSS)
+- Optimized handling of Personio account in this plugin (like links to the login or the position edit URL)
 
 ### Fixed
 

@@ -12,9 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\Position;
-use PersonioIntegrationLight\Plugin\Languages;
-use PersonioIntegrationLight\Plugin\Templates;
 
 /**
  * Object to handle this block.
@@ -70,7 +67,7 @@ class Application_Button extends Blocks_Basis {
 	}
 
 	/**
-	 * Get the content for single position.
+	 * Return the content of the application button.
 	 *
 	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string

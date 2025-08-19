@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Emails\DeletedPositions;
@@ -273,6 +274,7 @@ class Emails {
 	 * Send test-email by request.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function send_test_email_by_request(): void {
 		// check referer.

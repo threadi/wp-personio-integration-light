@@ -30,6 +30,7 @@ use PersonioIntegrationLight\Plugin\Compatibilities\SayWhat;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
+use WP_Error;
 use WP_Post;
 use WP_Query;
 use WP_REST_Request;
@@ -124,7 +125,7 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'posts_search', array( $this, 'search_also_in_meta_fields' ), 10, 2 );
 
 		// edit positions.
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10 , 2 );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
 		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
 		add_filter( 'admin_footer_text', array( $this, 'show_plugin_hint_in_footer' ) );
@@ -543,7 +544,6 @@ class PersonioPosition extends Post_Type {
 		// show languages with its names.
 		if ( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $column ) {
 			// get main-url.
-			// TODO falscher Link?
 			$url = add_query_arg( filter_input( INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_FULL_SPECIAL_CHARS ), '', home_url( $wp->request ) );
 
 			// get languages in the project.
@@ -783,14 +783,14 @@ class PersonioPosition extends Post_Type {
 
 		add_meta_box(
 			$this->get_name() . '-title',
-			__( 'Title', 'personio-integration-light' ) . Helper::get_personio_edit_link( $position_obj ),
+			__( 'Title', 'personio-integration-light' ) . Personio_Accounts::get_instance()->get_personio_edit_link( $position_obj ),
 			array( $this, 'get_meta_box_for_title' ),
 			$this->get_name()
 		);
 
 		add_meta_box(
 			$this->get_name() . '-text',
-			__( 'Description', 'personio-integration-light' ) . Helper::get_personio_edit_link( $position_obj ),
+			__( 'Description', 'personio-integration-light' ) . Personio_Accounts::get_instance()->get_personio_edit_link( $position_obj ),
 			array( $this, 'get_meta_box_for_description' ),
 			$this->get_name()
 		);
@@ -847,29 +847,20 @@ class PersonioPosition extends Post_Type {
 				$url = '#';
 
 				/**
-				 * Change this hint if Loco Translate is enabled.
-				 * TODO move to Loco Translate support object.
+				 * Adjust the dialog for hint for possibility to translate terms.
+				 *
+				 * @since 5.0.0 Available since 5.0.0.
+				 * @param array<string,mixed> $dialog The dialog to change.
+				 * @param string $taxonomy_name The taxonomy name.
 				 */
-				if ( Loco::get_instance()->is_active() ) {
-					$url = add_query_arg(
-						array(
-							'bundle' => trailingslashit( basename( Helper::get_plugin_path() ) ) . 'personio-integration-light.php',
-							'page'   => 'loco-plugin',
-							'action' => 'view',
-						),
-						get_admin_url() . 'admin.php'
-					);
-
-					/* translators: %1$s will be replaced by the URL for Loco Settings of this plugin. */
-					$dialog['texts'][1] = '<p>' . sprintf( __( 'You already have Loco Translate installed. Follow <a href="%1$s">this link</a> to edit the texts there.', 'personio-integration-light' ), esc_url( $url ) ) . '</p>';
-				}
+				$dialog = apply_filters( 'personio_integration_light_term_translate_hint', $dialog, $taxonomy_name );
 
 				// add link.
 				$changeable_hint = '<a href="' . esc_url( $url ) . '" class="easy-dialog-for-wordpress" data-dialog="' . esc_attr( Helper::get_json( $dialog ) ) . '"><span class="dashicons dashicons-translation"></span></a>';
 			}
 
 			// add edit link.
-			$changeable_hint .= Helper::get_personio_edit_link( $position_obj );
+			$changeable_hint .= Personio_Accounts::get_instance()->get_personio_edit_link( $position_obj );
 
 			// add a box for single taxonomy.
 			add_meta_box(
@@ -977,11 +968,11 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// get the edit URL.
-		$url = $position_obj->get_edit_link_on_personio();
+		$url = Personio_Accounts::get_instance()->get_edit_link_on_personio( $position_obj );
 
 		// use main Personio URL if no edit URL could be loaded.
 		if ( empty( $url ) ) {
-			$url = Helper::get_personio_login_url();
+			$url = Personio_Accounts::get_instance()->get_login_url();
 		}
 
 		// show hint.
@@ -1046,27 +1037,27 @@ class PersonioPosition extends Post_Type {
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
 		// get the edit URL.
-		$url = $position_obj->get_edit_link_on_personio();
+		$url = Personio_Accounts::get_instance()->get_edit_link_on_personio( $position_obj );
 
 		// use main Personio URL if no edit URL could be loaded.
 		if ( empty( $url ) ) {
-			$url = Helper::get_personio_login_url();
+			$url = Personio_Accounts::get_instance()->get_login_url();
 		}
 
 		// get the content array.
 		$content_array = $position_obj->get_content();
 
 		// bail if array is empty and show hint.
-		if( empty( $content_array ) ) {
+		if ( empty( $content_array ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p class="personio-pro-hint">' . sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), $url ) . '</p>';
+			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
 			return;
 		}
 
 		// bail if jobdescription entry is empty and show hint.
-		if( empty( $content_array['jobDescription'] ) ) {
+		if ( empty( $content_array['jobDescription'] ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p class="personio-pro-hint">' . sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), $url ) . '</p>';
+			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
 			return;
 		}
 
@@ -1102,7 +1093,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// get the configured Personio Login URL.
-		$personio_edit_url = $position_obj->get_edit_link_on_personio();
+		$personio_edit_url = Personio_Accounts::get_instance()->get_edit_link_on_personio( $position_obj );
 
 		// bail if no login URL is given.
 		if ( empty( $personio_edit_url ) ) {
@@ -1692,6 +1683,13 @@ class PersonioPosition extends Post_Type {
 
 		// bail if no extension is enabled.
 		if ( ! $imports_obj ) {
+			// log this.
+			/* translators: %1$s will be replaced by a URL. */
+			Log::get_instance()->add( sprintf( __( 'No import extension enabled! Go to <a href="%1$s">the extensions</a> and enable the import type you want to use.', 'personio-integration-light' ), Extensions::get_instance()->get_link( 'imports' ) ), 'error', 'import' );
+
+			// add this as error.
+			update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array( __( 'No import extension enabled!', 'personio-integration-light' ) ) );
+
 			// return error message.
 			wp_send_json_error();
 		}
@@ -2221,13 +2219,13 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function show_plugin_hint_in_footer( string $content ): string {
 		// get requested post type.
-		$post_type = filter_input(INPUT_GET, 'post_type');
+		$post_type = (string) filter_input( INPUT_GET, 'post_type' );
 
 		// get requested post.
-		$post = filter_input(INPUT_GET, 'post');
+		$post = absint( filter_input( INPUT_GET, 'post' ) );
 
 		// bail if this is not the listing or the single view of a position in backend.
-		if( $post_type !== $this->get_name() && get_post_type( $post ) !== $this->get_name() ) {
+		if ( $post_type !== $this->get_name() && get_post_type( $post ) !== $this->get_name() ) {
 			return $content;
 		}
 

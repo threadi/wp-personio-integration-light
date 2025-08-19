@@ -102,11 +102,6 @@ class Application_Button extends Widget_Base {
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		// bail if we are in admin.
-		if ( is_admin() ) {
-			return '';
-		}
-
 		$false = false;
 		/**
 		 * Bail if no button should be visible.
@@ -120,8 +115,9 @@ class Application_Button extends Widget_Base {
 			return '';
 		}
 
+		// get the requested position.
 		$position = $this->get_position_by_request();
-		if ( ! ( $position instanceof Position ) || ! $position->is_valid() ) {
+		if ( ! $position instanceof Position || ! $position->is_valid() ) {
 			return '';
 		}
 
@@ -131,8 +127,10 @@ class Application_Button extends Widget_Base {
 		// set actual language.
 		$position->set_lang( Languages::get_instance()->get_current_lang() );
 
-		// convert attributes.
-		$attributes = PersonioPosition::get_instance()->get_single_shortcode_attributes( $attributes );
+		// add styles if not set.
+		if ( ! isset( $attributes['styles'] ) ) {
+			$attributes['styles'] = '';
+		}
 
 		// define where this application-link is displayed.
 		$text_position = 'archive';
@@ -147,7 +145,7 @@ class Application_Button extends Widget_Base {
 		}
 
 		// reset back to list-link.
-		if ( 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) || 0 === absint( get_option( 'personioIntegrationTemplateBackToListButton' ) ) ) {
+		if ( 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) ) {
 			$back_to_list_url = '';
 		}
 
@@ -176,6 +174,15 @@ class Application_Button extends Widget_Base {
 		if ( ! $content ) {
 			return '';
 		}
-		return $content;
+
+		/**
+		 * Filter the output of the application button.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param string $content The content to output.
+		 * @param array<string,mixed> $attributes List of used attributes.
+		 * @param Position $position The position object.
+		 */
+		return apply_filters( 'personio_integration_light_application_button_output', $content, $attributes, $position );
 	}
 }

@@ -295,7 +295,7 @@ class Schedules {
 	}
 
 	/**
-	 * Get schedule object by its name.
+	 * Return schedule object by its name.
 	 *
 	 * @param string $name The name of the object.
 	 *
@@ -328,11 +328,11 @@ class Schedules {
 	}
 
 	/**
-	 * Get our own events from WP-cron-event-list.
+	 * Return our own events from WP-cron-event-list.
 	 *
 	 * @return array<string,array<string,mixed>>
 	 */
-	private function get_wp_events(): array {
+	public function get_wp_events(): array {
 		$our_events = array();
 		foreach ( _get_cron_array() as $events ) {
 			foreach ( $events as $event_name => $event_settings ) {

@@ -432,11 +432,20 @@ class Extensions_Base {
 	}
 
 	/**
-	 * Return the state of the dependent plugin/theme.
+	 * Return the active state of the dependent plugin/theme.
 	 *
 	 * @return bool
 	 */
 	public function is_active(): bool {
+		return false;
+	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
 		return false;
 	}
 

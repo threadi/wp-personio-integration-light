@@ -175,6 +175,7 @@ class Extensions {
 		// add extensions we deliver in this plugin.
 		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Availability';
 		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Manual_Import';
+		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Personio_Accounts';
 		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Show_Position_Xml';
 		$extension_list[] = '\PersonioIntegrationLight\PageBuilder\Page_Builders';
 
@@ -547,9 +548,9 @@ class Extensions {
 	/**
 	 * Add help for extensions.
 	 *
-	 * @param array<int,array<string,string>> $help_list List of help tabs.
+	 * @param array<int,array<string,int|string>> $help_list List of help tabs.
 	 *
-	 * @return array<int,array<string,string>>
+	 * @return array<int,array<string,int|string>>
 	 */
 	public function add_help( array $help_list ): array {
 		// collect the content for the help.
@@ -577,10 +578,10 @@ class Extensions {
 
 		// add help for the positions in general.
 		$help_list[] = array(
-			'id'      => PersonioPosition::get_instance()->get_name() . '-extensions',
-			'title'   => __( 'Extensions', 'personio-integration-light' ),
-			'content' => $content,
-			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url( 'personioPositionExtensions' ) ) ? 1 : 30
+			'id'       => PersonioPosition::get_instance()->get_name() . '-extensions',
+			'title'    => __( 'Extensions', 'personio-integration-light' ),
+			'content'  => $content,
+			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url( 'personioPositionExtensions' ) ) ? 1 : 30,
 		);
 
 		// return resulting list.

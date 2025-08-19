@@ -17,7 +17,9 @@ use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl;
 use PersonioIntegrationLight\Plugin\Setup;
+use WP_REST_Request;
 
 /**
  * Object to handle availability-checks for positions.
@@ -261,7 +263,7 @@ class Availability extends Extensions_Base {
 						'<p><strong>' . __( 'If the Personio page for this position is not available, no one will be able to apply for it directly.', 'personio-integration-light' ) . '</strong></p>',
 						'<p>' . __( 'We will check the availability after every import of positions for you.', 'personio-integration-light' ) . '</p>',
 						/* translators: %1$s will be replaced by the link to the Personio account */
-						'<p>' . sprintf( __( 'Check in your <a href="%1$s" target="_blank">Personio account (opens new window)</a> why the page is not available.<br>You may have only deactivated the career page.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ) ) . '</p>',
+						'<p>' . sprintf( __( 'Check in your <a href="%1$s" target="_blank">Personio account (opens new window)</a> why the page is not available.<br>You may have only deactivated the career page.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) ) . '</p>',
 						'<p>' . __( 'With <strong>Personio Integration Pro</strong>, you can also enter applications directly in the WordPress website and transfer them to Personio.<br>The career page of a position in Personio does not need to be enabled for this.', 'personio-integration-light' ) . '</p>',
 					),
 					'buttons'   => array(
@@ -486,5 +488,68 @@ class Availability extends Extensions_Base {
 	 */
 	private function get_extension( Position $position_obj ): Extensions\Availability {
 		return new Extensions\Availability( $position_obj->get_id() );
+	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
+	}
+
+	/**
+	 * Check the Personio-URL availability.
+	 *
+	 * @param WP_REST_Request $request The request-object.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function url_availability_checks( WP_REST_Request $request ): array {
+		// get attributes to detect the requested Personio URL.
+		$args = $request->get_attributes();
+
+		// bail with error if no settings found.
+		if ( empty( $args ) || empty( $args['args'] ) || empty( $args['args'][0]['personio_url'] ) ) {
+			return array(
+				'label'       => __( 'Personio URL availability check', 'personio-integration-light' ),
+				'status'      => 'recommended',
+				'badge'       => array(
+					'label' => __( 'Personio Integration Light', 'personio-integration-light' ),
+					'color' => 'gray',
+				),
+				'description' => __( 'Missing Personio URL for check. Something is wrong with your plugin configuration.', 'personio-integration-light' ),
+				'action'      => '',
+				'test'        => 'personio_integration_rest_api_url_availability_check',
+			);
+		}
+
+		// get Personio-object for requested URL.
+		$personio_obj = new Personio( $args['args'][0]['personio_url'] );
+
+		// define default results.
+		$result = array(
+			'label'       => __( 'Personio URL availability Check', 'personio-integration-light' ),
+			'status'      => 'good',
+			'badge'       => array(
+				'label' => __( 'Personio Integration Light', 'personio-integration-light' ),
+				'color' => 'gray',
+			),
+			/* translators: %1$s and %2$s will be replaced by the Personio-URL */
+			'description' => sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ) ),
+			'actions'     => '',
+			'test'        => 'personio_integration_rest_api_url_availability_check',
+		);
+
+		// request the HTTP-header of XML-API for the given Personio URL.
+		if ( ! PersonioIntegrationUrl::check_url( $personio_obj->get_url() ) ) {
+			$result['status'] = 'recommended';
+			/* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
+			$result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ), esc_url( Helper::get_settings_url() ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) );
+		}
+
+		// return result.
+		return $result;
 	}
 }

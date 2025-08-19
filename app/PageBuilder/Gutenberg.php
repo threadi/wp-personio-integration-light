@@ -66,13 +66,15 @@ class Gutenberg extends PageBuilder_Base {
 		// add our custom variations.
 		add_action( 'init', array( $this, 'add_variations' ) );
 
+		// initialize the templates.
+		add_action( 'init', array( $this, 'add_templates' ) );
+
 		// bail if theme is not an FSE-theme with Block support.
 		if ( ! $this->theme_support_block_templates() ) {
 			return;
 		}
 
 		// add our custom templates and set to use them.
-		add_action( 'init', array( $this, 'add_templates' ) );
 		add_action( 'init', array( $this, 'add_settings' ), 50 );
 		add_filter( 'personio_integration_load_single_template', '__return_true' );
 		add_filter( 'personio_integration_load_archive_template', '__return_true' );
@@ -187,7 +189,7 @@ class Gutenberg extends PageBuilder_Base {
 		$settings_page = $settings_obj->get_page( 'personioPositions' );
 
 		// bail if page could not be found.
-		if( ! $settings_page instanceof Page ) {
+		if ( ! $settings_page instanceof Page ) {
 			return;
 		}
 
@@ -195,7 +197,7 @@ class Gutenberg extends PageBuilder_Base {
 		$template_tab = $settings_page->get_tab( 'templates' );
 
 		// bail if template tab could not be found.
-		if( ! $template_tab instanceof Tab ) {
+		if ( ! $template_tab instanceof Tab ) {
 			return;
 		}
 
@@ -203,7 +205,7 @@ class Gutenberg extends PageBuilder_Base {
 		$section = $template_tab->get_section( 'settings_section_template_list' );
 
 		// bail if section could not be found.
-		if( ! $section instanceof Section ) {
+		if ( ! $section instanceof Section ) {
 			return;
 		}
 
@@ -323,5 +325,14 @@ class Gutenberg extends PageBuilder_Base {
 
 		/* translators: %1$s will be replaced with the name of the theme, %2$s will be replaced by the URL for the editor */
 		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'You are using with <i>%1$s</i> a modern block theme. The settings here will therefore might not work. Edit the archive- and single-template under <a href="%2$s">Appearance > Editor > Templates > Manage</a>.', 'personio-integration-light' ), esc_html( Helper::get_theme_title() ), esc_url( $editor_url ) ) ) . '</p>';
+	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
 	}
 }
