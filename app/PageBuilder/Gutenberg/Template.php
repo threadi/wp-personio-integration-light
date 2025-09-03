@@ -85,7 +85,7 @@ class Template {
 	 * @return string
 	 */
 	public function get_file_path(): string {
-		return Helper::get_plugin_path() . 'templates/gutenberg/' . $this->get_slug() . '.html';
+		return \PersonioIntegrationLight\Plugin\Templates::get_instance()->get_template('gutenberg/' . $this->get_slug() . '.html' );
 	}
 
 	/**

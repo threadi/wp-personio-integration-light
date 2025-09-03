@@ -149,6 +149,12 @@ class Application_Button extends Widget_Base {
 			$back_to_list_url = '';
 		}
 
+		// set classes, if not set.
+		if( ! isset( $attributes['classes' ] ) ) {
+			$attributes['classes' ] = '';
+		}
+
+
 		// generate styling.
 		Helper::add_inline_style( $attributes['styles'] );
 
