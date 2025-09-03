@@ -25,6 +25,7 @@
 - Added links to edit position settings in Personio if login URL is given
 - Added info in admin footer if a page from our plugin is loaded
 - Added option to import project configuration during setup
+- Added log for error 500 during imports which also prevents hanging import tasks
 
 ### Changed
 

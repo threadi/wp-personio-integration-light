@@ -132,7 +132,7 @@ class PersonioPosition extends Post_Type {
 
 		// add ajax-hooks.
 		add_action( 'wp_ajax_personio_get_deletion_info', array( $this, 'get_deletion_info' ) );
-		add_action( 'wp_ajax_personio_run_import', array( $this, 'run_import' ) );
+		add_action( 'wp_ajax_personio_run_import', array( $this, 'run_import_via_ajax' ) );
 		add_action( 'wp_ajax_personio_get_import_info', array( $this, 'get_import_info' ) );
 		add_action( 'wp_ajax_personio_get_import_dialog', array( $this, 'get_import_dialog' ) );
 
@@ -1674,7 +1674,7 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function run_import(): void {
+	public function run_import_via_ajax(): void {
 		// check nonce.
 		check_ajax_referer( 'personio-run-import', 'nonce' );
 
