@@ -154,12 +154,21 @@ class Application_Button extends Widget_Base {
 			$attributes['classes' ] = '';
 		}
 
-
 		// generate styling.
 		Helper::add_inline_style( $attributes['styles'] );
 
 		// get application URL.
 		$link = $position->get_application_url();
+
+		/**
+		 * Filter the application URL.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param string $link The URL.
+		 * @param Position $position The position as object.
+		 * @param array<string,mixed> $attributes List of attributes used for the output.
+		 */
+		$link = apply_filters( 'personio_integration_light_position_application_link', $link, $position, $attributes );
 
 		$target = '_blank';
 		/**
@@ -168,7 +177,7 @@ class Application_Button extends Widget_Base {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param string $target The target value.
-		 * @param Position $position The Position as object.
+		 * @param Position $position The position as object.
 		 * @param array<string,mixed> $attributes List of attributes used for the output.
 		 */
 		$target = apply_filters( 'personio_integration_back_to_list_target_attribute', $target, $position, $attributes );

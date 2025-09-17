@@ -27,8 +27,8 @@ class PersonioIntegrationUrl {
 		// get cleaned new value.
 		$value = \PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::cleanup_url_string( $value );
 
-		// trigger re-import hint if URL will be changed.
-		if ( ! empty( get_option( 'personioIntegrationUrl' ) ) && get_option( 'personioIntegrationUrl' ) !== $value && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+		// trigger re-import hint if URL will be changed and a URL is set.
+		if ( ! empty( $value ) && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! empty( get_option( 'personioIntegrationUrl' ) ) && get_option( 'personioIntegrationUrl' ) !== $value ) {
 			Positions::get_instance()->trigger_reimport_hint();
 		}
 
