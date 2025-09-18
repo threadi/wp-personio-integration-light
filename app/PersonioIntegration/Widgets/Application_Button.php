@@ -150,8 +150,8 @@ class Application_Button extends Widget_Base {
 		}
 
 		// set classes, if not set.
-		if( ! isset( $attributes['classes' ] ) ) {
-			$attributes['classes' ] = '';
+		if ( ! isset( $attributes['classes'] ) ) {
+			$attributes['classes'] = '';
 		}
 
 		// generate styling.

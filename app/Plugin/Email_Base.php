@@ -144,8 +144,8 @@ class Email_Base {
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		$field = new Button();
-		$field->set_title( __( 'Test-Email', 'easy-settings-for-wordpress' ) );
-		$field->set_button_title( __( 'Send now', 'easy-settings-for-wordpress' ) );
+		$field->set_title( __( 'Test-Email', 'personio-integration-light' ) );
+		$field->set_button_title( __( 'Send now', 'personio-integration-light' ) );
 		$field->set_button_url(
 			add_query_arg(
 				array(

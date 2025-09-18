@@ -362,12 +362,12 @@ class Api extends Imports_Base {
 				// update position counter.
 				++$imported_positions;
 			}
-
-		} catch( Error $e ) {
+		} catch ( Error $e ) {
 			// log this event.
 			Log::get_instance()->add( __( 'Following error occurred during import of positions:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>', 'error', 'imports' );
 
 			// show hint.
+			/* translators: %1$s will be replaced by a URL. */
 			$this->add_error( sprintf( __( 'Error occurred. Check <a href="%1$s">the log</a> for details.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
 		}
 

@@ -386,9 +386,9 @@ class Manual_Import extends Extensions_Base {
 				'title'     => __( 'Choose positions to import', 'personio-integration-light' ),
 				'callback'  => 'personio_integration_run_manual_import_callback()',
 				'texts'     => array(
-					'<p><strong>' . __( 'Select the positions you want to import in your WordPress.' ) . '</strong></p>',
+					'<p><strong>' . __( 'Select the positions you want to import in your WordPress.', 'personio-integration-light' ) . '</strong></p>',
 					$list,
-					'<p>' . __( '<strong>Hint:</strong> not selected positions will not be imported and also deleted in WordPress if they exist there.' ) . '</p>',
+					'<p>' . __( '<strong>Hint:</strong> not selected positions will not be imported and also deleted in WordPress if they exist there.', 'personio-integration-light' ) . '</p>',
 					'<input type="hidden" id="all_positions" name="all_positions" value="' . $personio_id_list . '">',
 				),
 				'buttons'   => array(
