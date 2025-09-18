@@ -57,6 +57,11 @@ body.post-type-personioposition {
 	line-height: 1.4;
 }
 
+body.post-type-personioposition .wrap > h1 {
+	display: inline-block;
+	margin-right: 5px;
+}
+
 body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
 	margin-left: 0.4em;
 }

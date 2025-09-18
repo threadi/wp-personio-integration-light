@@ -301,8 +301,8 @@ class Intro {
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		$field = new Button();
-		$field->set_title( __( 'Reset intro', 'easy-settings-for-wordpress' ) );
-		$field->set_button_title( __( 'Rerun the intro', 'easy-settings-for-wordpress' ) );
+		$field->set_title( __( 'Reset intro', 'personio-integration-light' ) );
+		$field->set_button_title( __( 'Rerun the intro', 'personio-integration-light' ) );
 		$field->set_button_url(
 			add_query_arg(
 				array(

@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\PersonioIntegration\Imports;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use Error;
 use JsonException;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -82,7 +83,7 @@ class Xml extends Imports_Base {
 	}
 
 	/**
-	 * Run the import of positions.
+	 * Run the import of positions from Personio.
 	 *
 	 * @return void
 	 */
@@ -159,25 +160,34 @@ class Xml extends Imports_Base {
 		$this->set_import_count( 0 );
 		$this->set_import_max_count( 0 );
 
-		// run the imports in loops through Personio URLs and active languages.
-		foreach ( $personio_urls as $import_url ) {
-			// loop through the languages.
-			foreach ( $languages as $language_name => $label ) {
-				// run the import for this language on this Personio URL.
-				$import_obj = new Import_Single_Personio_Url();
-				$import_obj->set_imports_object( $this );
-				$import_obj->set_language( $language_name );
-				$import_obj->set_url( $import_url );
-				$import_obj->run();
+		try {
+			// run the imports in loops through Personio URLs and active languages.
+			foreach ( $personio_urls as $import_url ) {
+				// loop through the languages.
+				foreach ( $languages as $language_name => $label ) {
+					// run the import for this language on this Personio URL.
+					$import_obj = new Import_Single_Personio_Url();
+					$import_obj->set_imports_object( $this );
+					$import_obj->set_language( $language_name );
+					$import_obj->set_url( $import_url );
+					$import_obj->run();
 
-				// add errors from import to global list.
-				foreach ( $import_obj->get_errors() as $error ) {
-					$this->add_error( $error );
+					// add errors from import to global list.
+					foreach ( $import_obj->get_errors() as $error ) {
+						$this->add_error( $error );
+					}
+
+					// update counter for imported positions.
+					$imported_positions += (int) count( $import_obj->get_imported_positions() );
 				}
-
-				// update counter for imported positions.
-				$imported_positions += (int) count( $import_obj->get_imported_positions() );
 			}
+		} catch ( Error $e ) {
+			// log this event.
+			Log::get_instance()->add( __( 'Following error occurred during import of positions:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>', 'error', 'imports' );
+
+			// show hint.
+			/* translators: %1$s will be replaced by a URL. */
+			$this->add_error( sprintf( __( 'Error occurred. Check <a href="%1$s">the log</a> for details.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
 		}
 
 		// finalize progress for WP CLI.

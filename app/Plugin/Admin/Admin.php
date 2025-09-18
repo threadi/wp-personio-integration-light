@@ -974,6 +974,13 @@ class Admin {
 		$transients_obj->set_url( Helper::get_plugin_url() . '/app/Dependencies/easyTransientsForWordPress/' );
 		$transients_obj->set_path( Helper::get_plugin_path() . '/app/Dependencies/easyTransientsForWordPress/' );
 		$transients_obj->set_vendor_path( Helper::get_plugin_path() . 'vendor/' );
+		$transients_obj->set_translations(
+			array(
+				/* translators: %1$d will be replaced by the days this message will be hidden. */
+				'hide_message' => __( 'Hide this message for %1$d days.', 'personio-integration-light' ),
+				'dismiss'      => __( 'Dismiss', 'personio-integration-light' ),
+			)
+		);
 		$transients_obj->init();
 	}
 }

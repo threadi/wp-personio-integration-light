@@ -123,6 +123,42 @@ class Settings {
 		$settings_obj->set_menu_position( 1 );
 		$settings_obj->set_url( Helper::get_plugin_url() . '/app/Dependencies/easySettingsForWordPress/' );
 		$settings_obj->set_path( Helper::get_plugin_path() . '/app/Dependencies/easySettingsForWordPress/' );
+		$settings_obj->set_translations(
+			array(
+				'title_settings_import_file_missing' => __( 'Required file missing', 'personio-integration-light' ),
+				'text_settings_import_file_missing'  => __( 'Please choose a JSON-file with settings to import.', 'personio-integration-light' ),
+				'lbl_ok'                             => __( 'OK', 'personio-integration-light' ),
+				'lbl_cancel'                         => __( 'Cancel', 'personio-integration-light' ),
+				'import_title'                       => __( 'Import settings', 'personio-integration-light' ),
+				'dialog_import_title'                => __( 'Import plugin settings', 'personio-integration-light' ),
+				'dialog_import_text'                 => __( 'Click on the button below to chose your JSON-file with the settings.', 'personio-integration-light' ),
+				'dialog_import_button'               => __( 'Import now', 'personio-integration-light' ),
+				'dialog_import_error_title'          => __( 'Error during import', 'personio-integration-light' ),
+				'dialog_import_error_text'           => __( 'The file could not be imported!', 'personio-integration-light' ),
+				'dialog_import_error_no_file'        => __( 'No file was uploaded.', 'personio-integration-light' ),
+				'dialog_import_error_no_size'        => __( 'The uploaded file is no size.', 'personio-integration-light' ),
+				'dialog_import_error_no_json'        => __( 'The uploaded file is not a valid JSON-file.', 'personio-integration-light' ),
+				'dialog_import_error_no_json_ext'    => __( 'The uploaded file does not have the file extension <i>.json</i>.', 'personio-integration-light' ),
+				'dialog_import_error_not_saved'      => __( 'The uploaded file could not be saved. Contact your hoster about this problem.', 'personio-integration-light' ),
+				'dialog_import_error_not_our_json'   => __( 'The uploaded file is not a valid JSON-file with settings for this plugin.', 'personio-integration-light' ),
+				'dialog_import_success_title'        => __( 'Settings have been imported', 'personio-integration-light' ),
+				'dialog_import_success_text'         => __( 'Import has been run successfully.', 'personio-integration-light' ),
+				'dialog_import_success_text_2'       => __( 'The new settings are now active. Click on the button below to reload the page and see the settings.', 'personio-integration-light' ),
+				'export_title'                       => __( 'Export settings', 'personio-integration-light' ),
+				'dialog_export_title'                => __( 'Export plugin settings', 'personio-integration-light' ),
+				'dialog_export_text'                 => __( 'Click on the button below to export the actual settings.', 'personio-integration-light' ),
+				'dialog_export_text_2'               => __( 'You can import this JSON-file in other projects using this WordPress plugin or theme.', 'personio-integration-light' ),
+				'dialog_export_button'               => __( 'Export now', 'personio-integration-light' ),
+				'table_options'                      => __( 'Options', 'personio-integration-light' ),
+				'table_entry'                        => __( 'Entry', 'personio-integration-light' ),
+				'table_no_entries'                   => __( 'No entries found.', 'personio-integration-light' ),
+				'plugin_settings_title'              => __( 'Settings', 'personio-integration-light' ),
+				'file_add_file'                      => __( 'Add file', 'personio-integration-light' ),
+				'file_choose_file'                   => __( 'Choose file', 'personio-integration-light' ),
+				'file_choose_image'                  => __( 'Upload or choose image', 'personio-integration-light' ),
+				'drag_n_drop'                        => __( 'Hold to drag & drop', 'personio-integration-light' ),
+			)
+		);
 
 		// initialize this settings object, if setup has been completed or if this is a REST API request.
 		if ( Helper::is_rest_request() || Setup::get_instance()->is_completed() ) {

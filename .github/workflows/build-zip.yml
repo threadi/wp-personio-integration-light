@@ -100,6 +100,7 @@ jobs:
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/composer/*
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/*/build/*
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/*/lib/*
+                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/node_modules/intro.js/minified/*
                   mv personio-integration-light ${{ github.event.repository.name }}
                   cp personio-integration-light_${{ github.ref_name }}.zip ${{ github.event.repository.name }}/
 

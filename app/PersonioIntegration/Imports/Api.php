@@ -12,6 +12,7 @@ namespace PersonioIntegrationLight\PersonioIntegration\Imports;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use Error;
 use JsonException;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -153,212 +154,221 @@ class Api extends Imports_Base {
 		$this->set_import_count( 0 );
 		$this->set_import_max_count( 0 );
 
-		/**
-		 * Use a loop to get all positions.
-		 *
-		 * We use 10 as limit to get max. (10*200=)2000 open positions and to not reach the limit
-		 * for 150 requests per minute for the most projects.
-		 */
-		$max_iterations = 100;
-		for ( $i = 1;$i < $max_iterations;$i++ ) {
-			// create request to get the open positions.
-			$request_object = new Api_Request();
-			$request_object->set_url( $url );
-			$request_object->set_post_data( '' );
-			$request_object->set_method( 'GET' );
-			$request_object->set_md5( md5( $url ) );
+		try {
+			/**
+			 * Use a loop to get all positions.
+			 *
+			 * We use 10 as limit to get max. (10*200=)2000 open positions and to not reach the limit
+			 * for 150 requests per minute for the most projects.
+			 */
+			$max_iterations = 100;
+			for ( $i = 1;$i < $max_iterations;$i++ ) {
+				// create request to get the open positions.
+				$request_object = new Api_Request();
+				$request_object->set_url( $url );
+				$request_object->set_post_data( '' );
+				$request_object->set_method( 'GET' );
+				$request_object->set_md5( md5( $url ) );
 
-			// send it.
-			if ( ! $request_object->send() ) {
-				// if it was not successfully, get the occurred errors from the request object.
-				foreach ( $request_object->get_errors() as $error ) {
-					$this->add_error( $error );
+				// send it.
+				if ( ! $request_object->send() ) {
+					// if it was not successfully, get the occurred errors from the request object.
+					foreach ( $request_object->get_errors() as $error ) {
+						$this->add_error( $error );
+					}
+
+					// do nothing more.
+					continue;
 				}
 
-				// do nothing more.
-				continue;
-			}
+				// bail if response is not 200.
+				if ( 200 !== $request_object->get_http_status() ) {
+					// break the loop.
+					$i = $max_iterations;
 
-			// bail if response is not 200.
-			if ( 200 !== $request_object->get_http_status() ) {
-				// break the loop.
-				$i = $max_iterations;
-
-				// do nothing more.
-				continue;
-			}
-
-			// get the response content.
-			$body = $request_object->get_response();
-
-			// convert it to array.
-			$positions = json_decode( $body, true );
-
-			// bail if list is empty.
-			if ( empty( $positions ) ) {
-				$this->add_error( __( 'Got empty response for positions from Personio API.', 'personio-integration-light' ) );
-				continue;
-			}
-
-			// bail if "_data" is missing. This should happen in any step > 1 OR if no positions are available in Personio.
-			if ( empty( $positions['_data'] ) ) {
-				// break the loop.
-				$i = $max_iterations;
-
-				// do nothing more.
-				continue;
-			}
-
-			// add the positions to the list.
-			foreach ( $positions['_data'] as $position ) {
-				$this->add_position( $position['id'] );
-			}
-
-			// bail if next is missing.
-			if ( empty( $positions['_meta']['links']['next']['href'] ) ) {
-				// break the loop.
-				$i = $max_iterations;
-
-				// add the error.
-				$this->add_error( __( 'Response from Personio API is missing the "next"-link entry:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $positions ) . '</code>' );
-
-				// do nothing more.
-				continue;
-			}
-
-			// get the "next" URL which will be used in next loop.
-			$url = $positions['_meta']['links']['next']['href'];
-		}
-
-		// bail if list of positions is empty.
-		if ( empty( $this->get_positions() ) ) {
-			return;
-		}
-
-		/**
-		 * Get the data of all positions we collected in a loop.
-		 *
-		 * @source https://developer.personio.de/reference/get_v2-recruiting-jobs-id
-		 */
-		// loop through the positions and get their data.
-		foreach ( $this->get_positions() as $personio_id => $position_data ) {
-			// bail if position data are not empty.
-			if ( ! empty( $position_data ) ) {
-				continue;
-			}
-
-			// create request to get the open positions.
-			$request_object = new Api_Request();
-			$request_object->set_url( 'https://api.personio.de/v2/recruiting/jobs/' . $personio_id );
-			$request_object->set_post_data( '' );
-			$request_object->set_method( 'GET' );
-			$request_object->set_md5( md5( $url ) );
-
-			// send it.
-			if ( ! $request_object->send() ) {
-				// if it was not successfully, get the occurred errors from the request object.
-				foreach ( $request_object->get_errors() as $error ) {
-					$this->add_error( $error );
+					// do nothing more.
+					continue;
 				}
 
-				// do nothing more.
-				continue;
+				// get the response content.
+				$body = $request_object->get_response();
+
+				// convert it to array.
+				$positions = json_decode( $body, true );
+
+				// bail if list is empty.
+				if ( empty( $positions ) ) {
+					$this->add_error( __( 'Got empty response for positions from Personio API.', 'personio-integration-light' ) );
+					continue;
+				}
+
+				// bail if "_data" is missing. This should happen in any step > 1 OR if no positions are available in Personio.
+				if ( empty( $positions['_data'] ) ) {
+					// break the loop.
+					$i = $max_iterations;
+
+					// do nothing more.
+					continue;
+				}
+
+				// add the positions to the list.
+				foreach ( $positions['_data'] as $position ) {
+					$this->add_position( $position['id'] );
+				}
+
+				// bail if next is missing.
+				if ( empty( $positions['_meta']['links']['next']['href'] ) ) {
+					// break the loop.
+					$i = $max_iterations;
+
+					// add the error.
+					$this->add_error( __( 'Response from Personio API is missing the "next"-link entry:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $positions ) . '</code>' );
+
+					// do nothing more.
+					continue;
+				}
+
+				// get the "next" URL which will be used in next loop.
+				$url = $positions['_meta']['links']['next']['href'];
 			}
 
-			// bail if response is not 200.
-			if ( 200 !== $request_object->get_http_status() ) {
-				continue;
+			// bail if list of positions is empty.
+			if ( empty( $this->get_positions() ) ) {
+				return;
 			}
-
-			// get the response content.
-			$body = $request_object->get_response();
-
-			// convert it to array.
-			try {
-				$data = json_decode( $body, true, 512, JSON_THROW_ON_ERROR );
-			} catch ( JsonException $e ) {
-				$this->add_error( __( 'JSON-Error:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>' );
-			}
-
-			// bail if data is empty.
-			if ( empty( $data ) ) {
-				// add this as error.
-				/* translators: %1$s will be replaced by the Personio ID. */
-				$this->add_error( sprintf( __( 'Got no data for position %1$s from Personio API.', 'personio-integration-light' ), esc_html( $personio_id ) ) );
-
-				// do nothing more.
-				continue;
-			}
-
-			// marker to run import.
-			$run_import    = true;
-			$language_name = 'de'; // TODO change this if language support is given by API.
-			$object        = new stdClass(); // TODO change this is API supports all necessary fields.
-			$personio_obj  = new Personio( get_option( 'personioIntegrationUrl' ) );
-			$imports_obj   = $this;
 
 			/**
-			 * Check the position before import.
+			 * Get the data of all positions we collected in a loop.
 			 *
-			 * @noinspection PhpConditionAlreadyCheckedInspection
-			 *
-			 * @since 1.0.0 Available since first release.
-			 *
-			 * @param bool $run_import The individual text.
-			 * @param object $xml_object The XML-object of the Position.
-			 * @param string $language_name The language-marker.
-			 * @param Personio $personio_obj The used Personio-account-object.
-			 * @param Imports_Base $imports_obj The used imports object.
+			 * @source https://developer.personio.de/reference/get_v2-recruiting-jobs-id
 			 */
-			if ( false !== apply_filters( 'personio_integration_import_single_position', $run_import, $object, $language_name, $personio_obj, $imports_obj ) ) {
-				continue;
+			// loop through the positions and get their data.
+			foreach ( $this->get_positions() as $personio_id => $position_data ) {
+				// bail if position data are not empty.
+				if ( ! empty( $position_data ) ) {
+					continue;
+				}
+
+				// create request to get the open positions.
+				$request_object = new Api_Request();
+				$request_object->set_url( 'https://api.personio.de/v2/recruiting/jobs/' . $personio_id );
+				$request_object->set_post_data( '' );
+				$request_object->set_method( 'GET' );
+				$request_object->set_md5( md5( $url ) );
+
+				// send it.
+				if ( ! $request_object->send() ) {
+					// if it was not successfully, get the occurred errors from the request object.
+					foreach ( $request_object->get_errors() as $error ) {
+						$this->add_error( $error );
+					}
+
+					// do nothing more.
+					continue;
+				}
+
+				// bail if response is not 200.
+				if ( 200 !== $request_object->get_http_status() ) {
+					continue;
+				}
+
+				// get the response content.
+				$body = $request_object->get_response();
+
+				// convert it to array.
+				try {
+					$data = json_decode( $body, true, 512, JSON_THROW_ON_ERROR );
+				} catch ( JsonException $e ) {
+					$this->add_error( __( 'JSON-Error:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>' );
+				}
+
+				// bail if data is empty.
+				if ( empty( $data ) ) {
+					// add this as error.
+					/* translators: %1$s will be replaced by the Personio ID. */
+					$this->add_error( sprintf( __( 'Got no data for position %1$s from Personio API.', 'personio-integration-light' ), esc_html( $personio_id ) ) );
+
+					// do nothing more.
+					continue;
+				}
+
+				// marker to run import.
+				$run_import    = true;
+				$language_name = 'de'; // TODO change this if language support is given by API.
+				$object        = new stdClass(); // TODO change this is API supports all necessary fields.
+				$personio_obj  = new Personio( get_option( 'personioIntegrationUrl' ) );
+				$imports_obj   = $this;
+
+				/**
+				 * Check the position before import.
+				 *
+				 * @noinspection PhpConditionAlreadyCheckedInspection
+				 *
+				 * @since 1.0.0 Available since first release.
+				 *
+				 * @param bool $run_import The individual text.
+				 * @param object $xml_object The XML-object of the Position.
+				 * @param string $language_name The language-marker.
+				 * @param Personio $personio_obj The used Personio-account-object.
+				 * @param Imports_Base $imports_obj The used imports object.
+				 */
+				if ( false !== apply_filters( 'personio_integration_import_single_position', $run_import, $object, $language_name, $personio_obj, $imports_obj ) ) {
+					continue;
+				}
+
+				// add the result to the array.
+				$this->positions[ $personio_id ] = $data;
+
+				/**
+				 * As of June 2025, we unfortunately receive almost no information on positions relevant to the website
+				 * from API V2. As soon as this is available, it should be read out and imported here.
+				 */
+
+				// get the position object for this position.
+				$position_obj = Positions::get_instance()->get_position_by_personio_id( $personio_id );
+
+				// if no object could be loaded, create a new one.
+				if ( ! $position_obj instanceof Position ) {
+					$position_obj = new Position( 0 );
+					$position_obj->set_personio_id( $personio_id );
+				}
+
+				// set the creation datetime.
+				$position_obj->set_created_at( $data['created_at']['date-time'] );
+
+				// set the title.
+				$position_obj->set_title( $data['name'] );
+
+				// set the job description.
+				$position_obj->set_content_as_string( '{}' );
+
+				/**
+				 * Change the position-object before saving it.
+				 *
+				 * @since 5.0.0 Available since 5.0.0.
+				 *
+				 * @param Position $position_obj The object of this position.
+				 * @param array $data The data from Personio.
+				 */
+				$position_obj = apply_filters( 'personio_integration_import_single_position_api', $position_obj, $data );
+
+				// save the position object.
+				try {
+					$position_obj->save();
+				} catch ( JsonException $e ) {
+					$this->add_error( __( 'JSON-Error:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>' );
+				}
+
+				// update position counter.
+				++$imported_positions;
 			}
+		} catch ( Error $e ) {
+			// log this event.
+			Log::get_instance()->add( __( 'Following error occurred during import of positions:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>', 'error', 'imports' );
 
-			// add the result to the array.
-			$this->positions[ $personio_id ] = $data;
-
-			/**
-			 * As of June 2025, we unfortunately receive almost no information on positions relevant to the website
-			 * from API V2. As soon as this is available, it should be read out and imported here.
-			 */
-
-			// get the position object for this position.
-			$position_obj = Positions::get_instance()->get_position_by_personio_id( $personio_id );
-
-			// if no object could be loaded, create a new one.
-			if ( ! $position_obj instanceof Position ) {
-				$position_obj = new Position( 0 );
-				$position_obj->set_personio_id( $personio_id );
-			}
-
-			// set the creation datetime.
-			$position_obj->set_created_at( $data['created_at']['date-time'] );
-
-			// set the title.
-			$position_obj->set_title( $data['name'] );
-
-			// set the job description.
-			$position_obj->set_content_as_string( '{}' );
-
-			/**
-			 * Change the position-object before saving it.
-			 *
-			 * @since 5.0.0 Available since 5.0.0.
-			 *
-			 * @param Position $position_obj The object of this position.
-			 * @param array $data The data from Personio.
-			 */
-			$position_obj = apply_filters( 'personio_integration_import_single_position_api', $position_obj, $data );
-
-			// save the position object.
-			try {
-				$position_obj->save();
-			} catch ( JsonException $e ) {
-				$this->add_error( __( 'JSON-Error:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>' );
-			}
-
-			// update position counter.
-			++$imported_positions;
+			// show hint.
+			/* translators: %1$s will be replaced by a URL. */
+			$this->add_error( sprintf( __( 'Error occurred. Check <a href="%1$s">the log</a> for details.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
 		}
 
 		// finalize progress for WP CLI.
