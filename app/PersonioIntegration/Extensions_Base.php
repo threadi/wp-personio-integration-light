@@ -249,7 +249,7 @@ class Extensions_Base {
 		if ( 0 === $state ) {
 			$new_state = 1;
 
-			// enable all extension this extension requires.
+			// enable all extensions this extension requires.
 			foreach ( $this->get_required_extensions() as $extension_class_name ) {
 				// get the classname.
 				$classname = $extension_class_name . '::get_instance';

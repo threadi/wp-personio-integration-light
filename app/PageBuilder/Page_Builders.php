@@ -52,25 +52,8 @@ class Page_Builders extends Extensions_Base {
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 
 		// register the known pagebuilder.
-		foreach ( $this->get_page_builders() as $page_builder ) {
-			// get the classname.
-			$classname = $page_builder . '::get_instance';
-
-			// bail if it is not callable.
-			if ( ! is_callable( $classname ) ) {
-				continue;
-			}
-
-			// get the object.
-			$obj = $classname();
-
-			// bail if object is not PageBuilder_Base.
-			if ( ! $obj instanceof PageBuilder_Base ) {
-				continue;
-			}
-
-			// initialize the object.
-			$obj->init();
+		foreach ( $this->get_page_builders_as_objects() as $page_builder_obj ) {
+			$page_builder_obj->init();
 		}
 	}
 
@@ -90,6 +73,41 @@ class Page_Builders extends Extensions_Base {
 		 * @param array<string> $list List of the handler.
 		 */
 		return apply_filters( 'personio_integration_pagebuilder', $list );
+	}
+
+	/**
+	 * Return list of page builders as their objects.
+	 *
+	 * @return array<int,PageBuilder_Base>
+	 */
+	public function get_page_builders_as_objects(): array {
+		// create the list.
+		$list = array();
+
+		// register the known pagebuilder.
+		foreach ( $this->get_page_builders() as $page_builder ) {
+			// get the classname.
+			$classname = $page_builder . '::get_instance';
+
+			// bail if it is not callable.
+			if ( ! is_callable( $classname ) ) {
+				continue;
+			}
+
+			// get the object.
+			$obj = $classname();
+
+			// bail if object is not PageBuilder_Base.
+			if ( ! $obj instanceof PageBuilder_Base ) {
+				continue;
+			}
+
+			// add object to the list.
+			$list[] = $obj;
+		}
+
+		// return the list.
+		return $list;
 	}
 
 	/**
