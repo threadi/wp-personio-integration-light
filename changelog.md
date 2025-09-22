@@ -45,6 +45,7 @@
 - Renamed "Application link" to "Option to apply"
 - Renamed "Content" to "Description"
 - Show hint in backend if no description is available for single position
+- Block settings are now visible on load
 - The help will show primary the help for the actual called page in backend
 - Optimized handling of header and footer settings for our block templates on theme switch
 - Checking whether a required plugin for an extension is installed (without it having to be activated)

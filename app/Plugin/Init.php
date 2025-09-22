@@ -10,7 +10,6 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
@@ -218,7 +217,10 @@ class Init {
 			return;
 		}
 
+		// flush the rewrite rules.
 		flush_rewrite_rules();
+
+		// disable the flag to update them.
 		update_option( 'personio_integration_update_slugs', 0 );
 	}
 
