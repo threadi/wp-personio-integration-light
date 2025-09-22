@@ -4,7 +4,7 @@
 	"name": "wp-personio-integration/details",
 	"version": "@@VersionNumber@@",
 	"title": "Details",
-	"category": "widgets",
+	"category": "personio-integration",
 	"description": "Provides a Gutenberg Block for details of a single position managed by Personio.",
 	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {

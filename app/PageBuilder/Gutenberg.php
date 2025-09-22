@@ -81,6 +81,7 @@ class Gutenberg extends PageBuilder_Base {
 
 		// misc.
 		add_filter( 'body_class', array( $this, 'add_body_classes' ) );
+		add_filter( 'block_categories_all', array( $this, 'add_block_category' ) );
 
 		// call parent init.
 		parent::init();
@@ -334,5 +335,23 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function is_installed(): bool {
 		return true;
+	}
+
+	/**
+	 * Add our custom block category for all of our own widgets.
+	 *
+	 * @param array<int,array<string,mixed>> $block_categories
+	 *
+	 * @return array<int,array<string,mixed>>
+	 */
+	public function add_block_category( array $block_categories ): array {
+		// add our custom block category.
+		$block_categories[] = array(
+			'slug' => 'personio-integration',
+			'title' => __( 'Personio Integration', 'personio-integration' )
+		);
+
+		// return resulting list.
+		return $block_categories;
 	}
 }

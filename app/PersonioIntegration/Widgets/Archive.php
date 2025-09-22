@@ -93,7 +93,7 @@ class Archive extends Widget_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __( 'Show a list of positions.', 'personio-integration-light' );
+		return __( 'Provides a Gutenberg block to show a list of positions provided by Personio.', 'personio-integration-light' );
 	}
 
 	/**

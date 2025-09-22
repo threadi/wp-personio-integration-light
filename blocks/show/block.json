@@ -4,7 +4,7 @@
 	"name": "wp-personio-integration/show",
 	"version": "@@VersionNumber@@",
 	"title": "Personio Position",
-	"category": "widgets",
+	"category": "personio-integration",
 	"description": "Provides a Gutenberg Block to show a position managed by Personio.",
 	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {

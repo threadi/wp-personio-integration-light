@@ -10,8 +10,8 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transient;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Radio;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Import;
@@ -166,6 +166,12 @@ class Setup {
 
 			// delete all other transients.
 			foreach ( $transients_obj->get_transients() as $transient_obj ) {
+				// bail if object is not ours.
+				if( ! $transient_obj instanceof Transient ) {
+					continue;
+				}
+
+				// delete it.
 				$transient_obj->delete();
 			}
 
