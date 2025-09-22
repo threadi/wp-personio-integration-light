@@ -77,9 +77,11 @@ class Settings {
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 30 );
 		add_filter( 'personio_integration_light_settings_tab_title', array( $this, 'add_pro_on_title' ), 10, 2 );
+		add_action( 'personio_integration_light_settings_import', array( $this, 'run_after_import' ) );
 
 		// misc.
 		add_action( 'wp_ajax_personio_get_settings_import_dialog', array( $this, 'get_settings_import_dialog_via_ajax' ) );
+		add_action( 'admin_action_personio_integration_light_reset', array( $this, 'reset_plugin_by_request' ) );
 	}
 
 	/**
@@ -240,6 +242,11 @@ class Settings {
 		$advanced->set_title( __( 'Additional settings', 'personio-integration-light' ) );
 		$advanced->set_setting( $settings_obj );
 		$advanced->set_callback( array( $this, 'show_advanced_hint' ) );
+
+		// the advanced plugin-handling section.
+		$advanced_plugin = $advanced_tab->add_section( 'settings_section_advanced_plugin', 10 );
+		$advanced_plugin->set_title( __( 'Plugin handling', 'personio-integration-light' ) );
+		$advanced_plugin->set_setting( $settings_obj );
 
 		// create a hidden page for hidden settings.
 		$hidden_page = $settings_obj->add_page( 'hidden_page' );
@@ -572,12 +579,6 @@ class Settings {
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 
-		// add import.
-		Import::get_instance()->add_settings( $settings_obj, $advanced );
-
-		// add export.
-		Export::get_instance()->add_settings( $settings_obj, $advanced );
-
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationDeleteOnUninstall' );
 		$setting->set_section( $advanced );
@@ -598,6 +599,56 @@ class Settings {
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		/* translators: %1$s will be replaced by a URL. */
 		$field->set_description( sprintf( __( 'When activated, the plugin logs many processes. This information can then be seen <a href="%1$s">in the log</a>. This helps to analyze any problems that may occur. At the same time, all open positions are retrieved in full at any time - it will not be checked whether anything has been changed in Personio. <strong>We do not recommend using this mode permanently in a productive system.</strong>', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
+		$setting->set_field( $field );
+
+		// add import.
+		Import::get_instance()->add_settings( $settings_obj, $advanced_plugin );
+
+		// add export.
+		Export::get_instance()->add_settings( $settings_obj, $advanced_plugin );
+
+		// create reset URL.
+		$reset_url = add_query_arg(
+			array(
+				'action' => 'personio_integration_light_reset',
+				'nonce' => wp_create_nonce( 'personio-integration-light-reset' )
+			),
+			get_admin_url() . 'admin.php'
+		);
+
+		// create dialog.
+		$reset_dialog = array(
+			'title'   => __( 'Reset plugin', 'personio-integration-light' ),
+			'texts'   => array(
+				'<p><strong>' . __( 'Do you really want to reset any settings and data for the plugin Personio Integration?', 'personio-integration-light' ) . '</strong></p>',
+				'<p>' . __( 'This will not only reset all settings, but also remove all positions and associated data.', 'personio-integration-light' ) . '</p>',
+				'<p>' . __( 'You can then setup the plugin again.', 'personio-integration-light' ) . '</p>',
+				'<p><strong>' . __( 'We recommend creating a backup before resetting the plugin.', 'personio-integration-light' ) . '</strong></p>'
+			),
+			'buttons' => array(
+				array(
+					'action'  => 'location.href="' . $reset_url . '";',
+					'variant' => 'primary',
+					'text'    => __( 'Yes, reset it', 'personio-integration-light' )
+				),
+				array(
+					'action'  => 'closeDialog();',
+					'variant' => 'primary',
+					'text'    => __( 'Cancel', 'personio-integration-light' )
+				),
+			),
+		);
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationReset' );
+		$setting->set_section( $advanced_plugin );
+		$setting->prevent_export( true );
+		$field = new Button();
+		$field->set_title( __( 'Reset plugin', 'personio-integration-light' ) );
+		$field->set_button_title( __( 'Reset plugin', 'personio-integration-light' ) );
+		$field->set_button_url( $reset_url );
+		$field->add_data( 'dialog', Helper::get_json( $reset_dialog ) );
+		$field->add_class( 'easy-dialog-for-wordpress' );
 		$setting->set_field( $field );
 
 		/**
@@ -850,5 +901,56 @@ class Settings {
 
 		// return the dialog.
 		wp_send_json( array( 'detail' => $dialog ) );
+	}
+
+	/**
+	 * Reset the plugin by request.
+	 *
+	 * @return void
+	 */
+	public function reset_plugin_by_request(): void {
+		// check nonce.
+		check_admin_referer( 'personio-integration-light-reset', 'nonce' );
+
+		// set options.
+		$options = array(
+			'delete-all' => 1
+		);
+
+		// uninstall all.
+		Uninstaller::get_instance()->run( array( 1 ) );
+
+		/**
+		 * Run additional tasks for uninstallation via WP CLI.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 * @updated 4.0.0 Using options instead of attributes.
+		 *
+		 * @param array $options Options used to call this command.
+		 */
+		do_action( 'personio_integration_uninstaller', $options );
+
+		// run installer tasks.
+		Installer::get_instance()->activation();
+
+		/**
+		 * Run additional tasks for installation via WP CLI.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 */
+		do_action( 'personio_integration_installer' );
+
+		// forward user to dashboard.
+		wp_safe_redirect( get_admin_url() );
+	}
+
+	/**
+	 * Tasks to run after import of settings.
+	 *
+	 * @return void
+	 */
+	public function run_after_import(): void {
+		// set setup to be completed.
+		\easySetupForWordPress\Setup::get_instance()->set_completed( Setup::get_instance()->get_setup_name() );
 	}
 }

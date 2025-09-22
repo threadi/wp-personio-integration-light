@@ -26,6 +26,7 @@
 - Added info in admin footer if a page from our plugin is loaded
 - Added option to import project configuration during setup
 - Added log for error 500 during imports which also prevents hanging import tasks
+- Added option to reset the plugin in backend settings (in preparation for Cyber Resilience Act)
 
 ### Changed
 

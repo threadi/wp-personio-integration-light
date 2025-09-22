@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transient;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
@@ -105,6 +106,12 @@ class Uninstaller {
 
 		// remove transients.
 		foreach ( Transients::get_instance()->get_transients() as $transient_obj ) {
+			// bail if object is not ours.
+			if( ! $transient_obj instanceof Transient ) {
+				continue;
+			}
+
+			// delete it.
 			$transient_obj->delete();
 			$transient_obj->delete_dismiss();
 		}
