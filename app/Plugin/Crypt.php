@@ -100,6 +100,7 @@ class Crypt {
 			return '';
 		}
 
+		// encrypt the string with the detected method.
 		return $method_obj->encrypt( $encrypted_text );
 	}
 
@@ -118,17 +119,18 @@ class Crypt {
 		if ( false === $method_obj ) {
 			// log this event.
 			/* translators: %1$s will be replaced by our support-URL. */
-			Log::get_instance()->add( sprintf( __( 'No supported encryption method found. Please contact <a href="%1$s">our support</a> about this problem.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ), 'error', 'system' );
+			Log::get_instance()->add( sprintf( __( 'No supported encryption method found! Please contact <a href="%1$s">our support</a> about this problem.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ), 'error', 'system' );
 			return '';
 		}
 
+		// decrypt the string with the detected method.
 		return $method_obj->decrypt( $encrypted_text );
 	}
 
 	/**
 	 * Return list of supported methods.
 	 *
-	 * @return array<string>
+	 * @return array<int,string>
 	 */
 	private function get_available_methods(): array {
 		$methods = array(
@@ -140,15 +142,15 @@ class Crypt {
 		 * Filter the available crypt-methods.
 		 *
 		 * @since 5.0.0 Available since 5.0.0.
-		 * @param array<string> $methods List of methods.
+		 * @param array<int,string> $methods List of methods.
 		 */
-		return apply_filters( 'personio_integration_crypt_methods', $methods );
+		return apply_filters( 'personio_integration_light_crypt_methods', $methods );
 	}
 
 	/**
 	 * Return list of available methods as objects.
 	 *
-	 * @return array<Crypt_Base>
+	 * @return array<int,Crypt_Base>
 	 */
 	private function get_methods_as_objects(): array {
 		// define list for objects.

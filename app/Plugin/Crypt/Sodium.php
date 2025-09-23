@@ -148,9 +148,9 @@ class Sodium extends Crypt_Base {
 	}
 
 	/**
-	 * Get sodium-encrypted text.
+	 * Encrypt a given string.
 	 *
-	 * @param string $plain_text The encrypted text.
+	 * @param string $plain_text The plain string.
 	 *
 	 * @return string
 	 */
@@ -172,9 +172,9 @@ class Sodium extends Crypt_Base {
 	}
 
 	/**
-	 * Get sodium-decrypted text.
+	 * Decrypt a string.
 	 *
-	 * @param string $encrypted_text The encrypted text.
+	 * @param string $encrypted_text The encrypted string.
 	 *
 	 * @return string
 	 */
@@ -211,16 +211,6 @@ class Sodium extends Crypt_Base {
 	 */
 	private function get_coding_id(): int {
 		return $this->coding_id;
-	}
-
-	/**
-	 * Get the code to use for wp-config.php.
-	 *
-	 * @return string
-	 * @throws SodiumException On Error with sodium.
-	 */
-	public function get_code(): string {
-		return "define( '" . $this->get_constant() . "', '" . sodium_bin2base64( $this->get_hash(), $this->get_coding_id() ) . "' );";
 	}
 
 	/**
