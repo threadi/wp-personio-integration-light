@@ -413,6 +413,16 @@ class Archive extends Widget_Base {
 				'example_value' => 1,
 				'required'      => false,
 			),
+			'positionBackgroundColor' => array(
+				'label'         => __( 'Background single position', 'personio-integration-light' ),
+				'example_value' => '',
+				'required'      => false,
+			),
+			'positionBackgroundColorHover' => array(
+				'label'         => __( 'Background single position (hover)', 'personio-integration-light' ),
+				'example_value' => '',
+				'required'      => false,
+			),
 		);
 	}
 }

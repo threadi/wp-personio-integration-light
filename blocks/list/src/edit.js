@@ -24,22 +24,24 @@ import {
 } from '@wordpress/components';
 import {
 	InspectorControls,
-	useBlockProps
+	useBlockProps,
+  __experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+  __experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
-	onChangeLimit,
-	onChangeSort,
-	onChangeTitleVisibility,
-	onChangeExcerptVisibility,
-	onChangeContentVisibility,
-	onChangeApplicationFormVisibility,
-	onChangeExcerptTemplates,
-	onChangeLinkingTitle,
-	onChangeSortBy,
-	onChangeGroupBy,
-	onChangeTemplate,
-  Personio_Helper_Panel
+  onChangeLimit,
+  onChangeSort,
+  onChangeTitleVisibility,
+  onChangeExcerptVisibility,
+  onChangeContentVisibility,
+  onChangeApplicationFormVisibility,
+  onChangeExcerptTemplates,
+  onChangeLinkingTitle,
+  onChangeSortBy,
+  onChangeGroupBy,
+  onChangeTemplate,
+  Personio_Helper_Panel, onChangePositionBackgroundColor, onChangePositionBackgroundColorHover
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -109,6 +111,11 @@ export default function Edit( object ) {
 
 	// set max amount for listings.
 	let max_amount = wp.hooks.applyFilters('personio.list.amount', 10);
+
+  // get the color gradient settings.
+  const colorGradientSettings = useMultipleOriginColorsAndGradients()
+
+  console.log(object.attributes);
 
 	/**
 	 * Collect return for the edit-function
@@ -201,6 +208,32 @@ export default function Edit( object ) {
 					/>
 				</PanelBody>
         <Personio_Helper_Panel/>
+      </InspectorControls>
+      <InspectorControls group="color">
+        <ColorGradientSettingsDropdown
+          panelId={object.clientId}
+          settings={ [
+            {
+              label: __('Background single position', 'personio-integration-light'),
+              colorValue: object.attributes.positionBackgroundColor,
+              onColorChange: value => onChangePositionBackgroundColor( value, object ),
+              clearable: true,
+            }
+          ] }
+          { ...colorGradientSettings }
+        />
+        <ColorGradientSettingsDropdown
+          panelId={object.clientId}
+          settings={ [
+            {
+              label: __('Background single position (hover)', 'personio-integration-light'),
+              colorValue: object.attributes.positionBackgroundColorHover,
+              onColorChange: value => onChangePositionBackgroundColorHover( value, object ),
+              clearable: true,
+            }
+          ] }
+          { ...colorGradientSettings }
+        />
       </InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/list"

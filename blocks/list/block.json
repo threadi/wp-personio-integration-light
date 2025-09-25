@@ -77,7 +77,15 @@
 		"blockId": {
 			"type": "string",
 			"default": ""
-		}
+		},
+        "positionBackgroundColor": {
+            "type": "string",
+            "default": ""
+        },
+        "positionBackgroundColorHover": {
+            "type": "string",
+            "default": ""
+        }
 	},
 	"example": {
 		"attributes": {
