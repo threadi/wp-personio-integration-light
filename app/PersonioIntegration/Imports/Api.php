@@ -552,6 +552,6 @@ class Api extends Imports_Base {
 	 * @return bool
 	 */
 	public function can_be_enabled_by_user(): bool {
-		return function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' );
+		return Helper::is_development_mode_active();
 	}
 }

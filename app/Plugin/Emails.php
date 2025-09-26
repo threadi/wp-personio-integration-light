@@ -231,7 +231,7 @@ class Emails {
 	 */
 	public function add_emails_help( array $help_list ): array {
 		// collect the content for the help.
-		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Emails', 'personio-integration-light' ) . '</h2><p>' . __( 'We enable you to advertise your jobs on your own website. Applicants can find them and apply for them.', 'personio-integration-light' ) . '</p>';
+		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Emails', 'personio-integration-light' ) . '</h2><p>' . __( 'We enable you to advertise your positions on your own website. Applicants can find them and apply for them.', 'personio-integration-light' ) . '</p>';
 		$content .= '<p><strong>' . __( 'How to use emails:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		$content .= '<li>' . __( 'Take a look at the list of emails in the settings.', 'personio-integration-light' ) . '</li>';

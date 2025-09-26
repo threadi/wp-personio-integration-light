@@ -358,62 +358,62 @@ class Archive extends Widget_Base {
 
 		// return the list of params for this widget.
 		return array(
-			'template'            => array(
+			'template'                     => array(
 				'label'         => __( 'Name of chosen template, one of these values:', 'personio-integration-light' ) . $list,
 				'example_value' => $values[0],
 				'required'      => false,
 			),
-			'limit'               => array(
+			'limit'                        => array(
 				'label'         => __( 'Amount of entries in the list. "0" for unlimited.', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'sort'                => array(
+			'sort'                         => array(
 				'label'         => __( 'Sort direction, one of these values:', 'personio-integration-light' ) . $sort_list,
 				'example_value' => $sort[0],
 				'required'      => false,
 			),
-			'sortby'              => array(
+			'sortby'                       => array(
 				'label'         => __( 'Sort by, one of these values:', 'personio-integration-light' ) . $sortby_list,
 				'example_value' => $sortby[0],
 				'required'      => false,
 			),
-			'groupby'             => array(
+			'groupby'                      => array(
 				'label'         => __( 'Group by, one of these values:', 'personio-integration-light' ) . $groupby_list,
 				'example_value' => $groupby_list[0],
 				'required'      => false,
 			),
-			'showTitle'           => array(
+			'showTitle'                    => array(
 				'label'         => __( 'Show title', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'linkTitle'           => array(
+			'linkTitle'                    => array(
 				'label'         => __( 'Link title', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'showExcerpt'         => array(
+			'showExcerpt'                  => array(
 				'label'         => __( 'Show excerpt', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'excerptTemplates'    => array(
+			'excerptTemplates'             => array(
 				'label'         => __( 'Choose details, any of these values:', 'personio-integration-light' ) . $excerpt_list,
 				'example_value' => $excerpts[0],
 				'required'      => false,
 			),
-			'showContent'         => array(
+			'showContent'                  => array(
 				'label'         => __( 'View content', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'showApplicationForm' => array(
+			'showApplicationForm'          => array(
 				'label'         => __( 'View option to apply', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
-			'positionBackgroundColor' => array(
+			'positionBackgroundColor'      => array(
 				'label'         => __( 'Background single position', 'personio-integration-light' ),
 				'example_value' => '',
 				'required'      => false,

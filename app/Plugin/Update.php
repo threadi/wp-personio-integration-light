@@ -10,11 +10,11 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Imports\Xml;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\PersonioIntegration\Widgets;
 
 /**
  * Helper-function for updates of this plugin.
@@ -72,15 +72,7 @@ class Update {
 		$db_plugin_version = get_option( 'personioIntegrationVersion', '1.0.0' );
 
 		// compare version if we are not in development-mode.
-		if (
-			(
-				(
-					function_exists( 'wp_is_development_mode' ) && false === wp_is_development_mode( 'plugin' )
-				)
-				|| ! function_exists( 'wp_is_development_mode' )
-			)
-			&& version_compare( $installed_plugin_version, $db_plugin_version, '>' )
-		) {
+		if ( ! Helper::is_development_mode_active() && version_compare( $installed_plugin_version, $db_plugin_version, '>' ) ) {
 			if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING ' ) ) {
 				define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
 			}
@@ -209,5 +201,10 @@ class Update {
 
 		// show hint to re-import positions.
 		Positions::get_instance()->trigger_reimport_hint();
+
+		// enable all widgets.
+		foreach ( Widgets::get_instance()->get_widgets_as_objects() as $widget_obj ) {
+			$widget_obj->set_enabled();
+		}
 	}
 }

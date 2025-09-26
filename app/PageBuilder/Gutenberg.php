@@ -215,13 +215,6 @@ class Gutenberg extends PageBuilder_Base {
 	}
 
 	/**
-	 * Replacement for FSE hint in template settings.
-	 *
-	 * @return void
-	 */
-	public function fse_hint_replacement(): void {}
-
-	/**
 	 * Initialize the pattern-object to register them.
 	 *
 	 * @return void
@@ -340,15 +333,15 @@ class Gutenberg extends PageBuilder_Base {
 	/**
 	 * Add our custom block category for all of our own widgets.
 	 *
-	 * @param array<int,array<string,mixed>> $block_categories
+	 * @param array<int,array<string,mixed>> $block_categories List of block categories.
 	 *
 	 * @return array<int,array<string,mixed>>
 	 */
 	public function add_block_category( array $block_categories ): array {
 		// add our custom block category.
 		$block_categories[] = array(
-			'slug' => 'personio-integration',
-			'title' => __( 'Personio Integration', 'personio-integration' )
+			'slug'  => 'personio-integration',
+			'title' => __( 'Personio Integration', 'personio-integration' ),
 		);
 
 		// return resulting list.

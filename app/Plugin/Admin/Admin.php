@@ -940,7 +940,7 @@ class Admin {
 		}
 
 		// bail if WordPress is in developer mode.
-		if ( function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' ) ) {
+		if ( Helper::is_development_mode_active() ) {
 			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
 			return;
 		}

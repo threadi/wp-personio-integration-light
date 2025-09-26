@@ -209,7 +209,7 @@ class Intro {
 				'import_intro_step_5_title'    => __( 'Import positions', 'personio-integration-light' ),
 				'import_intro_step_5_intro'    => __( 'With this simple steps you can manage the import of positions.<br>With Personio Integration Pro you will have much more options, not only for the import.', 'personio-integration-light' ),
 				'template_intro_step_1_title'  => __( 'Configure templates positions', 'personio-integration-light' ),
-				'template_intro_step_1_intro'  => __( 'The page in front of us is used to configure basic settings for the output of jobs in the frontend.<br><br><strong>Please note:</strong> if you use a PageBuilder with your own templates, these templates will overwrite the settings here. However, the options are always the same.', 'personio-integration-light' ),
+				'template_intro_step_1_intro'  => __( 'The page in front of us is used to configure basic settings for the output of positions in the frontend.<br><br><strong>Please note:</strong> if you use a PageBuilder with your own templates, these templates will overwrite the settings here. However, the options are always the same.', 'personio-integration-light' ),
 				'template_intro_step_2_title'  => __( 'Configure templates positions', 'personio-integration-light' ),
 				'template_intro_step_2_intro'  => __( 'Enable this if you want to use a filter above your list of positions. The filter can help applicants to find suitable positions more quickly.', 'personio-integration-light' ),
 				'template_intro_step_3_title'  => __( 'Configure templates positions', 'personio-integration-light' ),

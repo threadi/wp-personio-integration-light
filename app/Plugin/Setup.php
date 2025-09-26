@@ -167,7 +167,7 @@ class Setup {
 			// delete all other transients.
 			foreach ( $transients_obj->get_transients() as $transient_obj ) {
 				// bail if object is not ours.
-				if( ! $transient_obj instanceof Transient ) {
+				if ( ! $transient_obj instanceof Transient ) { // @phpstan-ignore instanceof.alwaysTrue
 					continue;
 				}
 

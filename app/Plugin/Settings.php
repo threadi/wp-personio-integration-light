@@ -516,6 +516,7 @@ class Settings {
 		$setting->set_default( '' );
 		$field = new Text();
 		$field->set_title( __( 'URL for back to list-link', 'personio-integration-light' ) );
+		$field->set_description( __( 'If empty we use the default archive URL.', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$field->add_depend( $setting_back_to_list_button, 1 );
 		$setting->set_field( $field );
@@ -611,7 +612,7 @@ class Settings {
 		$reset_url = add_query_arg(
 			array(
 				'action' => 'personio_integration_light_reset',
-				'nonce' => wp_create_nonce( 'personio-integration-light-reset' )
+				'nonce'  => wp_create_nonce( 'personio-integration-light-reset' ),
 			),
 			get_admin_url() . 'admin.php'
 		);
@@ -623,18 +624,18 @@ class Settings {
 				'<p><strong>' . __( 'Do you really want to reset any settings and data for the plugin Personio Integration?', 'personio-integration-light' ) . '</strong></p>',
 				'<p>' . __( 'This will not only reset all settings, but also remove all positions and associated data.', 'personio-integration-light' ) . '</p>',
 				'<p>' . __( 'You can then setup the plugin again.', 'personio-integration-light' ) . '</p>',
-				'<p><strong>' . __( 'We recommend creating a backup before resetting the plugin.', 'personio-integration-light' ) . '</strong></p>'
+				'<p><strong>' . __( 'We recommend creating a backup before resetting the plugin.', 'personio-integration-light' ) . '</strong></p>',
 			),
 			'buttons' => array(
 				array(
 					'action'  => 'location.href="' . $reset_url . '";',
 					'variant' => 'primary',
-					'text'    => __( 'Yes, reset it', 'personio-integration-light' )
+					'text'    => __( 'Yes, reset it', 'personio-integration-light' ),
 				),
 				array(
 					'action'  => 'closeDialog();',
 					'variant' => 'primary',
-					'text'    => __( 'Cancel', 'personio-integration-light' )
+					'text'    => __( 'Cancel', 'personio-integration-light' ),
 				),
 			),
 		);
@@ -914,7 +915,7 @@ class Settings {
 
 		// set options.
 		$options = array(
-			'delete-all' => 1
+			'delete-all' => 1,
 		);
 
 		// uninstall all.

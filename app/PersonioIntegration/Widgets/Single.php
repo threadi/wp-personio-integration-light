@@ -127,7 +127,7 @@ class Single extends Widget_Base {
 			return '';
 		}
 
-		// get the position by its PersonioId.
+		// get the position by its Personio ID.
 		$position = Positions::get_instance()->get_position_by_personio_id( $personio_attributes['personioid'] );
 
 		// do not show this position if it is not valid or could not be loaded.
@@ -217,7 +217,7 @@ class Single extends Widget_Base {
 	 */
 	private function get_single_shortcode_attributes_defaults(): array {
 		$default_values = array(
-			'personioid'              => 0,
+			'personioid'              => '',
 			'lang'                    => Languages::get_instance()->get_main_language(),
 			'template'                => '',
 			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults' ) ),

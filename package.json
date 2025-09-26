@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@wordpress/i18n": "^6.2.0",
-    "concurrently": "^9.2.0",
+    "concurrently": "^9.2.1",
     "intro.js": "^8.3.2"
   }
 }

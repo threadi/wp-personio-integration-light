@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use cli\progress\Bar;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
-use PersonioIntegrationLight\Plugin\Email_Base;
+use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Emails\ImportError;
 use WP_CLI\NoOp;
 use WP_Error;
@@ -82,7 +82,9 @@ class Imports_Base extends Extensions_Base {
 	 *
 	 * @return void
 	 */
-	public function init(): void {}
+	public function init(): void {
+		add_filter( 'personio_integration_light_extension_state_changed_dialog', array( $this, 'add_hint_after_enabling' ), 10, 2 );
+	}
 
 	/**
 	 * Run the import.
@@ -290,5 +292,47 @@ class Imports_Base extends Extensions_Base {
 	 */
 	public function is_installed(): bool {
 		return true;
+	}
+
+	/**
+	 * Extend the dialog after enabling this extension with hints to usage.
+	 *
+	 * @param array<string,mixed> $dialog The dialog.
+	 * @param Extensions_Base     $extension The changed extension.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function add_hint_after_enabling( array $dialog, Extensions_Base $extension ): array {
+		// bail if this is not this extension.
+		if ( $this->get_name() !== $extension->get_name() ) {
+			return $dialog;
+		}
+
+		// bail if status is disabled.
+		if ( ! $extension->is_enabled() ) {
+			// bail if another extension is enabled.
+			if ( Imports::get_instance()->is_one_extension_enabled() ) {
+				return $dialog;
+			}
+
+			// add hint.
+			/* translators: %1$s will be replaced by a URL. */
+			$dialog['texts'][] = '<p><strong>' . sprintf( __( 'There is no import extension for Personio positions enabled!', 'personio-integration-light' ) . '</strong> ' . __( 'Please <a href="%1$s">go to the list of import extensions</a> and enable one to import and update your positions in your website.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link( 'imports' ) ) ) . '</p>';
+
+			// return the dialog.
+			return $dialog;
+		}
+
+		// add hint.
+		$dialog['texts'][] = '<p>' . __( 'Follow these steps to use this import extension.', 'personio-integration-light' ) . '</p>';
+		/* translators: %1$s will be replaced by a URL. */
+		$list              = '<ol><li>' . sprintf( __( 'Check the <a href="%1$s">settings</a> for imports.', 'personio-integration-light' ), Helper::get_settings_url( 'personioPositions', 'import' ) ) . '</li>';
+		$list             .= '<li>' . __( 'Run the import of positions.', 'personio-integration-light' ) . '</li>';
+		/* translators: %1$s will be replaced by a URL. */
+		$list             .= '<li>' . sprintf( __( 'Go to the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) ) . '</li></ol>';
+		$dialog['texts'][] = $list;
+
+		// return resulting dialog.
+		return $dialog;
 	}
 }

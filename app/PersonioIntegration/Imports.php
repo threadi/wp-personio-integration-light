@@ -68,7 +68,6 @@ class Imports {
 
 		// bail of no import extension is enabled.
 		if ( ! $this->is_one_extension_enabled() ) {
-			add_action( 'init', array( $this, 'trigger_no_extension_hint' ) );
 			return;
 		}
 
@@ -178,7 +177,7 @@ class Imports {
 		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Import', 'save' ) );
 		$field = new Checkbox();
 		$field->set_title( __( 'Enable automatic import', 'personio-integration-light' ) );
-		$field->set_description( __( 'The automatic import is run once per day. You don\'t have to worry about updating your jobs on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
+		$field->set_description( __( 'The automatic import is run once per day. You don\'t have to worry about updating your positions on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
 		$automatic_import_setting->set_field( $field );
 	}
 
@@ -266,7 +265,7 @@ class Imports {
 	 *
 	 * @return bool
 	 */
-	private function is_one_extension_enabled(): bool {
+	public function is_one_extension_enabled(): bool {
 		return false !== $this->get_import_extension();
 	}
 
@@ -287,27 +286,6 @@ class Imports {
 
 		// return false if no import extension is enabled.
 		return false;
-	}
-
-	/**
-	 * Trigger the "no extension enabled" hint.
-	 *
-	 * @return void
-	 */
-	public function trigger_no_extension_hint(): void {
-		// bail if setup has not been run.
-		if ( ! Setup::get_instance()->is_completed() ) {
-			return;
-		}
-
-		// show warning about missing enabled import extension.
-		$transient_obj = Transients::get_instance()->add();
-		$transient_obj->set_name( 'personio_import_extension_not_enabled' );
-		$transient_obj->set_dismissible_days( 30 );
-		$transient_obj->set_type( 'error' );
-		/* translators: %1$s will be replaced by a URL. */
-		$transient_obj->set_message( sprintf( __( 'There is no import extension for Personio positions enabled. Please <a href="%1$s">go to the list of import extensions</a> and enable one to import and update your positions in your website.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link( 'imports' ) ) ) );
-		$transient_obj->save();
 	}
 
 	/**

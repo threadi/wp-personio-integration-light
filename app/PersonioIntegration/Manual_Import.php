@@ -128,7 +128,7 @@ class Manual_Import extends Extensions_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return __( 'Adds option to manual import positions from Personio. You can choose which positions to import and which not to import.', 'personio-integration-light' );
+		return __( 'Adds option to manual import positions from Personio. You can choose which positions to import and which not.', 'personio-integration-light' );
 	}
 
 	/**
@@ -467,7 +467,7 @@ class Manual_Import extends Extensions_Base {
 				'detail' => array(
 					'title'   => __( 'No positions selected', 'personio-integration-light' ),
 					'texts'   => array(
-						'<p>' . __( 'No positions were selected for import.', 'personio-integration-light' ) . '</p>',
+						'<p>' . __( 'No positions were selected for import. Nothing has been changed.', 'personio-integration-light' ) . '</p>',
 					),
 					'buttons' => array(
 						array(

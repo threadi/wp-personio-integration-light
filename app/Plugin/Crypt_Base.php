@@ -192,7 +192,7 @@ class Crypt_Base {
 	 */
 	protected function create_mu_plugin(): void {
 		// bail if WPMU_PLUGIN_DIR is not set.
-		if( ! defined( 'WPMU_PLUGIN_DIR' ) ) {
+		if ( ! defined( 'WPMU_PLUGIN_DIR' ) ) {
 			return;
 		}
 
@@ -211,7 +211,7 @@ class Crypt_Base {
 		$file_path = WPMU_PLUGIN_DIR . DIRECTORY_SEPARATOR . $this->get_mu_plugin_filename();
 
 		// save the file.
-		if( ! $wp_filesystem->put_contents( $file_path, $file_content ) ) {
+		if ( ! $wp_filesystem->put_contents( $file_path, $file_content ) ) {
 			// trigger warning if the fallback file could also not be saved.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_crypt_error' );
@@ -235,7 +235,7 @@ class Crypt_Base {
 	 */
 	protected function delete_mu_plugin(): void {
 		// bail if WPMU_PLUGIN_DIR is not set.
-		if( ! defined( 'WPMU_PLUGIN_DIR' ) ) {
+		if ( ! defined( 'WPMU_PLUGIN_DIR' ) ) {
 			return;
 		}
 
