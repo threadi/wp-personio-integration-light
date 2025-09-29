@@ -66,18 +66,18 @@ class Helper {
 	}
 
 	/**
-	 * Get the language-depending detail-slug.
+	 * Get the language-depending single-slug.
 	 *
 	 * @return string
 	 */
-	public static function get_detail_slug(): string {
+	public static function get_single_slug(): string {
 		$slug = 'position';
 		if ( Languages::get_instance()->is_german_language() ) {
 			$slug = 'stelle';
 		}
 
 		/**
-		 * Change the detail slug.
+		 * Change the single slug.
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *

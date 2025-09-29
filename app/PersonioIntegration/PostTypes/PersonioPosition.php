@@ -185,7 +185,7 @@ class PersonioPosition extends Post_Type {
 
 		// get slugs.
 		$archive_slug = Helper::get_archive_slug();
-		$single_slug  = Helper::get_detail_slug();
+		$single_slug  = Helper::get_single_slug();
 
 		// set arguments for our own cpt.
 		$args = array(
