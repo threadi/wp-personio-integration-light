@@ -54,6 +54,8 @@
 - Checking whether a required plugin for an extension is installed (without it having to be activated)
 - Optimized HTML-code for grouped archive templates (now allows better styling via custom CSS)
 - Optimized handling of Personio account in this plugin (like links to the login or the position edit URL)
+- Cleanup styling of all blocks
+- Reduced the output of to many style elements on classic themes
 - Updated Intro-script
 - Updated dependencies
 

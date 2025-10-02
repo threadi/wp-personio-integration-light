@@ -5,11 +5,11 @@
   "author": "laOlaWeb GmbH",
   "license": "GPL-2.0-or-later",
   "scripts": {
-    "build": "concurrently --kill-others \"npm run build:list\" \"npm run build:show\" \"npm run build:filter-list\" \"npm run build:filter-select\" \"npm run build:application-button\" \"npm run build:details\" \"npm run build:description\"",
+    "build": "concurrently --kill-others \"npm run build:list\" \"npm run build:show\" \"npm run build:filter-list\" \"npm run build:filter-select\" \"npm run build:application-button\" \"npm run build:details\" \"npm run build:description\" \"npm run global-styles\"",
     "format": "wp-scripts format",
     "lint:css": "wp-scripts lint-style",
     "lint:js": "wp-scripts lint-js",
-    "start": "concurrently --kill-others \"npm run start:list\" \"npm run start:show\" \"npm run start:filter-list\" \"npm run start:filter-select\" \"npm run start:application-button\" \"npm run start:details\" \"npm run start:description\"",
+    "start": "concurrently --kill-others \"npm run start:list\" \"npm run start:show\" \"npm run start:filter-list\" \"npm run start:filter-select\" \"npm run start:application-button\" \"npm run start:details\" \"npm run start:description\" \"npm run global-styles\"",
     "packages-update": "wp-scripts packages-update",
     "start:application-button": "wp-scripts start blocks/application-button/src/index.js --output-path=blocks/application-button/build/",
     "build:application-button": "wp-scripts build blocks/application-button/src/index.js --output-path=blocks/application-button/build/",
@@ -26,7 +26,8 @@
     "start:filter-select": "wp-scripts start blocks/filter-select/src/index.js --output-path=blocks/filter-select/build/",
     "build:filter-select": "wp-scripts build blocks/filter-select/src/index.js --output-path=blocks/filter-select/build/",
     "make-pot": "wp i18n make-pot . languages/wp-personio-integration.pot --exclude=blocks/show/src/,blocks/list/src/,blocks/filter-list/src/,blocks/filter-select/src/,blocks/application-button/src/,blocks/details/src/,svn/",
-    "make-json": "wp i18n make-json languages"
+    "make-json": "wp i18n make-json languages",
+    "global-styles": "cat blocks/*/build/style-index.css > css/blocks.css"
   },
   "devDependencies": {
     "@wordpress/scripts": "~30.7",
