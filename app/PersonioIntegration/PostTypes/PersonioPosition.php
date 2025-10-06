@@ -875,7 +875,7 @@ class PersonioPosition extends Post_Type {
 		// add meta box with Pro-hint for subcompany-field which is only in Pro.
 		add_meta_box(
 			$this->get_name() . '-taxonomy-subcompany',
-			__( 'Subcompany', 'personio-integration-light' ),
+			__( 'Legal entity', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_pro_taxonomy' ),
 			$this->get_name(),
 			'side'

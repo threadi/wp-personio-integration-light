@@ -341,7 +341,7 @@ class Gutenberg extends PageBuilder_Base {
 		// add our custom block category.
 		$block_categories[] = array(
 			'slug'  => 'personio-integration',
-			'title' => __( 'Personio Integration', 'personio-integration' ),
+			'title' => __( 'Personio Integration', 'personio-integration-light' ),
 		);
 
 		// return resulting list.

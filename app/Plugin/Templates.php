@@ -953,7 +953,7 @@ class Templates {
 		 * Filter the class list of a single position.
 		 *
 		 * @since 4.0.0 Available since 4.0.0.
-		 * @param array $css_classes List of classes.
+		 * @param array<int,string> $css_classes List of classes.
 		 * @param Position $position_obj Position as object.
 		 */
 		$css_classes = apply_filters( 'personio_integration_light_position_classes', $css_classes, $position_obj );

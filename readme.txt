@@ -47,7 +47,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Multiple and customizable application forms incl. export of them via Personio API
 - Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech
 - Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
-- Support for subcompanies and additional offices in positions
+- Support for legal entities and other workplaces in positions
 - Support for salaries for open positions
 - Use GoogleMaps or OpenStreetMap for show you locations with open positions
 - Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Everest Forms, Fluent Forms, Forminator, Ninja Forms and WPForms
