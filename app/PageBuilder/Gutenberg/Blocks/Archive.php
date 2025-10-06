@@ -90,6 +90,14 @@ class Archive extends Blocks_Basis {
 			'type'    => 'string',
 			'default' => '',
 		),
+		'positionBackgroundColor' => array(
+			'type' => 'string',
+			'default' => ''
+		),
+		'positionBackgroundColorHover' => array(
+			'type' => 'string',
+			'default' => ''
+		)
 	);
 
 	/**
@@ -143,6 +151,14 @@ class Archive extends Blocks_Basis {
 				}
 				$styles_array[] = 'body .' . $class . ' { margin-bottom: ' . $value . '; }';
 			}
+		}
+
+		// set background for single positions in the list.
+		if( ! empty( $attributes['positionBackgroundColor'] ) ) {
+			$styles_array[] = '.wp-block-wp-personio-integration-list .personioposition { background-color: ' . $attributes['positionBackgroundColor'] . ' }';
+		}
+		if( ! empty( $attributes['positionBackgroundColorHover'] ) ) {
+			$styles_array[] = '.wp-block-wp-personio-integration-list .personioposition:hover { background-color: ' . $attributes['positionBackgroundColorHover'] . ' }';
 		}
 
 		// collect all settings for this block.

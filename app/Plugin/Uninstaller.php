@@ -77,14 +77,14 @@ class Uninstaller {
 				switch_to_blog( $blog->blog_id );
 
 				// run tasks for deactivation in this single blog.
-				$this->deactivation_tasks( $delete_data );
+				$this->deinstallation_tasks( $delete_data );
 			}
 
 			// switch back to original blog.
 			switch_to_blog( $original_blog_id );
 		} else {
 			// simply run the tasks on single-site-install.
-			$this->deactivation_tasks( $delete_data );
+			$this->deinstallation_tasks( $delete_data );
 		}
 	}
 
@@ -95,32 +95,33 @@ class Uninstaller {
 	 *
 	 * @return void
 	 */
-	private function deactivation_tasks( array $delete_data ): void {
+	private function deinstallation_tasks( array $delete_data ): void {
 		global $wpdb;
-
-		// remove schedules.
-		Schedules::get_instance()->delete_all();
-
-		// remove widgets.
-		Widgets::get_instance()->uninstall_all();
-
-		// remove transients.
-		foreach ( Transients::get_instance()->get_transients() as $transient_obj ) {
-			// bail if object is not ours.
-			if( ! $transient_obj instanceof Transient ) {
-				continue;
-			}
-
-			// delete it.
-			$transient_obj->delete();
-			$transient_obj->delete_dismiss();
-		}
-
-		// remove plugin update transient.
-		delete_transient( 'personio_integration_light_plugin_update_notices' );
 
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
+			/**
+			 * Set all settings.
+			 */
+
+			// initialize the plugin.
+			Init::get_instance()->init();
+
+			/**
+			 * Run the global init to initialize all components.
+			 */
+			do_action( 'init' );
+
+			// enable the settings.
+			\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->activation();
+
+			/**
+			 * Remove them.
+			 */
+
+			// clean managed settings.
+			\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->delete_settings();
+
 			// initialize the extensions to call their uninstall routines later.
 			Extensions::get_instance()->init();
 
@@ -133,17 +134,10 @@ class Uninstaller {
 			// delete position.
 			PersonioPosition::get_instance()->delete_positions();
 
-			// remove options used by settings.
-			$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
-			$settings_obj->delete_settings();
-
 			// remove custom options.
 			foreach ( $this->get_options() as $option ) {
 				delete_option( $option );
 			}
-
-			// remove setup-options.
-			Setup::get_instance()->uninstall();
 
 			// remove user meta for each cpt we provide.
 			foreach ( Post_Types::get_instance()->get_post_types() as $post_type ) {
@@ -176,11 +170,38 @@ class Uninstaller {
 			Extensions::get_instance()->uninstall_all();
 		}
 
+		// remove schedules.
+		Schedules::get_instance()->delete_all();
+
+		// remove widgets.
+		Widgets::get_instance()->uninstall_all();
+
+		// remove transients.
+		foreach ( Transients::get_instance()->get_transients() as $transient_obj ) {
+			// bail if object is not ours.
+			if ( ! $transient_obj instanceof Transient ) { // @phpstan-ignore instanceof.alwaysTrue
+				continue;
+			}
+
+			// delete it.
+			$transient_obj->delete();
+			$transient_obj->delete_dismiss();
+		}
+
+		// remove plugin update transient.
+		delete_transient( 'personio_integration_light_plugin_update_notices' );
+
+		// remove setup-options.
+		Setup::get_instance()->uninstall();
+
 		// remove roles from our plugin.
 		Roles::get_instance()->uninstall();
 
 		// delete our custom database-tables.
 		Init::get_instance()->delete_db_tables();
+
+		// remove crypt settings.
+		Crypt::get_instance()->uninstall();
 	}
 
 	/**
@@ -198,9 +219,13 @@ class Uninstaller {
 			WP_PERSONIO_INTEGRATION_DELETE_RUNNING,
 			WP_PERSONIO_INTEGRATION_DELETE_STATUS,
 			WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST,
+			WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS,
+			WP_PERSONIO_INTEGRATION_DELETE_COUNT,
+			WP_PERSONIO_INTEGRATION_DELETE_MAX,
 			'personioIntegrationLightInstallDate',
 			'personio_integration_settings',
 			'personio_integration_intro',
+			'personioIntegrationPageBuilder',
 		);
 	}
 }

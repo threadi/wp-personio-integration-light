@@ -62,9 +62,12 @@ class Api {
 	 */
 	public function init(): void {
 		// bail if WordPress has not enabled the development mode.
-		if ( ! function_exists( 'wp_is_development_mode' ) || ( function_exists( 'wp_is_development_mode' ) && ! wp_is_development_mode( 'plugin' ) ) ) {
+		if ( ! Helper::is_development_mode_active() ) {
 			return;
 		}
+
+		// add settings.
+		add_action( 'init', array( $this, 'add_settings' ), 20 );
 
 		// use option hooks.
 		add_action( 'update_option_personioIntegrationApiSecret', array( $this, 'check_for_api_support' ), 10, 2 );
@@ -72,7 +75,6 @@ class Api {
 		// use our own hooks.
 		add_filter( 'personio_integration_objects_with_db_tables', array( $this, 'add_table' ) );
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_category' ) );
-		add_action( 'init', array( $this, 'add_settings' ), 20 );
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 	}
 

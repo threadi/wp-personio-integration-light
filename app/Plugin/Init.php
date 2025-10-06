@@ -149,10 +149,10 @@ class Init {
 		 */
 		if ( ! Helper::theme_is_fse_theme() ) {
 			wp_enqueue_style(
-				'personio-integration-additional-styles',
-				Helper::get_plugin_url() . 'blocks/list/build/style-index.css',
+				'personio-integration',
+				Helper::get_plugin_url() . 'css/blocks.css',
 				array(),
-				Helper::get_file_version( Helper::get_plugin_path() . 'blocks/list/build/style-index.css' )
+				Helper::get_file_version( Helper::get_plugin_path() . 'css/blocks.css' )
 			);
 		}
 	}

@@ -39,6 +39,7 @@
 - Extensions can now check if other extension they require are enabled
 - More code optimizations with PHPStan
 - Optimized output of some log entries
+- Extended style options for positions in Block Editor
 - Style optimization for extension table
 - Using WP_Error for any error handling
 - Extended the limitation for REST API requests regarding our own Block Editor blocks
@@ -53,6 +54,8 @@
 - Checking whether a required plugin for an extension is installed (without it having to be activated)
 - Optimized HTML-code for grouped archive templates (now allows better styling via custom CSS)
 - Optimized handling of Personio account in this plugin (like links to the login or the position edit URL)
+- Cleanup styling of all blocks
+- Reduced the output of to many style elements on classic themes
 - Updated Intro-script
 - Updated dependencies
 

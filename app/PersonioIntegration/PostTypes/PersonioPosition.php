@@ -185,7 +185,7 @@ class PersonioPosition extends Post_Type {
 
 		// get slugs.
 		$archive_slug = Helper::get_archive_slug();
-		$single_slug  = Helper::get_detail_slug();
+		$single_slug  = Helper::get_single_slug();
 
 		// set arguments for our own cpt.
 		$args = array(
@@ -875,7 +875,7 @@ class PersonioPosition extends Post_Type {
 		// add meta box with Pro-hint for subcompany-field which is only in Pro.
 		add_meta_box(
 			$this->get_name() . '-taxonomy-subcompany',
-			__( 'Subcompany', 'personio-integration-light' ),
+			__( 'Legal entity', 'personio-integration-light' ),
 			array( $this, 'get_meta_box_for_pro_taxonomy' ),
 			$this->get_name(),
 			'side'
@@ -1867,7 +1867,7 @@ class PersonioPosition extends Post_Type {
 			array(
 				'name'        => 'social_media',
 				'label'       => __( 'Social Media', 'personio-integration-light' ),
-				'description' => __( 'Add features to your jobs to advertise them optimally on social media platforms such as Fediverse (e.g. Mastodon), X (aka twitter), WhatsApp, Telegram or Facebook. Google Jobs is also supported.', 'personio-integration-light' ),
+				'description' => __( 'Add features to your positions to advertise them optimally on social media platforms such as Fediverse (e.g. Mastodon), X (aka twitter), WhatsApp, Telegram or Facebook. Google Jobs is also supported.', 'personio-integration-light' ),
 				'category'    => 'seo',
 			),
 			array(
@@ -2059,7 +2059,7 @@ class PersonioPosition extends Post_Type {
 		$content .= '<li>' . __( 'Add the shortcode you want to use where you want to output data for your positions.', 'personio-integration-light' ) . '</li>';
 		$content .= '</ol>';
 		$content .= '<p><strong>' . __( 'Example 1:', 'personio-integration-light' ) . '</strong></p>';
-		$content .= '<p>' . __( 'This shortcode will output a list of positions including the filter above it. The filter will provide 2 properties. The jobs are displayed with a title and 2 job details matching the filter.', 'personio-integration-light' ) . '</p>';
+		$content .= '<p>' . __( 'This shortcode will output a list of positions including the filter above it. The filter will provide 2 properties. The posititions are displayed with a title and 2 job details matching the filter.', 'personio-integration-light' ) . '</p>';
 		$content .= '<code>[personioPositions showfilter="1" filter="recruitingCategory,schedule" filtertype="linklist" templates="title,excerpt" excerpt="recruitingCategory,schedule"]</code>';
 		$content .= '<p><strong>' . __( 'Example 2:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<p>' . __( 'This shortcode will output a single position with the Personio ID 42. The title, the job description and the link to the application form at Personio are output.', 'personio-integration-light' ) . '</p>';

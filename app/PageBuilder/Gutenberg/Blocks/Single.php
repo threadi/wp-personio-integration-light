@@ -12,7 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
  * Object to handle this block.
@@ -124,7 +123,7 @@ class Single extends Blocks_Basis {
 			'templates'  => $this->get_template_parts( $attributes ),
 			'excerpt'    => $this->get_details_array( $attributes ),
 			'donotlink'  => $do_not_link,
-			'personioid' => $attributes['id'],
+			'personioid' => (string)$attributes['id'],
 			'styles'     => implode( PHP_EOL, $styles_array ),
 			'classes'    => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 		);

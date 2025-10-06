@@ -66,18 +66,18 @@ class Helper {
 	}
 
 	/**
-	 * Get the language-depending detail-slug.
+	 * Get the language-depending single-slug.
 	 *
 	 * @return string
 	 */
-	public static function get_detail_slug(): string {
+	public static function get_single_slug(): string {
 		$slug = 'position';
 		if ( Languages::get_instance()->is_german_language() ) {
 			$slug = 'stelle';
 		}
 
 		/**
-		 * Change the detail slug.
+		 * Change the single slug.
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *
@@ -92,11 +92,10 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_pro_url(): string {
-		$url = 'https://laolaweb.com/en/plugins/personio-wordpress-plugin/';
 		if ( Languages::get_instance()->is_german_language() ) {
-			$url = 'https://laolaweb.com/plugins/personio-wordpress-plugin/';
+			return 'https://laolaweb.com/plugins/personio-wordpress-plugin/';
 		}
-		return $url;
+		return 'https://laolaweb.com/en/plugins/personio-wordpress-plugin/';
 	}
 
 	/**
@@ -974,5 +973,14 @@ class Helper {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Return whether plugin developer modus is enabled.
+	 *
+	 * @return bool
+	 */
+	public static function is_development_mode_active(): bool {
+		return function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' );
 	}
 }

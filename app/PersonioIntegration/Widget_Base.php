@@ -54,6 +54,8 @@ class Widget_Base extends Extensions_Base {
 	 * @return void
 	 */
 	public function init(): void {
+		add_filter( 'personio_integration_light_extension_state_changed_dialog', array( $this, 'add_hint_after_enabling' ), 10, 2 );
+
 		// bail if object is not enabled.
 		if ( ! $this->is_enabled() ) {
 			return;
@@ -253,5 +255,32 @@ class Widget_Base extends Extensions_Base {
 	 */
 	public function is_installed(): bool {
 		return true;
+	}
+
+	/**
+	 * Extend the dialog after enabling this extension with hints to usage.
+	 *
+	 * @param array<string,mixed> $dialog The dialog.
+	 * @param Extensions_Base     $extension The changed extension.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function add_hint_after_enabling( array $dialog, Extensions_Base $extension ): array {
+		// bail if this is not this extension.
+		if ( $this->get_name() !== $extension->get_name() ) {
+			return $dialog;
+		}
+
+		// bail if status is disabled.
+		if ( ! $extension->is_enabled() ) {
+			return $dialog;
+		}
+
+		// add hint.
+		$dialog['texts'][] = '<p>' . __( 'You can now use this widget to improve the output of your positions in the frontend.', 'personio-integration-light' ) . '</p>';
+		$dialog['texts'][] = '<p>' . __( 'To do this, edit the templates of your theme or the pages where you want to display the positions.', 'personio-integration-light' ) . '</p>';
+
+		// return resulting dialog.
+		return $dialog;
 	}
 }

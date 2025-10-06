@@ -42,6 +42,13 @@ class Show_Position_Xml extends Extensions_Base {
 	protected string $extension_category = 'positions';
 
 	/**
+	 * Name if the setting tab where the setting field is visible.
+	 *
+	 * @var string
+	 */
+	protected string $setting_tab = '';
+
+	/**
 	 * Variable for instance of this Singleton object.
 	 *
 	 * @var ?Show_Position_Xml
@@ -201,7 +208,7 @@ class Show_Position_Xml extends Extensions_Base {
 		// add hint.
 		$dialog['texts'][] = '<p>' . __( 'Follow these steps to be able to see the XML which has been published by Personio for each position:', 'personio-integration-light' ) . '</></p>';
 		/* translators: %1$s will be replaced by a URL. */
-		$list = '<ol><li>' . sprintf( __( 'Import the positions as usual, e.g. <a href="%1$s">here</a>, to update its data.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPostions', 'import' ) ) ) . '</li>';
+		$list = '<ol><li>' . sprintf( __( 'Import the positions as usual, e.g. <a href="%1$s">here</a>, to update its data.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'import' ) ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
 		$list .= '<li>' . sprintf( __( 'Go to the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) ) . '</li>';
 		$list .= '<li>' . __( 'Edit the individual positions to see the XML output there.', 'personio-integration-light' ) . '</li></ol>';

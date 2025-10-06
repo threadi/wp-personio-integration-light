@@ -12,11 +12,8 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\Position;
-use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Widgets\Details;
 use PersonioIntegrationLight\Plugin\Languages;
-use PersonioIntegrationLight\Plugin\Templates;
 
 /**
  * Object to handle this block.
@@ -126,7 +123,7 @@ class Detail extends Blocks_Basis {
 		// add the attributes.
 		$attributes['styles'] = implode( PHP_EOL, $styles_array );
 		$attributes['classes'] = $classes . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes );
-		
+
 		// return the rendered template.
 		return Details::get_instance()->render( $attributes );
 	}

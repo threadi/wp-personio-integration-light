@@ -84,6 +84,14 @@ export const onChangeLinkToAnchor = ( newValue, object ) => {
   object.setAttributes( { link_to_anchor: newValue } );
 }
 
+export const onChangePositionBackgroundColor = ( value, object ) => {
+  object.setAttributes( { positionBackgroundColor: value } );
+}
+
+export const onChangePositionBackgroundColorHover = ( value, object ) => {
+  object.setAttributes( { positionBackgroundColorHover: value } );
+}
+
 /**
  * Panel for helper texts.
  */

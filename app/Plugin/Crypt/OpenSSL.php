@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle openssl-tasks.
+ * File to handle OpenSSL-tasks.
  *
  * @package personio-integration-light
  */
@@ -101,12 +101,12 @@ class OpenSSL extends Crypt_Base {
 		}
 
 		// remove previous value.
-		$placeholder           = '## PERSONIO INTEGRATION PRO placeholder ##';
+		$placeholder           = '## PERSONIO INTEGRATION LIGHT placeholder ##';
 		$wp_config_php_content = preg_replace( '@^[\t ]*define\s*\(\s*["\']' . $this->get_constant() . '["\'].*$@miU', $placeholder, $wp_config_php_content );
 		$wp_config_php_content = preg_replace( "@\n$placeholder@", '', (string) $wp_config_php_content );
 
 		// add the constant.
-		$define                = "define( '" . $this->get_constant() . "', '" . $this->get_hash() . "' ); // Added by Personio Integration Pro.\r\n";
+		$define                = "define( '" . $this->get_constant() . "', '" . $this->get_hash() . "' ); // Added by Personio Integration Light.\r\n";
 		$wp_config_php_content = preg_replace( '@<\?php\s*@i', "<?php\n$define", (string) $wp_config_php_content, 1 );
 
 		if ( ! is_string( $wp_config_php_content ) ) {
@@ -133,7 +133,7 @@ class OpenSSL extends Crypt_Base {
 	}
 
 	/**
-	 * Run encryption of the given text.
+	 * Encrypt a given string.
 	 *
 	 * @param string $plain_text Text to encrypt.
 	 *
@@ -165,9 +165,9 @@ class OpenSSL extends Crypt_Base {
 	}
 
 	/**
-	 * Get decrypted text.
+	 * Decrypted a given string.
 	 *
-	 * @param string $encrypted_text The encrypted text.
+	 * @param string $encrypted_text The encrypted string.
 	 *
 	 * @return string
 	 */

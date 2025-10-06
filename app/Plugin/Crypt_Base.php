@@ -10,7 +10,9 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
 
 /**
  * Object to handle crypt methods as base-object.
@@ -75,9 +77,9 @@ class Crypt_Base {
 	}
 
 	/**
-	 * Encrypt a given text.
+	 * Encrypt a given string.
 	 *
-	 * @param string $plain_text The plain text.
+	 * @param string $plain_text The plain string.
 	 *
 	 * @return string
 	 */
@@ -132,15 +134,6 @@ class Crypt_Base {
 	}
 
 	/**
-	 * Get the code to use for wp-config.php.
-	 *
-	 * @return string
-	 */
-	public function get_code(): string {
-		return "define( '" . $this->get_constant() . "', '" . $this->get_hash() . "' );";
-	}
-
-	/**
 	 * Run the constant.
 	 *
 	 * @return void
@@ -167,18 +160,19 @@ class Crypt_Base {
 	 * @return string
 	 */
 	private function get_php_header(): string {
-		return '/**
- * Plugin Name:       Personio Integration Pro Hash
- * Description:       Holds the Personio Integration hash value, which is necessary to use the license and encryption.
+		return '
+/**
+ * Plugin Name:       Personio Integration Light Hash
+ * Description:       Holds the Personio Integration Light hash value, which is necessary to use encryption.
  * Requires at least: 4.9.24
- * Requires PHP:      8.0
- * Requires Plugins:  personio-integration
+ * Requires PHP:      8.1
+ * Requires Plugins:  personio-integration-light
  * Version:           1.0.0
  * Author:            laOlaWeb
  * Author URI:        https://laolaweb.com
- * Text Domain:       personio-integration-pro-hash
+ * Text Domain:       personio-integration-light-hash
  *
- * @package personio-integration-pro-hash
+ * @package personio-integration-light-hash
  */';
 	}
 
@@ -188,7 +182,7 @@ class Crypt_Base {
 	 * @return string
 	 */
 	private function get_mu_plugin_filename(): string {
-		return 'personio-integration-pro-hash.php';
+		return 'personio-integration-light-hash.php';
 	}
 
 	/**
@@ -197,11 +191,16 @@ class Crypt_Base {
 	 * @return void
 	 */
 	protected function create_mu_plugin(): void {
+		// bail if WPMU_PLUGIN_DIR is not set.
+		if ( ! defined( 'WPMU_PLUGIN_DIR' ) ) {
+			return;
+		}
+
 		// get WP Filesystem-handler.
 		$wp_filesystem = Helper::get_wp_filesystem();
 
 		// create a custom must-use-plugin instead.
-		$file_content = '<?php ' . $this->get_php_header() . "\ndefine( '" . $this->get_constant() . "', '" . $this->get_hash() . "' ); // Added by Personio Integration Pro.\r\n";
+		$file_content = '<?php ' . $this->get_php_header() . "\ndefine( '" . $this->get_constant() . "', '" . $this->get_hash() . "' ); // Added by Personio Integration Light.\r\n";
 
 		// create mu-plugin directory if it is missing.
 		if ( ! $wp_filesystem->exists( WPMU_PLUGIN_DIR ) ) {
@@ -212,7 +211,18 @@ class Crypt_Base {
 		$file_path = WPMU_PLUGIN_DIR . DIRECTORY_SEPARATOR . $this->get_mu_plugin_filename();
 
 		// save the file.
-		$wp_filesystem->put_contents( $file_path, $file_content );
+		if ( ! $wp_filesystem->put_contents( $file_path, $file_content ) ) {
+			// trigger warning if the fallback file could also not be saved.
+			$transient_obj = Transients::get_instance()->add();
+			$transient_obj->set_name( 'personio_integration_crypt_error' );
+			$transient_obj->set_message( __( 'The security token for encryption could not be saved. Neither <em>wp-config.php</em> nor the mu-plugin directory are writable. Please contact your hosters support team for assistance.', 'personio-integration-light' ) );
+			$transient_obj->set_type( 'error' );
+			$transient_obj->save();
+
+			// log this event.
+			Log::get_instance()->add( __( 'The security token for encryption could not be saved. Neither wp-config.php nor the mu-plugin directory are writable. Please contact your hosters support team for assistance.', 'personio-integration-light' ), 'error', 'system' );
+			return;
+		}
 
 		// run the constant for this process.
 		$this->run_constant();
@@ -224,6 +234,11 @@ class Crypt_Base {
 	 * @return void
 	 */
 	protected function delete_mu_plugin(): void {
+		// bail if WPMU_PLUGIN_DIR is not set.
+		if ( ! defined( 'WPMU_PLUGIN_DIR' ) ) {
+			return;
+		}
+
 		// get WP Filesystem-handler.
 		$wp_filesystem = Helper::get_wp_filesystem();
 
