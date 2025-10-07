@@ -251,7 +251,7 @@ class Import_Single_Personio_Url {
 		$http_status = absint( apply_filters( 'personio_integration_import_header_status', $http_status ) );
 		if ( 200 === $http_status ) {
 			// timestamp did not change -> do nothing if we already have positions in the DB.
-			if ( $positions_count > 0 && $check_for_changes && $last_modified_timestamp > 0 && $personio_obj->get_timestamp( $this->get_language() ) === $last_modified_timestamp ) {
+			if ( $positions_count > 0 && $check_for_changes && $last_modified_timestamp > 0 && $personio_obj->get_timestamp( $this->get_language() ) === $last_modified_timestamp && 0 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 				// set import count to actual max to show that it has been run.
 				$imports_obj->set_import_count( $imports_obj->get_import_max_count() );
 
@@ -291,7 +291,7 @@ class Import_Single_Personio_Url {
 
 				// check if md5-hash of body content has not been changed.
 				// md5-hash did not change -> do nothing if we already have positions in the DB.
-				if ( $check_for_changes && $positions_count > 0 && $personio_obj->get_md5( $language_name ) === $md5hash ) {
+				if ( $check_for_changes && $positions_count > 0 && $personio_obj->get_md5( $language_name ) === $md5hash && 0 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 					// log event.
 					/* translators: %1$s will be replaced by a URL, %2$s by the language name. */
 					$this->log->add( sprintf( __( 'No changes in positions from %1$s for language %2$s according to the content we got from Personio. No import run.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );

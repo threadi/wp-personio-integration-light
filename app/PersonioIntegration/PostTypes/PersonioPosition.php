@@ -30,7 +30,6 @@ use PersonioIntegrationLight\Plugin\Compatibilities\SayWhat;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
-use WP_Error;
 use WP_Post;
 use WP_Query;
 use WP_REST_Request;
@@ -224,7 +223,7 @@ class PersonioPosition extends Post_Type {
 		);
 		register_post_type( $this->get_name(), $args );
 
-		// register personioId als post-meta to be published in rest-api,
+		// register personioId as post-meta to be published in rest-api,
 		// which is necessary for our Blocks.
 		register_post_meta(
 			$this->get_name(),
@@ -1031,7 +1030,8 @@ class PersonioPosition extends Post_Type {
 	 *
 	 * @return void
 	 * @noinspection PhpUnusedParameterInspection
-	 **/
+	 * @noinspection PhpUnused
+	 */
 	public function get_meta_box_for_description( WP_Post $post ): void {
 		// get the requested position as object.
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
@@ -1050,14 +1050,14 @@ class PersonioPosition extends Post_Type {
 		// bail if array is empty and show hint.
 		if ( empty( $content_array ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
+			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description has been provided for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
 			return;
 		}
 
 		// bail if jobdescription entry is empty and show hint.
 		if ( empty( $content_array['jobDescription'] ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description available for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
+			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description has been provided for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
 			return;
 		}
 
