@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
 use PersonioIntegrationLight\Plugin\Languages;
@@ -102,8 +103,21 @@ class Description extends Widget_Base {
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		$position = $this->get_position_by_request();
-		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! $position instanceof Position ) {
+		// set position.
+		$position = false;
+
+		// get position from attributes, if not set.
+		if ( ! empty( $attributes['personioid'] ) ) {
+			$position = Positions::get_instance()->get_position_by_personio_id( $attributes['personioid'] );
+		}
+
+		// get position from request if no position could be loaded.
+		if( ! $position instanceof Position || ! $position->is_valid() ) {
+			$position = $this->get_position_by_request();
+		}
+
+		// bail if position could not be loaded.
+		if ( ! $position instanceof Position || ! $position->is_valid() ) {
 			return '';
 		}
 

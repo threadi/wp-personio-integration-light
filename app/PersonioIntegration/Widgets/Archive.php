@@ -235,9 +235,6 @@ class Archive extends Widget_Base {
 		 */
 		do_action( 'personio_integration_get_template_before', $personio_attributes );
 
-		// generate styling.
-		Helper::add_inline_style( $personio_attributes['styles'] );
-
 		// for backwards compatibility.
 		$form_id = '';
 
@@ -258,9 +255,14 @@ class Archive extends Widget_Base {
 
 		// collect the output.
 		ob_start();
-		if ( ! empty( $personio_attributes['styles'] ) && Helper::is_rest_request() ) {
-			wp_styles()->print_inline_style( 'wp-block-library' );
-		}
+
+		/**
+		 * Run custom actions before the output of the archive listing.
+		 *
+		 * @since 3.2.0 Available since 3.2.0.
+		 * @param array $personio_attributes List of attributes.
+		 */
+		do_action( 'personio_integration_get_template_before', $personio_attributes );
 
 		// embed filter.
 		require Templates::get_instance()->get_template( 'parts/part-filter.php' );

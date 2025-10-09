@@ -793,6 +793,11 @@ class Templates {
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function get_direct_content_template( Position $position, array $attributes ): string {
+		// bail if position has no content.
+		if( empty( $position->get_content_as_array() ) ) {
+			return '';
+		}
+
 		// use old template if it exists.
 		$template_file = 'parts/properties-content.php';
 
@@ -1112,18 +1117,30 @@ class Templates {
 	 * @return void
 	 */
 	public function add_styles( array $attributes ): void {
-		// bail if this is a block theme.
+		// bail if styles are not set.
+		if ( empty( $attributes['styles'] ) ) {
+			return;
+		}
+
+		// set the style.
+		wp_add_inline_style( 'wp-block-library', $attributes['styles'] );
+
+		if( Helper::is_rest_request() ) {
+			include Helper::get_plugin_path() . '/legacy/styles.php';
+			return;
+		}
+
+		// if this is a block theme add styles the modern way.
 		if ( Helper::theme_is_fse_theme() ) {
+			// generate styling.
+			Helper::add_inline_style( $attributes['styles'] );
+
+			// and do nothing more.
 			return;
 		}
 
 		// bail if this is a REST API request.
 		if ( Helper::is_rest_request() ) {
-			return;
-		}
-
-		// bail if styles are not set.
-		if ( empty( $attributes['styles'] ) ) {
 			return;
 		}
 
