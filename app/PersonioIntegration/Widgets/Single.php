@@ -164,14 +164,16 @@ class Single extends Widget_Base {
 		$position->set_lang( $personio_attributes['lang'] );
 		$position->set_title( '' );
 
-		// generate styling.
-		Helper::add_inline_style( $personio_attributes['styles'] );
-
 		// collect the output.
 		ob_start();
-		if ( empty( $personio_attributes['styles'] ) && Helper::is_rest_request() ) {
-			wp_styles()->print_inline_style( 'wp-block-library' );
-		}
+
+		/**
+		 * Run custom actions before the output of the archive listing.
+		 *
+		 * @since 3.2.0 Available since 3.2.0.
+		 * @param array $personio_attributes List of attributes.
+		 */
+		do_action( 'personio_integration_get_template_before', $personio_attributes );
 
 		// embed content.
 		include Templates::get_instance()->get_template( 'parts/content.php' );

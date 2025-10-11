@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
 use PersonioIntegrationLight\Plugin\Languages;
@@ -115,8 +116,15 @@ class Application_Button extends Widget_Base {
 			return '';
 		}
 
-		// get the requested position.
+		// get position from request.
 		$position = $this->get_position_by_request();
+
+		// get position from attributes, if not set.
+		if ( ! $position instanceof Position && ! empty( $attributes['personioid'] ) ) {
+			$position = Positions::get_instance()->get_position_by_personio_id( $attributes['personioid'] );
+		}
+
+		// bail if position could not be loaded.
 		if ( ! $position instanceof Position || ! $position->is_valid() ) {
 			return '';
 		}
@@ -182,8 +190,18 @@ class Application_Button extends Widget_Base {
 		 */
 		$target = apply_filters( 'personio_integration_back_to_list_target_attribute', $target, $position, $attributes );
 
+		$personio_attributes = $attributes;
 		// get and output template.
 		ob_start();
+
+		/**
+		 * Run custom actions before the output of the archive listing.
+		 *
+		 * @since 3.2.0 Available since 3.2.0.
+		 * @param array $personio_attributes List of attributes.
+		 */
+		do_action( 'personio_integration_get_template_before', $personio_attributes );
+
 		include Templates::get_instance()->get_template( 'parts/properties-application-button.php' );
 		$content = ob_get_clean();
 		if ( ! $content ) {

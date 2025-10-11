@@ -183,7 +183,10 @@ class Widget_Base extends Extensions_Base {
 		if ( Helper::is_rest_request() ) {
 			$position_array = $positions->get_positions( 1 );
 			if ( ! empty( $position_array ) ) {
-				return $position_array[0];
+				$position_obj = $position_array[0];
+				if( $position_obj instanceof Position && $position_obj->is_valid() ) {
+					return $position_array[0];
+				}
 			}
 		}
 

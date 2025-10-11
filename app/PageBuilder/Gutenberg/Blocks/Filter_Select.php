@@ -128,7 +128,7 @@ class Filter_Select extends Blocks_Basis {
 		// collect all settings for this block.
 		$attribute_defaults = array(
 			'templates'  => '',
-			'filter'     => implode( ',', $attributes['filter'] ),
+			'filter'     => $attributes['filter'],
 			'filtertype' => 'select',
 			'showfilter' => true,
 			'styles'     => implode( PHP_EOL, $styles_array ),
@@ -143,6 +143,9 @@ class Filter_Select extends Blocks_Basis {
 		 * @param array $attribute_defaults List of attributes to use.
 		 * @param array $attributes List of attributes vom PageBuilder.
 		 */
-		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Filter_Select::get_instance()->render( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
+		$attributes = apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes );
+
+		// return the rendered content.
+		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Filter_Select::get_instance()->render( $attributes );
 	}
 }

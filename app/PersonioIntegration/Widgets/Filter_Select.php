@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
+use PersonioIntegrationLight\Plugin\Templates;
 
 /**
  * Object to handle the filter select widget.
@@ -93,12 +94,27 @@ class Filter_Select extends Widget_Base {
 	/**
 	 * Return the rendered widget.
 	 *
-	 * @param array<string,mixed> $attributes Attributes to configure the rendering.
+	 * @param array<string,mixed> $personio_attributes Attributes to configure the rendering.
 	 *
 	 * @return string
+	 * @noinspection PhpParameterNameChangedDuringInheritanceInspection
 	 */
-	public function render( array $attributes ): string {
-		return Archive::get_instance()->render( $attributes );
+	public function render( array $personio_attributes ): string {
+		// get output.
+		ob_start();
+
+		/**
+		 * Run custom actions before the output of the archive listing.
+		 *
+		 * @since 3.2.0 Available since 3.2.0.
+		 * @param array $personio_attributes List of attributes.
+		 */
+		do_action( 'personio_integration_get_template_before', $personio_attributes );
+
+		include Templates::get_instance()->get_template( 'parts/part-filter.php' );
+
+		// return resulting html.
+		return ob_get_clean();
 	}
 
 	/**

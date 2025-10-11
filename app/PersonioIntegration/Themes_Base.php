@@ -56,7 +56,7 @@ class Themes_Base {
 	}
 
 	/**
-	 * Add own CSS and JS for backend.
+	 * Add own CSS for individual theme support.
 	 *
 	 * @return void
 	 */
@@ -68,7 +68,7 @@ class Themes_Base {
 		wp_enqueue_style(
 			'personio-integration-' . $this->get_name(),
 			Helper::get_plugin_url() . 'css/' . $css_file,
-			array( 'personio-integration-additional-styles' ),
+			array( 'personio-integration' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'css/' . $css_file ),
 		);
 	}

@@ -306,7 +306,7 @@ class Position {
 			// add log in debug-mode.
 			if ( false !== $this->debug ) {
 				/* translators: %1$s will be replaced by the PersonioID, %2$s by the language name. */
-				Log::get_instance()->add( sprintf( __( 'Position %1$s successfully imported or updated in %2$s.', 'personio-integration-light' ), esc_html( $this->get_personio_id() ), esc_html( Languages::get_instance()->get_language_title( $this->get_lang() ) ) ), 'success', 'import' );
+				Log::get_instance()->add( sprintf( __( 'Position %1$s successfully imported or updated in %2$s.', 'personio-integration-light' ), '<em>' . esc_html( $this->get_personio_id() . ' (' . $this->get_title() . ')' ) . '</em>', esc_html( Languages::get_instance()->get_language_title( $this->get_lang() ) ) ), 'success', 'import' );
 			}
 		}
 	}

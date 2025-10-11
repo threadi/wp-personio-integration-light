@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
@@ -103,8 +104,16 @@ class Details extends Widget_Base {
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
+		// get position from request.
 		$position = $this->get_position_by_request();
-		if ( ! ( $position instanceof Position ) || ! $position->is_valid() ) {
+
+		// get position from attributes, if not set.
+		if ( ! $position instanceof Position && ! empty( $attributes['personioid'] ) ) {
+			$position = Positions::get_instance()->get_position_by_personio_id( $attributes['personioid'] );
+		}
+
+		// bail if position could not be loaded.
+		if ( ! $position instanceof Position || ! $position->is_valid() ) {
 			return '';
 		}
 
@@ -208,13 +217,19 @@ class Details extends Widget_Base {
 				$template = $attributes['excerpt_template'];
 			}
 
-			// generate styling.
-			if ( ! empty( $attributes['styles'] ) ) {
-				Helper::add_inline_style( $attributes['styles'] );
-			}
+			$personio_attributes = $attributes;
 
 			// get template and return it.
 			ob_start();
+
+			/**
+			 * Run custom actions before the output of the archive listing.
+			 *
+			 * @since 3.2.0 Available since 3.2.0.
+			 * @param array $personio_attributes List of attributes.
+			 */
+			do_action( 'personio_integration_get_template_before', $personio_attributes );
+
 			include Templates::get_instance()->get_template( 'parts/details/' . $template . '.php' );
 			$content = ob_get_clean();
 			if ( ! $content ) {
