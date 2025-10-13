@@ -46,7 +46,7 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 - Customization of slugs (URLs) for list and detailed views of positions
 - Multiple and customizable application forms incl. export of them via Personio API
 - Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech
-- Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress
+- Support for multilingual plugins Bogo, Polylang, WPML, Weglot and TranslatePress
 - Support for legal entities and other workplaces in positions
 - Support for salaries for open positions
 - Use GoogleMaps or OpenStreetMap for show you locations with open positions
