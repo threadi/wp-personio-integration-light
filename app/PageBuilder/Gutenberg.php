@@ -75,7 +75,7 @@ class Gutenberg extends PageBuilder_Base {
 		}
 
 		// add our custom templates and set to use them.
-		add_action( 'init', array( $this, 'add_settings' ), 50 );
+		add_action( 'init', array( $this, 'add_the_settings' ), 50 );
 		add_filter( 'personio_integration_load_single_template', '__return_true' );
 		add_filter( 'personio_integration_load_archive_template', '__return_true' );
 
@@ -182,7 +182,7 @@ class Gutenberg extends PageBuilder_Base {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {
+	public function add_the_settings(): void {
 		// get settings object.
 		$settings_obj = Settings::get_instance();
 

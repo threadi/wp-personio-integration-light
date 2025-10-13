@@ -385,7 +385,7 @@ class Extensions_Base {
 		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
 		$setting->set_default( $this->is_default_enabled() ? 1 : 0 );
-		$setting->add_custom_var( 'source', $this->get_plugin_source() );
+		$setting->add_custom_var( 'source', $this->get_public_plugin_source() );
 	}
 
 	/**
@@ -393,7 +393,7 @@ class Extensions_Base {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {}
+	public function add_the_settings(): void {}
 
 	/**
 	 * Whether this extension is enabled by default (true) or not (false).
@@ -416,7 +416,18 @@ class Extensions_Base {
 	 *
 	 * @return string
 	 */
-	public function get_plugin_source(): string {
+	protected function get_plugin_source(): string {
+		return $this->plugin_source;
+	}
+
+	/**
+	 * Return the plugin source for this extension.
+	 *
+	 * Hint: ony for compatibility with other plugins.
+	 *
+	 * @return string
+	 */
+	public function get_public_plugin_source(): string {
 		return $this->plugin_source;
 	}
 

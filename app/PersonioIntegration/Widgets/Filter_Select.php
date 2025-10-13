@@ -113,8 +113,12 @@ class Filter_Select extends Widget_Base {
 
 		include Templates::get_instance()->get_template( 'parts/part-filter.php' );
 
-		// return resulting html.
-		return ob_get_clean();
+		// get and return resulting html.
+		$content = ob_get_clean();
+		if ( ! $content ) {
+			return '';
+		}
+		return $content;
 	}
 
 	/**

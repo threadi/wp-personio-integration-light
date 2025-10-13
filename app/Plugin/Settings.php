@@ -71,7 +71,7 @@ class Settings {
 	 */
 	public function init(): void {
 		// set all settings for this plugin.
-		add_action( 'init', array( $this, 'add_settings' ) );
+		add_action( 'init', array( $this, 'add_the_settings' ) );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
@@ -89,7 +89,7 @@ class Settings {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {
+	public function add_the_settings(): void {
 		// get taxonomies.
 		$list_template_filter = array();
 		$list_excerpt         = array();
@@ -953,5 +953,65 @@ class Settings {
 	public function run_after_import(): void {
 		// set setup to be completed.
 		\easySetupForWordPress\Setup::get_instance()->set_completed( Setup::get_instance()->get_setup_name() );
+	}
+
+	/**
+	 * Return setting value.
+	 *
+	 * @param mixed $settings The settings as array.
+	 *
+	 * @return array<string,mixed>
+	 * @deprecated since 5.0.0
+	 */
+	public function add_settings( mixed $settings ): array {
+		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()' );
+		if ( ! is_array( $settings ) ) {
+			return array();
+		}
+		return $settings;
+	}
+
+	/**
+	 * Return setting value.
+	 *
+	 * @deprecated since 5.0.0
+	 *
+	 * @param string $name The requested setting name.
+	 *
+	 * @return mixed
+	 */
+	public function get_setting( string $name ): mixed {
+		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->get_setting()' );
+		$setting_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->get_setting( $name );
+		if ( ! $setting_obj ) {
+			return '';
+		}
+		return $setting_obj->get_value();
+	}
+
+	/**
+	 * Return settings.
+	 *
+	 * @deprecated since 5.0.0
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function get_settings(): array {
+		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->get_setting()' );
+		return array();
+	}
+
+	/**
+	 * Return setting value.
+	 *
+	 * @deprecated since 5.0.0
+	 *
+	 * @param string $name The requested setting name.
+	 *
+	 * @return mixed
+	 */
+	public function get_settings_for_field( string $name ): mixed {
+		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->get_setting()' );
+		return $this->get_setting( $name );
 	}
 }

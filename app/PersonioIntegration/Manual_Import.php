@@ -94,7 +94,7 @@ class Manual_Import extends Extensions_Base {
 		}
 
 		// use hooks.
-		add_action( 'init', array( $this, 'add_settings' ), 30 );
+		add_action( 'init', array( $this, 'add_the_settings' ), 30 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_styles_and_js' ), PHP_INT_MAX );
 		add_action( 'wp_ajax_personio_integration_get_manual_import_dialog', array( $this, 'get_dialog' ) );
 		add_action( 'wp_ajax_personio_integration_run_manual_import', array( $this, 'download_positions' ) );
@@ -163,7 +163,7 @@ class Manual_Import extends Extensions_Base {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {
+	public function add_the_settings(): void {
 		// get settings object.
 		$settings_obj = Settings::get_instance();
 
@@ -544,6 +544,7 @@ class Manual_Import extends Extensions_Base {
 
 			// send response as JSON.
 			wp_send_json( $dialog );
+			exit;
 		}
 
 		// bail if import can not be run.
@@ -568,6 +569,7 @@ class Manual_Import extends Extensions_Base {
 
 			// send response as JSON.
 			wp_send_json( $dialog );
+			exit;
 		}
 
 		// return the actual import object.

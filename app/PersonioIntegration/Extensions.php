@@ -107,7 +107,7 @@ class Extensions {
 			$extension_obj->add_global_settings();
 
 			// and the custom settings for each extension.
-			$extension_obj->add_settings();
+			$extension_obj->add_the_settings();
 		}
 	}
 
@@ -497,12 +497,12 @@ class Extensions {
 			}
 
 			// bail if this extension does not match the called category.
-			if( ! empty( $category ) && $extension_obj->get_category() !== $category ) {
+			if ( ! empty( $category ) && $extension_obj->get_category() !== $category ) {
 				continue;
 			}
 
 			// bail if this is the widgets-category.
-			if( 'widgets' === $extension_obj->get_category() ) {
+			if ( 'widgets' === $extension_obj->get_category() ) {
 				continue;
 			}
 
@@ -536,7 +536,7 @@ class Extensions {
 			}
 
 			// bail if this extension does not match the called category.
-			if( ! empty( $category ) && $extension_obj->get_category() !== $category ) {
+			if ( ! empty( $category ) && $extension_obj->get_category() !== $category ) {
 				continue;
 			}
 

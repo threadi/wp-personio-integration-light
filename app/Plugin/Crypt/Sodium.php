@@ -77,7 +77,7 @@ class Sodium extends Crypt_Base {
 		}
 
 		// get hash from db.
-		$this->set_hash( sodium_base642bin( get_option( WP_PERSONIO_INTEGRATION_HASH_SODIUM, '' ), $this->get_coding_id() ) );
+		$this->set_hash( sodium_base642bin( get_option( WP_PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM, '' ), $this->get_coding_id() ) );
 
 		// bail if update is running, if cron or ajax is called or if this is not an admin-request.
 		if ( defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) || defined( 'DOING_CRON' ) || defined( 'DOING_AJAX' ) || ! is_admin() ) {
@@ -132,7 +132,7 @@ class Sodium extends Crypt_Base {
 		$wp_filesystem->put_contents( $wp_config_php_path, $wp_config_php_content );
 
 		// delete the old option field.
-		delete_option( WP_PERSONIO_INTEGRATION_HASH_SODIUM );
+		delete_option( WP_PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM );
 
 		// run the constant for this process.
 		$this->run_constant();
@@ -224,7 +224,7 @@ class Sodium extends Crypt_Base {
 		$this->init();
 
 		// save the hash in db.
-		update_option( WP_PERSONIO_INTEGRATION_HASH_SODIUM, sodium_bin2base64( $this->get_hash(), $this->get_coding_id() ) );
+		update_option( WP_PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM, sodium_bin2base64( $this->get_hash(), $this->get_coding_id() ) );
 
 		parent::uninstall();
 	}

@@ -74,7 +74,7 @@ class Imports_Base extends Extensions_Base {
 	 * @return void
 	 */
 	public function activation(): void {
-		$this->add_settings();
+		$this->add_the_settings();
 	}
 
 	/**

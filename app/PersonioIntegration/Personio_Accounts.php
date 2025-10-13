@@ -83,7 +83,7 @@ class Personio_Accounts extends Extensions_Base {
 	 */
 	public function init(): void {
 		// use hooks.
-		add_action( 'init', array( $this, 'add_settings' ), 20 );
+		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 		add_filter( 'site_status_tests', array( $this, 'add_checks' ) );
 
 		// use our own hooks.
@@ -95,7 +95,7 @@ class Personio_Accounts extends Extensions_Base {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {
+	public function add_the_settings(): void {
 		// get the settings object.
 		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 

@@ -184,7 +184,7 @@ class Widget_Base extends Extensions_Base {
 			$position_array = $positions->get_positions( 1 );
 			if ( ! empty( $position_array ) ) {
 				$position_obj = $position_array[0];
-				if ( $position_obj instanceof Position && $position_obj->is_valid() ) {
+				if ( $position_obj->is_valid() ) {
 					return $position_array[0];
 				}
 			}

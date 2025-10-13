@@ -83,7 +83,7 @@ class Availability extends Extensions_Base {
 		}
 
 		// add the settings.
-		add_action( 'init', array( $this, 'add_settings' ), 20 );
+		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
@@ -107,7 +107,7 @@ class Availability extends Extensions_Base {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {
+	public function add_the_settings(): void {
 		// get settings object.
 		$settings_obj = Settings::get_instance();
 
@@ -551,5 +551,21 @@ class Availability extends Extensions_Base {
 
 		// return result.
 		return $result;
+	}
+
+	/**
+	 * Return setting value.
+	 *
+	 * @param mixed $settings The settings as array.
+	 *
+	 * @return array<string,mixed>
+	 * @deprecated since 5.0.0
+	 */
+	public function add_settings( mixed $settings ): array {
+		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()' );
+		if ( ! is_array( $settings ) ) {
+			return array();
+		}
+		return $settings;
 	}
 }

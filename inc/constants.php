@@ -130,30 +130,30 @@ const WP_PERSONIO_GUTENBERG_PARENT_ID = 'personio-integration-light/personio-int
 /**
  * Hash-name for openssl (old).
  */
-const WP_PERSONIO_INTEGRATION_HASH = 'personioIntegrationHash';
+const WP_PERSONIO_INTEGRATION_LIGHT_HASH = 'personioIntegrationHash';
 
 /**
  * Hash-name for sodium (old).
  */
-const WP_PERSONIO_INTEGRATION_HASH_SODIUM = 'personioIntegrationHashSodium';
+const WP_PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM = 'personioIntegrationHashSodium';
 
 /**
  * License-URL.
  *
- * TODO dynmisch einfügen.
+ * TODO add during release build.
  */
 const WP_PERSONIO_INTEGRATION_LIGHT_LICENCE_URL = 'https://laolaweb.com/wp-json/lwlicences/personio-integration/';
 
 /**
  * Update-URL.
  *
- * TODO dynmisch einfügen.
+ * TODO add during release build.
  */
 const WP_PERSONIO_INTEGRATION_PRO_UPDATE_URL = 'https://laolaweb.com/wp-json/lwreleases/personio-integration/';
 
 /**
  * Costs-URL.
  *
- * TODO dynmisch einfügen.
+ * TODO add during release build.
  */
 const WP_PERSONIO_INTEGRATION_LIGHT_COSTS_URL = 'https://laolaweb.com/wp-json/lwlicences/personio-integration/costs';

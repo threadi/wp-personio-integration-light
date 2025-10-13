@@ -65,7 +65,7 @@ class Schedules {
 		if ( is_admin() ) {
 			add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
 		}
-		add_action( 'init', array( $this, 'add_settings' ), 20 );
+		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 		add_action( 'init', array( $this, 'init_schedules' ) );
 
 		// action to create all registered schedules.
@@ -101,7 +101,7 @@ class Schedules {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {
+	public function add_the_settings(): void {
 		// get settings object.
 		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 

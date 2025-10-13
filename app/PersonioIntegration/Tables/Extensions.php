@@ -229,7 +229,7 @@ class Extensions extends WP_List_Table {
 		 * @param bool $false Set true to hide the hint.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
-		if ( $item->get_plugin_source() !== WP_PERSONIO_INTEGRATION_PLUGIN && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+		if ( $item->get_public_plugin_source() !== WP_PERSONIO_INTEGRATION_PLUGIN && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			$actions = array(
 				'pro' => '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . esc_html__( 'Get Pro', 'personio-integration-light' ) . '</a>',
 			);
@@ -267,7 +267,7 @@ class Extensions extends WP_List_Table {
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		// show simple pro-hint if this is a pro-extension.
-		if ( $item->get_plugin_source() !== WP_PERSONIO_INTEGRATION_PLUGIN && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+		if ( $item->get_public_plugin_source() !== WP_PERSONIO_INTEGRATION_PLUGIN && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			return '<a class="pro-marker" href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . __( 'Only in Pro', 'personio-integration-light' ) . '</a>';
 		}
 
@@ -377,16 +377,16 @@ class Extensions extends WP_List_Table {
 			$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 			// bail if this is the widgets-category.
-			if( 'widgets' === $category ) {
+			if ( 'widgets' === $category ) {
 				return;
 			}
 
 			// URL to disable all extensions.
 			$disable_url = add_query_arg(
 				array(
-					'action' => 'personio_integration_extension_disable_all',
-					'nonce'  => wp_create_nonce( 'personio-integration-extension-disable-all' ),
-					'category' => $category
+					'action'   => 'personio_integration_extension_disable_all',
+					'nonce'    => wp_create_nonce( 'personio-integration-extension-disable-all' ),
+					'category' => $category,
 				),
 				get_admin_url() . 'admin.php'
 			);
@@ -416,9 +416,9 @@ class Extensions extends WP_List_Table {
 			// URL to disable all extensions.
 			$enable_url = add_query_arg(
 				array(
-					'action' => 'personio_integration_extension_enable_all',
-					'nonce'  => wp_create_nonce( 'personio-integration-extension-enable-all' ),
-					'category' => $category
+					'action'   => 'personio_integration_extension_enable_all',
+					'nonce'    => wp_create_nonce( 'personio-integration-extension-enable-all' ),
+					'category' => $category,
 				),
 				get_admin_url() . 'admin.php'
 			);

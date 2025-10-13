@@ -11,10 +11,7 @@ namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\Position;
-use PersonioIntegrationLight\PersonioIntegration\Positions;
 use WP_Block_Type_Registry;
-use function Automattic\Jetpack\Extensions\Gif\register_block;
 
 /**
  * Object to handle main functions for single block.

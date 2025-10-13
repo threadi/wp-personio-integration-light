@@ -58,7 +58,7 @@ class Emails {
 	 */
 	public function init(): void {
 		// add email settings.
-		add_action( 'init', array( $this, 'add_settings' ), 20 );
+		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_emails_help' ), 80 );
@@ -79,7 +79,7 @@ class Emails {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {
+	public function add_the_settings(): void {
 		// get settings object.
 		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 
