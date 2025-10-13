@@ -112,7 +112,7 @@ class Description extends Widget_Base {
 		}
 
 		// get position from request if no position could be loaded.
-		if( ! $position instanceof Position || ! $position->is_valid() ) {
+		if ( ! $position instanceof Position || ! $position->is_valid() ) {
 			$position = $this->get_position_by_request();
 		}
 

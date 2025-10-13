@@ -335,13 +335,13 @@ class Extensions extends WP_List_Table {
 		 */
 		$all_url = apply_filters( 'personio_integration_light_extension_all_url', $url );
 
-		// define initial list.
-		$list = array(
-			'all' => '<a href="' . esc_url( $all_url ) . '">' . __( 'All', 'personio-integration-light' ) . '</a>',
-		);
-
 		// get active marker for category.
 		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// define initial list.
+		$list = array(
+			'all' => '<a href="' . esc_url( $all_url ) . '"' . ( empty( $category ) ? ' class="current"' : '' ) . '>' . __( 'All', 'personio-integration-light' ) . '</a>',
+		);
 
 		// add all categories to the list.
 		foreach ( $this->get_extension_categories() as $name => $label ) {
@@ -373,28 +373,37 @@ class Extensions extends WP_List_Table {
 	 */
 	protected function extra_tablenav( $which ): void {
 		if ( 'top' === $which ) {
+			// get active marker for category.
+			$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+			// bail if this is the widgets-category.
+			if( 'widgets' === $category ) {
+				return;
+			}
+
 			// URL to disable all extensions.
 			$disable_url = add_query_arg(
 				array(
 					'action' => 'personio_integration_extension_disable_all',
 					'nonce'  => wp_create_nonce( 'personio-integration-extension-disable-all' ),
+					'category' => $category
 				),
 				get_admin_url() . 'admin.php'
 			);
 
 			// define dialog for export.
 			$dialog_disable = array(
-				'title'   => __( 'Disable all extensions', 'personio-integration-light' ),
+				'title'   => __( 'Disable this extensions', 'personio-integration-light' ),
 				'texts'   => array(
-					'<p><strong>' . __( 'Do you really want to disable all extensions?', 'personio-integration-light' ) . '</strong></p>',
-					'<p>' . __( 'You might not be able to you all possibilities for your positions.', 'personio-integration-light' ) . '</p>',
-					'<p>' . __( 'Settings of extension will not change through its deactivation.', 'personio-integration-light' ) . '</p>',
+					'<p><strong>' . __( 'Do you really want to disable this extensions?', 'personio-integration-light' ) . '</strong></p>',
+					'<p>' . __( 'You might not be able to use all possibilities for your positions.', 'personio-integration-light' ) . '</p>',
+					'<p>' . __( 'The settings of extensions will not change through their deactivation.', 'personio-integration-light' ) . '</p>',
 				),
 				'buttons' => array(
 					array(
 						'action'  => 'location.href="' . esc_url( $disable_url ) . '";',
 						'variant' => 'primary',
-						'text'    => __( 'Yes, disable all', 'personio-integration-light' ),
+						'text'    => __( 'Yes, disable them', 'personio-integration-light' ),
 					),
 					array(
 						'action'  => 'closeDialog();',
@@ -409,15 +418,16 @@ class Extensions extends WP_List_Table {
 				array(
 					'action' => 'personio_integration_extension_enable_all',
 					'nonce'  => wp_create_nonce( 'personio-integration-extension-enable-all' ),
+					'category' => $category
 				),
 				get_admin_url() . 'admin.php'
 			);
 
 			// define dialog for export.
 			$dialog_enable = array(
-				'title'   => __( 'Enable all extensions', 'personio-integration-light' ),
+				'title'   => __( 'Enable this extensions', 'personio-integration-light' ),
 				'texts'   => array(
-					'<p><strong>' . __( 'Do you really want to enable all extensions?', 'personio-integration-light' ) . '</strong></p>',
+					'<p><strong>' . __( 'Do you really want to enable this extensions?', 'personio-integration-light' ) . '</strong></p>',
 					'<p>' . __( 'Extensions that depend on third-party plugins are not activated automatically.', 'personio-integration-light' ) . '</p>',
 				),
 				'buttons' => array(
@@ -435,8 +445,8 @@ class Extensions extends WP_List_Table {
 			);
 
 			// output buttons.
-			echo '<a data-dialog="' . esc_attr( Helper::get_json( $dialog_disable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable all', 'personio-integration-light' ) . '</a>';
-			echo '<a data-dialog="' . esc_attr( Helper::get_json( $dialog_enable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable all', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( Helper::get_json( $dialog_disable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable this extensions', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( Helper::get_json( $dialog_enable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable this extensions', 'personio-integration-light' ) . '</a>';
 		}
 	}
 }

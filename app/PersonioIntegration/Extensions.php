@@ -14,6 +14,7 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
+use function cli\err;
 
 /**
  * Object to handle different themes to output templates of our plugin.
@@ -482,12 +483,26 @@ class Extensions {
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function disable_all_by_request(): void {
+		// check nonce.
 		check_admin_referer( 'personio-integration-extension-disable-all', 'nonce' );
+
+		// get the category.
+		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// loop through all extensions and enable them.
 		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
 			// bail if this extension could not be disabled by user.
 			if ( ! $extension_obj->can_be_enabled_by_user() ) {
+				continue;
+			}
+
+			// bail if this extension does not match the called category.
+			if( ! empty( $category ) && $extension_obj->get_category() !== $category ) {
+				continue;
+			}
+
+			// bail if this is the widgets-category.
+			if( 'widgets' === $extension_obj->get_category() ) {
 				continue;
 			}
 
@@ -507,21 +522,12 @@ class Extensions {
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function enable_all_by_request(): void {
+		// check nonce.
 		check_admin_referer( 'personio-integration-extension-enable-all', 'nonce' );
 
-		$this->enable_all();
+		// get the category.
+		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
-		// redirect user.
-		wp_safe_redirect( wp_get_referer() );
-		exit;
-	}
-
-	/**
-	 * Enable all extensions which could be enabled by user.
-	 *
-	 * @return void
-	 */
-	public function enable_all(): void {
 		// loop through all extensions and enable them.
 		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
 			// bail if this extension could not be enabled by user.
@@ -529,9 +535,18 @@ class Extensions {
 				continue;
 			}
 
+			// bail if this extension does not match the called category.
+			if( ! empty( $category ) && $extension_obj->get_category() !== $category ) {
+				continue;
+			}
+
 			// enable this extension.
 			$extension_obj->set_enabled();
 		}
+
+		// redirect user.
+		wp_safe_redirect( wp_get_referer() );
+		exit;
 	}
 
 	/**

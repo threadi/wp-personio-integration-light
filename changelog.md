@@ -57,6 +57,7 @@
 - Optimized handling of Personio account in this plugin (like links to the login or the position edit URL)
 - Cleanup styling of all blocks
 - Reduced the output of to many style elements on classic themes
+- Optimized handling for extensions: disable or enable only the listed in actual view, mark the "all" list
 - Updated Intro-script
 - Updated dependencies
 

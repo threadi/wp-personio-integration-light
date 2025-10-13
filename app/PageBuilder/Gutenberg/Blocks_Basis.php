@@ -103,12 +103,12 @@ class Blocks_Basis {
 			// @phpstan-ignore argument.type
 			array(
 				'render_callback' => array( $this, 'render' ),
-				'attributes'      => $this->get_attributes()
+				'attributes'      => $this->get_attributes(),
 			)
 		);
 
 		// if this is a classic theme deregister the blocks css. we will use the concatenated blocks.css instead.
-		if( ! Helper::theme_is_fse_theme() ) {
+		if ( ! Helper::theme_is_fse_theme() ) {
 			wp_deregister_style( 'wp-personio-integration-' . $this->get_name() . '-style' );
 		}
 
