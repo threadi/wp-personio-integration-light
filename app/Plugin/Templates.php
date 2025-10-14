@@ -794,7 +794,7 @@ class Templates {
 	 */
 	public function get_direct_content_template( Position $position, array $attributes ): string {
 		// bail if position has no content.
-		if( empty( $position->get_content_as_array() ) ) {
+		if ( empty( $position->get_content_as_array() ) ) {
 			return '';
 		}
 
@@ -1125,7 +1125,7 @@ class Templates {
 		// set the style.
 		wp_add_inline_style( 'wp-block-library', $attributes['styles'] );
 
-		if( Helper::is_rest_request() ) {
+		if ( Helper::is_rest_request() ) {
 			include Helper::get_plugin_path() . '/legacy/styles.php';
 			return;
 		}

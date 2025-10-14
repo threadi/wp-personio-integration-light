@@ -67,7 +67,7 @@ class Api {
 		}
 
 		// add settings.
-		add_action( 'init', array( $this, 'add_settings' ), 20 );
+		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 
 		// use option hooks.
 		add_action( 'update_option_personioIntegrationApiSecret', array( $this, 'check_for_api_support' ), 10, 2 );
@@ -83,7 +83,7 @@ class Api {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {
+	public function add_the_settings(): void {
 		// get settings object.
 		$settings_obj = Settings::get_instance();
 

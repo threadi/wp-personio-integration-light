@@ -66,7 +66,7 @@ class Intro {
 		add_action( 'admin_action_personioPositionsIntroReset', array( $this, 'reset_intro' ) );
 
 		// add settings.
-		add_action( 'init', array( $this, 'add_settings' ), 20 );
+		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 
 		// bail if intro has been run.
 		if ( 1 === absint( get_option( 'personio_integration_intro' ) ) ) {
@@ -267,7 +267,7 @@ class Intro {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {
+	public function add_the_settings(): void {
 		// get settings object.
 		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 
@@ -329,5 +329,21 @@ class Intro {
 		$setting->set_show_in_rest( true );
 		$setting->set_type( 'integer' );
 		$setting->set_default( 0 );
+	}
+
+	/**
+	 * Return setting value.
+	 *
+	 * @param mixed $settings The settings as array.
+	 *
+	 * @return array<string,mixed>
+	 * @deprecated since 5.0.0
+	 */
+	public function add_settings( mixed $settings ): array {
+		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()' );
+		if ( ! is_array( $settings ) ) {
+			return array();
+		}
+		return $settings;
 	}
 }

@@ -64,7 +64,7 @@ class Imports {
 		add_filter( 'personio_integration_extension_categories', array( $this, 'add_category' ) );
 
 		// add settings.
-		add_action( 'init', array( $this, 'add_settings' ), 20 );
+		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 
 		// bail of no import extension is enabled.
 		if ( ! $this->is_one_extension_enabled() ) {
@@ -90,7 +90,7 @@ class Imports {
 	 *
 	 * @return void
 	 */
-	public function add_settings(): void {
+	public function add_the_settings(): void {
 		// get settings object.
 		$settings_obj = Settings::get_instance();
 
@@ -350,5 +350,21 @@ class Imports {
 
 		// save the list of new positions.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, $deleted_positions );
+	}
+
+	/**
+	 * Return setting value.
+	 *
+	 * @param mixed $settings The settings as array.
+	 *
+	 * @return array<string,mixed>
+	 * @deprecated since 5.0.0
+	 */
+	public function add_settings( mixed $settings ): array {
+		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()' );
+		if ( ! is_array( $settings ) ) {
+			return array();
+		}
+		return $settings;
 	}
 }

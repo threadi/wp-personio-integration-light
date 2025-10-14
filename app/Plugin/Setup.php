@@ -308,6 +308,7 @@ class Setup {
 			'finish_button_label'   => __( 'Completed', 'personio-integration-light' ) . '<span class="dashicons dashicons-saved"></span>',
 			'skip_button_label'     => __( 'Skip', 'personio-integration-light' ) . '<span class="dashicons dashicons-undo"></span>',
 			'skip_url'              => \easySetupForWordPress\Setup::get_instance()->get_skip_url( $this->get_setup_name(), Helper::get_settings_url() ),
+			'error_label'           => __( 'An error occurred. Received an incorrect response from the server. Please check your permalink settings.', 'personio-integration-light' ),
 		);
 
 		/**

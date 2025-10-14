@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Db;
 use PersonioIntegrationLight\Plugin\Languages;
@@ -184,6 +185,19 @@ class Helper {
 			return str_starts_with( $current_url['path'], $rest_url['path'] );
 		}
 		return false;
+	}
+
+	/**
+	 * Alias for @is_rest_request().
+	 *
+	 * @return bool
+	 * @noinspection PhpUnused
+	 *
+	 * @deprecated since 5.0.0   *
+	 */
+	public static function is_admin_api_request(): bool {
+		_deprecated_function( __FUNCTION__, '5.0.0', 'is_rest_request()' );
+		return self::is_rest_request();
 	}
 
 	/**
@@ -982,5 +996,17 @@ class Helper {
 	 */
 	public static function is_development_mode_active(): bool {
 		return function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' );
+	}
+
+	/**
+	 * Return the Personio Login URL.
+	 *
+	 * @deprecated since 5.0.0
+	 *
+	 * @return string
+	 */
+	public static function get_personio_login_url(): string {
+		_deprecated_function( __FUNCTION__, '5.0.0', 'Personio_Accounts::get_instance()->get_login_url()' );
+		return Personio_Accounts::get_instance()->get_login_url();
 	}
 }

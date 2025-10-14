@@ -62,7 +62,7 @@ class OpenSSL extends Crypt_Base {
 		}
 
 		// get hash from db.
-		$this->set_hash( get_option( WP_PERSONIO_INTEGRATION_HASH, '' ) );
+		$this->set_hash( get_option( WP_PERSONIO_INTEGRATION_LIGHT_HASH, '' ) );
 
 		// bail if update is running, if cron or ajax is called or if this is not an admin-request.
 		if ( defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) || defined( 'DOING_CRON' ) || defined( 'DOING_AJAX' ) || ! is_admin() ) {
@@ -117,7 +117,7 @@ class OpenSSL extends Crypt_Base {
 		$wp_filesystem->put_contents( $wp_config_php_path, $wp_config_php_content );
 
 		// delete the old option field.
-		delete_option( WP_PERSONIO_INTEGRATION_HASH );
+		delete_option( WP_PERSONIO_INTEGRATION_LIGHT_HASH );
 
 		// run the constant for this process.
 		$this->run_constant();
@@ -214,7 +214,7 @@ class OpenSSL extends Crypt_Base {
 		$this->init();
 
 		// save the hash in db.
-		update_option( WP_PERSONIO_INTEGRATION_HASH, $this->get_hash() );
+		update_option( WP_PERSONIO_INTEGRATION_LIGHT_HASH, $this->get_hash() );
 
 		parent::uninstall();
 	}

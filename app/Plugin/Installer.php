@@ -101,7 +101,7 @@ class Installer {
 		Roles::get_instance()->install();
 
 		// add the main settings.
-		Settings::get_instance()->add_settings();
+		Settings::get_instance()->add_the_settings();
 
 		// add the settings from all extensions.
 		Extensions::get_instance()->activation();

@@ -74,7 +74,7 @@ class Imports_Base extends Extensions_Base {
 	 * @return void
 	 */
 	public function activation(): void {
-		$this->add_settings();
+		$this->add_the_settings();
 	}
 
 	/**
@@ -326,8 +326,8 @@ class Imports_Base extends Extensions_Base {
 		// add hint.
 		$dialog['texts'][] = '<p>' . __( 'Follow these steps to use this import extension.', 'personio-integration-light' ) . '</p>';
 		/* translators: %1$s will be replaced by a URL. */
-		$list              = '<ol><li>' . sprintf( __( 'Check the <a href="%1$s">settings</a> for imports.', 'personio-integration-light' ), Helper::get_settings_url( 'personioPositions', 'import' ) ) . '</li>';
-		$list             .= '<li>' . __( 'Run the import of positions.', 'personio-integration-light' ) . '</li>';
+		$list  = '<ol><li>' . sprintf( __( 'Check the <a href="%1$s">settings</a> for imports.', 'personio-integration-light' ), Helper::get_settings_url( 'personioPositions', 'import' ) ) . '</li>';
+		$list .= '<li>' . __( 'Run the import of positions.', 'personio-integration-light' ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
 		$list             .= '<li>' . sprintf( __( 'Go to the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) ) . '</li></ol>';
 		$dialog['texts'][] = $list;
