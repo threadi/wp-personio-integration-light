@@ -133,7 +133,7 @@ class Email_Base {
 		$field = new Text();
 		$field->set_title( __( 'Sender Email', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced by the email address. */
-		$field->set_description( sprintf( __( 'If no email is set we use the admin-email %1$s as recipient. You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . get_option( 'admin_email' ) . '</code>', $wp_general_settings_url ) );
+		$field->set_description( sprintf( __( 'If no email is set we use the admin-email %1$s as sender. You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . get_option( 'admin_email' ) . '</code>', $wp_general_settings_url ) );
 		$field->set_placeholder( 'info@example.com' );
 		$field->add_depend( $enable_setting, 1 );
 		$setting->set_field( $field );
