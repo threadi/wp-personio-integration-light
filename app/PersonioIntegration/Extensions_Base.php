@@ -10,6 +10,12 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
+use PersonioIntegrationLight\Helper;
+
 /**
  * Object to handle positions.
  */
@@ -36,11 +42,11 @@ class Extensions_Base {
 	protected string $description = '';
 
 	/**
-	 * Mark this as pro-extension.
+	 * Marker for source of this extension.
 	 *
-	 * @var bool
+	 * @var string
 	 */
-	private bool $pro = false;
+	private string $plugin_source = WP_PERSONIO_INTEGRATION_PLUGIN;
 
 	/**
 	 * This extension can be enabled by user.
@@ -70,7 +76,14 @@ class Extensions_Base {
 	 *
 	 * @var string
 	 */
-	protected string $setting_tab = '';
+	protected string $setting_tab = 'extensions';
+
+	/**
+	 * Name of the setting tab where the setting field is visible.
+	 *
+	 * @var string
+	 */
+	protected string $setting_sub_tab = '';
 
 	/**
 	 * Internal name of the used category.
@@ -91,14 +104,14 @@ class Extensions_Base {
 	 *
 	 * @var ?Extensions_Base
 	 */
-	protected static ?Extensions_Base $instance = null;
+	private static ?Extensions_Base $instance = null;
 
 	/**
 	 * Constructor, not used as this a Singleton object.
 	 */
 	public function __construct() {
 		// add global settings for each extension.
-		add_filter( 'personio_integration_settings', array( $this, 'add_global_settings' ) );
+		add_action( 'init', array( $this, 'add_global_settings' ), 20 );
 	}
 
 	/**
@@ -112,11 +125,11 @@ class Extensions_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Extensions_Base {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
 	/**
@@ -125,6 +138,13 @@ class Extensions_Base {
 	 * @return void
 	 */
 	public function init(): void {}
+
+	/**
+	 * Tasks to run during plugin activation for this extension.
+	 *
+	 * @return void
+	 */
+	public function activation(): void {}
 
 	/**
 	 * Return internal name of this extension.
@@ -229,20 +249,18 @@ class Extensions_Base {
 		if ( 0 === $state ) {
 			$new_state = 1;
 
-			// enable all extension this extension requires.
+			// enable all extensions this extension requires.
 			foreach ( $this->get_required_extensions() as $extension_class_name ) {
-				// bail if "get_instance" does not exist.
-				if ( ! method_exists( $extension_class_name, 'get_instance' ) ) {
-					continue;
-				}
+				// get the classname.
+				$classname = $extension_class_name . '::get_instance';
 
 				// bail if "get_instance" is not callable.
-				if ( ! is_callable( $extension_class_name . '::get_instance' ) ) {
+				if ( ! is_callable( $classname ) ) {
 					continue;
 				}
 
 				// get the object.
-				$obj = call_user_func( $extension_class_name . '::get_instance' );
+				$obj = $classname();
 
 				// bail if this is not an extension object.
 				if ( ! $obj instanceof self ) {
@@ -286,26 +304,6 @@ class Extensions_Base {
 	}
 
 	/**
-	 * Return whether this is a pro-extension.
-	 *
-	 * @return bool
-	 */
-	public function is_pro(): bool {
-		return $this->pro;
-	}
-
-	/**
-	 * Mark this extension as pro-extension.
-	 *
-	 * @param bool $pro True to mark as pro.
-	 *
-	 * @return void
-	 */
-	public function set_pro( bool $pro ): void {
-		$this->pro = $pro;
-	}
-
-	/**
 	 * Return the name of the settings-page.
 	 *
 	 * @return string
@@ -321,6 +319,15 @@ class Extensions_Base {
 	 */
 	public function get_setting_tab(): string {
 		return $this->setting_tab;
+	}
+
+	/**
+	 * Return the name of the setting-tab.
+	 *
+	 * @return string
+	 */
+	public function get_setting_sub_tab(): string {
+		return $this->setting_sub_tab;
 	}
 
 	/**
@@ -353,34 +360,40 @@ class Extensions_Base {
 	/**
 	 * Add the global settings for each extension.
 	 *
-	 * @param array<array<string,bool|string>> $settings List of settings.
-	 *
-	 * @return array<array<string,bool|string>>
+	 * @return void
 	 */
-	public function add_global_settings( array $settings ): array {
+	public function add_global_settings(): void {
 		// bail if not setting field is set.
 		if ( empty( $this->get_settings_field_name() ) ) {
-			return $settings;
+			return;
 		}
 
-		// bail if setting does already exist.
-		if ( ! empty( $settings['hidden_section']['fields'][ $this->get_settings_field_name() ] ) ) {
-			return $settings;
+		// get settings object.
+		$settings_obj = Settings::get_instance();
+
+		// get hidden section.
+		$hidden = \PersonioIntegrationLight\Plugin\Settings::get_instance()->get_hidden_section();
+
+		// bail if hidden section does not exist.
+		if ( ! $hidden instanceof Section ) {
+			return;
 		}
 
-		// add global setting to enable or disable this extension.
-		$settings['hidden_section']['fields'][ $this->get_settings_field_name() ] = array(
-			'register_attributes' => array(
-				'type'         => 'integer',
-				'default'      => $this->is_default_enabled() ? 1 : 0,
-				'show_in_rest' => true,
-			),
-			'source'              => $this->get_plugin_source(),
-		);
-
-		// return resulting list.
-		return $settings;
+		// add setting.
+		$setting = $settings_obj->add_setting( $this->get_settings_field_name() );
+		$setting->set_section( $hidden );
+		$setting->set_show_in_rest( true );
+		$setting->set_type( 'integer' );
+		$setting->set_default( $this->is_default_enabled() ? 1 : 0 );
+		$setting->add_custom_var( 'source', $this->get_public_plugin_source() );
 	}
+
+	/**
+	 * Add settings for this extension.
+	 *
+	 * @return void
+	 */
+	public function add_the_settings(): void {}
 
 	/**
 	 * Whether this extension is enabled by default (true) or not (false).
@@ -399,20 +412,51 @@ class Extensions_Base {
 	public function uninstall(): void {}
 
 	/**
-	 * Set the plugin source for this page builder support.
+	 * Return the plugin source for this extension.
 	 *
 	 * @return string
 	 */
 	protected function get_plugin_source(): string {
-		return WP_PERSONIO_INTEGRATION_PLUGIN;
+		return $this->plugin_source;
 	}
 
 	/**
-	 * Return the state.
+	 * Return the plugin source for this extension.
+	 *
+	 * Hint: ony for compatibility with other plugins.
+	 *
+	 * @return string
+	 */
+	public function get_public_plugin_source(): string {
+		return $this->plugin_source;
+	}
+
+	/**
+	 * Set the plugin source for this extension.
+	 *
+	 * @param string $plugin_source The plugin source.
+	 *
+	 * @return void
+	 */
+	public function set_plugin_source( string $plugin_source ): void {
+		$this->plugin_source = $plugin_source;
+	}
+
+	/**
+	 * Return the active state of the dependent plugin/theme.
 	 *
 	 * @return bool
 	 */
 	public function is_active(): bool {
+		return false;
+	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
 		return false;
 	}
 
@@ -453,6 +497,47 @@ class Extensions_Base {
 	}
 
 	/**
+	 * Return whether this extension does require other extensions.
+	 *
+	 * @return bool
+	 */
+	private function has_required_extensions(): bool {
+		return ! empty( $this->get_required_extensions() );
+	}
+
+	/**
+	 * Return whether a required extension is enabled.
+	 *
+	 * @return bool
+	 */
+	protected function is_required_extension_enabled(): bool {
+		// bail if this extension does not require any extension.
+		if ( ! $this->has_required_extensions() ) {
+			return true;
+		}
+
+		// check each required extension.
+		$enabled_extensions = 0;
+		foreach ( Extensions::get_instance()->get_extensions_as_objects() as $extension_obj ) {
+			// bail if this extension does not require the actual one.
+			if ( ! in_array( get_class( $extension_obj ), $this->get_required_extensions(), true ) ) {
+				continue;
+			}
+
+			// bail if extension is not enabled.
+			if ( ! $extension_obj->is_enabled() ) {
+				continue;
+			}
+
+			// update enabled counter.
+			++$enabled_extensions;
+		}
+
+		// return true if enabled extension matches the count of extensions.
+		return count( $this->get_required_extensions() ) === $enabled_extensions;
+	}
+
+	/**
 	 * Return link to change state of this extension.
 	 *
 	 * @return string
@@ -466,5 +551,38 @@ class Extensions_Base {
 			),
 			get_admin_url() . 'admin.php'
 		);
+	}
+
+	/**
+	 * Return the extension tab where we add our settings for extensions.
+	 *
+	 * @return Tab|false
+	 */
+	protected function get_extension_tab(): Tab|false {
+		// get settings object.
+		$settings_obj = Settings::get_instance();
+
+		// get the main settings page.
+		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
+
+		// bail if page could not be loaded.
+		if ( ! $main_settings_page instanceof Page ) {
+			return false;
+		}
+
+		// get and return the extension tab.
+		return $main_settings_page->get_tab( 'extensions' );
+	}
+
+	/**
+	 * Return the URL for the form handler settings.
+	 *
+	 * @return string
+	 */
+	public function get_settings_link(): string {
+		if ( empty( $this->get_setting_sub_tab() ) ) {
+			return Helper::get_settings_url( $this->get_settings_page(), $this->get_setting_tab() );
+		}
+		return Helper::get_settings_url( $this->get_settings_page(), $this->get_setting_tab(), $this->get_setting_sub_tab() );
 	}
 }

@@ -36,10 +36,9 @@ class Compatibilities_Base {
 	private static ?Compatibilities_Base $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
-	private function __construct() {
-	}
+	protected function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.
@@ -52,11 +51,11 @@ class Compatibilities_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Compatibilities_Base {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
 	/**

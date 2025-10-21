@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Compatibilities_Base;
-use PersonioIntegrationLight\Plugin\Transients;
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 
 /**
  * Object for this check.
@@ -25,6 +25,24 @@ class Acf extends Compatibilities_Base {
 	 * @var string
 	 */
 	protected string $name = 'personio_integration_compatibility_acf';
+
+	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Acf
+	 */
+	private static ?Acf $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Acf {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Run the check.

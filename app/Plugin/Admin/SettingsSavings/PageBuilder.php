@@ -10,9 +10,10 @@ namespace PersonioIntegrationLight\Plugin\Admin\SettingsSavings;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\PageBuilder\Page_Builders;
 use PersonioIntegrationLight\PageBuilder\PageBuilder_Base;
-use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object which saves the page builder import setting for templates and run it if enabled.
@@ -26,6 +27,11 @@ class PageBuilder {
 	 * @return string
 	 */
 	public static function save( string|null $value ): string {
+		// convert value to string.
+		if ( is_null( $value ) ) {
+			$value = '';
+		}
+
 		// bail if value is not 1.
 		if ( 1 !== absint( $value ) ) {
 			return $value;
@@ -35,20 +41,39 @@ class PageBuilder {
 		$option = str_replace( 'pre_update_option_', '', current_filter() );
 
 		// get the depends-field-name as this is the field which enables this setting.
-		$field_settings = Settings::get_instance()->get_settings_for_field( $option );
+		$field_settings = Settings::get_instance()->get_setting( $option );
 
 		// bail if no settings or page_builder is found.
-		if ( empty( $field_settings ) || empty( $field_settings['page_builder'] ) ) {
+		if ( ! $field_settings instanceof Setting || empty( $field_settings->get_custom_var( 'page_builder' ) ) ) {
 			return $value;
 		}
 
 		// get the page builder object.
 		$page_builder_obj_to_use = false;
 		foreach ( Page_Builders::get_instance()->get_page_builders() as $page_builder ) {
-			$page_builder_obj = call_user_func( $page_builder . '::get_instance' );
-			if ( $page_builder_obj instanceof PageBuilder_Base && $page_builder_obj->get_name() === $field_settings['page_builder'] ) {
-				$page_builder_obj_to_use = $page_builder_obj;
+			// get the class name.
+			$classname = $page_builder . '::get_instance';
+
+			// bail if it is not callable.
+			if ( ! is_callable( $classname ) ) {
+				continue;
 			}
+
+			// get the object.
+			$page_builder_obj = $classname();
+
+			// bail if it is not PageBuilder_Base.
+			if ( ! $page_builder_obj instanceof PageBuilder_Base ) {
+				continue;
+			}
+
+			// bail if name does not match.
+			if ( $page_builder_obj->get_name() !== $field_settings->get_custom_var( 'page_builder' ) ) {
+				continue;
+			}
+
+			// set this object as pagebuilder object to use.
+			$page_builder_obj_to_use = $page_builder_obj;
 		}
 
 		// bail if no page builder could be found.

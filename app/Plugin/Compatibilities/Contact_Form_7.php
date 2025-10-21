@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Compatibilities_Base;
-use PersonioIntegrationLight\Plugin\Transients;
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 
 /**
  * Object for this check.
@@ -25,6 +25,24 @@ class Contact_Form_7 extends Compatibilities_Base {
 	 * @var string
 	 */
 	protected string $name = 'personio_integration_compatibility_cf7';
+
+	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Contact_Form_7
+	 */
+	private static ?Contact_Form_7 $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Contact_Form_7 {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Run the check.
@@ -47,7 +65,7 @@ class Contact_Form_7 extends Compatibilities_Base {
 	}
 
 	/**
-	 * Check if Avada and its necessary plugins are active.
+	 * Check if the plugin is active.
 	 *
 	 * @return bool
 	 */

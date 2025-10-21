@@ -25,7 +25,7 @@ class MainLanguage extends Settings_Validation_Base {
 	 * @return string
 	 */
 	public static function validate( string $value ): string {
-		if ( ! Helper::is_admin_api_request() ) {
+		if ( ! Helper::is_rest_request() ) {
 			if ( ! self::has_size( $value ) ) {
 				add_settings_error( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, __( 'No main language was specified. The specification of a main language is mandatory.', 'personio-integration-light' ) );
 				$value = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language();
@@ -50,7 +50,7 @@ class MainLanguage extends Settings_Validation_Base {
 	 *
 	 * @param string $value The configured URL.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 * @noinspection PhpUnused
 	 */
 	public static function rest_validate( string $value ): array {
@@ -59,8 +59,10 @@ class MainLanguage extends Settings_Validation_Base {
 			return array(
 				'error' => 'no_size',
 			);
-		} elseif ( ! self::check_language( $value ) ) {
-			// return error if language is not available.
+		}
+
+		// return error if language is not available.
+		if ( ! self::check_language( $value ) ) {
 			return array(
 				'error' => 'language_not_available',
 			);

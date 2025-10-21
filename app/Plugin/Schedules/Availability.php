@@ -42,8 +42,7 @@ class Availability extends Schedules_Base {
 	 * Initialize this schedule.
 	 */
 	public function __construct() {
-		// get interval from settings.
-		$this->interval = 'daily';
+		$this->interval = 'personio_integration_daily';
 	}
 
 	/**

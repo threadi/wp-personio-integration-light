@@ -13,30 +13,6 @@ jQuery(document).ready(function($) {
       this.after(button);
     })
 
-    // save to hide transient-messages via ajax-request
-    $('div[data-dismissible] button.notice-dismiss').on('click',
-        function (event) {
-            event.preventDefault();
-            let $this = $(this);
-            let attr_value, option_name, dismissible_length, data;
-            attr_value = $this.closest('div[data-dismissible]').attr('data-dismissible').split('-');
-
-            // Remove the dismissible length from the attribute value and rejoin the array.
-            dismissible_length = attr_value.pop();
-            option_name = attr_value.join('-');
-            data = {
-                'action': 'personio_integration_dismiss_admin_notice',
-                'option_name': option_name,
-                'dismissible_length': dismissible_length,
-                'nonce': personioIntegrationLightJsVars.dismiss_nonce
-            };
-
-            // run ajax request to save this setting
-            $.post(personioIntegrationLightJsVars.ajax_url, data);
-            $this.closest('div[data-dismissible]').hide('slow');
-        }
-    );
-
     /**
      * Create dialog before import is running.
      * Get the content for the dialog via AJAX for dynamic content-changes.
@@ -89,59 +65,9 @@ jQuery(document).ready(function($) {
     });
 
     /**
-     * Handle depending settings on settings page.
-     *
-     * Get all fields which depends from another.
-     * Hide fields where the dependends does not match.
-     * Set handler on depending fields to show or hide the dependend fields.
-     *
-     * Hint: hide the surrounding "tr"-element.
-     */
-    $('body.post-type-personioposition input[type="checkbox"], body.post-type-personioposition input[type="hidden"], body.post-type-personioposition select').each( function() {
-        let form_field = $(this);
-
-        // check on load to hide some fields.
-        $('body.post-type-personioposition [data-depends]').each( function() {
-          let depending_field = $(this);
-          $.each( $(this).data('depends'), function( i, v ) {
-             if( i === form_field.attr('name')
-               && (
-                 ( form_field.attr('type') === 'checkbox' && ! form_field.is(':checked') )
-                 || ( form_field.attr('type') !== 'checkbox' && v.toString() !== form_field.val() )
-               ) ) {
-               depending_field.closest('tr').addClass('hide');
-               depending_field.closest('tr').removeClass('show_with_animation');
-             }
-          });
-        });
-
-        // add event-listener to changed depending fields.
-        form_field.on('change', function() {
-          $('body.post-type-personioposition [data-depends]').each( function() {
-            let depending_field = $(this);
-            $.each( $(this).data('depends'), function( i, v ) {
-              if( i === form_field.attr('name') ) {
-                if(
-                  (form_field.attr('type') !== 'checkbox' && v.toString() === form_field.val() )
-                  || (form_field.attr('type') === 'checkbox' && form_field.is(':checked') )
-                ) {
-                  depending_field.closest('tr').removeClass('hide');
-                  depending_field.closest( 'tr' ).addClass('show_with_animation')
-                }
-                else {
-                  depending_field.closest('tr').addClass('hide');
-                  depending_field.closest('tr').removeClass('show_with_animation');
-                }
-              }
-            });
-          });
-        })
-    });
-
-    /**
      * Add hint for applications in Pro-version in menu.
      */
-    $("#menu-posts-personioposition a[href='#']").on( 'click', function(e) {
+    $("body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication']").on( 'click', function(e) {
       e.preventDefault();
 
       let dialog_config = {
@@ -374,7 +300,7 @@ function personio_get_import_info() {
           personio_get_import_info()
         }, 500 );
       } else if (errors.length > 0) {
-        let message = '<p>' + personioIntegrationLightJsVars.import_txt_error + '</p>';
+        let message = '<p><strong>' + personioIntegrationLightJsVars.import_txt_error + '</strong></p>';
         message = message + '<ul>';
         for (error of errors) {
           message = message + '<li>' + error + '</li>';
@@ -382,6 +308,7 @@ function personio_get_import_info() {
         message = message + '</ul>';
         let dialog_config = {
           detail: {
+            className: 'personio-integration-import-error',
             title: personioIntegrationLightJsVars.import_title_error,
             texts: [
               message
@@ -669,6 +596,18 @@ function personio_integration_extension_state_button() {
       error: function( jqXHR, textStatus, errorThrown ) {
         personio_integration_ajax_error_dialog( errorThrown )
       },
+      beforeSend: function() {
+        // show wait window as dialog.
+        let dialog_config = {
+          detail: {
+            title: personioIntegrationLightJsVars.title_please_wait,
+            texts: [
+              '<p>' + personioIntegrationLightJsVars.txt_please_wait + '</p>',
+            ],
+          }
+        }
+        personio_integration_create_dialog(dialog_config);
+      },
       success: function (dialog_config) {
         if( dialog_config.success ) {
           button.removeClass( 'button-state-disabled' );
@@ -684,5 +623,26 @@ function personio_integration_extension_state_button() {
         personio_integration_create_dialog( dialog_config.data );
       }
     } )
+  });
+}
+
+/**
+ * Return the settings import via AJAX.
+ */
+function personio_integration_settings_import_dialog_via_setup() {
+  // get the dialog via AJAX.
+  jQuery.ajax({
+    type: "POST",
+    url: personioIntegrationLightJsVars.ajax_url,
+    data: {
+      'action': 'personio_get_settings_import_dialog',
+      'nonce': personioIntegrationLightJsVars.settings_import_dialog_nonce
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      personio_integration_ajax_error_dialog( errorThrown )
+    },
+    success: function( result ) {
+      personio_integration_create_dialog( result );
+    }
   });
 }

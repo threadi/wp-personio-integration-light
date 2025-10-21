@@ -20,12 +20,17 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	/**
 	 * Validate the Personio-URL.
 	 *
-	 * @param string $value The value from the field.
+	 * @param ?string $value The value from the field.
 	 *
 	 * @return string
 	 */
-	public static function validate( string $value ): string {
-		if ( ! Helper::is_admin_api_request() ) {
+	public static function validate( ?string $value ): string {
+		// set value as string if null is given.
+		if ( is_null( $value ) ) {
+			$value = '';
+		}
+
+		if ( ! Helper::is_rest_request() ) {
 			$errors = get_settings_errors();
 			/**
 			 * If a result-entry already exists, do nothing here.
@@ -40,7 +45,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 			$value = self::cleanup_url_string( $value );
 
 			if ( ! empty( $value ) ) {
-				// check if URL ends with ".jobs.personio.com" or ".jobs.personio.de" with or without "/" on the end.
+				// check if URL ends with ".personio.com" or ".personio.de" with or without "/" on the end.
 				if ( ! self::check_personio_login_url( $value ) ) {
 					add_settings_error( 'personioIntegrationLoginUrl', 'personioIntegrationLoginUrl', __( 'The Personio Login URL must end with ".personio.com" or ".personio.de"!', 'personio-integration-light' ) );
 					$value = '';
@@ -74,7 +79,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function validate_url( string $value ): bool {
-		return wp_http_validate_url( $value );
+		return is_string( wp_http_validate_url( $value ) );
 	}
 
 	/**

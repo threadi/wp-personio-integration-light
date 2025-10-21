@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\Plugin\Admin\Settings_Validation_Base;
-use PersonioIntegrationLight\Plugin\Transients;
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 
 /**
  * Object which validates the given URL.
@@ -27,7 +27,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 * @return string
 	 */
 	public static function validate( string $value ): string {
-		if ( ! Helper::is_admin_api_request() ) {
+		if ( ! Helper::is_rest_request() ) {
 			$transients_obj = Transients::get_instance();
 
 			$errors = get_settings_errors();
@@ -41,7 +41,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 			}
 
 			$error = false;
-			if ( 0 === strlen( $value ) ) {
+			if ( '' === $value ) {
 				add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'The specification of the Personio URL is mandatory.', 'personio-integration-light' ) );
 				$error = true;
 			}
@@ -121,7 +121,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 *
 	 * @param string $value The configured URL.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 * @noinspection PhpUnused
 	 */
 	public static function rest_validate( string $value ): array {
@@ -131,20 +131,26 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 		if ( ! self::has_size( $value ) ) {
 			// return empty string as we do not mark this as failure.
 			return array();
-		} elseif ( ! self::validate_url( $value ) ) {
-			// return error as the given string is not a valid URL.
+		}
+
+		// return error as the given string is not a valid URL.
+		if ( ! self::validate_url( $value ) ) {
 			return array(
 				'error' => 'no_url',
 				'text'  => __( 'Please enter a valid URL, e.g. https://example.jobs.personio.com. See also the hints below.', 'personio-integration-light' ),
 			);
-		} elseif ( ! self::check_personio_in_url( $value ) ) {
-			// return error as the given string is a URL but not for Personio.
+		}
+
+		// return error as the given string is a URL but not for Personio.
+		if ( ! self::check_personio_in_url( $value ) ) {
 			return array(
 				'error' => 'no_personio_url',
 				'text'  => __( 'The specified Personio URL is not a Personio-URL. It must end with ".jobs.personio.com" or ".jobs.personio.de".', 'personio-integration-light' ),
 			);
-		} elseif ( ! self::check_url( $value ) ) {
-			// return error as the given URL is not a usable Personio-URL.
+		}
+
+		// return error as the given URL is not a usable Personio-URL.
+		if ( ! self::check_url( $value ) ) {
 			return array(
 				'error' => 'url_not_available',
 				'text'  => __( 'The specified Personio URL is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there.', 'personio-integration-light' ),
@@ -174,7 +180,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function validate_url( string $value ): bool {
-		return wp_http_validate_url( $value );
+		return is_string( wp_http_validate_url( $value ) );
 	}
 
 	/**

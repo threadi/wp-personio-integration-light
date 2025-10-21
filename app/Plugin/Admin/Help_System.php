@@ -26,7 +26,7 @@ class Help_System {
 	private static ?Help_System $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -41,11 +41,11 @@ class Help_System {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Help_System {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
 	/**
@@ -67,13 +67,21 @@ class Help_System {
 	 * @return void
 	 */
 	public function add_help( WP_Screen $screen ): void {
-		// bail if we are not in our cpt.
-		if ( PersonioPosition::get_instance()->get_name() !== $screen->post_type ) {
+		$allowed = PersonioPosition::get_instance()->get_name() === $screen->post_type;
+		/**
+		 * Prevent to add the WordPress-internal help for our plugin.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param bool $allowed True if the help should be visible.
+		 * @param WP_Screen $screen The actual visible screen.
+		 */
+		if ( ! apply_filters( 'personio_integration_light_show_help', $allowed, $screen ) ) {
 			return;
 		}
 
 		// get the help tabs.
 		$help_tabs = $this->get_help_tabs();
+
 		// bail if list is empty.
 		if ( empty( $help_tabs ) ) {
 			return;
@@ -114,7 +122,7 @@ class Help_System {
 	/**
 	 * Return the list of help tabs.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	private function get_help_tabs(): array {
 		$list = array();
@@ -123,7 +131,7 @@ class Help_System {
 		 * Filter the list of help tabs with its contents.
 		 *
 		 * @since 4.0.0 Available since 4.0.0.
-		 * @param array $list List of help tabs.
+		 * @param array<string,mixed> $list List of help tabs.
 		 */
 		return apply_filters( 'personio_integration_light_help_tabs', $list );
 	}
@@ -131,19 +139,19 @@ class Help_System {
 	/**
 	 * Add help for using applications.
 	 *
-	 * @param array $help_list List of help tabs.
+	 * @param array<int,array<string,mixed>> $help_list List of help tabs.
 	 *
-	 * @return array
+	 * @return array<int,array<string,mixed>>
 	 */
 	public function add_applications_help( array $help_list ): array {
 		// add menu entry for applications (with hint to pro).
 		$false = false;
 		/**
-		 * Hide the application help with its pro hint.
+		 * Hide hint for Pro-plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param array $false Set true to hide the buttons.
+		 * @param bool $false Set true to hide the hint.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
@@ -151,12 +159,12 @@ class Help_System {
 		}
 
 		// collect the content for the help.
-		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Applications', 'personio-integration-light' ) . '</h2><p>' . __( 'We enable you to advertise your jobs on your own website. Applicants can find them and apply for them.', 'personio-integration-light' ) . '</p>';
+		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Applications', 'personio-integration-light' ) . '</h2><p>' . __( 'We enable you to advertise your positions on your own website. Applicants can find them and apply for them.', 'personio-integration-light' ) . '</p>';
 		$content .= '<p><strong>' . __( 'How to get applications:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		$content .= '<li>' . __( 'Publish your open positions in your website.', 'personio-integration-light' ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Show the application link on each position. Enable this <a href="%1$s">in the template settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
+		$content .= '<li>' . sprintf( __( 'Show the option to apply on each position. Enable this <a href="%1$s">in the template settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
 		$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens new window)</a> to use application forms in your website.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
 		$content .= '</ol>';
@@ -175,9 +183,9 @@ class Help_System {
 	/**
 	 * Add help for using applications.
 	 *
-	 * @param array $help_list List of help tabs.
+	 * @param array<int,array<string,mixed>> $help_list List of help tabs.
 	 *
-	 * @return array
+	 * @return array<int,array<string,mixed>>
 	 */
 	public function add_documentation_help( array $help_list ): array {
 		// collect the content for the help.

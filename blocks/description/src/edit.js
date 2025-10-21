@@ -58,7 +58,7 @@ export default function Edit( object ) {
 			]);
 		}, []);
 		templates = useSelect((select) => {
-				return select('core').getEntityRecords('personio/v1', 'jobdescription-templates') || [];
+				return select('core').getEntityRecords('personio/v1', 'jobdescription-templates', { per_page: 20 }) || [];
 			}
 		);
 	}
@@ -69,7 +69,7 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody initialOpen={false} title={ __( 'Settings', 'personio-integration-light' ) }>
+				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
 					<div className="wp-personio-integration-selectcontrol">
 						{
 							<SelectControl

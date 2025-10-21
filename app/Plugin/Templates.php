@@ -10,11 +10,16 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Application_Button;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Description;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Details;
+use WP_Error;
 use WP_Post;
 use WP_Term;
 
@@ -30,7 +35,7 @@ class Templates {
 	private static ?Templates $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -45,10 +50,11 @@ class Templates {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Templates {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return static::$instance;
+
+		return self::$instance;
 	}
 
 	/**
@@ -73,8 +79,8 @@ class Templates {
 
 		// our own hooks.
 		add_action( 'personio_integration_get_title', array( $this, 'get_title_template' ), 10, 2 );
-		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt' ), 10, 2 );
-		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 );
+		add_action( 'personio_integration_get_excerpt', array( $this, 'get_excerpt' ), 10, 2 ); // @phpstan-ignore return.void
+		add_action( 'personio_integration_get_content', array( $this, 'get_content_template' ), 10, 2 ); // @phpstan-ignore return.void
 		add_action( 'personio_integration_get_formular', array( $this, 'get_application_link_template' ), 10, 2 );
 		add_action( 'personio_integration_get_filter', array( $this, 'get_filter_template' ), 10, 2 );
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'get_lowercase_attributes' ), 5 );
@@ -86,6 +92,7 @@ class Templates {
 		add_filter( 'personio_integration_light_filter_url', array( $this, 'format_filter_url' ), 10, 2 );
 		add_action( 'personio_integration_filter_pre', array( $this, 'extend_form_for_simple_permalinks' ) );
 		add_action( 'personio_integration_get_template_before', array( $this, 'add_styles' ) );
+		add_filter( 'personio_integration_show_content', array( $this, 'prevent_content_via_excerpt_loading' ) );
 
 		// expand kses-filter.
 		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
@@ -94,7 +101,7 @@ class Templates {
 	/**
 	 * Return possible archive-templates.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_archive_templates(): array {
 		$templates = array(
@@ -107,7 +114,7 @@ class Templates {
 		 *
 		 * @since 2.6.0 Available since 2.6.0
 		 *
-		 * @param array $templates List of templates (filename => label).
+		 * @param array<string,string> $templates List of templates (filename => label).
 		 */
 		return apply_filters( 'personio_integration_templates_archive', $templates );
 	}
@@ -191,14 +198,14 @@ class Templates {
 	 *
 	 * This also defines the order of the templates in backend and frontend.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_template_labels(): array {
 		$templates = array(
 			'title'    => esc_html__( 'Title', 'personio-integration-light' ),
 			'excerpt'  => esc_html__( 'Details', 'personio-integration-light' ),
-			'content'  => esc_html__( 'Content', 'personio-integration-light' ),
-			'formular' => esc_html__( 'Application link', 'personio-integration-light' ),
+			'content'  => esc_html__( 'Description', 'personio-integration-light' ),
+			'formular' => esc_html__( 'Option to apply', 'personio-integration-light' ),
 		);
 
 		/**
@@ -206,7 +213,7 @@ class Templates {
 		 *
 		 * @since 2.6.0 Available since 2.6.0
 		 *
-		 * @param array $templates List of templates (filename => label).
+		 * @param array<string,string> $templates List of templates (filename => label).
 		 */
 		return apply_filters( 'personio_integration_admin_template_labels', $templates );
 	}
@@ -214,8 +221,8 @@ class Templates {
 	/**
 	 * Change all attributes zu lowercase
 	 *
-	 * @param array $values List of shortcode attributes.
-	 * @return array
+	 * @param array<string,mixed> $values List of shortcode attributes.
+	 * @return array<string,mixed>
 	 */
 	public function get_lowercase_attributes( array $values ): array {
 		return array(
@@ -228,7 +235,7 @@ class Templates {
 	/**
 	 * Return list of possible templates for job description.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 * @noinspection PhpUnused
 	 */
 	public function get_jobdescription_templates(): array {
@@ -242,7 +249,7 @@ class Templates {
 		 *
 		 * @since 2.6.0 Available since 2.6.0
 		 *
-		 * @param array $templates List of templates (filename => label).
+		 * @param array<string,string> $templates List of templates (filename => label).
 		 */
 		return apply_filters( 'personio_integration_templates_jobdescription', $templates );
 	}
@@ -250,7 +257,7 @@ class Templates {
 	/**
 	 * Return list of possible templates for excerpts.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 * @noinspection PhpUnused
 	 */
 	public function get_excerpts_templates(): array {
@@ -264,7 +271,7 @@ class Templates {
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
-		 * @param array $templates List of templates (filename => label).
+		 * @param array<string,string> $templates List of templates (filename => label).
 		 */
 		return apply_filters( 'personio_integration_templates_excerpts', $templates );
 	}
@@ -370,8 +377,24 @@ class Templates {
 	 * @return string
 	 */
 	public function get_single_template( string $single_template ): string {
+		// get the actual post ID.
+		$post_id = get_the_ID();
+
+		// bail if post ID could not be loaded.
+		if ( ! $post_id ) {
+			return $single_template;
+		}
+
+		// get post type of actual object.
+		$post_type = get_post_type( $post_id );
+
+		// bail if post type could not be loaded.
+		if ( ! is_string( $post_type ) ) {
+			return $single_template;
+		}
+
 		// bail if this is not our cpt.
-		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( get_the_ID() ) ) {
+		if ( PersonioPosition::get_instance()->get_name() !== $post_type ) {
 			return $single_template;
 		}
 
@@ -383,6 +406,7 @@ class Templates {
 		 *
 		 * @param bool $false Return true if our own single template should not be used.
 		 * @param string $single_template The single template which will be used instead.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_load_single_template', $false, $single_template ) ) {
 			return $single_template;
@@ -399,8 +423,24 @@ class Templates {
 	 * @return string
 	 */
 	public function get_archive_template( string $archive_template ): string {
-		// bail if it is not our post type.
-		if ( ! is_post_type_archive( PersonioPosition::get_instance()->get_name() ) ) {
+		// get the actual post ID.
+		$post_id = get_the_ID();
+
+		// bail if post ID could not be loaded.
+		if ( ! $post_id ) {
+			return $archive_template;
+		}
+
+		// get post type of actual object.
+		$post_type = get_post_type( $post_id );
+
+		// bail if post type could not be loaded.
+		if ( ! is_string( $post_type ) ) {
+			return $archive_template;
+		}
+
+		// bail if this is not our cpt.
+		if ( PersonioPosition::get_instance()->get_name() !== $post_type ) {
 			return $archive_template;
 		}
 
@@ -412,6 +452,7 @@ class Templates {
 		 *
 		 * @param bool $false Return true if our own archive template should not be used.
 		 * @param string $archive_template The archive template which will be used instead.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_load_archive_template', $false, $archive_template ) ) {
 			return $archive_template;
@@ -429,8 +470,24 @@ class Templates {
 	 * @return string
 	 */
 	public function prepare_content_template( string $content ): string {
-		// bail if this is not our own cpt.
-		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( get_the_ID() ) ) {
+		// get the actual post ID.
+		$post_id = get_the_ID();
+
+		// bail if post ID could not be loaded.
+		if ( ! $post_id ) {
+			return $content;
+		}
+
+		// get post type of actual object.
+		$post_type = get_post_type( $post_id );
+
+		// bail if post type could not be loaded.
+		if ( ! is_string( $post_type ) ) {
+			return $content;
+		}
+
+		// bail if this is not our cpt.
+		if ( PersonioPosition::get_instance()->get_name() !== $post_type ) {
 			return $content;
 		}
 
@@ -439,6 +496,7 @@ class Templates {
 		 * Filter whether the content template should be used (false) or not (true).
 		 *
 		 * @param bool $true False if content template should not be used.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_show_content', $true ) ) {
 			return $content;
@@ -448,9 +506,9 @@ class Templates {
 		 * Set arguments to load content of this position via shortcode-function
 		 */
 		$arguments = array(
-			'personioid' => get_post_meta( get_the_ID(), WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, true ),
+			'personioid' => get_post_meta( $post_id, WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID, true ),
 		);
-		return wp_kses_post( PersonioPosition::get_instance()->shortcode_single( $arguments ) );
+		return wp_kses_post( \PersonioIntegrationLight\PersonioIntegration\Widgets\Single::get_instance()->render( $arguments ) );
 	}
 
 	/**
@@ -461,13 +519,29 @@ class Templates {
 	 * @return string
 	 */
 	public function prepare_excerpt_template( string $content ): string {
-		// bail if this is not our own cpt.
-		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( get_the_ID() ) ) {
+		// get the actual post ID.
+		$post_id = get_the_ID();
+
+		// bail if post ID could not be loaded.
+		if ( ! $post_id ) {
+			return $content;
+		}
+
+		// get post type of actual object.
+		$post_type = get_post_type( $post_id );
+
+		// bail if post type could not be loaded.
+		if ( ! is_string( $post_type ) ) {
+			return $content;
+		}
+
+		// bail if this is not our cpt.
+		if ( PersonioPosition::get_instance()->get_name() !== $post_type ) {
 			return $content;
 		}
 
 		// get position as object.
-		$position_obj = Positions::get_instance()->get_position( get_the_ID() );
+		$position_obj = Positions::get_instance()->get_position( $post_id );
 
 		// return the excerpt-template.
 		return $this->get_excerpt( $position_obj, PersonioPosition::get_instance()->get_single_shortcode_attributes( array() ), true );
@@ -476,8 +550,8 @@ class Templates {
 	/**
 	 * Get position title for list.
 	 *
-	 * @param Position $position The position as object.
-	 * @param array    $attributes The attributes.
+	 * @param Position            $position   The position as object.
+	 * @param array<string,mixed> $attributes The attributes.
 	 *
 	 * @return void
 	 * @noinspection PhpUnusedParameterInspection
@@ -515,183 +589,34 @@ class Templates {
 	}
 
 	/**
-	 * Get the position details as excerpt via template.
+	 * Get or return the position details as excerpt via template.
 	 *
-	 * @param Position $position   The position as object.
-	 * @param array    $attributes The attributes.
-	 * @param bool     $use_return True if this function should return and not echo for output.
+	 * @param Position            $position   The position as object.
+	 * @param array<string,mixed> $attributes The attributes.
+	 * @param bool                $use_return True if this function should return and not echo for output.
 	 *
 	 * @return string
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function get_excerpt( Position $position, array $attributes, bool $use_return = false ): string {
-		// collect the details in this array.
-		$details       = array();
-		$taxonomy_data = array();
-
-		// get the configured separator.
-		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator' ) . ' ';
-
-		// get colon setting.
-		$colon = ':';
-		if ( isset( $attributes['colon'] ) && '' === $attributes['colon'] ) {
-			$colon = '';
+		$content = Details::get_instance()->render( $attributes );
+		if ( $use_return ) {
+			return $content;
 		}
-
-		// get line break from setting.
-		$line_break = '<br>';
-		if ( isset( $attributes['line_break'] ) && '' === $attributes['line_break'] ) {
-			$line_break = ' ';
-		}
-
-		// get the excerpts for this position.
-		if ( ! empty( $attributes['excerpt'] ) ) {
-			foreach ( $attributes['excerpt'] as $taxonomy_slug ) {
-				// get taxonomy name by given slug.
-				$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $taxonomy_slug );
-
-				// bail if taxonomy could not be found.
-				if ( ! $taxonomy_name ) {
-					continue;
-				}
-
-				// get taxonomy label.
-				$taxonomy_label = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name, $attributes['lang'] )['name'];
-
-				// get label in for this output configured language.
-				$terms_label = Taxonomies::get_instance()->get_default_terms_for_taxonomy( $taxonomy_name, $attributes['lang'] );
-
-				// get terms this position is using on this taxonomy.
-				$terms = get_the_terms( $position->get_id(), $taxonomy_name );
-
-				$false = false;
-				/**
-				 * Filter whether to show terms of single taxonomy as list or not.
-				 *
-				 * @since 3.0.8 Available since 3.0.8.
-				 * @param bool $false True to show the list.
-				 * @param array $terms List of terms.
-				 */
-				$show_term_list = apply_filters( 'personio_integration_show_term_list', $false, $terms );
-
-				// if term exist, get the corresponding term-label.
-				if ( ! empty( $terms ) ) {
-					$added  = false;
-					$values = '';
-					foreach ( $terms as $term ) {
-						if ( ! empty( $terms_label[ $term->slug ] ) ) {
-							$details[ $taxonomy_label ] = $terms_label[ $term->slug ];
-							$added                      = true;
-						} elseif ( $show_term_list ) {
-							if ( ! empty( $values ) ) {
-								$values .= $separator;
-							}
-							$values .= $term->name;
-						}
-					}
-
-					if ( ! empty( $values ) ) {
-						$details[ $taxonomy_label ] = $values;
-						$added                      = true;
-					}
-
-					// for not translated label.
-					if ( ! $added ) {
-						$details[ $taxonomy_label ] = $terms[0]->name;
-					}
-				}
-				$taxonomy_data[ $taxonomy_label ] = get_taxonomy( $taxonomy_name );
-			}
-		}
-
-		if ( ! empty( $details ) ) {
-			// get configured template of none has been set for this output.
-			if ( empty( $attributes['excerpt_template'] ) ) {
-				$template = Settings::get_instance()->get_setting( is_singular() ? 'personioIntegrationTemplateDetailsExcerptsTemplate' : 'personioIntegrationTemplateListingExcerptsTemplate' );
-			} else {
-				$template = $attributes['excerpt_template'];
-			}
-
-			// get template and return it.
-			ob_start();
-			include $this->get_template( 'parts/details/' . $template . '.php' );
-			$content = ob_get_clean();
-
-			// return content depending on setting.
-			if ( $use_return ) {
-				return $content;
-			}
-			echo wp_kses_post( $content );
-			return '';
-		}
-
-		// return nothing.
+		echo wp_kses_post( $content );
 		return '';
 	}
 
 	/**
 	 * Get position application-link-button for list.
 	 *
-	 * @param Position $position The position as object.
-	 * @param array    $attributes The attributes.
+	 * @param Position            $position The position as object.
+	 * @param array<string,mixed> $attributes The attributes.
 	 *
 	 * @return void
 	 */
 	public function get_application_link_template( Position $position, array $attributes ): void {
-		// bail if we are in admin.
-		if ( is_admin() ) {
-			return;
-		}
-
-		$false = false;
-		/**
-		 * Bail if no button should be visible.
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 *
-		 * @param bool $false Return true to prevent button-output.
-		 */
-		if ( apply_filters( 'personio_integration_hide_button', $false ) ) {
-			return;
-		}
-
-		// convert attributes.
-		$attributes = PersonioPosition::get_instance()->get_single_shortcode_attributes( $attributes );
-
-		// define where this application-link is displayed.
-		$text_position = 'archive';
-		if ( is_single() ) {
-			$text_position = 'single';
-		}
-
-		// set back to list-link.
-		$back_to_list_url = get_option( 'personioIntegrationTemplateBackToListUrl', '' );
-		if ( empty( $back_to_list_url ) ) {
-			$back_to_list_url = get_post_type_archive_link( PersonioPosition::get_instance()->get_name() );
-		}
-
-		// reset back to list-link.
-		if ( 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) || 0 === absint( get_option( 'personioIntegrationTemplateBackToListButton' ) ) ) {
-			$back_to_list_url = '';
-		}
-
-		// generate styling.
-		Helper::add_inline_style( $attributes['styles'] );
-
-		// get application URL.
-		$link = $position->get_application_url();
-
-		/**
-		 * Set and filter the value for the target-attribute.
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 *
-		 * @param Position $position The Position as object.
-		 * @param array $attributes List of attributes used for the output.
-		 */
-		$target = apply_filters( 'personio_integration_back_to_list_target_attribute', '_blank', $position, $attributes );
-
-		// get and output template.
-		include $this->get_template( 'parts/properties-application-button.php' );
+		echo wp_kses_post( Application_Button::get_instance()->render( $attributes ) );
 	}
 
 	/**
@@ -702,16 +627,27 @@ class Templates {
 	 * @noinspection PhpUnused
 	 */
 	public function update_post_object( WP_Post $post ): void {
-		if ( PersonioPosition::get_instance()->get_name() === $post->post_type ) {
-			// get positions object.
-			$positions_object = Positions::get_instance();
-
-			// get the position as object.
-			$position_object = $positions_object->get_position( get_the_ID() );
-
-			// set language to output language-specific content of the position.
-			$position_object->set_lang( Languages::get_instance()->get_main_language() );
+		// bail if post type does not match.
+		if ( PersonioPosition::get_instance()->get_name() !== $post->post_type ) {
+			return;
 		}
+
+		// get the post ID.
+		$post_id = get_the_ID();
+
+		// bail if not post ID is given.
+		if ( ! $post_id ) {
+			return;
+		}
+
+		// get positions object.
+		$positions_object = Positions::get_instance();
+
+		// get the position as object.
+		$position_object = $positions_object->get_position( $post_id );
+
+		// set language to output language-specific content of the position.
+		$position_object->set_lang( Languages::get_instance()->get_main_language() );
 	}
 
 	/**
@@ -719,15 +655,23 @@ class Templates {
 	 *
 	 * Necessary primary for FSE-themes.
 	 *
-	 * @param string             $post_title The title.
-	 * @param int|string|WP_Post $post_id The post ID.
+	 * Hint: according to https://developer.wordpress.org/reference/hooks/the_title/ the 2nd parameter should be int.
+	 * Reality is that other plugins use here all but not int ...
+	 *
+	 * @param string                  $post_title The title.
+	 * @param string|int|WP_Post|null $post_id The post ID.
 	 *
 	 * @return string
 	 */
-	public function update_post_title( string $post_title, int|string|WP_Post $post_id = 0 ): string {
+	public function update_post_title( string $post_title, string|int|WP_Post|null $post_id = 0 ): string {
 		// bail if this is not our cpt.
-		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( $post_id ) ) {
+		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( $post_id ) ) { // @phpstan-ignore argument.type
 			return $post_title;
+		}
+
+		// get the post id as int, if it is a string.
+		if ( is_string( $post_id ) ) {
+			$post_id = absint( $post_id );
 		}
 
 		// get the post id from object.
@@ -750,8 +694,8 @@ class Templates {
 	/**
 	 * Show a filter in frontend restricted to positions which are visible in list.
 	 *
-	 * @param string $filter     Name of the filter (taxonomy-slug).
-	 * @param array  $attributes List of attributes for the filter.
+	 * @param string              $filter     Name of the filter (taxonomy-slug).
+	 * @param array<string,mixed> $attributes List of attributes for the filter.
 	 *
 	 * @return void
 	 */
@@ -773,7 +717,7 @@ class Templates {
 			if ( $filter === $taxonomy['slug'] && 1 === absint( $taxonomy['useInFilter'] ) ) {
 				$taxonomy_to_use = $taxonomy_name;
 				$terms           = get_terms( array( 'taxonomy' => $taxonomy_name ) );
-				if ( ! empty( $terms ) ) {
+				if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 					foreach ( $terms as $term ) {
 						if ( $term->count > 0 ) {
 							$term_ids[] = $term->term_id;
@@ -800,7 +744,7 @@ class Templates {
 		 * Filter the terms to use in filters.
 		 *
 		 * @since 4.2.4 Available since 4.2.4.
-		 * @param array $terms List of terms.
+		 * @param array<int,WP_Term>|WP_Error $terms List of terms.
 		 * @param string $taxonomy_to_use The taxonomy of these terms to use for the filter.
 		 */
 		$terms = apply_filters( 'personio_integration_light_filter_terms', $terms, $taxonomy_to_use );
@@ -828,16 +772,32 @@ class Templates {
 	}
 
 	/**
+	 * Output the content with configured template.
+	 *
+	 * @param Position            $position   The position as object.
+	 * @param array<string,mixed> $attributes The attributes used for output the template.
+	 *
+	 * @return void
+	 */
+	public function get_content_template( Position $position, array $attributes ): void {
+		echo wp_kses_post( Description::get_instance()->render( $attributes ) );
+	}
+
+	/**
 	 * Return the content with configured template.
 	 *
-	 * @param Position $position   The position as object.
-	 * @param array    $attributes The attributes used for output the template.
-	 * @param bool     $use_return True if this function should return and not echo for output.
+	 * @param Position            $position   The position as object.
+	 * @param array<string,mixed> $attributes The attributes used for output the template.
 	 *
 	 * @return string
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function get_content_template( Position $position, array $attributes, bool $use_return = false ): string {
+	public function get_direct_content_template( Position $position, array $attributes ): string {
+		// bail if position has no content.
+		if ( empty( $position->get_content_as_array() ) ) {
+			return '';
+		}
+
 		// use old template if it exists.
 		$template_file = 'parts/properties-content.php';
 
@@ -845,11 +805,7 @@ class Templates {
 		if ( ! $this->has_template( $template_file ) ) {
 			// get configured template if none has been set for this output.
 			if ( empty( $attributes['jobdescription_template'] ) ) {
-				$template = Settings::get_instance()->get_setting( is_singular() ? 'personioIntegrationTemplateJobDescription' : 'personioIntegrationTemplateListingContentTemplate' );
-				if ( ! $this->has_template( $template_file ) ) {
-					// set default template if none has been configured (should never happen).
-					$template = 'default';
-				}
+				$template = get_option( is_singular() ? 'personioIntegrationTemplateJobDescription' : 'personioIntegrationTemplateListingContentTemplate' );
 			} else {
 				$template = $attributes['jobdescription_template'];
 			}
@@ -865,21 +821,20 @@ class Templates {
 		include $this->get_template( $template_file );
 		$content = ob_get_clean();
 
-		// return content depending on setting.
-		if ( $use_return ) {
-			return $content;
+		if ( ! $content ) {
+			return '';
 		}
-		echo wp_kses_post( $content );
-		return '';
+
+		return $content;
 	}
 
 	/**
 	 * Extend kses-filter for form-element if our own cpt is called.
 	 *
-	 * @param array  $allowed_tags List of allowed tags and attributes.
-	 * @param string $context The context where this is called.
+	 * @param array<string,mixed> $allowed_tags List of allowed tags and attributes.
+	 * @param string              $context The context where this is called.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function add_kses_html( array $allowed_tags, string $context ): array {
 		$false = false;
@@ -943,10 +898,10 @@ class Templates {
 	/**
 	 * Set attributes for output with help of attributes from the used PageBuilder.
 	 *
-	 * @param array $attributes List of pre-filtered attributes.
-	 * @param array $attributes_set_by_pagebuilder List of unfiltered attributes, set by used pagebuilder.
+	 * @param array<string,mixed> $attributes List of pre-filtered attributes.
+	 * @param array<string,mixed> $attributes_set_by_pagebuilder List of unfiltered attributes, set by used pagebuilder.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function filter_attributes_for_templates( array $attributes, array $attributes_set_by_pagebuilder ): array {
 		if ( ! isset( $attributes['lang'] ) ) {
@@ -1003,7 +958,7 @@ class Templates {
 		 * Filter the class list of a single position.
 		 *
 		 * @since 4.0.0 Available since 4.0.0.
-		 * @param array $css_classes List of classes.
+		 * @param array<int,string> $css_classes List of classes.
 		 * @param Position $position_obj Position as object.
 		 */
 		$css_classes = apply_filters( 'personio_integration_light_position_classes', $css_classes, $position_obj );
@@ -1068,9 +1023,9 @@ class Templates {
 	/**
 	 * Set anchor value for output.
 	 *
-	 * @param array $attributes List of pre-filtered attributes.
+	 * @param array<string,mixed> $attributes List of pre-filtered attributes.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function set_anchor( array $attributes ): array {
 		// bail if anchor is already set.
@@ -1083,8 +1038,16 @@ class Templates {
 			return $attributes;
 		}
 
+		// get json of filter.
+		$filter_json = wp_json_encode( $attributes['filter'] );
+
+		// bail if json could not be generated.
+		if ( ! $filter_json ) {
+			return $attributes;
+		}
+
 		// add the default value.
-		$attributes['anchor'] = 'pif' . md5( wp_json_encode( $attributes['filter'] ) );
+		$attributes['anchor'] = 'pif' . md5( $filter_json );
 
 		// return resulting attributes.
 		return $attributes;
@@ -1093,10 +1056,10 @@ class Templates {
 	/**
 	 * Set link_to_anchor value for output.
 	 *
-	 * @param array $attributes List of pre-filtered attributes.
-	 * @param array $attributes_set_by_pagebuilder List if attributes set by page builder.
+	 * @param array<string,mixed> $attributes List of pre-filtered attributes.
+	 * @param array<string,mixed> $attributes_set_by_pagebuilder List if attributes set by page builder.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function set_link_to_anchor( array $attributes, array $attributes_set_by_pagebuilder ): array {
 		// bail if link_to_anchor is already set.
@@ -1115,8 +1078,16 @@ class Templates {
 			return $attributes;
 		}
 
+		// get JSON of filter configuration.
+		$json = wp_json_encode( $attributes['filter'] );
+
+		// bail if JSON could not be created.
+		if ( ! $json ) {
+			return $attributes;
+		}
+
 		// add the default value.
-		$attributes['link_to_anchor'] = 'pif' . md5( wp_json_encode( $attributes['filter'] ) );
+		$attributes['link_to_anchor'] = 'pif' . md5( $json );
 
 		// return resulting attributes.
 		return $attributes;
@@ -1141,27 +1112,48 @@ class Templates {
 	/**
 	 * Add custom widget styles for classic themes.
 	 *
-	 * @param array<string> $attributes List of attributes.
+	 * @param array<string,mixed> $attributes List of attributes.
 	 *
 	 * @return void
 	 */
 	public function add_styles( array $attributes ): void {
-		// bail if this is a block theme.
-		if ( Helper::theme_is_fse_theme() ) {
-			return;
-		}
-
-		// bail if this is a REST API request.
-		if ( Helper::is_admin_api_request() ) {
-			return;
-		}
-
 		// bail if styles are not set.
 		if ( empty( $attributes['styles'] ) ) {
 			return;
 		}
 
+		// set the style.
+		wp_add_inline_style( 'wp-block-library', $attributes['styles'] );
+
+		if ( Helper::is_rest_request() ) {
+			include Helper::get_plugin_path() . '/legacy/styles.php';
+			return;
+		}
+
+		// if this is a block theme add styles the modern way.
+		if ( Helper::theme_is_fse_theme() ) {
+			// generate styling.
+			Helper::add_inline_style( $attributes['styles'] );
+
+			// and do nothing more.
+			return;
+		}
+
+		// bail if this is a REST API request.
+		if ( Helper::is_rest_request() ) {
+			return;
+		}
+
 		// show this styles.
 		include Helper::get_plugin_path() . '/legacy/styles.php';
+	}
+
+	/**
+	 * Prevent loading of our own content via excerpt-filter.
+	 *
+	 * @return bool
+	 */
+	public function prevent_content_via_excerpt_loading(): bool {
+		return ! doing_filter( 'get_the_excerpt' );
 	}
 }

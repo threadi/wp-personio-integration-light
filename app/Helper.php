@@ -10,15 +10,21 @@ namespace PersonioIntegrationLight;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Db;
 use PersonioIntegrationLight\Plugin\Languages;
 use PersonioIntegrationLight\Plugin\Templates;
+use Plugin_Upgrader;
+use SimpleXMLElement;
+use WP_Ajax_Upgrader_Skin;
 use WP_Error;
 use WP_Filesystem_Base;
 use WP_Filesystem_Direct;
 use WP_Post;
 use WP_Post_Type;
 use WP_Rewrite;
+use WP_Screen;
 
 /**
  * The helper class itself.
@@ -61,18 +67,18 @@ class Helper {
 	}
 
 	/**
-	 * Get the language-depending detail-slug.
+	 * Get the language-depending single-slug.
 	 *
 	 * @return string
 	 */
-	public static function get_detail_slug(): string {
+	public static function get_single_slug(): string {
 		$slug = 'position';
 		if ( Languages::get_instance()->is_german_language() ) {
 			$slug = 'stelle';
 		}
 
 		/**
-		 * Change the detail slug.
+		 * Change the single slug.
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *
@@ -87,11 +93,10 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_pro_url(): string {
-		$url = 'https://laolaweb.com/en/plugins/personio-wordpress-plugin/';
 		if ( Languages::get_instance()->is_german_language() ) {
-			$url = 'https://laolaweb.com/plugins/personio-wordpress-plugin/';
+			return 'https://laolaweb.com/plugins/personio-wordpress-plugin/';
 		}
-		return $url;
+		return 'https://laolaweb.com/en/plugins/personio-wordpress-plugin/';
 	}
 
 	/**
@@ -160,7 +165,7 @@ class Helper {
 	 * @returns boolean
 	 * @author matzeeable
 	 */
-	public static function is_admin_api_request(): bool {
+	public static function is_rest_request(): bool {
 		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) // Case #1.
 			|| ( isset( $GLOBALS['wp']->query_vars['rest_route'] ) // (#2)
 				&& str_starts_with( $GLOBALS['wp']->query_vars['rest_route'], '/' ) ) ) {
@@ -176,10 +181,23 @@ class Helper {
 		// Case #4.
 		$rest_url    = wp_parse_url( trailingslashit( rest_url() ) );
 		$current_url = wp_parse_url( add_query_arg( array() ) );
-		if ( is_array( $current_url ) && isset( $current_url['path'] ) ) {
+		if ( is_array( $current_url ) && is_array( $rest_url ) && isset( $current_url['path'], $rest_url['path'] ) ) {
 			return str_starts_with( $current_url['path'], $rest_url['path'] );
 		}
 		return false;
+	}
+
+	/**
+	 * Alias for @is_rest_request().
+	 *
+	 * @return bool
+	 * @noinspection PhpUnused
+	 *
+	 * @deprecated since 5.0.0   *
+	 */
+	public static function is_admin_api_request(): bool {
+		_deprecated_function( __FUNCTION__, '5.0.0', 'is_rest_request()' );
+		return self::is_rest_request();
 	}
 
 	/**
@@ -188,7 +206,7 @@ class Helper {
 	 * @param array<string,mixed> $attribute_defaults List of attribute defaults.
 	 * @param array<string,mixed> $attribute_settings List of attribute settings.
 	 * @param array<string,mixed> $attributes List of actual attribute values.
-	 * @return array<string,array<string,mixed>>
+	 * @return array<string,string|array<int,mixed>>
 	 */
 	public static function get_shortcode_attributes( array $attribute_defaults, array $attribute_settings, array $attributes ): array {
 		$filtered = array(
@@ -299,6 +317,16 @@ class Helper {
 	}
 
 	/**
+	 * Checks whether a given plugin is installed.
+	 *
+	 * @param string $plugin Path to the requested plugin relative to plugin-directory.
+	 * @return bool
+	 */
+	public static function is_plugin_installed( string $plugin ): bool {
+		return file_exists( trailingslashit( WP_PLUGIN_DIR ) . $plugin );
+	}
+
+	/**
 	 * Return the absolute URL to the plugin (already trailed with slash).
 	 *
 	 * @return string
@@ -340,9 +368,9 @@ class Helper {
 	/**
 	 * Check if Settings-Errors-entry already exists in array.
 	 *
-	 * @param string $entry The entry.
-	 * @param array  $errors The list of errors.
-	 * @return false
+	 * @param string                  $entry The entry.
+	 * @param array<string|int,mixed> $errors The list of errors.
+	 * @return bool
 	 */
 	public static function check_if_setting_error_entry_exists_in_array( string $entry, array $errors ): bool {
 		foreach ( $errors as $error ) {
@@ -363,7 +391,7 @@ class Helper {
 	}
 
 	/**
-	 * Get current URL in frontend and backend.
+	 * Return current URL in frontend and backend.
 	 *
 	 * @return string
 	 */
@@ -384,6 +412,11 @@ class Helper {
 			$page_url = get_permalink( $object->ID );
 		}
 
+		// return empty string if no URL could be loaded.
+		if ( ! $page_url ) {
+			return '';
+		}
+
 		// return result.
 		return $page_url;
 	}
@@ -391,13 +424,13 @@ class Helper {
 	/**
 	 * Regex to get html tag attribute value.
 	 *
-	 * @param string $attrib The attribute.
+	 * @param string $attribute The attribute.
 	 * @param string $tag The tag.
-	 * @return string
+	 * @return string|false
 	 */
-	public static function get_attribute_value_from_html( string $attrib, string $tag ): string {
+	public static function get_attribute_value_from_html( string $attribute, string $tag ): string|false {
 		// get attribute from html tag.
-		$re = '/' . preg_quote( $attrib, null ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
+		$re = '/' . preg_quote( $attribute, null ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
 		if ( preg_match( $re, $tag, $match ) ) {
 			return urldecode( $match[2] );
 		}
@@ -408,22 +441,31 @@ class Helper {
 	 * Get all files of directory recursively.
 	 *
 	 * @param string $path The path.
+	 *
 	 * @return array<string>
 	 */
 	public static function get_files_from_directory( string $path = '.' ): array {
 		// get WP_Filesystem as object.
 		$wp_filesystem = self::get_wp_filesystem();
 
+		// get the file list.
+		$files = $wp_filesystem->dirlist( $path, true, true );
+
+		// bail if no files could be loaded.
+		if ( ! $files ) {
+			return array();
+		}
+
 		// load files recursive in array and return resulting list.
-		return self::get_files( $wp_filesystem->dirlist( $path, true, true ), $path );
+		return self::get_files( $files, $path );
 	}
 
 	/**
 	 * Recursively load files from given array.
 	 *
-	 * @param array<string>  $files Array of file we iterate through.
-	 * @param string $path Absolute path where the files are located.
-	 * @param array<string>  $file_list List of files.
+	 * @param array<string,array<string,mixed>> $files Array of file we iterate through.
+	 * @param string                            $path Absolute path where the files are located.
+	 * @param array<string>                     $file_list List of files.
 	 *
 	 * @return array<string>
 	 */
@@ -438,27 +480,6 @@ class Helper {
 		}
 
 		return $file_list;
-	}
-
-	/**
-	 * Get language-specific Personio account login url.
-	 *
-	 * @return string
-	 */
-	public static function get_personio_login_url(): string {
-		// get the configured Personio Login URL.
-		$personio_login_url = get_option( 'personioIntegrationLoginUrl' );
-
-		// return default URLs, if no Login URL is configured.
-		if ( empty( $personio_login_url ) ) {
-			if ( Languages::get_instance()->is_german_language() ) {
-				return 'https://www.personio.de/login/';
-			}
-			return 'https://www.personio.com/login/';
-		}
-
-		// return the custom Personio Login URL.
-		return $personio_login_url;
 	}
 
 	/**
@@ -494,7 +515,7 @@ class Helper {
 	/**
 	 * Get list of blogs in a multisite-installation.
 	 *
-	 * @return array
+	 * @return array<int,mixed>
 	 */
 	public static function get_blogs(): array {
 		if ( false === is_multisite() ) {
@@ -505,7 +526,7 @@ class Helper {
 		global $wpdb;
 
 		// get blogs in this site-network.
-		return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			"
             SELECT blog_id
             FROM {$wpdb->blogs}
@@ -513,7 +534,7 @@ class Helper {
             AND spam = '0'
             AND deleted = '0'
             AND archived = '0'
-        "
+        	"
 		);
 	}
 
@@ -521,17 +542,21 @@ class Helper {
 	 * Return the settings-URL.
 	 *
 	 * @param string $page The page to call (e.g. "personioPositions").
-	 * @param string $tab String which represents the tab to link to.
+	 * @param string $tab  String which represents the tab to link to.
+	 * @param string $sub_tab String for the sub-tab to link to.
 	 *
 	 * @return string
 	 */
-	public static function get_settings_url( string $page = 'personioPositions', string $tab = '' ): string {
+	public static function get_settings_url( string $page = 'personioPositions', string $tab = '', string $sub_tab = '' ): string {
 		$params = array(
 			'post_type' => PersonioPosition::get_instance()->get_name(),
 			'page'      => $page,
 		);
 		if ( ! empty( $tab ) ) {
 			$params['tab'] = $tab;
+		}
+		if ( ! empty( $sub_tab ) ) {
+			$params['subtab'] = $sub_tab;
 		}
 		return add_query_arg( $params, get_admin_url() . 'edit.php' );
 	}
@@ -542,11 +567,16 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_plugin_name(): string {
+		// get the plugin data.
 		$plugin_data = get_plugin_data( WP_PERSONIO_INTEGRATION_PLUGIN );
-		if ( ! empty( $plugin_data ) && ! empty( $plugin_data['Name'] ) ) {
-			return $plugin_data['Name'];
+
+		// bail if no 'Name' is in the result.
+		if ( empty( $plugin_data['Name'] ) ) {
+			return '';
 		}
-		return '';
+
+		// return the plugin name.
+		return $plugin_data['Name'];
 	}
 
 	/**
@@ -565,16 +595,6 @@ class Helper {
 	 */
 	public static function get_template_documentation_url(): string {
 		return Languages::get_instance()->is_german_language() ? 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/templates_de.md' : 'https://github.com/threadi/wp-personio-integration-light/blob/master/doc/templates.md';
-	}
-
-	/**
-	 * Return language-depending Personio Login URL example.
-	 *
-	 * @return string
-	 * @noinspection PhpUnused
-	 */
-	public static function get_personio_login_url_example(): string {
-		return Languages::get_instance()->is_german_language() ? 'https://dein-unternehmen.personio.de' : 'https://your-company.personio.com';
 	}
 
 	/**
@@ -608,7 +628,7 @@ class Helper {
 	/**
 	 * Return list of our own cpts as names.
 	 *
-	 * @return array
+	 * @return array<int,string>
 	 */
 	public static function get_list_of_our_cpts(): array {
 		$list = array(
@@ -620,7 +640,7 @@ class Helper {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $list The list of post types.
+		 * @param array<int,string> $list The list of post types.
 		 */
 		return apply_filters( 'personio_integration_list_of_cpts', $list );
 	}
@@ -633,7 +653,16 @@ class Helper {
 	 * @return string
 	 */
 	public static function replace_linebreaks( string $text_to_parse ): string {
-		return preg_replace( '/\s+/', ' ', $text_to_parse );
+		// get the result.
+		$result = preg_replace( '/\s+/', ' ', $text_to_parse );
+
+		// bail if result is not a string.
+		if ( ! is_string( $result ) ) {
+			return '';
+		}
+
+		// return the resulting string.
+		return $result;
 	}
 
 	/**
@@ -649,12 +678,12 @@ class Helper {
 	public static function get_file_version( string $filepath ): string {
 		// check for WP_DEBUG.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			return filemtime( $filepath );
+			return (string) filemtime( $filepath );
 		}
 
 		// check for own debug.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-			return filemtime( $filepath );
+			return (string) filemtime( $filepath );
 		}
 
 		$plugin_version = WP_PERSONIO_INTEGRATION_VERSION;
@@ -673,11 +702,11 @@ class Helper {
 	/**
 	 * Add new entry with its key on specific position in array.
 	 *
-	 * @param array<string,array<string,mixed>>|null $fields The array we want to change.
-	 * @param int                                    $position The position where the new array should be added.
-	 * @param array<string,array<string,mixed>>      $array_to_add The new array which should be added.
+	 * @param array<int|string,mixed>|null $fields The array we want to change.
+	 * @param int                          $position The position where the new array should be added.
+	 * @param array<int|string,mixed>      $array_to_add The new array which should be added.
 	 *
-	 * @return array<string,array<string,mixed>>
+	 * @return array<int|string,mixed>
 	 */
 	public static function add_array_in_array_on_position( array|null $fields, int $position, array $array_to_add ): array {
 		if ( is_null( $fields ) ) {
@@ -754,11 +783,15 @@ class Helper {
 		// do not load our files outside our own backend pages.
 		if ( function_exists( 'get_current_screen' ) && in_array( $hook, array( 'edit.php', 'post.php', 'edit-tags.php', 'term.php' ), true ) ) {
 			$screen = get_current_screen();
+			// bail if screen could not be loaded.
+			if ( ! $screen instanceof WP_Screen ) {
+				return false;
+			}
 			if ( ! in_array( $screen->post_type, apply_filters( 'personio_integration_light_do_not_load_on_cpt', array( PersonioPosition::get_instance()->get_name() ) ), true ) ) {
 				return true;
 			}
 		} elseif ( ! str_contains( $hook, 'personio' ) && ! str_contains( $hook, 'options-permalink.php' ) ) {
-			// bail if no personio page is used.
+			// bail if none of our pages is used.
 			return true;
 		}
 
@@ -795,11 +828,10 @@ class Helper {
 		}
 
 		// return local object on any error.
-		if ( $wp_filesystem->errors instanceof WP_Error && $wp_filesystem->errors->has_errors() ) {
+		if ( $wp_filesystem->errors->has_errors() ) {
 			// log this event.
-			$log = new Log();
 			/* translators: %1$s will be replaced by a name. */
-			$log->add_log( sprintf( __( '<strong>Error during loading the required WordPress-own filesystem object!</strong><br>We will now use the local filesystem object and hope it will work.<br><br>Tipps to solve this:<ul><li>Check the following error and speak to your WordPress administrator about it.</li><li>Check your <em>wp-config.php</em> if you have the constant "FS_METHOD" set there. If yes, remove it and check if your WordPress can save media files.</li><li>Ask the support of your hoster for help.</li></ul>Used filesystem mode: <em>%1$s</em><br>The following errors occurred:', 'personio-integration-light' ), get_filesystem_method() ) . ' <code>' . wp_json_encode( $wp_filesystem->errors ) . '</code>', 'error', 'system' );
+			Log::get_instance()->add( sprintf( __( '<strong>Error during loading the required WordPress-own filesystem object!</strong><br>We will now use the local filesystem object and hope it will work.<br><br>Tipps to solve this:<ul><li>Check the following error and speak to your WordPress administrator about it.</li><li>Check your <em>wp-config.php</em> if you have the constant "FS_METHOD" set there. If yes, remove it and check if your WordPress can save media files.</li><li>Ask the support of your hoster for help.</li></ul>Used filesystem mode: <em>%1$s</em><br>The following errors occurred:', 'personio-integration-light' ), get_filesystem_method() ) . ' <code>' . wp_json_encode( $wp_filesystem->errors ) . '</code>', 'error', 'system' );
 
 			// embed the local directory object.
 			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
@@ -810,5 +842,171 @@ class Helper {
 
 		// return the requested filesystem object.
 		return $wp_filesystem;
+	}
+
+	/**
+	 * Return the writable wp-config.php path.
+	 *
+	 * @return string
+	 */
+	public static function get_wp_config_path(): string {
+		$wp_config_php = 'wp-config';
+		/**
+		 * Filter to change the filename of the used wp-config.php without its extension .php.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param string $wp_config_php The filename.
+		 */
+		$wp_config_php = apply_filters( 'personio_integration_light_wp_config_name', $wp_config_php );
+
+		// get path for wp-config.php.
+		$wp_config_php_path = ABSPATH . $wp_config_php . '.php';
+
+		/**
+		 * Filter the path for the wp-config.php before we return it.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param string $wp_config_php_path The path.
+		 */
+		return apply_filters( 'personio_integration_light_wp_config_path', $wp_config_php_path );
+	}
+
+	/**
+	 * Return whether a given file is writable.
+	 *
+	 * @param string $file The file with absolute path.
+	 *
+	 * @return bool
+	 */
+	public static function is_writable( string $file ): bool {
+		return self::get_wp_filesystem()->is_writable( $file );
+	}
+
+	/**
+	 * Create JSON from given array.
+	 *
+	 * @param array<string|int,mixed>|WP_Error|SimpleXMLElement $source The source array.
+	 * @param int                                               $flag Flags to use for this JSON.
+	 *
+	 * @return string
+	 */
+	public static function get_json( array|WP_Error|SimpleXMLElement $source, int $flag = 0 ): string {
+		// create JSON.
+		$json = wp_json_encode( $source, $flag );
+
+		// bail if creating the JSON failed.
+		if ( ! $json ) {
+			return '';
+		}
+
+		// return resulting JSON-string.
+		return $json;
+	}
+
+	/**
+	 * Return the Personio documentation about API credentials.
+	 *
+	 * @return string
+	 */
+	public static function get_personio_api_documentation_url(): string {
+		if ( Languages::get_instance()->is_german_language() ) {
+			return 'https://support.personio.de/hc/de/articles/4404623630993-API-Zugriffsdaten-generieren-und-verwalten';
+		}
+		return 'https://support.personio.de/hc/en-us/articles/4404623630993-Generate-and-manage-API-credentials';
+	}
+
+	/**
+	 * Install a plugin by given download URL.
+	 *
+	 * @param string $download_url The download URL.
+	 * @param string $plugin_slug The plugin slug.
+	 *
+	 * @return int|null|bool|WP_Error
+	 */
+	public static function install_plugin( string $download_url, string $plugin_slug ): int|null|bool|WP_Error {
+		// include required libs for installation.
+		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-ajax-upgrader-skin.php';
+		require_once ABSPATH . 'wp-admin/includes/class-plugin-upgrader.php';
+
+		// run the installer.
+		$skin     = new WP_Ajax_Upgrader_Skin();
+		$upgrader = new Plugin_Upgrader( $skin );
+		$result   = $upgrader->install( $download_url ); // @phpstan-ignore property.nonObject
+
+		// bail if error occurred.
+		if ( is_wp_error( $result ) ) {
+			// log this event.
+			Log::get_instance()->add( __( 'Following during installing Personio Integration Pro:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $result ) . '</code>', 'error', 'system' );
+
+			// do nothing more.
+			return false;
+		}
+
+		// get plugin path.
+		$plugin_path = self::get_plugin_path_from_slug( $plugin_slug );
+
+		// bail if no path could be found.
+		if ( false === $plugin_path ) {
+			// log this event.
+			Log::get_instance()->add( __( 'Personio Integration Pro plugin path could not be read.', 'personio-integration-light' ), 'error', 'system' );
+
+			// do nothing more.
+			return false;
+		}
+
+		// activate the plugin.
+		require_once ABSPATH . 'wp-admin/includes/admin.php';
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		return activate_plugin( $plugin_path );
+	}
+
+	/**
+	 * Return plugin path from slug.
+	 *
+	 * @source WooCommerce
+	 *
+	 * @param string $slug The requested slug.
+	 *
+	 * @return false|string
+	 */
+	public static function get_plugin_path_from_slug( string $slug ): false|string {
+		$plugins = get_plugins();
+
+		if ( str_contains( $slug, '/' ) ) {
+			// The slug is already a plugin path.
+			return $slug;
+		}
+
+		foreach ( $plugins as $plugin_path => $data ) {
+			$path_parts = explode( '/', $plugin_path );
+			if ( $path_parts[0] === $slug ) {
+				return $plugin_path;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Return whether plugin developer modus is enabled.
+	 *
+	 * @return bool
+	 */
+	public static function is_development_mode_active(): bool {
+		return function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' );
+	}
+
+	/**
+	 * Return the Personio Login URL.
+	 *
+	 * @deprecated since 5.0.0
+	 *
+	 * @return string
+	 */
+	public static function get_personio_login_url(): string {
+		_deprecated_function( __FUNCTION__, '5.0.0', 'Personio_Accounts::get_instance()->get_login_url()' );
+		return Personio_Accounts::get_instance()->get_login_url();
 	}
 }

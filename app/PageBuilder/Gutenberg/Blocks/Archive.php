@@ -12,7 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
  * Object to handle this block.
@@ -36,7 +35,7 @@ class Archive extends Blocks_Basis {
 	/**
 	 * Attributes this block is using.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected array $attributes = array(
 		'preview'             => array(
@@ -91,12 +90,38 @@ class Archive extends Blocks_Basis {
 			'type'    => 'string',
 			'default' => '',
 		),
+		'positionBackgroundColor' => array(
+			'type' => 'string',
+			'default' => ''
+		),
+		'positionBackgroundColorHover' => array(
+			'type' => 'string',
+			'default' => ''
+		)
 	);
 
 	/**
-	 * Get the content for single position.
+	 * Variable for instance of this Singleton object.
 	 *
-	 * @param array $attributes List of attributes for this position.
+	 * @var ?Archive
+	 */
+	private static ?Archive $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Archive {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Return the content for single position.
+	 *
+	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
@@ -128,6 +153,14 @@ class Archive extends Blocks_Basis {
 			}
 		}
 
+		// set background for single positions in the list.
+		if( ! empty( $attributes['positionBackgroundColor'] ) ) {
+			$styles_array[] = '.wp-block-wp-personio-integration-list .personioposition { background-color: ' . $attributes['positionBackgroundColor'] . ' }';
+		}
+		if( ! empty( $attributes['positionBackgroundColorHover'] ) ) {
+			$styles_array[] = '.wp-block-wp-personio-integration-list .personioposition:hover { background-color: ' . $attributes['positionBackgroundColorHover'] . ' }';
+		}
+
 		// collect all settings for this block.
 		$attribute_defaults = array(
 			'templates'         => $templates,
@@ -152,6 +185,6 @@ class Archive extends Blocks_Basis {
 		 * @param array $attribute_defaults List of attributes to use.
 		 * @param array $attributes List of attributes vom PageBuilder.
 		 */
-		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
+		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Archive::get_instance()->render( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
 	}
 }

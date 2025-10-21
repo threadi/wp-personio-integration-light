@@ -29,8 +29,8 @@ trait Helper {
 	/**
 	 * Create output for Widget-fields.
 	 *
-	 * @param array $fields List of fields in this widget.
-	 * @param array $instance Current settings.
+	 * @param array<string,array<string,mixed>> $fields List of fields in this widget.
+	 * @param array<string,mixed>               $instance Current settings.
 	 * @return void
 	 */
 	protected function create_widget_field_output( array $fields, array $instance ): void {
@@ -95,10 +95,10 @@ trait Helper {
 	/**
 	 * Secure the widget-fields.
 	 *
-	 * @param array $fields List of fields.
-	 * @param array $new_instance The new instance.
-	 * @param array $instance The old instance.
-	 * @return array
+	 * @param array<string,mixed> $fields List of fields.
+	 * @param array<string,mixed> $new_instance The new instance.
+	 * @param array<string,mixed> $instance The old instance.
+	 * @return array<string,mixed>
 	 */
 	protected function secure_widget_fields( array $fields, array $new_instance, array $instance ): array {
 		foreach ( $fields as $name => $field ) {

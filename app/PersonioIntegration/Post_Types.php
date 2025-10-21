@@ -37,11 +37,11 @@ class Post_Types {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Post_Types {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
 	/**
@@ -61,8 +61,16 @@ class Post_Types {
 	 */
 	public function register_post_type(): void {
 		foreach ( $this->get_post_types() as $post_type ) {
+			// get the class name.
+			$class_name = $post_type . '::get_instance';
+
+			// check if it is callable.
+			if ( ! is_callable( $class_name ) ) {
+				continue;
+			}
+
 			// get the object.
-			$obj = call_user_func( $post_type . '::get_instance' );
+			$obj = $class_name();
 
 			// bail if instance is not our Post_Type.
 			if ( ! $obj instanceof Post_Type ) {
@@ -77,7 +85,7 @@ class Post_Types {
 	/**
 	 * Return list of post types.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_post_types(): array {
 		$post_types = array(
@@ -88,7 +96,7 @@ class Post_Types {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $post_types List of post types.
+		 * @param array<string> $post_types List of post types.
 		 */
 		return apply_filters( 'personio_position_register_post_type', $post_types );
 	}

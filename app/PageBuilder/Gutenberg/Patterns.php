@@ -39,10 +39,11 @@ class Patterns {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Patterns {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return static::$instance;
+
+		return self::$instance;
 	}
 
 	/**
@@ -59,7 +60,7 @@ class Patterns {
 	/**
 	 * Return the in this plugin available pattern.
 	 *
-	 * @return array[]
+	 * @return array<string,mixed>
 	 */
 	private function get_patterns(): array {
 		$patterns = array(
@@ -83,7 +84,7 @@ class Patterns {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $patterns List of patterns.
+		 * @param array<string,mixed> $patterns List of patterns.
 		 */
 		return apply_filters( 'personio_integration_gutenberg_pattern', $patterns );
 	}

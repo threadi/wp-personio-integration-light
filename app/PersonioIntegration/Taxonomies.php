@@ -13,9 +13,12 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Db;
 use PersonioIntegrationLight\Plugin\Languages;
+use WP_REST_Request;
 use WP_REST_Server;
 use WP_Screen;
+use WP_Taxonomy;
 use WP_Term;
 
 /**
@@ -31,7 +34,7 @@ class Taxonomies {
 	private static ?Taxonomies $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -46,10 +49,11 @@ class Taxonomies {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Taxonomies {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return static::$instance;
+
+		return self::$instance;
 	}
 
 	/**
@@ -58,7 +62,7 @@ class Taxonomies {
 	 * @return void
 	 */
 	public function init(): void {
-		// register taxonomies.
+		// register our own taxonomies.
 		add_action( 'init', array( $this, 'register' ), 0 );
 
 		// use REST hooks.
@@ -75,35 +79,47 @@ class Taxonomies {
 	/**
 	 * One-time function to create taxonomy-defaults.
 	 *
-	 * @param array $callback Callback for each step (optional).
+	 * @param array<int,mixed> $callback Callback for each step (optional).
 	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function create_defaults( array $callback = array() ): void {
 		// disable taxonomy-counting for more speed.
 		wp_defer_term_counting( true );
 
+		// set integer for counter.
 		$i = 0;
 
 		// loop through our own taxonomies and add their default terms.
 		foreach ( $this->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			// add default terms to taxonomy if they do not exist (only in admin or via CLI).
 			$taxonomy_obj = get_taxonomy( $taxonomy_name );
-			if ( ! empty( $taxonomy_obj->defaults ) ) {
-				$has_terms = get_terms( array( 'taxonomy' => $taxonomy_name ) );
-				if ( empty( $has_terms ) ) {
-					$this->add_terms( $taxonomy_obj->defaults, $taxonomy_name, $callback );
 
-					// count.
-					++$i;
+			// bail if object could not be loaded.
+			if ( ! $taxonomy_obj instanceof WP_Taxonomy ) {
+				continue;
+			}
 
-					// flush cache every 100 items for more speed.
-					if ( 0 === $i % 100 ) {
-						wp_cache_flush();
-					}
-				} elseif ( ! empty( $callback ) && is_callable( $callback ) ) {
-					$callback( count( $taxonomy_obj->defaults ) );
+			// get the taxonomy defaults.
+			$defaults = $this->get_default_terms_for_taxonomy( $taxonomy_name );
+
+			// get the terms.
+			$has_terms = get_terms( array( 'taxonomy' => $taxonomy_name ) );
+
+			// if we have no terms, add our default terms.
+			if ( empty( $has_terms ) ) {
+				$this->add_terms( $defaults, $taxonomy_name, $callback );
+
+				// count.
+				++$i;
+
+				// flush cache every 100 items for more speed.
+				if ( 0 === $i % 100 ) {
+					wp_cache_flush();
 				}
+			} elseif ( ! empty( $callback ) && is_callable( $callback ) ) {
+				$callback( count( $defaults ) );
 			}
 		}
 
@@ -117,14 +133,13 @@ class Taxonomies {
 	 * @return void
 	 */
 	public function register(): void {
-		// loop through the taxonomies our plugin will be using.
+		// loop through the taxonomies of our own plugin.
 		foreach ( $this->get_taxonomies() as $taxonomy_name => $settings ) {
 			// get properties.
-			$taxonomy_array             = array_merge( $this->get_default_settings(), $settings['attr'] );
-			$taxonomy_array['labels']   = $this->get_taxonomy_label( $taxonomy_name );
-			$taxonomy_array['defaults'] = $this->get_default_terms_for_taxonomy( $taxonomy_name );
+			$taxonomy_array           = array_merge( $this->get_default_settings(), $settings['attr'] );
+			$taxonomy_array['labels'] = $this->get_taxonomy_label( $taxonomy_name );
 
-			// remove slugs for not logged in users.
+			// remove slugs for not logged-in users.
 			if ( ! is_user_logged_in() ) {
 				$taxonomy_array['rewrite'] = false;
 			}
@@ -134,15 +149,10 @@ class Taxonomies {
 			 *
 			 * @since 3.0.0 Available since 3.0.0.
 			 *
-			 * @param array $taxonomy_array List of settings for the taxonomy.
+			 * @param array<string,mixed> $taxonomy_array List of settings for the taxonomy.
 			 * @param string $taxonomy_name Name of the taxonomy.
 			 */
 			$taxonomy_array = apply_filters( 'get_' . $taxonomy_name . '_translate_taxonomy', $taxonomy_array, $taxonomy_name );
-
-			// do not show any taxonomy in menu if Personio URL is not available.
-			if ( ! Helper::is_personio_url_set() ) {
-				$taxonomy_array['show_in_menu'] = false;
-			}
 
 			// register this taxonomy.
 			register_taxonomy( $taxonomy_name, array( PersonioPosition::get_instance()->get_name() ), $taxonomy_array );
@@ -155,7 +165,7 @@ class Taxonomies {
 	/**
 	 * Return the taxonomies this plugin is using with its individual settings.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public function get_taxonomies(): array {
 		$taxonomies = array(
@@ -296,7 +306,7 @@ class Taxonomies {
 	/**
 	 * Get default settings for each taxonomy.
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	private function get_default_settings(): array {
 		return array(
@@ -311,6 +321,7 @@ class Taxonomies {
 			'show_in_quick_edit' => true,
 			'show_in_rest'       => true,
 			'query_var'          => true,
+			'meta_box_cb'        => false,
 			'capabilities'       => array(
 				'manage_terms' => 'read_' . PersonioPosition::get_instance()->get_name(),
 				'edit_terms'   => 'read_' . PersonioPosition::get_instance()->get_name(),
@@ -323,7 +334,7 @@ class Taxonomies {
 	/**
 	 * Return the labels for all known taxonomies.
 	 *
-	 * @return array[]
+	 * @return array<string,array<string,string>>
 	 */
 	public function get_taxonomy_labels(): array {
 		return array(
@@ -334,6 +345,7 @@ class Taxonomies {
 				'edit_item'     => __( 'Edit category', 'personio-integration-light' ),
 				'update_item'   => __( 'Update category', 'personio-integration-light' ),
 				'menu_name'     => __( 'Categories', 'personio-integration-light' ),
+				'back_to_items' => '&larr; ' . __( 'Go to all categories', 'personio-integration-light' ),
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION_CATEGORY => array(
 				'name'          => _x( 'Job types', 'taxonomy general name', 'personio-integration-light' ),
@@ -342,6 +354,7 @@ class Taxonomies {
 				'edit_item'     => __( 'Edit Job type', 'personio-integration-light' ),
 				'update_item'   => __( 'Update Job type', 'personio-integration-light' ),
 				'menu_name'     => __( 'Job types', 'personio-integration-light' ),
+				'back_to_items' => '&larr; ' . __( 'Go to all job types', 'personio-integration-light' ),
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OCCUPATION => array(
 				'name'          => _x( 'Job type details', 'taxonomy general name', 'personio-integration-light' ),
@@ -350,14 +363,16 @@ class Taxonomies {
 				'edit_item'     => __( 'Edit Job type detail', 'personio-integration-light' ),
 				'update_item'   => __( 'Update Job type detail', 'personio-integration-light' ),
 				'menu_name'     => __( 'Job type details', 'personio-integration-light' ),
+				'back_to_items' => '&larr; ' . __( 'Go to all job type details', 'personio-integration-light' ),
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE     => array(
-				'name'          => _x( 'Locations', 'taxonomy general name', 'personio-integration-light' ),
-				'singular_name' => _x( 'Location', 'taxonomy singular name', 'personio-integration-light' ),
-				'search_items'  => __( 'Search location', 'personio-integration-light' ),
-				'edit_item'     => __( 'Edit location', 'personio-integration-light' ),
-				'update_item'   => __( 'Update location', 'personio-integration-light' ),
-				'menu_name'     => __( 'Locations', 'personio-integration-light' ),
+				'name'          => _x( 'Main workplaces', 'taxonomy general name', 'personio-integration-light' ),
+				'singular_name' => _x( 'Main workplace', 'taxonomy singular name', 'personio-integration-light' ),
+				'search_items'  => __( 'Search main workplace', 'personio-integration-light' ),
+				'edit_item'     => __( 'Edit main workplace', 'personio-integration-light' ),
+				'update_item'   => __( 'Update main workplace', 'personio-integration-light' ),
+				'menu_name'     => __( 'Main workplaces', 'personio-integration-light' ),
+				'back_to_items' => '&larr; ' . __( 'Go to all main workplace', 'personio-integration-light' ),
 			),
 			WP_PERSONIO_INTEGRATION_TAXONOMY_DEPARTMENT => array(
 				'name'          => _x( 'Departments', 'taxonomy general name', 'personio-integration-light' ),
@@ -424,7 +439,7 @@ class Taxonomies {
 	 * @param string $taxonomy The requested taxonomy.
 	 * @param string $language_code The requested language (optional).
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_taxonomy_label( string $taxonomy, string $language_code = '' ): array {
 		// get actual locale.
@@ -472,7 +487,7 @@ class Taxonomies {
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *
-		 * @param string $label The label.
+		 * @param array<string,string> $label The label.
 		 * @param string $taxonomy The taxonomy.
 		 */
 		return apply_filters( 'personio_integration_filter_taxonomy_label', $label, $taxonomy );
@@ -481,7 +496,7 @@ class Taxonomies {
 	/**
 	 * Get taxonomy labels for settings (only slug and label).
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_taxonomy_labels_for_settings(): array {
 		$labels = array(
@@ -501,7 +516,7 @@ class Taxonomies {
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *
-		 * @param array $labels The list of labels (internal name/slug => label).
+		 * @param array<string,string> $labels The list of labels (internal name/slug => label).
 		 */
 		return apply_filters( 'personio_integration_cat_labels', $labels );
 	}
@@ -509,20 +524,27 @@ class Taxonomies {
 	/**
 	 * Convert term-name to term-id if it is set in shortcode-attributes and configure shortcode-attribute.
 	 *
-	 * @param array $settings List of settings for a shortcode with 3 parts: defaults, settings & attributes.
-	 * @return array
+	 * @param array<string,mixed> $settings List of settings for a shortcode with 3 parts: defaults, settings & attributes.
+	 *
+	 * @return array<string,mixed>
 	 */
 	public function check_taxonomies( array $settings ): array {
 		// check each taxonomy if it is used as restriction for this list.
 		foreach ( $this->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			$slug = strtolower( $taxonomy['slug'] );
 			if ( ! empty( $settings['attributes'][ $slug ] ) ) {
+				// get the term.
 				$term = get_term_by( 'id', $settings['attributes'][ $slug ], $taxonomy_name );
-				if ( ! empty( $term ) ) {
-					$settings['defaults'][ $taxonomy['slug'] ]   = 0;
-					$settings['settings'][ $taxonomy['slug'] ]   = 'filter';
-					$settings['attributes'][ $taxonomy['slug'] ] = $term->term_id;
+
+				// bail if term could not be loaded.
+				if ( ! $term instanceof WP_Term ) {
+					continue;
 				}
+
+				// set settings for the term.
+				$settings['defaults'][ $taxonomy['slug'] ]   = 0;
+				$settings['settings'][ $taxonomy['slug'] ]   = 'filter';
+				$settings['attributes'][ $taxonomy['slug'] ] = $term->term_id;
 			}
 		}
 
@@ -537,9 +559,9 @@ class Taxonomies {
 	/**
 	 * Add terms from an array to a taxonomy.
 	 *
-	 * @param array  $list_or_terms List of terms to add.
-	 * @param string $taxonomy_name Name of the taxonomy.
-	 * @param array  $callback Callback if term has been processed.
+	 * @param array<string,string> $list_or_terms List of terms to add.
+	 * @param string               $taxonomy_name Name of the taxonomy.
+	 * @param array<mixed,string>  $callback Callback if term has been processed.
 	 *
 	 * @return void
 	 */
@@ -591,7 +613,7 @@ class Taxonomies {
 	/**
 	 * Return the taxonomy defaults.
 	 *
-	 * @return array
+	 * @return array<string,array<string,string>>
 	 */
 	private function get_taxonomy_defaults(): array {
 		return array(
@@ -941,7 +963,7 @@ class Taxonomies {
 	 * @param string $taxonomy The requested taxonomy.
 	 * @param string $language_code The requested language-name (e.g. 'de').
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function get_default_terms_for_taxonomy( string $taxonomy, string $language_code = '' ): array {
 		// set language in frontend to read the texts depending on main-language.
@@ -987,29 +1009,40 @@ class Taxonomies {
 	/**
 	 * Hide some taxonomy-columns in our own cpt-table.
 	 *
-	 * @param array     $hidden List of columns to hide.
-	 * @param WP_Screen $screen Actual screen-object.
-	 * @param bool      $use_defaults If defaults should be used.
+	 * @param array<int,string> $hidden List of columns to hide.
+	 * @param WP_Screen         $screen Actual screen-object.
+	 * @param bool              $use_defaults If defaults should be used.
 	 *
-	 * @return mixed
+	 * @return array<int,string>
 	 */
 	public function hide_columns( array $hidden, WP_Screen $screen, bool $use_defaults ): array {
-		if ( $use_defaults && PersonioPosition::get_instance()->get_name() === $screen->post_type ) {
-			foreach ( $this->get_taxonomies() as $taxonomy_name => $settings ) {
-				if ( ! empty( $settings['initiallyHideInTable'] ) && 1 === absint( $settings['initiallyHideInTable'] ) ) {
-					$hidden[] = 'taxonomy-' . $taxonomy_name;
-				}
+		// bail if we do not want to use the defaults.
+		if ( ! $use_defaults ) {
+			return $hidden;
+		}
+
+		// bail if this is not out own cpt.
+		if ( PersonioPosition::get_instance()->get_name() !== $screen->post_type ) {
+			return $hidden;
+		}
+
+		// add the configured taxonomies to the list to hide.
+		foreach ( $this->get_taxonomies() as $taxonomy_name => $settings ) {
+			if ( ! empty( $settings['initiallyHideInTable'] ) && 1 === absint( $settings['initiallyHideInTable'] ) ) {
+				$hidden[] = 'taxonomy-' . $taxonomy_name;
 			}
 		}
+
+		// return resulting list.
 		return $hidden;
 	}
 
 	/**
 	 * Get list of taxonomy-labels for settings.
 	 *
-	 * @param array|bool $taxonomies Given list of enabled taxonomies.
+	 * @param array<string,string>|bool $taxonomies Given list of enabled taxonomies.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_labels_for_settings( array|bool $taxonomies ): array {
 		if ( is_bool( $taxonomies ) ) {
@@ -1024,8 +1057,8 @@ class Taxonomies {
 		 *
 		 * @since 2.3.0 Available since 2.3.0.
 		 *
-		 * @param array $labels List of labels.
-		 * @param array $taxonomies List of taxonomies.
+		 * @param array<string,string> $labels List of labels.
+		 * @param array<string,string> $taxonomies List of taxonomies.
 		 */
 		return apply_filters( 'personio_integration_settings_get_list', $labels, $taxonomies );
 	}
@@ -1066,46 +1099,70 @@ class Taxonomies {
 	/**
 	 * Return list of available taxonomies for REST-API.
 	 *
-	 * @return array
+	 * @param WP_REST_Request $data The request.
+	 * @return array<int,array<string,mixed>>
 	 * @noinspection PhpUnused
 	 */
-	public function get_taxonomies_via_rest_api(): array {
+	public function get_taxonomies_via_rest_api( WP_REST_Request $data ): array {
 		$taxonomies_labels_array = $this->get_taxonomy_labels_for_settings();
 		$taxonomies              = array();
 		$count                   = 0;
 		foreach ( $this->get_taxonomies() as $taxonomy_name => $taxonomy ) {
-			if ( 1 === absint( $taxonomy['useInFilter'] ) ) {
-				++$count;
-				$terms_as_objects = get_terms( array( 'taxonomy' => $taxonomy_name ) );
-				$term_count       = 0;
-				$terms            = array(
-					array(
-						'id'    => $term_count,
-						'label' => __( 'Please choose', 'personio-integration-light' ),
-						'value' => 0,
-					),
+			// bail if this taxonomy should not be used in filter.
+			if ( 1 !== absint( $taxonomy['useInFilter'] ) ) {
+				continue;
+			}
+
+			// get terms.
+			$terms_as_objects = get_terms( array( 'taxonomy' => $taxonomy_name ) );
+
+			// bail if terms is not an array.
+			if ( ! is_array( $terms_as_objects ) ) {
+				continue;
+			}
+
+			// update counter.
+			++$count;
+
+			// set term counter.
+			$term_count = 0;
+
+			// add initial list entry.
+			$terms = array(
+				array(
+					'id'    => $term_count,
+					'label' => __( 'Please choose', 'personio-integration-light' ),
+					'value' => 0,
+				),
+			);
+
+			// add the terms we got.
+			foreach ( $terms_as_objects as $term ) {
+				++$term_count;
+				$terms[] = array(
+					'id'    => $term_count,
+					'label' => $term->name,
+					'value' => $term->term_id,
 				);
-				foreach ( $terms_as_objects as $term ) {
-					++$term_count;
-					$terms[] = array(
-						'id'    => $term_count,
-						'label' => $term->name,
-						'value' => $term->term_id,
-					);
-				}
-				if ( ! empty( $taxonomies_labels_array[ $taxonomy['slug'] ] ) ) {
-					$taxonomies[] = array(
-						'id'      => $count,
-						'label'   => $taxonomies_labels_array[ $taxonomy['slug'] ],
-						'value'   => $taxonomy['slug'],
-						'entries' => $terms,
-					);
-				}
+			}
+			if ( ! empty( $taxonomies_labels_array[ $taxonomy['slug'] ] ) ) {
+				$taxonomies[] = array(
+					'id'      => $count,
+					'label'   => $taxonomies_labels_array[ $taxonomy['slug'] ],
+					'value'   => $taxonomy['slug'],
+					'entries' => $terms,
+				);
 			}
 		}
 
-		// return resulting list of taxonomies.
-		return $taxonomies;
+		/**
+		 * Filter the resulting list of taxonomies for REST API response.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param array<int,array<string,mixed>> $taxonomies List of taxonomies.
+		 * @param WP_REST_Request $data The REST API request.
+		 */
+		return apply_filters( 'personio_integration_light_rest_taxonomies', $taxonomies, $data );
 	}
 
 	/**
@@ -1123,7 +1180,7 @@ class Taxonomies {
 		$progress   = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy_name => $settings ) {
 			// get all terms with direct db access.
-			$terms = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$terms = Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT ' . $wpdb->terms . '.term_id
                     FROM ' . $wpdb->terms . '
@@ -1141,7 +1198,7 @@ class Taxonomies {
 				$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					$wpdb->terms,
 					array(
-						'term_id' => $term->term_id,
+						'term_id' => $term['term_id'],
 					)
 				);
 			}
@@ -1154,8 +1211,7 @@ class Taxonomies {
 
 			// log in debug-mode.
 			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-				$log = new Log();
-				$log->add_log( 'Taxonomy ' . $taxonomy_name . ' has been deleted.', 'success', 'import' );
+				Log::get_instance()->add( 'Taxonomy ' . $taxonomy_name . ' has been deleted.', 'success', 'import' );
 			}
 
 			// show progress.
@@ -1171,10 +1227,10 @@ class Taxonomies {
 	/**
 	 * Set filter for taxonomies through attributes from the used PageBuilder.
 	 *
-	 * @param array $attributes List of pre-filtered attributes.
-	 * @param array $attributes_set_by_pagebuilder List of unfiltered attributes, set by used pagebuilder.
+	 * @param array<string,int>    $attributes List of pre-filtered attributes.
+	 * @param array<string,string> $attributes_set_by_pagebuilder List of unfiltered attributes, set by used pagebuilder.
 	 *
-	 * @return array
+	 * @return array<string,int>
 	 */
 	public function filter_by_attributes( array $attributes, array $attributes_set_by_pagebuilder ): array {
 		foreach ( $this->get_taxonomies() as $taxonomy ) {

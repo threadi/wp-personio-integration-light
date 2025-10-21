@@ -24,25 +24,24 @@ import {
 } from '@wordpress/components';
 import {
 	InspectorControls,
-	useBlockProps
+	useBlockProps,
+  __experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+  __experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
-	onChangeLimit,
-	onChangeSort,
-	onChangeTitleVisibility,
-	onChangeExcerptVisibility,
-	onChangeContentVisibility,
-	onChangeApplicationFormVisibility,
-	onChangeExcerptTemplates,
-	onChangeLinkingTitle,
-	onChangeFilter,
-	onChangeFilterType,
-	onChangeShowFilter,
-	onChangeSortBy,
-	onChangeGroupBy,
-	onChangeTemplate,
-  Personio_Helper_Panel
+  onChangeLimit,
+  onChangeSort,
+  onChangeTitleVisibility,
+  onChangeExcerptVisibility,
+  onChangeContentVisibility,
+  onChangeApplicationFormVisibility,
+  onChangeExcerptTemplates,
+  onChangeLinkingTitle,
+  onChangeSortBy,
+  onChangeGroupBy,
+  onChangeTemplate,
+  Personio_Helper_Panel, onChangePositionBackgroundColor, onChangePositionBackgroundColorHover
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -76,7 +75,7 @@ export default function Edit( object ) {
 			]);
 		}, []);
 		archive_templates = useSelect((select) => {
-				return select('core').getEntityRecords('personio/v1', 'archive-templates') || [];
+				return select('core').getEntityRecords('personio/v1', 'archive-templates', { per_page: 20 }) || [];
 			}
 		);
 	}
@@ -101,7 +100,7 @@ export default function Edit( object ) {
 			]);
 		}, []);
 		personioTaxonomies = useSelect((select) => {
-				return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
+				return select('core').getEntityRecords('personio/v1', 'taxonomies', { per_page: 20 }) || [];
 			}
 		);
     personioTaxonomiesGrouped = personioTaxonomies.map((x) => x);
@@ -113,13 +112,18 @@ export default function Edit( object ) {
 	// set max amount for listings.
 	let max_amount = wp.hooks.applyFilters('personio.list.amount', 10);
 
+  // get the color gradient settings.
+  const colorGradientSettings = useMultipleOriginColorsAndGradients()
+
+  console.log(object.attributes);
+
 	/**
 	 * Collect return for the edit-function
 	 */
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody initialOpen={false} title={ __( 'Settings', 'personio-integration-light' ) }>
+				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
 					<div className="wp-personio-integration-selectcontrol">
 						{
 							<SelectControl
@@ -145,8 +149,8 @@ export default function Edit( object ) {
 						label={__('Sort direction', 'personio-integration-light')}
 						value={ object.attributes.sort }
 						options={ [
-							{ label: __('ascending', 'personio-integration-light'), value: 'asc' },
-							{ label: __('descending', 'personio-integration-light'), value: 'desc' }
+							{ label: __('Ascending', 'personio-integration-light'), value: 'asc' },
+							{ label: __('Descending', 'personio-integration-light'), value: 'desc' }
 						] }
 						onChange={ value => onChangeSort( value, object ) }
 					/>
@@ -154,8 +158,8 @@ export default function Edit( object ) {
 						label={__('Sort by', 'personio-integration-light')}
 						value={ object.attributes.sortby }
 						options={ [
-							{ label: __('title', 'personio-integration-light'), value: 'title' },
-							{ label: __('date', 'personio-integration-light'), value: 'date' }
+							{ label: __('Title', 'personio-integration-light'), value: 'title' },
+							{ label: __('Date', 'personio-integration-light'), value: 'date' }
 						] }
 						onChange={ value => onChangeSortBy( value, object ) }
 					/>
@@ -198,12 +202,38 @@ export default function Edit( object ) {
 						onChange={ value => onChangeContentVisibility( value, object )  }
 					/>
 					<ToggleControl
-						label={__('View application link', 'personio-integration-light')}
+						label={__('View option to apply', 'personio-integration-light')}
 						checked={ object.attributes.showApplicationForm }
 						onChange={ value => onChangeApplicationFormVisibility( value, object )  }
 					/>
 				</PanelBody>
         <Personio_Helper_Panel/>
+      </InspectorControls>
+      <InspectorControls group="color">
+        <ColorGradientSettingsDropdown
+          panelId={object.clientId}
+          settings={ [
+            {
+              label: __('Background single position', 'personio-integration-light'),
+              colorValue: object.attributes.positionBackgroundColor,
+              onColorChange: value => onChangePositionBackgroundColor( value, object ),
+              clearable: true,
+            }
+          ] }
+          { ...colorGradientSettings }
+        />
+        <ColorGradientSettingsDropdown
+          panelId={object.clientId}
+          settings={ [
+            {
+              label: __('Background single position (hover)', 'personio-integration-light'),
+              colorValue: object.attributes.positionBackgroundColorHover,
+              onColorChange: value => onChangePositionBackgroundColorHover( value, object ),
+              clearable: true,
+            }
+          ] }
+          { ...colorGradientSettings }
+        />
       </InspectorControls>
 			<ServerSideRender
 				block="wp-personio-integration/list"

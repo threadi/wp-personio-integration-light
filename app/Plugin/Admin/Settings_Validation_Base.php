@@ -7,6 +7,9 @@
 
 namespace PersonioIntegrationLight\Plugin\Admin;
 
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Base-Object for each validation-object.
  */
@@ -20,6 +23,6 @@ class Settings_Validation_Base {
 	 * @return bool
 	 */
 	protected static function has_size( string $value ): bool {
-		return strlen( $value );
+		return '' !== $value;
 	}
 }

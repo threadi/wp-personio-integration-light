@@ -12,9 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\Position;
-use PersonioIntegrationLight\Plugin\Languages;
-use PersonioIntegrationLight\Plugin\Templates;
 
 /**
  * Object to handle this block.
@@ -38,7 +35,7 @@ class Application_Button extends Blocks_Basis {
 	/**
 	 * Attributes this block is using.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected array $attributes = array(
 		'preview' => array(
@@ -52,20 +49,30 @@ class Application_Button extends Blocks_Basis {
 	);
 
 	/**
-	 * Get the content for single position.
+	 * Variable for instance of this Singleton object.
 	 *
-	 * @param array $attributes List of attributes for this position.
+	 * @var ?Application_Button
+	 */
+	private static ?Application_Button $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Application_Button {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Return the content of the application button.
+	 *
+	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		$position = $this->get_position_by_request();
-		if ( ! ( $position instanceof Position ) || ! $position->is_valid() ) {
-			return '';
-		}
-
-		// set actual language.
-		$position->set_lang( Languages::get_instance()->get_current_lang() );
-
 		// set ID as class.
 		$class = '';
 		if ( ! empty( $attributes['blockId'] ) ) {
@@ -86,15 +93,10 @@ class Application_Button extends Blocks_Basis {
 		}
 
 		$attributes = array(
-			'personioid' => absint( $position->get_personio_id() ),
 			'templates'  => array( 'formular' ),
 			'styles'     => implode( PHP_EOL, $styles_array ),
 			'classes'    => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 		);
-
-		// get the output.
-		ob_start();
-		Templates::get_instance()->get_application_link_template( $position, $attributes );
-		return ob_get_clean();
+		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Application_Button::get_instance()->render( $attributes );
 	}
 }

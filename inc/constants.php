@@ -46,6 +46,16 @@ const WP_PERSONIO_INTEGRATION_IMPORT_ERRORS = 'personioIntegrationImportErrors';
 const WP_PERSONIO_INTEGRATION_IMPORT_STATUS = 'personioIntegrationImportStatus';
 
 /**
+ * List of newly imported positions.
+ */
+const WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS = 'personioIntegrationImportNewPositions';
+
+/**
+ * List of deleted positions after import.
+ */
+const WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS = 'personioIntegrationImportDeletedPositions';
+
+/**
  * Marker for running deletion.
  */
 const WP_PERSONIO_INTEGRATION_DELETE_RUNNING = 'personioIntegrationDeleteRunning';
@@ -116,3 +126,34 @@ const WP_PERSONIO_INTEGRATION_DELETE_MAX   = 'piDeleteMax';
  * Define the Gutenberg-template-parent-ID which should reflect the plugin-directory.
  */
 const WP_PERSONIO_GUTENBERG_PARENT_ID = 'personio-integration-light/personio-integration-light';
+
+/**
+ * Hash-name for openssl (old).
+ */
+const WP_PERSONIO_INTEGRATION_LIGHT_HASH = 'personioIntegrationHash';
+
+/**
+ * Hash-name for sodium (old).
+ */
+const WP_PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM = 'personioIntegrationHashSodium';
+
+/**
+ * License-URL.
+ *
+ * TODO add during release build.
+ */
+const WP_PERSONIO_INTEGRATION_LIGHT_LICENCE_URL = 'https://laolaweb.com/wp-json/lwlicences/personio-integration/';
+
+/**
+ * Update-URL.
+ *
+ * TODO add during release build.
+ */
+const WP_PERSONIO_INTEGRATION_PRO_UPDATE_URL = 'https://laolaweb.com/wp-json/lwreleases/personio-integration/';
+
+/**
+ * Costs-URL.
+ *
+ * TODO add during release build.
+ */
+const WP_PERSONIO_INTEGRATION_LIGHT_COSTS_URL = 'https://laolaweb.com/wp-json/lwlicences/personio-integration/costs';

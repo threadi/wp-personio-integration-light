@@ -3,7 +3,9 @@ jQuery(document).ready(function($) {
    * Set intro after initial set up of the plugin on list view in backend.
    */
   $('body.post-type-personioposition.edit-personioposition-php .table-view-list').each(function() {
-    introJs().setOptions( {
+
+    // create the intro tour.
+    let intro = introJs.tour().setOptions( {
       nextLabel: personioIntegrationLightIntroJsVars.button_title_next,
       prevLabel: personioIntegrationLightIntroJsVars.button_title_back,
       doneLabel: personioIntegrationLightIntroJsVars.button_title_done,
@@ -46,8 +48,10 @@ jQuery(document).ready(function($) {
           tooltipClass: 'intro-width'
         }
       ]
-    } )
-      .onbeforechange(function() {
+    } );
+
+    // add change events.
+    intro.onbeforechange(function() {
         let obj = $("#screen-meta");
         if( obj.is(':visible') ) {
           obj.hide();
@@ -57,20 +61,29 @@ jQuery(document).ready(function($) {
         if( "screen-meta" === targetElement.id ) {
           $("#screen-options-link-wrap").find('button').trigger('click');
         }
-      })
-      .onexit( function () {
-        jQuery.ajax( {
-          type: "POST",
-          url: personioIntegrationLightIntroJsVars.ajax_url,
-          data: {
-            'action': 'personio_intro_closed',
-            'nonce': personioIntegrationLightIntroJsVars.intro_closed_nonce
-          },
-          error: function( jqXHR, textStatus, errorThrown ) {
-            personio_integration_ajax_error_dialog( errorThrown )
-          },
-        } )
-      } )
-      .start();
+    });
+
+    // set skip handler.
+    intro.onSkip( () => personio_integration_intro_exit() );
+
+    // set exit handler.
+    intro.onexit( () => personio_integration_intro_exit() );
+
+    // start the tour.
+    intro.start();
   });
 });
+
+function personio_integration_intro_exit() {
+  jQuery.ajax( {
+    type: "POST",
+    url: personioIntegrationLightIntroJsVars.ajax_url,
+    data: {
+      'action': 'personio_intro_closed',
+      'nonce': personioIntegrationLightIntroJsVars.intro_closed_nonce
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      personio_integration_ajax_error_dialog( errorThrown )
+    },
+  } )
+}

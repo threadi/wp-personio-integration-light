@@ -36,27 +36,7 @@ body.post-type-personioposition {
     display: block;
 }
 
-.personio-field-width { width: 280px }
-
-.personio-integration-transient {
-    position: relative;
-    z-index: 1;
-}
-
-.personio-integration-transient h3 img {
-    vertical-align: middle;
-    display: inline-block;
-    margin-right: 8px;
-}
-
-.personio-integration-transient .notice-dismiss:before {
-	display: inline-block;
-	float: right;
-}
-
-.personio-integration-transient .notice-dismiss:hover {
-	color: #d63638;
-}
+.personio_integration_light-field-width { width: 100% }
 
 .column-dragdrop { width: 20px }
 
@@ -77,33 +57,42 @@ body.post-type-personioposition {
 	line-height: 1.4;
 }
 
+body.post-type-personioposition .wrap > h1 {
+	display: inline-block;
+	margin-right: 5px;
+}
+
 body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
 	margin-left: 0.4em;
 }
 
-.post-type-personioposition .personio-pro-hint, .personioposition_page_personioPositions .personio-pro-hint {
+.post-type-personioposition .personio-pro-hint, .personioposition_page_personioPositions .personio-pro-hint, .personioposition_page_personioApplication .personio-pro-hint {
     background-color: var(--personio-pro-hint-bg);
     color: var(--personio-pro-hint-font);
 	margin-top: 12px;
     padding: 12px;
 }
 
-.post-type-personioposition .personio-integration-hint, .personioposition_page_personioPositions .personio-integration-hint {
+.post-type-personioposition .personio-integration-hint, .personioposition_page_personioPositions .personio-integration-hint, .post-type-personioformtemplate .personio-integration-hint {
 	background-color: var(--personio-hint-bg);
 	color: var(--personio-hint-font);
 	margin-top: 12px;
 	padding: 12px;
 }
 
-.post-type-personioposition .personio-integration-hint a, .personioposition_page_personioPositions .personio-integration-hint a {
+.post-type-personioposition .personio-integration-hint a, .personioposition_page_personioPositions .personio-integration-hint a, .post-type-personioformtemplate .personio-integration-hint a {
 	color: inherit;
 }
 
-.post-type-personioposition .personio-pro-hint:first-child, .post-type-personioposition .personio-integration-hint:first-child {
+.post-type-personioposition .personio-pro-hint:first-child, .post-type-personioposition .personio-integration-hint:first-child, .post-type-personioformtemplate .personio-integration-hint:first-child {
 	margin-top: 0;
 }
 
-.post-type-personioposition div.wrap > .personio-pro-hint {
+.post-type-personioposition .tab-content > .personio-integration-hint:first-child:first-child {
+	margin-top: 1em;
+}
+
+.post-type-personioposition:not(.personioposition_page_personioApplication) div.wrap > .personio-pro-hint {
     padding: 0 8px;
 }
 
@@ -117,7 +106,7 @@ body.post-type-personioposition .wrap .wp-heading-inline + .page-title-action {
     color: var(--personio-hint-font);
 }
 
-body.post-type-personioposition a[target="_blank"]:after {
+body.post-type-personioposition a:not(.personio-integration-icon-link):not(.review-hint-button)[target="_blank"]:after {
 	content: "\f504";
 	display: inline-block;
 	font-family: "dashicons", sans-serif;
@@ -152,7 +141,7 @@ body.post-type-personioposition #personioposition-edit-hints .postbox-header { b
 
 body.post-type-personioposition #personioposition-edit-hints .handle-actions { display: none }
 
-.personio-integration-transient .dashicons-star-filled { color: #ffb900 }
+#etfw-transients .dashicons-star-filled, .etfw-transient .dashicons-star-filled { color: #ffb900 }
 
 .wp-pointer-content p img {
 	margin-right: 8px;
@@ -212,7 +201,7 @@ body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text:last-o
 	margin-right: 8px;
 }
 
-#menu-posts-personioposition a[href='#'], #menu-posts-personioposition a[href='#']:hover, #menu-posts-personioposition a[href='#']:visited, #menu-posts-personioposition a[href='#']:active, #menu-posts-personioposition a[href='#']:focus {
+body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication'], body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication']:hover, body:not(.personio-integration) #menu-posts-personioposition a[href='#']:visited, body:not(.personio-integration) #menu-posts-personioposition a[href='#']:active, body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication']:focus {
 	color: var(--personio-pro-hint-bg);
 }
 
@@ -224,9 +213,6 @@ body.post-type-personioposition a.review-hint-button:after {
 	display: inline-block;
 	font-family: "dashicons", sans-serif;
 	margin-left: 8px;
-	position: relative;
-	top: -2px;
-	z-index: 1;
 }
 
 .personio-integration-applications-hint button.is-primary:after {
@@ -234,35 +220,6 @@ body.post-type-personioposition a.review-hint-button:after {
 	display: inline-block;
 	font-family: "dashicons", sans-serif;
 	margin-left: 8px;
-}
-
-body.post-type-personioposition tr.hide { display: none }
-
-body.post-type-personioposition tr.show_with_animation {
-	animation: show-animation 1s ease-in forwards;
-}
-
-@keyframes show-animation {
-	0% {
-		opacity: 0;
-		background-color: #fca15b00;
-	}
-	25% {
-		opacity: .25;
-		background-color: #fca15b20;
-	}
-	50% {
-		opacity: .5;
-		background-color: #fca15b40;
-	}
-	75% {
-		opacity: .75;
-		background-color: #fca15b60;
-	}
-	100% {
-		opacity: 1;
-		background-color: transparent;
-	}
 }
 
 .nav-tab.copyright { position: relative;z-index: 1 }
@@ -283,7 +240,7 @@ body.post-type-personioposition tr.show_with_animation {
 	width: 120px;
 }
 
-body.post-type-personioposition #post-body-content { display: none }
+body.post-php.post-type-personioposition #post-body-content { display: none }
 
 .personio-integration-dialog-error .easy-dialog-for-wordpress-text p:before {
 	content: "\f14c";
@@ -310,7 +267,7 @@ body.post-type-personioposition #post-body-content { display: none }
 }
 
 .personioposition_page_personiopositionextensions #state {
-	width: 128px;
+	width: 160px;
 }
 
 .personioposition_page_personiopositionextensions #name {
@@ -327,20 +284,42 @@ body.post-type-personioposition #post-body-content { display: none }
 
 #easy-setup-for-wordpress .components-panel__body details summary { cursor: pointer }
 
-body.post-type-personioposition summary { cursor: pointer }
+body.post-type-personioposition details {
+	margin-bottom: 1em;
+}
+
+body.post-type-personioposition summary {
+	cursor: pointer;
+	text-indent: -14px;
+	padding-left: 14px;
+}
+
+body.post-type-personioposition details > div {
+	line-height: 1.8;
+	margin-top: .4em;
+	padding-left: 14px;
+}
 
 body.post-type-personioposition .icl_subsubsub { display: none !important; }
 
 body.personioposition_page_personioPositions .state .dashicons-yes { color: green }
 body.personioposition_page_personioPositions .state .dashicons-no { color: red }
 
-body.post-type-personioposition .postbox-header a { text-decoration: none }
+body.post-type-personioposition .postbox-header a {
+	float: right;
+	margin-left: 6px;
+	text-decoration: none
+}
 
 body.post-type-personioposition #minor-publishing-actions, body.post-type-personioposition #misc-publishing-actions { display: none }
 
 body.post-type-personioposition #poststuff header h2 {
 	font-size: 23px;
 	padding-left: 0;
+}
+
+body.post-type-personioposition #poststuff .postbox-header h2 {
+	display: block;
 }
 
 body.post-type-personioposition .button span.dashicons {
@@ -359,4 +338,94 @@ body.post-type-personioposition .button span.dashicons {
 #dashboard_personio_integration_positions p:last-child:after {
 	content: url(../gfx/personio_icon.png);
 	float: right;
+}
+
+.easy-dialog.personio-integration-import-error ul {
+	list-style: disc;
+	padding-left: 1em;
+	max-width: 320px;
+}
+
+.personioposition_page_personioPositions table th {
+	text-align: left;
+}
+
+.personio-integration-field {
+	margin-bottom: 8px;
+	width: 100% !important;
+}
+
+.personio-integration-field label {
+	display: block;
+	font-weight: 600;
+	line-height: 1.8;
+}
+
+.personio-integration-field input:not(.customformfieldrequired), .personio-integration-field select, .personio-integration-field textarea {
+	display: inline-block;
+	width: 240px;
+}
+
+.personio-integration-field input[type="checkbox"] {
+	width: auto;
+}
+
+.wp-core-ui .personio-integration-field button {
+	margin-right: 1em;
+	vertical-align: middle
+}
+.wp-core-ui .personio-integration-field button + p { display: inline-block }
+
+#personioposition-pro-infos {
+	.hndle { cursor: default }
+	.inside { overflow: hidden }
+	img {
+		float: right;
+		width: 240px;
+	}
+
+	li:before {
+		color: green;
+		content: "\f12a";
+		font-family: dashicons, sans-serif;
+		margin: 0 .4em 0 0;
+		font-size: 16px;
+		vertical-align: middle;
+		position: relative;
+		top: -2px;
+		z-index: 1;
+	}
+}
+
+#personioposition-pro-costs {
+	.hndle { cursor: default }
+	.inside { overflow: hidden }
+	img {
+		float: right;
+		width: 120px;
+	}
+	table {
+		margin-bottom: 2em;
+		width: 100%;
+	}
+	td {
+		text-align: center;
+	}
+	td img {
+		display: block;
+		float: none;
+		margin: 0 auto;
+		max-width: 300px;
+		width: auto;
+	}
+	label { cursor: pointer }
+}
+
+#personioposition-pro-license-key {
+	.hndle { cursor: default }
+	label { cursor: pointer }
+}
+
+body.easy-dialog-for-wordpress.wp-core-ui .personio-integration-manual-import-selection .easy-dialog-for-wordpress-text label {
+	font-weight: normal;
 }

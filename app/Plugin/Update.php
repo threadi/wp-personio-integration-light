@@ -12,6 +12,9 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
+use PersonioIntegrationLight\PersonioIntegration\Imports\Xml;
+use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\PersonioIntegration\Widgets;
 
 /**
  * Helper-function for updates of this plugin.
@@ -25,7 +28,7 @@ class Update {
 	private static ?Update $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -40,10 +43,11 @@ class Update {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Update {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return static::$instance;
+
+		return self::$instance;
 	}
 
 	/**
@@ -53,22 +57,6 @@ class Update {
 	 */
 	public function init(): void {
 		add_action( 'init', array( $this, 'run' ) );
-	}
-
-	/**
-	 * Wrapper to run all version-specific updates, which are in this class.
-	 *
-	 * @return void
-	 */
-	public static function run_all_updates(): void {
-		$obj = self::get_instance();
-		$obj->version300();
-		$obj->version310();
-		$obj->version320();
-		$obj->version400();
-
-		// reset import-flag.
-		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
 	}
 
 	/**
@@ -84,15 +72,7 @@ class Update {
 		$db_plugin_version = get_option( 'personioIntegrationVersion', '1.0.0' );
 
 		// compare version if we are not in development-mode.
-		if (
-			(
-				(
-					function_exists( 'wp_is_development_mode' ) && false === wp_is_development_mode( 'plugin' )
-				)
-				|| ! function_exists( 'wp_is_development_mode' )
-			)
-			&& version_compare( $installed_plugin_version, $db_plugin_version, '>' )
-		) {
+		if ( ! Helper::is_development_mode_active() && version_compare( $installed_plugin_version, $db_plugin_version, '>' ) ) {
 			if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING ' ) ) {
 				define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
 			}
@@ -100,6 +80,7 @@ class Update {
 			$this->version310();
 			$this->version320();
 			$this->version400();
+			$this->version500();
 
 			// save new plugin-version in DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
@@ -135,16 +116,8 @@ class Update {
 			delete_transient( $transient );
 		}
 
-		// set default settings for new options.
-		$settings_obj = Settings::get_instance();
-		$settings_obj->set_settings();
-		foreach ( $settings_obj->get_settings() as $section_settings ) {
-			foreach ( $section_settings['fields'] as $field_name => $field_settings ) {
-				if ( ! empty( $field_settings['register_attributes']['default'] ) && ! get_option( $field_name ) ) {
-					update_option( $field_name, $field_settings['register_attributes']['default'], true );
-				}
-			}
-		}
+		// initialize the settings.
+		\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->activation();
 
 		// create our schedules.
 		Schedules::get_instance()->create_schedules();
@@ -208,5 +181,30 @@ class Update {
 		delete_option( 'wp_easy_setup_step' );
 		delete_option( 'wp_easy_setup_step_label' );
 		delete_option( 'wp_easy_setup_running' );
+	}
+
+	/**
+	 * To run on update to version 5.0.0 or newer.
+	 *
+	 * @return void
+	 */
+	private function version500(): void {
+		// enable the Import XML extension.
+		Xml::get_instance()->set_enabled();
+
+		// re-initiate each schedule to set the new intervals.
+		Schedules::get_instance()->delete_all();
+		Schedules::get_instance()->create_schedules();
+
+		// enable new extensions.
+		update_option( 'personioIntegrationPersonioAccountsStatus', 1 );
+
+		// show hint to re-import positions.
+		Positions::get_instance()->trigger_reimport_hint();
+
+		// enable all widgets.
+		foreach ( Widgets::get_instance()->get_widgets_as_objects() as $widget_obj ) {
+			$widget_obj->set_enabled();
+		}
 	}
 }

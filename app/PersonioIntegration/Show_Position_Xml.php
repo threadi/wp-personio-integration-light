@@ -10,8 +10,9 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Extensions\Show_Xml;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-use PersonioIntegrationLight\Plugin\Settings;
 use SimpleXMLElement;
 use WP_Post;
 
@@ -41,13 +42,40 @@ class Show_Position_Xml extends Extensions_Base {
 	protected string $extension_category = 'positions';
 
 	/**
-	 * Initialize this plugin.
+	 * Name if the setting tab where the setting field is visible.
+	 *
+	 * @var string
+	 */
+	protected string $setting_tab = '';
+
+	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Show_Position_Xml
+	 */
+	private static ?Show_Position_Xml $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Show_Position_Xml {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Initialize this extension.
 	 *
 	 * @return void
 	 */
 	public function init(): void {
+		add_filter( 'personio_integration_light_extension_state_changed_dialog', array( $this, 'add_hint_after_enabling' ), 10, 2 );
+
 		// bail if extension is not enabled.
-		if ( ! $this->is_enabled() && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+		if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
 			return;
 		}
 
@@ -56,12 +84,10 @@ class Show_Position_Xml extends Extensions_Base {
 
 		// use our own hooks.
 		add_filter( 'personio_integration_import_single_position_xml', array( $this, 'add_xml_to_position_object_on_import' ), 10, 2 );
-		add_action( 'personio_integration_import_single_position_save', array( $this, 'save_xml_on_position' ) );
 	}
 
 	/**
-	 * Add Box with hints for editing.
-	 * Add Open Graph Meta-box für edit-page of positions.
+	 * Add box to show the XML-code.
 	 *
 	 * @return void
 	 */
@@ -77,7 +103,7 @@ class Show_Position_Xml extends Extensions_Base {
 	}
 
 	/**
-	 * Show the XML.
+	 * Show the XML in meta box.
 	 *
 	 * @param WP_Post $post The called post object.
 	 *
@@ -112,7 +138,7 @@ class Show_Position_Xml extends Extensions_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		return 1 === absint( Settings::get_instance()->get_setting( $this->get_settings_field_name() ) );
+		return 1 === absint( get_option( $this->get_settings_field_name() ) );
 	}
 
 	/**
@@ -126,25 +152,24 @@ class Show_Position_Xml extends Extensions_Base {
 	}
 
 	/**
-	 * Whether this extension is enabled by default (true) or not (false).
-	 *
-	 * @return bool
-	 */
-	protected function is_default_enabled(): bool {
-		return false;
-	}
-
-	/**
 	 * Remove inline styles on job description during import, if enabled.
 	 *
-	 * @param Position              $position_obj The Position object we want to change.
-	 * @param SimpleXMLElement|null $position The XML-object.
+	 * @param Position         $position_obj The Position object we want to change.
+	 * @param SimpleXMLElement $xml_object The XML-object.
 	 *
 	 * @return Position
 	 */
-	public function add_xml_to_position_object_on_import( Position $position_obj, ?SimpleXMLElement $position ): Position {
+	public function add_xml_to_position_object_on_import( Position $position_obj, SimpleXMLElement $xml_object ): Position {
+		// get the XML-code from the object.
+		$xml = $xml_object->asXML();
+
+		// bail if no XML code given.
+		if ( ! is_string( $xml ) ) {
+			return $position_obj;
+		}
+
 		// set the xml on position, convert from object to xml.
-		$this->get_extension( $position_obj )->set_xml( $position_obj, $position->asXML() );
+		$this->get_extension( $position_obj )->set_xml( $xml );
 
 		// return resulting object.
 		return $position_obj;
@@ -155,20 +180,51 @@ class Show_Position_Xml extends Extensions_Base {
 	 *
 	 * @param Position $position_obj The object of the position.
 	 *
-	 * @return Position_Extensions_Base
+	 * @return Show_Xml
 	 */
-	private function get_extension( Position $position_obj ): Position_Extensions_Base {
-		return $position_obj->get_extension( 'PersonioIntegrationLight\PersonioIntegration\Extensions\Show_Xml' );
+	private function get_extension( Position $position_obj ): Show_Xml {
+		return new Show_Xml( $position_obj->get_id() );
 	}
 
 	/**
-	 * Save the xml on position via extension.
+	 * Extend the dialog after enabling this extension with hints to usage.
 	 *
-	 * @param Position $position_obj The object of the position.
+	 * @param array<string,mixed> $dialog The dialog.
+	 * @param Extensions_Base     $extension The changed extension.
 	 *
-	 * @return void
+	 * @return array<string,mixed>
 	 */
-	public function save_xml_on_position( Position $position_obj ): void {
-		$this->get_extension( $position_obj )->save( $position_obj );
+	public function add_hint_after_enabling( array $dialog, Extensions_Base $extension ): array {
+		// bail if this is not this extension.
+		if ( $this->get_name() !== $extension->get_name() ) {
+			return $dialog;
+		}
+
+		// bail if status is disabled.
+		if ( ! $extension->is_enabled() ) {
+			return $dialog;
+		}
+
+		// add hint.
+		$dialog['texts'][] = '<p>' . __( 'Follow these steps to be able to see the XML which has been published by Personio for each position:', 'personio-integration-light' ) . '</></p>';
+		/* translators: %1$s will be replaced by a URL. */
+		$list = '<ol><li>' . sprintf( __( 'Import the positions as usual, e.g. <a href="%1$s">here</a>, to update its data.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'import' ) ) ) . '</li>';
+		/* translators: %1$s will be replaced by a URL. */
+		$list .= '<li>' . sprintf( __( 'Go to the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) ) . '</li>';
+		$list .= '<li>' . __( 'Edit the individual positions to see the XML output there.', 'personio-integration-light' ) . '</li></ol>';
+
+		$dialog['texts'][] = $list;
+
+		// return resulting dialog.
+		return $dialog;
+	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
 	}
 }

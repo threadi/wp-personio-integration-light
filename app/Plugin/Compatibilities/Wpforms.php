@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Compatibilities_Base;
-use PersonioIntegrationLight\Plugin\Transients;
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 
 /**
  * Object for this check.
@@ -25,6 +25,24 @@ class Wpforms extends Compatibilities_Base {
 	 * @var string
 	 */
 	protected string $name = 'personio_integration_compatibility_wpforms';
+
+	/**
+	 * Instance of this object.
+	 *
+	 * @var ?Wpforms
+	 */
+	private static ?Wpforms $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Wpforms {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Run the check.
@@ -47,7 +65,7 @@ class Wpforms extends Compatibilities_Base {
 	}
 
 	/**
-	 * Check if Avada and its necessary plugins are active.
+	 * Check if the plugin is active.
 	 *
 	 * @return bool
 	 */

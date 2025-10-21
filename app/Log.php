@@ -8,6 +8,8 @@
 namespace PersonioIntegrationLight;
 
 // prevent direct access.
+use PersonioIntegrationLight\Plugin\Db;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -22,9 +24,34 @@ class Log {
 	private string $md5 = '';
 
 	/**
-	 * Constructor for Logging-Handler.
+	 * Instance of this object.
+	 *
+	 * @var ?Log
+	 */
+	private static ?Log $instance = null;
+
+	/**
+	 * Constructor for this object.
 	 */
 	public function __construct() {}
+
+	/**
+	 * Prevent cloning of this object.
+	 *
+	 * @return void
+	 */
+	private function __clone() { }
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Log {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Create the logging-table in the database.
@@ -48,12 +75,6 @@ class Log {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
-
-		// log error if any occurred.
-		if ( ! empty( $wpdb->last_error ) ) {
-			/* translators: %1$s will be replaced by an DB-error-message. */
-			$this->add_log( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
-		}
 	}
 
 	/**
@@ -63,7 +84,7 @@ class Log {
 	 */
 	public function delete_table(): void {
 		global $wpdb;
-		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	}
 
 	/**
@@ -76,11 +97,11 @@ class Log {
 	 *
 	 * @return void
 	 */
-	public function add_log( string $log, string $state, string $category = '', string $md5 = '' ): void {
+	public function add( string $log, string $state, string $category = '', string $md5 = '' ): void {
 		global $wpdb;
 
 		// insert the log entry.
-		$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		Db::get_instance()->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->prefix . 'personio_import_logs',
 			array(
 				'time'     => gmdate( 'Y-m-d H:i:s' ),
@@ -90,12 +111,6 @@ class Log {
 				'state'    => $state,
 			)
 		);
-
-		// log if any error occurred.
-		if ( ! empty( $wpdb->last_error ) ) {
-			/* translators: %1$s will be replaced by an DB-error-message. */
-			$this->add_log( sprintf( __( 'Database error during saving a log entry: %1$s', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
-		}
 
 		// clean the log.
 		$this->clean_log();
@@ -117,19 +132,19 @@ class Log {
 		global $wpdb;
 
 		// run the deletion.
-		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		// log if any error occurred.
 		if ( ! empty( $wpdb->last_error ) ) {
 			/* translators: %1$s will be replaced by an DB-error-message. */
-			$this->add_log( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
+			$this->add( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
 		}
 	}
 
 	/**
 	 * Return list of categories with internal name & their label.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_categories(): array {
 		$list = array(
@@ -141,7 +156,7 @@ class Log {
 		 *
 		 * @since 3.1.0 Available since 3.1.0.
 		 *
-		 * @param array $list List of categories.
+		 * @param array<string,string> $list List of categories.
 		 */
 		return apply_filters( 'personio_integration_log_categories', $list );
 	}
@@ -151,7 +166,7 @@ class Log {
 	 *
 	 * Use for each possible condition own statements to match WCS.
 	 *
-	 * @return array
+	 * @return array<int,mixed>
 	 */
 	public function get_entries(): array {
 		global $wpdb;
@@ -178,7 +193,7 @@ class Log {
 		$limit = apply_filters( 'personio_integration_light_log_limit', $limit );
 
 		// get filter.
-		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$category = (string) filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		/**
 		 * Filter the used category.
@@ -186,10 +201,10 @@ class Log {
 		 * @since 4.1.0 Available since 4.1.0.
 		 * @param string $category The category to use.
 		 */
-		$category = apply_filters( 'personio_integration_light_log_category', $category );
+		$category = (string) apply_filters( 'personio_integration_light_log_category', $category );
 
 		// get md5.
-		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$md5 = (string) filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// if request is empty, get md5 from object if set.
 		if ( empty( $md5 ) ) {
@@ -202,7 +217,7 @@ class Log {
 		 * @since 4.1.0 Available since 4.1.0.
 		 * @param string $md5 The md5 to use.
 		 */
-		$md5 = apply_filters( 'personio_integration_light_log_md5', $md5 );
+		$md5 = (string) apply_filters( 'personio_integration_light_log_md5', $md5 );
 
 		// get errors.
 		$errors = absint( filter_input( INPUT_GET, 'errors', FILTER_SANITIZE_NUMBER_INT ) );
@@ -222,14 +237,14 @@ class Log {
 		}
 
 		// if only category is set.
-		if ( ! is_null( $category ) && is_null( $md5 ) ) {
+		if ( ! empty( $category ) && empty( $md5 ) ) {
 			// get and return the entries.
-			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
                     WHERE `category` = %s' . $where . '
-                    ORDER BY ' . $order_by . ' ' . $order . '
+                    ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
                     LIMIT %d',
 					array( $category, $limit )
 				),
@@ -238,14 +253,14 @@ class Log {
 		}
 
 		// if only md5 is set.
-		if ( is_null( $category ) && ! is_null( $md5 ) ) {
+		if ( empty( $category ) && ! empty( $md5 ) ) {
 			// get and return the entries.
-			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
                     WHERE `md5` = %s' . $where . '
-                    ORDER BY ' . $order_by . ' ' . $order . '
+                    ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
                     LIMIT %d',
 					array( $md5, $limit )
 				),
@@ -254,14 +269,14 @@ class Log {
 		}
 
 		// if both are set.
-		if ( ! is_null( $category ) && ! is_null( $md5 ) ) {
+		if ( ! empty( $category ) && ! empty( $md5 ) ) {
 			// get and return the entries.
-			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
                     WHERE `md5` = %s AND `category` = %s' . $where . '
-                    ORDER BY ' . $order_by . ' ' . $order . '
+                    ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
                     LIMIT %d',
 					array( $md5, $category, $limit )
 				),
@@ -271,12 +286,12 @@ class Log {
 
 		if ( 1 === $errors ) {
 			// return all.
-			return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                 FROM `' . $wpdb->prefix . 'personio_import_logs`
                 WHERE `state` = "error"
-                ORDER BY ' . $order_by . ' ' . $order . '
+                ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
                 LIMIT %d',
 					array( $limit )
 				),
@@ -285,7 +300,7 @@ class Log {
 		}
 
 		// return all.
-		return $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`, `category`
                 FROM `' . $wpdb->prefix . 'personio_import_logs`

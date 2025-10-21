@@ -56,7 +56,7 @@ class Themes_Base {
 	}
 
 	/**
-	 * Add own CSS and JS for backend.
+	 * Add own CSS for individual theme support.
 	 *
 	 * @return void
 	 */
@@ -68,7 +68,7 @@ class Themes_Base {
 		wp_enqueue_style(
 			'personio-integration-' . $this->get_name(),
 			Helper::get_plugin_url() . 'css/' . $css_file,
-			array( 'personio-integration-additional-styles' ),
+			array( 'personio-integration' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'css/' . $css_file ),
 		);
 	}
@@ -104,7 +104,7 @@ class Themes_Base {
 	/**
 	 * Return the wrapper classes used for single- and archive-view.
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function get_wrapper_classes(): string {
 		$wrapper_classes = $this->wrapper_classes;
@@ -115,7 +115,7 @@ class Themes_Base {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param string $css_file Name of the wrapper-classes.
+		 * @param string $wrapper_classes Name of the wrapper-classes.
 		 * @param string $theme_name Internal name of the used theme (slug of the theme).
 		 */
 		return apply_filters( 'personio_integration_theme_wrapper_classes', $wrapper_classes, $theme_name );

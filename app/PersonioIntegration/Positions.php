@@ -10,10 +10,10 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-use PersonioIntegrationLight\Plugin\Transients;
 use WP_Query;
 
 /**
@@ -26,7 +26,7 @@ class Positions {
 	 *
 	 * @var ?Positions
 	 */
-	protected static ?Positions $instance = null;
+	private static ?Positions $instance = null;
 
 	/**
 	 * Variable to hold the results of a query.
@@ -38,14 +38,14 @@ class Positions {
 	/**
 	 * Variable to hold the list of initialized Positions.
 	 *
-	 * @var array[Position]
+	 * @var array<Position>
 	 */
 	private array $positions = array();
 
 	/**
 	 * Constructor, not used as this a Singleton object.
 	 */
-	private function __construct() {}
+	protected function __construct() {}
 
 	/**
 	 * Prevent cloning of this object.
@@ -58,11 +58,19 @@ class Positions {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Positions {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return static::$instance;
+
+		return self::$instance;
 	}
+
+	/**
+	 * Initialize the positions in Light.
+	 *
+	 * @return void
+	 */
+	public function init(): void {}
 
 	/**
 	 * Return Position object of given id.
@@ -95,10 +103,10 @@ class Positions {
 	 * Get positions from database as Position-objects.
 	 * Optionally limited by a number.
 	 *
-	 * @param int   $limit The limit, defaults to -1 for default-limiting.
-	 * @param array $parameter_to_add The parameter to add.
+	 * @param int                 $limit The limit, defaults to -1 for default-limiting.
+	 * @param array<string,mixed> $parameter_to_add The parameter to add.
 	 *
-	 * @return array
+	 * @return array<Position>
 	 */
 	public function get_positions( int $limit = -1, array $parameter_to_add = array() ): array {
 		$query = array(
@@ -195,18 +203,26 @@ class Positions {
 
 		// add log for this query if debug is enabled.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-			$log = new Log();
-			$log->add_log( __( 'Query-Debug', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $query ) . '</code><br><br>' . __( 'Result', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $this->get_results() ) . '</code><br><br>' . __( 'Used URL', 'personio-integration-light' ) . ': ' . esc_url( Helper::get_current_url() ), 'info', 'system' );
+			Log::get_instance()->add( __( 'Query-Debug', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $query ) . '</code><br><br>' . __( 'Result', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $this->get_results() ) . '</code><br><br>' . __( 'Used URL', 'personio-integration-light' ) . ': ' . esc_url( Helper::get_current_url() ), 'info', 'system' );
 		}
 
 		// remove filter.
 		remove_filter( 'posts_join', array( $this, 'add_taxonomy_table_to_position_query' ) );
 		remove_filter( 'posts_orderby', array( $this, 'set_position_query_order_by_for_group' ) );
 
+		// get the grouped taxonomy name from given slug.
+		$grouped_taxonomy_name = '';
+		if ( ! empty( $parameter_to_add['groupby'] ) ) {
+			$grouped_taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
+		}
+
 		// get the positions as object in array
 		// -> optionally grouped by a given taxonomy.
 		$resulting_position_list = array();
-		foreach ( $this->results->posts as $post_id ) {
+		foreach ( $this->results->get_posts() as $post_id ) {
+			// get the int value.
+			$post_id = absint( $post_id );
+
 			/**
 			 * Filter the resulting ID / object.
 			 *
@@ -221,8 +237,8 @@ class Positions {
 			}
 
 			// consider grouping of entries in list.
-			if ( ! empty( $parameter_to_add['groupby'] ) ) {
-				$resulting_position_list[ $position_object->get_term_by_field( Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] ), 'name' ) ] = $position_object;
+			if ( ! empty( $grouped_taxonomy_name ) ) {
+				$resulting_position_list[ $position_object->get_term_by_field( $grouped_taxonomy_name, 'name' ) ] = $position_object;
 			} else {
 				// ungrouped simply add the position to the list.
 				$resulting_position_list[] = $position_object;
@@ -339,7 +355,7 @@ class Positions {
 		$transient_obj = Transients::get_instance()->add();
 		$transient_obj->set_name( 'personio_integration_reimport_hint' );
 		$transient_obj->set_type( 'success' );
-		$transient_obj->set_message( __( 'You have changed settings that would make it advisable to re-import the positions from Personio. Click on the following button: ', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $url ) . '" class="button button-primary easy-dialog-for-wordpress" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '">' . __( 'Re-Import all positions', 'personio-integration-light' ) . '</a>' );
+		$transient_obj->set_message( __( 'You have changed settings that would make it advisable to re-import the positions from Personio. Click on the following button: ', 'personio-integration-light' ) . '</p><p><a href="' . esc_url( $url ) . '" class="button button-primary easy-dialog-for-wordpress" data-dialog="' . esc_attr( Helper::get_json( $dialog ) ) . '">' . __( 'Re-Import all positions', 'personio-integration-light' ) . '</a>' );
 		$transient_obj->save();
 	}
 }

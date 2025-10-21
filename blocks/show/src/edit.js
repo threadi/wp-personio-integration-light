@@ -55,7 +55,7 @@ export default function Edit( object ) {
 		object.setAttributes({blockId: object.clientId});
 	});
 
-	// useSelect to retrieve all post types
+	// useSelect to retrieve all entries on our own cpt
 	const positions = useSelect(
 		(select) => select('core').getEntityRecords('postType', 'personioposition', { per_page: -1 }), []
 	);
@@ -73,7 +73,7 @@ export default function Edit( object ) {
       ]);
     }, []);
     personioTaxonomies = useSelect((select) => {
-        return select('core').getEntityRecords('personio/v1', 'taxonomies') || [];
+        return select('core').getEntityRecords('personio/v1', 'taxonomies', { per_page: 20 }) || [];
       }
     );
   }
@@ -119,7 +119,7 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody initialOpen={false} title={ __( 'Settings', 'personio-integration-light' ) }>
+				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
 					<SelectControl
 						label={__('Select position', 'personio-integration-light')}
 						options={ positionOptions }
@@ -163,7 +163,7 @@ export default function Edit( object ) {
 						disabled={ disabledFields }
 					/>
 					<ToggleControl
-						label={__('View application link', 'personio-integration-light')}
+						label={__('View option to apply', 'personio-integration-light')}
 						checked={ object.attributes.showApplicationForm }
 						onChange={ value => onChangeApplicationFormVisibility( value, object )  }
 						disabled={ disabledFields }

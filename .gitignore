@@ -1,4 +1,5 @@
 /.idea
+/app/Dependencies
 /build/
 !/build/build.properties.dist
 !/build/build.xml

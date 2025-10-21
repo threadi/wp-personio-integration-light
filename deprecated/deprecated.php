@@ -19,3 +19,21 @@ const WP_PERSONIO_INTEGRATION_CPT_PM_PID = 'personioId';
 if( ! class_exists( '\wpEasySetup\Setup' ) ) {
 	class_alias('\easySetupForWordPress\Setup', 'wpEasySetup\Setup');
 }
+
+/**
+ * Load alias for transients.
+ *
+ * @deprecated since 5.0.0
+ */
+if( ! class_exists( 'PersonioIntegrationLight\Plugin\Transients' ) ) {
+	class_alias('PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients', 'PersonioIntegrationLight\Plugin\Transients' );
+}
+
+/**
+ * Load alias for transient.
+ *
+ * @deprecated since 5.0.0
+ */
+if( ! class_exists( 'PersonioIntegrationLight\Plugin\Transient' ) ) {
+	class_alias('PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transient', 'PersonioIntegrationLight\Plugin\Transient' );
+}

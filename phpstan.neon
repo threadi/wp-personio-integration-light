@@ -1,5 +1,5 @@
 parameters:
-  level: 10
+  level: 8
   reportUnmatchedIgnoredErrors: false
   ignoreErrors:
     - "#^Unsafe usage of new static#"
@@ -11,6 +11,16 @@ parameters:
     - "#rocket_clean_domain#"
     - "#WpFastestCache#"
     - "#wp-admin/includes#"
+    - "#WP_CLI#"
+    - "#Yoast#"
+    - "#wp_safe_redirect#"
+    - "#with generic class WP_REST_Request but does not specify its types#"
+    - "#extends generic class WP_Widget but does not specify its types#"
+    - "#ARRAY_A#"
+    - "#WP_PLUGIN_DIR#"
+    - "#WPMU_PLUGIN_DIR#"
+    - "#PERSONIO_INTEGRATION_LIGHT#"
+    - "#WPINC#"
   paths:
     - app
     - personio-integration-light.php

@@ -22,7 +22,7 @@ class Dashboard {
 	private static ?Dashboard $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -37,11 +37,11 @@ class Dashboard {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Dashboard {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
 	/**
@@ -76,7 +76,7 @@ class Dashboard {
 	/**
 	 * Get the dashboard-widgets.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	private function get_dashboard_widgets(): array {
 		$dashboard_widgets = array();
@@ -85,7 +85,7 @@ class Dashboard {
 		 * Filter the dashboard-widgets used by this plugin.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array $dashboard_widgets List of widgets.
+		 * @param array<string,array<string,mixed>> $dashboard_widgets List of widgets.
 		 */
 		return apply_filters( 'personio_integration_dashboard_widgets', $dashboard_widgets );
 	}

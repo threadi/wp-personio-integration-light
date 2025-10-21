@@ -4,8 +4,7 @@
 	"name": "wp-personio-integration/list",
 	"version": "@@VersionNumber@@",
 	"title": "Personio Positions",
-	"category": "widgets",
-	"icon": "list-view",
+	"category": "personio-integration",
 	"description": "Provides a Gutenberg block to show a list of positions provided by Personio.",
 	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {
@@ -78,7 +77,15 @@
 		"blockId": {
 			"type": "string",
 			"default": ""
-		}
+		},
+        "positionBackgroundColor": {
+            "type": "string",
+            "default": ""
+        },
+        "positionBackgroundColorHover": {
+            "type": "string",
+            "default": ""
+        }
 	},
 	"example": {
 		"attributes": {

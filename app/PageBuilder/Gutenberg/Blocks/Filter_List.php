@@ -12,7 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
  * Object to handle this block.
@@ -36,7 +35,7 @@ class Filter_List extends Blocks_Basis {
 	/**
 	 * Attributes this block is using.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected array $attributes = array(
 		'preview'         => array(
@@ -74,9 +73,27 @@ class Filter_List extends Blocks_Basis {
 	);
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Filter_List
+	 */
+	private static ?Filter_List $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Filter_List {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Get the content for single position.
 	 *
-	 * @param array $attributes List of attributes for this position.
+	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
@@ -111,7 +128,7 @@ class Filter_List extends Blocks_Basis {
 		// collect all settings for this block.
 		$attribute_defaults = array(
 			'templates'  => '',
-			'filter'     => implode( ',', $attributes['filter'] ),
+			'filter'     => $attributes['filter'],
 			'filtertype' => 'linklist',
 			'showfilter' => true,
 			'styles'     => implode( PHP_EOL, $styles_array ),
@@ -126,6 +143,9 @@ class Filter_List extends Blocks_Basis {
 		 * @param array $attribute_defaults List of attributes to use.
 		 * @param array $attributes List of attributes vom PageBuilder.
 		 */
-		return PersonioPosition::get_instance()->shortcode_archive( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
+		$attributes = apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes );
+
+		// return the rendered content.
+		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Filter_List::get_instance()->render( $attributes );
 	}
 }

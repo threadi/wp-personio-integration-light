@@ -25,7 +25,7 @@ class Roles {
 	private static ?Roles $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -40,10 +40,11 @@ class Roles {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Roles {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return static::$instance;
+
+		return self::$instance;
 	}
 
 	/**
@@ -100,7 +101,7 @@ class Roles {
 			$role = get_role( $role_name );
 
 			// bail if object could not be loaded.
-			if ( $role instanceof WP_Role ) {
+			if ( ! $role instanceof WP_Role ) {
 				continue;
 			}
 

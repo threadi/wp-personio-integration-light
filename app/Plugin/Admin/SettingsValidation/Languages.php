@@ -10,7 +10,7 @@ namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\PersonioIntegration\Imports;
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 
 /**
@@ -20,15 +20,15 @@ class Languages {
 	/**
 	 * Validate the usage of languages.
 	 *
-	 * @param array|null $values List of configured languages.
+	 * @param array<string,string>|null $values List of configured languages.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
-	public static function validate( array|null $values ): array {
+	public static function validate( mixed $values ): array {
 		// if empty set fallback language.
 		if ( empty( $values ) ) {
 			add_settings_error( 'personioIntegrationLanguages', 'personioIntegrationLanguages', __( 'You must enable one language. English will be set.', 'personio-integration-light' ) );
-			$values = array( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_fallback_language_name() => 1 );
+			return array( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_fallback_language_name() => '1' );
 		}
 
 		// check if new configuration would change anything.
@@ -38,7 +38,7 @@ class Languages {
 		}
 		if ( $values !== $actual_languages ) {
 			// reset Personio- and language-specific settings.
-			Imports::get_instance()->reset_personio_settings();
+			Personio_Accounts::get_instance()->reset_personio_settings();
 
 			// then set the activated languages.
 			foreach ( $values as $language_name => $active ) {

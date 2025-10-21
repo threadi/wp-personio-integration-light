@@ -10,8 +10,6 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-
 /**
  * Base Object for each post-type.
  */
@@ -23,6 +21,13 @@ class Post_Type {
 	 * @var string
 	 */
 	protected string $name = '';
+
+	/**
+	 * The parent slug.
+	 *
+	 * @var string
+	 */
+	protected string $parent_slug = 'edit.php?post_type=personioposition';
 
 	/**
 	 * Initialize this object.
@@ -68,7 +73,7 @@ class Post_Type {
 
 		$post_id = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) );
 		if ( $post_id > 0 && get_post_type( $post_id ) === $this->get_name() ) {
-			$parent_file  = 'edit.php?post_type=' . PersonioPosition::get_instance()->get_name();
+			$parent_file  = $this->get_parent_slug();
 			$submenu_file = get_post_type( $post_id );
 		}
 
@@ -85,5 +90,28 @@ class Post_Type {
 	 */
 	public function is_from_plugin( string $cpt ): bool {
 		return WP_PERSONIO_INTEGRATION_PLUGIN === $cpt;
+	}
+
+	/**
+	 * Return the archive URL of this post type.
+	 *
+	 * @return string
+	 */
+	public function get_archive_url(): string {
+		// get the archive URL.
+		$url = get_post_type_archive_link( $this->get_name() );
+		if ( ! $url ) {
+			$url = '';
+		}
+		return $url;
+	}
+
+	/**
+	 * Return the parent slug.
+	 *
+	 * @return string
+	 */
+	private function get_parent_slug(): string {
+		return $this->parent_slug;
 	}
 }

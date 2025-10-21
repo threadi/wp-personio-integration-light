@@ -1,21 +1,10 @@
 .personio-position-filter-select {
-	display: flex;
-	flex-direction: row;
-
-	legend {
-		display: inline-block;
-		font-weight: bold;
-		margin-right: 1.4em;
-		padding: 0;
-		width: auto;
-	}
-
 	&> div {
 		cursor: pointer;
 		display: inline-block;
 		margin: 0 1.4em 0 0;
 		position: relative;
-		z-index :1;
+		z-index: 1;
 	}
 
 	label {

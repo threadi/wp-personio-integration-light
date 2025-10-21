@@ -12,10 +12,8 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\Position;
-use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Details;
 use PersonioIntegrationLight\Plugin\Languages;
-use PersonioIntegrationLight\Plugin\Templates;
 
 /**
  * Object to handle this block.
@@ -39,7 +37,7 @@ class Detail extends Blocks_Basis {
 	/**
 	 * Attributes this block is using.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected array $attributes = array(
 		'preview'          => array(
@@ -73,87 +71,60 @@ class Detail extends Blocks_Basis {
 	);
 
 	/**
-	 * Get the content for single position.
+	 * Variable for instance of this Singleton object.
 	 *
-	 * @param array $attributes List of attributes for this position.
+	 * @var ?Detail
+	 */
+	private static ?Detail $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Detail {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Return the content for single position.
+	 *
+	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		$position = $this->get_position_by_request();
-		if ( ! ( $position instanceof Position ) || ! $position->is_valid() ) {
-			return '';
+		// set ID as class.
+		$classes = '';
+		if ( ! empty( $attributes['blockId'] ) ) {
+			$classes = 'personio-integration-block-' . $attributes['blockId'];
 		}
 
-		// set actual language.
-		$position->set_lang( Languages::get_instance()->get_current_lang() );
+		// map the settings.
+		$attributes['excerpt'] = $attributes['excerptTemplates'];
+		$attributes['lang'] = Languages::get_instance()->get_current_lang();
+		$attributes['line_break'] = $attributes['wrap'];
+		$attributes['excerpt_template'] = $attributes['template'];
 
-		// get setting for colon.
-		$colon = ': ';
-		if ( false === $attributes['colon'] ) {
-			$colon = '';
-		}
+		// get block-classes.
+		$styles_array          = array();
+		$block_html_attributes = '';
+		if ( function_exists( 'get_block_wrapper_attributes' ) ) {
+			$block_html_attributes = get_block_wrapper_attributes();
 
-		// get setting for line break.
-		$line_break = '<br>';
-		if ( false === $attributes['wrap'] ) {
-			$line_break = '';
-		}
-
-		// get separator.
-		$separator = get_option( 'personioIntegrationTemplateExcerptSeparator' ) . ' ';
-		if ( ! empty( $attributes['separator'] ) ) {
-			$separator = $attributes['separator'];
-		}
-
-		// get settings for templates.
-		$template = 'default';
-		if ( ! empty( $attributes['template'] ) ) {
-			$template = $attributes['template'];
-		}
-
-		/**
-		 * Filter the attributes for the output.
-		 *
-		 * @since 3.0.0 Available since 3.0.0
-		 * @param array $attribute_defaults The parameter we use.
-		 * @param array $attributes The attributes from PageBuilder.
-		 */
-		$attributes = apply_filters( 'personio_integration_get_list_attributes', $attributes, $attributes );
-
-		// collect the details in this array.
-		$details = array();
-		$taxonomy_data = array();
-
-		// loop through the chosen details.
-		foreach ( $attributes['excerptTemplates'] as $detail ) {
-			// get the terms of this taxonomy.
-			foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
-				if ( $detail === $taxonomy['slug'] ) {
-					// get value.
-					$value = $position->get_term_by_field( $taxonomy_name, 'name' );
-
-					// bail if no value is available.
-					if ( empty( $value ) ) {
-						continue;
-					}
-
-					// get labels of this taxonomy.
-					$labels = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name );
-
-					$details[ $labels['name'] ] = $value;
-					$taxonomy_data[ $labels['name'] ] = get_taxonomy( $taxonomy_name );
-				}
+			// get styles.
+			$styles = Helper::get_attribute_value_from_html( 'style', $block_html_attributes );
+			if ( ! empty( $styles ) ) {
+				$styles_array[] = '.entry-content.' . $classes . ' { ' . $styles . ' }';
 			}
 		}
 
-		// get block-classes.
-		if ( function_exists( 'get_block_wrapper_attributes' ) ) {
-			$attributes['classes'] =  Helper::get_attribute_value_from_html( 'class', get_block_wrapper_attributes() );
-		}
+		// add the attributes.
+		$attributes['styles'] = implode( PHP_EOL, $styles_array );
+		$attributes['classes'] = $classes . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes );
 
-		// get content for output.
-		ob_start();
-		include Templates::get_instance()->get_template( 'parts/details/' . $template . '.php' );
-		return ob_get_clean();
+		// return the rendered template.
+		return Details::get_instance()->render( $attributes );
 	}
 }

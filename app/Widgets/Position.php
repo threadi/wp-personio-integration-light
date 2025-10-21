@@ -10,8 +10,8 @@ namespace PersonioIntegrationLight\Widgets;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
+use PersonioIntegrationLight\PersonioIntegration\Widgets\Single;
 use WP_Widget;
 
 /**
@@ -37,7 +37,7 @@ class Position extends WP_Widget {
 	/**
 	 * Get the fields for this widget.
 	 *
-	 * @return array[]
+	 * @return array<string,array<string,mixed>>
 	 */
 	private function getFields(): array {
 		// get the actual positions.
@@ -111,7 +111,7 @@ class Position extends WP_Widget {
 			),
 			'showApplicationForm' => array(
 				'type'   => 'select',
-				'title'  => __( 'Show application link', 'personio-integration-light' ),
+				'title'  => __( 'Show option to apply', 'personio-integration-light' ),
 				'std'    => 'yes',
 				'values' => array(
 					'yes' => esc_html__( 'Show', 'personio-integration-light' ),
@@ -124,7 +124,7 @@ class Position extends WP_Widget {
 	/**
 	 * Add entry-formular with settings for the widget.
 	 *
-	 * @param array $instance The instance of the widget.
+	 * @param array<string,mixed> $instance The instance of the widget.
 	 *
 	 * @return void
 	 * @noinspection PhpMissingReturnTypeInspection*/
@@ -135,9 +135,9 @@ class Position extends WP_Widget {
 	/**
 	 * Save updated settings from the formular.
 	 *
-	 * @param array $new_instance The new instance.
-	 * @param array $old_instance The old instance.
-	 * @return array
+	 * @param array<string,mixed> $new_instance The new instance.
+	 * @param array<string,mixed> $old_instance The old instance.
+	 * @return array<string,mixed>
 	 */
 	public function update( $new_instance, $old_instance ): array {
 		return $this->secure_widget_fields( $this->getFields(), $new_instance, $old_instance );
@@ -146,8 +146,8 @@ class Position extends WP_Widget {
 	/**
 	 * Output of the widget in frontend.
 	 *
-	 * @param array $args List of arguments.
-	 * @param array $settings List of settings.
+	 * @param array<string,mixed> $args List of arguments.
+	 * @param array<string,mixed> $settings List of settings.
 	 *
 	 * @return void
 	 * @noinspection PhpParameterNameChangedDuringInheritanceInspection
@@ -158,7 +158,7 @@ class Position extends WP_Widget {
 		// collect the configured templates.
 		$templates = '';
 		if ( 'yes' === $settings['showTitle'] ) {
-			$templates .= ( '' !== $templates ? ',' : '' ) . 'title';
+			$templates .= 'title';
 		}
 		if ( 'yes' === $settings['showExcerpt'] ) {
 			$templates .= ( '' !== $templates ? ',' : '' ) . 'excerpt';
@@ -206,7 +206,7 @@ class Position extends WP_Widget {
 		echo wp_kses_post( $args['before_widget'] );
 
 		// get the output.
-		echo wp_kses_post( PersonioPosition::get_instance()->shortcode_single( $attribute_defaults ) );
+		echo wp_kses_post( Single::get_instance()->render( $attribute_defaults ) );
 
 		// add wrapper from template around widget-content.
 		echo wp_kses_post( $args['after_widget'] );

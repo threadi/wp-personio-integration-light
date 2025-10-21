@@ -24,14 +24,14 @@ class Languages {
 	/**
 	 * List of languages this plugin supports.
 	 *
-	 * @var array|int[]
+	 * @var array<string>
 	 */
 	private array $languages;
 
 	/**
 	 * List of languages (format: "xx") and their mappings to WP-language (format: "xx_YY")
 	 *
-	 * @var array
+	 * @var array<string,array<string>>
 	 */
 	private array $language_to_wp_lang_mapping = array(
 		'de' => array(
@@ -55,7 +55,7 @@ class Languages {
 	private string $fallback_language_name = 'en';
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {
 		$this->languages = array(
@@ -75,16 +75,17 @@ class Languages {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Languages {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return static::$instance;
+
+		return self::$instance;
 	}
 
 	/**
 	 * Return an array of the supported languages.
 	 *
-	 * @return array
+	 * @return array<string>
 	 * @noinspection PhpUnused
 	 */
 	public function get_languages(): array {
@@ -95,7 +96,7 @@ class Languages {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param string $languages List of supported languages.
+		 * @param array<string> $languages List of supported languages.
 		 */
 		return apply_filters( 'personio_integration_supported_languages', $languages );
 	}
@@ -135,7 +136,7 @@ class Languages {
 	 *
 	 * @param bool $with_main_language True to use main language in list.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_active_languages( bool $with_main_language = true ): array {
 		// get active languages from settings.
@@ -230,7 +231,7 @@ class Languages {
 	 * @return string
 	 */
 	public function get_current_lang(): string {
-		$wp_language = substr( get_bloginfo( 'language' ), 0, 2 );
+		$wp_language = substr( get_locale(), 0, 2 );
 
 		// if language is not known, use fallback language.
 		if ( ! $this->is_language_supported( $wp_language ) ) {

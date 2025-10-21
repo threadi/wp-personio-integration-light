@@ -10,7 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
 use PersonioIntegrationLight\Log;
 
 /**
@@ -40,10 +40,11 @@ class Schedules {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Schedules {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return static::$instance;
+
+		return self::$instance;
 	}
 
 	/**
@@ -52,11 +53,19 @@ class Schedules {
 	 * @return void
 	 */
 	public function init(): void {
+		// bail if setup has not been run.
+		if ( ! Setup::get_instance()->is_completed() ) {
+			return;
+		}
+
+		// initialize the intervals.
+		Intervals::get_instance()->init();
+
 		// use our own hooks.
 		if ( is_admin() ) {
 			add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
 		}
-		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
+		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 		add_action( 'init', array( $this, 'init_schedules' ) );
 
 		// action to create all registered schedules.
@@ -90,38 +99,35 @@ class Schedules {
 	/**
 	 * Add settings for this extension.
 	 *
-	 * @param array $settings List of settings.
-	 *
-	 * @return array
+	 * @return void
 	 */
-	public function add_settings( array $settings ): array {
-		if ( empty( $settings['settings_section_advanced']['fields'] ) ) {
-			return $settings;
-		}
-		$settings['settings_section_advanced']['fields'] = Helper::add_array_in_array_on_position(
-			$settings['settings_section_advanced']['fields'],
-			8,
-			array(
-				'personioIntegrationEnableCronCheckInFrontend' => array(
-					'label'               => __( 'Check for schedules in frontend', 'personio-integration-light' ),
-					'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-					'description'         => __( 'If enabled the plugin will check our own schedules on each request in frontend. This could be slow the performance of your website.', 'personio-integration-light' ),
-					'register_attributes' => array(
-						'type'    => 'integer',
-						'default' => 0,
-					),
-				),
-			)
-		);
+	public function add_the_settings(): void {
+		// get settings object.
+		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 
-		// return resulting list of settings.
-		return $settings;
+		// get the section.
+		$advanced_section = $settings_obj->get_section( 'settings_section_advanced' );
+
+		// bail if tab does not exist.
+		if ( ! $advanced_section ) {
+			return;
+		}
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationEnableCronCheckInFrontend' );
+		$setting->set_section( $advanced_section );
+		$setting->set_type( 'integer' );
+		$setting->set_default( 0 );
+		$field = new Checkbox();
+		$field->set_title( __( 'Check for schedules in frontend', 'personio-integration-light' ) );
+		$field->set_description( __( 'If enabled the plugin will check our own schedules on each request in frontend. This could be slow the performance of your website.', 'personio-integration-light' ) );
+		$setting->set_field( $field );
 	}
 
 	/**
 	 * Get our own active events from WP-list.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	private function get_events(): array {
 		// get our own events from events list in WordPress.
@@ -133,7 +139,7 @@ class Schedules {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $our_events List of our own events in WP-cron.
+		 * @param array<string,array<string,mixed>> $our_events List of our own events in WP-cron.
 		 */
 		return apply_filters( 'personio_integration_schedule_our_events', $our_events );
 	}
@@ -145,9 +151,10 @@ class Schedules {
 	 *
 	 * Does only run in wp-admin, not frontend.
 	 *
-	 * @param array $our_events List of our own events.
+	 * @param array<string,array<string,mixed>> $our_events List of our own events.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
+	 * @noinspection PhpUnused
 	 */
 	public function check_events( array $our_events ): array {
 		// bail if check should be disabled.
@@ -171,38 +178,46 @@ class Schedules {
 
 		// check the schedule objects if they are set.
 		foreach ( $this->get_schedule_object_names() as $object_name ) {
+			// bail if class name does not exist.
+			if ( ! class_exists( $object_name ) ) {
+				continue;
+			}
+
+			// get the object.
 			$obj = new $object_name();
-			if ( $obj instanceof Schedules_Base ) {
-				// install if schedule is enabled and not in list of our schedules.
-				if ( $obj->is_enabled() && ! isset( $our_events[ $obj->get_name() ] ) ) {
-					// reinstall the missing event.
-					$obj->install();
 
-					// log this event if debug-mode is enabled.
-					if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-						$log = new Log();
-						/* translators: %1$s will be replaced by the event name. */
-						$log->add_log( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
-					}
+			// bail if object is not Schedules_Base.
+			if ( ! $obj instanceof Schedules_Base ) {
+				continue;
+			}
 
-					// re-run the check for WP-cron-events.
-					$our_events = $this->get_wp_events();
+			// install if schedule is enabled and not in list of our schedules.
+			if ( $obj->is_enabled() && ! isset( $our_events[ $obj->get_name() ] ) ) {
+				// reinstall the missing event.
+				$obj->install();
+
+				// log this event if debug-mode is enabled.
+				if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+					/* translators: %1$s will be replaced by the event name. */
+					Log::get_instance()->add( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 				}
 
-				// delete if schedule is in list of our events and not enabled.
-				if ( ! $obj->is_enabled() && isset( $our_events[ $obj->get_name() ] ) ) {
-					$obj->delete();
+				// re-run the check for WP-cron-events.
+				$our_events = $this->get_wp_events();
+			}
 
-					// log this event if debug-mode is enabled.
-					if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-						$log = new Log();
-						/* translators: %1$s will be replaced by the event name. */
-						$log->add_log( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
-					}
+			// delete if schedule is in list of our events and not enabled.
+			if ( ! $obj->is_enabled() && isset( $our_events[ $obj->get_name() ] ) ) {
+				$obj->delete();
 
-					// re-run the check for WP-cron-events.
-					$our_events = $this->get_wp_events();
+				// log this event if debug-mode is enabled.
+				if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+					/* translators: %1$s will be replaced by the event name. */
+					Log::get_instance()->add( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 				}
+
+				// re-run the check for WP-cron-events.
+				$our_events = $this->get_wp_events();
 			}
 		}
 
@@ -259,7 +274,7 @@ class Schedules {
 	/**
 	 * Return list of all schedule-object-names.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_schedule_object_names(): array {
 		// list of schedules: free version supports only one import-schedule.
@@ -274,13 +289,13 @@ class Schedules {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $list_of_schedules List of additional schedules.
+		 * @param array<string> $list_of_schedules List of additional schedules.
 		 */
 		return apply_filters( 'personio_integration_schedules', $list_of_schedules );
 	}
 
 	/**
-	 * Get schedule object by its name.
+	 * Return schedule object by its name.
 	 *
 	 * @param string $name The name of the object.
 	 *
@@ -288,20 +303,36 @@ class Schedules {
 	 */
 	public function get_schedule_object_by_name( string $name ): false|Schedules_Base {
 		foreach ( $this->get_schedule_object_names() as $object_name ) {
-			$obj = new $object_name();
-			if ( $obj instanceof Schedules_Base && $name === $obj->get_name() ) {
-				return $obj;
+			// bail if class does not exist.
+			if ( ! class_exists( $object_name ) ) {
+				continue;
 			}
+
+			// get the object.
+			$obj = new $object_name();
+
+			// bail if object is not a Schedule_Base object.
+			if ( ! $obj instanceof Schedules_Base ) {
+				continue;
+			}
+
+			// bail if name does not match.
+			if ( $name !== $obj->get_name() ) {
+				continue;
+			}
+
+			// return this object.
+			return $obj;
 		}
 		return false;
 	}
 
 	/**
-	 * Get our own events from WP-cron-event-list.
+	 * Return our own events from WP-cron-event-list.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
-	private function get_wp_events(): array {
+	public function get_wp_events(): array {
 		$our_events = array();
 		foreach ( _get_cron_array() as $events ) {
 			foreach ( $events as $event_name => $event_settings ) {
@@ -339,6 +370,7 @@ class Schedules {
 	 * @param object|bool $event The event properties.
 	 *
 	 * @return object|bool
+	 * @noinspection PhpUnused
 	 */
 	public function add_schedule_to_list( object|bool $event ): object|bool {
 		// bail if event is not an object.
@@ -347,7 +379,7 @@ class Schedules {
 		}
 
 		// get our object.
-		$schedule_obj = $this->get_schedule_object_by_name( $event->hook );
+		$schedule_obj = $this->get_schedule_object_by_name( $event->hook ); // @phpstan-ignore property.notFound
 
 		// bail if this is not an event of our plugin.
 		if ( ! $schedule_obj ) {

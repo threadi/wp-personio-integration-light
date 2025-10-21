@@ -12,9 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\Position;
-use PersonioIntegrationLight\Plugin\Languages;
-use PersonioIntegrationLight\Plugin\Templates;
 
 /**
  * Object to handle this block.
@@ -38,7 +35,7 @@ class Description extends Blocks_Basis {
 	/**
 	 * Attributes this block is using.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected array $attributes = array(
 		'template' => array(
@@ -56,24 +53,34 @@ class Description extends Blocks_Basis {
 	);
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Description
+	 */
+	private static ?Description $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Description {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Get the content for single position.
 	 *
-	 * @param array $attributes List of attributes for this position.
+	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		$position = $this->get_position_by_request();
-		if ( ( $position instanceof Position && ! $position->is_valid() ) || ! ( $position instanceof Position ) ) {
-			return '';
-		}
-
-		// set actual language.
-		$position->set_lang( Languages::get_instance()->get_current_lang() );
-
 		// set ID as class.
-		$class = '';
+		$classes = '';
 		if ( ! empty( $attributes['blockId'] ) ) {
-			$class = 'personio-integration-block-' . $attributes['blockId'];
+			$classes = 'personio-integration-block-' . $attributes['blockId'];
 		}
 
 		// get block-classes.
@@ -85,21 +92,15 @@ class Description extends Blocks_Basis {
 			// get styles.
 			$styles = Helper::get_attribute_value_from_html( 'style', $block_html_attributes );
 			if ( ! empty( $styles ) ) {
-				$styles_array[] = '.entry.' . $class . ' { ' . $styles . ' }';
+				$styles_array[] = '.entry-content.' . $classes . ' { ' . $styles . ' }';
 			}
 		}
 
-		$attributes = array(
-			'personioid'              => absint( $position->get_personio_id() ),
-			'jobdescription_template' => empty( $attributes['template'] ) ? get_option( 'personioIntegrationTemplateJobDescription' ) : $attributes['template'],
-			'templates'               => array( 'content' ),
-			'styles'                  => implode( PHP_EOL, $styles_array ),
-			'classes'                 => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
-		);
+		// add the attributes.
+		$attributes['styles'] = implode( PHP_EOL, $styles_array );
+		$attributes['classes'] = $classes . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes );
 
-		// get the output.
-		ob_start();
-		Templates::get_instance()->get_content_template( $position, $attributes );
-		return ob_get_clean();
+		// return the rendered template.
+		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Description::get_instance()->render( $attributes );
 	}
 }

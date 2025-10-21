@@ -4,8 +4,7 @@
 	"name": "wp-personio-integration/filter-select",
 	"version": "@@VersionNumber@@",
 	"title": "Personio Select Filter",
-	"category": "widgets",
-	"icon": "list-view",
+	"category": "personio-integration",
 	"description": "Provides a Gutenberg block to show filter as dropdown-list for Personio Positions.",
 	"keywords": ["Personio", "Positions", "Position"],
 	"supports": {

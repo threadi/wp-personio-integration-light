@@ -10,6 +10,8 @@ namespace PersonioIntegrationLight\PageBuilder;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
 use PersonioIntegrationLight\Plugin\Setup;
@@ -46,7 +48,7 @@ class PageBuilder_Base extends Extensions_Base {
 	 */
 	public function init(): void {
 		// add global settings for the page builder.
-		add_filter( 'personio_integration_settings', array( $this, 'add_global_settings' ) );
+		add_action( 'init', array( $this, 'add_global_settings' ), 20 );
 
 		// actions to run during setup.
 		add_action( 'esfw_process', array( $this, 'run_setup_process' ), 20 );
@@ -58,9 +60,10 @@ class PageBuilder_Base extends Extensions_Base {
 	/**
 	 * Return widgets this page builder supports.
 	 *
-	 * This means any widgets, block, component ... name it.
+	 * This means any widgets, block, component ... name it. The returning strings should contain their
+	 * class names incl. namespace.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_widgets(): array {
 		return array();
@@ -87,31 +90,34 @@ class PageBuilder_Base extends Extensions_Base {
 	/**
 	 * Add global Elementor-settings, used by setup.
 	 *
-	 * @param array $settings List of settings.
-	 *
-	 * @return array
+	 * @return void
 	 */
-	public function add_global_settings( array $settings ): array {
+	public function add_global_settings(): void {
 		// bail if page builder does not support templates.
 		if ( ! $this->has_templates() ) {
-			return $settings;
+			return;
 		}
 
-		// add marker for template import via setup.
-		$settings['hidden_section']['fields'][ 'pb_templates_import_' . $this->get_name() ] = array(
-			'register_attributes' => array(
-				'type'         => 'integer',
-				'show_in_rest' => true,
-				'default'      => 0,
-			),
-			'source'              => $this->get_plugin_source(),
-			'page_builder'        => $this->get_name(),
-			'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\PageBuilder', 'save' ),
-			'do_not_export'       => true,
-		);
+		// get settings object.
+		$settings_obj = Settings::get_instance();
 
-		// return resulting settings.
-		return $settings;
+		// get hidden section.
+		$hidden = \PersonioIntegrationLight\Plugin\Settings::get_instance()->get_hidden_section();
+
+		// bail if hidden section does not exist.
+		if ( ! $hidden instanceof Section ) {
+			return;
+		}
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'pb_templates_import_' . $this->get_name() );
+		$setting->set_section( $hidden );
+		$setting->set_show_in_rest( true );
+		$setting->set_type( 'integer' );
+		$setting->set_default( 0 );
+		$setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\PageBuilder', 'save' ) );
+		$setting->prevent_export( true );
+		$setting->add_custom_var( 'page_builder', $this->get_name() );
 	}
 
 	/**
@@ -144,14 +150,5 @@ class PageBuilder_Base extends Extensions_Base {
 
 		// set steps to max steps to end the process.
 		update_option( 'esfw_steps', $setup_obj->get_max_step() );
-	}
-
-	/**
-	 * Return whether this page builder is active.
-	 *
-	 * @return bool
-	 */
-	public function is_active(): bool {
-		return false;
 	}
 }

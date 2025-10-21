@@ -19,7 +19,7 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Override the parent columns method. Defines the columns to use in your listing table
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_columns(): array {
 		return array(
@@ -33,10 +33,10 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Get the table data
 	 *
-	 * @return array
+	 * @return array<int,mixed>
 	 */
 	private function table_data(): array {
-		return ( new Log() )->get_entries();
+		return Log::get_instance()->get_entries();
 	}
 
 	/**
@@ -71,7 +71,7 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Define which columns are hidden
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_hidden_columns(): array {
 		return array();
@@ -80,7 +80,7 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Define the sortable columns
 	 *
-	 * @return array
+	 * @return array<string,mixed>
 	 */
 	public function get_sortable_columns(): array {
 		return array( 'date' => array( 'date', false ) );
@@ -89,8 +89,8 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Define what data to show on each column of the table
 	 *
-	 * @param  array  $item        Data.
-	 * @param  String $column_name - Current column name.
+	 * @param  array<string,string> $item        Data.
+	 * @param  string               $column_name - Current column name.
 	 *
 	 * @return string
 	 */
@@ -113,8 +113,7 @@ class Log_Table extends WP_List_Table {
 	 */
 	private function get_category( string $category ): string {
 		// get list of categories.
-		$log_obj    = new Log();
-		$categories = $log_obj->get_categories();
+		$categories = Log::get_instance()->get_categories();
 
 		// bail if search category is not found.
 		if ( empty( $categories[ $category ] ) ) {
@@ -211,8 +210,8 @@ class Log_Table extends WP_List_Table {
 			);
 
 			?>
-			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( wp_json_encode( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
-			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( wp_json_encode( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
 			<?php
 		}
 	}
@@ -229,8 +228,7 @@ class Log_Table extends WP_List_Table {
 		// if filter is set show other text.
 		if ( ! empty( $category ) ) {
 			// get all categories to get the title.
-			$log_obj    = new Log();
-			$categories = $log_obj->get_categories();
+			$categories = Log::get_instance()->get_categories();
 
 			// show text.
 			/* translators: %1$s will be replaced by the category name. */
@@ -245,7 +243,7 @@ class Log_Table extends WP_List_Table {
 	/**
 	 * Define filter for categories.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	protected function get_views(): array {
 		// get main url without filter.
@@ -260,7 +258,7 @@ class Log_Table extends WP_List_Table {
 		);
 
 		// get all log categories.
-		$log_obj = new Log();
+		$log_obj = Log::get_instance();
 		foreach ( $log_obj->get_categories() as $key => $label ) {
 			$url          = add_query_arg( array( 'category' => $key ) );
 			$list[ $key ] = '<a href="' . esc_url( $url ) . '"' . ( $category === $key ? ' class="current"' : '' ) . '>' . esc_html( $label ) . '</a>';
@@ -274,7 +272,7 @@ class Log_Table extends WP_List_Table {
 		 * Filter the list before output.
 		 *
 		 * @since 3.1.0 Available since 3.1.0.
-		 * @param array $list List of filter.
+		 * @param array<string,string> $list List of filter.
 		 */
 		return apply_filters( 'personio_integration_log_table_filter', $list );
 	}

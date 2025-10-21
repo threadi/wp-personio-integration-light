@@ -27,7 +27,15 @@ class Cli {
 	 * @noinspection PhpUnused
 	 */
 	public function import_positions(): void {
-		$imports_obj = Imports::get_instance();
+		// get the import object.
+		$imports_obj = Imports::get_instance()->get_import_extension();
+
+		// bail if no import extension is enabled.
+		if ( ! $imports_obj ) {
+			return;
+		}
+
+		// run the import.
 		$imports_obj->run();
 	}
 
@@ -39,8 +47,7 @@ class Cli {
 	 */
 	public function delete_all(): void {
 		// log this event.
-		$logs = new Log();
-		$logs->add_log( 'WP CLI-command delete_all has been used.', 'success', 'cli' );
+		Log::get_instance()->add( 'WP CLI-command delete_all has been used.', 'success', 'cli' );
 
 		// delete all taxonomies.
 		Taxonomies::get_instance()->delete_all();
@@ -71,8 +78,8 @@ class Cli {
 	 *
 	 * @since        1.0.0
 	 *
-	 * @param array $attributes Marker to delete all data or not.
-	 * @param array $options List of options.
+	 * @param array<string,string> $attributes Marker to delete all data or not.
+	 * @param array<string,string> $options List of options.
 	 *
 	 * @return void
 	 * @noinspection PhpUnused

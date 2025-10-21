@@ -26,7 +26,7 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Override the parent columns method. Defines the columns to use in your listing table
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function get_columns(): array {
 		$columns = array(
@@ -41,7 +41,7 @@ class Extensions extends WP_List_Table {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $columns List of columns.
+		 * @param array<string,string> $columns List of columns.
 		 */
 		return apply_filters( 'personio_integration_extensions_table_columns', $columns );
 	}
@@ -49,7 +49,7 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Get the table data
 	 *
-	 * @return array
+	 * @return array<Extensions_Base>
 	 */
 	private function table_data(): array {
 		// get filter.
@@ -75,7 +75,7 @@ class Extensions extends WP_List_Table {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $extensions List of unsorted extensions.
+		 * @param array<Extensions_Base> $extensions List of unsorted extensions.
 		 */
 		$extensions = apply_filters( 'personio_integration_extensions_table_extensions', $extensions );
 
@@ -142,7 +142,7 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Define which columns are hidden
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_hidden_columns(): array {
 		return array();
@@ -151,17 +151,12 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Define what data to show on each column of the table.
 	 *
-	 * @param  object $item       Object.
-	 * @param  string $column_name Current column name.
+	 * @param  Extensions_Base $item       Object.
+	 * @param  string          $column_name Current column name.
 	 *
 	 * @return string
 	 */
 	public function column_default( $item, $column_name ): string {
-		// bail if $item is not our object.
-		if ( ! ( $item instanceof Extensions_Base ) ) {
-			return '';
-		}
-
 		// show category.
 		if ( 'category' === $column_name ) {
 			$extension_categories = $this->get_extension_categories();
@@ -183,7 +178,7 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Get the available categories.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	private function get_extension_categories(): array {
 		$categories = array(
@@ -199,7 +194,7 @@ class Extensions extends WP_List_Table {
 		 * Filter the extension categories.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array $categories List of categories.
+		 * @param array<string,string> $categories List of categories.
 		 */
 		return apply_filters( 'personio_integration_extension_categories', $categories );
 	}
@@ -221,11 +216,20 @@ class Extensions extends WP_List_Table {
 		// define actions.
 		$actions = array();
 		if ( ! empty( $item->get_setting_tab() ) ) {
-			$actions['settings'] = '<a href="' . esc_url( Helper::get_settings_url( $item->get_settings_page(), $item->get_setting_tab() ) ) . '">' . esc_html__( 'Settings', 'personio-integration-light' ) . '</a>';
+			$actions['settings'] = '<a href="' . esc_url( $item->get_settings_link() ) . '">' . esc_html__( 'Settings', 'personio-integration-light' ) . '</a>';
 		}
 
 		// change actions to pro-link only.
-		if ( $item->is_pro() ) {
+		$false = false;
+		/**
+		 * Hide hint for Pro-plugin.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param bool $false Set true to hide the hint.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
+		if ( $item->get_public_plugin_source() !== WP_PERSONIO_INTEGRATION_PLUGIN && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			$actions = array(
 				'pro' => '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . esc_html__( 'Get Pro', 'personio-integration-light' ) . '</a>',
 			);
@@ -253,8 +257,17 @@ class Extensions extends WP_List_Table {
 	 * @noinspection PhpUnused
 	 */
 	public function column_state( Extensions_Base $item ): string {
+		$false = false;
+		/**
+		 * Hide hint for Pro-plugin.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param bool $false Set true to hide the hint.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
+		 */
 		// show simple pro-hint if this is a pro-extension.
-		if ( $item->is_pro() ) {
+		if ( $item->get_public_plugin_source() !== WP_PERSONIO_INTEGRATION_PLUGIN && ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			return '<a class="pro-marker" href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . __( 'Only in Pro', 'personio-integration-light' ) . '</a>';
 		}
 
@@ -275,6 +288,11 @@ class Extensions extends WP_List_Table {
 			}
 		}
 
+		// show hint if dependent plugin/theme is not installed.
+		if ( ! $item->is_installed() ) {
+			return '<span class="button button-disabled button-state-disabled" title="' . esc_attr( __( 'Required plugin/theme not installed', 'personio-integration-light' ) ) . '">' . esc_html__( 'Not installed', 'personio-integration-light' ) . '</span>';
+		}
+
 		// show custom state.
 		if ( $item->has_custom_state() ) {
 			$html = $item->get_custom_state();
@@ -287,9 +305,9 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Allow input-field in kses for on/off-toggle.
 	 *
-	 * @param array $allowed_tags The allowed tags.
+	 * @param array<string,array<string,bool>> $allowed_tags The allowed tags.
 	 *
-	 * @return array
+	 * @return array<string,array<string,bool>>
 	 */
 	public function add_kses_html( array $allowed_tags ): array {
 		$allowed_tags['input'] = array(
@@ -303,7 +321,7 @@ class Extensions extends WP_List_Table {
 	/**
 	 * Define filter for categories.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	protected function get_views(): array {
 		// get main url.
@@ -317,13 +335,13 @@ class Extensions extends WP_List_Table {
 		 */
 		$all_url = apply_filters( 'personio_integration_light_extension_all_url', $url );
 
-		// define initial list.
-		$list = array(
-			'all' => '<a href="' . esc_url( $all_url ) . '">' . __( 'All', 'personio-integration-light' ) . '</a>',
-		);
-
 		// get active marker for category.
 		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// define initial list.
+		$list = array(
+			'all' => '<a href="' . esc_url( $all_url ) . '"' . ( empty( $category ) ? ' class="current"' : '' ) . '>' . __( 'All', 'personio-integration-light' ) . '</a>',
+		);
 
 		// add all categories to the list.
 		foreach ( $this->get_extension_categories() as $name => $label ) {
@@ -341,7 +359,7 @@ class Extensions extends WP_List_Table {
 		 * Filter the list of possible views in extension table.
 		 *
 		 * @since 4.0.0 Available since 4.0.0.
-		 * @param array $list List of views.
+		 * @param array<string,string> $list List of views.
 		 */
 		return apply_filters( 'personio_integration_light_extension_table_views', $list );
 	}
@@ -355,28 +373,37 @@ class Extensions extends WP_List_Table {
 	 */
 	protected function extra_tablenav( $which ): void {
 		if ( 'top' === $which ) {
+			// get active marker for category.
+			$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+			// bail if this is the widgets-category.
+			if ( 'widgets' === $category ) {
+				return;
+			}
+
 			// URL to disable all extensions.
 			$disable_url = add_query_arg(
 				array(
-					'action' => 'personio_integration_extension_disable_all',
-					'nonce'  => wp_create_nonce( 'personio-integration-extension-disable-all' ),
+					'action'   => 'personio_integration_extension_disable_all',
+					'nonce'    => wp_create_nonce( 'personio-integration-extension-disable-all' ),
+					'category' => $category,
 				),
 				get_admin_url() . 'admin.php'
 			);
 
 			// define dialog for export.
 			$dialog_disable = array(
-				'title'   => __( 'Disable all extensions', 'personio-integration-light' ),
+				'title'   => __( 'Disable this extensions', 'personio-integration-light' ),
 				'texts'   => array(
-					'<p><strong>' . __( 'Do you really want to disable all extensions?', 'personio-integration-light' ) . '</strong></p>',
-					'<p>' . __( 'You might not be able to you all possibilities for your positions.', 'personio-integration-light' ) . '</p>',
-					'<p>' . __( 'Settings of extension will not change through its deactivation.', 'personio-integration-light' ) . '</p>',
+					'<p><strong>' . __( 'Do you really want to disable this extensions?', 'personio-integration-light' ) . '</strong></p>',
+					'<p>' . __( 'You might not be able to use all possibilities for your positions.', 'personio-integration-light' ) . '</p>',
+					'<p>' . __( 'The settings of extensions will not change through their deactivation.', 'personio-integration-light' ) . '</p>',
 				),
 				'buttons' => array(
 					array(
 						'action'  => 'location.href="' . esc_url( $disable_url ) . '";',
 						'variant' => 'primary',
-						'text'    => __( 'Yes, disable all', 'personio-integration-light' ),
+						'text'    => __( 'Yes, disable them', 'personio-integration-light' ),
 					),
 					array(
 						'action'  => 'closeDialog();',
@@ -389,17 +416,18 @@ class Extensions extends WP_List_Table {
 			// URL to disable all extensions.
 			$enable_url = add_query_arg(
 				array(
-					'action' => 'personio_integration_extension_enable_all',
-					'nonce'  => wp_create_nonce( 'personio-integration-extension-enable-all' ),
+					'action'   => 'personio_integration_extension_enable_all',
+					'nonce'    => wp_create_nonce( 'personio-integration-extension-enable-all' ),
+					'category' => $category,
 				),
 				get_admin_url() . 'admin.php'
 			);
 
 			// define dialog for export.
 			$dialog_enable = array(
-				'title'   => __( 'Enable all extensions', 'personio-integration-light' ),
+				'title'   => __( 'Enable this extensions', 'personio-integration-light' ),
 				'texts'   => array(
-					'<p><strong>' . __( 'Do you really want to enable all extensions?', 'personio-integration-light' ) . '</strong></p>',
+					'<p><strong>' . __( 'Do you really want to enable this extensions?', 'personio-integration-light' ) . '</strong></p>',
 					'<p>' . __( 'Extensions that depend on third-party plugins are not activated automatically.', 'personio-integration-light' ) . '</p>',
 				),
 				'buttons' => array(
@@ -417,8 +445,8 @@ class Extensions extends WP_List_Table {
 			);
 
 			// output buttons.
-			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_disable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable all', 'personio-integration-light' ) . '</a>';
-			echo '<a data-dialog="' . esc_attr( wp_json_encode( $dialog_enable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable all', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( Helper::get_json( $dialog_disable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable this extensions', 'personio-integration-light' ) . '</a>';
+			echo '<a data-dialog="' . esc_attr( Helper::get_json( $dialog_enable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable this extensions', 'personio-integration-light' ) . '</a>';
 		}
 	}
 }

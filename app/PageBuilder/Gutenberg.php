@@ -10,6 +10,10 @@ namespace PersonioIntegrationLight\PageBuilder;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Patterns;
@@ -30,17 +34,29 @@ class Gutenberg extends PageBuilder_Base {
 	protected string $name = 'gutenberg';
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Gutenberg
+	 */
+	private static ?Gutenberg $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Gutenberg {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Initialize this PageBuilder support.
 	 *
 	 * @return void
 	 */
 	public function init(): void {
-		// bail if Gutenberg is disabled.
-		if ( ! $this->is_enabled() ) {
-			add_filter( 'personio_integration_settings', array( $this, 'remove_fse_hint' ) );
-			return;
-		}
-
 		// add our custom blocks.
 		add_action( 'init', array( $this, 'register_blocks' ) );
 
@@ -50,20 +66,22 @@ class Gutenberg extends PageBuilder_Base {
 		// add our custom variations.
 		add_action( 'init', array( $this, 'add_variations' ) );
 
+		// initialize the templates.
+		add_action( 'init', array( $this, 'add_templates' ) );
+
 		// bail if theme is not an FSE-theme with Block support.
 		if ( ! $this->theme_support_block_templates() ) {
-			// remove hint from settings.
-			add_filter( 'personio_integration_settings', array( $this, 'remove_fse_hint' ) );
 			return;
 		}
 
 		// add our custom templates and set to use them.
-		add_action( 'init', array( $this, 'add_templates' ) );
+		add_action( 'init', array( $this, 'add_the_settings' ), 50 );
 		add_filter( 'personio_integration_load_single_template', '__return_true' );
 		add_filter( 'personio_integration_load_archive_template', '__return_true' );
 
 		// misc.
 		add_filter( 'body_class', array( $this, 'add_body_classes' ) );
+		add_filter( 'block_categories_all', array( $this, 'add_block_category' ) );
 
 		// call parent init.
 		parent::init();
@@ -122,18 +140,10 @@ class Gutenberg extends PageBuilder_Base {
 	/**
 	 * Return list of available blocks.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function get_widgets(): array {
-		$list = array(
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Application_Button',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Archive',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Description',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Detail',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Filter_List',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Filter_Select',
-			'PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks\Single',
-		);
+		$list = array();
 
 		// return resulting list.
 		return apply_filters( 'personio_integration_gutenberg_blocks', $list );
@@ -146,11 +156,6 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function register_blocks(): void {
 		foreach ( $this->get_widgets() as $block_class_name ) {
-			// bail if class name is not a string.
-			if ( ! is_string( $block_class_name ) ) {
-				continue;
-			}
-
 			// extend the class name to match callable.
 			$class_name = $block_class_name . '::get_instance';
 
@@ -173,17 +178,40 @@ class Gutenberg extends PageBuilder_Base {
 	}
 
 	/**
-	 * Remove the FSE-hint from settings.
+	 * Add FSE-hint in settings.
 	 *
-	 * @param array $settings Array with the settings.
-	 *
-	 * @return array
+	 * @return void
 	 */
-	public function remove_fse_hint( array $settings ): array {
-		if ( isset( $settings['settings_section_template_list']['fields']['personio_integration_fse_theme_hint'] ) ) {
-			unset( $settings['settings_section_template_list']['fields']['personio_integration_fse_theme_hint'] );
+	public function add_the_settings(): void {
+		// get settings object.
+		$settings_obj = Settings::get_instance();
+
+		// get the settings page.
+		$settings_page = $settings_obj->get_page( 'personioPositions' );
+
+		// bail if page could not be found.
+		if ( ! $settings_page instanceof Page ) {
+			return;
 		}
-		return $settings;
+
+		// get template tab.
+		$template_tab = $settings_page->get_tab( 'templates' );
+
+		// bail if template tab could not be found.
+		if ( ! $template_tab instanceof Tab ) {
+			return;
+		}
+
+		// get the section.
+		$section = $template_tab->get_section( 'settings_section_template_list' );
+
+		// bail if section could not be found.
+		if ( ! $section instanceof Section ) {
+			return;
+		}
+
+		// override the callback.
+		$section->set_callback( array( $this, 'show_fse_hint' ) );
 	}
 
 	/**
@@ -243,9 +271,9 @@ class Gutenberg extends PageBuilder_Base {
 	/**
 	 * Add position specific classes in body class for single view.
 	 *
-	 * @param array $css_classes List of classes.
+	 * @param array<string> $css_classes List of classes.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function add_body_classes( array $css_classes ): array {
 		// bail if this is not a single page.
@@ -271,5 +299,52 @@ class Gutenberg extends PageBuilder_Base {
 
 		// return resulting classes.
 		return $css_classes;
+	}
+
+	/**
+	 * Show fse hint above template list.
+	 *
+	 * Will be removed if no FSE-theme is used.
+	 *
+	 * @return void
+	 */
+	public function show_fse_hint(): void {
+		// get Block Editor URL.
+		$editor_url = add_query_arg(
+			array(
+				'path' => '/wp_template/all',
+			),
+			admin_url( 'site-editor.php' )
+		);
+
+		/* translators: %1$s will be replaced with the name of the theme, %2$s will be replaced by the URL for the editor */
+		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'You are using with <i>%1$s</i> a modern block theme. The settings here will therefore might not work. Edit the archive- and single-template under <a href="%2$s">Appearance > Editor > Templates > Manage</a>.', 'personio-integration-light' ), esc_html( Helper::get_theme_title() ), esc_url( $editor_url ) ) ) . '</p>';
+	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
+	}
+
+	/**
+	 * Add our custom block category for all of our own widgets.
+	 *
+	 * @param array<int,array<string,mixed>> $block_categories List of block categories.
+	 *
+	 * @return array<int,array<string,mixed>>
+	 */
+	public function add_block_category( array $block_categories ): array {
+		// add our custom block category.
+		$block_categories[] = array(
+			'slug'  => 'personio-integration',
+			'title' => __( 'Personio Integration', 'personio-integration-light' ),
+		);
+
+		// return resulting list.
+		return $block_categories;
 	}
 }

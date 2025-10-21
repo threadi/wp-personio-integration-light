@@ -3,7 +3,7 @@
  * Plugin Name:       Personio Integration Light
  * Description:       Provides recruiting handling for Personio.
  * Requires at least: 4.9.24
- * Requires PHP:      8.0
+ * Requires PHP:      8.1
  * Version:           @@VersionNumber@@
  * Author:            laOlaWeb
  * Author URI:        https://laolaweb.com
@@ -18,10 +18,11 @@
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Plugin\Init;
+use PersonioIntegrationLight\Plugin\Installer;
 use PersonioIntegrationLight\Plugin\Update;
 
-// do nothing if PHP-version is not 8.0 or newer.
-if ( PHP_VERSION_ID < 80000 ) {
+// do nothing if PHP-version is not 8.1 or newer.
+if ( PHP_VERSION_ID < 80100 ) { // @phpstan-ignore smaller.alwaysFalse
 	return;
 }
 
@@ -41,14 +42,14 @@ require_once __DIR__ . '/inc/constants.php';
 require_once __DIR__ . '/deprecated/deprecated.php';
 
 // on activation.
-register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_instance(), 'activation' ) );
+register_activation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Installer::get_instance(), 'activation' ) );
 
 // on deactivation.
 register_deactivation_hook( WP_PERSONIO_INTEGRATION_PLUGIN, array( Init::get_instance(), 'deactivation' ) );
 
 add_action(
 	'plugins_loaded',
-	function () {
+	static function () {
 		Update::get_instance()->init();
 		Init::get_instance()->init();
 	}

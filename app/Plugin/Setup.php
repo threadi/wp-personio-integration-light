@@ -10,8 +10,16 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transient;
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Radio;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Import;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
+use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
+use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 
@@ -29,7 +37,7 @@ class Setup {
 	/**
 	 * Define setup as array with steps.
 	 *
-	 * @var array
+	 * @var array<int,array<string,mixed>>
 	 */
 	private array $setup = array();
 
@@ -49,11 +57,11 @@ class Setup {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Setup {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
 	/**
@@ -96,6 +104,9 @@ class Setup {
 			// set configuration for setup.
 			$setup_obj->set_config( $this->get_config() );
 
+			// initialize the import object.
+			Import::get_instance()->init();
+
 			// only load setup if it is not completed.
 			add_filter( 'esfw_completed', array( $this, 'check_completed_value' ), 10, 2 );
 			add_action( 'esfw_set_completed', array( $this, 'set_completed' ) );
@@ -104,6 +115,7 @@ class Setup {
 
 			// add hooks to enable the setup of this plugin.
 			add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'add_js_and_css' ) );
 
 			// use own hooks.
 			add_action( 'personio_integration_import_max_count', array( $this, 'update_max_step' ) );
@@ -117,7 +129,14 @@ class Setup {
 	 * @return bool
 	 */
 	public function is_completed(): bool {
-		return \easySetupForWordPress\Setup::get_instance()->is_completed( $this->get_setup_name() );
+		$completed = \easySetupForWordPress\Setup::get_instance()->is_completed( $this->get_setup_name() );
+		/**
+		 * Filter the setup complete marker.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param bool $completed True if setup has been completed.
+		 */
+		return apply_filters( 'personio_integration_light_setup_is_completed', $completed );
 	}
 
 	/**
@@ -147,6 +166,12 @@ class Setup {
 
 			// delete all other transients.
 			foreach ( $transients_obj->get_transients() as $transient_obj ) {
+				// bail if object is not ours.
+				if ( ! $transient_obj instanceof Transient ) { // @phpstan-ignore instanceof.alwaysTrue
+					continue;
+				}
+
+				// delete it.
 				$transient_obj->delete();
 			}
 
@@ -172,7 +197,7 @@ class Setup {
 	/**
 	 * Return the configured setup.
 	 *
-	 * @return array
+	 * @return array<int,array<string,mixed>>
 	 */
 	private function get_setup(): array {
 		$setup = $this->setup;
@@ -186,7 +211,7 @@ class Setup {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array $setup The setup-configuration.
+		 * @param array<int,array<string,mixed>> $setup The setup-configuration.
 		 */
 		return apply_filters( 'personio_integration_setup', $setup );
 	}
@@ -229,7 +254,7 @@ class Setup {
 			PersonioPosition::get_instance()->get_name(),
 			__( 'Personio Integration Light', 'personio-integration-light' ) . ' ' . __( 'Setup', 'personio-integration-light' ),
 			__( 'Setup', 'personio-integration-light' ),
-			'manage_' . PersonioPosition::get_instance()->get_name(),
+			'manage_options',
 			'personioPositions',
 			array( $this, 'display' ),
 			1
@@ -242,9 +267,9 @@ class Setup {
 	/**
 	 * Convert options array to react-compatible array-list with label and value.
 	 *
-	 * @param array $options The list of options to convert.
+	 * @param array<string,string> $options The list of options to convert.
 	 *
-	 * @return array
+	 * @return array<int,array<string,string>>
 	 */
 	public function convert_options_for_react( array $options ): array {
 		// define resulting list.
@@ -267,7 +292,7 @@ class Setup {
 	 *
 	 * Here we define which steps and texts are used by wp-easy-setup.
 	 *
-	 * @return array
+	 * @return array<string,array<int,mixed>|string>
 	 */
 	private function get_config(): array {
 		// get setup.
@@ -283,13 +308,14 @@ class Setup {
 			'finish_button_label'   => __( 'Completed', 'personio-integration-light' ) . '<span class="dashicons dashicons-saved"></span>',
 			'skip_button_label'     => __( 'Skip', 'personio-integration-light' ) . '<span class="dashicons dashicons-undo"></span>',
 			'skip_url'              => \easySetupForWordPress\Setup::get_instance()->get_skip_url( $this->get_setup_name(), Helper::get_settings_url() ),
+			'error_label'           => __( 'An error occurred. Received an incorrect response from the server. Please check your permalink settings.', 'personio-integration-light' ),
 		);
 
 		/**
 		 * Filter the setup configuration.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array $config List of configuration for the setup.
+		 * @param array<string,array<int,mixed>|string> $config List of configuration for the setup.
 		 */
 		return apply_filters( 'personio_integration_setup_config', $config );
 	}
@@ -323,32 +349,64 @@ class Setup {
 	 */
 	public function set_config(): void {
 		// get properties from settings.
-		$settings = Settings::get_instance();
-		$settings->set_settings();
+		$settings = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 
 		// get URL-settings.
-		$url_settings = $settings->get_settings_for_field( 'personioIntegrationUrl' );
+		$url_settings = $settings->get_setting( 'personioIntegrationUrl' );
+
+		// bail if URL setting could not be loaded.
+		if ( ! $url_settings instanceof Setting ) {
+			return;
+		}
+
+		// get field for URL settings.
+		$url_field = $url_settings->get_field();
+
+		// bail if field is not available.
+		if ( ! $url_field instanceof Text ) {
+			return;
+		}
 
 		// get main language setting.
-		$language_setting = $settings->get_settings_for_field( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );
+		$language_setting = $settings->get_setting( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );
+
+		// bail if language setting could not be loaded.
+		if ( ! $language_setting instanceof Setting ) {
+			return;
+		}
+
+		// get field for URL settings.
+		$language_field = $language_setting->get_field();
+
+		// bail if field is not available.
+		if ( ! $language_field instanceof Radio ) {
+			return;
+		}
 
 		// define setup.
 		$this->setup = array(
 			1 => array(
 				'personioIntegrationUrl'              => array(
 					'type'                => 'TextControl',
-					'label'               => $url_settings['label'],
-					'help'                => $url_settings['description'],
-					'placeholder'         => $url_settings['placeholder'],
+					'label'               => $url_field->get_title(),
+					'help'                => $url_field->get_description(),
+					'placeholder'         => $url_field->get_placeholder(),
 					'required'            => true,
 					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::rest_validate',
 				),
 				WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE => array(
 					'type'                => 'RadioControl',
-					'label'               => $language_setting['label'],
-					'help'                => $language_setting['description'],
-					'options'             => $this->convert_options_for_react( $language_setting['options'] ),
+					'label'               => $language_field->get_title(),
+					'help'                => $language_field->get_description(),
+					'options'             => $this->convert_options_for_react( $language_field->get_options() ),
 					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate',
+				),
+				'import_settings'                     => array(
+					'type'    => 'ButtonControl',
+					'variant' => 'secondary',
+					'label'   => __( 'Import configuration', 'personio-integration-light' ),
+					'help'    => __( 'Select a configuration file to quickly save the plugin settings. The setup will be skipped.', 'personio-integration-light' ),
+					'onclick' => '() => personio_integration_settings_import_dialog_via_setup();',
 				),
 				'help'                                => array(
 					'type' => 'Text',
@@ -390,7 +448,7 @@ class Setup {
 		}
 
 		// update the max steps for this process.
-		$this->update_max_step( Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Imports::get_instance()->get_personio_urls() ) );
+		$this->update_max_step( Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Personio_Accounts::get_instance()->get_personio_urls() ) );
 
 		// step 1: Run import of taxonomies.
 		$this->set_process_label( __( 'Import of Personio labels running.', 'personio-integration-light' ) );
@@ -398,8 +456,12 @@ class Setup {
 
 		// step 2: Run import of positions.
 		$this->set_process_label( __( 'Import of your Personio positions running.', 'personio-integration-light' ) );
-		$imports_obj = Imports::get_instance();
-		$imports_obj->run();
+
+		// get the import extension.
+		$imports_obj = Imports::get_instance()->get_import_extension();
+		if ( $imports_obj instanceof Imports_Base ) {
+			$imports_obj->run();
+		}
 	}
 
 	/**
@@ -443,7 +505,7 @@ class Setup {
 		}
 
 		// bail if this is not a request from API.
-		if ( ! Helper::is_admin_api_request() ) {
+		if ( ! Helper::is_rest_request() ) {
 			return;
 		}
 
@@ -508,5 +570,14 @@ class Setup {
 	 */
 	public function uninstall(): void {
 		\easySetupForWordPress\Setup::get_instance()->uninstall( $this->get_setup_name() );
+	}
+
+	/**
+	 * Add own JS and CSS for backend.
+	 *
+	 * @return void
+	 */
+	public function add_js_and_css(): void {
+		Import::get_instance()->add_script( 'appearance_page_easy-settings-for-wordpress' );
 	}
 }

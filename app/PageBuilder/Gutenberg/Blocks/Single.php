@@ -12,7 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
-use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
  * Object to handle this block.
@@ -36,7 +35,7 @@ class Single extends Blocks_Basis {
 	/**
 	 * Attributes this block is using.
 	 *
-	 * @var array
+	 * @var array<string,array<string,mixed>>
 	 */
 	protected array $attributes = array(
 		'id'                  => array(
@@ -73,9 +72,27 @@ class Single extends Blocks_Basis {
 	);
 
 	/**
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Single
+	 */
+	private static ?Single $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Single {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * Get the content for single position.
 	 *
-	 * @param array $attributes List of attributes for this position.
+	 * @param array<string,mixed> $attributes List of attributes for this position.
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
@@ -106,7 +123,7 @@ class Single extends Blocks_Basis {
 			'templates'  => $this->get_template_parts( $attributes ),
 			'excerpt'    => $this->get_details_array( $attributes ),
 			'donotlink'  => $do_not_link,
-			'personioid' => $attributes['id'],
+			'personioid' => (string)$attributes['id'],
 			'styles'     => implode( PHP_EOL, $styles_array ),
 			'classes'    => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 		);
@@ -119,6 +136,9 @@ class Single extends Blocks_Basis {
 		 * @param array $attribute_defaults List of attributes to use.
 		 * @param array $attributes List of attributes vom PageBuilder.
 		 */
-		return PersonioPosition::get_instance()->shortcode_single( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
+		$attributes = apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes );
+
+		// return the rendered content.
+		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Single::get_instance()->render( $attributes );
 	}
 }

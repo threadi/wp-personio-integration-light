@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
@@ -29,7 +30,7 @@ class Init {
 	private static ?Init $instance = null;
 
 	/**
-	 * Constructor for Init-Handler.
+	 * Constructor for this object.
 	 */
 	private function __construct() {}
 
@@ -44,10 +45,11 @@ class Init {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Init {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return static::$instance;
+
+		return self::$instance;
 	}
 
 	/**
@@ -56,14 +58,17 @@ class Init {
 	 * @return void
 	 */
 	public function init(): void {
-		// init transients.
-		Transients::get_instance()->init();
-
 		// register settings.
 		Settings::get_instance()->init();
 
 		// check setup state.
 		Setup::get_instance()->init();
+
+		// init wp-admin-support.
+		Admin::get_instance()->init();
+
+		// initialize the API support.
+		Api::get_instance()->init();
 
 		// check intro state.
 		Intro::get_instance()->init();
@@ -77,9 +82,6 @@ class Init {
 		// init templates.
 		Templates::get_instance()->init();
 
-		// init wp-admin-support.
-		Admin::get_instance()->init();
-
 		// init roles.
 		Roles::get_instance()->init();
 
@@ -91,6 +93,9 @@ class Init {
 
 		// init compatibility-checks.
 		Compatibilities::get_instance()->init();
+
+		// init email support.
+		Emails::get_instance()->init();
 
 		// install db tables on plugin-installation.
 		add_action( 'personio_integration_install_db_tables', array( $this, 'install_db_tables' ) );
@@ -112,18 +117,6 @@ class Init {
 		add_action( 'wp', array( $this, 'update_slugs' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 		add_action( 'parse_query', array( $this, 'check_static_front_filter' ) );
-
-			// misc.
-		add_action( 'admin_init', array( $this, 'check_php' ) );
-	}
-
-	/**
-	 * Tasks to run on activation.
-	 *
-	 * @return void
-	 */
-	public function activation(): void {
-		Installer::get_instance()->activation();
 	}
 
 	/**
@@ -156,10 +149,10 @@ class Init {
 		 */
 		if ( ! Helper::theme_is_fse_theme() ) {
 			wp_enqueue_style(
-				'personio-integration-additional-styles',
-				Helper::get_plugin_url() . 'blocks/list/build/style-index.css',
+				'personio-integration',
+				Helper::get_plugin_url() . 'css/blocks.css',
 				array(),
-				Helper::get_file_version( Helper::get_plugin_path() . 'blocks/list/build/style-index.css' )
+				Helper::get_file_version( Helper::get_plugin_path() . 'css/blocks.css' )
 			);
 		}
 	}
@@ -167,8 +160,8 @@ class Init {
 	/**
 	 * Add link to plugin-settings in plugin-list.
 	 *
-	 * @param array $links List of links.
-	 * @return array
+	 * @param array<int,string> $links List of links.
+	 * @return array<int,string>
 	 */
 	public function add_setting_link( array $links ): array {
 		// if setup has not been completed, show link here.
@@ -185,10 +178,10 @@ class Init {
 	/**
 	 * Add links in row meta.
 	 *
-	 * @param array  $links List of links.
-	 * @param string $file The requested plugin file name.
+	 * @param array<string,string> $links List of links.
+	 * @param string               $file The requested plugin file name.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function add_row_meta_links( array $links, string $file ): array {
 		// bail if this is not our plugin.
@@ -205,7 +198,7 @@ class Init {
 		 * Filter the links in row meta of our plugin in plugin list.
 		 *
 		 * @since 4.2.4 Available since 4.2.4.
-		 * @param array $row_meta List of links.
+		 * @param array<string,string> $row_meta List of links.
 		 */
 		$row_meta = apply_filters( 'personio_integration_light_plugin_row_meta', $row_meta );
 
@@ -224,16 +217,19 @@ class Init {
 			return;
 		}
 
+		// flush the rewrite rules.
 		flush_rewrite_rules();
+
+		// disable the flag to update them.
 		update_option( 'personio_integration_update_slugs', 0 );
 	}
 
 	/**
 	 * Register our custom query_vars for frontend.
 	 *
-	 * @param array $query_vars List of query vars.
+	 * @param array<int,string> $query_vars List of query vars.
 	 *
-	 * @return array
+	 * @return array<int,string>
 	 */
 	public function add_query_vars( array $query_vars ): array {
 		// variable for filter.
@@ -244,8 +240,8 @@ class Init {
 	/**
 	 * Show info from update_notice-section in readme.txt in the WordPress-repository.
 	 *
-	 * @param array  $data List of plugin-infos.
-	 * @param object $response The response-data.
+	 * @param array<string,mixed> $data List of plugin-infos.
+	 * @param object              $response The response-data.
 	 *
 	 * @return void
 	 */
@@ -312,16 +308,36 @@ class Init {
 	}
 
 	/**
-	 * Install db-table of registered objects.
+	 * Install db-tables of registered objects.
+	 *
+	 * Hint: the objects must just have a function "create_table".
 	 *
 	 * @return void
 	 */
 	public function install_db_tables(): void {
-		foreach ( apply_filters( 'personio_integration_objects_with_db_tables', array( 'PersonioIntegrationLight\Log' ) ) as $obj_name ) {
-			$obj = new $obj_name();
-			if ( method_exists( $obj, 'create_table' ) ) {
-				$obj->create_table();
+		$objects = array( '\PersonioIntegrationLight\Log' );
+		/**
+		 * Add additional objects for this plugin which use custom tables.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 * @param array<int,string> $objects List of objects.
+		 */
+		foreach ( apply_filters( 'personio_integration_objects_with_db_tables', $objects ) as $obj_name ) {
+			// bail if class does not exist.
+			if ( ! class_exists( $obj_name ) ) {
+				continue;
 			}
+
+			// get the object.
+			$obj = new $obj_name();
+
+			// bail if object does not have a function "create_table".
+			if ( ! method_exists( $obj, 'create_table' ) ) {
+				continue;
+			}
+
+			// call the function to create its table(s).
+			$obj->create_table();
 		}
 	}
 
@@ -331,12 +347,12 @@ class Init {
 	 * @return void
 	 */
 	public function delete_db_tables(): void {
-		$objects = array( 'PersonioIntegrationLight\Log' );
+		$objects = array( '\PersonioIntegrationLight\Log' );
 		/**
 		 * Add additional objects for this plugin which use custom tables.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param array $objects List of objects.
+		 * @param array<int,string> $objects List of objects.
 		 */
 		foreach ( apply_filters( 'personio_integration_objects_with_db_tables', $objects ) as $obj_name ) {
 			if ( str_contains( $obj_name, 'PersonioIntegrationLight\\' ) ) {
@@ -346,42 +362,6 @@ class Init {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Check if website is using an old PHP version and show warning if is it using such.
-	 *
-	 * @return void
-	 */
-	public function check_php(): void {
-		// get transients object.
-		$transients_obj = Transients::get_instance();
-
-		// bail if setup has not been run yet.
-		if ( ! Setup::get_instance()->is_completed() ) {
-			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
-			return;
-		}
-
-		// bail if WordPress is in developer mode.
-		if ( function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' ) ) {
-			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
-			return;
-		}
-
-		// bail if PHP >= 8.1 is used.
-		if ( PHP_VERSION_ID >= 80100 ) {
-			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
-			return;
-		}
-
-		// show hint for necessary configuration to restrict access to application files.
-		$transient_obj = Transients::get_instance()->add();
-		$transient_obj->set_type( 'error' );
-		$transient_obj->set_name( 'personio_integration_light_php_hint' );
-		$transient_obj->set_dismissible_days( 90 );
-		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'personio-integration-light' ) . '</strong><br>' . __( 'Future versions of <i>Personio Integration Light</i> will no longer be compatible with PHP 8.0 or older. These versions <a href="https://www.php.net/supported-versions.php" target="_blank">are outdated</a> since December 2023. To continue using the plugins new features, please update your PHP version.', 'personio-integration-light' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'personio-integration-light' ) );
-		$transient_obj->save();
 	}
 
 	/**

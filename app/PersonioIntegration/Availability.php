@@ -10,11 +10,16 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
-use PersonioIntegrationLight\Plugin\Settings;
+use PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl;
 use PersonioIntegrationLight\Plugin\Setup;
+use WP_REST_Request;
 
 /**
  * Object to handle availability-checks for positions.
@@ -39,7 +44,7 @@ class Availability extends Extensions_Base {
 	 *
 	 * @var string
 	 */
-	protected string $setting_tab = 'import';
+	protected string $setting_sub_tab = 'availability';
 
 	/**
 	 * Internal name of the used category.
@@ -49,23 +54,40 @@ class Availability extends Extensions_Base {
 	protected string $extension_category = 'positions';
 
 	/**
-	 * Initialize this plugin.
+	 * Variable for instance of this Singleton object.
+	 *
+	 * @var ?Availability
+	 */
+	private static ?Availability $instance = null;
+
+	/**
+	 * Return the instance of this Singleton object.
+	 */
+	public static function get_instance(): Availability {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Initialize this object.
 	 *
 	 * @return void
 	 */
 	public function init(): void {
-		// add as extension.
-		add_filter( 'personio_integration_extensions_table_extension', array( $this, 'add_extension' ) );
-
 		// bail if extension is not enabled.
-		if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
+		if ( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
 			return;
 		}
+
+		// add the settings.
+		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'run' ) );
-		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 
 		// extend the position table.
@@ -83,27 +105,47 @@ class Availability extends Extensions_Base {
 	/**
 	 * Add settings for this extension.
 	 *
-	 * @param array $settings List of settings.
-	 *
-	 * @return array
+	 * @return void
 	 */
-	public function add_settings( array $settings ): array {
-		if ( empty( $settings['settings_section_import']['fields'] ) ) {
-			return $settings;
-		}
-		$settings['settings_section_import_other']['fields']['personioIntegrationEnableAvailabilityCheck'] = array(
-			'label'               => __( 'Enable availability checks', 'personio-integration-light' ),
-			'field'               => array( 'PersonioIntegrationLight\Plugin\Admin\SettingFields\Checkbox', 'get' ),
-			'description'         => __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ),
-			'register_attributes' => array(
-				'type'    => 'integer',
-				'default' => 1,
-			),
-			'callback'            => array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ),
-		);
+	public function add_the_settings(): void {
+		// get settings object.
+		$settings_obj = Settings::get_instance();
 
-		// return resulting list of settings.
-		return $settings;
+		// get the main settings page.
+		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
+
+		// bail if page could not be loaded.
+		if ( ! $main_settings_page instanceof Page ) {
+			return;
+		}
+
+		// get the extensions tab.
+		$extension_tab = $main_settings_page->get_tab( $this->get_setting_tab() );
+
+		// bail if tab could not be loaded.
+		if ( ! $extension_tab instanceof Tab ) {
+			return;
+		}
+
+		// add our own tab.
+		$availability_tab = $extension_tab->add_tab( $this->get_setting_sub_tab(), 10 );
+		$availability_tab->set_title( __( 'Availability', 'personio-integration-light' ) );
+		$extension_tab->set_default_tab( $availability_tab );
+
+		// add the section.
+		$availability_section = $availability_tab->add_section( 'settings_section_availability', 10 );
+		$availability_section->set_title( __( 'Settings for availability check', 'personio-integration-light' ) );
+
+		// add setting.
+		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnableAvailabilityCheck' );
+		$automatic_import_setting->set_section( $availability_section );
+		$automatic_import_setting->set_type( 'integer' );
+		$automatic_import_setting->set_default( 1 );
+		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ) );
+		$field = new Checkbox();
+		$field->set_title( __( 'Enable availability checks', 'personio-integration-light' ) );
+		$field->set_description( __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ) );
+		$automatic_import_setting->set_field( $field );
 	}
 
 	/**
@@ -113,7 +155,7 @@ class Availability extends Extensions_Base {
 	 */
 	public function run(): void {
 		// bail if settings is not enabled.
-		if ( 1 !== absint( Settings::get_instance()->get_setting( 'personioIntegrationEnableAvailabilityCheck' ) ) ) {
+		if ( 1 !== absint( get_option( 'personioIntegrationEnableAvailabilityCheck' ) ) ) {
 			return;
 		}
 
@@ -141,20 +183,18 @@ class Availability extends Extensions_Base {
 
 		// loop through the positions and check each.
 		foreach ( $positions as $position_obj ) {
-			if ( $position_obj instanceof Position ) {
-				// run check for this single position.
-				$this->run_single_check( $position_obj );
+			// run check for this single position.
+			$this->run_single_check( $position_obj );
 
-				$count = 1;
-				/**
-				 * Add actual count on third party components (like Setup).
-				 *
-				 * @since 3.0.0 Available since 3.0.0.
-				 *
-				 * @param int $count The value to add.
-				 */
-				do_action( 'personio_integration_import_count', $count );
-			}
+			$count = 1;
+			/**
+			 * Add actual count on third party components (like Setup).
+			 *
+			 * @since 3.0.0 Available since 3.0.0.
+			 *
+			 * @param int $count The value to add.
+			 */
+			do_action( 'personio_integration_import_count', $count );
 
 			// show progress.
 			$progress ? $progress->tick() : false;
@@ -167,9 +207,9 @@ class Availability extends Extensions_Base {
 	/**
 	 * Add our own schedule to the list.
 	 *
-	 * @param array $list_of_schedules List of schedules.
+	 * @param array<string> $list_of_schedules List of schedules.
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function add_schedule( array $list_of_schedules ): array {
 		// add the schedule-objekt.
@@ -182,9 +222,9 @@ class Availability extends Extensions_Base {
 	/**
 	 * Add columns to position-table in backend.
 	 *
-	 * @param array $columns List of columns.
+	 * @param array<int|string, mixed> $columns List of columns.
 	 *
-	 * @return array
+	 * @return array<int|string, mixed>
 	 */
 	public function add_column( array $columns ): array {
 		return Helper::add_array_in_array_on_position( $columns, 2, array( 'personio_integration_position_availability' => __( 'Personio-page available', 'personio-integration-light' ) ) );
@@ -204,8 +244,8 @@ class Availability extends Extensions_Base {
 
 		// show column for availability.
 		if ( 'personio_integration_position_availability' === $column ) {
-			if ( $position_obj->get_extension( 'PersonioIntegrationLight\PersonioIntegration\Extensions\Availability' )->get_availability() ) {
-				$html = '<a class="dashicons dashicons-yes personio-integration-availability-check" data-post-id="' . esc_attr( $position_obj->get_id() ) . '" href="#" title="' . __( 'Available', 'personio-integration-light' ) . '"></a>';
+			if ( $this->get_extension( $position_obj )->get_availability() ) {
+				$html = '<a class="dashicons dashicons-yes personio-integration-availability-check" data-post-id="' . absint( $position_obj->get_id() ) . '" href="#" title="' . __( 'Available', 'personio-integration-light' ) . '"></a>';
 				/**
 				 * Filter the availability "yes"-output.
 				 *
@@ -223,7 +263,7 @@ class Availability extends Extensions_Base {
 						'<p><strong>' . __( 'If the Personio page for this position is not available, no one will be able to apply for it directly.', 'personio-integration-light' ) . '</strong></p>',
 						'<p>' . __( 'We will check the availability after every import of positions for you.', 'personio-integration-light' ) . '</p>',
 						/* translators: %1$s will be replaced by the link to the Personio account */
-						'<p>' . sprintf( __( 'Check in your <a href="%1$s" target="_blank">Personio account (opens new window)</a> why the page is not available.<br>You may have only deactivated the career page.', 'personio-integration-light' ), esc_url( Helper::get_personio_login_url() ) ) . '</p>',
+						'<p>' . sprintf( __( 'Check in your <a href="%1$s" target="_blank">Personio account (opens new window)</a> why the page is not available.<br>You may have only deactivated the career page.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) ) . '</p>',
 						'<p>' . __( 'With <strong>Personio Integration Pro</strong>, you can also enter applications directly in the WordPress website and transfer them to Personio.<br>The career page of a position in Personio does not need to be enabled for this.', 'personio-integration-light' ) . '</p>',
 					),
 					'buttons'   => array(
@@ -241,7 +281,7 @@ class Availability extends Extensions_Base {
 				);
 
 				// show icon with helper.
-				$html = '<a class="dashicons dashicons-no personio-integration-availability-check" href="#" data-post-id="' . esc_attr( $position_obj->get_id() ) . '" title="' . __( 'Not available', 'personio-integration-light' ) . '"></a> <a class="pro-marker easy-dialog-for-wordpress" data-dialog="' . esc_attr( wp_json_encode( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
+				$html = '<a class="dashicons dashicons-no personio-integration-availability-check" href="#" data-post-id="' . absint( $position_obj->get_id() ) . '" title="' . __( 'Not available', 'personio-integration-light' ) . '"></a> <a class="pro-marker easy-dialog-for-wordpress" data-dialog="' . esc_attr( Helper::get_json( $dialog ) ) . '"><span class="dashicons dashicons-editor-help"></span></a>';
 				/**
 				 * Filter the availability "no"-output.
 				 *
@@ -253,23 +293,6 @@ class Availability extends Extensions_Base {
 				echo wp_kses_post( apply_filters( 'personio_integration_light_position_availability_no', $html, $position_obj ) );
 			}
 		}
-	}
-
-	/**
-	 * Add this extension to the list of extensions.
-	 *
-	 * @param array $extensions List of extensions.
-	 *
-	 * @return array
-	 */
-	public function add_extension( array $extensions ): array {
-		$extensions[] = array(
-			'state'       => false,
-			'name'        => 'Availability',
-			'description' => __( 'Check each position for availability on your Personio career page.', 'personio-integration-light' ),
-		);
-
-		return $extensions;
 	}
 
 	/**
@@ -287,7 +310,7 @@ class Availability extends Extensions_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		return 1 === absint( Settings::get_instance()->get_setting( $this->get_settings_field_name() ) );
+		return 1 === absint( get_option( $this->get_settings_field_name() ) );
 	}
 
 	/**
@@ -326,7 +349,7 @@ class Availability extends Extensions_Base {
 		wp_enqueue_script(
 			'personio-integration-admin-availability',
 			Helper::get_plugin_url() . 'admin/availability.js',
-			array( 'jquery', 'easy-dialog' ),
+			array( 'jquery', 'easy-dialog-for-wordpress' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/availability.js' ),
 			true
 		);
@@ -352,7 +375,6 @@ class Availability extends Extensions_Base {
 	 * Run single check via AJAX-request.
 	 *
 	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function single_check_via_request(): void {
 		// check none.
@@ -381,8 +403,10 @@ class Availability extends Extensions_Base {
 	 * @return void
 	 */
 	public function get_single_check_status(): void {
+		// get the state.
 		$is_running = 1 === absint( get_option( 'personio-integration-availability-info-nonce', 0 ) );
 
+		// return the result.
 		wp_send_json(
 			array(
 				'running' => $is_running,
@@ -399,9 +423,6 @@ class Availability extends Extensions_Base {
 	 * @return void
 	 */
 	private function run_single_check( Position $position_obj ): void {
-		// get log object.
-		$log = new Log();
-
 		// define settings for second request to get the contents.
 		$args     = array(
 			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
@@ -411,24 +432,13 @@ class Availability extends Extensions_Base {
 
 		if ( is_wp_error( $response ) ) {
 			// log possible error.
-			$log->add_log( 'Error on request to get position availability: ' . $response->get_error_message(), 'error', 'availability' );
-		} elseif ( empty( $response ) ) {
-			// log im result is empty.
-			$log->add_log( 'Get empty response for position availability.', 'error', 'availability' );
+			Log::get_instance()->add( 'Error on request to get position availability: ' . $response->get_error_message(), 'error', 'availability' );
 		} else {
 			// get the http-status to check if call results in acceptable results.
 			$http_status = $response['http_response']->get_status();
 
-			// get extension to save the availability.
-			$availability_extension = $position_obj->get_extension( 'PersonioIntegrationLight\PersonioIntegration\Extensions\Availability' );
-
-			// bail if extension could not be loaded.
-			if ( ! ( $availability_extension instanceof Extensions\Availability ) ) {
-				return;
-			}
-
 			// if http-status is not 200, mark the position as not available.
-			$availability_extension->set_availability( 200 === $http_status );
+			$this->get_extension( $position_obj )->set_availability( 200 === $http_status );
 		}
 	}
 
@@ -457,9 +467,9 @@ class Availability extends Extensions_Base {
 	/**
 	 * Add import categories.
 	 *
-	 * @param array $categories List of categories.
+	 * @param array<string,string> $categories List of categories.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	public function add_log_categories( array $categories ): array {
 		// add categories we need for our cpt.
@@ -467,5 +477,95 @@ class Availability extends Extensions_Base {
 
 		// return resulting list.
 		return $categories;
+	}
+
+	/**
+	 * Get the extension for the position-object itself.
+	 *
+	 * @param Position $position_obj The object of the position.
+	 *
+	 * @return Extensions\Availability
+	 */
+	private function get_extension( Position $position_obj ): Extensions\Availability {
+		return new Extensions\Availability( $position_obj->get_id() );
+	}
+
+	/**
+	 * Return the installation state of the dependent plugin/theme.
+	 *
+	 * @return bool
+	 */
+	public function is_installed(): bool {
+		return true;
+	}
+
+	/**
+	 * Check the Personio-URL availability.
+	 *
+	 * @param WP_REST_Request $request The request-object.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function url_availability_checks( WP_REST_Request $request ): array {
+		// get attributes to detect the requested Personio URL.
+		$args = $request->get_attributes();
+
+		// bail with error if no settings found.
+		if ( empty( $args ) || empty( $args['args'] ) || empty( $args['args'][0]['personio_url'] ) ) {
+			return array(
+				'label'       => __( 'Personio URL availability check', 'personio-integration-light' ),
+				'status'      => 'recommended',
+				'badge'       => array(
+					'label' => __( 'Personio Integration Light', 'personio-integration-light' ),
+					'color' => 'gray',
+				),
+				'description' => __( 'Missing Personio URL for check. Something is wrong with your plugin configuration.', 'personio-integration-light' ),
+				'action'      => '',
+				'test'        => 'personio_integration_rest_api_url_availability_check',
+			);
+		}
+
+		// get Personio-object for requested URL.
+		$personio_obj = new Personio( $args['args'][0]['personio_url'] );
+
+		// define default results.
+		$result = array(
+			'label'       => __( 'Personio URL availability Check', 'personio-integration-light' ),
+			'status'      => 'good',
+			'badge'       => array(
+				'label' => __( 'Personio Integration Light', 'personio-integration-light' ),
+				'color' => 'gray',
+			),
+			/* translators: %1$s and %2$s will be replaced by the Personio-URL */
+			'description' => sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ) ),
+			'actions'     => '',
+			'test'        => 'personio_integration_rest_api_url_availability_check',
+		);
+
+		// request the HTTP-header of XML-API for the given Personio URL.
+		if ( ! PersonioIntegrationUrl::check_url( $personio_obj->get_url() ) ) {
+			$result['status'] = 'recommended';
+			/* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
+			$result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ), esc_url( Helper::get_settings_url() ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) );
+		}
+
+		// return result.
+		return $result;
+	}
+
+	/**
+	 * Return setting value.
+	 *
+	 * @param mixed $settings The settings as array.
+	 *
+	 * @return array<string,mixed>
+	 * @deprecated since 5.0.0
+	 */
+	public function add_settings( mixed $settings ): array {
+		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()' );
+		if ( ! is_array( $settings ) ) {
+			return array();
+		}
+		return $settings;
 	}
 }

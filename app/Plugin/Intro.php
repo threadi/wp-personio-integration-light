@@ -10,11 +10,15 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
 /**
- * Initialize this plugin.
+ * Initialize this object.
  */
 class Intro {
 	/**
@@ -40,11 +44,11 @@ class Intro {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Intro {
-		if ( ! static::$instance instanceof static ) {
-			static::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
 	/**
@@ -61,8 +65,8 @@ class Intro {
 		// add admin-actions.
 		add_action( 'admin_action_personioPositionsIntroReset', array( $this, 'reset_intro' ) );
 
-		// use our own hooks.
-		add_filter( 'personio_integration_settings', array( $this, 'add_settings' ) );
+		// add settings.
+		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 
 		// bail if intro has been run.
 		if ( 1 === absint( get_option( 'personio_integration_intro' ) ) ) {
@@ -76,6 +80,7 @@ class Intro {
 		 * @since 3.0.0 Available since 3.0.0
 		 *
 		 * @param bool $false Return true to hide the intro.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_light_hide_intro', $false ) ) {
 			return;
@@ -204,7 +209,7 @@ class Intro {
 				'import_intro_step_5_title'    => __( 'Import positions', 'personio-integration-light' ),
 				'import_intro_step_5_intro'    => __( 'With this simple steps you can manage the import of positions.<br>With Personio Integration Pro you will have much more options, not only for the import.', 'personio-integration-light' ),
 				'template_intro_step_1_title'  => __( 'Configure templates positions', 'personio-integration-light' ),
-				'template_intro_step_1_intro'  => __( 'The page in front of us is used to configure basic settings for the output of jobs in the frontend.<br><br><strong>Please note:</strong> if you use a PageBuilder with your own templates, these templates will overwrite the settings here. However, the options are always the same.', 'personio-integration-light' ),
+				'template_intro_step_1_intro'  => __( 'The page in front of us is used to configure basic settings for the output of positions in the frontend.<br><br><strong>Please note:</strong> if you use a PageBuilder with your own templates, these templates will overwrite the settings here. However, the options are always the same.', 'personio-integration-light' ),
 				'template_intro_step_2_title'  => __( 'Configure templates positions', 'personio-integration-light' ),
 				'template_intro_step_2_intro'  => __( 'Enable this if you want to use a filter above your list of positions. The filter can help applicants to find suitable positions more quickly.', 'personio-integration-light' ),
 				'template_intro_step_3_title'  => __( 'Configure templates positions', 'personio-integration-light' ),
@@ -230,38 +235,10 @@ class Intro {
 	}
 
 	/**
-	 * Show reset button for intro via Settings.php.
-	 *
-	 * @return void
-	 */
-	public static function show_reset_button(): void {
-		$false = false;
-		/**
-		 * Hide intro via hook.
-		 *
-		 * @since 3.0.0 Available since 3.0.0
-		 *
-		 * @param bool $false Return true to hide the intro.
-		 */
-		if ( apply_filters( 'personio_integration_light_hide_intro', $false ) ) {
-			echo esc_html__( 'Intro is disabled via custom hook.', 'personio-integration-light' );
-		} else {
-			$url = add_query_arg(
-				array(
-					'action' => 'personioPositionsIntroReset',
-					'nonce'  => wp_create_nonce( 'personio-integration-intro-reset' ),
-				),
-				get_admin_url() . 'admin.php'
-			);
-			?><p><a href="<?php echo esc_url( $url ); ?>" class="button button-primary personio-integration-reset-intro"><?php echo esc_html__( 'Rerun the intro', 'personio-integration-light' ); ?></a></p>
-			<?php
-		}
-	}
-
-	/**
 	 * Reset intro via request.
 	 *
 	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function reset_intro(): void {
 		// check nonce.
@@ -286,33 +263,87 @@ class Intro {
 
 	/**
 	 * Add settings for the intro.
+	 * *
 	 *
-	 * @param array $settings List of settings.
-	 *
-	 * @return array
+	 * @return void
 	 */
-	public function add_settings( array $settings ): array {
-		if ( empty( $settings['settings_section_advanced']['fields'] ) ) {
-			return $settings;
+	public function add_the_settings(): void {
+		// get settings object.
+		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+
+		// get the main settings page.
+		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
+
+		// bail if page could not be loaded.
+		if ( ! $main_settings_page instanceof Page ) {
+			return;
 		}
-		$settings['settings_section_advanced']['fields']                    = Helper::add_array_in_array_on_position(
-			$settings['settings_section_advanced']['fields'],
-			5,
-			array(
-				'personioIntegrationResetIntro' => array(
-					'label' => __( 'Reset intro', 'personio-integration-light' ),
-					'field' => array( 'PersonioIntegrationLight\Plugin\Intro', 'show_reset_button' ),
+
+		// get the advanced tab.
+		$advanced_tab = $main_settings_page->get_tab( 'advanced' );
+
+		// bail if page could not be loaded.
+		if ( ! $advanced_tab instanceof Tab ) {
+			return;
+		}
+
+		// get the advanced section.
+		$advanced_section = $advanced_tab->get_section( 'settings_section_advanced' );
+
+		// bail if section could not be loaded.
+		if ( ! $advanced_section instanceof Section ) {
+			return;
+		}
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationResetIntro' );
+		$setting->set_section( $advanced_section );
+		$setting->set_autoload( false );
+		$setting->prevent_export( true );
+		$field = new Button();
+		$field->set_title( __( 'Reset intro', 'personio-integration-light' ) );
+		$field->set_button_title( __( 'Rerun the intro', 'personio-integration-light' ) );
+		$field->set_button_url(
+			add_query_arg(
+				array(
+					'action' => 'personioPositionsIntroReset',
+					'nonce'  => wp_create_nonce( 'personio-integration-intro-reset' ),
 				),
+				get_admin_url() . 'admin.php'
 			)
 		);
-		$settings['hidden_section']['fields']['personio_integration_intro'] = array(
-			'register_attributes' => array(
-				'type'    => 'integer',
-				'default' => 0,
-			),
-		);
+		$field->add_class( 'personio-integration-reset-intro' );
+		$setting->set_field( $field );
 
-		// return resulting list.
+		// get hidden section.
+		$hidden_section = Settings::get_instance()->get_hidden_section();
+
+		// bail if hidden section could not be found.
+		if ( ! $hidden_section instanceof Section ) {
+			return;
+		}
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personio_integration_intro' );
+		$setting->set_section( $hidden_section );
+		$setting->set_show_in_rest( true );
+		$setting->set_type( 'integer' );
+		$setting->set_default( 0 );
+	}
+
+	/**
+	 * Return setting value.
+	 *
+	 * @param mixed $settings The settings as array.
+	 *
+	 * @return array<string,mixed>
+	 * @deprecated since 5.0.0
+	 */
+	public function add_settings( mixed $settings ): array {
+		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()' );
+		if ( ! is_array( $settings ) ) {
+			return array();
+		}
 		return $settings;
 	}
 }
