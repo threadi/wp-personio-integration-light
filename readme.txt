@@ -120,7 +120,7 @@ Yes, it is without any further settings.
 
 = 5.0.0 =
 
-Complete revision of the plugin. Please create a backup before installing version 4.0.0 or newer.
+Complete revision of the plugin. Please create a backup before installing version 5.0.0 or newer.
 
 == Changelog ==
 
