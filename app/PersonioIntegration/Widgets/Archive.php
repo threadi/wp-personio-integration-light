@@ -406,12 +406,12 @@ class Archive extends Widget_Base {
 				'required'      => false,
 			),
 			'showContent'                  => array(
-				'label'         => __( 'View content', 'personio-integration-light' ),
+				'label'         => __( 'Show content', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
 			'showApplicationForm'          => array(
-				'label'         => __( 'View option to apply', 'personio-integration-light' ),
+				'label'         => __( 'Show option to apply', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),

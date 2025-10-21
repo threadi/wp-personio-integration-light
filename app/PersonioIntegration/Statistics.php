@@ -114,7 +114,7 @@ class Statistics {
 		if ( ! is_array( $terms ) ) {
 			$terms = array();
 		}
-		$statistics[ __( 'Used offices:', 'personio-integration-light' ) ] = count( $terms );
+		$statistics[ __( 'Used main workplaces:', 'personio-integration-light' ) ] = count( $terms );
 
 		/**
 		 * Filter the statistics.

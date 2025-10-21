@@ -938,7 +938,7 @@ class Helper {
 		// bail if error occurred.
 		if ( is_wp_error( $result ) ) {
 			// log this event.
-			Log::get_instance()->add( __( 'Following during installing Personio Integration Pro:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $result ) . '</code>', 'error', 'system' );
+			Log::get_instance()->add( __( 'Following error occurred during installing Personio Integration Pro:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $result ) . '</code>', 'error', 'system' );
 
 			// do nothing more.
 			return false;
