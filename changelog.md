@@ -71,6 +71,28 @@
 - Removed check for WpPageBuilder compatibility
 - Removed already deprecated hook "personio_integration_personioposition_columns"
 
+## [4.3.3] - 11.08.2025
+
+### Changed
+
+- Now also compatible with ClassicPress 2.x
+
+## [4.3.2] - 24.07.2025
+
+### Changed
+
+- Optimized output of update hints in plugin list
+
+### Fixed
+
+- Fixed grouped list of position which has been missing its key
+
+## [4.3.1] - 05.05.2025
+
+### Fixed
+
+- Fixed missing non-german initial setup
+
 ## [4.3.0] - 28.04.2025
 
 ### Added
