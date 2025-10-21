@@ -118,7 +118,7 @@ Yes, it is without any further settings.
 
 == Upgrade Notice ==
 
-= 4.0.0 =
+= 5.0.0 =
 
 Complete revision of the plugin. Please create a backup before installing version 4.0.0 or newer.
 
