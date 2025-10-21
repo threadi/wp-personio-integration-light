@@ -478,11 +478,11 @@ class License {
 				<li><?php echo esc_html__( 'Customization of slugs (URLs) for list and detailed views of positions', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Multiple and customizable application forms incl. export of them via Personio API', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech', 'personio-integration-light' ); ?></li>
-				<li><?php echo esc_html__( 'Support for multilingual plugins Polylang, WPML, Weglot and TranslatePress', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Support for multilingual plugins Bogo, Polylang, WPML, Weglot and TranslatePress', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Support for legal entities and other workplaces in positions', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Support for salaries for open positions', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Use GoogleMaps or OpenStreetMap for show you locations with open positions', 'personio-integration-light' ); ?></li>
-				<li><?php echo esc_html__( 'Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Fluent Forms, Forminator and WPForms', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Everest Forms, Fluent Forms, Forminator and WPForms', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Use custom feature image on each position', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Unlimited custom files for download on each single position', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Support for tracking of events with Google Analytics 4', 'personio-integration-light' ); ?></li>

@@ -1,18 +1,19 @@
 # Statistics about this plugin
 
-Last updated: on Nov 1 2024 for version 4.0.0
+Last updated: on Oct 21 2025 for version 5.0.0
 
-| Property                   | Light     | Pro     |
-|----------------------------|-----------|---------|
-| Development files complete | 160899    | 144963  |
-| Development directory size | 1.4GB     | 1.2GB   |
-| Release package size       | 482KB     | 1.8MB   |
-| Directories                | 21184     | 19878   |
-| PHP-classes                | 125       | 254     |
-| PHP-files                  | 7838      | 2078    |
-| JavaScript-files           | 86159     | 85015   |
-| JSON-files                 | 8981      | 9123    |
-| Hooks                      | 173       | 117     |
-| Templates                  | 25        | 29      |
-| User                       | 200+      | ~170    |
-| Time for release build | 1m 30 s | 3 m 10s |
+| Property                   | Light   | Pro     |
+|----------------------------|---------|---------|
+| Development files complete | 174297  | 147222  |
+| Development directory size | 1.6GB   | 1.3GB   |
+| Release package size       | 685KB   | 2.8MB   |
+| Directories                | 21160   | 17892   |
+| PHP-classes                | 199     | 370     |
+| PHP-files                  | 11339   | 2535    |
+| JavaScript-files           | 89494   | 84616   |
+| JSON-files                 | 8195    | 8248    |
+| Hooks                      | 209     | 158     |
+| Templates                  | 25      | 31      |
+| User                       | 200+    | ~190    |
+| Translatable strings       | 1237    | 1946    |
+| Time for release build     | 3m 04 s | 5 m 12s |
