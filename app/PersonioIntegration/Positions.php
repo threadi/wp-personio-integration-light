@@ -14,6 +14,7 @@ use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use WP_Post;
 use WP_Query;
 
 /**
@@ -144,7 +145,7 @@ class Positions {
 			);
 		}
 
-		// add taxonomies as filter.
+		// add taxonomies as a filter.
 		$tax_query = array();
 		foreach ( Taxonomies::get_instance()->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			if ( ! empty( $parameter_to_add[ $taxonomy['slug'] ] ) ) {
@@ -216,10 +217,15 @@ class Positions {
 			$grouped_taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
 		}
 
-		// get the positions as object in array
+		// get the positions as an object in array
 		// -> optionally grouped by a given taxonomy.
 		$resulting_position_list = array();
 		foreach ( $this->results->get_posts() as $post_id ) {
+			// if post_id is a WP_Post object, get the ID.
+			if( $post_id instanceof WP_Post ) {
+				$post_id = $post_id->ID;
+			}
+
 			// get the int value.
 			$post_id = absint( $post_id );
 
@@ -231,7 +237,7 @@ class Positions {
 			 */
 			$position_object = $this->get_position( absint( apply_filters( 'personio_integration_positions_loop_id', $post_id ) ) );
 
-			// set used language on position-object.
+			// set used language on the position-object.
 			if ( ! empty( $parameter_to_add['lang'] ) ) {
 				$position_object->set_lang( $parameter_to_add['lang'] );
 			}
