@@ -5,6 +5,7 @@
 ### Changed
 
 - Check for object on results for the query for positions
+- Optimized cron deletion on uninstall
 - Updated dependencies
 
 ### Fixed

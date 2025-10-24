@@ -231,6 +231,7 @@ class Schedules {
 	 * @return void
 	 */
 	public function delete_all(): void {
+		// delete the simple schedules from our plugin.
 		foreach ( $this->get_schedule_object_names() as $obj_name ) {
 			$schedule_obj = new $obj_name();
 			if ( $schedule_obj instanceof Schedules_Base ) {
@@ -385,6 +386,9 @@ class Schedules {
 		if ( ! $schedule_obj ) {
 			return $event;
 		}
+
+		// add the args to the event.
+		$schedule_obj->set_args( $event->args );
 
 		// get the actual list.
 		$list = get_option( 'personio_integration_schedules' );

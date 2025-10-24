@@ -98,6 +98,9 @@ class Uninstaller {
 	private function deinstallation_tasks( array $delete_data ): void {
 		global $wpdb;
 
+		// remove schedules.
+		Schedules::get_instance()->delete_all();
+
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
 			/**
@@ -169,9 +172,6 @@ class Uninstaller {
 			// uninstall extensions.
 			Extensions::get_instance()->uninstall_all();
 		}
-
-		// remove schedules.
-		Schedules::get_instance()->delete_all();
 
 		// remove widgets.
 		Widgets::get_instance()->uninstall_all();
