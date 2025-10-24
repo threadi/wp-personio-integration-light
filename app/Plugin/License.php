@@ -678,7 +678,7 @@ class License {
 		update_option( 'personioIntegrationLicenseKey', $this->key );
 
 		// set the referrer URL.
-		$url = (string) wp_get_referer();
+		$url = Helper::get_settings_url( 'personioPositionsLicense' );
 
 		/**
 		 * Filter the referer URL after Personio Integration Pro has been installed and activated.

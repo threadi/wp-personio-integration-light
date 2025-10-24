@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed the wrong URL usage after the Pro plugin is installed
+
 ## [5.0.0] - 21.10.2025
 
 ### Added
