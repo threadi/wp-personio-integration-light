@@ -4,7 +4,8 @@
 
 ### Changed
 
-- Check for object on results for the positions query
+- Check for object on results for the query for positions
+- Updated dependencies
 
 ### Fixed
 
