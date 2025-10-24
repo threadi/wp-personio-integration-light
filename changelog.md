@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Check for object on results for the query for positions
+- Optimized cron deletion on uninstall
+- Updated dependencies
+
 ### Fixed
 
 - Fixed the wrong URL usage after the Pro plugin is installed
@@ -11,27 +17,27 @@
 ### Added
 
 - Plugin structure revised with modern security mechanisms and design
-- Added new extension for manual import of positions from Personio
-- Added new object to handle all settings
+- Added a new extension for manual import of positions from Personio
+- Added a new object to handle all settings
 - Prepared support for new Personio API V2, which is still in beta and not usable for productive systems
 - Added encryption for sensible data like API credentials
-- Added backend page for list of applications as hint for using the Pro
-- Added support for Say What for hint to translate taxonomy terms
-- Added new email object which handles all emails this plugin is sending
-- Added new email trigger: if position has been deleted, if new position has been imported, if any error occurred during import
-- Added new statistic about the plugin data, which could also be sent via email on regular base
+- Added a backend page for the list of applications as a hint for using the Pro
+- Added support for Say What for a hint to translate taxonomy terms
+- Added a new email object which handles all emails this plugin is sending
+- Added new email trigger: if a position has been deleted, if a new position has been imported, if any error occurred during import
+- Added a new statistic about the plugin data, which could also be sent via email on regular base
 - Added option to change the from-email in each email
 - Added email-template for all emails
 - New centralized widget handling for every supported PageBuilder
-- Added new extension category "Widgets"
+- Added the new extension category "Widgets"
 - Added hint for additional offices which are usable in Pro-plugin
-- Added new compatibility check for Oxygen
-- Added info-page for Pro plugin with option to install the Pro-plugin with valid license key
+- Added a new compatibility check for Oxygen
+- Added the info-page for Pro plugin with the option to install the Pro-plugin with valid license key
 - Added new handling for admin notices for better overview over messages from the plugin
-- Added links to edit position settings in Personio if login URL is given
-- Added info in admin footer if a page from our plugin is loaded
+- Added links to edit position settings in Personio if the login URL is given
+- Added info in the admin footer if a page from our plugin is loaded
 - Added option to import project configuration during setup
-- Added log for error 500 during imports which also prevents hanging import tasks
+- Added log for error 500 during the imports which also prevents hanging import tasks
 - Added option to reset the plugin in backend settings (in preparation for Cyber Resilience Act)
 - Added support for check for multilingual plugin Bogo
 
