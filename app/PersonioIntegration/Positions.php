@@ -222,7 +222,7 @@ class Positions {
 		$resulting_position_list = array();
 		foreach ( $this->results->get_posts() as $post_id ) {
 			// if post_id is a WP_Post object, get the ID.
-			if( $post_id instanceof WP_Post ) {
+			if ( $post_id instanceof WP_Post ) {
 				$post_id = $post_id->ID;
 			}
 
