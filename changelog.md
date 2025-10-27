@@ -6,6 +6,7 @@
 
 - Text optimization in the import log
 - Optimization of the last PHPStan warnings
+- Optimization of schedule handling
 
 ## [5.0.1] - 27.10.2025
 

@@ -191,7 +191,7 @@ class Schedules {
 				continue;
 			}
 
-			// install if schedule is enabled and not in list of our schedules.
+			// install if the schedule is enabled and not in the list of our schedules.
 			if ( $obj->is_enabled() && ! isset( $our_events[ $obj->get_name() ] ) ) {
 				// reinstall the missing event.
 				$obj->install();
@@ -206,7 +206,7 @@ class Schedules {
 				$our_events = $this->get_wp_events();
 			}
 
-			// delete if schedule is in list of our events and not enabled.
+			// delete it if schedule is in list of our events and not enabled.
 			if ( ! $obj->is_enabled() && isset( $our_events[ $obj->get_name() ] ) ) {
 				$obj->delete();
 
@@ -221,7 +221,7 @@ class Schedules {
 			}
 		}
 
-		// return resulting list.
+		// return the resulting list.
 		return $our_events;
 	}
 
@@ -233,25 +233,37 @@ class Schedules {
 	public function delete_all(): void {
 		// delete the simple schedules from our plugin.
 		foreach ( $this->get_schedule_object_names() as $obj_name ) {
+			// get the object.
 			$schedule_obj = new $obj_name();
-			if ( $schedule_obj instanceof Schedules_Base ) {
-				$schedule_obj->delete();
+
+			// bail if the object is not a Schedules_Base object.
+			if ( ! $schedule_obj instanceof Schedules_Base ) {
+				continue;
 			}
+
+			// delete the schedule.
+			$schedule_obj->delete();
 		}
 	}
 
 	/**
-	 * Create our schedules per request.
+	 * Create our schedules.
 	 *
 	 * @return void
 	 */
 	public function create_schedules(): void {
 		// install the schedules if they do not exist atm.
 		foreach ( $this->get_schedule_object_names() as $obj_name ) {
+			// get the object.
 			$schedule_obj = new $obj_name();
-			if ( $schedule_obj instanceof Schedules_Base ) {
-				$schedule_obj->install();
+
+			// bail if the object is not a Schedules_Base object.
+			if ( ! $schedule_obj instanceof Schedules_Base ) {
+				continue;
 			}
+
+			// install the schedule.
+			$schedule_obj->install();
 		}
 	}
 
@@ -273,12 +285,12 @@ class Schedules {
 	}
 
 	/**
-	 * Return list of all schedule-object-names.
+	 * Return the list of all schedule-object-names.
 	 *
 	 * @return array<string>
 	 */
 	public function get_schedule_object_names(): array {
-		// list of schedules: free version supports only one import-schedule.
+		// list of schedules in this plugin.
 		$list_of_schedules = array(
 			'\PersonioIntegrationLight\Plugin\Schedules\Import',
 		);
@@ -286,7 +298,7 @@ class Schedules {
 		/**
 		 * Add custom schedule-objects to use.
 		 *
-		 * This must be objects based on PersonioIntegrationLight\Plugin\Schedules_Base.
+		 * They must be objects based on PersonioIntegrationLight\Plugin\Schedules_Base.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
@@ -296,7 +308,7 @@ class Schedules {
 	}
 
 	/**
-	 * Return schedule object by its name.
+	 * Return the schedule object by its name.
 	 *
 	 * @param string $name The name of the object.
 	 *
