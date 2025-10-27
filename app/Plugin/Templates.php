@@ -1140,7 +1140,7 @@ class Templates {
 		}
 
 		// bail if this is a REST API request.
-		if ( Helper::is_rest_request() ) {
+		if ( Helper::is_rest_request() ) { // @phpstan-ignore if.alwaysFalse
 			return;
 		}
 

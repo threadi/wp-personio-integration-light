@@ -4,7 +4,8 @@
 
 ### Changed
 
-- Text optimization in import log
+- Text optimization in the import log
+- Optimization of the last PHPStan warnings
 
 ## [5.0.1] - 27.10.2025
 

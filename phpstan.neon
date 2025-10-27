@@ -21,6 +21,7 @@ parameters:
     - "#WPMU_PLUGIN_DIR#"
     - "#PERSONIO_INTEGRATION_LIGHT#"
     - "#WPINC#"
+    - "#_IN_SECONDS#"
   paths:
     - app
     - personio-integration-light.php

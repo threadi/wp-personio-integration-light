@@ -143,7 +143,7 @@ class OpenSSL extends Crypt_Base {
 		$cipher    = 'AES-128-CBC';
 		$iv_length = openssl_cipher_iv_length( $cipher );
 
-		if ( ! is_int( $iv_length ) ) {
+		if ( ! is_int( $iv_length ) ) { // @phpstan-ignore function.alreadyNarrowedType
 			return '';
 		}
 

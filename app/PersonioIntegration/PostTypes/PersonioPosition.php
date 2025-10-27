@@ -1324,10 +1324,11 @@ class PersonioPosition extends Post_Type {
 			return $search;
 		}
 
-		// get search request.
+		// get the search request.
 		$term = (string) $wp_query->query_vars['s'];
 
-		// create and return changed statement.
+		// create and return the changed statement.
+		/*  @phpstan-ignore binaryOp.invalid */
 		return ' AND (
         (
             1 = 1 ' . $search . '
@@ -1342,7 +1343,7 @@ class PersonioPosition extends Post_Type {
                     ON ' . $wpdb->term_relationships . '.term_taxonomy_id = ' . $wpdb->term_taxonomy . ".term_taxonomy_id
                 WHERE taxonomy = 'personioKeywords'
                     AND object_id = " . $wpdb->posts . '.ID
-                    AND ' . $wpdb->terms . ".name LIKE '%" . (string) esc_sql( $term ) . "%'
+                    AND ' . $wpdb->terms . ".name LIKE '%" . esc_sql( $term ) . "%'
             )
         )
     )";
@@ -1351,7 +1352,7 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Change SitemapXML-data for positions.
 	 *
-	 * Add last modification date and priority.
+	 * Add the last modification date and priority.
 	 *
 	 * @param array<string,mixed> $entry The entry-data.
 	 * @param WP_Post             $post The post-object.
