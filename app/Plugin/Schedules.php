@@ -317,7 +317,7 @@ class Schedules {
 				continue;
 			}
 
-			// bail if name does not match.
+			// bail if the name does not match.
 			if ( $name !== $obj->get_name() ) {
 				continue;
 			}
@@ -388,7 +388,7 @@ class Schedules {
 		}
 
 		// add the args to the event.
-		$schedule_obj->set_args( $event->args );
+		$schedule_obj->set_args( $event->args ); // @phpstan-ignore property.notFound
 
 		// get the actual list.
 		$list = get_option( 'personio_integration_schedules' );

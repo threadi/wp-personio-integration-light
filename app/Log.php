@@ -84,7 +84,7 @@ class Log {
 	 */
 	public function delete_table(): void {
 		global $wpdb;
-		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) ); // @phpstan-ignore cast.string
 	}
 
 	/**
@@ -132,11 +132,11 @@ class Log {
 		global $wpdb;
 
 		// run the deletion.
-		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) ); // @phpstan-ignore cast.string
 
 		// log if any error occurred.
 		if ( ! empty( $wpdb->last_error ) ) {
-			/* translators: %1$s will be replaced by an DB-error-message. */
+			/* translators: %1$s will be replaced by a DB-error-message. */
 			$this->add( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
 		}
 	}
@@ -162,7 +162,7 @@ class Log {
 	}
 
 	/**
-	 * Get log entries depending on filter.
+	 * Get log entries depending on some filters.
 	 *
 	 * Use for each possible condition own statements to match WCS.
 	 *
@@ -206,7 +206,7 @@ class Log {
 		// get md5.
 		$md5 = (string) filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
-		// if request is empty, get md5 from object if set.
+		// if the request is empty, get md5 from the object if set.
 		if ( empty( $md5 ) ) {
 			$md5 = $this->get_md5();
 		}

@@ -341,7 +341,7 @@ class Import_Single_Personio_Url {
 
 				// log event.
 				/* translators: %1$s will be replaced by the PersonioId, %2$s by the language title. */
-				$this->log->add( sprintf( __( 'Import of positions from %1$s for language %2$s starting.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
+				$this->log->add( sprintf( __( 'Import of positions from %1$s into language %2$s started.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
 
 				// loop through the positions and import them.
 				foreach ( $this->get_xml_positions() as $xml_object ) {
@@ -379,14 +379,14 @@ class Import_Single_Personio_Url {
 				// save the last-modified-timestamp.
 				$personio_obj->set_timestamp( absint( $last_modified_timestamp ), $this->get_language() );
 
-				// wait 1 second for consistent log-view on fast runs with just a view positions.
+				// wait 1 second for a consistent log-view on fast runs with just a few positions.
 				if ( count( $this->get_xml_positions() ) < apply_filters( 'personio_integration_import_sleep_positions_limit', 20 ) ) {
 					sleep( 1 );
 				}
 
 				// log ok.
 				/* translators: %1$d will be replaced by a number, %2$s by the Personio account URL and %3$s by the language title. */
-				$this->log->add( sprintf( __( '%1$d positions from Personio account %2$s in language %3$s imported.', 'personio-integration-light' ), count( $this->imported_postions ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
+				$this->log->add( sprintf( __( '%1$d positions imported from Personio account %2$s in language %3$s.', 'personio-integration-light' ), count( $this->imported_postions ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
 
 				// re-enable taxonomy-counting.
 				wp_defer_term_counting( false );
