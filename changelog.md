@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Text optimization in import log
+
 ## [5.0.1] - 27.10.2025
 
 ### Changed
