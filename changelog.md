@@ -1,11 +1,11 @@
 # Changelog
 
-## [Unreleased]
+## [5.0.1] - 27.10.2025
 
 ### Changed
 
 - Check for object on results for the query for positions
-- Optimized cron deletion on uninstall
+- Optimized cron deletion on uninstallation
 - Updated dependencies
 
 ### Fixed
