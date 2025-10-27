@@ -2,7 +2,7 @@
 
 ## About
 
-This repository provides the features of the Light version of the WordPress plugin _Personio Integration_. The repository is used as a basis for deploying the plugin to the WordPress repository. It is not intended to run as a plugin as it is, even if that is possible for development.
+This repository provides the features for the Light version of the WordPress plugin _Personio Integration_. The repository is used as a basis for deploying the plugin to the WordPress repository. It is not intended to run as a plugin as it is, even if that is possible for development.
 
 ## Preparations
 
@@ -34,7 +34,7 @@ After checkout go through the following steps:
 
 ## Translations
 
-I recommend to use [PoEdit](https://poedit.net/) to translate texts for this plugin.
+I recommend using [PoEdit](https://poedit.net/) to translate texts for this plugin.
 
 ### generate pot-file
 
@@ -51,12 +51,12 @@ Run in main directory:
 ### export translation-file
 
 1. Open .po-file of the language in PoEdit.
-2. Go to File > Save.
+2. Go to "File" > "Save".
 3. Upload the generated .mo-file and the .po-file to the plugin-folder languages/
 
 ### generate json-translation-files
 
-Run in main directory:
+Run in the main directory:
 
 `wp i18n make-json languages`
 
@@ -88,6 +88,15 @@ Hint: this check runs against the VIP-GO-platform which is not our target for th
 
 `vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration --exclude=Section.php --exclude=Tab.php --exclude=Import.php --exclude=Export.php --exclude=Field_Base.php --exclude=Settings.php --exclude=Page.php --exclude=Widget_Base.php`
 
-## Analyse with PHPStan
+## Analyze with PHPStan
 
 `vendor/bin/phpstan analyse`
+
+## Check with plugin "Plugin Check"
+
+This runs the plugin check as the plugin check in the WordPress repository does on every plugin update. It should result in no errors.
+
+Hint: run this not in the development environment, it would also check all dependencies that is unnecessary.
+Use a normal WordPress installation with an installed PCP plugin.
+
+`wp plugin check --error-severity=7 --warning-severity=6 --include-low-severity-errors --categories=plugin_repo --format=json --slug=personio-integration-light .`

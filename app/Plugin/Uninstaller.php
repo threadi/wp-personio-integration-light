@@ -80,7 +80,7 @@ class Uninstaller {
 				$this->deinstallation_tasks( $delete_data );
 			}
 
-			// switch back to original blog.
+			// switch back to the original blog.
 			switch_to_blog( $original_blog_id );
 		} else {
 			// simply run the tasks on single-site-install.
@@ -98,15 +98,8 @@ class Uninstaller {
 	private function deinstallation_tasks( array $delete_data ): void {
 		global $wpdb;
 
-		// remove schedules.
-		Schedules::get_instance()->delete_all();
-
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
-			/**
-			 * Set all settings.
-			 */
-
 			// initialize the plugin.
 			Init::get_instance()->init();
 
@@ -118,14 +111,10 @@ class Uninstaller {
 			// enable the settings.
 			\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->activation();
 
-			/**
-			 * Remove them.
-			 */
-
 			// clean managed settings.
 			\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->delete_settings();
 
-			// initialize the extensions to call their uninstall routines later.
+			// initialize the extensions to call their uninstalling routines later.
 			Extensions::get_instance()->init();
 
 			// reset Personio- and language-specific settings.
@@ -134,7 +123,7 @@ class Uninstaller {
 			// delete taxonomies.
 			Taxonomies::get_instance()->delete_all();
 
-			// delete position.
+			// delete positions.
 			PersonioPosition::get_instance()->delete_positions();
 
 			// remove custom options.
@@ -144,10 +133,10 @@ class Uninstaller {
 
 			// remove user meta for each cpt we provide.
 			foreach ( Post_Types::get_instance()->get_post_types() as $post_type ) {
-				// create classname.
+				// create the classname.
 				$classname = $post_type . '::get_instance';
 
-				// bail if classname is not callable.
+				// bail if the classname is not callable.
 				if ( ! is_callable( $classname ) ) {
 					continue;
 				}
@@ -155,12 +144,12 @@ class Uninstaller {
 				// get the object.
 				$obj = $classname();
 
-				// bail if object is not our own post_type.
+				// bail if the object is not our own post_type.
 				if ( ! $obj instanceof Post_Type ) {
 					continue;
 				}
 
-				// bail if post type is not from this plugin.
+				// bail if the post-type is not from this plugin.
 				if ( ! $obj->is_from_plugin( WP_PERSONIO_INTEGRATION_PLUGIN ) ) {
 					continue;
 				}
@@ -173,12 +162,15 @@ class Uninstaller {
 			Extensions::get_instance()->uninstall_all();
 		}
 
+		// remove schedules.
+		Schedules::get_instance()->delete_all();
+
 		// remove widgets.
 		Widgets::get_instance()->uninstall_all();
 
 		// remove transients.
 		foreach ( Transients::get_instance()->get_transients() as $transient_obj ) {
-			// bail if object is not ours.
+			// bail if the object is not ours.
 			if ( ! $transient_obj instanceof Transient ) { // @phpstan-ignore instanceof.alwaysTrue
 				continue;
 			}

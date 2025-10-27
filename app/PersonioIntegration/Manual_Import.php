@@ -544,7 +544,7 @@ class Manual_Import extends Extensions_Base {
 
 			// send response as JSON.
 			wp_send_json( $dialog );
-			exit;
+			exit; // @phpstan-ignore deadCode.unreachable
 		}
 
 		// bail if import can not be run.
@@ -554,7 +554,7 @@ class Manual_Import extends Extensions_Base {
 				'detail' => array(
 					'title'   => __( 'Error', 'personio-integration-light' ),
 					'texts'   => array(
-						/* translators: %1$s will be replaced by a URL. */
+						/* translators: a URL will replace %1$s. */
 						'<p>' . sprintf( __( 'Import can not be run. Please <a href="%1$s" target="_blank">go to logs</a> for details.', 'personio-integration-light' ), Helper::get_settings_url( 'personioPositions', 'logs' ) ) . '</p>',
 					),
 					'buttons' => array(
@@ -569,7 +569,7 @@ class Manual_Import extends Extensions_Base {
 
 			// send response as JSON.
 			wp_send_json( $dialog );
-			exit;
+			exit; // @phpstan-ignore deadCode.unreachable
 		}
 
 		// return the actual import object.

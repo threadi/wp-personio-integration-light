@@ -92,7 +92,7 @@ class Db {
 	}
 
 	/**
-	 * Return the results for a statement from database.
+	 * Return the results for a statement from the database.
 	 *
 	 * This function is simply using $wpdb->get_results() but also checks for any errors.
 	 *
