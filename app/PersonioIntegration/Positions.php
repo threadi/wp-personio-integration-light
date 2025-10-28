@@ -207,10 +207,6 @@ class Positions {
 			Log::get_instance()->add( __( 'Query-Debug', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $query ) . '</code><br><br>' . __( 'Result', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $this->get_results() ) . '</code><br><br>' . __( 'Used URL', 'personio-integration-light' ) . ': ' . esc_url( Helper::get_current_url() ), 'info', 'system' );
 		}
 
-		// remove filter.
-		remove_filter( 'posts_join', array( $this, 'add_taxonomy_table_to_position_query' ) );
-		remove_filter( 'posts_orderby', array( $this, 'set_position_query_order_by_for_group' ) );
-
 		// get the grouped taxonomy name from given slug.
 		$grouped_taxonomy_name = '';
 		if ( ! empty( $parameter_to_add['groupby'] ) ) {
@@ -250,6 +246,10 @@ class Positions {
 				$resulting_position_list[] = $position_object;
 			}
 		}
+
+		// remove filter.
+		remove_filter( 'posts_join', array( $this, 'add_taxonomy_table_to_position_query' ) );
+		remove_filter( 'posts_orderby', array( $this, 'set_position_query_order_by_for_group' ) );
 
 		// sort the list by key.
 		ksort( $resulting_position_list );

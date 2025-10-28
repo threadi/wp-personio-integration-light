@@ -8,6 +8,10 @@
 - Optimization of the last PHPStan warnings
 - Optimization of schedule handling
 
+### Fixed
+
+- Fixed group of positions which were not correct sorted
+
 ## [5.0.1] - 27.10.2025
 
 ### Changed
