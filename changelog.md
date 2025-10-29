@@ -7,6 +7,7 @@
 - Text optimization in the import log
 - Optimization of the last PHPStan warnings
 - Optimization of schedule handling
+- Updated dependencies
 
 ### Fixed
 
