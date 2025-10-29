@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added detection of the plugin Pods
+
 ### Changed
 
 - Text optimization in the import log
