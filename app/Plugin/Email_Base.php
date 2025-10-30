@@ -337,20 +337,20 @@ class Email_Base {
 	/**
 	 * Return the mail headers.
 	 *
-	 * @return array<string,string>
+	 * @return array<int,string>
 	 */
 	private function get_headers(): array {
 		$headers = array(
-			'Content-Type' => 'text/html; charset=UTF-8',
-			'From'         => $this->get_from(),
-			'X-Mailer'     => Helper::get_plugin_name(),
+			'Content-Type: text/html; charset=UTF-8',
+			'From: ' . $this->get_from(),
+			'X-Mailer: '. Helper::get_plugin_name(),
 		);
 
 		/**
 		 * Filter the email header.
 		 *
 		 * @since 5.0.0 Available since 5.0.0.
-		 * @param array<string,string> $headers List of headers.
+		 * @param array<int,string> $headers List of headers.
 		 */
 		return apply_filters( 'personio_integration_light_email_headers', $headers );
 	}

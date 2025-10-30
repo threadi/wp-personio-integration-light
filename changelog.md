@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added detection of the plugin Pods
+
 ### Changed
 
 - Text optimization in the import log
@@ -12,6 +16,7 @@
 ### Fixed
 
 - Fixed group of positions which were not correct sorted
+- Fixed wrong email headers
 
 ## [5.0.1] - 27.10.2025
 
