@@ -343,7 +343,7 @@ class Email_Base {
 		$headers = array(
 			'Content-Type: text/html; charset=UTF-8',
 			'From: ' . $this->get_from(),
-			'X-Mailer: '. Helper::get_plugin_name(),
+			'X-Mailer: ' . Helper::get_plugin_name(),
 		);
 
 		/**

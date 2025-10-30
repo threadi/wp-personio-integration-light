@@ -1110,7 +1110,9 @@ class Templates {
 	}
 
 	/**
-	 * Add custom widget styles for classic themes.
+	 * Add custom widget styles depending on the theme type:
+	 * - add via wp block-library-handle for block themes
+	 * - add via custom handle for all other themes
 	 *
 	 * @param array<string,mixed> $attributes List of attributes.
 	 *
@@ -1122,30 +1124,19 @@ class Templates {
 			return;
 		}
 
-		// set the style.
-		wp_add_inline_style( 'wp-block-library', $attributes['styles'] );
-
-		if ( Helper::is_rest_request() ) {
-			include Helper::get_plugin_path() . '/legacy/styles.php';
-			return;
-		}
-
 		// if this is a block theme add styles the modern way.
-		if ( Helper::theme_is_fse_theme() ) {
-			// generate styling.
-			Helper::add_inline_style( $attributes['styles'] );
+		if ( Helper::theme_is_fse_theme() && ! Helper::is_rest_request() ) {
+			// show this styles the modern way.
+			wp_add_inline_style( 'wp-block-library', $attributes['styles'] );
 
 			// and do nothing more.
 			return;
 		}
 
-		// bail if this is a REST API request.
-		if ( Helper::is_rest_request() ) { // @phpstan-ignore if.alwaysFalse
-			return;
-		}
-
-		// show this styles.
-		include Helper::get_plugin_path() . '/legacy/styles.php';
+		// show this styles the classic way.
+		wp_register_style( 'personio-integration-generated-styles', false, array(), WP_PERSONIO_INTEGRATION_VERSION, 'all' );
+		wp_enqueue_style( 'personio-integration-generated-styles' );
+		wp_add_inline_style( 'personio-integration-generated-styles', $attributes['styles'] );
 	}
 
 	/**
