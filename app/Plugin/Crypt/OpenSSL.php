@@ -54,7 +54,7 @@ class OpenSSL extends Crypt_Base {
 	 * Constructor for this object.
 	 */
 	public function init(): void {
-		$this->set_hash( $this->is_hash_saved() ? PERSONIO_INTEGRATION_LIGHT_HASH : '' );
+		$this->set_hash( $this->is_hash_saved() ? PERSONIO_INTEGRATION_LIGHT_HASH : '' ); // @phpstan-ignore constant.notFound
 
 		// bail if hash is set.
 		if ( ! empty( $this->get_hash() ) ) {

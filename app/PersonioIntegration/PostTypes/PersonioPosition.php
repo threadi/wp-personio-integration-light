@@ -221,7 +221,7 @@ class PersonioPosition extends Post_Type {
 				'slug' => $single_slug,
 			),
 		);
-		register_post_type( $this->get_name(), $args );
+		register_post_type( $this->get_name(), $args ); // @phpstan-ignore argument.type
 
 		// register personioId as post-meta to be published in rest-api,
 		// which is necessary for our Blocks.
