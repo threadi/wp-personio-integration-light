@@ -177,7 +177,7 @@ class Log {
 			$order_by = 'date';
 		}
 		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( ! is_null( $order ) ) {
+		if ( is_string( $order ) ) {
 			$order = sanitize_sql_orderby( $order );
 		} else {
 			$order = 'DESC';

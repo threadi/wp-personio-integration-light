@@ -68,7 +68,7 @@ class Sodium extends Crypt_Base {
 	 */
 	public function init(): void {
 		if ( $this->is_hash_saved() ) {
-			$this->set_hash( sodium_base642bin( PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM, $this->get_coding_id() ) );
+			$this->set_hash( sodium_base642bin( PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM, $this->get_coding_id() ) ); // @phpstan-ignore constant.notFound
 		}
 
 		// bail if hash is set.
@@ -76,7 +76,7 @@ class Sodium extends Crypt_Base {
 			return;
 		}
 
-		// get hash from db.
+		// get hash from old db entry.
 		$this->set_hash( sodium_base642bin( get_option( WP_PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM, '' ), $this->get_coding_id() ) );
 
 		// bail if update is running, if cron or ajax is called or if this is not an admin-request.

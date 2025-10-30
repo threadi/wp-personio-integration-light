@@ -22,6 +22,7 @@ parameters:
     - "#PERSONIO_INTEGRATION_LIGHT#"
     - "#WPINC#"
     - "#_IN_SECONDS#"
+    - "#WPINC#"
   paths:
     - app
     - personio-integration-light.php

@@ -742,23 +742,6 @@ class Helper {
 	}
 
 	/**
-	 * Add custom inline style for output.
-	 *
-	 * @param string $style The style (CSS-code).
-	 *
-	 * @return void
-	 */
-	public static function add_inline_style( string $style ): void {
-		// bail if style it empty.
-		if ( empty( $style ) ) {
-			return;
-		}
-
-		// set the style.
-		wp_add_inline_style( 'wp-block-library', $style );
-	}
-
-	/**
 	 * Return the GitHub documentation link.
 	 *
 	 * @return string

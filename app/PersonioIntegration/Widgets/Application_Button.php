@@ -163,7 +163,7 @@ class Application_Button extends Widget_Base {
 		}
 
 		// generate styling.
-		Helper::add_inline_style( $attributes['styles'] );
+		Templates::get_instance()->add_styles( $attributes );
 
 		// get application URL.
 		$link = $position->get_application_url();

@@ -134,10 +134,8 @@ class Description extends Widget_Base {
 			)
 		);
 
-		// generate styling.
-		if ( ! empty( $attributes['styles'] ) ) {
-			Helper::add_inline_style( $attributes['styles'] );
-		}
+		// generate styles.
+		Templates::get_instance()->add_styles( $attributes );
 
 		// return the output of the template.
 		return Templates::get_instance()->get_direct_content_template( $position, $attributes );

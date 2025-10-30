@@ -18,6 +18,10 @@
 - Fixed group of positions which were not correct sorted
 - Fixed wrong email headers
 
+### Removed
+
+- Removed legacy style usage to fulfill WordPress Plugin Checker tests
+
 ## [5.0.1] - 27.10.2025
 
 ### Changed
