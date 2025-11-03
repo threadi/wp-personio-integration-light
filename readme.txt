@@ -125,9 +125,16 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Check for object on results for the query for positions
-- Optimized cron deletion on uninstallation
+- Added detection of the plugin Pods
+- Text optimization in the import log
+- Optimization of the last PHPStan warnings
+- Optimization of schedule handling
 - Updated dependencies
-- Fixed the wrong URL usage after the Pro plugin is installed
+- Fixed group of positions which were not correct sorted
+- Fixed wrong email headers
+
+### Removed
+
+- Removed legacy style usage to fulfill WordPress Plugin Checker tests
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
