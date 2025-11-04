@@ -127,7 +127,7 @@ class PersonioPosition extends Post_Type {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
 		add_action( 'add_meta_boxes', array( $this, 'remove_third_party_meta_boxes' ), PHP_INT_MAX );
 		add_action( 'admin_menu', array( $this, 'disable_create_options' ) );
-		add_filter( 'admin_footer_text', array( $this, 'show_plugin_hint_in_footer' ) );
+		add_filter( 'admin_footer_text', array( $this, 'show_plugin_hint_in_footer' ), 0 );
 
 		// add ajax-hooks.
 		add_action( 'wp_ajax_personio_get_deletion_info', array( $this, 'get_deletion_info' ) );

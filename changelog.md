@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Changed priority to load admin footer text to prevent errors from third party plugins
+  which do not use this hook the correct way
+
 ## [5.0.2] - 03.11.2025
 
 ### Added
