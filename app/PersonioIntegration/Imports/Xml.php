@@ -183,7 +183,7 @@ class Xml extends Imports_Base {
 			}
 		} catch ( Error $e ) {
 			// log this event.
-			Log::get_instance()->add( __( 'Following error occurred during import of positions:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>', 'error', 'imports' );
+			Log::get_instance()->add( __( 'Following error occurred during import of positions via XML:', 'personio-integration-light' ) . '<br>' . __( 'Message:', 'personio-integration-light' ) . '<code>' . $e->getMessage() . '</code><br>' . __( 'Code:', 'personio-integration-light' ) . '<code>' . $e->getCode() . '</code><br>' . __( 'File:', 'personio-integration-light' ) . '<code>' . $e->getFile() . '</code><br>' . __( 'Line:', 'personio-integration-light' ) . '<code>' . $e->getLine() . '</code>', 'error', 'imports' );
 
 			// show hint.
 			/* translators: %1$s will be replaced by a URL. */
@@ -266,7 +266,7 @@ class Xml extends Imports_Base {
 					if ( false === delete_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED ) ) {
 						// log this event.
 						/* translators: %1$s will be replaced by the PersonioId. */
-						Log::get_instance()->add( sprintf( __( 'Removing updated flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
+						Log::get_instance()->add( sprintf( __( 'Removing the update flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
 					}
 				} else {
 					// delete this position from database without using trash.

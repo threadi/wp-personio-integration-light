@@ -134,6 +134,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Elementor',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Everest_Forms',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Fluent_Forms',
+			'PersonioIntegrationLight\Plugin\Compatibilities\GeneratePressPremium',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Loco',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Nimble_Builder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Oxygen',
