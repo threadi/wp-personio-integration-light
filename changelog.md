@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added compatibility-detection for GeneratePress Premium
+
 ### Changed
 
 - Changed priority to load admin footer text to prevent errors from third party plugins
