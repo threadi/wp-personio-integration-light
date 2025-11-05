@@ -6,6 +6,7 @@
 
 - Changed priority to load admin footer text to prevent errors from third party plugins
   which do not use this hook the correct way
+- Extended the error reporting for PHP-errors during the import of positions
 
 ## [5.0.2] - 03.11.2025
 

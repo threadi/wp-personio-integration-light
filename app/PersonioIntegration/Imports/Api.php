@@ -364,7 +364,7 @@ class Api extends Imports_Base {
 			}
 		} catch ( Error $e ) {
 			// log this event.
-			Log::get_instance()->add( __( 'Following error occurred during import of positions:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>', 'error', 'imports' );
+			Log::get_instance()->add( __( 'Following error occurred during import of positions via API:', 'personio-integration-light' ) . '<br>' . __( 'Message:', 'personio-integration-light' ) . '<code>' . $e->getMessage() . '</code><br>' . __( 'Code:', 'personio-integration-light' ) . '<code>' . $e->getCode() . '</code><br>' . __( 'File:', 'personio-integration-light' ) . '<code>' . $e->getFile() . '</code><br>' . __( 'Line:', 'personio-integration-light' ) . '<code>' . $e->getLine() . '</code>', 'error', 'imports' );
 
 			// show hint.
 			/* translators: %1$s will be replaced by a URL. */
