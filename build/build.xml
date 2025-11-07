@@ -85,6 +85,7 @@
         <delete file="${log.dir}/npm-build7.txt"/>
         <delete file="${log.dir}/npm-build8.txt"/>
         <delete file="${log.dir}/npm-build9.txt"/>
+        <delete file="${log.dir}/npm-build10.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build1.txt">
             <arg line="run build:show"/>
         </exec>
@@ -111,6 +112,9 @@
         </exec>
         <exec dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build9.txt">
             <arg line="run build"/>
+        </exec>
+        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build10.txt">
+            <arg line="run global-styles"/>
         </exec>
     </target>
 
