@@ -125,16 +125,11 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added detection of the plugin Pods
-- Text optimization in the import log
-- Optimization of the last PHPStan warnings
-- Optimization of schedule handling
+- Added compatibility-detection for GeneratePress Premium
+- Changed priority to load admin footer text to prevent errors from third party plugins
+  which do not use this hook the correct way
+- Extended the error reporting for any PHP-errors during the import of positions
 - Updated dependencies
-- Fixed group of positions which were not correct sorted
-- Fixed wrong email headers
-
-### Removed
-
-- Removed legacy style usage to fulfill WordPress Plugin Checker tests
+- Fixed missing listing styles for non-FSE-themes
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
