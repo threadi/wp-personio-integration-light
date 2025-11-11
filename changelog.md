@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Consider wrong WooCommerce usage for the meta boxes hook
+
 ## [5.0.3] - 10.11.2025
 
 ### Added

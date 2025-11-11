@@ -754,15 +754,20 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Add Box with hints for editing.
-	 * Add Open Graph Meta-box für edit-page of positions.
+	 * Add boxes to the edit-page of our own cpt.
 	 *
-	 * @param string  $post_type The requested post type.
-	 * @param WP_Post $post The post object.
+	 * @param string $post_type The requested post type.
+	 * @param mixed  $post The post-object.
 	 *
 	 * @return void
 	 */
-	public function add_meta_boxes( string $post_type, WP_Post $post ): void {
+	public function add_meta_boxes( string $post_type, mixed $post ): void {
+		// bail if the second parameter is not WP_Post.
+		// this is necessary because of a bug on WooCommerce: https://github.com/woocommerce/woocommerce/issues/61909.
+		if ( ! $post instanceof WP_Post ) {
+			return;
+		}
+
 		// get the requested position as object.
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
