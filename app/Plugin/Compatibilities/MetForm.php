@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the compatibility-check for Fluent Forms.
+ * File to handle the compatibility-check for MetForm.
  *
  * @package personio-integration-light
  */
@@ -17,26 +17,26 @@ use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 /**
  * Object for this check.
  */
-class Fluent_Forms extends Compatibilities_Base {
+class MetForm extends Compatibilities_Base {
 
 	/**
 	 * Name of this object.
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_fluentforms';
+	protected string $name = 'personio_integration_compatibility_metform';
 
 	/**
 	 * Instance of this object.
 	 *
-	 * @var ?Fluent_Forms
+	 * @var ?MetForm
 	 */
-	private static ?Fluent_Forms $instance = null;
+	private static ?MetForm $instance = null;
 
 	/**
 	 * Return the instance of this Singleton object.
 	 */
-	public static function get_instance(): Fluent_Forms {
+	public static function get_instance(): MetForm {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -55,7 +55,7 @@ class Fluent_Forms extends Compatibilities_Base {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Fluent Forms - very nice!</strong> <a href="%1$s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design your application forms with Fluent Forms.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using MetForm - very nice!</strong> Send us a request if you want to collect your applications with this form plugin using our <a href="%1$s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
 			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
@@ -70,6 +70,6 @@ class Fluent_Forms extends Compatibilities_Base {
 	 * @return bool
 	 */
 	public function is_active(): bool {
-		return Helper::is_plugin_active( 'fluentform/fluentform.php' );
+		return Helper::is_plugin_active( 'metform/metform.php' );
 	}
 }

@@ -5,6 +5,11 @@
 ### Changed
 
 - Consider wrong WooCommerce usage for the meta boxes hook
+- Compatible with WordPress 6.9
+
+### Fixed
+
+- Fixed missing logging of errors during creation of schedules
 
 ## [5.0.3] - 10.11.2025
 

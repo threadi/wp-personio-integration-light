@@ -84,15 +84,19 @@ class Schedules {
 		foreach ( $this->get_events() as $event ) {
 			// get the schedule object.
 			$schedule_obj = $this->get_schedule_object_by_name( $event['name'] );
-			if ( $schedule_obj instanceof Schedules_Base ) {
-				// set attributes in object, if available.
-				if ( ! empty( $event['settings'][ array_key_first( $event['settings'] ) ]['args'] ) ) {
-					$schedule_obj->set_args( $event['settings'][ array_key_first( $event['settings'] ) ]['args'] );
-				}
 
-				// define action hook to run the schedule.
-				add_action( $schedule_obj->get_name(), array( $schedule_obj, 'run' ), 10, 0 );
+			// bail if object could not be loaded.
+			if ( ! $schedule_obj instanceof Schedules_Base ) {
+				continue;
 			}
+
+			// set attributes in object, if available.
+			if ( ! empty( $event['settings'][ array_key_first( $event['settings'] ) ]['args'] ) ) {
+				$schedule_obj->set_args( $event['settings'][ array_key_first( $event['settings'] ) ]['args'] );
+			}
+
+			// define action hook to run the schedule.
+			add_action( $schedule_obj->get_name(), array( $schedule_obj, 'run' ), 10, 0 );
 		}
 	}
 

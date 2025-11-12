@@ -52,8 +52,27 @@ class ApiAccessToken extends Schedules_Base {
 	 * @return void
 	 */
 	public function run(): void {
-		if ( $this->is_enabled() ) {
-			Api::get_instance()->update_access_token();
+		// bail if setting is not enabled.
+		if ( ! $this->is_enabled() ) {
+			return;
 		}
+
+		// run the token update.
+		Api::get_instance()->update_access_token();
+	}
+
+	/**
+	 * Install this schedule.
+	 *
+	 * @return void
+	 */
+	public function install(): void {
+		// bail if it is not enabled.
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
+		// install this schedule.
+		parent::install();
 	}
 }
