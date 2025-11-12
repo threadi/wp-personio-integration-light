@@ -55,7 +55,7 @@ class Ninja_Forms extends Compatibilities_Base {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-			$transient_obj->set_message( sprintf( __( 'We realized that you are using Ninja Forms - very nice! <a href="%1$s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a> allows you to design your application forms with Ninja Forms.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Ninja Forms - very nice!</strong> Send us a request if you want to collect your applications with this form plugin using our <a href="%1$s" target="_blank"><i>Personio Integration Pro</i> (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
 			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();

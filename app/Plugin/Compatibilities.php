@@ -136,6 +136,8 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Fluent_Forms',
 			'PersonioIntegrationLight\Plugin\Compatibilities\GeneratePressPremium',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Loco',
+			'PersonioIntegrationLight\Plugin\Compatibilities\MetForm',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Ninja_Forms',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Nimble_Builder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Oxygen',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Pdf_Generator_For_Wp',
