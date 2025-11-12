@@ -6,6 +6,10 @@
 
 - Consider wrong WooCommerce usage for the meta boxes hook
 
+### Fixed
+
+- Fixed missing logging of errors during creation of schedules
+
 ## [5.0.3] - 10.11.2025
 
 ### Added

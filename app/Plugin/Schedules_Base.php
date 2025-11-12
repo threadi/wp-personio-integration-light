@@ -121,14 +121,18 @@ class Schedules_Base {
 			return;
 		}
 
-		if ( ! wp_next_scheduled( $this->get_name() ) ) {
-			// create the schedule.
-			$result = wp_schedule_event( time(), $this->get_interval(), $this->get_name(), $this->get_args() );
+		// bail if schedule already exist.
+		if ( wp_next_scheduled( $this->get_name(), $this->get_args() ) ) {
+			return;
+		}
 
-			// log event if the schedule could not be created.
-			if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType
-				Log::get_instance()->add( __( 'Error during creation of schedule:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $result->get_error_message() ) . '</code>', 'error', $this->get_log_category() );
-			}
+		// create the schedule.
+		$result = wp_schedule_event( time(), $this->get_interval(), $this->get_name(), $this->get_args(), true );
+
+		// log event if the schedule could not be created.
+		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType
+			/* translators: %1$s will be replaced by the name of the schedule. */
+			Log::get_instance()->add( sprintf( __( 'Error during creation of schedule %1$s:', 'personio-integration-light' ), $this->get_name() ) . ' <code>' . wp_json_encode( wp_json_encode( $result->get_error_messages() ) ) . '</code>', 'error', $this->get_log_category() );
 		}
 	}
 
