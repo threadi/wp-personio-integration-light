@@ -76,7 +76,7 @@ class Report extends Schedules_Base {
 	 */
 	public function install(): void {
 		// bail if it is not enabled.
-		if( ! $this->is_enabled() ) {
+		if ( ! $this->is_enabled() ) {
 			return;
 		}
 

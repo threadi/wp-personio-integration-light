@@ -18,7 +18,7 @@ use PersonioIntegrationLight\Plugin\Templates;
 $use_li = false;
 if ( ! empty( $personio_attributes['groupby'] ) ) {
 	$first_position_id = $GLOBALS['personio_query_results']->get_posts()[0];
-	$position_obj = $positions_obj->get_position( get_the_id() );
+	$position_obj      = $positions_obj->get_position( get_the_id() );
 	$position_obj->set_lang( $personio_attributes['lang'] );
 
 	// get group title.

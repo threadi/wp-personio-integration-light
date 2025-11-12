@@ -16,7 +16,7 @@ use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Templates;
 
 // get first group title.
-include Templates::get_instance()->get_template( 'parts/part-archive-heading.php' );
+require Templates::get_instance()->get_template( 'parts/part-archive-heading.php' );
 
 ?><ul class="personio-integration-archive-listing <?php echo esc_attr( $personio_attributes['classes'] ); ?>">
 <?php

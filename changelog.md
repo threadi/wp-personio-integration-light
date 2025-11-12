@@ -5,6 +5,7 @@
 ### Changed
 
 - Consider wrong WooCommerce usage for the meta boxes hook
+- Compatible with WordPress 6.9
 
 ### Fixed
 

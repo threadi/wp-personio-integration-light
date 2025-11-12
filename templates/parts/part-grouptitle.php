@@ -22,11 +22,11 @@ if ( ! empty( $personio_attributes['groupby'] ) ) {
 	// output title if it has been changed during the loop.
 	if ( strcmp( $new_group_title, $group_title ) ) {
 		$group_title = $new_group_title;
-		if( $use_li ) {
+		if ( $use_li ) {
 			echo '<li>';
 		}
 		echo '<h2>' . esc_html( $new_group_title ) . '</h2>';
-		if( $use_li ) {
+		if ( $use_li ) {
 			echo '</li>';
 		}
 	}
