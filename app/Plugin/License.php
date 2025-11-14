@@ -272,6 +272,7 @@ class License {
 			$transient_obj->set_name( 'personio_integration_license_request_error' );
 			$transient_obj->set_message( __( 'An error occurred during the request to the license server! Check the log for more details.', 'personio-integration-light' ) );
 			$transient_obj->set_type( 'error' );
+			$transient_obj->set_prioritized( true );
 			$transient_obj->save();
 
 			// forward user.
@@ -288,11 +289,15 @@ class License {
 
 		// if HTTP response is 400, show error.
 		if ( 400 === $http_status ) {
+			// log this event.
+			Log::get_instance()->add( __( 'Got the following error from license server:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $response ) . '</code>', 'error', 'system' );
+
 			// show error message.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_license_error' );
 			$transient_obj->set_message( __( 'Response from license server:', 'personio-integration-light' ) . ' <code>' . esc_html( $response_array['message'] ) . '</code>' );
 			$transient_obj->set_type( 'error' );
+			$transient_obj->set_prioritized( true );
 			$transient_obj->save();
 
 			// forward user.
@@ -317,6 +322,7 @@ class License {
 			$transient_obj->set_name( 'personio_integration_license_success' );
 			$transient_obj->set_message( __( '<strong>The specified license is valid.</strong> Click on the following button so that we can install and configure Personio Integration Pro for you.', 'personio-integration-light' ) . ' <br><br><a href="' . esc_url( $url ) . '" class="button button-primary">' . esc_html__( 'Install now', 'personio-integration-light' ) . '</a>' );
 			$transient_obj->set_type( 'success' );
+			$transient_obj->set_prioritized( true );
 			$transient_obj->save();
 
 			// forward user.
@@ -329,6 +335,7 @@ class License {
 		$transient_obj->set_name( 'personio_integration_license_error' );
 		$transient_obj->set_message( __( 'The test could not be performed. Please try again later.', 'personio-integration-light' ) );
 		$transient_obj->set_type( 'error' );
+		$transient_obj->set_prioritized( true );
 		$transient_obj->save();
 
 		// forward user.

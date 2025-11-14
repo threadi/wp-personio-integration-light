@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Imports\Xml;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
@@ -82,7 +83,11 @@ class Update {
 			$this->version400();
 			$this->version500();
 
-			// save new plugin-version in DB.
+			// log that this update has been run.
+			/* translators: %1$s and %2$s are replaced by the old and new version. */
+			Log::get_instance()->add( sprintf( __( 'Personio Integration Light has been updated from %1$s to %2$s.', 'personio-integration-light' ), $db_plugin_version, $installed_plugin_version ), 'success', 'system' );
+
+			// save the new plugin-version in DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
 
 			// refresh permalinks.
