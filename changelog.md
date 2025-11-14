@@ -9,7 +9,7 @@
 
 ### Fixed
 
-- Fixed missing logging of errors during creation of schedules
+- Fixed missing logging of errors during the creation of schedules
 
 ## [5.0.3] - 10.11.2025
 
