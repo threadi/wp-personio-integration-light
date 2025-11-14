@@ -5,6 +5,8 @@
 ### Changed
 
 - Consider wrong WooCommerce usage for the meta boxes hook
+- Set messages from license check as prioritized to show them first
+- Updated dependencies
 - Compatible with WordPress 6.9
 
 ### Fixed
