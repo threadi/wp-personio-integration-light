@@ -66,7 +66,7 @@ class Schedules {
 			add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
 		}
 		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
-		add_action( 'init', array( $this, 'init_schedules' ) );
+		add_action( 'init', array( $this, 'init_schedules' ), 100 );
 
 		// action to create all registered schedules.
 		add_action( 'admin_action_personioPositionsCreateSchedules', array( $this, 'create_schedules_per_request' ) );
@@ -85,12 +85,12 @@ class Schedules {
 			// get the schedule object.
 			$schedule_obj = $this->get_schedule_object_by_name( $event['name'] );
 
-			// bail if object could not be loaded.
+			// bail if the object could not be loaded.
 			if ( ! $schedule_obj instanceof Schedules_Base ) {
 				continue;
 			}
 
-			// set attributes in object, if available.
+			// set attributes in the object, if available.
 			if ( ! empty( $event['settings'][ array_key_first( $event['settings'] ) ]['args'] ) ) {
 				$schedule_obj->set_args( $event['settings'][ array_key_first( $event['settings'] ) ]['args'] );
 			}
@@ -112,7 +112,7 @@ class Schedules {
 		// get the section.
 		$advanced_section = $settings_obj->get_section( 'settings_section_advanced' );
 
-		// bail if tab does not exist.
+		// bail if the tab does not exist.
 		if ( ! $advanced_section ) {
 			return;
 		}
