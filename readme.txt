@@ -125,11 +125,12 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added compatibility-detection for GeneratePress Premium
-- Changed priority to load admin footer text to prevent errors from third party plugins
-  which do not use this hook the correct way
-- Extended the error reporting for any PHP-errors during the import of positions
+- Optimized check of our own schedules
+- Consider wrong WooCommerce usage for the meta-boxes hook
+- Set messages from license check as prioritized to show them first
+- Log if the plugin has been updated
 - Updated dependencies
-- Fixed missing listing styles for non-FSE-themes
+- Compatible with WordPress 6.9
+- Fixed missing logging of errors during the creation of schedules
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
