@@ -140,6 +140,11 @@ class OpenSSL extends Crypt_Base {
 	 * @return string
 	 */
 	public function encrypt( string $plain_text ): string {
+		// bail if no text is given.
+		if ( empty( $plain_text ) ) {
+			return '';
+		}
+
 		$cipher    = 'AES-128-CBC';
 		$iv_length = openssl_cipher_iv_length( $cipher );
 
@@ -172,6 +177,11 @@ class OpenSSL extends Crypt_Base {
 	 * @return string
 	 */
 	public function decrypt( string $encrypted_text ): string {
+		// bail if no text is given.
+		if ( empty( $encrypted_text ) ) {
+			return '';
+		}
+
 		$cipher    = 'AES-128-CBC';
 		$iv_length = openssl_cipher_iv_length( $cipher );
 		if ( ! $iv_length ) {

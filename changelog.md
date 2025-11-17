@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Check if the string to encrypt has any content
+
 ## [5.0.4] - 17.11.2025
 
 ### Changed

@@ -183,7 +183,7 @@ class Sodium extends Crypt_Base {
 			// split into the parts after converting from base64- to binary-string.
 			$parts = explode( ':', sodium_base642bin( $encrypted_text, $this->get_coding_id() ) );
 
-			// bail if array is empty or does not have 2 entries.
+			// bail if an array is empty or does not have 2 entries.
 			if ( count( $parts ) !== 2 ) {
 				return '';
 			}
