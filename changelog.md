@@ -5,6 +5,11 @@
 ### Changed
 
 - Check if the string to encrypt has any content
+- Now also compatible with PHP 8.5
+
+### Fixed
+
+- Fixed wrong group sorting for <li>-using archive templates
 
 ## [5.0.4] - 17.11.2025
 
