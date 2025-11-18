@@ -6,6 +6,7 @@
 
 - Check if the string to encrypt has any content
 - Now also compatible with PHP 8.5
+- Do not run all updates of older versions if the plugin has been updated
 
 ### Fixed
 
