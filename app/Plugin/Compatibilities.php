@@ -128,6 +128,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Acf',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Avada',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Beaver',
+			'PersonioIntegrationLight\Plugin\Compatibilities\BitForm',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Bold_Page_Builder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Brizy',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Divi',
