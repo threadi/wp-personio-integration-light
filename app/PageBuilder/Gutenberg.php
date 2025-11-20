@@ -69,6 +69,9 @@ class Gutenberg extends PageBuilder_Base {
 		// initialize the templates.
 		add_action( 'init', array( $this, 'add_templates' ) );
 
+		// add our custom block category.
+		add_filter( 'block_categories_all', array( $this, 'add_block_category' ) );
+
 		// bail if theme is not an FSE-theme with Block support.
 		if ( ! $this->theme_support_block_templates() ) {
 			return;
@@ -81,7 +84,6 @@ class Gutenberg extends PageBuilder_Base {
 
 		// misc.
 		add_filter( 'body_class', array( $this, 'add_body_classes' ) );
-		add_filter( 'block_categories_all', array( $this, 'add_block_category' ) );
 
 		// call parent init.
 		parent::init();

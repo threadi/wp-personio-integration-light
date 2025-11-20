@@ -2,16 +2,22 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added support for navigation link block in WordPress 6.9
+
 ### Changed
 
 - Check if the string to encrypt has any content
 - Now also compatible with PHP 8.5
+- Optimized blocks for WordPress 6.9 usage
 - Updated dependencies
 
 ### Fixed
 
 - Fixed wrong group sorting for <li>-using archive templates
 - Fixed an unnecessary load of the number of positions on every request
+- Fixed the missing custom block category for non-fse-themes with support for block editor
 
 ## [5.0.4] - 17.11.2025
 

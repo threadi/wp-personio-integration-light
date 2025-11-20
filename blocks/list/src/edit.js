@@ -115,8 +115,6 @@ export default function Edit( object ) {
   // get the color gradient settings.
   const colorGradientSettings = useMultipleOriginColorsAndGradients()
 
-  console.log(object.attributes);
-
 	/**
 	 * Collect return for the edit-function
 	 */
@@ -127,6 +125,8 @@ export default function Edit( object ) {
 					<div className="wp-personio-integration-selectcontrol">
 						{
 							<SelectControl
+                __next40pxDefaultSize
+                __nextHasNoMarginBottom
 								label={ __('Choose template', 'personio-integration-light') }
 								value={ object.attributes.template }
 								options={ archive_templates }
@@ -136,6 +136,7 @@ export default function Edit( object ) {
 						}
 					</div>
 					<NumberControl
+            __next40pxDefaultSize
 						label={__('Amount', 'personio-integration-light')}
 						labelPosition='top'
 						isShiftStepEnabled={ true }
@@ -146,6 +147,8 @@ export default function Edit( object ) {
 						value={ object.attributes.limit }
 					/>
 					<SelectControl
+            __next40pxDefaultSize
+            __nextHasNoMarginBottom
 						label={__('Sort direction', 'personio-integration-light')}
 						value={ object.attributes.sort }
 						options={ [
@@ -155,6 +158,8 @@ export default function Edit( object ) {
 						onChange={ value => onChangeSort( value, object ) }
 					/>
 					<SelectControl
+            __next40pxDefaultSize
+            __nextHasNoMarginBottom
 						label={__('Sort by', 'personio-integration-light')}
 						value={ object.attributes.sortby }
 						options={ [
@@ -164,22 +169,27 @@ export default function Edit( object ) {
 						onChange={ value => onChangeSortBy( value, object ) }
 					/>
 					<SelectControl
+            __next40pxDefaultSize
+            __nextHasNoMarginBottom
 						label={__('Group by', 'personio-integration-light')}
 						value={ object.attributes.groupby }
 						options={ personioTaxonomiesGrouped }
 						onChange={ value => onChangeGroupBy( value, object ) }
 					/>
 					<ToggleControl
+            __nextHasNoMarginBottom
 						label={__('Show title', 'personio-integration-light')}
 						checked={ object.attributes.showTitle }
 						onChange={ value => onChangeTitleVisibility( value, object ) }
 					/>
 					<ToggleControl
+            __nextHasNoMarginBottom
 						label={__('Link title', 'personio-integration-light')}
 						checked={ object.attributes.linkTitle }
 						onChange={ value => onChangeLinkingTitle( value, object ) }
 					/>
 					<ToggleControl
+            __nextHasNoMarginBottom
 						label={__('Show excerpt', 'personio-integration-light')}
 						checked={ object.attributes.showExcerpt }
 						onChange={ value => onChangeExcerptVisibility( value, object ) }
@@ -187,6 +197,8 @@ export default function Edit( object ) {
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
+                __next40pxDefaultSize
+                __nextHasNoMarginBottom
 								label={__('Choose details', 'personio-integration-light')}
 								value={object.attributes.excerptTemplates}
 								options={ personioTaxonomies }
@@ -197,11 +209,13 @@ export default function Edit( object ) {
 						}
 					</div>
 					<ToggleControl
+            __nextHasNoMarginBottom
 						label={__('View content', 'personio-integration-light')}
 						checked={ object.attributes.showContent }
 						onChange={ value => onChangeContentVisibility( value, object )  }
 					/>
 					<ToggleControl
+            __nextHasNoMarginBottom
 						label={__('View option to apply', 'personio-integration-light')}
 						checked={ object.attributes.showApplicationForm }
 						onChange={ value => onChangeApplicationFormVisibility( value, object )  }

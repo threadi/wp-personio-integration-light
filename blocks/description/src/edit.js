@@ -73,6 +73,8 @@ export default function Edit( object ) {
 					<div className="wp-personio-integration-selectcontrol">
 						{
 							<SelectControl
+                                __next40pxDefaultSize
+                                __nextHasNoMarginBottom
 								label={ __('Choose template', 'personio-integration-light') }
 								value={ object.attributes.template }
 								options={ templates }

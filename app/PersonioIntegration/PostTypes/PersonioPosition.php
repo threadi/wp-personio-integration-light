@@ -172,6 +172,8 @@ class PersonioPosition extends Post_Type {
 			'edit_item'         => __( 'View Position in backend', 'personio-integration-light' ),
 			'search_items'      => __( 'Search Position', 'personio-integration-light' ),
 			'not_found'         => __( 'No positions imported', 'personio-integration-light' ),
+			'item_link'         => _x( 'Position Link', 'navigation link block title', 'personio-integration-light' ),
+			'item_link_description'    => _x( 'A link to a position.', 'navigation link block description', 'personio-integration-light' ),
 		);
 
 		if ( Helper::is_personio_url_set() ) {
@@ -191,7 +193,7 @@ class PersonioPosition extends Post_Type {
 			'label'               => $labels['name'],
 			'description'         => '',
 			'labels'              => $labels,
-			'supports'            => array( '' ),
+			'supports'            => array( 'title' ),
 			'public'              => true,
 			'hierarchical'        => false,
 			'show_ui'             => Setup::get_instance()->is_completed(),

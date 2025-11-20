@@ -86,7 +86,7 @@ Hint: this check runs against the VIP-GO-platform which is not our target for th
 
 ## Generate documentation
 
-`vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration --exclude=Section.php --exclude=Tab.php --exclude=Import.php --exclude=Export.php --exclude=Field_Base.php --exclude=Settings.php --exclude=Page.php --exclude=Widget_Base.php`
+`vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration --exclude=Section.php --exclude=Tab.php --exclude=Import.php --exclude=Export.php --exclude=Field_Base.php --exclude=Settings.php --exclude=Page.php --exclude=Widget_Base.php --exclude=Transients.php`
 
 ## Analyze with PHPStan
 

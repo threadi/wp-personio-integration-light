@@ -125,6 +125,8 @@ export default function Edit( object ) {
           <div className="wp-personio-integration-selectcontrol">
             {
               <SelectControl
+                __next40pxDefaultSize
+                __nextHasNoMarginBottom
                 label={ __('Choose template', 'personio-integration-light') }
                 value={ object.attributes.template }
                 options={ templates }
@@ -136,6 +138,8 @@ export default function Edit( object ) {
 					<div className="wp-personio-integration-selectcontrol-multiple">
 						{
 							<SelectControl
+                                __next40pxDefaultSize
+                                __nextHasNoMarginBottom
 								label={__('Choose details', 'personio-integration-light')}
 								value={object.attributes.excerptTemplates}
 								options={ personioTaxonomies }
@@ -146,11 +150,13 @@ export default function Edit( object ) {
 					</div>
           {object.attributes.template === 'list' && <div>
             <ToggleControl
-						label={__('With colon', 'personio-integration-light')}
-						checked={ object.attributes.colon }
-						onChange={ value => onChangeColonVisibility( value, object )  }
+              __nextHasNoMarginBottom
+              label={__('With colon', 'personio-integration-light')}
+              checked={ object.attributes.colon }
+              onChange={ value => onChangeColonVisibility( value, object )  }
             />
             <ToggleControl
+              __nextHasNoMarginBottom
               label={__('With line break', 'personio-integration-light')}
               checked={ object.attributes.wrap }
               onChange={ value => onChangeWrapVisibility( value, object )  }
