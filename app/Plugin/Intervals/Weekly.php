@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the hourly interval.
+ * File to handle the weekly interval.
  *
  * @package personio-integration-light
  */
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Plugin\Interval_Base;
 
 /**
- * Object to handle the hourly interval.
+ * Object to handle the weekly interval.
  */
 class Weekly extends Interval_Base {
 

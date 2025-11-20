@@ -11,6 +11,7 @@
 ### Fixed
 
 - Fixed wrong group sorting for <li>-using archive templates
+- Fixed an unnecessary load of the number of positions on every request
 
 ## [5.0.4] - 17.11.2025
 
