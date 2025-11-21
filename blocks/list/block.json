@@ -2,7 +2,6 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 3,
 	"name": "wp-personio-integration/list",
-	"version": "@@VersionNumber@@",
 	"title": "Personio Positions",
 	"category": "personio-integration",
 	"description": "Provides a Gutenberg block to show a list of positions provided by Personio.",

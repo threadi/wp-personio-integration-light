@@ -77,11 +77,21 @@ class Update {
 			if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING ' ) ) {
 				define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
 			}
-			$this->version300();
-			$this->version310();
-			$this->version320();
-			$this->version400();
-			$this->version500();
+			if ( version_compare( $db_plugin_version, '3.0.0', '<' ) ) {
+				$this->version300();
+			}
+			if ( version_compare( $db_plugin_version, '3.1.0', '<' ) ) {
+				$this->version310();
+			}
+			if ( version_compare( $db_plugin_version, '3.2.0', '<' ) ) {
+				$this->version320();
+			}
+			if ( version_compare( $db_plugin_version, '4.0.0', '<' ) ) {
+				$this->version400();
+			}
+			if ( version_compare( $db_plugin_version, '5.0.0', '<' ) ) {
+				$this->version500();
+			}
 
 			// log that this update has been run.
 			/* translators: %1$s and %2$s are replaced by the old and new version. */
@@ -163,7 +173,7 @@ class Update {
 	 * @return void
 	 */
 	private function version400(): void {
-		// get actual value for setup and save it in new field, if not already set.
+		// get the actual value for setup and save it in the new field, if not already set.
 		if ( ! get_option( 'esfw_completed' ) ) {
 			update_option( 'esfw_completed', get_option( 'wp_easy_setup_completed' ) );
 		}

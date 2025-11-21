@@ -2,7 +2,6 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 3,
 	"name": "wp-personio-integration/description",
-	"version": "@@VersionNumber@@",
 	"title": "Description",
 	"category": "personio-integration",
 	"description": "Provides a Gutenberg Block for the description of a single position managed by Personio.",
