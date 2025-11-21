@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle main functions for single block.
+ * File to handle main functions for a single block.
  *
  * @package personio-integration-light
  */
@@ -14,7 +14,7 @@ use PersonioIntegrationLight\Helper;
 use WP_Block_Type_Registry;
 
 /**
- * Object to handle main functions for single block.
+ * Object to handle main functions for a single block.
  */
 class Blocks_Basis {
 	/**
@@ -89,7 +89,7 @@ class Blocks_Basis {
 			return;
 		}
 
-		// bail if block is already registered.
+		// bail if the block is already registered.
 		if ( $block_type_registry->is_registered( 'wp-personio-integration/' . $this->get_name() ) ) {
 			return;
 		}
@@ -104,33 +104,37 @@ class Blocks_Basis {
 			)
 		);
 
-		// if this is a classic theme deregister the blocks css. we will use the concatenated blocks.css instead.
+		// if this is a classic theme, deregister the blocks css. we will use the concatenated blocks.css instead.
 		if ( ! Helper::theme_is_fse_theme() ) {
 			wp_deregister_style( 'wp-personio-integration-' . $this->get_name() . '-style' );
 		}
+	}
 
-		// embed translation if available.
-		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'wp-personio-integration-' . $this->get_name() . '-editor-script', $this->get_text_domain(), $this->get_language_path() );
+	/**
+	 * Register our block translations if they are delivered by the plugin itself.
+	 *
+	 * @return void
+	 */
+	public function register_translations(): void {
+		wp_set_script_translations( 'wp-personio-integration-' . $this->get_name() . '-editor-script', $this->get_text_domain(), $this->get_language_path() );
 
-			// add JavaScript-variables for Block Editor.
-			wp_add_inline_script(
-				'wp-personio-integration-' . $this->get_name() . '-editor-script',
-				'window.personio_integration_config = ' . wp_json_encode(
-					array(
-						'enable_help' => 1 === absint( get_option( 'personioIntegrationShowHelp' ) ),
-						/**
-						 * Change the block help URL.
-						 *
-						 * @since 3.2.0 Available since 3.2.0.
-						 * @param string $url The URL where user could find support for this block.
-						 */
-						'support_url' => apply_filters( 'personio_integration_block_help_url', Helper::get_plugin_support_url() ),
-					)
-				),
-				'before'
-			);
-		}
+		// add some JavaScript variables for Block Editor.
+		wp_add_inline_script(
+			'wp-personio-integration-' . $this->get_name() . '-editor-script',
+			'window.personio_integration_config = ' . wp_json_encode(
+				array(
+					'enable_help' => 1 === absint( get_option( 'personioIntegrationShowHelp' ) ),
+					/**
+					 * Change the block help URL.
+					 *
+					 * @since 3.2.0 Available since 3.2.0.
+					 * @param string $url The URL where the user could find support for this block.
+					 */
+					'support_url' => apply_filters( 'personio_integration_block_help_url', Helper::get_plugin_support_url() ),
+				)
+			),
+			'before'
+		);
 	}
 
 	/**

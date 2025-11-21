@@ -34,7 +34,7 @@ class Gutenberg extends PageBuilder_Base {
 	protected string $name = 'gutenberg';
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for an instance of this Singleton object.
 	 *
 	 * @var ?Gutenberg
 	 */
@@ -147,7 +147,7 @@ class Gutenberg extends PageBuilder_Base {
 	public function get_widgets(): array {
 		$list = array();
 
-		// return resulting list.
+		// return the resulting list.
 		return apply_filters( 'personio_integration_gutenberg_blocks', $list );
 	}
 
@@ -169,7 +169,7 @@ class Gutenberg extends PageBuilder_Base {
 			// initiate object.
 			$obj = $class_name();
 
-			// bail if object is not "Blocks_Basis".
+			// bail if the object is not a "Blocks_Basis".
 			if ( ! $obj instanceof Blocks_Basis ) {
 				continue;
 			}

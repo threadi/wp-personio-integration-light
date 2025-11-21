@@ -11,6 +11,7 @@
 - Check if the string to encrypt has any content
 - Now also compatible with PHP 8.5
 - Optimized blocks for WordPress 6.9 usage
+- Optimized support for translation for blocks
 - Updated dependencies
 
 ### Fixed
