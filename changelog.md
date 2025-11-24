@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [5.0.5] - 24.11.2025
 
 ### Added
 
