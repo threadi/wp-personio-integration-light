@@ -154,7 +154,7 @@ class Imports {
 		$setting->set_section( $import_section );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
-		if ( Positions::get_instance()->get_positions_count() > 0 ) {
+		if ( absint( get_option( 'personioIntegrationPositionCount' ) ) > 0 ) {
 			$field = new Button();
 			$field->set_title( __( 'Clear positions', 'personio-integration-light' ) );
 			$field->set_button_title( __( 'Delete all positions', 'personio-integration-light' ) );

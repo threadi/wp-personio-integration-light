@@ -1,8 +1,7 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
-	"apiVersion": 2,
+	"apiVersion": 3,
 	"name": "wp-personio-integration/filter-select",
-	"version": "@@VersionNumber@@",
 	"title": "Personio Select Filter",
 	"category": "personio-integration",
 	"description": "Provides a Gutenberg block to show filter as dropdown-list for Personio Positions.",

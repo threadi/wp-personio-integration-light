@@ -6,7 +6,7 @@
  * @param Positions $positions_obj The positions object.
  *
  * @package personio-integration-light
- * @version: 5.0.0
+ * @version: 5.0.5
  */
 
 // prevent direct access.
@@ -15,8 +15,8 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Templates;
 
-// get first group title.
-require Templates::get_instance()->get_template( 'parts/part-archive-heading.php' );
+// mark to use LI for group titles.
+$use_li = true;
 
 ?><ul class="personio-integration-archive-listing <?php echo esc_attr( $personio_attributes['classes'] ); ?>">
 <?php

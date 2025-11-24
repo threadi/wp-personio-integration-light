@@ -121,7 +121,7 @@ class Schedules_Base {
 			return;
 		}
 
-		// bail if schedule already exist.
+		// bail if the schedule already exists.
 		if ( wp_next_scheduled( $this->get_name(), $this->get_args() ) ) {
 			return;
 		}

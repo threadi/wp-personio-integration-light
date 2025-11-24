@@ -34,7 +34,7 @@ class Gutenberg extends PageBuilder_Base {
 	protected string $name = 'gutenberg';
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for an instance of this Singleton object.
 	 *
 	 * @var ?Gutenberg
 	 */
@@ -69,6 +69,9 @@ class Gutenberg extends PageBuilder_Base {
 		// initialize the templates.
 		add_action( 'init', array( $this, 'add_templates' ) );
 
+		// add our custom block category.
+		add_filter( 'block_categories_all', array( $this, 'add_block_category' ) );
+
 		// bail if theme is not an FSE-theme with Block support.
 		if ( ! $this->theme_support_block_templates() ) {
 			return;
@@ -81,7 +84,6 @@ class Gutenberg extends PageBuilder_Base {
 
 		// misc.
 		add_filter( 'body_class', array( $this, 'add_body_classes' ) );
-		add_filter( 'block_categories_all', array( $this, 'add_block_category' ) );
 
 		// call parent init.
 		parent::init();
@@ -145,7 +147,7 @@ class Gutenberg extends PageBuilder_Base {
 	public function get_widgets(): array {
 		$list = array();
 
-		// return resulting list.
+		// return the resulting list.
 		return apply_filters( 'personio_integration_gutenberg_blocks', $list );
 	}
 
@@ -167,7 +169,7 @@ class Gutenberg extends PageBuilder_Base {
 			// initiate object.
 			$obj = $class_name();
 
-			// bail if object is not "Blocks_Basis".
+			// bail if the object is not a "Blocks_Basis".
 			if ( ! $obj instanceof Blocks_Basis ) {
 				continue;
 			}

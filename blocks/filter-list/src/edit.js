@@ -84,6 +84,8 @@ export default function Edit( object ) {
           <div className="wp-personio-integration-selectcontrol-multiple">
             {
               <SelectControl
+                __next40pxDefaultSize
+                __nextHasNoMarginBottom
                 label={__( 'Choose filter', 'personio-integration-light' )}
                 value={object.attributes.filter}
                 options={personioTaxonomies}
@@ -93,17 +95,21 @@ export default function Edit( object ) {
             }
           </div>
           <ToggleControl
+            __nextHasNoMarginBottom
             label={__( 'Hide filter title', 'personio-integration-light' )}
             checked={object.attributes.hideFilterTitle}
             onChange={value => onChangeHideFilterTitle( value, object )}
           />
           <ToggleControl
+            __nextHasNoMarginBottom
             label={__( 'Hide reset link', 'personio-integration-light' )}
             checked={object.attributes.hideResetLink}
             onChange={value => onChangeHideResetLink( value, object )}
           />
           <div className="wp-personio-integration-range">
             <RangeControl
+              __nextHasNoMarginBottom
+              __next40pxDefaultSize
               label={__( 'Space between filters', 'personio-integration-light' )}
               value={object.attributes.space_between}
               onChange={value => onChangeSpaceBetween( value, object )}

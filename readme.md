@@ -30,15 +30,18 @@ After checkout go through the following steps:
 
 1. increase the version number in _build/build.properties_.
 2. execute the following command in _build/_: `ant build`
-3. after that you will finde in the release directory a zip file which could be used in WordPress to install it.
+3. after that you will have a zip file in the release directory which could be used in WordPress to install it.
 
 ## Translations
 
-I recommend using [PoEdit](https://poedit.net/) to translate texts for this plugin.
+Translations are managed in the WordPress repository: https://translate.wordpress.org/projects/wp-plugins/personio-integration-light/
+
+For local tests I recommend using [PoEdit](https://poedit.net/) to translate texts for this plugin. But first run `npm run build` to
+generate the optimized block build files.
 
 ### generate pot-file
 
-Run in main directory:
+Run in the main directory:
 
 `wp i18n make-pot . languages/personio-integration-light.pot --exclude=blocks/show/src/,blocks/list/src/,blocks/filter-list/src/,blocks/filter-select/src/,blocks/application-button/src/,blocks/details/src/,blocks/description/src/,blocks/setup/src/,svn/,deprecated/`
 
@@ -86,7 +89,7 @@ Hint: this check runs against the VIP-GO-platform which is not our target for th
 
 ## Generate documentation
 
-`vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration --exclude=Section.php --exclude=Tab.php --exclude=Import.php --exclude=Export.php --exclude=Field_Base.php --exclude=Settings.php --exclude=Page.php --exclude=Widget_Base.php`
+`vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration --exclude=Section.php --exclude=Tab.php --exclude=Import.php --exclude=Export.php --exclude=Field_Base.php --exclude=Settings.php --exclude=Page.php --exclude=Widget_Base.php --exclude=Transients.php`
 
 ## Analyze with PHPStan
 

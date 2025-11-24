@@ -99,7 +99,7 @@ class Intervals {
 			// get the object.
 			$obj = $class_name();
 
-			// bail if object is not a Compatibilities_Base.
+			// bail if the object is not a Interval_Base.
 			if ( ! $obj instanceof Interval_Base ) {
 				continue;
 			}

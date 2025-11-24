@@ -125,12 +125,14 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Optimized check of our own schedules
-- Consider wrong WooCommerce usage for the meta-boxes hook
-- Set messages from license check as prioritized to show them first
-- Log if the plugin has been updated
+- Added support for navigation link block in WordPress 6.9
+- Check if the string to encrypt has any content
+- Now also compatible with PHP 8.5
+- Optimized blocks for WordPress 6.9 usage
+- Optimized support for translation for blocks
 - Updated dependencies
-- Compatible with WordPress 6.9
-- Fixed missing logging of errors during the creation of schedules
+- Fixed wrong group sorting for <li>-using archive templates
+- Fixed an unnecessary load of the number of positions on every request
+- Fixed the missing custom block category for non-fse-themes with support for block editor
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
