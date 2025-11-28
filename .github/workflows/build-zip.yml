@@ -104,6 +104,7 @@ jobs:
                 error-severity: 7
                 warning-severity: 6
                 include-low-severity-errors: true
+                slug: personio-integration-light
               continue-on-error: true
 
             - name: Create ZIP release
