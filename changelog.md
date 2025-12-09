@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed missing $use_li variable in default archive listing
+
 ## [5.0.5] - 24.11.2025
 
 ### Added

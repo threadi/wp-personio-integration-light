@@ -6,7 +6,7 @@
  * @param Positions $positions_obj The positions object.
  *
  * @package personio-integration-light
- * @version: 4.0.0
+ * @version: 5.0.6
  */
 
 // prevent direct access.
@@ -14,6 +14,9 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Templates;
+
+// mark to use LI for group titles.
+$use_li = true;
 
 ?><div class="<?php echo esc_attr( $personio_attributes['classes'] ); ?>">
 <?php
