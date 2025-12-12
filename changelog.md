@@ -2,9 +2,14 @@
 
 ## [Unreleased]
 
+### Changes
+
+- Updated dependencies
+
 ### Fixed
 
-- Fixed missing $use_li variable in default archive listing
+- Fixed the missing $ use_li variable in the default archive listing
+- Fixed deletion of reset transients during uninstallation of the plugin
 
 ## [5.0.5] - 24.11.2025
 
