@@ -4,6 +4,7 @@
 
 ### Changes
 
+- Optimized code for actual WordPress Coding Standards & PHPStan
 - Updated dependencies
 
 ### Fixed

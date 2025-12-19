@@ -40,7 +40,7 @@ class Emails {
 		}
 
 		// get option.
-		$option = str_replace( 'sanitize_option_', '', current_filter() );
+		$option = str_replace( 'sanitize_option_', '', (string) current_filter() );
 
 		// calculate value counts.
 		$value_counts = array_count_values( $values );
@@ -53,17 +53,17 @@ class Emails {
 				continue;
 			}
 
-			// cleanup the string.
+			// clean up the string.
 			$value = trim( $value );
 
-			// remove double ones one time.
+			// remove double ones at one time.
 			if ( ! empty( $value_counts[ $value ] ) && $value_counts[ $value ] > 1 ) {
 				unset( $values[ $index ] );
 				$value_counts = array_count_values( $values );
 				continue;
 			}
 
-			// check if given string is a valid email.
+			// check if the given string is a valid email.
 			if ( ! filter_var( $value, FILTER_VALIDATE_EMAIL ) ) {
 				add_settings_error( $option, $option, __( 'The value entered does not appear to be an email address!', 'personio-integration-light' ) );
 				unset( $values[ $index ] );

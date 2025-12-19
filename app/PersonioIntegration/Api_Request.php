@@ -134,7 +134,7 @@ class Api_Request {
 		 */
 		$time_limit = apply_filters( 'personio_integration_light_request_time_limit', $time_limit );
 
-		// check if there has not been 150 request in the last 90 seconds to Personio.
+		// check if there have not been 150 requests in the last 90 seconds to Personio.
 		// -> we use a puffer of 30 seconds more than the Personio API requires.
 		$results = Db::get_instance()->get_results(
 			$wpdb->prepare(
@@ -143,13 +143,13 @@ class Api_Request {
             FROM ' . $wpdb->prefix . 'personio_api_requests
             WHERE
                 insertdate >= DATE_SUB( %s, INTERVAL %d SECOND)',
-				current_time( 'mysql', 1 ),
+				current_time( 'mysql', true ),
 				absint( $time_limit )
 			),
 			ARRAY_A
 		);
 		if ( count( $results ) >= 150 ) {
-			// add this as error.
+			// log this as error.
 			$this->add_error( __( 'More than 150 requests were sent to Personio in the last 90 seconds - we will try it later to get around the limitation of Personio.', 'personio-integration-light' ) );
 
 			// do nothing more.
@@ -222,7 +222,7 @@ class Api_Request {
 			Db::get_instance()->insert(
 				$wpdb->prefix . 'personio_api_requests',
 				array(
-					'insertdate' => current_time( 'mysql', 1 ),
+					'insertdate' => current_time( 'mysql', true ),
 					'md5'        => md5( $this->get_url() . Helper::get_json( (array) $this->get_post_data() ) ),
 				)
 			);

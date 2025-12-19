@@ -284,7 +284,7 @@ class Api extends Imports_Base {
 
 				// bail if data is empty.
 				if ( empty( $data ) ) {
-					// add this as error.
+					// log this as error.
 					/* translators: %1$s will be replaced by the Personio ID. */
 					$this->add_error( sprintf( __( 'Got no data for position %1$s from Personio API.', 'personio-integration-light' ), esc_html( $personio_id ) ) );
 

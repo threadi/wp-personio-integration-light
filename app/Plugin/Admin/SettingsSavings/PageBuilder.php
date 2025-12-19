@@ -38,7 +38,7 @@ class PageBuilder {
 		}
 
 		// get option.
-		$option = str_replace( 'pre_update_option_', '', current_filter() );
+		$option = str_replace( 'pre_update_option_', '', (string) current_filter() );
 
 		// get the depends-field-name as this is the field which enables this setting.
 		$field_settings = Settings::get_instance()->get_setting( $option );
