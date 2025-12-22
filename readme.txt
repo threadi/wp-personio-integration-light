@@ -125,14 +125,9 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added support for navigation link block in WordPress 6.9
-- Check if the string to encrypt has any content
-- Now also compatible with PHP 8.5
-- Optimized blocks for WordPress 6.9 usage
-- Optimized support for translation for blocks
+- Optimized code for actual WordPress Coding Standards & PHPStan
 - Updated dependencies
-- Fixed wrong group sorting for <li>-using archive templates
-- Fixed an unnecessary load of the number of positions on every request
-- Fixed the missing custom block category for non-fse-themes with support for block editor
+- Fixed the missing $ use_li variable in the default archive listing
+- Fixed deletion of reset transients during uninstallation of the plugin
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

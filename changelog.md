@@ -1,10 +1,16 @@
 # Changelog
 
-## [Unreleased]
+## [5.0.6] - 22.12.2025
+
+### Changes
+
+- Optimized code for actual WordPress Coding Standards & PHPStan
+- Updated dependencies
 
 ### Fixed
 
-- Fixed missing $use_li variable in default archive listing
+- Fixed the missing $ use_li variable in the default archive listing
+- Fixed deletion of reset transients during uninstallation of the plugin
 
 ## [5.0.5] - 24.11.2025
 

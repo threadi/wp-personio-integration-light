@@ -1695,7 +1695,7 @@ class PersonioPosition extends Post_Type {
 			/* translators: %1$s will be replaced by a URL. */
 			Log::get_instance()->add( sprintf( __( 'No import extension enabled! Go to <a href="%1$s">the extensions</a> and enable the import type you want to use.', 'personio-integration-light' ), Extensions::get_instance()->get_link( 'imports' ) ), 'error', 'import' );
 
-			// add this as error.
+			// log this as error.
 			update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array( __( 'No import extension enabled!', 'personio-integration-light' ) ) );
 
 			// return error message.

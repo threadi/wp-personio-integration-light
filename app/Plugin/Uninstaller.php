@@ -169,7 +169,7 @@ class Uninstaller {
 		Widgets::get_instance()->uninstall_all();
 
 		// remove transients.
-		foreach ( Transients::get_instance()->get_transients() as $transient_obj ) {
+		foreach ( Transients::get_instance()->get_transients( false, true ) as $transient_obj ) {
 			// bail if the object is not ours.
 			if ( ! $transient_obj instanceof Transient ) { // @phpstan-ignore instanceof.alwaysTrue
 				continue;
