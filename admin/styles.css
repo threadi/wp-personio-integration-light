@@ -20,11 +20,6 @@ body.post-type-personioposition {
     padding: 8px 12px;
 }
 
-/* Gutenberg multi-select */
-.wp-personio-integration-selectcontrol-multiple select {
-    height: 120px !important;
-}
-
 /* Gutenberg range slider */
 .wp-personio-integration-range {
     padding: 0 24px;

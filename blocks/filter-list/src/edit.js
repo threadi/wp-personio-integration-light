@@ -81,19 +81,15 @@ export default function Edit( object ) {
 		<div { ...useBlockProps() }>
 			<InspectorControls>
         <PanelBody title={__( 'Settings', 'personio-integration-light' )}>
-          <div className="wp-personio-integration-selectcontrol-multiple">
-            {
-              <SelectControl
-                __next40pxDefaultSize
-                __nextHasNoMarginBottom
-                label={__( 'Choose filter', 'personio-integration-light' )}
-                value={object.attributes.filter}
-                options={personioTaxonomies}
-                multiple={true}
-                onChange={value => onChangeFilter( value, object )}
-              />
-            }
-          </div>
+          <SelectControl
+            __next40pxDefaultSize
+            __nextHasNoMarginBottom
+            label={__( 'Choose filter', 'personio-integration-light' )}
+            value={object.attributes.filter}
+            options={personioTaxonomies}
+            multiple={true}
+            onChange={value => onChangeFilter( value, object )}
+          />
           <ToggleControl
             __nextHasNoMarginBottom
             label={__( 'Hide filter title', 'personio-integration-light' )}
