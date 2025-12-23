@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Added automatic PHP compatibility check before each release
+
 ## [5.0.6] - 22.12.2025
 
 ### Changes
