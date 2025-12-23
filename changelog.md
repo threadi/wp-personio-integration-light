@@ -6,6 +6,11 @@
 
 - Added automatic PHP compatibility check before each release
 
+### Changed
+
+- Changed the hook name "position_integration_position_title" to "personio_integration_light_position_title"
+  for compatibility with WCS
+
 ## [5.0.6] - 22.12.2025
 
 ### Changes

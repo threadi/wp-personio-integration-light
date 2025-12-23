@@ -431,6 +431,9 @@ class Position {
 
 		$title    = $this->data['post_title'];
 		$instance = $this;
+
+		$title = apply_filters_deprecated( 'position_integration_position_title', array( $title, $instance ), '5.1.0', 'personio_integration_light_position_title' );
+
 		/**
 		 * Filter the title of the position.
 		 *
@@ -439,7 +442,7 @@ class Position {
 		 * @param string $title The title.
 		 * @param Position $instance The position object.
 		 */
-		return apply_filters( 'position_integration_position_title', $title, $instance );
+		return apply_filters( 'personio_integration_light_position_title', $title, $instance );
 	}
 
 	/**
