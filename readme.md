@@ -95,6 +95,10 @@ Hint: this check runs against the VIP-GO-platform which is not our target for th
 
 `vendor/bin/phpstan analyse`
 
+## Check PHP compatibility
+
+`vendor/bin/phpcs -p app --standard=PHPCompatibilityWP`
+
 ## Check with plugin "Plugin Check"
 
 This runs the plugin check as the plugin check in the WordPress repository does on every plugin update. It should result in no errors.
