@@ -225,7 +225,7 @@ class Init {
 	}
 
 	/**
-	 * Register our custom query_vars for frontend.
+	 * Register our custom query_vars for the frontend.
 	 *
 	 * @param array<int,string> $query_vars List of query vars.
 	 *

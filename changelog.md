@@ -5,12 +5,17 @@
 ### Added
 
 - Added automatic PHP compatibility check before each release
+- Added some more hooks
 
 ### Changed
 
 - Changed the hook name "position_integration_position_title" to "personio_integration_light_position_title"
   for compatibility with WCS
 - Changed styling for select fields in blocks to the default styling by Block Editor
+
+### Fixed
+
+- Fixed multiple typos in code comments
 
 ## [5.0.6] - 22.12.2025
 

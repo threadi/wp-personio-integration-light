@@ -263,7 +263,7 @@ class Helper {
 				if ( 'filter' === $attribute_settings[ $name ] ) {
 					// if filter is set in config.
 					$attributes[ $name ] = absint( $attribute );
-					// if filter is set via request.
+					// if the filter is set via request.
 					if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $name ] ) ) {
 						$attributes[ $name ] = absint( $GLOBALS['wp']->query_vars['personiofilter'][ $name ] );
 					}
