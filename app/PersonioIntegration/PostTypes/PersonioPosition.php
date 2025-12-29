@@ -1861,6 +1861,12 @@ class PersonioPosition extends Post_Type {
 				'category'    => 'positions',
 			),
 			array(
+				'name'        => 'inline_styles',
+				'label'       => __( 'Remove inline styles', 'personio-integration-light' ),
+				'description' => __( 'Optimize the description texts for your positions received by Personio by removing unnecessary styles.', 'personio-integration-light' ),
+				'category'    => 'positions',
+			),
+			array(
 				'name'        => 'multilingual',
 				'label'       => __( 'Multilingual', 'personio-integration-light' ),
 				'description' => __( 'Use Polylang, TranslatePress or WPML for optimal multilingual presentation of your positions.', 'personio-integration-light' ),
@@ -1885,6 +1891,12 @@ class PersonioPosition extends Post_Type {
 				'category'    => 'tracking',
 			),
 			array(
+				'name'        => 'Avada',
+				'label'       => __( 'Avada', 'personio-integration-light' ),
+				'description' => __( 'Use one of the most stable page builder to style your positions in your website.', 'personio-integration-light' ),
+				'category'    => 'pagebuilder',
+			),
+			array(
 				'name'        => 'divi',
 				'label'       => __( 'Divi', 'personio-integration-light' ),
 				'description' => __( 'Use one of the most used page builder to style your positions in your website.', 'personio-integration-light' ),
@@ -1894,6 +1906,18 @@ class PersonioPosition extends Post_Type {
 				'name'        => 'elementor',
 				'label'       => __( 'Elementor', 'personio-integration-light' ),
 				'description' => __( 'Use the most used page builder to style your positions in your website.', 'personio-integration-light' ),
+				'category'    => 'pagebuilder',
+			),
+			array(
+				'name'        => 'gutenberg',
+				'label'       => __( 'Block Editor', 'personio-integration-light' ),
+				'description' => __( 'You will have 18 blocks at your disposal, including Google Maps, more filter options, and radius search.', 'personio-integration-light' ),
+				'category'    => 'pagebuilder',
+			),
+			array(
+				'name'        => 'generatepress',
+				'label'       => __( 'GeneratePress', 'personio-integration-light' ),
+				'description' => __( 'Take advantage of the possibilities offered by GeneratePress Premium to present your position vacancies in the best possible light.', 'personio-integration-light' ),
 				'category'    => 'pagebuilder',
 			),
 			array(

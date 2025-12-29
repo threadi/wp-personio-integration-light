@@ -82,6 +82,7 @@ class Admin {
 		// show hint for Pro-version.
 		add_filter( 'personio_integration_admin_show_pro_hint', array( $this, 'get_pro_hint' ), 10, 2 );
 		add_filter( 'admin_body_class', array( $this, 'add_body_classes' ) );
+		add_action( 'personio_integration_light_extension_table_buttons', array( $this, 'add_extension_table_buttons' ) );
 
 		// add our own checks in wp-admin.
 		add_action( 'admin_init', array( $this, 'check_config' ) );
@@ -982,5 +983,27 @@ class Admin {
 			)
 		);
 		$transients_obj->init();
+	}
+
+	/**
+	 * Show a hint for Pro in the extension table.
+	 *
+	 * @return void
+	 */
+	public function add_extension_table_buttons(): void {
+		$false = false;
+		/**
+		 * Hide the additional buttons for reviews or pro-version.
+		 *
+		 * @since 3.0.0 Available since 3.0.0
+		 *
+		 * @param bool $false Set true to hide the buttons.
+		 */
+		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
+			return;
+		}
+
+		// show the hint for Pro plugin.
+		echo '<a href="' . esc_url( Helper::get_pro_url() ) .'" class="page-title-action" target="_blank">' . esc_html__( 'Use more then 60 extensions in Personio Integration Pro', 'personio-integration-light' ) . '</a>';
 	}
 }
