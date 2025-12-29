@@ -84,7 +84,7 @@ class Compatibilities {
 	}
 
 	/**
-	 * Return list of compatibility-checks as objects.
+	 * Return the list of compatibilities as objects.
 	 *
 	 * @return array<Compatibilities_Base>
 	 */
@@ -105,7 +105,7 @@ class Compatibilities {
 			// get the object.
 			$obj = $class_name();
 
-			// bail if object is not a Compatibilities_Base.
+			// bail if this object is not a Compatibilities_Base.
 			if ( ! $obj instanceof Compatibilities_Base ) {
 				continue;
 			}
@@ -136,6 +136,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Everest_Forms',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Fluent_Forms',
 			'PersonioIntegrationLight\Plugin\Compatibilities\GeneratePressPremium',
+			'PersonioIntegrationLight\Plugin\Compatibilities\JetFormBuilder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Loco',
 			'PersonioIntegrationLight\Plugin\Compatibilities\MetForm',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Ninja_Forms',
@@ -154,6 +155,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpBakery',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Wpml',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WPMultilang',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Ws_Form',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Yoast',
 		);
 
