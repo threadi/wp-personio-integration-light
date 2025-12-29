@@ -6,6 +6,7 @@
 
 - Added automatic PHP compatibility check before each release
 - Added some more hooks
+- Added check for used language and show a hint if we have no translations for it
 
 ### Changed
 

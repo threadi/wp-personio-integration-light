@@ -79,13 +79,14 @@ class Admin {
 		// initialize the license handler.
 		License::get_instance()->init();
 
-		// show hint for Pro-version.
+		// show hint for the Pro-version.
 		add_filter( 'personio_integration_admin_show_pro_hint', array( $this, 'get_pro_hint' ), 10, 2 );
 		add_filter( 'admin_body_class', array( $this, 'add_body_classes' ) );
 		add_action( 'personio_integration_light_extension_table_buttons', array( $this, 'add_extension_table_buttons' ) );
 
 		// add our own checks in wp-admin.
 		add_action( 'admin_init', array( $this, 'check_config' ) );
+		add_action( 'admin_init', array( $this, 'check_language' ) );
 		add_action( 'admin_init', array( $this, 'show_review_hint' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
 		add_action( 'init', array( $this, 'configure_transients' ), 5 );
@@ -952,7 +953,7 @@ class Admin {
 			return;
 		}
 
-		// show hint for necessary configuration to restrict access to application files.
+		// show hint for the necessary configuration to restrict access to application files.
 		$transient_obj = Transients::get_instance()->add(); // @phpstan-ignore deadCode.unreachable
 		$transient_obj->set_type( 'error' );
 		$transient_obj->set_name( 'personio_integration_light_php_hint' );
@@ -962,7 +963,7 @@ class Admin {
 	}
 
 	/**
-	 * Set base configuration for each transient.
+	 * Set the base configuration for each transient.
 	 *
 	 * @return void
 	 */
@@ -1005,5 +1006,30 @@ class Admin {
 
 		// show the hint for Pro plugin.
 		echo '<a href="' . esc_url( Helper::get_pro_url() ) . '" class="page-title-action" target="_blank">' . esc_html__( 'Use more then 60 extensions in Personio Integration Pro', 'personio-integration-light' ) . '</a>';
+	}
+
+	/**
+	 * Check the language and show hint if we have no translations for it.
+	 *
+	 * @return void
+	 */
+	public function check_language(): void {
+		// bail if englisch.
+		if( get_locale() === 'en_US' ) {
+			return;
+		}
+
+		// bail if 'Provides recruiting handling for Personio.' is translated.
+		if( __( 'Provides recruiting handling for Personio.', 'personio-integration-light' ) !== 'Provides recruiting handling for Personio.' ) {
+			return;
+		}
+
+		// show hint that the plugin could be translated in the actually used language.
+		$transient_obj = Transients::get_instance()->add();
+		$transient_obj->set_type( 'hint' );
+		$transient_obj->set_name( 'personio_integration_light_translatable' );
+		$transient_obj->set_dismissible_days( 180 );
+		$transient_obj->set_message( sprintf( __( '<strong>You are using a language in your WordPress that has not yet been translated for the plugin "Personio Integration Light".</strong> You are welcome to help by providing translations for your language <a href="%1$s" target="_blank">here</a>. If you have any questions, please feel free to contact us <a href="%2$s" target="_blank">in the support forum</a>.', 'personio-integration-light' ), 'https://translate.wordpress.org/projects/wp-plugins/personio-integration-light/', Helper::get_plugin_support_url() ) );
+		$transient_obj->save();
 	}
 }
