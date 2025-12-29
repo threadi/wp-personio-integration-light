@@ -12,6 +12,7 @@
 - Changed the hook name "position_integration_position_title" to "personio_integration_light_position_title"
   for compatibility with WCS
 - Changed styling for select fields in blocks to the default styling by Block Editor
+- Use minified blocks.css for classic themes which are using the block editor
 - Updated dependencies
 
 ### Fixed

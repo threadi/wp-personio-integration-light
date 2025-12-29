@@ -769,7 +769,7 @@ class Templates {
 		// -> if user sets filter in frontend.
 		if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ) {
 			$value = sanitize_text_field( wp_unslash( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) );
-			if( filter_var( $value, FILTER_VALIDATE_INT ) ) {
+			if ( filter_var( $value, FILTER_VALIDATE_INT ) ) {
 				$value = absint( $value );
 			}
 		}

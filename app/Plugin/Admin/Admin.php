@@ -1004,6 +1004,6 @@ class Admin {
 		}
 
 		// show the hint for Pro plugin.
-		echo '<a href="' . esc_url( Helper::get_pro_url() ) .'" class="page-title-action" target="_blank">' . esc_html__( 'Use more then 60 extensions in Personio Integration Pro', 'personio-integration-light' ) . '</a>';
+		echo '<a href="' . esc_url( Helper::get_pro_url() ) . '" class="page-title-action" target="_blank">' . esc_html__( 'Use more then 60 extensions in Personio Integration Pro', 'personio-integration-light' ) . '</a>';
 	}
 }

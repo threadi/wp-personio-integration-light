@@ -138,27 +138,34 @@ class Init {
 	}
 
 	/**
-	 * Add own CSS and JS for frontend.
+	 * Add own CSS and JS for the frontend.
 	 *
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
 	public function add_styles_frontend(): void {
 		/**
-		 * Load listing-style from Block "list" if FSE-theme is NOT used.
+		 * Load listing-style from Block "list" if NO FSE theme is used.
 		 */
 		if ( ! Helper::theme_is_fse_theme() ) {
+			$css_file = 'css/blocks.css';
+			// if debug-mode is not enabled, use a minified file.
+			if ( ! defined( 'WP_DEBUG' ) || ( defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
+				$css_file = str_replace( '.css', '.min.css', $css_file );
+			}
+
+			// enqueue the css-file.
 			wp_enqueue_style(
 				'personio-integration',
-				Helper::get_plugin_url() . 'css/blocks.css',
+				Helper::get_plugin_url() . $css_file,
 				array(),
-				Helper::get_file_version( Helper::get_plugin_path() . 'css/blocks.css' )
+				Helper::get_file_version( Helper::get_plugin_path() . $css_file )
 			);
 		}
 	}
 
 	/**
-	 * Add link to plugin-settings in plugin-list.
+	 * Add a link to plugin-settings in the plugin-list.
 	 *
 	 * @param array<int,string> $links List of links.
 	 * @return array<int,string>
