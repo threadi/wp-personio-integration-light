@@ -1911,7 +1911,7 @@ class PersonioPosition extends Post_Type {
 			array(
 				'name'        => 'gutenberg',
 				'label'       => __( 'Block Editor', 'personio-integration-light' ),
-				'description' => __( 'You will have 18 blocks at your disposal, including Google Maps, more filter options, and radius search.', 'personio-integration-light' ),
+				'description' => __( 'Use 18 blocks, including Google Maps, more filter options, and radius search.', 'personio-integration-light' ),
 				'category'    => 'pagebuilder',
 			),
 			array(
