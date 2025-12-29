@@ -9,3 +9,12 @@ npm.path=
 
 # set path to composer-binary
 composer.path=
+
+# set url for license-checks
+url.license=
+
+# set url for update-checks
+url.update=
+
+# set url for costs requests
+url.costs=

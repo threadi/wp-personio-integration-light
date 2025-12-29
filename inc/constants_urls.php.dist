@@ -1,0 +1,21 @@
+<?php
+/**
+ * File which holds the generated constants this plugin is using.
+ *
+ * @package personio-integration-light
+ */
+
+/**
+ * License-URL.
+ */
+const WP_PERSONIO_INTEGRATION_LIGHT_LICENCE_URL = '@@UrlLicense@@';
+
+/**
+ * Update-URL.
+ */
+const WP_PERSONIO_INTEGRATION_PRO_UPDATE_URL = '@@UrlUpdate@@';
+
+/**
+ * Costs-URL.
+ */
+const WP_PERSONIO_INTEGRATION_LIGHT_COSTS_URL = '@@UrlCosts@@';

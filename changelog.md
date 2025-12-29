@@ -14,6 +14,7 @@
   for compatibility with WCS
 - Changed styling for select fields in blocks to the default styling by Block Editor
 - Use minified blocks.css for classic themes which are using the block editor
+- Optimized release generation with dynamic URLs
 - Updated dependencies
 
 ### Fixed

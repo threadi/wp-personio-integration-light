@@ -28,6 +28,7 @@ parameters:
     - personio-integration-light.php
     - uninstall.php
     - inc/constants.php
+    - inc/constants_urls.php
   excludePaths:
      - app/Dependencies/*
   scanFiles:
@@ -36,3 +37,5 @@ parameters:
      - %rootDir%/../../php-stubs/wp-cli-stubs/wp-cli-commands-stubs.php
      - %rootDir%/../../php-stubs/wp-cli-stubs/wp-cli-i18n-stubs.php
      - %rootDir%/../../php-stubs/wp-cli-stubs/wp-cli-tools-stubs.php
+  earlyTerminatingFunctionCalls:
+     - wp_send_json

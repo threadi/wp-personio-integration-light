@@ -1009,18 +1009,18 @@ class Admin {
 	}
 
 	/**
-	 * Check the language and show hint if we have no translations for it.
+	 * Check the language and show a hint if we have no translations for it.
 	 *
 	 * @return void
 	 */
 	public function check_language(): void {
 		// bail if englisch.
-		if( get_locale() === 'en_US' ) {
+		if ( get_locale() === 'en_US' ) {
 			return;
 		}
 
 		// bail if 'Provides recruiting handling for Personio.' is translated.
-		if( __( 'Provides recruiting handling for Personio.', 'personio-integration-light' ) !== 'Provides recruiting handling for Personio.' ) {
+		if ( __( 'Provides recruiting handling for Personio.', 'personio-integration-light' ) !== 'Provides recruiting handling for Personio.' ) {
 			return;
 		}
 
@@ -1029,6 +1029,7 @@ class Admin {
 		$transient_obj->set_type( 'hint' );
 		$transient_obj->set_name( 'personio_integration_light_translatable' );
 		$transient_obj->set_dismissible_days( 180 );
+		/* translators: %1$s and %2$s will be replaced by URLs. */
 		$transient_obj->set_message( sprintf( __( '<strong>You are using a language in your WordPress that has not yet been translated for the plugin "Personio Integration Light".</strong> You are welcome to help by providing translations for your language <a href="%1$s" target="_blank">here</a>. If you have any questions, please feel free to contact us <a href="%2$s" target="_blank">in the support forum</a>.', 'personio-integration-light' ), 'https://translate.wordpress.org/projects/wp-plugins/personio-integration-light/', Helper::get_plugin_support_url() ) );
 		$transient_obj->save();
 	}
