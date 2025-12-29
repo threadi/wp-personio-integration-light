@@ -19,6 +19,7 @@
 
 ### Fixed
 
+- Fixed wrong options for listing template in classic themes
 - Fixed multiple typos in code comments
 
 ## [5.0.6] - 22.12.2025
