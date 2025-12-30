@@ -39,7 +39,7 @@ class Position_Extension extends Position {
 		// get the title.
 		$title = get_post_meta( $this->get_id(), 'pi_' . $this->get_extension_name() . '_title', true );
 
-		// bail if title could not be loaded.
+		// bail if the title could not be loaded.
 		if ( ! is_string( $title ) ) {
 			return '';
 		}
@@ -89,7 +89,7 @@ class Position_Extension extends Position {
 	/**
 	 * Set id of chosen image.
 	 *
-	 * @param int $attachment_id ID of the attachment used as image.
+	 * @param int $attachment_id ID of the attachment used as an image.
 	 *
 	 * @return void
 	 */

@@ -122,32 +122,24 @@ export default function Edit( object ) {
 		<div { ...useBlockProps() }>
 			<InspectorControls>
 				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
-          <div className="wp-personio-integration-selectcontrol">
-            {
-              <SelectControl
-                __next40pxDefaultSize
-                __nextHasNoMarginBottom
-                label={ __('Choose template', 'personio-integration-light') }
-                value={ object.attributes.template }
-                options={ templates }
-                multiple={ false }
-                onChange={ value => onChangeTemplate(value, object) }
-              />
-            }
-          </div>
-					<div className="wp-personio-integration-selectcontrol-multiple">
-						{
-							<SelectControl
-                                __next40pxDefaultSize
-                                __nextHasNoMarginBottom
-								label={__('Choose details', 'personio-integration-light')}
-								value={object.attributes.excerptTemplates}
-								options={ personioTaxonomies }
-								multiple={true}
-								onChange={value => onChangeExcerptTemplates(value, object)}
-							/>
-						}
-					</div>
+                <SelectControl
+                  __next40pxDefaultSize
+                  __nextHasNoMarginBottom
+                  label={ __('Choose template', 'personio-integration-light') }
+                  value={ object.attributes.template }
+                  options={ templates }
+                  multiple={ false }
+                  onChange={ value => onChangeTemplate(value, object) }
+                />
+                <SelectControl
+                    __next40pxDefaultSize
+                    __nextHasNoMarginBottom
+                    label={__('Choose details', 'personio-integration-light')}
+                    value={object.attributes.excerptTemplates}
+                    options={ personioTaxonomies }
+                    multiple={true}
+                    onChange={value => onChangeExcerptTemplates(value, object)}
+                />
           {object.attributes.template === 'list' && <div>
             <ToggleControl
               __nextHasNoMarginBottom

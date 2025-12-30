@@ -138,22 +138,6 @@ const WP_PERSONIO_INTEGRATION_LIGHT_HASH = 'personioIntegrationHash';
 const WP_PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM = 'personioIntegrationHashSodium';
 
 /**
- * License-URL.
- *
- * TODO add during release build.
+ * Include URLs-file.
  */
-const WP_PERSONIO_INTEGRATION_LIGHT_LICENCE_URL = 'https://laolaweb.com/wp-json/lwlicences/personio-integration/';
-
-/**
- * Update-URL.
- *
- * TODO add during release build.
- */
-const WP_PERSONIO_INTEGRATION_PRO_UPDATE_URL = 'https://laolaweb.com/wp-json/lwreleases/personio-integration/';
-
-/**
- * Costs-URL.
- *
- * TODO add during release build.
- */
-const WP_PERSONIO_INTEGRATION_LIGHT_COSTS_URL = 'https://laolaweb.com/wp-json/lwlicences/personio-integration/costs';
+require_once 'constants_urls.php';

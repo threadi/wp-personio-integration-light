@@ -23,7 +23,7 @@ use WP_Query;
 class Positions {
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Positions
 	 */
@@ -74,9 +74,9 @@ class Positions {
 	public function init(): void {}
 
 	/**
-	 * Return Position object of given id.
+	 * Return Position object of the given ID.
 	 *
-	 * @param int    $post_id The ID of the post object.
+	 * @param int    $post_id The ID of the post-object.
 	 * @param string $language_code The language-code to use for contents of the requested position (optional).
 	 *
 	 * @return Position
@@ -101,7 +101,8 @@ class Positions {
 	}
 
 	/**
-	 * Get positions from database as Position-objects.
+	 * Return positions from the database as Position-objects.
+	 *
 	 * Optionally limited by a number.
 	 *
 	 * @param int                 $limit The limit, defaults to -1 for default-limiting.
@@ -207,7 +208,7 @@ class Positions {
 			Log::get_instance()->add( __( 'Query-Debug', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $query ) . '</code><br><br>' . __( 'Result', 'personio-integration-light' ) . ': <code>' . wp_json_encode( $this->get_results() ) . '</code><br><br>' . __( 'Used URL', 'personio-integration-light' ) . ': ' . esc_url( Helper::get_current_url() ), 'info', 'system' );
 		}
 
-		// get the grouped taxonomy name from given slug.
+		// get the grouped taxonomy name from the given slug.
 		$grouped_taxonomy_name = '';
 		if ( ! empty( $parameter_to_add['groupby'] ) ) {
 			$grouped_taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
@@ -238,7 +239,7 @@ class Positions {
 				$position_object->set_lang( $parameter_to_add['lang'] );
 			}
 
-			// consider grouping of entries in list.
+			// consider grouping of entries in the list.
 			if ( ! empty( $grouped_taxonomy_name ) ) {
 				$resulting_position_list[ $position_object->get_term_by_field( $grouped_taxonomy_name, 'name' ) ] = $position_object;
 			} else {
@@ -276,7 +277,7 @@ class Positions {
 	}
 
 	/**
-	 * Get a single position by its PersonioID.
+	 * Return a single position by its PersonioID.
 	 *
 	 * @param string $personioid The PersonioID.
 	 * @return Position|null
@@ -328,7 +329,7 @@ class Positions {
 	 * @return void
 	 */
 	public function trigger_reimport_hint(): void {
-		// create re-import dialog.
+		// create the re-import dialog.
 		$dialog = array(
 			'title'   => __( 'Re-Import positions', 'personio-integration-light' ),
 			'texts'   => array(

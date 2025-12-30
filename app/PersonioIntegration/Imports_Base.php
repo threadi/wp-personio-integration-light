@@ -37,13 +37,6 @@ class Imports_Base extends Extensions_Base {
 	protected bool|Bar|NoOp $cli_progress = false;
 
 	/**
-	 * Name of the settings-page where the tab resides.
-	 *
-	 * @var string
-	 */
-	protected string $setting_page = 'personioPositions';
-
-	/**
 	 * Name if the setting tab where the setting field is visible.
 	 *
 	 * @var string
@@ -51,7 +44,7 @@ class Imports_Base extends Extensions_Base {
 	protected string $setting_tab = 'import';
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Imports_Base
 	 */
@@ -94,7 +87,7 @@ class Imports_Base extends Extensions_Base {
 	public function run(): void {}
 
 	/**
-	 * Add an error with given text to the list of errors.
+	 * Add an error with the given text to the list of errors.
 	 *
 	 * @param string|WP_Error $text The error text or WP_Error object.
 	 *
@@ -136,7 +129,7 @@ class Imports_Base extends Extensions_Base {
 	 *
 	 * Logs resulting errors.
 	 *
-	 * Send list of errors via email to configured admin-e-mail if debug is not enabled.
+	 * Send a list of errors via email to the configured admin-e-mail if debug is not enabled.
 	 *
 	 * @return void
 	 */
@@ -179,7 +172,7 @@ class Imports_Base extends Extensions_Base {
 			\WP_CLI::error( wp_json_encode( $message ) );
 		}
 
-		// set errors in list for response.
+		// set errors in the list for response.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, $message );
 
 		// create the email object.
@@ -240,7 +233,7 @@ class Imports_Base extends Extensions_Base {
 	}
 
 	/**
-	 * Set max count for the running import.
+	 * Set a maximum count for the running import.
 	 *
 	 * @param int $max_count New count value.
 	 *
@@ -250,7 +243,7 @@ class Imports_Base extends Extensions_Base {
 		// set it in DB for frontend.
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_MAX, $max_count );
 
-		// set it in object for WP CLI.
+		// set it in an object for WP CLI.
 		$this->cli_progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Get positions from Personio by language', $this->get_import_max_count() ) : false;
 
 		/**
@@ -273,7 +266,7 @@ class Imports_Base extends Extensions_Base {
 	}
 
 	/**
-	 * Return a complete position object with data from source object.
+	 * Return a complete position object with data from a source object.
 	 *
 	 * @param object $xml_object The source object.
 	 * @param string $language_name The used language.
@@ -317,7 +310,7 @@ class Imports_Base extends Extensions_Base {
 
 			// add hint.
 			/* translators: %1$s will be replaced by a URL. */
-			$dialog['texts'][] = '<p><strong>' . sprintf( __( 'There is no import extension for Personio positions enabled!', 'personio-integration-light' ) . '</strong> ' . __( 'Please <a href="%1$s">go to the list of import extensions</a> and enable one to import and update your positions in your website.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link( 'imports' ) ) ) . '</p>';
+			$dialog['texts'][] = '<p><strong>' . sprintf( __( 'There is no import extension for Personio positions enabled!', 'personio-integration-light' ) . '</strong> ' . __( 'Please <a href="%1$s">go to the list of import extensions</a> and enable one to import and update your positions on your website.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link( 'imports' ) ) ) . '</p>';
 
 			// return the dialog.
 			return $dialog;

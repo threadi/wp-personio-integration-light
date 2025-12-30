@@ -61,7 +61,7 @@ class Widgets {
 	}
 
 	/**
-	 * Return list of supported widgets.
+	 * Return the list of supported widgets.
 	 *
 	 * @param array<int,string> $extensions List of extensions.
 	 *
@@ -72,7 +72,7 @@ class Widgets {
 	}
 
 	/**
-	 * Return list of light plugin widgets.
+	 * Return the list of light plugin widgets.
 	 *
 	 * @return array<int,string>
 	 */
@@ -89,7 +89,7 @@ class Widgets {
 	}
 
 	/**
-	 * Return list of widgets as object.
+	 * Return the list of widgets as an object.
 	 *
 	 * @return array<int,Widget_Base>
 	 */
@@ -99,10 +99,10 @@ class Widgets {
 
 		// add the widgets.
 		foreach ( $this->add_widgets( array() ) as $widget_class_name ) {
-			// create classname.
+			// create the classname.
 			$classname = $widget_class_name . '::get_instance';
 
-			// bail if classname is not callable.
+			// bail if the classname is not callable.
 			if ( ! is_callable( $classname ) ) {
 				continue;
 			}
@@ -110,12 +110,12 @@ class Widgets {
 			// get the object.
 			$obj = $classname();
 
-			// bail if object is not the handler base.
+			// bail if an object is not the handler base.
 			if ( ! $obj instanceof Widget_Base ) {
 				continue;
 			}
 
-			// add object to the list.
+			// add an object to the list.
 			$list[] = $obj;
 		}
 
@@ -124,7 +124,7 @@ class Widgets {
 	}
 
 	/**
-	 * Add pro-categories for extension table.
+	 * Add pro-categories for the extension table.
 	 *
 	 * @param array<string,string> $categories List of categories.
 	 *

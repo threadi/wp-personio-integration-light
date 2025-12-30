@@ -122,19 +122,15 @@ export default function Edit( object ) {
 		<div { ...useBlockProps() }>
 			<InspectorControls>
 				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
-					<div className="wp-personio-integration-selectcontrol">
-						{
-							<SelectControl
-                __next40pxDefaultSize
-                __nextHasNoMarginBottom
-								label={ __('Choose template', 'personio-integration-light') }
-								value={ object.attributes.template }
-								options={ archive_templates }
-								multiple={ false }
-								onChange={ value => onChangeTemplate(value, object) }
-							/>
-						}
-					</div>
+					<SelectControl
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						label={ __('Choose template', 'personio-integration-light') }
+						value={ object.attributes.template }
+						options={ archive_templates }
+						multiple={ false }
+						onChange={ value => onChangeTemplate(value, object) }
+					/>
 					<NumberControl
             __next40pxDefaultSize
 						label={__('Amount', 'personio-integration-light')}
@@ -189,27 +185,23 @@ export default function Edit( object ) {
 						onChange={ value => onChangeLinkingTitle( value, object ) }
 					/>
 					<ToggleControl
-            __nextHasNoMarginBottom
+						__nextHasNoMarginBottom
 						label={__('Show excerpt', 'personio-integration-light')}
 						checked={ object.attributes.showExcerpt }
 						onChange={ value => onChangeExcerptVisibility( value, object ) }
 					/>
-					<div className="wp-personio-integration-selectcontrol-multiple">
-						{
-							<SelectControl
-                __next40pxDefaultSize
-                __nextHasNoMarginBottom
-								label={__('Choose details', 'personio-integration-light')}
-								value={object.attributes.excerptTemplates}
-								options={ personioTaxonomies }
-								multiple={true}
-								disabled={ !object.attributes.showExcerpt }
-								onChange={value => onChangeExcerptTemplates(value, object)}
-							/>
-						}
-					</div>
+					<SelectControl
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						label={__('Choose details', 'personio-integration-light')}
+						value={object.attributes.excerptTemplates}
+						options={ personioTaxonomies }
+						multiple={true}
+						disabled={ !object.attributes.showExcerpt }
+						onChange={value => onChangeExcerptTemplates(value, object)}
+					/>
 					<ToggleControl
-            __nextHasNoMarginBottom
+						__nextHasNoMarginBottom
 						label={__('View content', 'personio-integration-light')}
 						checked={ object.attributes.showContent }
 						onChange={ value => onChangeContentVisibility( value, object )  }

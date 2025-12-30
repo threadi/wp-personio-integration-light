@@ -1,6 +1,6 @@
 <?php
 /**
- * File with main handler for all emails this plugin will generate.
+ * File with the main handler for all emails this plugin will generate.
  *
  * @package personio-integration-light
  */
@@ -62,10 +62,10 @@ class Emails {
 
 		// use our own hooks.
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_emails_help' ), 80 );
-		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
+		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_category' ) );
 		add_action( 'personio_integration_import_finished', array( $this, 'trigger_new_positions' ), 10, 0 );
 		add_action( 'personio_integration_import_finished', array( $this, 'trigger_deleted_positions' ), 10, 0 );
-		add_filter( 'personio_integration_schedules', array( $this, 'add_schedules' ) );
+		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 
 		// use actions.
 		add_action( 'admin_action_personioPositionsEmailTest', array( $this, 'send_test_email_by_request' ) );
@@ -83,10 +83,10 @@ class Emails {
 		// get settings object.
 		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
 
-		// get main settings page.
+		// get the main settings page.
 		$settings_page = $settings_obj->get_page( 'personioPositions' );
 
-		// bail if page does not exist.
+		// bail if the page does not exist.
 		if ( ! $settings_page instanceof Page ) {
 			return;
 		}
@@ -95,7 +95,7 @@ class Emails {
 		$email_tab = $settings_page->add_tab( 'emails', 80 );
 		$email_tab->set_title( __( 'Emails', 'personio-integration-light' ) );
 
-		// add setting for each supported trigger.
+		// add a setting for each supported trigger.
 		foreach ( $this->get_email_trigger() as $email_class_name ) {
 			// bail if class does not exist.
 			if ( ! class_exists( $email_class_name ) ) {
@@ -105,7 +105,7 @@ class Emails {
 			// get the object.
 			$obj = new $email_class_name();
 
-			// bail if object is not Email_Base.
+			// bail if an object is not Email_Base.
 			if ( ! $obj instanceof Email_Base ) {
 				continue;
 			}
@@ -116,7 +116,7 @@ class Emails {
 	}
 
 	/**
-	 * Return list of all available email trigger.
+	 * Return a list of all available email triggers.
 	 *
 	 * @return array<int,string>
 	 */
@@ -145,7 +145,7 @@ class Emails {
 	 * @return Email_Base|false
 	 */
 	private function get_email_trigger_by_name( string $name ): Email_Base|false {
-		// add setting for each supported trigger.
+		// add a setting for each supported trigger.
 		foreach ( $this->get_email_trigger() as $email_class_name ) {
 			// bail if class does not exist.
 			if ( ! class_exists( $email_class_name ) ) {
@@ -155,12 +155,12 @@ class Emails {
 			// get the object.
 			$obj = new $email_class_name();
 
-			// bail if object is not Email_Base.
+			// bail if an object is not Email_Base.
 			if ( ! $obj instanceof Email_Base ) {
 				continue;
 			}
 
-			// bail if name does not match.
+			// bail if the name does not match.
 			if ( $name !== $obj->get_name() ) {
 				continue;
 			}
@@ -173,17 +173,17 @@ class Emails {
 	}
 
 	/**
-	 * Add email category
+	 * Add the log category for emails.
 	 *
 	 * @param array<string,string> $categories List of categories.
 	 *
 	 * @return array<string,string>
 	 */
-	public function add_log_categories( array $categories ): array {
+	public function add_log_category( array $categories ): array {
 		// add categories we need for our settings.
 		$categories['emails'] = __( 'Emails', 'personio-integration-light' );
 
-		// return resulting list.
+		// return the resulting list.
 		return $categories;
 	}
 
@@ -251,7 +251,7 @@ class Emails {
 			'content' => $content,
 		);
 
-		// return resulting list.
+		// return the resulting list.
 		return $help_list;
 	}
 
@@ -262,11 +262,11 @@ class Emails {
 	 *
 	 * @return array<string>
 	 */
-	public function add_schedules( array $list_of_schedules ): array {
-		// add the schedule-objekt, if report is enabled.
+	public function add_schedule( array $list_of_schedules ): array {
+		// add the schedule-object if the report is enabled.
 		$list_of_schedules[] = '\PersonioIntegrationLight\Plugin\Schedules\Report';
 
-		// return resulting list.
+		// return the resulting list.
 		return $list_of_schedules;
 	}
 
@@ -332,12 +332,12 @@ class Emails {
 			return $args;
 		}
 
-		// bail if header "X-Mailer" is not set.
+		// bail if the header "X-Mailer" is not set.
 		if ( ! isset( $args['headers']['X-Mailer'] ) ) {
 			return $args;
 		}
 
-		// bail if header "X-Mailer" is not our plugin.
+		// bail if the header "X-Mailer" is not our plugin.
 		if ( Helper::get_plugin_name() !== $args['headers']['X-Mailer'] ) {
 			return $args;
 		}

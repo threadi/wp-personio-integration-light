@@ -1,6 +1,6 @@
 <?php
 /**
- * File with handler for our own intervals.
+ * File with a handler for our own intervals.
  *
  * Hint: we use our own intervals to prevent intervals of other plugins from being used.
  * This would be an unnecessary dependency that leads to missing execution of our own schedules.
@@ -57,7 +57,7 @@ class Intervals {
 	}
 
 	/**
-	 * Return list of our own intervals.
+	 * Return the list of our own intervals.
 	 *
 	 * @return array<int,string>
 	 */
@@ -99,7 +99,7 @@ class Intervals {
 			// get the object.
 			$obj = $class_name();
 
-			// bail if the object is not a Interval_Base.
+			// bail if the object is not an "Interval_Base" object.
 			if ( ! $obj instanceof Interval_Base ) {
 				continue;
 			}
@@ -132,14 +132,14 @@ class Intervals {
 	}
 
 	/**
-	 * Add our own intervals to the WordPress-list of intervals.
+	 * Add our own intervals to the WordPress list of intervals.
 	 *
 	 * @param array<string,array<string,mixed>> $intervals List of intervals.
 	 *
 	 * @return array<string,array<string,mixed>>
 	 */
 	public function add_intervals( array $intervals ): array {
-		// loop through our own intervals and add them to the list..
+		// loop through our own intervals and add them to the list.
 		foreach ( $this->get_intervals_as_objects() as $obj ) {
 			$intervals[ $this->get_prefix() . $obj->get_name() ] = array(
 				'interval' => $obj->get_time(),
@@ -147,7 +147,7 @@ class Intervals {
 			);
 		}
 
-		// return resulting list of intervals.
+		// return the resulting list of intervals.
 		return $intervals;
 	}
 

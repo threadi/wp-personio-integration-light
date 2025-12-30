@@ -727,7 +727,17 @@ class Templates {
 			}
 		}
 
-		// bail if no term as filter is available.
+		/**
+		 * Filter whether we found a taxonomy to use for the filter.
+		 *
+		 * @since 5.1.0 Available since 5.1.0.
+		 * @param string $taxonomy_to_use The taxonomy to use for the filter.
+		 * @param string $filter The filter slug.
+		 * @param array $attributes List of attributes for the filter.
+		 */
+		$taxonomy_to_use = apply_filters( 'personio_integration_light_filter_taxonomy_to_use', $taxonomy_to_use, $filter, $attributes );
+
+		// bail if no taxonomy was found.
 		if ( '' === $taxonomy_to_use ) {
 			return;
 		}
@@ -750,15 +760,18 @@ class Templates {
 		$terms = apply_filters( 'personio_integration_light_filter_terms', $terms, $taxonomy_to_use );
 
 		// bail if no terms are collected.
-		if ( empty( $terms ) ) {
+		if ( empty( $terms ) || $terms instanceof WP_Error ) {
 			return;
 		}
 
 		// get the value.
 		$value = 0;
-		// -> if filter is set by user in frontend.
+		// -> if user sets filter in frontend.
 		if ( ! empty( $GLOBALS['wp']->query_vars['personiofilter'] ) && ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ) {
-			$value = absint( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] );
+			$value = sanitize_text_field( wp_unslash( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) );
+			if ( filter_var( $value, FILTER_VALIDATE_INT ) ) {
+				$value = absint( $value );
+			}
 		}
 
 		// get name.

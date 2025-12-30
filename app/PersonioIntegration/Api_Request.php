@@ -18,7 +18,7 @@ use PersonioIntegrationLight\Plugin\Db;
 use WP_Error;
 
 /**
- * Send single request with given post-data.
+ * Send a single request with given post-data.
  * Used for each request to Personio API.
  */
 class Api_Request {
@@ -107,9 +107,9 @@ class Api_Request {
 	}
 
 	/**
-	 * Set post data for the request.
+	 * Set post-data for the request.
 	 *
-	 * @param string|array<string,mixed> $post_data The post-data as JSON- or boundary-string OR as array.
+	 * @param string|array<string,mixed> $post_data The post-data as JSON- or boundary-string OR as an array.
 	 * @return void
 	 */
 	public function set_post_data( string|array $post_data ): void {
@@ -149,7 +149,7 @@ class Api_Request {
 			ARRAY_A
 		);
 		if ( count( $results ) >= 150 ) {
-			// log this as error.
+			// log this as an error.
 			$this->add_error( __( 'More than 150 requests were sent to Personio in the last 90 seconds - we will try it later to get around the limitation of Personio.', 'personio-integration-light' ) );
 
 			// do nothing more.
@@ -183,7 +183,7 @@ class Api_Request {
 		// set response initiale to false.
 		$response = false;
 
-		// send request and get the result-object.
+		// send the request and get the result-object.
 		switch ( $this->get_method() ) {
 			case 'GET':
 				$response = wp_remote_get( $this->get_url(), $args );
@@ -193,9 +193,9 @@ class Api_Request {
 				break;
 		}
 
-		// bail if response is false.
+		// bail if the response is false.
 		if ( false === $response ) {
-			// add event in log.
+			// add event in the log.
 			$this->add_error( __( 'Got not response from Personio API.', 'personio-integration-light' ) );
 
 			// return false as request resulted in unspecific http error.
@@ -204,7 +204,7 @@ class Api_Request {
 
 		// bail on error.
 		if ( is_wp_error( $response ) ) {
-			// add event in log.
+			// add event in the log.
 			$this->add_error( __( 'The request to the Personio API ended in an error: ', 'personio-integration-light' ) . Helper::get_json( $response ) );
 
 			// return false as request resulted in unspecific http error.
@@ -240,12 +240,12 @@ class Api_Request {
 		$log_text .= '<br><br>' . __( 'Response:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $this->get_response() ) . '</code>';
 		Log::get_instance()->add( $log_text, 'info', 'api', $this->get_md5() );
 
-		// return true as request itself was successful.
+		// return true as the request itself was successful.
 		return true;
 	}
 
 	/**
-	 * Return response of the request.
+	 * Return the response we got from the request.
 	 *
 	 * @return string
 	 */
@@ -254,7 +254,7 @@ class Api_Request {
 	}
 
 	/**
-	 * Set response of the request.
+	 * Set the response of the request.
 	 *
 	 * @param string $response The response.
 	 *
@@ -347,7 +347,7 @@ class Api_Request {
 	}
 
 	/**
-	 * Add an error with given text to the list of errors.
+	 * Add an error with the given text to the list of errors.
 	 *
 	 * @param string $text The error text.
 	 *

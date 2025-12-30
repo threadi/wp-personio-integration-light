@@ -85,7 +85,7 @@ class Taxonomies {
 	 * @noinspection PhpUnused
 	 */
 	public function create_defaults( array $callback = array() ): void {
-		// disable taxonomy-counting for more speed.
+		// disable taxonomy-counting for higher speed.
 		wp_defer_term_counting( true );
 
 		// set integer for counter.
@@ -96,7 +96,7 @@ class Taxonomies {
 			// add default terms to taxonomy if they do not exist (only in admin or via CLI).
 			$taxonomy_obj = get_taxonomy( $taxonomy_name );
 
-			// bail if object could not be loaded.
+			// bail if an object could not be loaded.
 			if ( ! $taxonomy_obj instanceof WP_Taxonomy ) {
 				continue;
 			}
@@ -114,7 +114,7 @@ class Taxonomies {
 				// count.
 				++$i;
 
-				// flush cache every 100 items for more speed.
+				// flush cache every 100 items for higher speed.
 				if ( 0 === $i % 100 ) {
 					wp_cache_flush();
 				}
@@ -273,7 +273,7 @@ class Taxonomies {
 		);
 
 		/**
-		 * Filter all taxonomies and return the resulting list as array.
+		 * Filter all taxonomies and return the resulting list as an array.
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *
@@ -291,7 +291,7 @@ class Taxonomies {
 	 * @return WP_Term
 	 */
 	public function translate( WP_Term $_term, string $taxonomy ): WP_Term {
-		// bail if requested taxonomy is the language taxonomy.
+		// bail if the requested taxonomy is the language taxonomy.
 		if ( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $taxonomy ) {
 			return $_term;
 		}
@@ -445,7 +445,7 @@ class Taxonomies {
 		// get actual locale.
 		$locale = get_locale();
 
-		// switch to requested language.
+		// switch to the requested language.
 		if ( ! is_admin() ) {
 			// if no language is requested, use the current language.
 			if ( empty( $language_code ) ) {
@@ -474,7 +474,7 @@ class Taxonomies {
 			switch_to_locale( $locale );
 		}
 
-		// if the requested taxonomy does not exist in the array add it as empty setting.
+		// if the requested taxonomy does not exist in the array, add it as an empty setting.
 		if ( empty( $array[ $taxonomy ] ) ) {
 			$array[ $taxonomy ] = array();
 		}
@@ -524,12 +524,12 @@ class Taxonomies {
 	/**
 	 * Convert term-name to term-id if it is set in shortcode-attributes and configure shortcode-attribute.
 	 *
-	 * @param array<string,mixed> $settings List of settings for a shortcode with 3 parts: defaults, settings & attributes.
+	 * @param array<string,mixed> $settings List of settings for a shortcode with 3 parts: defaults, settings and attributes.
 	 *
 	 * @return array<string,mixed>
 	 */
 	public function check_taxonomies( array $settings ): array {
-		// check each taxonomy if it is used as restriction for this list.
+		// check each taxonomy if it is used as a restriction for this list.
 		foreach ( $this->get_taxonomies() as $taxonomy_name => $taxonomy ) {
 			$slug = strtolower( $taxonomy['slug'] );
 			if ( ! empty( $settings['attributes'][ $slug ] ) ) {
@@ -561,7 +561,7 @@ class Taxonomies {
 	 *
 	 * @param array<string,string> $list_or_terms List of terms to add.
 	 * @param string               $taxonomy_name Name of the taxonomy.
-	 * @param array<mixed,string>  $callback Callback if term has been processed.
+	 * @param array<mixed,string>  $callback Callback if the term has been processed.
 	 *
 	 * @return void
 	 */
@@ -582,7 +582,7 @@ class Taxonomies {
 	}
 
 	/**
-	 * Return internal taxonomy name by given slug.
+	 * Return the internal taxonomy name by given slug.
 	 *
 	 * @param string $slug The requested slug.
 	 *
@@ -958,7 +958,7 @@ class Taxonomies {
 	}
 
 	/**
-	 * Get language-specific defaults for a requested taxonomy terms.
+	 * Return the language-specific defaults for the requested taxonomy terms.
 	 *
 	 * @param string $taxonomy The requested taxonomy.
 	 * @param string $language_code The requested language-name (e.g. 'de').
@@ -966,9 +966,9 @@ class Taxonomies {
 	 * @return array<string,mixed>
 	 */
 	public function get_default_terms_for_taxonomy( string $taxonomy, string $language_code = '' ): array {
-		// set language in frontend to read the texts depending on main-language.
+		// set language in the frontend to read the texts depending on the main language.
 		$locale = get_locale();
-		// switch to requested language.
+		// switch to the requested language.
 		if ( ! is_admin() ) {
 			// if no language is requested, use the current language.
 			if ( empty( $language_code ) ) {
@@ -989,7 +989,7 @@ class Taxonomies {
 			switch_to_locale( $language_code );
 		}
 
-		// get ALL defaults for all taxonomies as array.
+		// get ALL defaults for all taxonomies as an array.
 		$array = $this->get_taxonomy_defaults();
 
 		// revert the locale-setting.
@@ -997,7 +997,7 @@ class Taxonomies {
 			switch_to_locale( $locale );
 		}
 
-		// return nothing of requested taxonomy does not have any defaults.
+		// return nothing if the requested taxonomy has no defaults.
 		if ( empty( $array[ $taxonomy ] ) ) {
 			return array();
 		}
@@ -1033,12 +1033,12 @@ class Taxonomies {
 			}
 		}
 
-		// return resulting list.
+		// return the resulting list.
 		return $hidden;
 	}
 
 	/**
-	 * Get list of taxonomy-labels for settings.
+	 * Return the list of taxonomy-labels for settings.
 	 *
 	 * @param array<string,string>|bool $taxonomies Given list of enabled taxonomies.
 	 *
@@ -1053,7 +1053,7 @@ class Taxonomies {
 		$labels = $this->get_taxonomy_labels_for_settings();
 
 		/**
-		 * Filter the taxonomy labels for template filter in listing before adding them to the settings.
+		 * Filter the taxonomy labels for template filter in the listing before adding them to the settings.
 		 *
 		 * @since 2.3.0 Available since 2.3.0.
 		 *
@@ -1097,7 +1097,7 @@ class Taxonomies {
 	}
 
 	/**
-	 * Return list of available taxonomies for REST-API.
+	 * Return the list of available taxonomies for REST-API.
 	 *
 	 * @param WP_REST_Request $data The request.
 	 * @return array<int,array<string,mixed>>
@@ -1166,7 +1166,7 @@ class Taxonomies {
 	}
 
 	/**
-	 * Delete all taxonomies which depends on our own custom post type.
+	 * Delete all taxonomies that depend on our own custom post type.
 	 *
 	 * @return void
 	 * @noinspection SqlResolve
@@ -1175,7 +1175,7 @@ class Taxonomies {
 		global $wpdb;
 
 		// delete the content of all taxonomies.
-		// -> hint: some will be newly insert after next wp-init.
+		// -> hint: some will be newly inserted after the next wp-init.
 		$taxonomies = $this->get_taxonomies();
 		$progress   = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy_name => $settings ) {

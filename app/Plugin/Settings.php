@@ -380,7 +380,7 @@ class Settings {
 		$field->set_title( __( 'Choose template for listing', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced with the documentation-URL */
 		$field->set_description( sprintf( __( 'You could add own custom templates as described in the <a href="%1$s" target="_blank">documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ) ) );
-		$field->set_options( Helper::get_filter_types() );
+		$field->set_options( Templates::get_instance()->get_archive_templates() );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 

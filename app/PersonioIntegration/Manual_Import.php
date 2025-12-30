@@ -63,7 +63,7 @@ class Manual_Import extends Extensions_Base {
 	protected string $extension_category = 'positions';
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Manual_Import
 	 */

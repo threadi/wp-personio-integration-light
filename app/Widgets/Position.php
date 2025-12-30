@@ -53,12 +53,12 @@ class Position extends WP_Widget {
 				'hint' => array(
 					'type' => 'text',
 					/* translators: %1$s will be replaced with the URL to start the import */
-					'text' => sprintf( __( 'No positions available. Start to import them <a href="%1$s">here</a>.', 'personio-integration-light' ), esc_url( \PersonioIntegrationLight\Helper::get_settings_url() ) ),
+					'text' => sprintf( __( 'No positions are available. Start to import them <a href="%1$s">here</a>.', 'personio-integration-light' ), esc_url( \PersonioIntegrationLight\Helper::get_settings_url() ) ),
 				),
 			);
 		}
 
-		// return possible configuration for this widget.
+		// return the possible configuration for this widget.
 		return array(
 			'postId'              => array(
 				'type'   => 'select',

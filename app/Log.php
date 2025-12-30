@@ -8,9 +8,9 @@
 namespace PersonioIntegrationLight;
 
 // prevent direct access.
-use PersonioIntegrationLight\Plugin\Db;
-
 defined( 'ABSPATH' ) || exit;
+
+use PersonioIntegrationLight\Plugin\Db;
 
 /**
  * Handler for logging in this plugin.
@@ -117,7 +117,7 @@ class Log {
 	}
 
 	/**
-	 * Delete all entries which are older than X days.
+	 * Delete all entries that are older than X days.
 	 *
 	 * @return void
 	 * @noinspection PhpUnused
@@ -142,7 +142,7 @@ class Log {
 	}
 
 	/**
-	 * Return list of categories with internal name & their label.
+	 * Return the list of categories with internal name and their label.
 	 *
 	 * @return array<string,string>
 	 */
@@ -226,7 +226,7 @@ class Log {
 		 * Filter for errors.
 		 *
 		 * @since 4.1.0 Available since 4.1.0.
-		 * @param int $errors Should 1 to filter only for errors.
+		 * @param int $errors Should be 1 to filter only for errors.
 		 */
 		$errors = apply_filters( 'personio_integration_light_log_errors', $errors );
 

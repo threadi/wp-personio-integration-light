@@ -24,7 +24,7 @@ class Themes_Base {
 	protected string $name = '';
 
 	/**
-	 * Name of CSS-file for this theme.
+	 * Name of CSS file for this theme.
 	 *
 	 * @var string
 	 */
@@ -74,7 +74,7 @@ class Themes_Base {
 	}
 
 	/**
-	 * Get the CSS-file for the theme.
+	 * Get the CSS file for the theme.
 	 *
 	 * @return string
 	 */
@@ -82,7 +82,7 @@ class Themes_Base {
 		// get the file name.
 		$css_file = $this->css_file;
 
-		// if debug-mode is not enabled, use minified file.
+		// if debug-mode is not enabled, use a minified file.
 		if ( ! defined( 'WP_DEBUG' ) || ( defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
 			$css_file = str_replace( '.css', '.min.css', $css_file );
 		}
@@ -95,7 +95,7 @@ class Themes_Base {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param string $css_file Name of the CSS-file located in /css in this plugin.
+		 * @param string $css_file Name of the CSS file located in /css in this plugin.
 		 * @param string $theme_name Internal name of the used theme (slug of the theme).
 		 */
 		return apply_filters( 'personio_integration_theme_css', $css_file, $theme_name );

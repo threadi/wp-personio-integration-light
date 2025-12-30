@@ -1,6 +1,6 @@
 <?php
 /**
- * File for object of single Personio-account in WordPress.
+ * File for an object for a single Personio-account in WordPress.
  *
  * @package personio-integration-light
  */
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Plugin\Languages;
 
 /**
- * Object for single Personio-account in WordPress.
+ * Object for a single Personio-account in WordPress.
  */
 class Personio {
 
@@ -27,7 +27,7 @@ class Personio {
 	/**
 	 * Constructor for this object.
 	 *
-	 * @param string $url The URL of the public page of the account on Personio.
+	 * @param string $url The URL from the public page of the account on Personio.
 	 */
 	public function __construct( string $url ) {
 		$this->url = $url;
@@ -43,7 +43,7 @@ class Personio {
 	}
 
 	/**
-	 * Get generated Personio-application-URL.
+	 * Return the generated Personio-application-URL for a specific Position.
 	 *
 	 * @param Position $position_obj The Position-object.
 	 * @param bool     $without_application Whether the link should be generated with form-#hashtag.
@@ -80,7 +80,7 @@ class Personio {
 	}
 
 	/**
-	 * Get languages-specific last modified timestamp from previous import.
+	 * Return languages-specific last modified timestamp from the previous import.
 	 *
 	 * @param string $language_name The internal language-name (e.g. "de").
 	 *

@@ -1,6 +1,6 @@
 <?php
 /**
- * File with main initializer for this plugin.
+ * File with the main initializer for this plugin.
  *
  * @package personio-integration-light
  */
@@ -106,11 +106,11 @@ class Init {
 		// register frontend scripts.
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_frontend' ), PHP_INT_MAX );
 
-		// add action links on plugin-list.
+		// add action links on the plugin-list.
 		add_filter( 'plugin_action_links_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_setting_link' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'add_row_meta_links' ), 10, 2 );
 
-		// add update message in plugin list.
+		// add the update message in the plugin list.
 		add_action( 'in_plugin_update_message-' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'add_plugin_update_hints' ), 10, 2 );
 
 		// request-hooks.
@@ -138,33 +138,40 @@ class Init {
 	}
 
 	/**
-	 * Add own CSS and JS for frontend.
+	 * Add own CSS and JS for the frontend.
 	 *
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
 	public function add_styles_frontend(): void {
 		/**
-		 * Load listing-style from Block "list" if FSE-theme is NOT used.
+		 * Load listing-style from Block "list" if NO FSE theme is used.
 		 */
 		if ( ! Helper::theme_is_fse_theme() ) {
+			$css_file = 'css/blocks.css';
+			// if debug-mode is not enabled, use a minified file.
+			if ( ! defined( 'WP_DEBUG' ) || ( defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
+				$css_file = str_replace( '.css', '.min.css', $css_file );
+			}
+
+			// enqueue the css-file.
 			wp_enqueue_style(
 				'personio-integration',
-				Helper::get_plugin_url() . 'css/blocks.css',
+				Helper::get_plugin_url() . $css_file,
 				array(),
-				Helper::get_file_version( Helper::get_plugin_path() . 'css/blocks.css' )
+				Helper::get_file_version( Helper::get_plugin_path() . $css_file )
 			);
 		}
 	}
 
 	/**
-	 * Add link to plugin-settings in plugin-list.
+	 * Add a link to plugin-settings in the plugin-list.
 	 *
 	 * @param array<int,string> $links List of links.
 	 * @return array<int,string>
 	 */
 	public function add_setting_link( array $links ): array {
-		// if setup has not been completed, show link here.
+		// if setup has not been completed, show the link here.
 		if ( ! Setup::get_instance()->is_completed() ) {
 			$links[] = "<a href='" . esc_url( Setup::get_instance()->get_setup_link() ) . "'>" . __( 'Setup', 'personio-integration-light' ) . '</a>';
 		} else {
@@ -172,6 +179,7 @@ class Init {
 			$links[] = "<a href='" . esc_url( Helper::get_settings_url() ) . "'>" . __( 'Settings', 'personio-integration-light' ) . '</a>';
 		}
 
+		// return the resulting list of links.
 		return $links;
 	}
 
@@ -195,7 +203,7 @@ class Init {
 		);
 
 		/**
-		 * Filter the links in row meta of our plugin in plugin list.
+		 * Filter the links in row meta of our plugin in the plugin list.
 		 *
 		 * @since 4.2.4 Available since 4.2.4.
 		 * @param array<string,string> $row_meta List of links.
@@ -225,7 +233,7 @@ class Init {
 	}
 
 	/**
-	 * Register our custom query_vars for frontend.
+	 * Register our custom query_vars for the frontend.
 	 *
 	 * @param array<int,string> $query_vars List of query vars.
 	 *
@@ -238,7 +246,7 @@ class Init {
 	}
 
 	/**
-	 * Show info from update_notice-section in readme.txt in the WordPress-repository.
+	 * Show info from the "update_notice"-section in readme.txt in the WordPress repository.
 	 *
 	 * @param array<string,mixed> $data List of plugin-infos.
 	 * @param object              $response The response-data.
@@ -256,21 +264,21 @@ class Init {
 			return;
 		}
 
-		// get transient with notice hints and check if actual version has one.
+		// get transient with notice hints and check if the actual version has one.
 		$notice_hints = get_transient( 'personio_integration_light_plugin_update_notices' );
 		$notice_hint  = '';
 		if ( ! empty( $notice_hints[ $response->new_version ] ) ) {
 			$notice_hint = $notice_hints[ $response->new_version ];
 		}
 
-		// if no notices is set, try to get one.
+		// if no notices are set, try to get one.
 		if ( empty( $notice_hint ) ) {
 			// get actual readme.txt from repository.
 			$readme_response = wp_safe_remote_get( 'https://plugins.svn.wordpress.org/personio-integration-light/trunk/readme.txt' );
 			if ( ! is_wp_error( $readme_response ) && ! empty( $readme_response['body'] ) ) {
 				$notice_hint = $this->parse_plugin_update_notice( $readme_response['body'], $response->new_version );
 				if ( ! empty( $notice_hint ) ) {
-					// save the response as notice.
+					// save the response as a notice.
 					$transient_value = array(
 						$response->new_version => $notice_hint,
 					);
@@ -286,7 +294,7 @@ class Init {
 	}
 
 	/**
-	 * Parse update notice from readme file.
+	 * Parse update notice from the readme file.
 	 *
 	 * @param  string $content WooCommerce readme file content.
 	 * @param  string $new_version WooCommerce new version.
@@ -295,7 +303,7 @@ class Init {
 	private function parse_plugin_update_notice( string $content, string $new_version ): string {
 		$upgrade_notice = '';
 
-		// get upgrade notice section.
+		// get the upgrade notice section.
 		if ( preg_match( '/(?<===) Upgrade Notice ==(.*?)(?===)/ms', $content, $section ) ) {
 			$upgrade_section_content = $section[0];
 			if ( preg_match( '/(?<==) ' . preg_quote( $new_version, null ) . ' =(.*?)(?==)/ms', $upgrade_section_content, $version_notes ) ) {
@@ -331,7 +339,7 @@ class Init {
 			// get the object.
 			$obj = new $obj_name();
 
-			// bail if object does not have a function "create_table".
+			// bail if the object does not have a function "create_table".
 			if ( ! method_exists( $obj, 'create_table' ) ) {
 				continue;
 			}
@@ -365,7 +373,7 @@ class Init {
 	}
 
 	/**
-	 * Check for static front page with active filter and change the main query settings to show the page with filter.
+	 * Check for static front page with active filter and change the main query settings to show the page with the filter.
 	 *
 	 * @param WP_Query $query The query object.
 	 *

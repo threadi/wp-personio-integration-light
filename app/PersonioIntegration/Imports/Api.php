@@ -57,7 +57,7 @@ class Api extends Imports_Base {
 	private array $positions = array();
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Api
 	 */
@@ -96,7 +96,7 @@ class Api extends Imports_Base {
 	 * @return void
 	 */
 	public function run(): void {
-		// if debug mode is enabled log this event.
+		// if debug mode is enabled, log this event.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 			Log::get_instance()->add( __( 'Import of positions is now running.', 'personio-integration-light' ), 'success', 'import' );
 		}
@@ -109,34 +109,41 @@ class Api extends Imports_Base {
 
 		// bail if no token is set.
 		if ( empty( $access_token ) ) {
-			// log this as error.
+			// log this as an error.
 			$this->add_error( __( 'No Access Token for API available. Import from API will not run.', 'personio-integration-light' ) );
+
+			// reset status.
+			update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, '' );
 
 			// do nothing more.
 			return;
 		}
 
-		// set mark that import is running in WP.
-		define( 'WP_IMPORTING', true );
+		// set the mark that import is running in WP.
+		if ( ! defined( 'WP_IMPORTING' ) ) {
+			define( 'WP_IMPORTING', true );
+		}
 
 		// mark process as running import.
-		define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
+		if ( ! defined( 'PERSONIO_INTEGRATION_IMPORT_RUNNING' ) ) {
+			define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
+		}
 
-		// mark import as running with its start-time.
+		// mark the import as running with its start-time.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
 
 		// set status.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import starting ..', 'personio-integration-light' ) );
 
-		// reset list of errors during import.
+		// reset the list of errors during import.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() );
 
-		// reset import counter.
+		// reset the import counter.
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 );
 
 		$instance = $this;
 		/**
-		 * Run custom actions before import of positions is running.
+		 * Run custom actions before the import of positions is running.
 		 *
 		 * @since 3.0.0 Available since release 3.0.0.
 		 * @param Imports_Base $instance The import object.
@@ -158,12 +165,12 @@ class Api extends Imports_Base {
 			/**
 			 * Use a loop to get all positions.
 			 *
-			 * We use 10 as limit to get max. (10*200=)2000 open positions and to not reach the limit
+			 * We use 10 as the limit to get max. (10*200=)2000 open positions and to not reach the limit
 			 * for 150 requests per minute for the most projects.
 			 */
 			$max_iterations = 100;
 			for ( $i = 1;$i < $max_iterations;$i++ ) {
-				// create request to get the open positions.
+				// create a request to get the open positions.
 				$request_object = new Api_Request();
 				$request_object->set_url( $url );
 				$request_object->set_post_data( '' );
@@ -172,7 +179,7 @@ class Api extends Imports_Base {
 
 				// send it.
 				if ( ! $request_object->send() ) {
-					// if it was not successfully, get the occurred errors from the request object.
+					// if it was not successful, get the occurred errors from the request object.
 					foreach ( $request_object->get_errors() as $error ) {
 						$this->add_error( $error );
 					}

@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Post_Types {
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Post_Types
 	 */
@@ -55,7 +55,7 @@ class Post_Types {
 	}
 
 	/**
-	 * Register the post-types from list.
+	 * Register the post-types from a list.
 	 *
 	 * @return void
 	 */
@@ -72,7 +72,7 @@ class Post_Types {
 			// get the object.
 			$obj = $class_name();
 
-			// bail if instance is not our Post_Type.
+			// bail if the instance is not our Post_Type.
 			if ( ! $obj instanceof Post_Type ) {
 				continue;
 			}
@@ -83,7 +83,7 @@ class Post_Types {
 	}
 
 	/**
-	 * Return list of post types.
+	 * Return the list of post-types.
 	 *
 	 * @return array<string>
 	 */
@@ -96,7 +96,7 @@ class Post_Types {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array<string> $post_types List of post types.
+		 * @param array<string> $post_types List of post-types.
 		 */
 		return apply_filters( 'personio_position_register_post_type', $post_types );
 	}

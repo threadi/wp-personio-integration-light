@@ -1,0 +1,90 @@
+name: Testing
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  phpunit:
+    name: Run tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.4', '8.3', '8.2']
+    services:
+      database:
+        image: mysql:latest
+        env:
+          MYSQL_DATABASE: wordpress_tests
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v4
+
+      - name: Run package installs and builds
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
+          composer install
+          composer update
+          npm i
+          npm i concurrently
+          cd vendor/threadi/easy-dialog-for-wordpress/
+          npm i
+          npm run build
+          cd ../../../
+          cd vendor/threadi/easy-setup-for-wordpress/
+          npm i
+          npm run build
+          cd ../../../
+          npm run build:show
+          npm run build:list
+          npm run build:filter-list
+          npm run build:filter-select
+          npm run build:application-button
+          npm run build:details
+          npm run build:description
+          npm run global-styles
+          cp inc/constants_urls.php.dist inc/constants_urls.php
+
+      - name: Set licence server
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'inc/constants_urls.php'
+          search-text: '@@UrlLicense@@'
+          replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/'
+
+      - name: Set update server
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'inc/constants_urls.php'
+          search-text: '@@UrlUpdate@@'
+          replacement-text: 'https://laolaweb.com/wp-json/lwreleases/personio-integration/'
+
+      - name: Set costs server
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'inc/constants_urls.php'
+          search-text: '@@UrlCosts@@'
+          replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/costs'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+            php-version: ${{ matrix.php-version }}
+            tools: phpunit-polyfills:1.1
+            extensions: mbstring, xml, zip, intl, pdo, mysql
+            coverage: none
+
+      - name: Install SVN
+        run: sudo apt-get update && sudo apt-get install -y subversion
+
+      - name: Setup tests
+        run: bash bin/install-wp-tests.sh wordpress_tests root root 127.0.0.1 latest true
+
+      - name: Run tests
+        run: composer test

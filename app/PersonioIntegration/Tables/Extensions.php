@@ -447,6 +447,13 @@ class Extensions extends WP_List_Table {
 			// output buttons.
 			echo '<a data-dialog="' . esc_attr( Helper::get_json( $dialog_disable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $disable_url ) . '">' . esc_html__( 'Disable this extensions', 'personio-integration-light' ) . '</a>';
 			echo '<a data-dialog="' . esc_attr( Helper::get_json( $dialog_enable ) ) . '" class="page-title-action easy-dialog-for-wordpress" href="' . esc_url( $enable_url ) . '">' . esc_html__( 'Enable this extensions', 'personio-integration-light' ) . '</a>';
+
+			/**
+			 * Add additional buttons to the extension table.
+			 *
+			 * @since 5.1.0 Available since 5.1.0.
+			 */
+			do_action( 'personio_integration_light_extension_table_buttons' );
 		}
 	}
 }

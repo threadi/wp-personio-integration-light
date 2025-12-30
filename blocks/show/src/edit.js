@@ -149,20 +149,16 @@ export default function Edit( object ) {
 						onChange={ value => onChangeExcerptVisibility( value, object ) }
 						disabled={ disabledFields }
 					/>
-					<div className="wp-personio-integration-selectcontrol-multiple">
-						{
-							<SelectControl
-                                __next40pxDefaultSize
-                                __nextHasNoMarginBottom
-								label={__('Choose details', 'personio-integration-light')}
-								value={object.attributes.excerptTemplates}
-								options={ personioTaxonomies }
-								multiple={true}
-								onChange={value => onChangeExcerptTemplates(value, object)}
-								disabled={ disabledFields }
-							/>
-						}
-					</div>
+          <SelectControl
+              __next40pxDefaultSize
+              __nextHasNoMarginBottom
+              label={__('Choose details', 'personio-integration-light')}
+              value={object.attributes.excerptTemplates}
+              options={ personioTaxonomies }
+              multiple={true}
+              onChange={value => onChangeExcerptTemplates(value, object)}
+              disabled={ disabledFields }
+          />
 					<ToggleControl
                         __nextHasNoMarginBottom
 						label={__('View content', 'personio-integration-light')}

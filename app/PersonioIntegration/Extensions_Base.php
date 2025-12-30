@@ -42,14 +42,14 @@ class Extensions_Base {
 	protected string $description = '';
 
 	/**
-	 * Marker for source of this extension.
+	 * Marker for the source of this extension.
 	 *
 	 * @var string
 	 */
 	private string $plugin_source = WP_PERSONIO_INTEGRATION_PLUGIN;
 
 	/**
-	 * This extension can be enabled by user.
+	 * User can enable this extension.
 	 *
 	 * Defaults to true as most extensions will be.
 	 *
@@ -100,7 +100,7 @@ class Extensions_Base {
 	protected array $requires = array();
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Extensions_Base
 	 */
@@ -147,7 +147,7 @@ class Extensions_Base {
 	public function activation(): void {}
 
 	/**
-	 * Return internal name of this extension.
+	 * Return the internal name of this extension.
 	 *
 	 * @return string
 	 */
@@ -349,7 +349,7 @@ class Extensions_Base {
 	}
 
 	/**
-	 * Return whether this extension can be enabled by the user (true) or not (false).
+	 * Return whether the user can enable this extension (true) or not (false).
 	 *
 	 * @return bool
 	 */
@@ -374,7 +374,7 @@ class Extensions_Base {
 		// get hidden section.
 		$hidden = \PersonioIntegrationLight\Plugin\Settings::get_instance()->get_hidden_section();
 
-		// bail if hidden section does not exist.
+		// bail if the hidden section does not exist.
 		if ( ! $hidden instanceof Section ) {
 			return;
 		}
@@ -414,16 +414,7 @@ class Extensions_Base {
 	/**
 	 * Return the plugin source for this extension.
 	 *
-	 * @return string
-	 */
-	protected function get_plugin_source(): string {
-		return $this->plugin_source;
-	}
-
-	/**
-	 * Return the plugin source for this extension.
-	 *
-	 * Hint: ony for compatibility with other plugins.
+	 * Hint: only for compatibility with other plugins.
 	 *
 	 * @return string
 	 */
@@ -461,7 +452,7 @@ class Extensions_Base {
 	}
 
 	/**
-	 * Return list of required extensions.
+	 * Return the list of required extensions.
 	 *
 	 * @return array<string>
 	 */
@@ -470,7 +461,7 @@ class Extensions_Base {
 	}
 
 	/**
-	 * Return whether this extension is required by another.
+	 * Return whether another requires this extension.
 	 *
 	 * @return bool
 	 */
@@ -565,7 +556,7 @@ class Extensions_Base {
 		// get the main settings page.
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
 
-		// bail if page could not be loaded.
+		// bail if the page could not be loaded.
 		if ( ! $main_settings_page instanceof Page ) {
 			return false;
 		}

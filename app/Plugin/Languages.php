@@ -132,9 +132,9 @@ class Languages {
 	}
 
 	/**
-	 * Return only the active languages with the main language as first entry.
+	 * Return only the active languages with the main language as the first entry.
 	 *
-	 * @param bool $with_main_language True to use main language in list.
+	 * @param bool $with_main_language True to use the main language in the list.
 	 *
 	 * @return array<string,string>
 	 */
@@ -145,10 +145,10 @@ class Languages {
 		// get all languages.
 		$all_languages = $this->get_languages();
 
-		// add active languages to returning list if they exist as language.
+		// add active languages to returning the list if they exist as language.
 		$languages = array();
 
-		// list with main language.
+		// list with the main language.
 		if ( $with_main_language ) {
 			$languages = array(
 				$this->get_main_language() => $all_languages[ $this->get_main_language() ],
@@ -160,7 +160,7 @@ class Languages {
 			}
 		}
 
-		// return resulting list.
+		// return the resulting list.
 		return $languages;
 	}
 
@@ -170,7 +170,7 @@ class Languages {
 	 * @return string
 	 */
 	public function get_fallback_language_name(): string {
-		// check if configured fallback language name is supported and return it.
+		// check if the configured fallback language name is supported and return it.
 		if ( ! empty( $this->get_languages()[ $this->fallback_language_name ] ) ) {
 			return $this->fallback_language_name;
 		}
@@ -178,7 +178,7 @@ class Languages {
 		/**
 		 * Define the fallback-language (only used if defined fallback language is not enabled in the settings).
 		 *
-		 * E.g. if english is not enabled, the fallback language will be set to english.
+		 * E.g. if English is not enabled, the fallback language will be set to english.
 		 */
 		$fallback_language = 'en';
 

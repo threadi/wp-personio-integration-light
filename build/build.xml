@@ -185,8 +185,19 @@
         </exec>
     </target>
 
+    <!-- set URLs -->
+    <target name="setUrls">
+        <delete file="${src.dir}/inc/constants_urls.php"/>
+        <copy file="${src.dir}/inc/constants_urls.php.dist" tofile="${src.dir}/inc/constants_urls.php"/>
+        <replace file="${src.dir}/inc/constants_urls.php">
+            <replacefilter token="@@UrlLicense@@" value="${url.license}" />
+            <replacefilter token="@@UrlUpdate@@" value="${url.update}" />
+            <replacefilter token="@@UrlCosts@@" value="${url.costs}" />
+        </replace>
+    </target>
+
     <!-- init project -->
-    <target name="init" description="initialize the project" depends="composer-install,npm-build" />
+    <target name="init" description="initialize the project" depends="composer-install,npm-build,setUrls" />
 
     <!-- create release-zip -->
     <target name="build" description="builds a new release" depends="init,minify-css,generate-documentation,autoloader-generation,check-phpstan,check-wcs,setVersionNumber">
@@ -218,7 +229,9 @@
             <zipfileset dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/build/" prefix="${plugin.slug}/vendor/threadi/easy-setup-for-wordpress/build/" />
             <zipfileset dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/lib/" prefix="${plugin.slug}/vendor/threadi/easy-setup-for-wordpress/lib/" />
             <zipfileset dir="${src.dir}/node_modules/intro.js/minified/" prefix="${plugin.slug}/node_modules/intro.js/minified/" />
-            <zipfileset dir="${src.dir}/inc" prefix="${plugin.slug}/inc" />
+            <zipfileset dir="${src.dir}/inc" prefix="${plugin.slug}/inc">
+                <exclude name="**/constants_urls.php.dist" />
+            </zipfileset>
             <zipfileset dir="${src.dir}/templates" prefix="${plugin.slug}/templates" />
             <zipfileset dir="${src.dir}" includes="composer.json" fullpath="${plugin.slug}/composer.json" />
             <zipfileset dir="${src.dir}" includes="wpml-config.xml" fullpath="${plugin.slug}/wpml-config.xml" />

@@ -1,6 +1,6 @@
 <?php
 /**
- * File for handling single position as object.
+ * File for handling a single position as an object.
  *
  * @package personio-integration-light
  */
@@ -20,7 +20,7 @@ use SimpleXMLElement;
 use WP_Term;
 
 /**
- * Object with represents a single position.
+ * Object which represents a single position.
  *
  * $data is an array which holds all contents for a position:
  * - post-data-rows (saved by their post-table-row-names)
@@ -68,15 +68,15 @@ class Position {
 			return;
 		}
 
-		// get the post as array to save it in this object.
+		// get the post as an array to save it in this object.
 		$post_array = get_post( $post_id, ARRAY_A );
 
-		// if result is not an array, create an empty array.
+		// if a result is not an array, create an empty array.
 		if ( ! is_array( $post_array ) ) {
 			$post_array = array();
 		}
 
-		// if result is not our post-type, create an empty array.
+		// if the result is not our post-type, create an empty array.
 		if ( ! empty( $post_array['post_type'] ) && PersonioPosition::get_instance()->get_name() !== $post_array['post_type'] ) {
 			return;
 		}
@@ -111,7 +111,7 @@ class Position {
 		$false    = false;
 		$instance = $this;
 		/**
-		 * Filter if position should be imported.
+		 * Filter if the position should be imported.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
@@ -162,12 +162,12 @@ class Position {
 			if ( 1 === count( $posts ) ) {
 				// get the post-id to update its data.
 				$this->data['ID'] = $posts[0];
-				// get the menu_order to obtain its value during update.
+				// get the menu_order to obtain its value during the update.
 				$this->data['menu_order'] = get_post_field( 'menu_order', $posts[0] );
 			} elseif ( 1 < count( $posts ) ) {
 				// something is wrong.
 				// -> delete all entries with this personioId without trash.
-				// -> it will be saved as new entry after this.
+				// -> it will be saved as a new entry after this.
 				foreach ( $posts as $post_id ) {
 					wp_delete_post( $post_id, true );
 				}
@@ -208,11 +208,11 @@ class Position {
 		}
 
 		/**
-		 * Filter the prepared position-data just before its saved.
+		 * Filter the prepared position-data just before it's saved.
 		 *
 		 * @since 1.0.0 Available since first release.
 		 *
-		 * @param array<string,mixed> $array The position data as array.
+		 * @param array<string,mixed> $array The position data as an array.
 		 * @param Position $instance The object we are in.
 		 */
 		$array = apply_filters( 'personio_integration_import_single_position_filter_before_saving', $array, $instance );
@@ -232,7 +232,7 @@ class Position {
 			$this->data['ID'] = absint( $result );
 
 			/**
-			 * Run hook for individual settings after Position has been saved (inserted or updated).
+			 * Run hook for individual settings after the position has been saved (inserted or updated).
 			 *
 			 * @since 2.0.0 Available since 2.0.0.
 			 *
@@ -247,7 +247,7 @@ class Position {
 			$taxonomies = Taxonomies::get_instance()->get_taxonomies();
 			foreach ( $taxonomies as $taxonomy_name => $taxonomy ) {
 				if ( ! empty( $taxonomy['attr']['rewrite']['slug'] ) ) {
-					// first remove all existing relations if list is appended (but not for language-taxonomy and only for main language).
+					// first, remove all existing relations if a list is appended (but not for language-taxonomy and only for main language).
 					if ( $taxonomy['append'] && WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES !== $taxonomy_name && $this->get_lang() === Languages::get_instance()->get_main_language() ) {
 						wp_delete_object_term_relationships( $this->get_id(), array( $taxonomy_name ) );
 					}
@@ -257,7 +257,7 @@ class Position {
 				}
 			}
 
-			// add created at as post meta field.
+			// add created at as post-meta field.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT, strtotime( $this->data['createdAt'] ) );
 
 			// add all language-specific titles.
@@ -350,7 +350,7 @@ class Position {
 		// get the term-object.
 		$term = get_term_by( 'name', $value, $taxonomy );
 
-		// if no term is found add it.
+		// if no term is found, add it.
 		if ( ! $term ) {
 			$term_array = wp_insert_term( $value, $taxonomy );
 			if ( ! is_wp_error( $term_array ) ) {
@@ -371,7 +371,7 @@ class Position {
 	 *
 	 * @param string $taxonomy The taxonomy.
 	 * @param string $field    The field.
-	 * @param bool   $no_list Prevent usage of list, only use first term.
+	 * @param bool   $no_list Prevent usage of a list, only use the first term.
 	 *
 	 * @return string
 	 */
@@ -431,6 +431,9 @@ class Position {
 
 		$title    = $this->data['post_title'];
 		$instance = $this;
+
+		$title = apply_filters_deprecated( 'position_integration_position_title', array( $title, $instance ), '5.1.0', 'personio_integration_light_position_title' );
+
 		/**
 		 * Filter the title of the position.
 		 *
@@ -439,11 +442,11 @@ class Position {
 		 * @param string $title The title.
 		 * @param Position $instance The position object.
 		 */
-		return apply_filters( 'position_integration_position_title', $title, $instance );
+		return apply_filters( 'personio_integration_light_position_title', $title, $instance );
 	}
 
 	/**
-	 * Set title for this position.
+	 * Set the title for this position.
 	 *
 	 * @param string $title The title.
 	 *
@@ -519,7 +522,7 @@ class Position {
 
 		$instance = $this;
 		/**
-		 * Filter the public url of a single position.
+		 * Filter the public URL from a single position.
 		 *
 		 * @since 3.2.0 Available since 3.2.0.
 		 *
@@ -567,7 +570,7 @@ class Position {
 			$this->set_title( '' );
 		}
 
-		// set new language.
+		// set the new language.
 		$this->data['personioLanguages'] = $lang;
 	}
 
@@ -636,7 +639,7 @@ class Position {
 	}
 
 	/**
-	 * Set keywords. We save them as array.
+	 * Set keywords. We save them as an array.
 	 *
 	 * @param string $keywords List of keywords, separated by ','.
 	 *
@@ -658,7 +661,7 @@ class Position {
 	}
 
 	/**
-	 * Set recruiting category.
+	 * Set the recruiting category.
 	 *
 	 * @param string $recruiting_category The recruitment category.
 	 *
@@ -669,7 +672,7 @@ class Position {
 	}
 
 	/**
-	 * Set employment type.
+	 * Set the employment type.
 	 *
 	 * @param string $employment_type The employment type.
 	 *
@@ -680,7 +683,7 @@ class Position {
 	}
 
 	/**
-	 * Set seniority.
+	 * Set the seniority.
 	 *
 	 * @param string $seniority The seniority.
 	 *
@@ -691,7 +694,7 @@ class Position {
 	}
 
 	/**
-	 * Set schedule.
+	 * Set the schedule.
 	 *
 	 * @param string $schedule The schedule.
 	 *

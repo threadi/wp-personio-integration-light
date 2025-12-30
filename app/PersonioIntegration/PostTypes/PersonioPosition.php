@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle our own custom post type PersonioPostion.
+ * File to handle our own custom post-type PersonioPostion.
  *
  * @package personio-integration-light
  */
@@ -42,7 +42,7 @@ use WP_Taxonomy;
  */
 class PersonioPosition extends Post_Type {
 	/**
-	 * Set name of this cpt.
+	 * Set the name of this cpt.
 	 *
 	 * @var string
 	 */
@@ -156,7 +156,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Register this custom post type.
+	 * Register this custom post-type.
 	 *
 	 * @return void
 	 */
@@ -239,10 +239,10 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Change the REST API-response for own cpt.
+	 * Change the REST API response for own cpt.
 	 *
 	 * In this way we add fields which are missing through the supports-setting during registering the cpt.
-	 * And we format the content, which comes from Personio as array.
+	 * And we format the content, which comes from Personio, as an array.
 	 *
 	 * @param WP_REST_Response $data The response object.
 	 * @param WP_Post          $post The requested object.
@@ -254,7 +254,7 @@ class PersonioPosition extends Post_Type {
 		// get positions-object.
 		$positions = Positions::get_instance();
 
-		// get the position as object.
+		// get the position as an object.
 		$position_obj = $positions->get_position( $post->ID );
 
 		// get content of the position.
@@ -263,7 +263,7 @@ class PersonioPosition extends Post_Type {
 		// generate except.
 		$excerpt = $position_obj->get_excerpt();
 
-		// add result to response.
+		// add a result to the response.
 		$data->data['excerpt'] = array(
 			'rendered'  => $excerpt,
 			'raw'       => '',
@@ -328,7 +328,7 @@ class PersonioPosition extends Post_Type {
 			)
 		);
 
-		// bail if user is not logged in.
+		// bail if the user is not logged in.
 		if ( ! is_user_logged_in() ) {
 			return;
 		}
@@ -346,7 +346,7 @@ class PersonioPosition extends Post_Type {
 			)
 		);
 
-		// extend our own cpt with delete method to delete all positions in one rush.
+		// extend our own cpt with the delete method to delete all positions in one rush.
 		register_rest_route(
 			'wp/v2',
 			$this->get_name(),
@@ -361,7 +361,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Return list of possible templates for details in REST API.
+	 * Return the list of possible templates for details in REST API.
 	 *
 	 * @return array<int,array<string,mixed>>
 	 * @noinspection PhpUnused
@@ -391,7 +391,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Return list of possible templates for job description in REST API.
+	 * Return the list of possible templates for job description in REST API.
 	 *
 	 * @return array<int,array<string,mixed>>
 	 * @noinspection PhpUnused
@@ -421,7 +421,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Return list of possible templates for archives in REST API.
+	 * Return the list of possible templates for archives in REST API.
 	 *
 	 * @return array<int,array<string,mixed>>
 	 * @noinspection PhpUnused
@@ -466,7 +466,7 @@ class PersonioPosition extends Post_Type {
 		$positions_obj = Positions::get_instance();
 		$position_obj  = $positions_obj->get_position( $post_id );
 
-		// bail if object is not valid.
+		// bail if an object is not valid.
 		if ( ! $position_obj->is_valid() ) {
 			return;
 		}
@@ -492,10 +492,10 @@ class PersonioPosition extends Post_Type {
 	 * @return array<string|int,string>
 	 */
 	public function add_column( array $columns ): array {
-		// create new column-array.
+		// create a new column-array.
 		$new_columns = array();
 
-		// add sort column for pro-hint.
+		// add a sort column for a pro-hint.
 		$new_columns['sort'] = __( 'Sorting', 'personio-integration-light' );
 
 		// replace language-column with our own.
@@ -515,7 +515,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Add content to the column in the position-table in backend.
+	 * Add content to the column in the position-table in the backend.
 	 *
 	 * @param string $column Name of the column.
 	 * @param int    $post_id The ID of the WP_Post-object.
@@ -524,10 +524,10 @@ class PersonioPosition extends Post_Type {
 	public function add_column_content( string $column, int $post_id ): void {
 		global $wp;
 
-		// get position as object.
+		// get position as an object.
 		$position_obj = Positions::get_instance()->get_position( $post_id );
 
-		// bail if position is not valid.
+		// bail if the position is not valid.
 		if ( ! $position_obj->is_valid() ) {
 			return;
 		}
@@ -537,7 +537,7 @@ class PersonioPosition extends Post_Type {
 			echo esc_html( $position_obj->get_personio_id() );
 		}
 
-		// show sort column with pro-hint.
+		// show sort column with a pro-hint.
 		if ( 'sort' === $column ) {
 			echo '<span class="pro-marker">' . esc_html__( 'Only in Pro', 'personio-integration-light' ) . '</span>';
 		}
@@ -552,7 +552,7 @@ class PersonioPosition extends Post_Type {
 
 			// loop through the languages of this position and show each of them.
 			foreach ( explode( ', ', $position_obj->get_term_by_field( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES, 'name' ) ) as $index => $language_name ) {
-				// bail if languages is not available.
+				// bail if languages are not available.
 				if ( empty( $languages[ $language_name ] ) ) {
 					continue;
 				}
@@ -618,10 +618,10 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function add_filter(): void {
-		// get requested post type.
+		// get requested post-type.
 		$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
-		// bail if no post type is given.
+		// bail if no post-type is given.
 		if ( is_null( $post_type ) ) {
 			return;
 		}
@@ -638,7 +638,7 @@ class PersonioPosition extends Post_Type {
 				continue;
 			}
 
-			// get the taxonomy as object.
+			// get the taxonomy as an object.
 			$taxonomy = get_taxonomy( $taxonomy_name );
 
 			// bail if taxonomy could not be loaded.
@@ -678,10 +678,10 @@ class PersonioPosition extends Post_Type {
 	public function use_filter( WP_Query $query ): void {
 		global $pagenow;
 
-		// get requested post type.
+		// get requested post-type.
 		$post_type = sanitize_text_field( wp_unslash( filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) );
 
-		// bail if no post type is given.
+		// bail if no post-type is given.
 		if ( empty( $post_type ) ) {
 			return;
 		}
@@ -728,7 +728,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Hide cpt filter-view. Simply return empty array.
+	 * Hide cpt filter-view. Just return an empty array.
 	 *
 	 * @return array<string>
 	 */
@@ -737,7 +737,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Force list-view of our own cpt to ignore author as filter.
+	 * Force list-view of our own cpt to ignore author as a filter.
 	 *
 	 * @param WP_Query $query The WP_Query-object.
 	 * @return WP_Query
@@ -770,7 +770,7 @@ class PersonioPosition extends Post_Type {
 			return;
 		}
 
-		// get the requested position as object.
+		// get the requested position as an object.
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
 		add_meta_box(
@@ -815,13 +815,13 @@ class PersonioPosition extends Post_Type {
 			$this->get_name()
 		);
 
-		// get taxonomies as object.
+		// get taxonomies as an object.
 		$taxonomies_obj = Taxonomies::get_instance();
 
 		// get the taxonomy settings.
 		$taxonomies_settings = $taxonomies_obj->get_taxonomies();
 
-		// add meta box for each supported taxonomy.
+		// add meta-box for each supported taxonomy.
 		foreach ( $taxonomies_obj->get_taxonomies() as $taxonomy_name => $settings ) {
 			// get label.
 			$labels = $taxonomies_obj->get_taxonomy_label( $taxonomy_name );
@@ -829,7 +829,7 @@ class PersonioPosition extends Post_Type {
 			// get the taxonomy settings.
 			$taxonomy_settings = $taxonomies_settings[ $taxonomy_name ];
 
-			// add changeable hint on title if enabled.
+			// add a changeable hint on title if enabled.
 			$changeable_hint = '';
 			if ( isset( $taxonomy_settings['changeable'] ) ) {
 				// create dialog.
@@ -838,7 +838,7 @@ class PersonioPosition extends Post_Type {
 					'texts'   => array(
 						'<p><strong>' . __( 'The texts of this taxonomy could be changed.', 'personio-integration-light' ) . '</strong></p>',
 						/* translators: %1$s will be replaced by the plugin URL for Loco Translate. */
-						'<p>' . sprintf( __( 'They are in the language file of the plugin and can be changed with any plugin that supports their editing,<br>e.g. with <a href="%1$s" target="_blank">Loco Translate (opens new window)</a> or <a href="%2$s" target="_blank">Say What (opens new window)</a>.', 'personio-integration-light' ), esc_url( Loco::get_instance()->get_plugin_url() ), esc_url( SayWhat::get_instance()->get_plugin_url() ) ) . '</p>',
+						'<p>' . sprintf( __( 'They are in the language file of the plugin and can be changed with any plugin that supports their editing.<br>For example, with <a href="%1$s" target="_blank">Loco Translate (opens new window)</a> or <a href="%2$s" target="_blank">Say What (opens new window)</a>.', 'personio-integration-light' ), esc_url( Loco::get_instance()->get_plugin_url() ), esc_url( SayWhat::get_instance()->get_plugin_url() ) ) . '</p>',
 					),
 					'buttons' => array(
 						array(
@@ -853,7 +853,7 @@ class PersonioPosition extends Post_Type {
 				$url = '#';
 
 				/**
-				 * Adjust the dialog for hint for possibility to translate terms.
+				 * Adjust the dialog for a hint for the possibility to translate terms.
 				 *
 				 * @since 5.0.0 Available since 5.0.0.
 				 * @param array<string,mixed> $dialog The dialog to change.
@@ -868,7 +868,7 @@ class PersonioPosition extends Post_Type {
 			// add edit link.
 			$changeable_hint .= Personio_Accounts::get_instance()->get_personio_edit_link( $position_obj );
 
-			// add a box for single taxonomy.
+			// add a box for a single taxonomy.
 			add_meta_box(
 				$this->get_name() . '-taxonomy-' . $taxonomy_name,
 				$labels['name'] . $changeable_hint,
@@ -878,7 +878,7 @@ class PersonioPosition extends Post_Type {
 			);
 		}
 
-		// add meta box with Pro-hint for subcompany-field which is only in Pro.
+		// add meta-box with Pro-hint for subcompany-field which is only in Pro.
 		add_meta_box(
 			$this->get_name() . '-taxonomy-subcompany',
 			__( 'Legal entity', 'personio-integration-light' ),
@@ -889,7 +889,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Remove all meta boxes which are not part of this post type.
+	 * Remove all meta-boxes which are not part of this post type.
 	 *
 	 * @param string $post_type The used post type.
 	 *
@@ -905,7 +905,7 @@ class PersonioPosition extends Post_Type {
 
 		$false = false;
 		/**
-		 * Prevent removing of all meta boxes in cpt edit view.
+		 * Prevent removing of all meta-boxes in cpt edit view.
 		 *
 		 * Caution: the boxes will not be able to be saved.
 		 *
@@ -944,7 +944,7 @@ class PersonioPosition extends Post_Type {
 						continue;
 					}
 
-					// check if box is not from our own plugin.
+					// check if the box is not from our own plugin.
 					if ( false === str_contains( $box['id'], $this->get_name() ) ) {
 						remove_meta_box( $box['id'], $this->get_name(), $context );
 					}
@@ -968,7 +968,7 @@ class PersonioPosition extends Post_Type {
 		// get the position.
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
-		// bail if position is not valid.
+		// bail if the position is not valid.
 		if ( ! $position_obj->is_valid() ) {
 			return;
 		}
@@ -976,7 +976,7 @@ class PersonioPosition extends Post_Type {
 		// get the edit URL.
 		$url = Personio_Accounts::get_instance()->get_edit_link_on_personio( $position_obj );
 
-		// use main Personio URL if no edit URL could be loaded.
+		// use the main Personio URL if no edit URL could be loaded.
 		if ( empty( $url ) ) {
 			$url = Personio_Accounts::get_instance()->get_login_url();
 		}
@@ -1040,13 +1040,13 @@ class PersonioPosition extends Post_Type {
 	 * @noinspection PhpUnused
 	 */
 	public function get_meta_box_for_description( WP_Post $post ): void {
-		// get the requested position as object.
+		// get the requested position as an object.
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
 		// get the edit URL.
 		$url = Personio_Accounts::get_instance()->get_edit_link_on_personio( $position_obj );
 
-		// use main Personio URL if no edit URL could be loaded.
+		// use the main Personio URL if no edit URL could be loaded.
 		if ( empty( $url ) ) {
 			$url = Personio_Accounts::get_instance()->get_login_url();
 		}
@@ -1061,7 +1061,7 @@ class PersonioPosition extends Post_Type {
 			return;
 		}
 
-		// bail if jobdescription entry is empty and show hint.
+		// bail if the jobdescription entry is empty and show hint.
 		if ( empty( $content_array['jobDescription'] ) ) {
 			/* translators: %1$s will be replaced by a URL. */
 			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description has been provided for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
@@ -1810,7 +1810,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Return list of pro-extension we show as demo in the extensions table.
+	 * Return list of pro-extension we show as a demo in the extensions table.
 	 *
 	 * @return array<int,array<string,string>>
 	 */
@@ -1829,7 +1829,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		/**
-		 * Hide the extensions for pro-version if Pro is installed but license not entered.
+		 * Hide the extensions for a pro-version if Pro is installed but license not entered.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 *
@@ -1861,6 +1861,12 @@ class PersonioPosition extends Post_Type {
 				'category'    => 'positions',
 			),
 			array(
+				'name'        => 'inline_styles',
+				'label'       => __( 'Remove inline styles', 'personio-integration-light' ),
+				'description' => __( 'Optimize the description texts for your positions received by Personio by removing unnecessary styles.', 'personio-integration-light' ),
+				'category'    => 'positions',
+			),
+			array(
 				'name'        => 'multilingual',
 				'label'       => __( 'Multilingual', 'personio-integration-light' ),
 				'description' => __( 'Use Polylang, TranslatePress or WPML for optimal multilingual presentation of your positions.', 'personio-integration-light' ),
@@ -1885,6 +1891,12 @@ class PersonioPosition extends Post_Type {
 				'category'    => 'tracking',
 			),
 			array(
+				'name'        => 'Avada',
+				'label'       => __( 'Avada', 'personio-integration-light' ),
+				'description' => __( 'Use one of the most stable page builder to style your positions in your website.', 'personio-integration-light' ),
+				'category'    => 'pagebuilder',
+			),
+			array(
 				'name'        => 'divi',
 				'label'       => __( 'Divi', 'personio-integration-light' ),
 				'description' => __( 'Use one of the most used page builder to style your positions in your website.', 'personio-integration-light' ),
@@ -1894,6 +1906,18 @@ class PersonioPosition extends Post_Type {
 				'name'        => 'elementor',
 				'label'       => __( 'Elementor', 'personio-integration-light' ),
 				'description' => __( 'Use the most used page builder to style your positions in your website.', 'personio-integration-light' ),
+				'category'    => 'pagebuilder',
+			),
+			array(
+				'name'        => 'gutenberg',
+				'label'       => __( 'Block Editor', 'personio-integration-light' ),
+				'description' => __( 'Use 18 blocks, including Google Maps, more filter options, and radius search.', 'personio-integration-light' ),
+				'category'    => 'pagebuilder',
+			),
+			array(
+				'name'        => 'generatepress',
+				'label'       => __( 'GeneratePress', 'personio-integration-light' ),
+				'description' => __( 'Take advantage of the possibilities offered by GeneratePress Premium to present your position vacancies in the best possible light.', 'personio-integration-light' ),
 				'category'    => 'pagebuilder',
 			),
 			array(
@@ -2140,7 +2164,7 @@ class PersonioPosition extends Post_Type {
 		$search_term = $wp_query->query['s'];
 		$search      = '';
 
-		// build SQL to search post title and content.
+		// build SQL to search the post title and content.
 		$search .= "($wpdb->posts.post_title LIKE '%" . $wpdb->esc_like( $search_term ) . "%') OR ($wpdb->posts.post_content LIKE '%" . $wpdb->esc_like( $search_term ) . "%')";
 
 		// add SQL to also search postmeta table for matching custom field values.
@@ -2169,7 +2193,7 @@ class PersonioPosition extends Post_Type {
 	 * Remove date filter on our own cpt.
 	 *
 	 * @param array<string> $months List of months.
-	 * @param string        $post_type The used post type.
+	 * @param string        $post_type The used post-type.
 	 *
 	 * @return array<string>
 	 */
@@ -2187,7 +2211,7 @@ class PersonioPosition extends Post_Type {
 	 * Show hint about additional offices, usable in Pro-plugin.
 	 *
 	 * @param Position            $position_obj The called position object.
-	 * @param array<string,mixed> $attr The attributes of the meta box.
+	 * @param array<string,mixed> $attr The attributes of the meta-box.
 	 *
 	 * @return void
 	 * @noinspection PhpUnusedParameterInspection
@@ -2226,7 +2250,7 @@ class PersonioPosition extends Post_Type {
 	 * @return string
 	 */
 	public function show_plugin_hint_in_footer( string $content ): string {
-		// get requested post type.
+		// get requested post-type.
 		$post_type = (string) filter_input( INPUT_GET, 'post_type' );
 
 		// get requested post.

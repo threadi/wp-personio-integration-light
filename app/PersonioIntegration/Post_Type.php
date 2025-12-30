@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 class Post_Type {
 
 	/**
-	 * Define the post type name.
+	 * Define the post-type name.
 	 *
 	 * @var string
 	 */
@@ -37,7 +37,7 @@ class Post_Type {
 	public function init(): void {}
 
 	/**
-	 * Return the post type name.
+	 * Return the post-type name.
 	 *
 	 * @return string
 	 */
@@ -46,7 +46,7 @@ class Post_Type {
 	}
 
 	/**
-	 * Return the link to manage items of this cpt in backend.
+	 * Return the link to manage items of this cpt in the backend.
 	 *
 	 * @param bool $without_admin_url True if the URL should contain get_admin_url().
 	 *
@@ -62,7 +62,7 @@ class Post_Type {
 	}
 
 	/**
-	 * Mark active menu if one of our own cpt is called.
+	 * Mark the active menu if one of our own cpt is called.
 	 *
 	 * @param bool $use_editor Whether to use editor (true) or not (false).
 	 *
@@ -82,7 +82,7 @@ class Post_Type {
 	}
 
 	/**
-	 * Return whether this cpt is assigned to given plugin.
+	 * Return whether this cpt is assigned to a given plugin.
 	 *
 	 * @param string $cpt Plugin-path.
 	 *
@@ -93,7 +93,7 @@ class Post_Type {
 	}
 
 	/**
-	 * Return the archive URL of this post type.
+	 * Return the archive URL of this post-type.
 	 *
 	 * @return string
 	 */

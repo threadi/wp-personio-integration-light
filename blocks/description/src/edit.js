@@ -69,20 +69,16 @@ export default function Edit( object ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
-					<div className="wp-personio-integration-selectcontrol">
-						{
-							<SelectControl
-                                __next40pxDefaultSize
-                                __nextHasNoMarginBottom
-								label={ __('Choose template', 'personio-integration-light') }
-								value={ object.attributes.template }
-								options={ templates }
-								multiple={ false }
-								onChange={ value => onChangeTemplate(value, object) }
-							/>
-						}
-					</div>
+          <PanelBody title={ __( 'Settings', 'personio-integration-light' ) }>
+          <SelectControl
+              __next40pxDefaultSize
+              __nextHasNoMarginBottom
+              label={ __('Choose template', 'personio-integration-light') }
+              value={ object.attributes.template }
+              options={ templates }
+              multiple={ false }
+              onChange={ value => onChangeTemplate(value, object) }
+          />
 				</PanelBody>
         <Personio_Helper_Panel/>
 			</InspectorControls>

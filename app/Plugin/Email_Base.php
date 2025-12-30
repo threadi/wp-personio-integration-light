@@ -179,7 +179,7 @@ class Email_Base {
 	}
 
 	/**
-	 * Return list of configured recipients.
+	 * Return the list of configured recipients.
 	 *
 	 * @return array<int,string>
 	 */
@@ -187,7 +187,7 @@ class Email_Base {
 		// get the setting.
 		$recipients = get_option( 'personio_integration_email_recipients_' . $this->get_name() );
 
-		// if setting is empty and if we are using the test mode, use the admin email.
+		// if the setting is empty and if we are using the test mode, use the admin email.
 		if ( empty( $recipients ) && $this->is_test() ) {
 			return array( get_option( 'admin_email' ) );
 		}
@@ -314,7 +314,7 @@ class Email_Base {
 
 		// send email.
 		if ( wp_mail( $this->get_recipients(), $this->get_subject(), $this->get_body(), $this->get_headers() ) ) {
-			// log this event, if debug mode is enabled.
+			// log this event if debug mode is enabled.
 			if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 				Log::get_instance()->add( __( 'Sent email:', 'personio-integration-light' ) . ' <code>' . $configuration_json . '</code>', 'success', 'emails' );
 			}

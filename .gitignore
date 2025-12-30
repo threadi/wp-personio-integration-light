@@ -15,7 +15,7 @@
 /blocks/list/build/
 /blocks/setup/build/
 /blocks/show/build/
-/inc/constants2.php
+/inc/constants_urls.php
 *.zip
 languages/*.json
 /vendor/
