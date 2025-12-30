@@ -51,6 +51,27 @@ jobs:
           npm run global-styles
           cp inc/constants_urls.php.dist inc/constants_urls.php
 
+      - name: Set licence server
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'inc/constants_urls.php'
+          search-text: '@@UrlLicense@@'
+          replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/'
+
+      - name: Set update server
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'inc/constants_urls.php'
+          search-text: '@@UrlUpdate@@'
+          replacement-text: 'https://laolaweb.com/wp-json/lwreleases/personio-integration/'
+
+      - name: Set costs server
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'inc/constants_urls.php'
+          search-text: '@@UrlCosts@@'
+          replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/costs'
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
