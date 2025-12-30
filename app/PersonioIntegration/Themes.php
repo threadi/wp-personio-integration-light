@@ -2,7 +2,7 @@
 /**
  * File for handling different themes to output templates of our plugin.
  *
- * Depending on the used theme, we add custom css to optimize the output initially.
+ * Depending on the used theme, we add custom CSS to optimize the output initially.
  *
  * Not supported themes do not get any additions.
  *
@@ -27,7 +27,7 @@ class Themes {
 	private ?Themes_Base $theme = null;
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Themes
 	 */
@@ -62,7 +62,7 @@ class Themes {
 	 * @return void
 	 */
 	public function init(): void {
-		add_action( 'init', array( $this, 'get_theme_support' ) );
+		add_action( 'init', array( $this, 'init_theme_support' ) );
 	}
 
 	/**
@@ -70,7 +70,7 @@ class Themes {
 	 *
 	 * @return void
 	 */
-	public function get_theme_support(): void {
+	public function init_theme_support(): void {
 		// bail if theme-support is already known.
 		if ( ! is_null( $this->theme ) ) {
 			return;
@@ -89,7 +89,7 @@ class Themes {
 			// initiate object.
 			$obj = new $theme_class_name();
 
-			// bail if object is not of type "Themes_Base".
+			// bail if an object is not of the type "Themes_Base".
 			if ( ! $obj instanceof Themes_Base ) {
 				continue;
 			}
@@ -108,7 +108,7 @@ class Themes {
 	}
 
 	/**
-	 * Return list of supported themes.
+	 * Return the list of supported themes.
 	 *
 	 * @return array<int,string>
 	 */
@@ -146,7 +146,7 @@ class Themes {
 	}
 
 	/**
-	 * Return wrapper class of the supported theme.
+	 * Return the wrapper class of the supported theme.
 	 *
 	 * @return string
 	 */

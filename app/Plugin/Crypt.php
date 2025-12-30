@@ -66,7 +66,7 @@ class Crypt {
 
 		// loop through the objects to check which one we could use.
 		foreach ( $this->get_methods_as_objects() as $obj ) {
-			// bail if method is not usable.
+			// bail if the method is not usable.
 			if ( ! $obj->is_usable() ) {
 				continue;
 			}
@@ -85,7 +85,7 @@ class Crypt {
 	}
 
 	/**
-	 * Return encrypted string.
+	 * Return an encrypted string.
 	 *
 	 * @param string $encrypted_text Text to decrypt.
 	 *
@@ -95,7 +95,7 @@ class Crypt {
 		// get the active method.
 		$method_obj = $this->get_method();
 
-		// bail if method could not be found.
+		// bail if the method could not be found.
 		if ( false === $method_obj ) {
 			return '';
 		}
@@ -105,7 +105,7 @@ class Crypt {
 	}
 
 	/**
-	 * Return decrypted string.
+	 * Return the decrypted string.
 	 *
 	 * @param string $encrypted_text Text to decrypt.
 	 *
@@ -115,7 +115,7 @@ class Crypt {
 		// get the active method.
 		$method_obj = $this->get_method();
 
-		// bail if method could not be found.
+		// bail if the method could not be found.
 		if ( false === $method_obj ) {
 			// log this event.
 			/* translators: %1$s will be replaced by our support-URL. */
@@ -128,7 +128,7 @@ class Crypt {
 	}
 
 	/**
-	 * Return list of supported methods.
+	 * Return the list of supported methods.
 	 *
 	 * @return array<int,string>
 	 */
@@ -148,17 +148,17 @@ class Crypt {
 	}
 
 	/**
-	 * Return list of available methods as objects.
+	 * Return the list of available methods as objects.
 	 *
 	 * @return array<int,Crypt_Base>
 	 */
 	private function get_methods_as_objects(): array {
-		// define list for objects.
+		// define the list for objects.
 		$list = array();
 
 		// get all available methods.
 		foreach ( $this->get_available_methods() as $method_class_name ) {
-			// create classname.
+			// create the classname.
 			$class_name = $method_class_name . '::get_instance';
 
 			// bail if it is not callable.
@@ -169,16 +169,16 @@ class Crypt {
 			// get the object.
 			$obj = $class_name();
 
-			// bail if object could not be loaded.
+			// bail if the object could not be loaded.
 			if ( ! $obj instanceof Crypt_Base ) {
 				continue;
 			}
 
-			// add object to the list.
+			// add the object to the list.
 			$list[] = $obj;
 		}
 
-		// return resulting list of objects.
+		// return the resulting list of objects.
 		return $list;
 	}
 

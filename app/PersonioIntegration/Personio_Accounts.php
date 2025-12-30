@@ -36,7 +36,7 @@ class Personio_Accounts extends Extensions_Base {
 	protected string $setting_field = 'personioIntegrationPersonioAccountsStatus';
 
 	/**
-	 * This extension can be enabled by user.
+	 * The user cannot enable this extension.
 	 *
 	 * Defaults to true as most extensions will be.
 	 *
@@ -59,7 +59,7 @@ class Personio_Accounts extends Extensions_Base {
 	protected string $setting_tab = 'basic';
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Personio_Accounts
 	 */
@@ -102,7 +102,7 @@ class Personio_Accounts extends Extensions_Base {
 		// get the main page.
 		$main_page = $settings_obj->get_page( $this->get_settings_page() );
 
-		// bail if page could not be loaded.
+		// bail if the page could not be loaded.
 		if ( ! $main_page instanceof Page ) {
 			return;
 		}
@@ -110,15 +110,15 @@ class Personio_Accounts extends Extensions_Base {
 		// get the main settings tab.
 		$main_tab = $main_page->get_tab( $this->get_setting_tab() );
 
-		// bail if main tab could not be loaded.
+		// bail if the main tab could not be loaded.
 		if ( ! $main_tab instanceof Tab ) {
 			return;
 		}
 
-		// get main section.
+		// get the main section.
 		$main_section = $main_tab->get_section( 'settings_section_main' );
 
-		// bail if section could not be loaded.
+		// bail if the section could not be loaded.
 		if ( ! $main_section instanceof Section ) {
 			return;
 		}
@@ -140,14 +140,14 @@ class Personio_Accounts extends Extensions_Base {
 	}
 
 	/**
-	 * Return list of Personio URLs which should be used to import positions.
+	 * Return the list of Personio URLs which should be used to import positions.
 	 *
 	 * The array contains the URLs as strings.
 	 *
 	 * @return array<string>
 	 */
 	public function get_personio_urls(): array {
-		// define list of Personio URLs.
+		// define the list of Personio URLs.
 		$personio_urls = array();
 
 		// add the configured Personio URL, if set.
@@ -224,7 +224,7 @@ class Personio_Accounts extends Extensions_Base {
 			// get the md5.
 			$md5 = md5( $personio_url );
 
-			// add to list.
+			// add to the list.
 			$statuses['async'][ 'personio_integration_url_availability_check_' . $md5 ] = array(
 				'label'    => __( 'Personio Integration URL availability check', 'personio-integration-light' ),
 				'test'     => rest_url( 'personio/v1/url_availability_checks_' . $md5 ),
@@ -290,7 +290,7 @@ class Personio_Accounts extends Extensions_Base {
 		// get the configured Personio Login URL.
 		$personio_login_url = get_option( 'personioIntegrationLoginUrl' );
 
-		// return default URLs, if no Login URL is configured.
+		// return default URLs if no Login URL is configured.
 		if ( empty( $personio_login_url ) ) {
 			if ( Languages::get_instance()->is_german_language() ) {
 				return 'https://www.personio.de/login/';
@@ -303,7 +303,7 @@ class Personio_Accounts extends Extensions_Base {
 	}
 
 	/**
-	 * Return language-specific Personio Login URL example.
+	 * Return the language-specific Personio Login URL example.
 	 *
 	 * @return string
 	 * @noinspection PhpUnused
@@ -335,7 +335,7 @@ class Personio_Accounts extends Extensions_Base {
 	}
 
 	/**
-	 * Return HTML-link with icon to edit specific entity in Personio account.
+	 * Return HTML-link with icon to edit specific entity in the Personio account.
 	 *
 	 * @param Position $position_obj The object of the position.
 	 *

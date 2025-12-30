@@ -5,6 +5,7 @@
 ### Added
 
 - Added automatic PHP compatibility check before each release
+- Added over 100 PHP Unit tests for over 200 situations
 - Added some more hooks
 - Added check for used language and show a hint if we have no translations for it
 
@@ -15,6 +16,9 @@
 - Changed styling for select fields in blocks to the default styling by Block Editor
 - Use minified blocks.css for classic themes which are using the block editor
 - Optimized release generation with dynamic URLs
+- Optimized import handling if an error occurs and the next import reads the previous import state
+- Optimized multiple typos in code and documentation
+- Optimized handling of encrypted strings
 - Updated dependencies
 
 ### Fixed

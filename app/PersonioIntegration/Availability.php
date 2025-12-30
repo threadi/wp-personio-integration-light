@@ -54,7 +54,7 @@ class Availability extends Extensions_Base {
 	protected string $extension_category = 'positions';
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Availability
 	 */
@@ -114,15 +114,15 @@ class Availability extends Extensions_Base {
 		// get the main settings page.
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
 
-		// bail if page could not be loaded.
+		// bail if the page could not be loaded.
 		if ( ! $main_settings_page instanceof Page ) {
 			return;
 		}
 
-		// get the extensions tab.
+		// get the extension tab.
 		$extension_tab = $main_settings_page->get_tab( $this->get_setting_tab() );
 
-		// bail if tab could not be loaded.
+		// bail if the tab could not be loaded.
 		if ( ! $extension_tab instanceof Tab ) {
 			return;
 		}
@@ -154,12 +154,12 @@ class Availability extends Extensions_Base {
 	 * @return void
 	 */
 	public function run(): void {
-		// bail if settings is not enabled.
+		// bail if the setting is not enabled.
 		if ( 1 !== absint( get_option( 'personioIntegrationEnableAvailabilityCheck' ) ) ) {
 			return;
 		}
 
-		// get list of positions.
+		// get the list of positions.
 		$positions      = Positions::get_instance()->get_positions();
 		$position_count = count( $positions );
 
@@ -183,7 +183,7 @@ class Availability extends Extensions_Base {
 
 		// loop through the positions and check each.
 		foreach ( $positions as $position_obj ) {
-			// run check for this single position.
+			// run a check for this single position.
 			$this->run_single_check( $position_obj );
 
 			$count = 1;

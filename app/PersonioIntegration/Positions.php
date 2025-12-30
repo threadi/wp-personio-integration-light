@@ -277,7 +277,7 @@ class Positions {
 	}
 
 	/**
-	 * Get a single position by its PersonioID.
+	 * Return a single position by its PersonioID.
 	 *
 	 * @param string $personioid The PersonioID.
 	 * @return Position|null

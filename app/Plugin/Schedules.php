@@ -134,12 +134,11 @@ class Schedules {
 	 * @return array<string,array<string,mixed>>
 	 */
 	private function get_events(): array {
-		// get our own events from events list in WordPress.
+		// get our own events from the events list in WordPress.
 		$our_events = $this->get_wp_events();
 
 		/**
-		 * Filter the list of our own events,
-		 * e.g. to check if all which are enabled in setting are active.
+		 * Filter the list of our own events e.g. to check if all which are enabled in setting are active.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
@@ -328,7 +327,7 @@ class Schedules {
 			// get the object.
 			$obj = new $object_name();
 
-			// bail if object is not a Schedule_Base object.
+			// bail if the object is not a Schedule_Base object.
 			if ( ! $obj instanceof Schedules_Base ) {
 				continue;
 			}
@@ -345,7 +344,7 @@ class Schedules {
 	}
 
 	/**
-	 * Return our own events from WP-cron-event-list.
+	 * Return our own events from the WP-cron-event-list.
 	 *
 	 * @return array<string,array<string,mixed>>
 	 */
@@ -362,17 +361,17 @@ class Schedules {
 			}
 		}
 
-		// return resulting list.
+		// return the resulting list.
 		return $our_events;
 	}
 
 	/**
-	 * Run check for cronjobs in frontend, if enabled.
+	 * Run check for cronjobs in the frontend, if enabled.
 	 *
 	 * @return void
 	 */
 	public function check_events_on_shutdown(): void {
-		// bail if check is disabled.
+		// bail if the check is disabled.
 		if ( 1 !== absint( get_option( 'personioIntegrationEnableCronCheckInFrontend' ) ) ) {
 			return;
 		}
@@ -382,7 +381,7 @@ class Schedules {
 	}
 
 	/**
-	 * Add schedule to our list of schedules.
+	 * Add a schedule to our list of schedules.
 	 *
 	 * @param object|bool $event The event properties.
 	 *
@@ -390,7 +389,7 @@ class Schedules {
 	 * @noinspection PhpUnused
 	 */
 	public function add_schedule_to_list( object|bool $event ): object|bool {
-		// bail if event is not an object.
+		// bail if the event is not an object.
 		if ( ! is_object( $event ) ) {
 			return $event;
 		}

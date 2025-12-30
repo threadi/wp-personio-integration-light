@@ -14,7 +14,6 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
-use function cli\err;
 
 /**
  * Object to handle different themes to output templates of our plugin.
@@ -22,7 +21,7 @@ use function cli\err;
 class Extensions {
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Extensions
 	 */
@@ -112,7 +111,7 @@ class Extensions {
 	}
 
 	/**
-	 * Get extensions as list of Extension_Base-objects.
+	 * Get extensions as a list of Extension_Base-objects.
 	 *
 	 * @return array<Extensions_Base>
 	 */
@@ -122,21 +121,21 @@ class Extensions {
 
 		// loop through them.
 		foreach ( $this->get_extensions() as $extension_name ) {
-			// bail if name is not a string.
+			// bail if the name is not a string.
 			if ( $extension_name instanceof Extensions_Base ) {
 				$list[] = $extension_name;
 				continue;
 			}
 
-			// bail if method does not exist.
+			// bail if the method does not exist.
 			if ( ! method_exists( $extension_name, 'get_instance' ) ) {
 				continue;
 			}
 
-			// get object name.
+			// get the object name.
 			$obj_name = $extension_name . '::get_instance';
 
-			// bail if method is not callable.
+			// bail if the method is not callable.
 			if ( ! is_callable( $obj_name ) ) {
 				continue;
 			}
@@ -145,7 +144,7 @@ class Extensions {
 			$list[] = $obj_name();
 		}
 
-		// return resulting list.
+		// return the resulting list.
 		return $list;
 	}
 
@@ -162,11 +161,12 @@ class Extensions {
 			return;
 		}
 
+		// initialize our extensions.
 		$this->initialize_extensions();
 	}
 
 	/**
-	 * Set list of extensions we deliver in Light.
+	 * Set the list of extensions we deliver in Light.
 	 *
 	 * @param array<string> $extension_list List of extensions.
 	 *
@@ -180,14 +180,14 @@ class Extensions {
 		$extension_list[] = '\PersonioIntegrationLight\PersonioIntegration\Show_Position_Xml';
 		$extension_list[] = '\PersonioIntegrationLight\PageBuilder\Page_Builders';
 
-		// return resulting list.
+		// return the resulting list.
 		return $extension_list;
 	}
 
 	/**
 	 * Return the list of all available extensions.
 	 *
-	 * Hint: list contains only the class-name, not the objects.
+	 * Hint: the list contains only the class-name, not the objects.
 	 *
 	 * @return array<string|Extensions_Base>
 	 */
@@ -240,7 +240,7 @@ class Extensions {
 		// get the extension object.
 		$obj = $this->get_extension_by_name( $extension_name );
 
-		// bail if extension could not be found.
+		// bail if an extension could not be found.
 		if ( ! $obj instanceof Extensions_Base ) {
 			wp_send_json_error(
 				array(
@@ -332,7 +332,7 @@ class Extensions {
 		// check none.
 		check_admin_referer( 'personio-integration-extension-state', 'nonce' );
 
-		// get transients as object.
+		// get transients as an object.
 		$transients_obj = Transients::get_instance();
 
 		// get the name of the extension to change.
@@ -355,7 +355,7 @@ class Extensions {
 		// get the extension object.
 		$obj = $this->get_extension_by_name( $extension_name );
 
-		// bail if object could not be loaded.
+		// bail if an object could not be loaded.
 		if ( ! $obj instanceof Extensions_Base ) {
 			// show error.
 			$transient_obj = $transients_obj->add();
@@ -395,7 +395,7 @@ class Extensions {
 	 */
 	private function get_extension_by_name( string $name ): Extensions_Base|false {
 		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
-			// bail if name does not match.
+			// bail if the name does not match.
 			if ( $extension_obj->get_name() !== $name ) {
 				continue;
 			}
@@ -417,7 +417,7 @@ class Extensions {
 			return;
 		}
 
-		// add main menu as setup entry.
+		// add the main menu as a setup entry.
 		add_submenu_page(
 			PersonioPosition::get_instance()->get_link( true ),
 			__( 'Personio Integration Light Extensions', 'personio-integration-light' ),
@@ -430,7 +430,7 @@ class Extensions {
 	}
 
 	/**
-	 * Get URL for backend list of extensions.
+	 * Return URL for the backend list of extensions.
 	 *
 	 * @param string $category The category (optional).
 	 *
@@ -446,7 +446,7 @@ class Extensions {
 			$query['category'] = $category;
 		}
 
-		// return resulting URL.
+		// return the resulting URL.
 		return add_query_arg(
 			$query,
 			get_admin_url() . 'edit.php'
@@ -454,7 +454,7 @@ class Extensions {
 	}
 
 	/**
-	 * Show list of extensions to manage.
+	 * Show the list of extensions to manage.
 	 *
 	 * @return void
 	 */
@@ -477,7 +477,7 @@ class Extensions {
 	}
 
 	/**
-	 * Disable all extensions which could be enabled by user via request.
+	 * Disable all extensions that could be enabled by a user via request.
 	 *
 	 * @return void
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
@@ -491,7 +491,7 @@ class Extensions {
 
 		// loop through all extensions and enable them.
 		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
-			// bail if this extension could not be disabled by user.
+			// bail if this extension could not be disabled by a user.
 			if ( ! $extension_obj->can_be_enabled_by_user() ) {
 				continue;
 			}
@@ -516,7 +516,7 @@ class Extensions {
 	}
 
 	/**
-	 * Enable all extensions which could be enabled by user via request.
+	 * Enable all extensions that could be enabled by a user via request.
 	 *
 	 * @return void
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
@@ -530,7 +530,7 @@ class Extensions {
 
 		// loop through all extensions and enable them.
 		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
-			// bail if this extension could not be enabled by user.
+			// bail if this extension could not be enabled by a user.
 			if ( ! $extension_obj->can_be_enabled_by_user() ) {
 				continue;
 			}
@@ -587,7 +587,7 @@ class Extensions {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens new window)</a> to get much more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens new window)</a> to get many more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
 		}
 		$content .= '</ol>';
 
@@ -599,7 +599,7 @@ class Extensions {
 			'priority' => str_starts_with( Helper::get_current_url(), Helper::get_settings_url( 'personioPositionExtensions' ) ) ? 1 : 30,
 		);
 
-		// return resulting list.
+		// return the resulting list.
 		return $help_list;
 	}
 }

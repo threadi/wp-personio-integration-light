@@ -140,6 +140,11 @@ class OpenSSL extends Crypt_Base {
 	 * @return string
 	 */
 	public function encrypt( string $plain_text ): string {
+		// bail if it is not usable.
+		if ( ! $this->is_usable() ) {
+			return '';
+		}
+
 		// bail if no text is given.
 		if ( empty( $plain_text ) ) {
 			return '';
@@ -177,6 +182,11 @@ class OpenSSL extends Crypt_Base {
 	 * @return string
 	 */
 	public function decrypt( string $encrypted_text ): string {
+		// bail if it is not usable.
+		if ( ! $this->is_usable() ) {
+			return '';
+		}
+
 		// bail if no text is given.
 		if ( empty( $encrypted_text ) ) {
 			return '';

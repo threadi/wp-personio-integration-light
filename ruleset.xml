@@ -12,6 +12,7 @@
     -->
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/build/*</exclude-pattern>
+    <exclude-pattern>*/tests/*</exclude-pattern>
     <exclude-pattern>*/node_modules/*</exclude-pattern>
     <exclude-pattern>*/blocks/*</exclude-pattern>
     <exclude-pattern>*/svn/*</exclude-pattern>

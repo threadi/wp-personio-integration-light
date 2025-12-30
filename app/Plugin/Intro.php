@@ -94,7 +94,7 @@ class Intro {
 	}
 
 	/**
-	 * Set the intro to closed.
+	 * Set the intro to be closed.
 	 *
 	 * @return void
 	 */
@@ -125,21 +125,21 @@ class Intro {
 	 * @return void
 	 */
 	public function add_js( string $hook ): void {
-		// do not load styles depending on used hook.
+		// do not load styles depending on the used hook.
 		if ( Helper::do_not_load_styles( $hook ) ) {
 			return;
 		}
 
-		// embed necessary scripts for dialog.
+		// embed the necessary scripts for the dialog.
 		$path = Helper::get_plugin_path() . 'node_modules/intro.js/minified/';
 		$url  = Helper::get_plugin_url() . 'node_modules/intro.js/minified/';
 
-		// bail if path does not exist.
+		// bail if a path does not exist.
 		if ( ! file_exists( $path ) ) {
 			return;
 		}
 
-		// embed the JS-script from intro.js.
+		// embed the JS script from "intro.js".
 		wp_enqueue_script(
 			'personio-integration-intro',
 			$url . 'intro.min.js',
@@ -148,7 +148,7 @@ class Intro {
 			true
 		);
 
-		// embed our own JS-script.
+		// embed our own JS script.
 		wp_enqueue_script(
 			'personio-integration-intro-custom',
 			Helper::get_plugin_url() . 'admin/intro.js',
@@ -157,7 +157,7 @@ class Intro {
 			true
 		);
 
-		// embed the CSS-file.
+		// embed the CSS file.
 		wp_enqueue_style(
 			'personio-integration-intro',
 			$url . 'introjs.min.css',
@@ -165,7 +165,7 @@ class Intro {
 			Helper::get_file_version( trailingslashit( $path ) . 'introjs.min.css' ),
 		);
 
-		// embed the CSS-file.
+		// embed the CSS file.
 		wp_enqueue_style(
 			'personio-integration-intro-custom',
 			Helper::get_plugin_url() . 'admin/intro.css',
@@ -207,7 +207,7 @@ class Intro {
 				'import_intro_step_4_title'    => __( 'Import positions', 'personio-integration-light' ),
 				'import_intro_step_4_intro'    => __( 'Enable or disable the automatic import of positions. If enabled it runs daily. If disabled you have to import the positions manually with help of the button above.', 'personio-integration-light' ),
 				'import_intro_step_5_title'    => __( 'Import positions', 'personio-integration-light' ),
-				'import_intro_step_5_intro'    => __( 'With this simple steps you can manage the import of positions.<br>With Personio Integration Pro you will have much more options, not only for the import.', 'personio-integration-light' ),
+				'import_intro_step_5_intro'    => __( 'With these easy steps you can manage the import of positions.<br>With Personio Integration Pro you will have many more options, not only for the import.', 'personio-integration-light' ),
 				'template_intro_step_1_title'  => __( 'Configure templates positions', 'personio-integration-light' ),
 				'template_intro_step_1_intro'  => __( 'The page in front of us is used to configure basic settings for the output of positions in the frontend.<br><br><strong>Please note:</strong> if you use a PageBuilder with your own templates, these templates will overwrite the settings here. However, the options are always the same.', 'personio-integration-light' ),
 				'template_intro_step_2_title'  => __( 'Configure templates positions', 'personio-integration-light' ),
@@ -274,7 +274,7 @@ class Intro {
 		// get the main settings page.
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
 
-		// bail if page could not be loaded.
+		// bail if the page could not be loaded.
 		if ( ! $main_settings_page instanceof Page ) {
 			return;
 		}
@@ -282,7 +282,7 @@ class Intro {
 		// get the advanced tab.
 		$advanced_tab = $main_settings_page->get_tab( 'advanced' );
 
-		// bail if page could not be loaded.
+		// bail if the page could not be loaded.
 		if ( ! $advanced_tab instanceof Tab ) {
 			return;
 		}
@@ -290,7 +290,7 @@ class Intro {
 		// get the advanced section.
 		$advanced_section = $advanced_tab->get_section( 'settings_section_advanced' );
 
-		// bail if section could not be loaded.
+		// bail if the section could not be loaded.
 		if ( ! $advanced_section instanceof Section ) {
 			return;
 		}
@@ -318,7 +318,7 @@ class Intro {
 		// get hidden section.
 		$hidden_section = Settings::get_instance()->get_hidden_section();
 
-		// bail if hidden section could not be found.
+		// bail if the hidden section could not be found.
 		if ( ! $hidden_section instanceof Section ) {
 			return;
 		}
@@ -334,7 +334,7 @@ class Intro {
 	/**
 	 * Return setting value.
 	 *
-	 * @param mixed $settings The settings as array.
+	 * @param mixed $settings The settings as an array.
 	 *
 	 * @return array<string,mixed>
 	 * @deprecated since 5.0.0

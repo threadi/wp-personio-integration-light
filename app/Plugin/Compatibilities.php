@@ -45,7 +45,7 @@ class Compatibilities {
 	}
 
 	/**
-	 * Initialize all compatibility-checks for this plugin.
+	 * Initialize all compatibility checks for this plugin.
 	 *
 	 * @return void
 	 */

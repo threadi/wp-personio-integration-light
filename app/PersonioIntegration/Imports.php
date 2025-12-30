@@ -15,8 +15,6 @@ use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkb
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\TextInfo;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
-use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 
 /**
@@ -24,7 +22,7 @@ use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
  */
 class Imports {
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Imports
 	 */
@@ -94,10 +92,10 @@ class Imports {
 		// get settings object.
 		$settings_obj = Settings::get_instance();
 
-		// get settings page.
+		// get the settings page.
 		$settings_page = $settings_obj->get_page( 'personioPositions' );
 
-		// bail if page could not be loaded.
+		// bail if the page could not be loaded.
 		if ( ! $settings_page instanceof Page ) {
 			return;
 		}
@@ -106,7 +104,7 @@ class Imports {
 		$import_tab = $settings_page->add_tab( 'import', 20 );
 		$import_tab->set_title( __( 'Import', 'personio-integration-light' ) );
 
-		// add main section.
+		// add the main section.
 		$import_section = $import_tab->add_section( 'settings_section_import', 10 );
 		$import_section->set_title( __( 'Import of positions from Personio', 'personio-integration-light' ) );
 		$import_section->set_setting( $settings_obj );
@@ -193,7 +191,7 @@ class Imports {
 	}
 
 	/**
-	 * Return list of import extensions.
+	 * Return the list of import extensions.
 	 *
 	 * @return array<int,string>
 	 */
@@ -220,15 +218,15 @@ class Imports {
 	 * @return array<string>
 	 */
 	public function add_category( array $categories ): array {
-		// add category for this extension type.
+		// add the category for this extension type.
 		$categories['imports'] = __( 'Imports', 'personio-integration-light' );
 
-		// return resulting list.
+		// return the resulting list.
 		return $categories;
 	}
 
 	/**
-	 * Return list of import extensions as object.
+	 * Return the list of import extensions as objects.
 	 *
 	 * No check for their states.
 	 *
@@ -245,10 +243,10 @@ class Imports {
 				continue;
 			}
 
-			// get the handler as object.
+			// get the handler as an object.
 			$obj = $class_name();
 
-			// bail if object is not an Imports_Base.
+			// bail if an object is not an Imports_Base.
 			if ( ! $obj instanceof Imports_Base ) {
 				continue;
 			}
@@ -256,12 +254,12 @@ class Imports {
 			$list[] = $obj;
 		}
 
-		// return list of import extensions.
+		// return the list of import extensions.
 		return $list;
 	}
 
 	/**
-	 * Check if min. 1 import extension is enabled.
+	 * Check if the minimum of 1 import extension is enabled.
 	 *
 	 * @return bool
 	 */
@@ -270,7 +268,7 @@ class Imports {
 	}
 
 	/**
-	 * Return the active import extension as object.
+	 * Return the active import extension as an object.
 	 *
 	 * @return Imports_Base|false
 	 */
@@ -314,7 +312,7 @@ class Imports {
 		// get the actual list of new position from this import.
 		$new_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, array() );
 
-		// bail if list is empty.
+		// bail if a list is empty.
 		if ( empty( $new_positions ) ) {
 			$new_positions = array();
 		}
@@ -325,12 +323,12 @@ class Imports {
 		// save the list of new positions.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, $new_positions );
 
-		// return the post array.
+		// return the post-array.
 		return $post_array;
 	}
 
 	/**
-	 * Add entry to the list of deleted positions.
+	 * Add an entry to the list of deleted positions.
 	 *
 	 * @param string $personio_id The Personio ID of the position which has been deleted.
 	 *
@@ -340,7 +338,7 @@ class Imports {
 		// get the actual list of deleted position from this import.
 		$deleted_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, array() );
 
-		// bail if list is empty.
+		// bail if a list is empty.
 		if ( empty( $deleted_positions ) ) {
 			$deleted_positions = array();
 		}
@@ -355,7 +353,7 @@ class Imports {
 	/**
 	 * Return setting value.
 	 *
-	 * @param mixed $settings The settings as array.
+	 * @param mixed $settings The settings as an array.
 	 *
 	 * @return array<string,mixed>
 	 * @deprecated since 5.0.0

@@ -24,14 +24,14 @@ class Widget_Base extends Extensions_Base {
 	protected string $extension_category = 'widgets';
 
 	/**
-	 * Path to Block object.
+	 * Path to the Block object.
 	 *
 	 * @var string
 	 */
 	protected string $gutenberg = '';
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Widget_Base
 	 */
@@ -56,7 +56,7 @@ class Widget_Base extends Extensions_Base {
 	public function init(): void {
 		add_filter( 'personio_integration_light_extension_state_changed_dialog', array( $this, 'add_hint_after_enabling' ), 10, 2 );
 
-		// bail if object is not enabled.
+		// bail if the object is not enabled.
 		if ( ! $this->is_enabled() ) {
 			return;
 		}
@@ -97,7 +97,7 @@ class Widget_Base extends Extensions_Base {
 	}
 
 	/**
-	 * Return whether this extension can be enabled by the user (true) or not (false).
+	 * Returns whether the user can enable this extension (true) or not (false).
 	 *
 	 * @return bool
 	 */
@@ -159,7 +159,7 @@ class Widget_Base extends Extensions_Base {
 	}
 
 	/**
-	 * Return position as object by request.
+	 * Return position as an object by request.
 	 *
 	 * Hints:
 	 * - Bug https://github.com/WordPress/gutenberg/issues/40714 prevents clean usage in Query Loop (backend bad, frontend ok)
@@ -170,7 +170,7 @@ class Widget_Base extends Extensions_Base {
 		// get positions object.
 		$positions = Positions::get_instance();
 
-		// return the position as object if the called ID is valid.
+		// return the position as an object if the called ID is valid.
 		$post_id = get_the_ID();
 		if ( $post_id > 0 ) {
 			$position_obj = $positions->get_position( $post_id );
@@ -247,7 +247,7 @@ class Widget_Base extends Extensions_Base {
 			$params .= ' ' . $name . '="' . $param['example_value'] . '"';
 		}
 
-		// return resulting example.
+		// return the resulting example.
 		return '<code data-copied-label="' . esc_attr__( 'copied', 'personio-integration-light' ) . '" title="' . esc_attr__( 'Click to copy this code in your clipboard', 'personio-integration-light' ) . '">[personio_integration_' . $this->get_name() . $params . ']</code>';
 	}
 

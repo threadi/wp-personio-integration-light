@@ -49,7 +49,7 @@ class Xml extends Imports_Base {
 	protected string $extension_category = 'imports';
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Xml
 	 */
@@ -88,16 +88,20 @@ class Xml extends Imports_Base {
 	 * @return void
 	 */
 	public function run(): void {
-		// if debug mode is enabled log this event.
+		// if debug mode is enabled, log this event.
 		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
 			Log::get_instance()->add( __( 'Import of positions is now running.', 'personio-integration-light' ), 'success', 'import' );
 		}
 
-		// set mark that import is running in WP.
-		define( 'WP_IMPORTING', true );
+		// set a mark that import is running in WP.
+		if ( ! defined( 'WP_IMPORTING' ) ) {
+			define( 'WP_IMPORTING', true );
+		}
 
 		// mark process as running import.
-		define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
+		if ( ! defined( 'PERSONIO_INTEGRATION_IMPORT_RUNNING' ) ) {
+			define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
+		}
 
 		// do not import if it is already running in another process.
 		if ( ! $this->can_be_run() ) {
@@ -128,27 +132,30 @@ class Xml extends Imports_Base {
 		// bail if any error occurred.
 		if ( $this->has_errors() ) {
 			$this->handle_errors();
+
+			// reset status.
+			update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, '' );
 			return;
 		}
 
 		// set max counter.
 		$language_count = count( $languages );
 
-		// mark import as running with its start-time.
+		// mark the import as running with its start-time.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
 
 		// set status.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import starting ..', 'personio-integration-light' ) );
 
-		// reset list of errors during import.
+		// reset the list of errors during import.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() );
 
-		// reset import counter.
+		// reset the import counter.
 		update_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 );
 
 		$instance = $this;
 		/**
-		 * Run custom actions before import of positions is running.
+		 * Run custom actions before the import of positions is running.
 		 *
 		 * @since 3.0.0 Available since release 3.0.0.
 		 * @param Imports_Base $instance The import object.
@@ -210,7 +217,7 @@ class Xml extends Imports_Base {
 			return;
 		}
 
-		// clean-up the database if no errors occurred.
+		// clean up the database if no errors occurred.
 		if ( ! $this->has_errors() ) {
 			if ( 0 === $imported_positions ) {
 				// output success-message.
@@ -269,10 +276,10 @@ class Xml extends Imports_Base {
 						Log::get_instance()->add( sprintf( __( 'Removing the update flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
 					}
 				} else {
-					// delete this position from database without using trash.
+					// delete this position from the database without using trash.
 					$result = wp_delete_post( $position_obj->get_id(), true );
 
-					// if result is WP_Post, it has been deleted successfully.
+					// if the result is WP_Post, it has been deleted successfully.
 					if ( $result instanceof WP_Post ) {
 						/**
 						 * Run tasks if a position has been deleted.
@@ -314,7 +321,7 @@ class Xml extends Imports_Base {
 		// refresh permalinks.
 		update_option( 'personio_integration_update_slugs', 1 );
 
-		// define step-count that has been run.
+		// define a step-count that has been run.
 		$step = 1;
 
 		/**

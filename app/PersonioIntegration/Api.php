@@ -2,7 +2,7 @@
 /**
  * File for manage any Personio API v2 tasks. This is not an extension but is used by some of them.
  *
- * Hint: API v2 from Personio is Beta and should not and can not be used from productive systems.
+ * Hint: API v2 from Personio is Beta and should not and could not be used on productive systems.
  *
  * @package personio-integration-light
  */
@@ -74,7 +74,7 @@ class Api {
 
 		// use our own hooks.
 		add_filter( 'personio_integration_objects_with_db_tables', array( $this, 'add_table' ) );
-		add_filter( 'personio_integration_log_categories', array( $this, 'add_category' ) );
+		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_category' ) );
 		add_filter( 'personio_integration_schedules', array( $this, 'add_schedule' ) );
 	}
 
@@ -90,7 +90,7 @@ class Api {
 		// get the main settings page.
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
 
-		// bail if page could not be loaded.
+		// bail if the page could not be loaded.
 		if ( ! $main_settings_page instanceof Page ) {
 			return;
 		}
@@ -98,7 +98,7 @@ class Api {
 		// get the general tab.
 		$general_tab = $main_settings_page->get_tab( 'basic' );
 
-		// bail if basic tab does not exist.
+		// bail if the basic tab does not exist.
 		if ( ! $general_tab instanceof Tab ) {
 			return;
 		}
@@ -138,7 +138,7 @@ class Api {
 		// get the hidden section.
 		$hidden = \PersonioIntegrationLight\Plugin\Settings::get_instance()->get_hidden_section();
 
-		// bail if hidden section does not exist.
+		// bail if a hidden section does not exist.
 		if ( ! $hidden instanceof Section ) {
 			return;
 		}
@@ -158,12 +158,12 @@ class Api {
 	public function show_api_settings_hint(): void {
 		if ( empty( get_option( 'personioIntegrationLoginUrl' ) ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p>' . wp_kses_post( sprintf( __( 'You can find this information in your Personio account (opens in new window) under Marketplace > Integrations. For more information take a look in the <a href="%1$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
+			echo '<p>' . wp_kses_post( sprintf( __( 'You can find this information in your Personio account (opens in a new window) under Marketplace > Integrations. For more information, take a look at the <a href="%1$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
 			return;
 		}
 
 		/* translators: %1$s will be replaced by a URL. */
-		echo '<p>' . wp_kses_post( sprintf( __( 'You can find this information <a href="%1$s" target="_blank">in your Personio account (opens in new window)</a> under Marketplace > Integrations. For more information take a look in the <a href="%2$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_personio_api_management_url() ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
+		echo '<p>' . wp_kses_post( sprintf( __( 'You can find this information <a href="%1$s" target="_blank">in your Personio account (opens in new window)</a> under Marketplace > Integrations. For more information, take a look at the <a href="%2$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_personio_api_management_url() ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
 	}
 
 	/**
@@ -176,9 +176,9 @@ class Api {
 	}
 
 	/**
-	 * Get the access token for the Personio API.
+	 * Return the access token for the Personio API.
 	 *
-	 * If token is not set, get it atm via API request.
+	 * If the token is not set, get it atm via API request.
 	 *
 	 * @return string
 	 */
@@ -197,13 +197,13 @@ class Api {
 		}
 
 		/**
-		 * As access token is unknown we request a new one from Personio API.
+		 * As the access token is unknown, we request a new one from Personio API.
 		 */
 
 		// define our custom header for this API request.
 		add_filter( 'personio_integration_light_request_header', array( $this, 'set_api_request_header_for_bearer_update' ) );
 
-		// collect the post data for this request.
+		// collect the post-data for this request.
 		$post_data = array(
 			'client_id'     => get_option( 'personioIntegrationClientId' ),
 			'client_secret' => get_option( 'personioIntegrationApiSecret' ),
@@ -218,7 +218,7 @@ class Api {
 		// send it.
 		$request_object->send();
 
-		// bail if HTTP-status is not 200.
+		// bail if HTTP status is not 200.
 		if ( 200 !== $request_object->get_http_status() ) {
 			return '';
 		}
@@ -226,7 +226,7 @@ class Api {
 		// get the response.
 		$response = json_decode( $request_object->get_response(), true );
 
-		// bail if response does not contain "access_token", "expires_in or "token_type".
+		// bail if the response does not contain "access_token", "expires_in or "token_type".
 		if ( ! isset( $response['access_token'], $response['token_type'], $response['expires_in'] ) ) {
 			return '';
 		}
@@ -234,7 +234,7 @@ class Api {
 		// get the access token.
 		$access_token = $response['access_token'];
 
-		// bail if token is empty.
+		// bail if the token is empty.
 		if ( empty( $access_token ) ) {
 			return '';
 		}
@@ -255,7 +255,7 @@ class Api {
 		// get the access token from DB.
 		$access_token = $this->get_access_token_from_db();
 
-		// bail if token is not set.
+		// bail if a token is not set.
 		if ( empty( $access_token ) ) {
 			return;
 		}
@@ -263,7 +263,7 @@ class Api {
 		// define our custom header for this API request.
 		add_filter( 'personio_integration_light_request_header', array( $this, 'set_api_request_header' ) );
 
-		// collect the post data for this request.
+		// collect the post-data for this request.
 		$post_data = array(
 			'token' => $access_token,
 		);
@@ -276,7 +276,7 @@ class Api {
 		// send it.
 		$request_object->send();
 
-		// bail if HTTP-status is not 200.
+		// bail if HTTP status is not 200.
 		if ( 200 !== $request_object->get_http_status() ) {
 			return;
 		}
@@ -298,7 +298,7 @@ class Api {
 	}
 
 	/**
-	 * Create request table on plugin activation.
+	 * Create the request table on plugin activation.
 	 *
 	 * @return void
 	 */
@@ -323,22 +323,22 @@ class Api {
 	}
 
 	/**
-	 * Add log category for Personio API.
+	 * Add the log category for Personio API.
 	 *
 	 * @param array<string> $categories List of categories.
 	 *
 	 * @return array<string>
 	 */
-	public function add_category( array $categories ): array {
-		// add category for this extension type.
+	public function add_log_category( array $categories ): array {
+		// add a category for this extension type.
 		$categories['api'] = __( 'Personio API', 'personio-integration-light' );
 
-		// return resulting list.
+		// return the resulting list.
 		return $categories;
 	}
 
 	/**
-	 * Set a specific HTTP-header for update of bearer token.
+	 * Set a specific HTTP header for update of the bearer token.
 	 *
 	 * @return array<string,mixed>
 	 */
@@ -358,7 +358,7 @@ class Api {
 	}
 
 	/**
-	 * Set a specific HTTP-header for update of bearer token.
+	 * Set a specific HTTP header for update of the bearer token.
 	 *
 	 * @return array<string,mixed>
 	 */
@@ -375,7 +375,7 @@ class Api {
 	}
 
 	/**
-	 * Update the access token (e.g. via schedule).
+	 * Update the access token (e.g., via schedule).
 	 *
 	 * @return void
 	 */
@@ -384,9 +384,9 @@ class Api {
 	}
 
 	/**
-	 * If token changes get the access token in one first request and enable the schedule if token has a value.
+	 * If the token has been changed, get the access token in one first request and enable the schedule if the token has a value.
 	 *
-	 * If token has no value remove the access token and disable the schedule.
+	 * If the token has no value, remove the access token and disable the schedule.
 	 *
 	 * @param string $old_value The old value.
 	 * @param string $new_value The new value.
@@ -394,7 +394,7 @@ class Api {
 	 * @return void
 	 */
 	public function check_for_api_support( string $old_value, string $new_value ): void {
-		// bail if value has not been changed.
+		// bail if the value has not been changed.
 		if ( Crypt::get_instance()->decrypt( $new_value ) === $old_value ) {
 			return;
 		}
@@ -402,7 +402,7 @@ class Api {
 		// get the schedule object.
 		$schedule_obj = new ApiAccessToken();
 
-		// if new value is empty, remove the access token and disable the schedule.
+		// if the new value is empty, remove the access token and disable the schedule.
 		if ( empty( $new_value ) ) {
 			$schedule_obj->delete();
 			$this->delete_access_token();
@@ -431,7 +431,7 @@ class Api {
 		// add the schedule-objekt.
 		$list_of_schedules[] = '\PersonioIntegrationLight\Plugin\Schedules\ApiAccessToken';
 
-		// return resulting list.
+		// return the resulting list.
 		return $list_of_schedules;
 	}
 }

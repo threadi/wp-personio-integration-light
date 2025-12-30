@@ -25,7 +25,7 @@ class Page_Builders extends Extensions_Base {
 	protected string $name = 'Page Builders';
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Page_Builders
 	 */
@@ -58,7 +58,7 @@ class Page_Builders extends Extensions_Base {
 	}
 
 	/**
-	 * Return list of page builders.
+	 * Return the list of page builders.
 	 *
 	 * @return array<string>
 	 */
@@ -76,7 +76,7 @@ class Page_Builders extends Extensions_Base {
 	}
 
 	/**
-	 * Return list of page builders as their objects.
+	 * Return the list of page builders as their objects.
 	 *
 	 * @return array<int,PageBuilder_Base>
 	 */
@@ -97,12 +97,12 @@ class Page_Builders extends Extensions_Base {
 			// get the object.
 			$obj = $classname();
 
-			// bail if object is not PageBuilder_Base.
+			// bail if an object is not PageBuilder_Base.
 			if ( ! $obj instanceof PageBuilder_Base ) {
 				continue;
 			}
 
-			// add object to the list.
+			// add an object to the list.
 			$list[] = $obj;
 		}
 
@@ -129,10 +129,10 @@ class Page_Builders extends Extensions_Base {
 	 * @return array<string,string>
 	 */
 	public function add_log_categories( array $categories ): array {
-		// add category for this extension type.
+		// add a category for this extension type.
 		$categories['pagebuilder'] = __( 'PageBuilder', 'personio-integration-light' );
 
-		// return resulting list.
+		// return the resulting list.
 		return $categories;
 	}
 }

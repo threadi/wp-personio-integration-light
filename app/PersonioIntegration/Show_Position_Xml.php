@@ -49,7 +49,7 @@ class Show_Position_Xml extends Extensions_Base {
 	protected string $setting_tab = '';
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Show_Position_Xml
 	 */

@@ -101,7 +101,7 @@ class Archive extends Blocks_Basis {
 	);
 
 	/**
-	 * Variable for instance of this Singleton object.
+	 * Variable for the instance of this Singleton object.
 	 *
 	 * @var ?Archive
 	 */

@@ -68,7 +68,7 @@ class Sodium extends Crypt_Base {
 	 */
 	public function init(): void {
 		if ( $this->is_hash_saved() ) {
-			$this->set_hash( sodium_base642bin( PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM, $this->get_coding_id() ) ); // @phpstan-ignore constant.notFound
+			$this->set_hash( sodium_base642bin( sodium_bin2base64( PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM, $this->get_coding_id() ), $this->get_coding_id() ) ); // @phpstan-ignore constant.notFound
 		}
 
 		// bail if hash is set.
@@ -76,10 +76,10 @@ class Sodium extends Crypt_Base {
 			return;
 		}
 
-		// get hash from old db entry.
+		// get hash from the old db entry.
 		$this->set_hash( sodium_base642bin( get_option( WP_PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM, '' ), $this->get_coding_id() ) );
 
-		// bail if update is running, if cron or ajax is called or if this is not an admin-request.
+		// bail if the update is running, if cron or ajax is called or if this is not an admin-request.
 		if ( defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) || defined( 'DOING_CRON' ) || defined( 'DOING_AJAX' ) || ! is_admin() ) {
 			return;
 		}
@@ -93,7 +93,7 @@ class Sodium extends Crypt_Base {
 		// get the wp-config.php path.
 		$wp_config_php_path = Helper::get_wp_config_path();
 
-		// bail if path could not be loaded.
+		// bail if the path could not be loaded.
 		if ( ! $wp_config_php_path ) {
 			return;
 		}
@@ -110,7 +110,7 @@ class Sodium extends Crypt_Base {
 		// get the contents of the wp-config.php.
 		$wp_config_php_content = $wp_filesystem->get_contents( $wp_config_php_path );
 
-		// bail if file has no contents.
+		// bail if the file has no contents.
 		if ( ! $wp_config_php_content ) {
 			return;
 		}
@@ -155,6 +155,11 @@ class Sodium extends Crypt_Base {
 	 * @return string
 	 */
 	public function encrypt( string $plain_text ): string {
+		// bail if it is not usable.
+		if ( ! $this->is_usable() ) {
+			return '';
+		}
+
 		try {
 			// generate a nonce.
 			$nonce = random_bytes( SODIUM_CRYPTO_AEAD_AES256GCM_NPUBBYTES );
@@ -179,6 +184,11 @@ class Sodium extends Crypt_Base {
 	 * @return string
 	 */
 	public function decrypt( string $encrypted_text ): string {
+		// bail if it is not usable.
+		if ( ! $this->is_usable() ) {
+			return '';
+		}
+
 		try {
 			// split into the parts after converting from base64- to binary-string.
 			$parts = explode( ':', sodium_base642bin( $encrypted_text, $this->get_coding_id() ) );

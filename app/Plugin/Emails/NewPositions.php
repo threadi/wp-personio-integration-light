@@ -65,7 +65,7 @@ class NewPositions extends Email_Base {
 	}
 
 	/**
-	 * Return the subject.
+	 * Return the subject of this email.
 	 *
 	 * @return string
 	 */
@@ -73,7 +73,7 @@ class NewPositions extends Email_Base {
 		// set our custom subject.
 		$this->subject = get_bloginfo( 'name' ) . ': ' . _n( 'New position imported from Personio', 'New positions imported from Personio', count( $this->get_new_positions() ), 'personio-integration-light' );
 
-		// return the parent tasks for subject.
+		// return the parent tasks for the subject.
 		return parent::get_subject();
 	}
 
@@ -130,7 +130,7 @@ class NewPositions extends Email_Base {
 			return;
 		}
 
-		// set this position as new position for the test.
+		// set this position as a new position for the test.
 		$this->set_new_positions( $positions );
 	}
 }
