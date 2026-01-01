@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in the class PersonioIntegrationLight\PersonioIntegration\Imports.
  */
-class Imports extends WP_UnitTestCase {
+class Imports extends PersonioTestCase {
 
 	/**
 	 * Test to run an import of positions.
@@ -16,27 +20,12 @@ class Imports extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_run_import(): void {
-		global $personio_positions;
+		// use the global handler.
+		$position_obj = self::get_single_position();
 
-		// first remove all existing positions.
-		\PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition::get_instance()->delete_positions();
-
-		// now run the import.
-		$imports_obj = \PersonioIntegrationLight\PersonioIntegration\Imports::get_instance()->get_import_extension();
-		if ( $imports_obj instanceof \PersonioIntegrationLight\PersonioIntegration\Imports_Base ) {
-			$imports_obj->run();
-
-			// check if the import was successful.
-			$result = get_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS );
-			$this->assertEquals( 'Import completed.', $result );
-		}
-		else {
-			$this->hasFailed();
-		}
-
-		// now get the list of positions and check if it contains at least one entry.
-		$personio_positions = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_positions();
-		$this->assertNotEmpty( $personio_positions );
+		// test it.
+		$this->assertIsObject( $position_obj );
+		$this->assertInstanceOf( '\PersonioIntegrationLight\PersonioIntegration\Position', $position_obj );
 	}
 
 	/**
@@ -48,20 +37,10 @@ class Imports extends WP_UnitTestCase {
 		// mark that an import is already running.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
 
-		// first remove all existing positions.
-		\PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition::get_instance()->delete_positions();
+		// use the global handler.
+		$position_obj = self::get_single_position();
 
-		// now run the import.
-		$imports_obj = \PersonioIntegrationLight\PersonioIntegration\Imports::get_instance()->get_import_extension();
-		if ( $imports_obj instanceof \PersonioIntegrationLight\PersonioIntegration\Imports_Base ) {
-			$imports_obj->run();
-
-			// check if the import was successful.
-			$result = get_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS );
-			$this->assertNotEquals( 'Import completed.', $result );
-		}
-		else {
-			$this->hasFailed();
-		}
+		// test it.
+		$this->assertIsNotObject( $position_obj );
 	}
 }

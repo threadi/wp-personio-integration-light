@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\Plugin;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in class PersonioIntegrationLight\Plugin\Emails.
  */
-class Emails extends WP_UnitTestCase {
+class Emails extends PersonioTestCase {
 
 	/**
 	 * Test if an email is sent when new positions are available.

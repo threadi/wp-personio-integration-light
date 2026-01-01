@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\Plugin\Crypt;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in class PersonioIntegrationLight\Plugin\Crypt\Sodium.
  */
-class Sodium extends WP_UnitTestCase {
+class Sodium extends PersonioTestCase {
 
 	/**
 	 * Prepare the test environment.

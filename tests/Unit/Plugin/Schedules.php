@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\Plugin;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in class PersonioIntegrationLight\Plugin\Schedules.
  */
-class Schedules extends WP_UnitTestCase {
+class Schedules extends PersonioTestCase {
 
 	/**
 	 * Test if the returning variable is an array.

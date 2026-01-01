@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in the class PersonioIntegrationLight\PersonioIntegration\Availability.
  */
-class Availability extends WP_UnitTestCase {
+class Availability extends PersonioTestCase {
 
 	/**
 	 * Test if the returning variable is a string.

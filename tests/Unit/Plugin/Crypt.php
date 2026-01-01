@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\Plugin;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in class PersonioIntegrationLight\Plugin\Crypt.
  */
-class Crypt extends WP_UnitTestCase {
+class Crypt extends PersonioTestCase {
 
 	/**
 	 * Test if the returning variable is a crypt method object.

@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\Plugin;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in class PersonioIntegrationLight\Plugin\Intervals.
  */
-class Intervals extends WP_UnitTestCase {
+class Intervals extends PersonioTestCase {
 
 	/**
 	 * Test if the returning variable is an array.

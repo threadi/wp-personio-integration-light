@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\PageBuilder;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in the class PersonioIntegrationLight\PageBuilder\Page_Builders.
  */
-class Page_Builders extends WP_UnitTestCase {
+class Page_Builders extends PersonioTestCase {
 	/**
 	 * Test if the returning variable is a string.
 	 *

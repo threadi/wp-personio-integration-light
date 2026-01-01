@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in the class PersonioIntegrationLight\PersonioIntegration\Personio_Accounts.
  */
-class Personio_Accounts extends WP_UnitTestCase {
+class Personio_Accounts extends PersonioTestCase {
 
 	/**
 	 * Test if the returning variable is a string.
@@ -82,7 +86,7 @@ class Personio_Accounts extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_personio_urls(): void {
-		$urls = PersonioIntegrationLight\PersonioIntegration\Personio_Accounts::get_instance()->get_personio_urls();
+		$urls = \PersonioIntegrationLight\PersonioIntegration\Personio_Accounts::get_instance()->get_personio_urls();
 		$this->assertIsArray( $urls);
 		$this->assertNotEmpty( $urls );
 	}
@@ -93,7 +97,7 @@ class Personio_Accounts extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_login_url(): void {
-		$url = PersonioIntegrationLight\PersonioIntegration\Personio_Accounts::get_instance()->get_login_url();
+		$url = \PersonioIntegrationLight\PersonioIntegration\Personio_Accounts::get_instance()->get_login_url();
 		$this->assertIsString( $url );
 		$this->assertNotEmpty( $url );
 		$this->assertStringContainsString( 'personio', $url );
@@ -105,14 +109,11 @@ class Personio_Accounts extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_personio_edit_link_not_set(): void {
-		global $personio_positions;
+		// get test position.
+		$position_obj = self::get_single_position();
 
-		// bail if no positions were found.
-		if( empty( $personio_positions ) ) {
-			$this->markTestSkipped( 'No positions were found.' );
-		}
-
-		$url = PersonioIntegrationLight\PersonioIntegration\Personio_Accounts::get_instance()->get_personio_edit_link( $personio_positions[0] );
+		// test it.
+		$url = \PersonioIntegrationLight\PersonioIntegration\Personio_Accounts::get_instance()->get_personio_edit_link( $position_obj );
 		$this->assertIsString( $url );
 		$this->assertEmpty( $url );
 	}
@@ -123,16 +124,13 @@ class Personio_Accounts extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_personio_edit_link(): void {
-		global $personio_positions;
-
 		update_option( 'personioIntegrationLoginUrl', 'https://example.com' );
 
-		// bail if no positions were found.
-		if( empty( $personio_positions ) ) {
-			$this->markTestSkipped( 'No positions were found.' );
-		}
+		// get test position.
+		$position_obj = self::get_single_position();
 
-		$url = PersonioIntegrationLight\PersonioIntegration\Personio_Accounts::get_instance()->get_personio_edit_link( $personio_positions[0] );
+		// test it.
+		$url = \PersonioIntegrationLight\PersonioIntegration\Personio_Accounts::get_instance()->get_personio_edit_link( $position_obj );
 		$this->assertIsString( $url );
 		$this->assertNotEmpty( $url );
 	}

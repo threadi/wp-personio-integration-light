@@ -51,6 +51,11 @@
             "PersonioIntegrationLight\\": "app/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "PersonioIntegrationLight\\Tests\\": "tests/"
+        }
+    },
     "require": {
         "php": "^8.1",
         "threadi/easy-dialog-for-wordpress": "^1.0.1",
