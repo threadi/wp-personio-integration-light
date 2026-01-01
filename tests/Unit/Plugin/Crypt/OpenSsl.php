@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\Plugin\Crypt;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in class PersonioIntegrationLight\Plugin\Crypt\OpenSSL.
  */
-class OpenSsl extends WP_UnitTestCase {
+class OpenSsl extends PersonioTestCase {
 
 	/**
 	 * Test if the returning variable is true or false.

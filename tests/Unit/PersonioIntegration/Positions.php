@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in the class PersonioIntegrationLight\PersonioIntegration\Positions.
  */
-class Positions extends WP_UnitTestCase {
+class Positions extends PersonioTestCase {
 
 	/**
 	 * Test if the returning variable is an object.
@@ -16,18 +20,13 @@ class Positions extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_position(): void {
-		global $personio_positions;
+		// get a test position object.
+		$test_position_obj = self::get_single_position();
 
-		// bail if no positions were found.
-		if( empty( $personio_positions ) ) {
-			$this->markTestSkipped( 'No positions were found.' );
-		}
-
-		// get the object.
-		$position_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_position( $personio_positions[0]->get_id() );
+		// test it.
+		$position_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_position( $test_position_obj->get_id() );
 		$this->assertIsObject( $position_obj );
-		$this->assertInstanceOf( '\PersonioIntegrationLight\PersonioIntegration\Position', $position_obj );
-		$this->assertEquals( $personio_positions[0]->get_id(), $position_obj->get_id() );
+		$this->assertEquals( $test_position_obj->get_id(), $position_obj->get_id() );
 	}
 
 	/**

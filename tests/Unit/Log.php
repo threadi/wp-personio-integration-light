@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in the class PersonioIntegrationLight\Log.
  */
-class Log extends WP_UnitTestCase {
+class Log extends PersonioTestCase {
 
 	/**
 	 * Test to add a new log entry in the database.

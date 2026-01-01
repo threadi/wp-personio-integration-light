@@ -277,15 +277,15 @@ class Positions {
 	}
 
 	/**
-	 * Return a single position by its PersonioID.
+	 * Return a single position by its Personio ID.
 	 *
-	 * @param string $personioid The PersonioID.
+	 * @param string $personio_id The Personio ID.
 	 * @return Position|null
 	 */
-	public function get_position_by_personio_id( string $personioid ): ?Position {
-		$array = $this->get_positions( 1, array( 'personioid' => $personioid ) );
-		if ( ! empty( $array ) ) {
-			return $array[0];
+	public function get_position_by_personio_id( string $personio_id ): ?Position {
+		$list_of_positions = $this->get_positions( 1, array( 'personioid' => $personio_id ) );
+		if ( ! empty( $list_of_positions ) ) {
+			return $list_of_positions[0];
 		}
 		return null;
 	}

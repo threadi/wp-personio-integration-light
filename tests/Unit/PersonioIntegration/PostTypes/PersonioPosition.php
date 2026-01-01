@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration\PostTypes;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in the class PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition.
  */
-class PersonioPosition extends WP_UnitTestCase {
+class PersonioPosition extends PersonioTestCase {
 	/**
 	 * Test if the returning variable is a string.
 	 *

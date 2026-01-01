@@ -5,12 +5,14 @@
  * @package personio-integration-light
  */
 
-use PersonioIntegrationLight\Plugin\Crypt;
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
 
 /**
  * Object to test functions in class PersonioIntegrationLight\PersonioIntegration\Api.
  */
-class Api extends WP_UnitTestCase {
+class Api extends PersonioTestCase {
 
 	/**
 	 * Prepare the test environment.
@@ -44,7 +46,7 @@ class Api extends WP_UnitTestCase {
 	 */
 	public function test_get_access_token(): void {
 		// set an example token.
-		set_transient( 'personio_integration_api_token', Crypt::get_instance()->encrypt( 'example' ), 180 );
+		set_transient( 'personio_integration_api_token', \PersonioIntegrationLight\Plugin\Crypt::get_instance()->encrypt( 'example' ), 180 );
 
 		// test is.
 		$access_token = \PersonioIntegrationLight\PersonioIntegration\Api::get_instance()->get_access_token();

@@ -47,20 +47,3 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 // Start up the WP testing environment.
 require "{$_tests_dir}/includes/bootstrap.php";
-
-/**
- * Prepare the test environment.
- */
-// activate the plugin.
-\PersonioIntegrationLight\Plugin\Installer::get_instance()->activation();
-
-// set the Personio URL.
-update_option( 'personioIntegrationUrl', 'https://dev-partner-laolaweb-gmbh-2025.jobs.personio.com' );
-
-// import the positions from the given Personio URL and load them as global variable.
-$imports_obj = \PersonioIntegrationLight\PersonioIntegration\Imports::get_instance()->get_import_extension();
-$positions = array();
-if ( $imports_obj instanceof \PersonioIntegrationLight\PersonioIntegration\Imports_Base ) {
-	$imports_obj->run();
-	$personio_positions = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_positions();
-}

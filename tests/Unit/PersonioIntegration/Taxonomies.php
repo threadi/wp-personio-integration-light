@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in the class PersonioIntegrationLight\PersonioIntegration\Taxonomies.
  */
-class Taxonomies extends WP_UnitTestCase {
+class Taxonomies extends PersonioTestCase {
 
 	/**
 	 * Test if the returning variable is an array.

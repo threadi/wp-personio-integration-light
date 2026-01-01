@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in class PersonioIntegrationLight\PersonioIntegration\Api_Request.
  */
-class Api_Request extends WP_UnitTestCase {
+class Api_Request extends PersonioTestCase {
 
 	/**
 	 * Prepare the test environment.

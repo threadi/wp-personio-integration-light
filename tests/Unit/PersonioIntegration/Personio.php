@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in the class PersonioIntegrationLight\PersonioIntegration\Personio.
  */
-class Personio extends WP_UnitTestCase {
+class Personio extends PersonioTestCase {
 
 	/**
 	 * The object.
@@ -52,15 +56,11 @@ class Personio extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_application_url_with_apply_hash(): void {
-		global $personio_positions;
-
-		// bail if no positions were found.
-		if( empty( $personio_positions ) ) {
-			$this->markTestSkipped( 'No positions were found.' );
-		}
+		// get test position.
+		$position_obj = self::get_single_position();
 
 		// get the application URL.
-		$application_url = $this->object->get_application_url( $personio_positions[0] );
+		$application_url = $this->object->get_application_url( $position_obj );
 		$this->assertIsString( $application_url );
 		$this->assertNotEmpty( $application_url );
 		$this->assertStringContainsString( $this->url, $application_url );
@@ -73,15 +73,11 @@ class Personio extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_get_application_url_without_apply_hash(): void {
-		global $personio_positions;
-
-		// bail if no positions were found.
-		if( empty( $personio_positions ) ) {
-			$this->markTestSkipped( 'No positions were found.' );
-		}
+		// get test position.
+		$position_obj = self::get_single_position();
 
 		// get the application URL.
-		$application_url = $this->object->get_application_url( $personio_positions[0], true );
+		$application_url = $this->object->get_application_url( $position_obj, true );
 		$this->assertIsString( $application_url );
 		$this->assertNotEmpty( $application_url );
 		$this->assertStringContainsString( $this->url, $application_url );

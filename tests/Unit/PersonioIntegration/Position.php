@@ -5,10 +5,14 @@
  * @package personio-integration-light
  */
 
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration;
+
+use PersonioIntegrationLight\Tests\PersonioTestCase;
+
 /**
  * Object to test functions in the class PersonioIntegrationLight\PersonioIntegration\Position.
  */
-class Position extends WP_UnitTestCase {
+class Position extends PersonioTestCase {
 
 	/**
 	 * The object.
@@ -23,10 +27,7 @@ class Position extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function setUp(): void {
-		global $personio_positions;
-
-		// set the first position as the object.
-		$this->object = $personio_positions[0];
+		$this->object = self::get_single_position();
 	}
 
 	/**
@@ -197,14 +198,12 @@ class Position extends WP_UnitTestCase {
 	/**
 	 * Test if the returning variable is a boolean.
 	 *
-	 * Hint: false is the right result during running the unit test.
-	 *
 	 * @return void
 	 */
 	public function test_is_visible(): void {
 		$is_visible = $this->object->is_visible();
 		$this->assertIsBool( $is_visible );
-		$this->assertFalse( $is_visible );
+		$this->assertTrue( $is_visible );
 	}
 
 	/**
