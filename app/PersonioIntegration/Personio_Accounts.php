@@ -56,7 +56,7 @@ class Personio_Accounts extends Extensions_Base {
 	 *
 	 * @var string
 	 */
-	protected string $setting_tab = 'basic';
+	protected string $setting_tab = 'personio_integration_basic';
 
 	/**
 	 * Variable for the instance of this Singleton object.

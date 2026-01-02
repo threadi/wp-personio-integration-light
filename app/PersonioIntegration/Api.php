@@ -96,7 +96,7 @@ class Api {
 		}
 
 		// get the general tab.
-		$general_tab = $main_settings_page->get_tab( 'basic' );
+		$general_tab = $main_settings_page->get_tab( 'personio_integration_basic' );
 
 		// bail if the basic tab does not exist.
 		if ( ! $general_tab instanceof Tab ) {
