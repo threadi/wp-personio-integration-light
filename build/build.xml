@@ -196,11 +196,23 @@
         </replace>
     </target>
 
+    <!-- PHP Unit Tests -->
+    <target name="php-unit-tests" depends="composer-install">
+        <delete file="${log.dir}/php-unit-tests-1.txt"/>
+        <delete file="${log.dir}/php-unit-tests-2.txt"/>
+        <exec dir="${src.dir}" failonerror="true" executable="${composer.path}" output="${log.dir}/php-unit-tests-1.txt">
+            <arg line="test-install-during-build"/>
+        </exec>
+        <exec dir="${src.dir}" failonerror="true" executable="${composer.path}" output="${log.dir}/php-unit-tests-2.txt">
+            <arg line="test"/>
+        </exec>
+    </target>
+
     <!-- init project -->
-    <target name="init" description="initialize the project" depends="composer-install,npm-build,setUrls" />
+    <target name="init" description="initialize the project" depends="composer-install,npm-build,setUrls,autoloader-generation-dev" />
 
     <!-- create release-zip -->
-    <target name="build" description="builds a new release" depends="init,minify-css,generate-documentation,autoloader-generation,check-phpstan,check-wcs,setVersionNumber">
+    <target name="build" description="builds a new release" depends="init,minify-css,generate-documentation,php-unit-tests,autoloader-generation,check-phpstan,check-wcs,setVersionNumber">
         <delete file="${build.dir}/${plugin.slug}_${plugin.version}.zip"/>
         <zip destfile="${build.dir}/${plugin.slug}_${plugin.version}.zip" comment="${plugin.slug} ${plugin.version} release">
             <zipfileset dir="${src.dir}/admin" prefix="${plugin.slug}/admin" />
