@@ -280,7 +280,7 @@ class Intro {
 		}
 
 		// get the advanced tab.
-		$advanced_tab = $main_settings_page->get_tab( 'advanced' );
+		$advanced_tab = $main_settings_page->get_tab( 'personio_integration_advanced' );
 
 		// bail if the page could not be loaded.
 		if ( ! $advanced_tab instanceof Tab ) {

@@ -626,7 +626,7 @@ class Helper {
 	}
 
 	/**
-	 * Return list of our own cpts as names.
+	 * Return the list of our own cpts as names.
 	 *
 	 * @return array<int,string>
 	 */
@@ -636,17 +636,17 @@ class Helper {
 		);
 
 		/**
-		 * Filter the list of custom post types this plugin is using.
+		 * Filter the list of custom the post types this plugin is using.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array<int,string> $list The list of post types.
+		 * @param array<int,string> $list The list of the post types.
 		 */
 		return apply_filters( 'personio_integration_list_of_cpts', $list );
 	}
 
 	/**
-	 * Replace all linebreaks in given string.
+	 * Replace all linebreaks in the given string.
 	 *
 	 * @param string $text_to_parse The text where we replace the line breaks.
 	 *

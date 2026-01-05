@@ -171,15 +171,15 @@ class Settings {
 		 * Configure all tabs for this object.
 		 */
 		// the basic tab.
-		$general_tab = $settings_page->add_tab( 'basic', 10 );
+		$general_tab = $settings_page->add_tab( 'personio_integration_basic', 10 );
 		$general_tab->set_title( __( 'Basic Settings', 'personio-integration-light' ) );
 		$settings_page->set_default_tab( $general_tab );
 
-		// the templates tab.
+		// the template tab.
 		$templates_tab = $settings_page->add_tab( 'templates', 20 );
 		$templates_tab->set_title( __( 'Templates', 'personio-integration-light' ) );
 
-		// the pro tab.
+		// the Pro-tab.
 		$pro_tab = $settings_page->add_tab( 'use_pro', 30 );
 		$pro_tab->set_title( __( 'Applications, SEO & more', 'personio-integration-light' ) );
 		$pro_tab->set_not_linked( true );
@@ -191,10 +191,10 @@ class Settings {
 		$extensions_tab->set_callback( array( $this, 'show_extensions_hint' ) );
 
 		// the advanced tab.
-		$advanced_tab = $settings_page->add_tab( 'advanced', 50 );
+		$advanced_tab = $settings_page->add_tab( 'personio_integration_advanced', 50 );
 		$advanced_tab->set_title( __( 'Additional settings', 'personio-integration-light' ) );
 
-		// the logs tab.
+		// the log tab.
 		$logs_tab = $settings_page->add_tab( 'logs', 60 );
 		$logs_tab->set_title( __( 'Logs', 'personio-integration-light' ) );
 		$logs_tab->set_hide_save( true );

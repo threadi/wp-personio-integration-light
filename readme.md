@@ -107,3 +107,15 @@ Hint: run this not in the development environment, it would also check all depen
 Use a normal WordPress installation with an installed PCP plugin.
 
 `wp plugin check --error-severity=7 --warning-severity=6 --include-low-severity-errors --categories=plugin_repo --format=json --slug=personio-integration-light .`
+
+## PHP Unit tests
+
+### Preparation
+
+Be sure to have run `composer install` or `composer update` before.
+
+Then: `composer test-install`
+
+### Run
+
+`composer test`
