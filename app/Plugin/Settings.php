@@ -194,6 +194,10 @@ class Settings {
 		$advanced_tab = $settings_page->add_tab( 'personio_integration_advanced', 50 );
 		$advanced_tab->set_title( __( 'Additional settings', 'personio-integration-light' ) );
 
+		// the advanced tab with the old name for compatibility with < 5.1.0.
+		$comp_advanced_tab = $settings_page->add_tab( 'advanced', 5000 );
+		$comp_advanced_tab->set_tab_class( 'hidden' );
+
 		// the log tab.
 		$logs_tab = $settings_page->add_tab( 'logs', 60 );
 		$logs_tab->set_title( __( 'Logs', 'personio-integration-light' ) );

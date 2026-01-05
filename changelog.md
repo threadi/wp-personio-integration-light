@@ -1,6 +1,13 @@
 # Changelog
 
-## [5.1.0] - 05.02.2026
+## [5.1.1] - 05.01.2026
+
+### Changed
+
+- Compatibility with older Pro-versions regarding the advanced tab for settings
+- PHP Unit tests now also run on local build of releases
+
+## [5.1.0] - 05.01.2026
 
 ### Added
 
