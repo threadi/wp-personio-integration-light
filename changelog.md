@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Added multiple new PHP Unit Tests
+
+### Changed
+
+- Reading details is now more accurate
+- optimized PHP Unit Tests
+
 ## [5.1.1] - 05.01.2026
 
 ### Changed

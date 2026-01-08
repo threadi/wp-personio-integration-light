@@ -139,6 +139,11 @@ class Details extends Widget_Base {
 			$line_break = ' ';
 		}
 
+		// set the classes string.
+		if( ! isset( $attributes['classes'] ) ) {
+			$attributes['classes'] = '';
+		}
+
 		// get the excerpts for this position.
 		if ( ! empty( $attributes['excerpt'] ) ) {
 
