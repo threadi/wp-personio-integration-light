@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration;
+namespace PersonioIntegrationLight\Tests\Unit\PersonioIntegration\Widgets;
 
 use PersonioIntegrationLight\Tests\PersonioTestCase;
 
