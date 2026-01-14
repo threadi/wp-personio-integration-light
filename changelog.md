@@ -10,7 +10,12 @@
 ### Changed
 
 - Reading details is now more accurate
-- optimized PHP Unit Tests
+- Optimized PHP Unit Tests
+- Updated dependencies
+
+### Fixed
+
+- Fixed a missing check for direct access in two templates
 
 ## [5.1.1] - 05.01.2026
 
