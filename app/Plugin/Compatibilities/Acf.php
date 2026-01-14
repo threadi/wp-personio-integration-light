@@ -70,6 +70,6 @@ class Acf extends Compatibilities_Base {
 	 * @return bool
 	 */
 	public function is_active(): bool {
-		return Helper::is_plugin_active( 'advanced-custom-fields/acf.php' ) || Helper::is_plugin_active( 'advanced-custom-fields-pro/acf.php' );
+		return Helper::is_plugin_active( 'advanced-custom-fields/acf.php' );
 	}
 }
