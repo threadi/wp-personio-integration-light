@@ -16,6 +16,7 @@
 ### Fixed
 
 - Fixed a missing check for direct access in two templates
+- Fixed to show automatic import in log for deletion of a single position
 
 ## [5.1.1] - 05.01.2026
 

@@ -475,14 +475,19 @@ class PersonioPosition extends Post_Type {
 		$user = wp_get_current_user();
 
 		// if no user could be found, check if we are running on WP CLI.
-		if ( is_null( $user ) ) { // @phpstan-ignore function.impossibleType
+		if ( ! $user instanceof WP_User ) {
 			$username = 'WP CLI';
 		} else {
 			$username = $user->display_name;
 		}
 
+		// is no username is set, use "automatic import".
+		if( empty( $username ) ) {
+			$username = __( 'Automatic import', 'personio-integration-light' );
+		}
+
 		// log the deletion.
-		Log::get_instance()->add( sprintf( 'Position %1$s has been deleted by %2$s.', esc_html( $position_obj->get_personio_id() ), esc_html( $username ) ), 'success', 'import' );
+		Log::get_instance()->add( sprintf( 'Position %1$s has been deleted by %2$s.', '<em>' . esc_html( $position_obj->get_personio_id() ) . '</em>', esc_html( $username ) ), 'success', 'import' );
 	}
 
 	/**
