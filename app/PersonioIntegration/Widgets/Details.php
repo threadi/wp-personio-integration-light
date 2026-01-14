@@ -140,7 +140,7 @@ class Details extends Widget_Base {
 		}
 
 		// set the classes string.
-		if( ! isset( $attributes['classes'] ) ) {
+		if ( ! isset( $attributes['classes'] ) ) {
 			$attributes['classes'] = '';
 		}
 
