@@ -5,6 +5,7 @@
 ### Added
 
 - Added multiple new PHP Unit Tests
+- Added some new hooks
 - Added support for detection of ACF Pro
 
 ### Changed

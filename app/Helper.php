@@ -391,7 +391,7 @@ class Helper {
 	}
 
 	/**
-	 * Return current URL in frontend and backend.
+	 * Return the current URL in frontend and backend.
 	 *
 	 * @return string
 	 */
@@ -412,13 +412,18 @@ class Helper {
 			$page_url = get_permalink( $object->ID );
 		}
 
-		// return empty string if no URL could be loaded.
+		// return an empty string if no URL could be loaded.
 		if ( ! $page_url ) {
 			return '';
 		}
 
-		// return result.
-		return $page_url;
+		/**
+		 * Filter the resulting current URL.
+		 *
+		 * @since 5.1.2 Available since 5.1.2.
+		 * @param string $page_url The resulting current URL.
+		 */
+		return apply_filters( 'personio_integration_light_current_url', $page_url );
 	}
 
 	/**
