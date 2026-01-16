@@ -41,7 +41,7 @@ class Interval_Base {
 	protected function __clone() {}
 
 	/**
-	 * Return name of this interval.
+	 * Return the name of this interval.
 	 *
 	 * @return string
 	 */

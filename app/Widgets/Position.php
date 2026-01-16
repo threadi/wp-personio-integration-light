@@ -1,6 +1,6 @@
 <?php
 /**
- * File for a classic widget for single position.
+ * File for a classic widget for a single position.
  *
  * @package personio-integration-light
  */
@@ -15,7 +15,7 @@ use PersonioIntegrationLight\PersonioIntegration\Widgets\Single;
 use WP_Widget;
 
 /**
- * Object to provide an old-fashion widget for positions.
+ * Object to provide a classic widget for a single position.
  */
 class Position extends WP_Widget {
 
@@ -144,7 +144,7 @@ class Position extends WP_Widget {
 	}
 
 	/**
-	 * Output of the widget in frontend.
+	 * Output of the widget in the frontend.
 	 *
 	 * @param array<string,mixed> $args List of arguments.
 	 * @param array<string,mixed> $settings List of settings.

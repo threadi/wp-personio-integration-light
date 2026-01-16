@@ -134,7 +134,7 @@ class Third_Party_Plugins {
 	 */
 	public function yoast( string $meta_og_description, Indexable_Presentation $presentation ): string {
 		if ( absint( $presentation->model->object_id ) > 0 && PersonioPosition::get_instance()->get_name() === $presentation->model->object_sub_type ) {
-			// return resulting text without line breaks.
+			// return the resulting text without line breaks.
 			return Helper::replace_linebreaks( $this->get_content( $presentation->model->object_id ) );
 		}
 		return $meta_og_description;
@@ -149,7 +149,7 @@ class Third_Party_Plugins {
 	 */
 	public function rank_math( string $description ): string {
 		if ( PersonioPosition::get_instance()->is_single_page_called() ) {
-			// return resulting text without line breaks.
+			// return the resulting text without line breaks.
 			return Helper::replace_linebreaks( $this->get_content( get_queried_object_id() ) );
 		}
 		return $description;
@@ -178,12 +178,12 @@ class Third_Party_Plugins {
 			$og_array['schema']['description']  = $description;
 		}
 
-		// return resulting list.
+		// return the resulting list.
 		return $og_array;
 	}
 
 	/**
-	 * Remove our CPTs from list of possible post-types in easy-language-plugin.
+	 * Remove our CPTs from the list of possible post-types in easy-language-plugin.
 	 *
 	 * @param array<string,string> $post_types List of post-types.
 	 *
@@ -197,7 +197,7 @@ class Third_Party_Plugins {
 	}
 
 	/**
-	 * Get position content as string.
+	 * Get position content as a string.
 	 *
 	 * @param int $post_id The ID of the requested position.
 	 *
@@ -213,7 +213,7 @@ class Third_Party_Plugins {
 				$text .= $content['name'] . ' ' . $content['value'];
 			}
 
-			// return resulting text.
+			// return the resulting text.
 			return $text;
 		}
 
@@ -224,7 +224,7 @@ class Third_Party_Plugins {
 	/**
 	 * Optimize output for plugin Open Graph and Twitter Card Tags.
 	 *
-	 * @param string $description The string the plugin would use as description.
+	 * @param string $description The string the plugin would use as the description.
 	 *
 	 * @return string
 	 */
@@ -234,7 +234,7 @@ class Third_Party_Plugins {
 			return Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
 		}
 
-		// return resulting text.
+		// return the resulting text.
 		return $description;
 	}
 
@@ -276,7 +276,7 @@ class Third_Party_Plugins {
 	/**
 	 * Optimize the output for SEO-og:description with plugin SEOPress.
 	 *
-	 * @param string $meta_og_description The meta-tag the plugin would use as description.
+	 * @param string $meta_og_description The meta-tag the plugin would use as the description.
 	 *
 	 * @return string
 	 */
@@ -286,7 +286,7 @@ class Third_Party_Plugins {
 			return '<meta property="og:description" content="' . wp_kses_post( Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) ) ) . '" />';
 		}
 
-		// return resulting text.
+		// return the resulting text.
 		return $meta_og_description;
 	}
 
@@ -303,7 +303,7 @@ class Third_Party_Plugins {
 			return Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) );
 		}
 
-		// return resulting text.
+		// return the resulting text.
 		return $description;
 	}
 
@@ -328,13 +328,7 @@ class Third_Party_Plugins {
 	 */
 	public function remove_yoast_columns( array $columns ): array {
 		if ( isset( $columns['wpseo-score'] ) ) {
-			unset( $columns['wpseo-score'] );
-			unset( $columns['wpseo-score-readability'] );
-			unset( $columns['wpseo-title'] );
-			unset( $columns['wpseo-metadesc'] );
-			unset( $columns['wpseo-focuskw'] );
-			unset( $columns['wpseo-links'] );
-			unset( $columns['wpseo-linked'] );
+			unset( $columns['wpseo-score'], $columns['wpseo-score-readability'], $columns['wpseo-title'], $columns['wpseo-metadesc'], $columns['wpseo-focuskw'], $columns['wpseo-links'], $columns['wpseo-linked'] );
 		}
 		return $columns;
 	}
@@ -348,15 +342,13 @@ class Third_Party_Plugins {
 	 */
 	public function remove_rank_math_columns( array $columns ): array {
 		if ( isset( $columns['rank_math_seo_details'] ) ) {
-			unset( $columns['rank_math_seo_details'] );
-			unset( $columns['rank_math_title'] );
-			unset( $columns['rank_math_description'] );
+			unset( $columns['rank_math_seo_details'], $columns['rank_math_title'], $columns['rank_math_description'] );
 		}
 		return $columns;
 	}
 
 	/**
-	 * Hide translation-option on our own custom post type pages.
+	 * Hide translation-option on our own custom post-type pages.
 	 *
 	 * @param string $capability The actual capability.
 	 *
@@ -392,12 +384,12 @@ class Third_Party_Plugins {
 			unset( $columns['icl_translations'] );
 		}
 
-		// return resulting list.
+		// return the resulting list.
 		return $columns;
 	}
 
 	/**
-	 * Remove meta boxes added by Borlabs from our cpts.
+	 * Remove the meta-boxes added by Borlabs from our cpts.
 	 *
 	 * @return void
 	 */
@@ -429,7 +421,7 @@ class Third_Party_Plugins {
 	}
 
 	/**
-	 * Return the position description for meta description with Slim SEO.
+	 * Return the position description for the meta-description with Slim SEO.
 	 *
 	 * @param string  $meta_description The description.
 	 * @param WP_Post $post The post-object.
@@ -450,7 +442,7 @@ class Third_Party_Plugins {
 	}
 
 	/**
-	 * Suppress filters for position query if WPML is enabled.
+	 * Suppress filters for the position query if WPML is enabled.
 	 *
 	 * @param array<string,mixed> $query The data for WP_Query.
 	 *
@@ -492,12 +484,12 @@ class Third_Party_Plugins {
 			return;
 		}
 
-		// bail if plugin Duplicate Page is not active.
+		// bail if the plugin Duplicate Page is not active.
 		if ( ! Helper::is_plugin_active( 'duplicate-page/duplicatepage.php' ) ) {
 			return;
 		}
 
-		// bail if we are in backend.
+		// bail if we are in the backend.
 		if ( is_admin() ) {
 			return;
 		}

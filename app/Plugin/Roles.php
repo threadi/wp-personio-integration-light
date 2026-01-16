@@ -62,7 +62,7 @@ class Roles {
 	 * @return void
 	 */
 	public function install(): void {
-		// add user role to manage positions if it does not exist.
+		// add a user role to manage positions if it does not exist.
 		$personio_position_manager_role = get_role( 'manage_personio_positions' );
 		if ( is_null( $personio_position_manager_role ) ) {
 			$personio_position_manager_role = add_role( 'manage_personio_positions', __( 'Manage Personio-based Positions', 'personio-integration-light' ) );
@@ -100,7 +100,7 @@ class Roles {
 			// get the role.
 			$role = get_role( $role_name );
 
-			// bail if object could not be loaded.
+			// bail if the object could not be loaded.
 			if ( ! $role instanceof WP_Role ) {
 				continue;
 			}

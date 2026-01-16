@@ -16,7 +16,7 @@ use PersonioIntegrationLight\Plugin\Templates;
 use WP_Widget;
 
 /**
- * Object to provide an old-fashion widget for positions.
+ * Object to provide a classic widget for multiple positions.
  */
 class Positions extends WP_Widget {
 
@@ -162,7 +162,7 @@ class Positions extends WP_Widget {
 	}
 
 	/**
-	 * Output of the widget in frontend.
+	 * Output of the widget in the frontend.
 	 *
 	 * @param array<string,mixed> $args List of arguments.
 	 * @param array<string,mixed> $settings List of settings.

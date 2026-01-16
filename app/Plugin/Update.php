@@ -114,7 +114,7 @@ class Update {
 		// get extensions.
 		Extensions::get_instance()->init();
 
-		// delete old wrong named interval.
+		// delete an old wrong-named interval.
 		wp_clear_scheduled_hook( 'personio_integration_schudule_events' );
 
 		// delete old transients.

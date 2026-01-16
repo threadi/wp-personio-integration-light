@@ -10,14 +10,14 @@
 
 ### Changed
 
-- Reading details is now more accurate
+- Reading position details is now more accurate
 - Optimized PHP Unit Tests
 - Updated dependencies
 
 ### Fixed
 
 - Fixed a missing check for direct access in two templates
-- Fixed to show automatic import in log for deletion of a single position
+- Fixed to show automatic import in the log for deletion of a single position
 
 ## [5.1.1] - 05.01.2026
 
@@ -109,12 +109,12 @@
 
 - Changed priority to load admin footer text to prevent errors from third party plugins
   which do not use this hook the correct way
-- Extended the error reporting for any PHP-errors during the import of positions
+- Extended the error reporting for any PHP errors during the import of positions
 - Updated dependencies
 
 ### Fixed
 
-- Fixed missing listing styles for non-FSE-themes
+- Fixed missing listing styles for non-FSE themes
 
 ## [5.0.2] - 03.11.2025
 
@@ -131,7 +131,7 @@
 
 ### Fixed
 
-- Fixed group of positions which were not correct sorted
+- Fixed the grouping of positions which were not correctly sorted
 - Fixed wrong email headers
 
 ### Removed
@@ -170,19 +170,19 @@
 - Added the new extension category "Widgets"
 - Added hint for additional offices which are usable in Pro-plugin
 - Added a new compatibility check for Oxygen
-- Added the info-page for Pro plugin with the option to install the Pro-plugin with valid license key
+- Added the info-page for Pro plugin with the option to install the Pro-plugin with a valid license key
 - Added new handling for admin notices for better overview over messages from the plugin
 - Added links to edit position settings in Personio if the login URL is given
 - Added info in the admin footer if a page from our plugin is loaded
 - Added option to import project configuration during setup
-- Added log for error 500 during the imports which also prevents hanging import tasks
+- Added log for error 500 during the imports, which also prevents hanging import tasks
 - Added option to reset the plugin in backend settings (in preparation for Cyber Resilience Act)
 - Added support for check for multilingual plugin Bogo
 
 ### Changed
 
 - Now requires PHP 8.1 or newer
-- Now using custom database object to get all errors which might be occurred
+- Now using a custom database object to get all errors which might be occurred
 - Get actual language via get_locale() and reduce usage of unnecessary additional hooks for multilingual plugins
 - Import of positions are now also handled as extension
 - Changed application hint in menu to be more stabil

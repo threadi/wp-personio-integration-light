@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle email object as base-object.
+ * File to for the base-object for each email.
  *
  * @package personio-integration-light
  */
@@ -20,7 +20,7 @@ use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 
 /**
- * Object to handle email objects as base-object.
+ * Object to handle email objects as a base-object.
  */
 class Email_Base {
 	/**
@@ -59,7 +59,7 @@ class Email_Base {
 	private bool $test = false;
 
 	/**
-	 * Return name of the method.
+	 * Return the name of the method.
 	 *
 	 * @return string
 	 */
@@ -103,7 +103,7 @@ class Email_Base {
 		$description = __( 'Add one or more recipients for this email. One email per field. Get more fields after saving the settings.', 'personio-integration-light' ) . ' ';
 		if ( ! empty( $this->get_default_recipient() ) ) {
 			/* translators: %1$s will be replaced by the email address. */
-			$description .= sprintf( __( '<strong>If no email is set we use the admin-email %1$s as recipient.</strong> You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . $this->get_default_recipient() . '</code>', $wp_general_settings_url );
+			$description .= sprintf( __( '<strong>If no email is set, we use the admin-email %1$s as the recipient.</strong> You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . $this->get_default_recipient() . '</code>', $wp_general_settings_url );
 		} else {
 			$description .= '<strong>' . __( 'Without recipient this email will not be sent.', 'personio-integration-light' ) . '</strong>';
 		}
@@ -133,7 +133,7 @@ class Email_Base {
 		$field = new Text();
 		$field->set_title( __( 'Sender Email', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced by the email address. */
-		$field->set_description( sprintf( __( 'If no email is set we use the admin-email %1$s as sender. You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . get_option( 'admin_email' ) . '</code>', $wp_general_settings_url ) );
+		$field->set_description( sprintf( __( 'If no email is set, we use the admin-email %1$s as sender. You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . get_option( 'admin_email' ) . '</code>', $wp_general_settings_url ) );
 		$field->set_placeholder( 'info@example.com' );
 		$field->add_depend( $enable_setting, 1 );
 		$setting->set_field( $field );
@@ -230,7 +230,7 @@ class Email_Base {
 		// get the body.
 		$body = $this->body;
 
-		// bail if body is empty.
+		// bail if the body is empty.
 		if ( empty( $body ) ) {
 			return '';
 		}
@@ -243,7 +243,7 @@ class Email_Base {
 
 		$support_part = '<div id="signature">---------------------------------------------------------';
 		/* translators: %1$s will be replaced by a URL. */
-		$support_part .= '<br><br>' . sprintf( __( 'This email was sent to you by the WordPress-plugin Personio Integration Light which is installed in your website under <a href="%1$s">%2$s</a>. You can disable this email <a href="%3$s">here</a>.', 'personio-integration-light' ), esc_url( $domain ), esc_html( $domain ), esc_url( $email_config_url ) );
+		$support_part .= '<br><br>' . sprintf( __( 'This email was sent to you by the WordPress-plugin Personio Integration Light, which is installed in your website under <a href="%1$s">%2$s</a>. You can disable this email <a href="%3$s">here</a>.', 'personio-integration-light' ), esc_url( $domain ), esc_html( $domain ), esc_url( $email_config_url ) );
 		/* translators: %1$s will be replaced by a URL. */
 		$support_part .= '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="%1$s">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
 		$support_part .= '</div>';
@@ -266,6 +266,7 @@ class Email_Base {
 	 * @param string $body The body to use.
 	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function set_body( string $body ): void {
 		$this->body = $body;
@@ -371,7 +372,7 @@ class Email_Base {
 	}
 
 	/**
-	 * Show description for this email object.
+	 * Show the description for this email object.
 	 *
 	 * @return void
 	 */
@@ -394,22 +395,22 @@ class Email_Base {
 	protected function prepare_for_test(): void {}
 
 	/**
-	 * Cleanup the object after test email.
+	 * Clean up the object after test email.
 	 *
 	 * @return void
 	 */
 	protected function cleanup_after_test(): void {}
 
 	/**
-	 * Trigger a test email with default content.
+	 * Trigger a test email with the default content.
 	 *
 	 * @return void
 	 */
 	public function send_test(): void {
-		// mark as test.
+		// mark as a test.
 		$this->set_test();
 
-		// prepare individual setting in email object.
+		// prepare individual setting in the email object.
 		$this->prepare_for_test();
 
 		// send the email.
@@ -438,7 +439,7 @@ class Email_Base {
 	}
 
 	/**
-	 * Return the configured from address we should use.
+	 * Return the configured "from"-address we should use.
 	 *
 	 * @return string
 	 */
@@ -461,7 +462,7 @@ class Email_Base {
 			$value = '';
 		}
 
-		// if value is not empty, return its value.
+		// if the value is not empty, return its value.
 		if ( ! empty( $value ) ) {
 			return $value;
 		}

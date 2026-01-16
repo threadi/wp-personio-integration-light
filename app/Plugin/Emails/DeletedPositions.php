@@ -15,7 +15,7 @@ use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Email_Base;
 
 /**
- * Object which handle info about deleted positions.
+ * Object that handles info about deleted positions.
  */
 class DeletedPositions extends Email_Base {
 	/**
@@ -56,7 +56,7 @@ class DeletedPositions extends Email_Base {
 	}
 
 	/**
-	 * Show description for this email object.
+	 * Show the description for this email object.
 	 *
 	 * @return void
 	 */
@@ -65,7 +65,7 @@ class DeletedPositions extends Email_Base {
 	}
 
 	/**
-	 * Return the subject.
+	 * Return the subject of the email.
 	 *
 	 * @return string
 	 */
@@ -73,7 +73,7 @@ class DeletedPositions extends Email_Base {
 		// set our custom subject.
 		$this->subject = get_bloginfo( 'name' ) . ': ' . _n( 'Position deleted after import from Personio', 'Positions deleted after imported from Personio', count( $this->get_deleted_positions() ), 'personio-integration-light' );
 
-		// return the parent tasks for subject.
+		// return the parent tasks for the subject.
 		return parent::get_subject();
 	}
 
@@ -98,7 +98,7 @@ class DeletedPositions extends Email_Base {
 	}
 
 	/**
-	 * Return list of deleted positions.
+	 * Return the list of deleted positions.
 	 *
 	 * @return array<int,Position>
 	 */
@@ -131,7 +131,7 @@ class DeletedPositions extends Email_Base {
 			return;
 		}
 
-		// set this position as deleted position for the test.
+		// set this position as deleted for the test.
 		$this->set_deleted_positions( $positions );
 	}
 }

@@ -35,7 +35,7 @@ class Setup {
 	private static ?Setup $instance = null;
 
 	/**
-	 * Define setup as array with steps.
+	 * Define setup as an array with steps.
 	 *
 	 * @var array<int,array<string,mixed>>
 	 */
@@ -79,7 +79,7 @@ class Setup {
 	 * @return void
 	 */
 	public function init_setup(): void {
-		// check to show hint if setup should be run.
+		// check to show a hint if setup should be run.
 		$this->show_hint();
 
 		// only load setup if it is not completed.
@@ -149,7 +149,7 @@ class Setup {
 	}
 
 	/**
-	 * Check if setup should be run and show hint for it.
+	 * Check if setup should be run and show the hint for it.
 	 *
 	 * @return void
 	 */
@@ -159,14 +159,14 @@ class Setup {
 
 		// check if setup should be run.
 		if ( ! $this->is_completed() ) {
-			// bail if hint is already set.
+			// bail if the hint is already set.
 			if ( $transients_obj->get_transient_by_name( 'personio_integration_start_setup_hint' )->is_set() ) {
 				return;
 			}
 
 			// delete all other transients.
 			foreach ( $transients_obj->get_transients() as $transient_obj ) {
-				// bail if object is not ours.
+				// bail if the object is not ours.
 				if ( ! $transient_obj instanceof Transient ) { // @phpstan-ignore instanceof.alwaysTrue
 					continue;
 				}
@@ -175,10 +175,10 @@ class Setup {
 				$transient_obj->delete();
 			}
 
-			// add hint to run setup.
+			// add a hint to run setup.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_start_setup_hint' );
-			$transient_obj->set_message( __( '<strong>You have installed Personio Integration Light - nice and thank you!</strong> Now run the setup to expand your website with the possibilities of this plugin to promote your open positions from Personio.', 'personio-integration-light' ) . '<br><br>' . sprintf( '<a href="%1$s" class="button button-primary">' . __( 'Start setup', 'personio-integration-light' ) . '</a>', esc_url( $this->get_setup_link() ) ) );
+			$transient_obj->set_message( __( '<strong>You have installed Personio Integration Light - nice, and thank you!</strong> Now run the setup to expand your website with the possibilities of this plugin to promote your open positions from Personio.', 'personio-integration-light' ) . '<br><br>' . sprintf( '<a href="%1$s" class="button button-primary">' . __( 'Start setup', 'personio-integration-light' ) . '</a>', esc_url( $this->get_setup_link() ) ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->set_dismissible_days( 2 );
 			$transient_obj->set_hide_on(
@@ -217,7 +217,7 @@ class Setup {
 	}
 
 	/**
-	 * Show setup dialog.
+	 * Show the setup dialog.
 	 *
 	 * @return void
 	 */
@@ -233,12 +233,12 @@ class Setup {
 	}
 
 	/**
-	 * Add setup menu of setup is not completed.
+	 * Add a setup menu if setup is not completed.
 	 *
 	 * @return void
 	 */
 	public function add_setup_menu(): void {
-		// add main menu as setup entry.
+		// add a main menu to go to the setup.
 		add_menu_page(
 			__( 'Positions', 'personio-integration-light' ),
 			__( 'Positions', 'personio-integration-light' ),
@@ -260,7 +260,7 @@ class Setup {
 			1
 		);
 
-		// remove menu page of our own cpt.
+		// remove the menu page of our own cpt.
 		remove_submenu_page( PersonioPosition::get_instance()->get_name(), PersonioPosition::get_instance()->get_name() );
 	}
 
@@ -283,7 +283,7 @@ class Setup {
 			);
 		}
 
-		// return resulting list.
+		// return the resulting list.
 		return $resulting_array;
 	}
 
@@ -321,7 +321,7 @@ class Setup {
 	}
 
 	/**
-	 * Set process label.
+	 * Set the process label.
 	 *
 	 * @param string $label The label to process.
 	 *
@@ -359,7 +359,7 @@ class Setup {
 			return;
 		}
 
-		// get field for URL settings.
+		// get the field for URL settings.
 		$url_field = $url_settings->get_field();
 
 		// bail if field is not available.
@@ -367,7 +367,7 @@ class Setup {
 			return;
 		}
 
-		// get main language setting.
+		// get the main language setting.
 		$language_setting = $settings->get_setting( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );
 
 		// bail if language setting could not be loaded.
@@ -375,7 +375,7 @@ class Setup {
 			return;
 		}
 
-		// get field for URL settings.
+		// get the field for URL settings.
 		$language_field = $language_setting->get_field();
 
 		// bail if field is not available.
@@ -479,7 +479,7 @@ class Setup {
 
 		$completed_text = __( 'Setup has been run. Your positions from Personio has been imported. Click on "Completed" to view them in an intro.', 'personio-integration-light' );
 		/**
-		 * Filter the text for display if setup has been run.
+		 * Filter the text for display if the setup has been run.
 		 *
 		 * @since 3.0.0 Available since 3.0.0
 		 * @param string $completed_text The text to show.
@@ -492,7 +492,7 @@ class Setup {
 	}
 
 	/**
-	 * Run additional tasks if setup has been marked as completed.
+	 * Run additional tasks if the setup has been marked as completed.
 	 *
 	 * @param string $config_name The name of the setup-configuration.
 	 *
@@ -510,7 +510,7 @@ class Setup {
 		}
 
 		/**
-		 * Run additional tasks if setup is marked as completed.
+		 * Run additional tasks if the setup is marked as completed.
 		 *
 		 * @since 4.0.0 Available since 4.0.0.
 		 */
@@ -525,7 +525,7 @@ class Setup {
 	}
 
 	/**
-	 * If Personio URL is set do not run the setup.
+	 * If Personio URL is set, do not run the setup.
 	 *
 	 * @param bool   $is_completed Whether to run setup (true) or not (false).
 	 * @param string $config_name The name of the used setup-configuration.
@@ -546,7 +546,7 @@ class Setup {
 	}
 
 	/**
-	 * Return name for the setup configuration.
+	 * Return the name for the setup configuration.
 	 *
 	 * @return string
 	 */
@@ -573,7 +573,7 @@ class Setup {
 	}
 
 	/**
-	 * Add own JS and CSS for backend.
+	 * Add own JS and CSS for the backend.
 	 *
 	 * @return void
 	 */

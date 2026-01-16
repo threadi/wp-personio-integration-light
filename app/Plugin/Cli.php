@@ -40,7 +40,7 @@ class Cli {
 	}
 
 	/**
-	 * Cleanup the database from plugin-data.
+	 * Clean up the database from plugin-data.
 	 *
 	 * @since  1.0.0
 	 * @return void
@@ -57,7 +57,7 @@ class Cli {
 	}
 
 	/**
-	 * Remove all position from local database.
+	 * Remove all position from the local database.
 	 *
 	 * @since  1.0.0
 	 * @return void
@@ -86,7 +86,7 @@ class Cli {
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function reset_plugin( array $attributes = array(), array $options = array() ): void {
-		// check for delete all marker.
+		// check for "delete-all"-marker.
 		$delete_all = isset( $options['delete-all'] ) ? 1 : 0;
 
 		// run uninstaller tasks.

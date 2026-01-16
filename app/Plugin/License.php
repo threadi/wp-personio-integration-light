@@ -1,6 +1,6 @@
 <?php
 /**
- * File for handling of license-input of Pro-plugin and info-texts about it.
+ * File for handling the license-input of Pro-plugin and info-texts about it.
  *
  * @package personio-integration-light
  */
@@ -110,19 +110,19 @@ class License {
 	}
 
 	/**
-	 * Add the boxes for the Pro info page.
+	 * Add the boxes to the Pro info page.
 	 *
 	 * Which boxes are visible depends on the state:
 	 * - Pro is not installed => Show where to buy.
 	 * - Pro is installed but not active => Activate plugin and start license setup.
-	 * - Pro is installed and active but license is not enabled => start license setup.
+	 * - Pro is installed and active, but the license is not enabled => start license setup.
 	 *
-	 * Hint: this page is not visible with enabled Pro license.
+	 * Hint: this page is not visible with an enabled Pro license.
 	 *
 	 * @return void
 	 */
 	private function add_meta_boxes(): void {
-		// show box to enter the license key.
+		// show a box to enter the license key.
 		add_meta_box(
 			PersonioPosition::get_instance()->get_name() . '-pro-infos',
 			__( 'Your benefits', 'personio-integration-light' ),
@@ -140,7 +140,7 @@ class License {
 			'normal'
 		);
 
-		// show box to enter the license key.
+		// show the box to enter the license key.
 		add_meta_box(
 			PersonioPosition::get_instance()->get_name() . '-pro-license-key',
 			__( 'Enter your license', 'personio-integration-light' ),
@@ -162,7 +162,7 @@ class License {
 		// get screen.
 		$screen = get_current_screen();
 
-		// bail if screen could not be loaded.
+		// bail if the screen could not be loaded.
 		if ( ! $screen instanceof WP_Screen ) {
 			return;
 		}
@@ -190,7 +190,7 @@ class License {
 	}
 
 	/**
-	 * Show box to enter the Pro license key.
+	 * Show the box to enter the Pro license key.
 	 *
 	 * @return void
 	 */
@@ -248,11 +248,11 @@ class License {
 			exit;
 		}
 
-		// send request to our license server to check the key.
-		// create body with all necessary values to validate the license key.
+		// send the request to our license server to check the key.
+		// create the body with all necessary values to validate the license key.
 		$body = $this->get_data();
 
-		// send request to API to verify the key.
+		// send the request to API to verify the key.
 		$query    = array(
 			'header' => array(
 				'Content-Type' => 'application/json; charset=utf-8',
@@ -287,7 +287,7 @@ class License {
 		$response_body  = wp_remote_retrieve_body( $response );
 		$response_array = json_decode( $response_body, true );
 
-		// if HTTP response is 400, show error.
+		// if the HTTP response is 400, show an error.
 		if ( 400 === $http_status ) {
 			// log this event.
 			Log::get_instance()->add( __( 'Got the following error from license server:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $response ) . '</code>', 'error', 'system' );
@@ -349,7 +349,7 @@ class License {
 	 * @return void
 	 */
 	public function show_pro_licence_costs(): void {
-		// get the flag if user has already acknowledged the loading of the costs.
+		// get the flag if the user has already acknowledged the loading of the costs.
 		if ( 1 !== absint( get_user_meta( get_current_user_id(), 'personio-integration-acknowledge-costs-loading', true ) ) ) {
 			?>
 			<form method="post" action="<?php echo esc_url( get_admin_url() ); ?>admin.php">
@@ -532,7 +532,7 @@ class License {
 			return array();
 		}
 
-		// return values as array.
+		// return values as an array.
 		return array(
 			'plugin'               => 'personio-integration',
 			'key'                  => $this->key,
@@ -544,7 +544,7 @@ class License {
 	}
 
 	/**
-	 * Install Pro plugin by request (only with valid license key).
+	 * Install Pro plugin by request (only with a valid license key).
 	 *
 	 * @return void
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
@@ -598,7 +598,7 @@ class License {
 			 * Filter the referer URL after Personio Integration Pro has been installed and activated.
 			 *
 			 * @since 5.0.0 Available since 5.0.0.
-			 * @param string $url The URL to use as forward target.
+			 * @param string $url The URL to use as the forward target.
 			 */
 			$url = (string) apply_filters( 'personio_integration_light_url_after_pro_installation', $url );
 
@@ -660,7 +660,7 @@ class License {
 		$download_url = $response_array['download_url'];
 
 		/**
-		 * Filter the download URL during installation of Personio Integration Pro.
+		 * Filter the download URL during the installation of Personio Integration Pro.
 		 *
 		 * @since 5.0.0 Available since 5.0.0.
 		 * @param string $download_url The download URL.
@@ -691,7 +691,7 @@ class License {
 		 * Filter the referer URL after Personio Integration Pro has been installed and activated.
 		 *
 		 * @since 5.0.0 Available since 5.0.0.
-		 * @param string $url The URL to use as forward target.
+		 * @param string $url The URL to use as the forward target.
 		 */
 		$url = (string) apply_filters( 'personio_integration_light_url_after_pro_installation', $url );
 

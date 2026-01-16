@@ -1,6 +1,6 @@
 <?php
 /**
- * File for handling table of logs in this plugin.
+ * File for handling the table of logs in this plugin.
  *
  * @package personio-integration-light
  */
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use WP_List_Table;
 
 /**
- * Handler for log-output in backend.
+ * Handler for log-output in the backend.
  */
 class Log_Table extends WP_List_Table {
 	/**
@@ -112,10 +112,10 @@ class Log_Table extends WP_List_Table {
 	 * @return string
 	 */
 	private function get_category( string $category ): string {
-		// get list of categories.
+		// get the list of categories.
 		$categories = Log::get_instance()->get_categories();
 
-		// bail if search category is not found.
+		// bail if the searched category is not found.
 		if ( empty( $categories[ $category ] ) ) {
 			return '<i>' . esc_html__( 'Unknown', 'personio-integration-light' ) . '</i>';
 		}
@@ -125,7 +125,7 @@ class Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Add export- and delete-buttons on top of table.
+	 * Add export- and delete-buttons on top of the table.
 	 *
 	 * @param string $which The position.
 	 * @return void
@@ -246,7 +246,7 @@ class Log_Table extends WP_List_Table {
 	 * @return array<string,string>
 	 */
 	protected function get_views(): array {
-		// get main url without filter.
+		// get the main url without the filter.
 		$url = remove_query_arg( array( 'category', 'md5', 'errors' ) );
 
 		// get actual filter.
@@ -314,7 +314,7 @@ class Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Return HTML-code for icon of the given status.
+	 * Return the HTML code for the icon of the given status.
 	 *
 	 * @param string $status The requested status.
 	 *
@@ -328,7 +328,7 @@ class Log_Table extends WP_List_Table {
 		);
 
 		/**
-		 * Filter the list of possible states in log table.
+		 * Filter the list of possible states in the log table.
 		 *
 		 * @since 4.0.0 Available since 4.0.0.
 		 */
@@ -339,7 +339,7 @@ class Log_Table extends WP_List_Table {
 			return '';
 		}
 
-		// return the HTML-code for the icon of this status.
+		// return the HTML code for the icon of this status.
 		return $list[ $status ];
 	}
 }

@@ -56,7 +56,7 @@ class Installer {
 	 * @return void
 	 */
 	public function activation(): void {
-		// mark activation runner as running.
+		// mark the activation runner as running.
 		define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 1 );
 
 		if ( is_multisite() ) {
@@ -69,7 +69,7 @@ class Installer {
 				$this->activation_tasks();
 			}
 
-			// switch back to original blog.
+			// switch back to the original blog.
 			restore_current_blog();
 		} else {
 			// simply run the tasks on single-site-install.

@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Plugin\Email_Base;
 
 /**
- * Object which handle import error mails.
+ * Object that handles import error mails.
  */
 class ImportError extends Email_Base {
 	/**
@@ -70,7 +70,7 @@ class ImportError extends Email_Base {
 	}
 
 	/**
-	 * Show description for this email object.
+	 * Show the description for this email object.
 	 *
 	 * @return void
 	 */
@@ -79,7 +79,7 @@ class ImportError extends Email_Base {
 	}
 
 	/**
-	 * Return the subject.
+	 * Return the subject for this email.
 	 *
 	 * @return string
 	 */
@@ -87,7 +87,7 @@ class ImportError extends Email_Base {
 		// set our custom subject.
 		$this->subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
 
-		// return the parent tasks for subject.
+		// return the parent tasks for the subject.
 		return parent::get_subject();
 	}
 
@@ -117,7 +117,7 @@ class ImportError extends Email_Base {
 	}
 
 	/**
-	 * Set list of errors.
+	 * Set the list of errors.
 	 *
 	 * @param array<int,string> $errors The list of errors.
 	 *
@@ -138,7 +138,7 @@ class ImportError extends Email_Base {
 			__( 'This is a test-error.', 'personio-integration-light' ),
 		);
 
-		// set this position as new position for the test.
+		// set error to trigger the test email.
 		$this->set_errors( $errors );
 	}
 }
