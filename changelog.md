@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.1.3] - 19.01.2026
+
+### Fixed
+
+- Fixed the missing check for ACF Pro
+
 ## [5.1.2] - 19.01.2026
 
 ### Added
