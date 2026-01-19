@@ -125,20 +125,13 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added automatic PHP compatibility check before each release
-- Added over 100 PHP Unit tests for over 200 situations
-- Added some more hooks
-- Added check for used language and show a hint if we have no translations for it
-- Changed the hook name "position_integration_position_title" to "personio_integration_light_position_title"
-  for compatibility with WCS
-- Changed styling for select fields in blocks to the default styling by Block Editor
-- Use minified blocks.css for classic themes which are using the block editor
-- Optimized release generation with dynamic URLs
-- Optimized import handling if an error occurs and the next import reads the previous import state
-- Optimized multiple typos in code and documentation
-- Optimized handling of encrypted strings
+- Added multiple new PHP Unit Tests
+- Added some new hooks
+- Added support for detection of ACF Pro
+- Reading position details is now more accurate
+- Optimized PHP Unit Tests
 - Updated dependencies
-- Fixed wrong options for listing template in classic themes
-- Fixed multiple typos in code comments
+- Fixed a missing check for direct access in two templates
+- Fixed to show automatic import in the log for deletion of a single position
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
