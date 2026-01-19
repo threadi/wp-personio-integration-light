@@ -15,7 +15,7 @@ use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Email_Base;
 
 /**
- * Object which handle info about new imported positions.
+ * Object that handles info about new imported positions.
  */
 class NewPositions extends Email_Base {
 	/**

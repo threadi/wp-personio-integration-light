@@ -116,7 +116,7 @@ class Helper {
 	}
 
 	/**
-	 * Return the url to remove all positions in local database.
+	 * Return the URL to remove all positions in the local database.
 	 *
 	 * @return string
 	 * @noinspection PhpUnused
@@ -132,7 +132,7 @@ class Helper {
 	}
 
 	/**
-	 * Get list of available filter types.
+	 * Return the list of available filter types.
 	 *
 	 * @return array<string,string>
 	 */
@@ -155,12 +155,12 @@ class Helper {
 	/**
 	 * Checks if the current request is a WP REST API request.
 	 *
-	 * Case #1: After WP_REST_Request initialisation
+	 * Case #1: After WP_REST_Request initialization
 	 * Case #2: Support "plain" permalink settings and check if `rest_route` starts with `/`
 	 * Case #3: It can happen that WP_Rewrite is not yet initialized,
 	 *          so do this (wp-settings.php)
 	 * Case #4: URL Path begins with wp-json/ (your REST prefix)
-	 *          Also supports WP installations in sub-folders
+	 *          Also supports WP installations in the subfolders
 	 *
 	 * @returns boolean
 	 * @author matzeeable
@@ -366,7 +366,7 @@ class Helper {
 	}
 
 	/**
-	 * Check if Settings-Errors-entry already exists in array.
+	 * Check if a Settings-Errors-entry already exists in the array.
 	 *
 	 * @param string                  $entry The entry.
 	 * @param array<string|int,mixed> $errors The list of errors.
@@ -443,7 +443,7 @@ class Helper {
 	}
 
 	/**
-	 * Get all files of directory recursively.
+	 * Return all files of the directory recursively.
 	 *
 	 * @param string $path The path.
 	 *
@@ -461,14 +461,14 @@ class Helper {
 			return array();
 		}
 
-		// load files recursive in array and return resulting list.
+		// load files recursive in an array and return the resulting list.
 		return self::get_files( $files, $path );
 	}
 
 	/**
-	 * Recursively load files from given array.
+	 * Recursively load files from the given array.
 	 *
-	 * @param array<string,array<string,mixed>> $files Array of file we iterate through.
+	 * @param array<string,array<string,mixed>> $files Array of the file we iterate through.
 	 * @param string                            $path Absolute path where the files are located.
 	 * @param array<string>                     $file_list List of files.
 	 *
@@ -518,24 +518,25 @@ class Helper {
 	}
 
 	/**
-	 * Get list of blogs in a multisite-installation.
+	 * Return the list of blogs in a multisite-installation.
 	 *
 	 * @return array<int,mixed>
 	 */
 	public static function get_blogs(): array {
+		// bail if this is not a multisite installation.
 		if ( false === is_multisite() ) {
 			return array();
 		}
 
-		// Get DB-connection.
+		// get the WordPress-own database object.
 		global $wpdb;
 
 		// get blogs in this site-network.
 		return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			"
+			'
             SELECT blog_id
-            FROM {$wpdb->blogs}
-            WHERE site_id = '{$wpdb->siteid}'
+            FROM ' . $wpdb->blogs . "
+            WHERE site_id = '" . $wpdb->siteid . "'
             AND spam = '0'
             AND deleted = '0'
             AND archived = '0'
@@ -641,11 +642,11 @@ class Helper {
 		);
 
 		/**
-		 * Filter the list of custom the post types this plugin is using.
+		 * Filter the list of custom post-types this plugin is using.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array<int,string> $list The list of the post types.
+		 * @param array<int,string> $list The list of the post-types.
 		 */
 		return apply_filters( 'personio_integration_list_of_cpts', $list );
 	}
@@ -661,7 +662,7 @@ class Helper {
 		// get the result.
 		$result = preg_replace( '/\s+/', ' ', $text_to_parse );
 
-		// bail if result is not a string.
+		// bail if the result is not a string.
 		if ( ! is_string( $result ) ) {
 			return '';
 		}
@@ -705,7 +706,7 @@ class Helper {
 	}
 
 	/**
-	 * Add new entry with its key on specific position in array.
+	 * Add a new entry with its key on the specific position in the array.
 	 *
 	 * @param array<int|string,mixed>|null $fields The array we want to change.
 	 * @param int                          $position The position where the new array should be added.
@@ -721,7 +722,7 @@ class Helper {
 	}
 
 	/**
-	 * Update list of used page builder.
+	 * Update the list of used page builder.
 	 *
 	 * @param string $page_builder_name The name of the page builder to add to the list.
 	 * @return void
@@ -756,14 +757,14 @@ class Helper {
 	}
 
 	/**
-	 * Return whether we should load styles depending on actual called backend page.
+	 * Return whether we should load styles depending on the actual called backend page.
 	 *
 	 * @param string $hook The used hook.
 	 *
 	 * @return bool
 	 */
 	public static function do_not_load_styles( string $hook ): bool {
-		// bail if function is used in frontend.
+		// bail if the function is used in the frontend.
 		if ( ! is_admin() ) {
 			return false;
 		}
@@ -771,7 +772,7 @@ class Helper {
 		// do not load our files outside our own backend pages.
 		if ( function_exists( 'get_current_screen' ) && in_array( $hook, array( 'edit.php', 'post.php', 'edit-tags.php', 'term.php' ), true ) ) {
 			$screen = get_current_screen();
-			// bail if screen could not be loaded.
+			// bail if the screen could not be loaded.
 			if ( ! $screen instanceof WP_Screen ) {
 				return false;
 			}
@@ -783,14 +784,14 @@ class Helper {
 			return true;
 		}
 
-		// return false to not prevent the loading of styles in backend.
+		// return false to not prevent the loading of styles in the backend.
 		return false;
 	}
 
 	/**
 	 * Return the WP Filesystem object.
 	 *
-	 * @param bool $local True to get the local filesystem object.
+	 * @param bool $local Mark with "true" to get the local filesystem object.
 	 *
 	 * @return WP_Filesystem_Base
 	 */
@@ -815,10 +816,10 @@ class Helper {
 			return new WP_Filesystem_Direct( false );
 		}
 
-		// return local object on any error.
+		// return the local object on any error.
 		if ( $wp_filesystem->errors->has_errors() ) {
 			// log this event.
-			/* translators: %1$s will be replaced by a name. */
+			/* translators: a name will replace %1$s. */
 			Log::get_instance()->add( sprintf( __( '<strong>Error during loading the required WordPress-own filesystem object!</strong><br>We will now use the local filesystem object and hope it will work.<br><br>Tipps to solve this:<ul><li>Check the following error and speak to your WordPress administrator about it.</li><li>Check your <em>wp-config.php</em> if you have the constant "FS_METHOD" set there. If yes, remove it and check if your WordPress can save media files.</li><li>Ask the support of your hoster for help.</li></ul>Used filesystem mode: <em>%1$s</em><br>The following errors occurred:', 'personio-integration-light' ), get_filesystem_method() ) . ' <code>' . wp_json_encode( $wp_filesystem->errors ) . '</code>', 'error', 'system' );
 
 			// embed the local directory object.
@@ -847,7 +848,7 @@ class Helper {
 		 */
 		$wp_config_php = apply_filters( 'personio_integration_light_wp_config_name', $wp_config_php );
 
-		// get path for wp-config.php.
+		// get the path for wp-config.php.
 		$wp_config_php_path = ABSPATH . $wp_config_php . '.php';
 
 		/**
@@ -862,7 +863,7 @@ class Helper {
 	/**
 	 * Return whether a given file is writable.
 	 *
-	 * @param string $file The file with absolute path.
+	 * @param string $file The file with the absolute path.
 	 *
 	 * @return bool
 	 */
@@ -871,7 +872,7 @@ class Helper {
 	}
 
 	/**
-	 * Create JSON from given array.
+	 * Create JSON from the given array.
 	 *
 	 * @param array<string|int,mixed>|WP_Error|SimpleXMLElement $source The source array.
 	 * @param int                                               $flag Flags to use for this JSON.
@@ -887,7 +888,7 @@ class Helper {
 			return '';
 		}
 
-		// return resulting JSON-string.
+		// return the resulting JSON string.
 		return $json;
 	}
 
@@ -932,7 +933,7 @@ class Helper {
 			return false;
 		}
 
-		// get plugin path.
+		// get the plugin path.
 		$plugin_path = self::get_plugin_path_from_slug( $plugin_slug );
 
 		// bail if no path could be found.
@@ -951,7 +952,7 @@ class Helper {
 	}
 
 	/**
-	 * Return plugin path from slug.
+	 * Return the plugin path from slug.
 	 *
 	 * @source WooCommerce
 	 *

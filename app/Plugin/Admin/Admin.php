@@ -73,7 +73,7 @@ class Admin {
 		// initialize the Site Health support.
 		Site_Health::get_instance()->init();
 
-		// initialize help system.
+		// initialize the help system.
 		Help_System::get_instance()->init();
 
 		// initialize the license handler.
@@ -92,7 +92,7 @@ class Admin {
 		add_action( 'init', array( $this, 'configure_transients' ), 5 );
 		add_action( 'admin_bar_menu', array( $this, 'add_custom_toolbar' ), 100 );
 
-		// register our own importer in backend.
+		// register our own importer in the backend.
 		add_action( 'admin_init', array( $this, 'add_importer' ) );
 		add_action( 'admin_init', array( $this, 'check_php' ) );
 		add_action( 'load-importer-personio-integration-importer', array( $this, 'forward_importer_to_settings' ) );
@@ -107,7 +107,7 @@ class Admin {
 	}
 
 	/**
-	 * Add own CSS and JS for backend.
+	 * Add own CSS and JS for the backend.
 	 *
 	 * @return void
 	 */
@@ -201,19 +201,19 @@ class Admin {
 	 * @return void
 	 */
 	public function add_dialog(): void {
-		// embed necessary scripts for dialog.
+		// embed the necessary scripts for the dialog.
 		$path = Helper::get_plugin_path() . 'vendor/threadi/easy-dialog-for-wordpress/';
 		$url  = Helper::get_plugin_url() . 'vendor/threadi/easy-dialog-for-wordpress/';
 
-		// bail if path does not exist.
+		// bail if the path does not exist.
 		if ( ! file_exists( $path ) ) {
 			return;
 		}
 
-		// embed the dialog-components JS-script.
+		// embed the dialog-components JavaScript.
 		$script_asset_path = $path . 'build/index.asset.php';
 
-		// bail if script does not exist.
+		// bail if the script does not exist.
 		if ( ! file_exists( $script_asset_path ) ) {
 			return;
 		}
@@ -228,7 +228,7 @@ class Admin {
 			true
 		);
 
-		// embed the dialog-components CSS-file.
+		// embed the dialog-components CSS file.
 		$admin_css      = $url . 'build/style-index.css';
 		$admin_css_path = $path . 'build/style-index.css';
 		wp_enqueue_style(
@@ -276,7 +276,7 @@ class Admin {
 	}
 
 	/**
-	 * Forward user to settings-page.
+	 * Forward user to the settings-page.
 	 *
 	 * @return void
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
@@ -360,7 +360,7 @@ class Admin {
 	}
 
 	/**
-	 * Set marker to cancel running import.
+	 * Set the marker to cancel running import.
 	 *
 	 * @return void
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
@@ -376,20 +376,20 @@ class Admin {
 			// add hint.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_import_canceled' );
-			$transient_obj->set_message( __( '<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes to long please check your hosting logfiles for possible restrictions mentioned there.', 'personio-integration-light' ) . ' <br><br><a href="' . esc_url( Helper::get_import_url() ) . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>' );
+			$transient_obj->set_message( __( '<strong>The running import has been canceled.</strong> Click on the following button to start a new import. If it also takes too long, please check your hosting logfiles for possible restrictions mentioned there.', 'personio-integration-light' ) . ' <br><br><a href="' . esc_url( Helper::get_import_url() ) . '" class="button button-primary personio-integration-import-hint">' . __( 'Run import', 'personio-integration-light' ) . '</a>' );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->save();
 
 			// get active user.
 			$user = wp_get_current_user();
 
-			// bail if user could not be loaded.
+			// bail if the user could not be loaded.
 			if ( ! $user instanceof WP_User ) { // @phpstan-ignore instanceof.alwaysTrue
 				return;
 			}
 
 			// log this event.
-			/* translators: %1$s will be replaced by a username. */
+			/* translators: a username will replace %1$s. */
 			Log::get_instance()->add( sprintf( __( 'A running import has been canceled through %1$s.', 'personio-integration-light' ), esc_html( $user->display_name ) ), 'info', 'import' );
 		}
 
@@ -484,7 +484,7 @@ class Admin {
 				$transient_obj->set_name( 'personio_integration_admin_show_review_hint' );
 				$transient_obj->set_message(
 					/* translators: %1$d is replaced with a day-count, %2$s will be replaced with the review-URL */
-					sprintf( __( 'Your use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="%2$s" target="_blank">leave us a review (opens new window)</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ), esc_url( Helper::get_review_url() ) ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
+					sprintf( __( 'You use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="%2$s" target="_blank">leave us a review (opens new window)</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ), esc_url( Helper::get_review_url() ) ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
 				);
 				$transient_obj->set_type( 'info' );
 				$transient_obj->save();
@@ -514,14 +514,14 @@ class Admin {
 			$classes .= ' personio-integration-hide-buttons';
 		}
 
-		// enable intros if set as parameter.
+		// enable intros if set as a parameter.
 		$import_intro = filter_input( INPUT_GET, 'import_intro', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		if ( ! empty( $import_intro ) ) {
 			global $pagenow;
 			Intro::get_instance()->add_js( $pagenow );
 			$classes .= ' personio-integration-import-intro';
 		}
-		// enable intros if set as parameter.
+		// enable intros if set as a parameter.
 		$template_intro = filter_input( INPUT_GET, 'template_intro', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		if ( ! empty( $template_intro ) ) {
 			global $pagenow;
@@ -534,8 +534,8 @@ class Admin {
 	}
 
 	/**
-	 * Add link in toolbar to list of positions.
-	 * Only if Personio URL is given and list-view is not disabled.
+	 * Add a link in the toolbar to the list of positions.
+	 * Only if Personio URL is given and the list-view is not disabled.
 	 *
 	 * @param WP_Admin_Bar $admin_bar The object of the Admin-Bar.
 	 *
@@ -554,7 +554,7 @@ class Admin {
 			return;
 		}
 
-		// add link in admin bar dropdown.
+		// add a link in the admin bar dropdown.
 		$admin_bar->add_menu(
 			array(
 				'id'     => PersonioPosition::get_instance()->get_name() . '-archive',
@@ -569,7 +569,7 @@ class Admin {
 			return;
 		}
 
-		// add link to view position in frontend if one is called in backend.
+		// add link to view position in frontend if one is called in the backend.
 		$post_id = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) );
 		if ( $post_id > 0 && PersonioPosition::get_instance()->get_name() === get_post_type( $post_id ) ) {
 			$position_obj = Positions::get_instance()->get_position( $post_id );
@@ -610,9 +610,9 @@ class Admin {
 	}
 
 	/**
-	 * Show help page for Pro-plugin.
+	 * Show the help page for Pro-plugin.
 	 *
-	 * It is also visible before license is validated.
+	 * It is also visible before the license is validated.
 	 *
 	 * @return void
 	 */
@@ -623,7 +623,7 @@ class Admin {
 		// get screen.
 		$screen = get_current_screen();
 
-		// bail if screen could not be loaded.
+		// bail if the screen could not be loaded.
 		if ( ! $screen instanceof WP_Screen ) {
 			return;
 		}
@@ -642,7 +642,7 @@ class Admin {
 	}
 
 	/**
-	 * Add settings-page for the plugin if setup has been completed.
+	 * Add the settings-page for the plugin if setup has been completed.
 	 *
 	 * @return void
 	 */
@@ -652,7 +652,7 @@ class Admin {
 			return;
 		}
 
-		// add menu entry for applications (with hint to pro).
+		// add menu entry for applications (with a hint to pro).
 		$false = false;
 		/**
 		 * Hide hint for Pro-plugin.
@@ -677,7 +677,7 @@ class Admin {
 		// create the capability as string.
 		$capability = 'read_' . PersonioPosition::get_instance()->get_name();
 
-		// add help link.
+		// add the help link.
 		add_submenu_page(
 			PersonioPosition::get_instance()->get_link( true ),
 			__( 'Need help with Personio Integration?', 'personio-integration-light' ),
@@ -714,7 +714,7 @@ class Admin {
 		);
 
 		/**
-		 * Add additional boxes for help page.
+		 * Add additional boxes for the help page.
 		 */
 		do_action( 'personio_integration_help_page' );
 	}
@@ -824,13 +824,13 @@ class Admin {
 		<p>
 			<?php
 			/* translators: %1$s will be replaced by the support-forum-URL. */
-			echo wp_kses_post( sprintf( __( 'If you have any questions do not hesitate to ask them in our <a href="%1$s" target="_blank">forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) );
+			echo wp_kses_post( sprintf( __( 'If you have any questions, do not hesitate to ask them in our <a href="%1$s" target="_blank">forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) );
 			?>
 		</p>
 		<p>
 			<?php
 			/* translators: %1$s and %2$s will be replaced by external URLs. */
-			echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">GitHub</a>. There you will also find <a href="%2$s" target="_blank">some documentations (opens new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ) ) );
+			echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">GitHub</a>. There you will also find <a href="%2$s" target="_blank">some documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ) ) );
 			?>
 			</p>
 		<?php
@@ -850,7 +850,7 @@ class Admin {
 		$log     = Log::get_instance();
 		$entries = $log->get_entries();
 
-		// create filename for JSON-download-file.
+		// create the filename for JSON-download-file.
 		$filename = gmdate( 'YmdHi' ) . '_' . get_option( 'blogname' ) . '_Personio_Integration_Light_Logs.csv';
 		/**
 		 * Filter the filename for CSV-download.
@@ -861,14 +861,14 @@ class Admin {
 		 */
 		$filename = apply_filters( 'personio_integration_log_export_filename', $filename );
 
-		// set header for response as CSV-download.
+		// set the header for response as CSV-download.
 		header( 'Content-Type: text/csv' );
 		header( 'Content-Disposition: attachment; filename=' . sanitize_file_name( $filename ) );
 
 		// generate CSV-output.
 		$fp = fopen( 'php://output', 'w' );
 
-		// bail if file could not be opened.
+		// bail if the file could not be opened.
 		if ( ! $fp ) {
 			exit;
 		}
@@ -909,7 +909,7 @@ class Admin {
 	}
 
 	/**
-	 * Show hint for applications on application page which are usable with Pro-plugin.
+	 * Show hint for applications on the application page which are usable with Pro-plugin.
 	 *
 	 * @return void
 	 */
@@ -927,7 +927,7 @@ class Admin {
 	}
 
 	/**
-	 * Check if website is using an old PHP version and show warning if is it using such.
+	 * Check if the website is using an old PHP version and show warning if is it using such.
 	 *
 	 * @return void
 	 */
@@ -1029,7 +1029,7 @@ class Admin {
 		$transient_obj->set_type( 'hint' );
 		$transient_obj->set_name( 'personio_integration_light_translatable' );
 		$transient_obj->set_dismissible_days( 180 );
-		/* translators: %1$s and %2$s will be replaced by URLs. */
+		/* translators: URLs will replace %1$s and %2$s. */
 		$transient_obj->set_message( sprintf( __( '<strong>You are using a language in your WordPress that has not yet been translated for the plugin "Personio Integration Light".</strong> You are welcome to help by providing translations for your language <a href="%1$s" target="_blank">here</a>. If you have any questions, please feel free to contact us <a href="%2$s" target="_blank">in the support forum</a>.', 'personio-integration-light' ), 'https://translate.wordpress.org/projects/wp-plugins/personio-integration-light/', Helper::get_plugin_support_url() ) );
 		$transient_obj->save();
 	}

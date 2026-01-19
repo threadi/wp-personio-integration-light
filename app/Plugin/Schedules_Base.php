@@ -1,6 +1,6 @@
 <?php
 /**
- * File as base for each schedule.
+ * File for an object as a base object for each schedule.
  *
  * @package personio-integration-light
  */
@@ -83,7 +83,7 @@ class Schedules_Base {
 		$interval = $this->interval;
 		$instance = $this;
 		/**
-		 * Filter the interval for a single schedule.
+		 * Filter the interval to a single schedule.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 * @param string $interval The interval.
@@ -111,7 +111,7 @@ class Schedules_Base {
 	public function run(): void {}
 
 	/**
-	 * Install this schedule, if it does not exist atm.
+	 * Install this schedule if it does not exist atm.
 	 *
 	 * @return void
 	 */

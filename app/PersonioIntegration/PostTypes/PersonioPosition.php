@@ -36,6 +36,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 use WP_Taxonomy;
+use WP_User;
 
 /**
  * Object of this custom post type.
@@ -475,14 +476,14 @@ class PersonioPosition extends Post_Type {
 		$user = wp_get_current_user();
 
 		// if no user could be found, check if we are running on WP CLI.
-		if ( ! $user instanceof WP_User ) {
+		if ( ! $user instanceof WP_User ) { // @phpstan-ignore instanceof.alwaysTrue
 			$username = 'WP CLI';
 		} else {
 			$username = $user->display_name;
 		}
 
 		// is no username is set, use "automatic import".
-		if( empty( $username ) ) {
+		if ( empty( $username ) ) {
 			$username = __( 'Automatic import', 'personio-integration-light' );
 		}
 
@@ -613,7 +614,7 @@ class PersonioPosition extends Post_Type {
 			$new_actions['edit'] = '<a href="' . esc_url( $edit_url ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
 		}
 
-		// return resulting list.
+		// return the resulting list.
 		return $new_actions;
 	}
 
@@ -733,7 +734,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Hide cpt filter-view. Just return an empty array.
+	 * Hide cpt filter-view. Return an empty array.
 	 *
 	 * @return array<string>
 	 */
@@ -767,6 +768,7 @@ class PersonioPosition extends Post_Type {
 	 * @param mixed  $post The post-object.
 	 *
 	 * @return void
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function add_meta_boxes( string $post_type, mixed $post ): void {
 		// bail if the second parameter is not WP_Post.
@@ -883,7 +885,7 @@ class PersonioPosition extends Post_Type {
 			);
 		}
 
-		// add meta-box with Pro-hint for subcompany-field which is only in Pro.
+		// add meta-box with a Pro-hint for subcompany-field which is only in Pro.
 		add_meta_box(
 			$this->get_name() . '-taxonomy-subcompany',
 			__( 'Legal entity', 'personio-integration-light' ),
@@ -894,9 +896,9 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Remove all meta-boxes which are not part of this post type.
+	 * Remove all meta-boxes that are not part of this post-type.
 	 *
-	 * @param string $post_type The used post type.
+	 * @param string $post_type The used post-type.
 	 *
 	 * @return void
 	 */
@@ -916,7 +918,7 @@ class PersonioPosition extends Post_Type {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param bool $false Set true to prevent removing of each meta box.
+		 * @param bool $false Set true to prevent removing of each meta-box.
 		 *
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
@@ -992,13 +994,13 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Show personioId in meta box.
+	 * Show personioId in meta-box.
 	 *
 	 * @param WP_Post $post Object of the post.
 	 * @return void
 	 */
 	public function get_meta_box_for_personio_id( WP_Post $post ): void {
-		// get the position as object.
+		// get the position as an object.
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
 		// show the Personio ID of this position.
@@ -1008,19 +1010,19 @@ class PersonioPosition extends Post_Type {
 		 * Run additional tasks.
 		 *
 		 * @since 4.1.0 Available since 4.1.0.
-		 * @param Position $position_obj The position as object.
+		 * @param Position $position_obj The position as an object.
 		 */
 		do_action( 'personio_integration_light_edit_position_box_personio_id', $position_obj );
 	}
 
 	/**
-	 * Show title of position in meta box.
+	 * Show title of position in meta-box.
 	 *
 	 * @param WP_Post $post Object of the post.
 	 * @return void
 	 */
 	public function get_meta_box_for_title( WP_Post $post ): void {
-		// get the position as object.
+		// get the position as an object.
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
 		// show the title of this position.
@@ -1030,13 +1032,13 @@ class PersonioPosition extends Post_Type {
 		 * Run additional tasks.
 		 *
 		 * @since 4.1.0 Available since 4.1.0.
-		 * @param Position $position_obj The position as object.
+		 * @param Position $position_obj The position as an object.
 		 */
 		do_action( 'personio_integration_light_edit_position_box_title', $position_obj );
 	}
 
 	/**
-	 * Show content of position in meta box.
+	 * Show content of position in meta-box.
 	 *
 	 * @param WP_Post $post Object of the post.
 	 *
@@ -1080,7 +1082,7 @@ class PersonioPosition extends Post_Type {
 		 * Run additional tasks.
 		 *
 		 * @since 4.1.0 Available since 4.1.0.
-		 * @param WP_post $post The post as object.
+		 * @param WP_post $post The post as an object.
 		 */
 		do_action( 'personio_integration_light_edit_position_box_content', $post );
 	}
@@ -1093,7 +1095,7 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function get_meta_box_for_personio( WP_Post $post ): void {
-		// get the requested position as object.
+		// get the requested position as an object.
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
 		// get the Personio URL.
@@ -1123,7 +1125,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Show any taxonomy of position in their own meta box.
+	 * Show any taxonomy of position in their own meta-box.
 	 *
 	 * @param WP_Post              $post Object of the post.
 	 * @param array<string,string> $attr The attributes.
@@ -1131,7 +1133,7 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 **/
 	public function get_meta_box_for_taxonomy( WP_Post $post, array $attr ): void {
-		// get the requested position as object.
+		// get the requested position as an object.
 		$position_obj = Positions::get_instance()->get_position( $post->ID );
 
 		// get the requested taxonomy from the box ID as string.
@@ -1181,14 +1183,14 @@ class PersonioPosition extends Post_Type {
 		 * Run additional tasks.
 		 *
 		 * @since 4.1.0 Available since 4.1.0.
-		 * @param Position $position_obj The position as object.
-		 * @param array $attr Attributes used for this meta box.
+		 * @param Position $position_obj The position as an object.
+		 * @param array $attr Attributes used for this meta-box.
 		 */
 		do_action( 'personio_integration_light_edit_position_box_taxonomy', $position_obj, $attr );
 	}
 
 	/**
-	 * Show any taxonomy of position in their own meta box.
+	 * Show any taxonomy of position in their own meta-box.
 	 *
 	 * @param WP_Post              $post Object of the post.
 	 * @param array<string,string> $attr The attributes.
@@ -1291,7 +1293,7 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Check for allowed filter-type.
 	 *
-	 * @param array<string,array<string,mixed>> $settings List of settings for a shortcode with 3 parts: defaults, settings & attributes.
+	 * @param array<string,array<string,mixed>> $settings List of settings for a shortcode with 3 parts: defaults, settings and attributes.
 	 * @return array<string,array<string,mixed>>
 	 */
 	public function check_filter_type( array $settings ): array {
@@ -1302,7 +1304,7 @@ class PersonioPosition extends Post_Type {
 			}
 		}
 
-		// return resulting arrays.
+		// return the resulting arrays.
 		return array(
 			'defaults'   => $settings['defaults'],
 			'settings'   => $settings['settings'],
@@ -1377,7 +1379,7 @@ class PersonioPosition extends Post_Type {
 			return $entry;
 		}
 
-		// get the position as object.
+		// get the position as an object.
 		$position = Positions::get_instance()->get_position( $post->ID );
 
 		// get the date.
@@ -1392,7 +1394,7 @@ class PersonioPosition extends Post_Type {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param array<string,mixed> $entry List of data for the sitemap.xml of this single position.
-		 * @param Position $position The position as object.
+		 * @param Position $position The position as an object.
 		 */
 		return apply_filters( 'personio_integration_sitemap_entry', $entry, $position );
 	}
@@ -1416,14 +1418,14 @@ class PersonioPosition extends Post_Type {
 			'callback' => array( $this, 'get_dashboard_widget_content' ),
 		);
 
-		// return resulting list.
+		// return the resulting list.
 		return $dashboard_widgets;
 	}
 
 	/**
 	 * Output the contents of the dashboard widget
 	 *
-	 * @param string               $post The post as object.
+	 * @param string               $post The post as an object.
 	 * @param array<string,string> $callback_args List of arguments.
 	 */
 	public function get_dashboard_widget_content( string $post, array $callback_args ): void {
@@ -1435,7 +1437,7 @@ class PersonioPosition extends Post_Type {
 		// get the position count.
 		$position_count = absint( get_option( 'personioIntegrationPositionCount', 0 ) );
 
-		// get the positions object.
+		// get the object for positions.
 		$positions_obj = Positions::get_instance();
 
 		// show wrapper.
@@ -1510,7 +1512,7 @@ class PersonioPosition extends Post_Type {
 		// get the queried object.
 		$object = get_queried_object();
 
-		// return true if object iss from our cpt.
+		// return true if the object is from our own cpt.
 		return ( $object instanceof WP_Post && $this->get_name() === $object->post_type );
 	}
 
@@ -1815,7 +1817,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Return list of pro-extension we show as a demo in the extensions table.
+	 * Return list of pro-extension we show as a demo in the extension table.
 	 *
 	 * @return array<int,array<string,string>>
 	 */
@@ -1955,7 +1957,7 @@ class PersonioPosition extends Post_Type {
 			$extensions[] = $obj;
 		}
 
-		// return resulting list.
+		// return the resulting list.
 		return $extensions;
 	}
 
@@ -1980,7 +1982,7 @@ class PersonioPosition extends Post_Type {
 		$categories['import'] = __( 'Import', 'personio-integration-light' );
 		$categories['cli']    = __( 'WP CLI', 'personio-integration-light' );
 
-		// return resulting list.
+		// return the resulting list.
 		return $categories;
 	}
 
@@ -2038,7 +2040,7 @@ class PersonioPosition extends Post_Type {
 		$content .= '<li>' . sprintf( __( 'Check the positions <a href="%1$s">in your frontend</a>.', 'personio-integration-light' ), esc_url( $this->get_archive_url() ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
 		$content .= '<li>' . sprintf( __( 'Change settings <a href="%1$s">for the template</a> to optimize the view.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
-		// add menu entry for applications (with hint to pro).
+		// add menu entry for applications (with a hint to Pro).
 		$false = false;
 		/**
 		 * Hide hint for Pro-plugin.
@@ -2050,7 +2052,7 @@ class PersonioPosition extends Post_Type {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens new window)</a> for individual application forms and much more options.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens new window)</a> for individual application forms and many more options.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
 		}
 		$content .= '</ol>';
 
@@ -2061,7 +2063,7 @@ class PersonioPosition extends Post_Type {
 			'content' => $content,
 		);
 
-		// return resulting list.
+		// return the resulting list.
 		return $help_list;
 	}
 
@@ -2129,7 +2131,7 @@ class PersonioPosition extends Post_Type {
 			'content' => $content,
 		);
 
-		// return resulting list.
+		// return the resulting list.
 		return $help_list;
 	}
 
@@ -2169,7 +2171,7 @@ class PersonioPosition extends Post_Type {
 		$search_term = $wp_query->query['s'];
 		$search      = '';
 
-		// build SQL to search the post title and content.
+		// build SQL to search the post-title and content.
 		$search .= "($wpdb->posts.post_title LIKE '%" . $wpdb->esc_like( $search_term ) . "%') OR ($wpdb->posts.post_content LIKE '%" . $wpdb->esc_like( $search_term ) . "%')";
 
 		// add SQL to also search postmeta table for matching custom field values.
@@ -2179,7 +2181,7 @@ class PersonioPosition extends Post_Type {
 			AND meta_value LIKE '%" . $wpdb->esc_like( $search_term ) . "%'
 		)";
 
-		// return resulting search SQL string.
+		// return the resulting search SQL string.
 		return ' AND (' . $search . ') ';
 	}
 

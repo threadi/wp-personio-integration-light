@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle OpenSSL-tasks.
+ * File to handle OpenSSL tasks.
  *
  * @package personio-integration-light
  */
@@ -64,7 +64,7 @@ class OpenSSL extends Crypt_Base {
 		// get hash from db.
 		$this->set_hash( get_option( WP_PERSONIO_INTEGRATION_LIGHT_HASH, '' ) );
 
-		// bail if update is running, if cron or ajax is called or if this is not an admin-request.
+		// bail if the update is running, if cron or ajax is called or if this is not an admin-request.
 		if ( defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) || defined( 'DOING_CRON' ) || defined( 'DOING_AJAX' ) || ! is_admin() ) {
 			return;
 		}
@@ -78,7 +78,7 @@ class OpenSSL extends Crypt_Base {
 		// get the wp-config.php path.
 		$wp_config_php_path = Helper::get_wp_config_path();
 
-		// bail if path could not be loaded.
+		// bail if the path could not be loaded.
 		if ( ! $wp_config_php_path ) {
 			return;
 		}
@@ -95,7 +95,7 @@ class OpenSSL extends Crypt_Base {
 		// get the contents of the wp-config.php.
 		$wp_config_php_content = $wp_filesystem->get_contents( $wp_config_php_path );
 
-		// bail if file has no contents.
+		// bail if the file has no contents.
 		if ( ! $wp_config_php_content ) {
 			return;
 		}

@@ -140,7 +140,7 @@
             <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />
         </replace>
 
-        <delete file="${build.dir}/readme-release.php"/>
+        <delete file="${build.dir}/readme-release.txt"/>
         <copy file="${src.dir}/readme.txt" tofile="${src.dir}/readme-release.txt"/>
         <replace file="${src.dir}/readme-release.txt">
             <replacefilter token="@@VersionNumber@@" value="${plugin.version}" />

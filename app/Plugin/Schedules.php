@@ -138,7 +138,7 @@ class Schedules {
 		$our_events = $this->get_wp_events();
 
 		/**
-		 * Filter the list of our own events e.g. to check if all which are enabled in setting are active.
+		 * Filter the list of our own events, e.g., to check if all which are enabled in setting are active.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
@@ -148,7 +148,7 @@ class Schedules {
 	}
 
 	/**
-	 * Check the available events with the ones which should be active.
+	 * Check the available events with the ones that should be active.
 	 *
 	 * Re-installs missing events. Log this event.
 	 *
@@ -166,7 +166,7 @@ class Schedules {
 		 * Disable the additional cron check.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
-		 * @param bool $false True if check should be disabled.
+		 * @param bool $false True if the check should be disabled.
 		 *
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
@@ -181,7 +181,7 @@ class Schedules {
 
 		// check the schedule objects if they are set.
 		foreach ( $this->get_schedule_object_names() as $object_name ) {
-			// bail if class name does not exist.
+			// bail if the class name does not exist.
 			if ( ! class_exists( $object_name ) ) {
 				continue;
 			}
@@ -189,7 +189,7 @@ class Schedules {
 			// get the object.
 			$obj = new $object_name();
 
-			// bail if object is not Schedules_Base.
+			// bail if an object is not Schedules_Base.
 			if ( ! $obj instanceof Schedules_Base ) {
 				continue;
 			}
@@ -209,7 +209,7 @@ class Schedules {
 				$our_events = $this->get_wp_events();
 			}
 
-			// delete it if schedule is in list of our events and not enabled.
+			// delete it if the schedule is in the list of our events and not enabled.
 			if ( ! $obj->is_enabled() && isset( $our_events[ $obj->get_name() ] ) ) {
 				$obj->delete();
 

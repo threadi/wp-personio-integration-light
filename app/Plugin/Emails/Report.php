@@ -1,6 +1,6 @@
 <?php
 /**
- * File for handling report about the positions.
+ * File for handling the report about the positions.
  *
  * @package personio-integration-light
  */
@@ -10,18 +10,16 @@ namespace PersonioIntegrationLight\Plugin\Emails;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Select;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
-use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Statistics;
 use PersonioIntegrationLight\Plugin\Email_Base;
 
 /**
- * Object which handle report about the positions.
+ * Object that handles the report about the positions.
  */
 class Report extends Email_Base {
 	/**
@@ -55,12 +53,12 @@ class Report extends Email_Base {
 	}
 
 	/**
-	 * Show description for this email object.
+	 * Show the description for this email object.
 	 *
 	 * @return void
 	 */
 	public function show_description(): void {
-		/* translators: %1$s will be replaced a link. */
+		/* translators: %1$s will be replaced with a link. */
 		echo wp_kses_post( sprintf( __( 'The report contains information about the number of positions on your website, the number of locations where they are advertised and the categories in which they are located. The report can also be viewed <a href="$1%s">here</a> at any time.', 'personio-integration-light' ), '' ) );
 	}
 
@@ -73,7 +71,7 @@ class Report extends Email_Base {
 	 * @return void
 	 */
 	public function add_settings( Settings $settings_obj, Tab $email_tab ): void {
-		// add the main settings from parent object.
+		// add the main settings from the parent object.
 		parent::add_settings( $settings_obj, $email_tab );
 
 		// get possible schedules.
@@ -87,7 +85,7 @@ class Report extends Email_Base {
 		// get our own section.
 		$email_tab_main = $email_tab->get_section( 'settings_section_email_' . $this->get_name() );
 
-		// bail if section does not exist.
+		// bail if the section does not exist.
 		if ( ! $email_tab_main instanceof Section ) {
 			return;
 		}
@@ -100,7 +98,7 @@ class Report extends Email_Base {
 			return;
 		}
 
-		// add callback for main setting.
+		// add callback for the main setting.
 		$main_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\ReportInterval', 'save' ) );
 
 		// add setting.
@@ -117,7 +115,7 @@ class Report extends Email_Base {
 	}
 
 	/**
-	 * Return the subject.
+	 * Return the subject of the email.
 	 *
 	 * @return string
 	 */
@@ -125,7 +123,7 @@ class Report extends Email_Base {
 		// set our custom subject.
 		$this->subject = get_bloginfo( 'name' ) . ': ' . __( 'Report about your positions', 'personio-integration-light' );
 
-		// return the parent tasks for subject.
+		// return the parent tasks for the subject.
 		return parent::get_subject();
 	}
 

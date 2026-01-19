@@ -197,7 +197,7 @@ class Intro {
 				'step_6_intro'                 => __( 'The settings of this plugin help you to individualize the use of your Personio positions on your website.', 'personio-integration-light' ),
 				'step_7_title'                 => __( 'Thank you for using Personio Integration Light', 'personio-integration-light' ),
 				/* translators: %1$s, %2$s and %3$s will be replaced by URLs */
-				'step_7_intro'                 => sprintf( __( 'If you have any questions, please do not hesitate to ask them <a href="%1$s" target="_blank">in our forum (opens new window)</a>.<br>You are also welcome to <a href="%2$s" target="_blank">rate the plugin (opens new window)</a>.<br>If you also want to collect applications in your website, take a look at our <a href="%3$s" target="_blank">Personio Integration Pro (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ), esc_url( Helper::get_review_url() ), esc_url( Helper::get_pro_url() ) ),
+				'step_7_intro'                 => sprintf( __( 'If you have any questions, please do not hesitate to ask them <a href="%1$s" target="_blank">in our forum (opens new window)</a>.<br>You are also welcome to <a href="%2$s" target="_blank">rate the plugin (opens new window)</a>.<br>If you also want to collect applications on your website, take a look at our <a href="%3$s" target="_blank">Personio Integration Pro (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ), esc_url( Helper::get_review_url() ), esc_url( Helper::get_pro_url() ) ),
 				'import_intro_step_1_title'    => __( 'Import positions', 'personio-integration-light' ),
 				'import_intro_step_1_intro'    => __( 'On this page you will find all settings regarding the import. Lets check the options.', 'personio-integration-light' ),
 				'import_intro_step_2_title'    => __( 'Import positions', 'personio-integration-light' ),
@@ -229,7 +229,7 @@ class Intro {
 				'template_intro_step_10_title' => __( 'Configure templates positions', 'personio-integration-light' ),
 				'template_intro_step_10_intro' => __( 'Choose the details you want to show on each position. Please note that the selected details must also be stored here in Personio.', 'personio-integration-light' ),
 				'template_intro_step_11_title' => __( 'Configure templates positions', 'personio-integration-light' ),
-				'template_intro_step_11_intro' => __( "That's it. You have now seen all the options with which you can influence the templates of the positions in your website.<br><br>Please note that some options display further possibilities when activated. If you are using a PageBuilder supported by Personio Integration, you will also find the options in its interface.", 'personio-integration-light' ),
+				'template_intro_step_11_intro' => __( "That's it. You have now seen all the options with which you can influence the templates of the positions on your website.<br><br>Please note that some options display further possibilities when activated. If you are using a PageBuilder supported by Personio Integration, you will also find the options in its interface.", 'personio-integration-light' ),
 			)
 		);
 	}
