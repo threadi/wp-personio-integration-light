@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.3] - 19.01.2026
+
+### Fixed
+
+- Fixed the missing check for ACF Pro
+- Fixed wrong handling of deleted positions during the generation of the deleted position email
+
 ## [5.1.2] - 19.01.2026
 
 ### Added

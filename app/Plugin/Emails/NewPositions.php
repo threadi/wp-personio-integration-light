@@ -97,7 +97,7 @@ class NewPositions extends Email_Base {
 	}
 
 	/**
-	 * Return list of new positions.
+	 * Return the list of new positions.
 	 *
 	 * @return array<int,Position>
 	 */

@@ -10,7 +10,6 @@ namespace PersonioIntegrationLight\Plugin\Emails;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Email_Base;
 
@@ -26,9 +25,9 @@ class DeletedPositions extends Email_Base {
 	protected string $name = 'deleted_positions';
 
 	/**
-	 * List of deleted positions.
+	 * List of deleted Personio IDs.
 	 *
-	 * @var array<int,Position>
+	 * @var array<int,string>
 	 */
 	private array $deleted_positions = array();
 
@@ -84,9 +83,9 @@ class DeletedPositions extends Email_Base {
 	 */
 	public function get_body(): string {
 		// create the body.
-		$body = __( 'The following positions have been deleted in WordPress after import from Personio:', 'personio-integration-light' );
-		foreach ( $this->get_deleted_positions() as $position_obj ) {
-			$body .= '<br>' . $position_obj->get_title() . ' (Personio ID: ' . $position_obj->get_personio_id() . ')';
+		$body = __( 'The following Personio IDs have been deleted in WordPress after the last import from Personio:', 'personio-integration-light' );
+		foreach ( $this->get_deleted_positions() as $personio_id ) {
+			$body .= '<br>' . $personio_id;
 		}
 		$body .= '<br><br>' . __( 'They were deleted because they were no longer made available as positions by Personio.', 'personio-integration-light' );
 
@@ -100,7 +99,7 @@ class DeletedPositions extends Email_Base {
 	/**
 	 * Return the list of deleted positions.
 	 *
-	 * @return array<int,Position>
+	 * @return array<int,string>
 	 */
 	private function get_deleted_positions(): array {
 		return $this->deleted_positions;
@@ -109,7 +108,7 @@ class DeletedPositions extends Email_Base {
 	/**
 	 * Set the new positions.
 	 *
-	 * @param array<int,Position> $deleted_positions List of deleted positions.
+	 * @param array<int,string> $deleted_positions List Personio IDs of deleted positions.
 	 *
 	 * @return void
 	 */
@@ -132,6 +131,6 @@ class DeletedPositions extends Email_Base {
 		}
 
 		// set this position as deleted for the test.
-		$this->set_deleted_positions( $positions );
+		$this->set_deleted_positions( array( $positions[0]->get_personio_id() ) );
 	}
 }
