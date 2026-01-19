@@ -125,13 +125,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added multiple new PHP Unit Tests
-- Added some new hooks
-- Added support for detection of ACF Pro
-- Reading position details is now more accurate
-- Optimized PHP Unit Tests
-- Updated dependencies
-- Fixed a missing check for direct access in two templates
-- Fixed to show automatic import in the log for deletion of a single position
+- Fixed the missing check for ACF Pro
+- Fixed wrong handling of deleted positions during the generation of the deleted position email
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
