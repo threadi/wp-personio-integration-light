@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Changes
+
+- Optimized the checkout of the plugin repository for local developments
+- Do not show the language translation hint if the Personio URL is not set
+
 ## [5.1.3] - 19.01.2026
 
 ### Fixed

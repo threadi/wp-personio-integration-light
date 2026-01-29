@@ -1019,6 +1019,11 @@ class Admin {
 			return;
 		}
 
+		// bail if no Personio URL is set.
+		if( ! Helper::is_personio_url_set() ) {
+			return;
+		}
+
 		// bail if 'Provides recruiting handling for Personio.' is translated.
 		if ( __( 'Provides recruiting handling for Personio.', 'personio-integration-light' ) !== 'Provides recruiting handling for Personio.' ) {
 			return;

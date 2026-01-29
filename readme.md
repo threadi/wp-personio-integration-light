@@ -14,8 +14,9 @@ define( 'WP_DEVELOPMENT_MODE', 'plugin' );
 ```
 
 You need to install:
+* composer
 * npm
-* node
+* nvm
 
 ## Usage
 
