@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added detection for the new Theme Divi 5
+
 ### Changes
 
 - Optimized the checkout of the plugin repository for local developments

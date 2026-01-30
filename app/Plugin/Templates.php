@@ -970,6 +970,9 @@ class Templates {
 			}
 		}
 
+		// add the container class.
+		$css_classes[] = 'container';
+
 		/**
 		 * Filter the class list to a single position.
 		 *
