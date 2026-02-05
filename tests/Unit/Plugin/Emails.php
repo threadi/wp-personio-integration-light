@@ -61,4 +61,30 @@ class Emails extends PersonioTestCase {
 		$this->assertIsArray( $log_categories );
 		$this->assertNotEmpty( $log_categories );
 	}
+
+	/**
+	 * Test if an email is sent when positions are deleted.
+	 *
+	 * @return void
+	 */
+	public function test_trigger_deleted_positions(): void {
+		global $phpmailer;
+
+		// set the pseudo email recipient.
+		$email_recipient = 'info@example.com';
+
+		// set necessary options for "delete positions" email.
+		update_option( 'personio_integration_email_deleted_positions', 1 );
+		update_option( 'personio_integration_email_recipients_deleted_positions', array( $email_recipient ) );
+
+		// trigger the email.
+		\PersonioIntegrationLight\Plugin\Emails::get_instance()->trigger_deleted_positions();
+
+		// get the email.
+		$email = $phpmailer->getSentMIMEMessage();
+		$this->assertIsString( $email );
+		$this->assertNotEmpty( $email );
+		$this->assertStringContainsString( get_option( 'blogname' ), $email );
+		$this->assertStringContainsString( $email_recipient, $email );
+	}
 }

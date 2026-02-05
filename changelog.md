@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Some more PHP Unit Tests
+
+### Fixed
+
+- Fixed missed loading of block scripts
+
 ## [5.1.3] - 19.01.2026
 
 ### Fixed
