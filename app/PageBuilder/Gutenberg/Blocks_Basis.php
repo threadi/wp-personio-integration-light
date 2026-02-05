@@ -108,15 +108,6 @@ class Blocks_Basis {
 		if ( ! Helper::theme_is_fse_theme() ) {
 			wp_deregister_style( 'wp-personio-integration-' . $this->get_name() . '-style' );
 		}
-	}
-
-	/**
-	 * Register our block translations if they are delivered by the plugin itself.
-	 *
-	 * @return void
-	 */
-	public function register_translations(): void {
-		wp_set_script_translations( 'wp-personio-integration-' . $this->get_name() . '-editor-script', $this->get_text_domain(), $this->get_language_path() );
 
 		// add some JavaScript variables for Block Editor.
 		wp_add_inline_script(
@@ -135,6 +126,15 @@ class Blocks_Basis {
 			),
 			'before'
 		);
+	}
+
+	/**
+	 * Register our block translations if they are delivered by the plugin itself.
+	 *
+	 * @return void
+	 */
+	public function register_translations(): void {
+		wp_set_script_translations( 'wp-personio-integration-' . $this->get_name() . '-editor-script', $this->get_text_domain(), $this->get_language_path() );
 	}
 
 	/**

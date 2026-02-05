@@ -31,7 +31,7 @@ use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 
 /**
- * Object tot handle settings.
+ * Object to handle settings.
  */
 class Settings {
 	/**
