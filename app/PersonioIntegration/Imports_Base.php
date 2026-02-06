@@ -167,11 +167,6 @@ class Imports_Base extends Extensions_Base {
 			$message[] = $text;
 		}
 
-		// output results in WP-CLI.
-		if ( Helper::is_cli() ) {
-			\WP_CLI::error( wp_json_encode( $message ) );
-		}
-
 		// set errors in the list for response.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, $message );
 

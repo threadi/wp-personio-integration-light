@@ -1,6 +1,6 @@
 <?php
 /**
- * File for handling of imports from single Personio-account.
+ * File for handling of imports from a single Personio-account in the given language.
  *
  * @package personio-integration-light
  */
@@ -23,7 +23,7 @@ use PersonioIntegrationLight\Plugin\Languages;
 use SimpleXMLElement;
 
 /**
- * Import-handling for positions from single Personio URL in given language.
+ * Import-handling for positions from a single Personio-account in the given language.
  */
 class Import_Single_Personio_Url {
 
@@ -84,7 +84,7 @@ class Import_Single_Personio_Url {
 	private ?Xml $imports_obj = null;
 
 	/**
-	 * Constructor which runs the import of position for single Personio-account.
+	 * Constructor which runs the import of position for a single Personio-account in the given language.
 	 */
 	public function __construct() {
 		// get log-object.
@@ -104,7 +104,7 @@ class Import_Single_Personio_Url {
 	}
 
 	/**
-	 * Get HTML-formatted link to the used Personio URL.
+	 * Return the HTML-formatted link to the used Personio URL.
 	 *
 	 * @return string
 	 */
@@ -170,15 +170,15 @@ class Import_Single_Personio_Url {
 		// get the language title for log entries.
 		$language_title = Languages::get_instance()->get_language_title( $language_name );
 
-		// get Personio-URL-object.
+		// get Personio object.
 		$personio_obj = new Personio( $this->get_url() );
 
-		// get language-specific URL for XML-API from Personio object.
+		// get language-specific URL for XML-API from the Personio object.
 		$url = $personio_obj->get_xml_url( $language_name );
 
 		$instance = $this;
 		/**
-		 * Run action on start of import of single URL.
+		 * Run action on the start of the import from a single Personio URL.
 		 *
 		 * @since 3.0.5 Available since 3.0.5
 		 * @param Import_Single_Personio_Url $instance The import-object.
@@ -200,13 +200,13 @@ class Import_Single_Personio_Url {
 		 * Set marker to check for timestamp and md5-hash-compare.
 		 *
 		 * @since 5.0.0 Available since 5.0.0.
-		 * @param bool $check_for_changes False to prevent this checks.
+		 * @param bool $check_for_changes False to prevent this check.
 		 *
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		$check_for_changes = apply_filters( 'personio_integration_light_import_of_url_starting', $check_for_changes );
 
-		// define settings for first request to Personio XML to get the last-modified-date.
+		// define settings for the first request to Personio XML to get the last-modified-date.
 		$args     = array(
 			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
 			'redirection' => 0,
@@ -221,7 +221,7 @@ class Import_Single_Personio_Url {
 			// log possible error.
 			$this->log->add( __( 'Error on request to get Personio timestamp: ', 'personio-integration-light' ) . ' <code>' . $response->get_error_message() . '</code>', 'error', 'import' );
 		} else {
-			// get the http-status to check if call results in acceptable results.
+			// get the http-status to check if the call results in acceptable results.
 			$http_status = $response['http_response']->get_status();
 
 			// get the last modified-timestamp from http-response.
@@ -233,16 +233,22 @@ class Import_Single_Personio_Url {
 				$this->log->add( sprintf( __( 'Last modified timestamp for %1$s from Personio: ', 'personio-integration-light' ), wp_kses_post( $this->get_link() ) ) . Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', absint( strtotime( $last_modified_timestamp ) ) ) ), 'success', 'import' );
 			}
 
-			// if timestamp and xml api are not available set 404 as state.
+			// if timestamp and XML api is not available set 404 as the HTTP state.
 			if ( is_null( $last_modified_timestamp ) ) {
+				// log this event.
+				/* translators: %1$s will be replaced by the Personio URL. */
+				$this->log->add( sprintf( __( 'Got no last modified timestamp for %1$s from Personio!', 'personio-integration-light' ), wp_kses_post( $this->get_link() ) ), 'error', 'import' );
+
+				// mark this as 404 to prevent further processing.
 				$http_status = 404;
 			} else {
+				// convert timestamp to unix-timestamp.
 				$last_modified_timestamp = absint( strtotime( $last_modified_timestamp ) );
 			}
 		}
 
 		/**
-		 * Check if response has been used http-status 200, all others are errors.
+		 * Check if the response has been used HTTP status 200, all others are errors.
 		 *
 		 * @since 2.5.0 Available since 2.5.0.
 		 *
@@ -252,7 +258,7 @@ class Import_Single_Personio_Url {
 		if ( 200 === $http_status ) {
 			// timestamp did not change -> do nothing if we already have positions in the DB.
 			if ( $positions_count > 0 && $check_for_changes && $last_modified_timestamp > 0 && $personio_obj->get_timestamp( $this->get_language() ) === $last_modified_timestamp && 0 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-				// set import count to actual max to show that it has been run.
+				// set the import count to actual max to show that it has been run.
 				$imports_obj->set_import_count( $imports_obj->get_import_max_count() );
 
 				// log event.
@@ -271,7 +277,7 @@ class Import_Single_Personio_Url {
 				return;
 			}
 
-			// define settings for second request to Personio XML to get the contents.
+			// define settings for the second request to Personio XML to get the contents.
 			$args     = array(
 				'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
 				'redirection' => 0,
@@ -302,7 +308,7 @@ class Import_Single_Personio_Url {
 					 * @since 3.0.4 Available since 3.0.4.
 					 *
 					 * @param Import_Single_Personio_Url $instance The import-object.
-					 * @param string $md5hash The md5-hash from body.
+					 * @param string $md5hash The md5-hash from the content of "body".
 					 */
 					do_action( 'personio_integration_import_content_not_changed', $instance, $md5hash );
 					return;
@@ -313,7 +319,7 @@ class Import_Single_Personio_Url {
 					// get the XML object with the positions.
 					$xml_positions = simplexml_load_string( $body, 'SimpleXMLElement', LIBXML_NOCDATA );
 
-					// bail if XML object could not be loaded.
+					// bail if the XML object could not be loaded.
 					if ( ! $xml_positions instanceof SimpleXMLElement ) {
 						/* translators: %1$s will be replaced with the Personio account URL, %2$s will be replaced by the language-name. */
 						$this->errors[] = sprintf( __( 'XML file from Personio account %1$s for language %2$s could not be read.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) );
@@ -403,11 +409,11 @@ class Import_Single_Personio_Url {
 			/* translators: %1$s will be replaced the url for the Personio account login */
 			$this->errors[] = sprintf( __( 'Please also check if the XML-API is enabled in <a href="%1$s" target="_blank">your Personio account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) );
 			/* translators: %1$s will be replaced the url for the Personio account login */
-			$this->errors[] = sprintf( __( 'And please check <a href="%1$s" target="_blank">the log (opens new window)</a> in your WordPress-backend under Positions > Settings > Logs.', 'personio-integration-light' ), esc_url( $log_url ) );
+			$this->errors[] = sprintf( __( 'And please check <a href="%1$s" target="_blank">the log (opens new window)</a> in your WordPress backend under Positions > Settings > Logs.', 'personio-integration-light' ), esc_url( $log_url ) );
 		}
 
 		/**
-		 * Run action on end of import of single URL.
+		 * Execute action at the end of importing a single URL.
 		 *
 		 * @since 3.0.5 Available since 3.0.5
 		 * @param Import_Single_Personio_Url $instance The import-object.
@@ -419,7 +425,7 @@ class Import_Single_Personio_Url {
 	}
 
 	/**
-	 * Return list of errors during this singe import.
+	 * Return the list of errors during this single import.
 	 *
 	 * @return array<string>
 	 */
@@ -428,7 +434,7 @@ class Import_Single_Personio_Url {
 	}
 
 	/**
-	 * Return list of imported positions.
+	 * Return the list of imported positions.
 	 *
 	 * @return array<int,Position>
 	 */
@@ -437,7 +443,7 @@ class Import_Single_Personio_Url {
 	}
 
 	/**
-	 * Return list of positions from XML.
+	 * Return the list of positions from XML.
 	 *
 	 * @return SimpleXMLElement
 	 */
@@ -446,7 +452,7 @@ class Import_Single_Personio_Url {
 	}
 
 	/**
-	 * Set list of positions from XML.
+	 * Set the list of positions from XML.
 	 *
 	 * @param SimpleXMLElement $xml_positions List of positions from XML.
 	 *
@@ -472,7 +478,7 @@ class Import_Single_Personio_Url {
 	}
 
 	/**
-	 * Set Xml-Imports-object to update counter on it.
+	 * Set Xml-Imports-object to update the counter on it.
 	 *
 	 * @param Xml $imports_obj The object for the imports.
 	 *
