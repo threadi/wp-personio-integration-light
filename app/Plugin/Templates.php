@@ -88,6 +88,7 @@ class Templates {
 		add_filter( 'personio_integration_get_list_attributes', array( $this, 'set_anchor' ) );
 		add_filter( 'personio_integration_get_list_attributes', array( $this, 'set_link_to_anchor' ), 10, 2 );
 		add_filter( 'personio_integration_light_position_get_classes', array( $this, 'get_classes_of_position' ) );
+		add_filter( 'personio_integration_light_position_get_filter_classes', array( $this, 'get_classes_for_filter' ) );
 		add_filter( 'personio_integration_light_term_get_classes', array( $this, 'get_classes_of_term' ) );
 		add_filter( 'personio_integration_light_filter_url', array( $this, 'format_filter_url' ), 10, 2 );
 		add_action( 'personio_integration_filter_pre', array( $this, 'extend_form_for_simple_permalinks' ) );
@@ -984,6 +985,30 @@ class Templates {
 
 		// return the list of classes as string.
 		return implode( ' ', $css_classes );
+	}
+
+	/**
+	 * Create a list of classes as a string from the properties of the filter.
+	 *
+	 * @param string $classes List of classes.
+	 *
+	 * @return string
+	 */
+	public function get_classes_for_filter( string $classes ): string {
+		// add our own classes.
+		$css_classes = array();
+		$css_classes[] = 'container';
+
+		/**
+		 * Filter the class list for filter.
+		 *
+		 * @since 5.2.0 Available since 5.2.0.
+		 * @param array<int,string> $css_classes List of classes.
+		 */
+		$css_classes = apply_filters( 'personio_integration_light_position_filter_classes', $css_classes );
+
+		// return the resulting list of classes.
+		return $classes . implode( ' ', $css_classes );
 	}
 
 	/**

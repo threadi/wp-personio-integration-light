@@ -145,13 +145,13 @@ class Application_Button extends Widget_Base {
 			$text_position = 'single';
 		}
 
-		// set back to list-link.
+		// set "back to list"-link.
 		$back_to_list_url = get_option( 'personioIntegrationTemplateBackToListUrl', '' );
 		if ( empty( $back_to_list_url ) ) {
 			$back_to_list_url = PersonioPosition::get_instance()->get_archive_url();
 		}
 
-		// reset back to list-link.
+		// reset "back to list"-link.
 		if ( 'archive' === $text_position || ( isset( $attributes['show_back_to_list'] ) && empty( $attributes['show_back_to_list'] ) ) ) {
 			$back_to_list_url = '';
 		}
@@ -184,7 +184,7 @@ class Application_Button extends Widget_Base {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param string $target The target value.
-		 * @param Position $position The position as object.
+		 * @param Position $position The position as an object.
 		 * @param array<string,mixed> $attributes List of attributes used for the output.
 		 */
 		$target = apply_filters( 'personio_integration_back_to_list_target_attribute', $target, $position, $attributes );

@@ -10,6 +10,8 @@
 
 - Optimized the checkout of the plugin repository for local developments
 - Do not show the language translation hint if the Personio URL is not set
+- Filter template can now also be used with dynamic CSS classes
+- Some new hooks
 
 ## [Unreleased]
 

@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! empty( $personio_attributes['filter'] ) && ! empty( $personio_attributes['filtertype'] ) && false !== $personio_attributes['showfilter'] && 0 < absint( get_option( 'personioIntegrationPositionCount', 0 ) ) ) :
 	?>
-	<article id="<?php echo esc_attr( $personio_attributes['anchor'] ); ?>" class="site-main entry entry-content container inside-article container site-content site-content site-container content-bg content-area ht-container <?php echo esc_attr( $personio_attributes['classes'] ); ?>" role="region" aria-label="<?php echo esc_attr__( 'Filter for positions', 'personio-integration-light' ); ?>">
+	<article id="<?php echo esc_attr( $personio_attributes['anchor'] ); ?>" class="site-main entry entry-content inside-article site-content site-content site-container content-bg content-area ht-container <?php echo esc_attr( apply_filters( 'personio_integration_light_position_get_filter_classes', $personio_attributes['classes'] ) ); ?>" role="region" aria-label="<?php echo esc_attr__( 'Filter for positions', 'personio-integration-light' ); ?>">
 		<form action="<?php echo esc_url( apply_filters( 'personio_integration_light_filter_url', Helper::get_current_url(), $personio_attributes['link_to_anchor'] ) ); ?>" class="entry-content personio-position-filter personio-position-filter-<?php echo esc_attr( $personio_attributes['filtertype'] ); ?> site-content site-container content-bg content-area">
 			<legend><?php echo esc_html__( 'Filter', 'personio-integration-light' ); ?></legend>
 			<?php
