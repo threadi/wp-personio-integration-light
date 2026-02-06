@@ -307,9 +307,6 @@ class Xml extends Imports_Base {
 			 * @since 2.0.0 Available since release 2.0.0.
 			 */
 			do_action( 'personio_integration_import_ended' );
-
-			// output success-message.
-			Helper::is_cli() ? \WP_CLI::success( $language_count . ' languages grabbed, ' . $imported_positions . ' positions imported.' ) : false;
 		} else {
 			// document errors.
 			update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, $this->get_errors() );
@@ -338,6 +335,16 @@ class Xml extends Imports_Base {
 
 		// set status.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import completed.', 'personio-integration-light' ) );
+
+		// show result on WP CLI.
+		if( Helper::is_cli() ) {
+			if( $this->has_errors() ) {
+				\WP_CLI::error( __( 'Import failed with following errors:', 'personio-integration-light' ) . ' ' . wp_json_encode( $this->get_errors() ) );
+			}
+
+			// output success-message.
+			\WP_CLI::success( $language_count . ' languages grabbed, ' . $imported_positions . ' positions imported.' );
+		}
 	}
 
 	/**
