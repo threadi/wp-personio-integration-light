@@ -15,11 +15,14 @@
 
 ### Changed
 
+- Log if Personio does not send any last timestamp for the request of open positions
+- Optimized output of import results on WP CLI
 - Some more PHP Unit Tests
 
 ### Fixed
 
 - Fixed missed loading of block scripts
+- Fixed the missing removing of the running flag if an import error occurs during import via WP CLI
 
 ## [5.1.3] - 19.01.2026
 
