@@ -51,6 +51,8 @@ jobs:
                   rm -fr example
                   rm readme.md
 
+            - uses: anchore/sbom-action@v0
+
             - name: Set licence server
               uses: richardrigutins/replace-in-files@v2
               with:

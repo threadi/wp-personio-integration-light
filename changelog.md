@@ -5,6 +5,7 @@
 ### Added
 
 - Added hint for usage of salary of position in Pro plugin
+- Added SBOM (Software Bill of Materials) which will be generated during every release
 
 ### Changed
 

@@ -4,6 +4,10 @@
 
 This repository provides the features for the Light version of the WordPress plugin _Personio Integration_. The repository is used as a basis for deploying the plugin to the WordPress repository. It is not intended to run as a plugin as it is, even if that is possible for development.
 
+## Responsive Disclosure
+
+We take security seriously. If you notice anything that could affect security, please send us a confidential message at [security@laolaweb.com](mailto:security@laolaweb.com).
+
 ## Preparations
 
 Add this in your wp-config.php for development:
