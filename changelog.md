@@ -13,11 +13,13 @@
 - Optimized output of import results on WP CLI
 - Set translatable text for a button in site health
 - Some more PHP Unit Tests
+- Updated dependencies
 
 ### Fixed
 
 - Fixed missed loading of block scripts
 - Fixed the missing removing of the running flag if an import error occurs during import via WP CLI
+- Fixed an error during activation in a multisite
 
 ## [5.1.4] - 09.02.2026
 
