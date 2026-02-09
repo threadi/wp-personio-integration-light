@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [5.1.4] - 09.02.2026
 
 ### Added
 
@@ -19,6 +19,7 @@
 
 - Log if Personio does not send any last timestamp for the request of open positions
 - Optimized output of import results on WP CLI
+- Set translatable text for a button in site health
 - Some more PHP Unit Tests
 
 ### Fixed

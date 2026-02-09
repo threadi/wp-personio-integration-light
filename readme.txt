@@ -125,7 +125,11 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Fixed the missing check for ACF Pro
-- Fixed wrong handling of deleted positions during the generation of the deleted position email
+- Log if Personio does not send any last timestamp for the request of open positions
+- Optimized output of import results on WP CLI
+- Set translatable text for a button in site health
+- Some more PHP Unit Tests
+- Fixed missed loading of block scripts
+- Fixed the missing removing of the running flag if an import error occurs during import via WP CLI
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

@@ -158,14 +158,13 @@ class Site_Health {
 			);
 			$result['status']      = 'recommended';
 			$result['description'] = __( 'Cronjob to import new Positions from Personio does not exist!', 'personio-integration-light' );
-			/* translators: %1$s will be replaced by the URL to recreate the schedule */
-			$result['actions'] = sprintf( '<p><a href="%1$s" class="button button-primary">Recreate the schedules</a></p>', $url );
+			$result['actions']     = '<p><a href="' . $url . '" class="button button-primary">' . __( 'Recreate the schedules', 'personio-integration-light' ) . '</a></p>';
 
 			// return this result.
 			return $result;
 		}
 
-		// if scheduled event exist, check if next run is in the past.
+		// if the scheduled event exists, check if the next run is in the past.
 		if ( $scheduled_event->timestamp < time() ) { // @phpstan-ignore property.notFound
 			$result['status'] = 'recommended';
 			/* translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past) */

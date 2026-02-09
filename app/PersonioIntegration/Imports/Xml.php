@@ -337,8 +337,8 @@ class Xml extends Imports_Base {
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import completed.', 'personio-integration-light' ) );
 
 		// show result on WP CLI.
-		if( Helper::is_cli() ) {
-			if( $this->has_errors() ) {
+		if ( Helper::is_cli() ) {
+			if ( $this->has_errors() ) {
 				\WP_CLI::error( __( 'Import failed with following errors:', 'personio-integration-light' ) . ' ' . wp_json_encode( $this->get_errors() ) );
 			}
 
