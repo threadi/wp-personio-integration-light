@@ -808,6 +808,14 @@ class PersonioPosition extends Post_Type {
 			$this->get_name()
 		);
 
+		// add a box with a hint to use salary in Pro plugin.
+		add_meta_box(
+			$this->get_name()  . '-pro-salary',
+			__( 'Salary', 'personio-integration' ),
+			array( $this, 'add_meta_box_salary' ),
+			$this->get_name(),
+		);
+
 		add_meta_box(
 			$this->get_name() . '-personio',
 			__( 'Personio Account', 'personio-integration-light' ),
@@ -2186,7 +2194,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Show hint on application forms in Pro plugins.
+	 * Show hint on application forms in Pro plugin.
 	 *
 	 * @return void
 	 */
@@ -2194,6 +2202,17 @@ class PersonioPosition extends Post_Type {
 		// show the hint.
 		/* translators: %1$s will be replaced with the plugin pro-name */
 		echo wp_kses_post( Admin::get_instance()->get_pro_hint( __( 'Use individual application forms for this position with %1$s.', 'personio-integration-light' ) ) );
+	}
+
+	/**
+	 * Show hint on salary in Pro plugin.
+	 *
+	 * @return void
+	 */
+	public function add_meta_box_salary(): void {
+		// show the hint.
+		/* translators: %1$s will be replaced with the plugin pro-name */
+		echo wp_kses_post( Admin::get_instance()->get_pro_hint( __( 'Use output of salary for this position with %1$s.', 'personio-integration-light' ) ) );
 	}
 
 	/**

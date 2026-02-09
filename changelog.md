@@ -1,19 +1,10 @@
 # Changelog
 
-## [5.1.4] - 09.02.2026
+## [Unreleased]
 
 ### Added
 
-- Added detection for the new Theme Divi 5
-
-### Changes
-
-- Optimized the checkout of the plugin repository for local developments
-- Do not show the language translation hint if the Personio URL is not set
-- Filter template can now also be used with dynamic CSS classes
-- Some new hooks
-
-## [Unreleased]
+- Added hint for usage of salary of position in Pro plugin
 
 ### Changed
 
@@ -26,6 +17,19 @@
 
 - Fixed missed loading of block scripts
 - Fixed the missing removing of the running flag if an import error occurs during import via WP CLI
+
+## [5.1.4] - 09.02.2026
+
+### Added
+
+- Added detection for the new Theme Divi 5
+
+### Changes
+
+- Optimized the checkout of the plugin repository for local developments
+- Do not show the language translation hint if the Personio URL is not set
+- Filter template can now also be used with dynamic CSS classes
+- Some new hooks
 
 ## [5.1.3] - 19.01.2026
 
