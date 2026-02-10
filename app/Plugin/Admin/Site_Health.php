@@ -10,12 +10,9 @@ namespace PersonioIntegrationLight\Plugin\Admin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PersonioIntegration\Personio;
-use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
-use PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl;
 use PersonioIntegrationLight\Plugin\Schedules\Import;
-use WP_REST_Request;
 use WP_REST_Server;
 
 /**
@@ -58,6 +55,9 @@ class Site_Health {
 	 * @return void
 	 */
 	public function init(): void {
+		// add debug info.
+		add_filter( 'debug_information', array( $this, 'add_debug_info' ) );
+
 		// register REST API.
 		add_action( 'rest_api_init', array( $this, 'add_rest_api' ) );
 
@@ -196,5 +196,40 @@ class Site_Health {
 
 		// return the statuses.
 		return $statuses;
+	}
+
+	/**
+	 * Add our own debug information to site health.
+	 *
+	 * @param array<string,mixed> $debug_information List of debug information for the actual project.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function add_debug_info( array $debug_information ): array {
+		$debug_information['external-files-in-media-library'] = array(
+			'label' => Helper::get_plugin_name(),
+			'fields' => array()
+		);
+
+		// loop through all settings and add them as fields if their export is allowed.
+		foreach( Settings::get_instance()->get_settings() as $setting ) {
+			// bail if the source of this setting is not the light plugin.
+			if( is_string( $setting->get_custom_var( 'source' ) ) ) {
+				continue;
+			}
+
+			// create the entry.
+			$entry = array(
+				'label' => $setting->get_name(),
+				'value' => $setting->get_value(),
+				'private' => $setting->is_export_prevented()
+			);
+
+			// add it to the list.
+			$debug_information['external-files-in-media-library']['fields'][$setting->get_name()] = $entry;
+		}
+
+		// return the resulting list of debug information.
+		return $debug_information;
 	}
 }

@@ -4,8 +4,9 @@
 
 ### Added
 
-- Added hint for usage of salary of position in Pro plugin
+- Added hint for the usage of salary for positions in Pro plugin
 - Added SBOM (Software Bill of Materials) which will be generated during every release
+- Added the light configuration in Site Health debug info
 
 ### Changed
 
