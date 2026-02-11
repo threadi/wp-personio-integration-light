@@ -301,6 +301,13 @@ class Manual_Import extends Extensions_Base {
 			),
 		);
 
+		/**
+		 * Filter the dialog shown before manual import.
+		 *
+		 * @since 5.2.0 Available since 5.2.0.
+		 */
+		$dialog = apply_filters( 'personio_integration_light_manual_import_dialog', $dialog );
+
 		// send response as JSON.
 		wp_send_json( $dialog );
 	}
