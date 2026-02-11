@@ -1391,7 +1391,7 @@ class PersonioPosition extends Post_Type {
 		$position = Positions::get_instance()->get_position( $post->ID );
 
 		// get the date.
-		$entry['lastmod'] = gmdate( 'Y-m-d', absint( $position->get_created_at() ) );
+		$entry['lastmod'] = gmdate( 'Y-m-d', strtotime( $post->post_date_gmt ) );
 
 		// set the priority for sitemap.
 		$entry['priority'] = 0.8;

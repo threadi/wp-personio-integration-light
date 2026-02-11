@@ -16,6 +16,7 @@
 - Query debug log is now separated from the debug log to reduce the size of the log table if debug is enabled
 - Set translatable text for a button in site health
 - Some more PHP Unit Tests
+- WordPress-own SitemapXML now uses the real last change date of the positions as other SEO-plugins do
 - Updated dependencies
 
 ### Fixed
