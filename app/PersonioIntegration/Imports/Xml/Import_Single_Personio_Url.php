@@ -234,7 +234,7 @@ class Import_Single_Personio_Url {
 			}
 
 			// if timestamp and XML api is not available set 404 as the HTTP state.
-			if ( is_null( $last_modified_timestamp ) ) {
+			if ( is_null( $last_modified_timestamp ) && false === $this->debug ) {
 				// log this event.
 				/* translators: %1$s will be replaced by the Personio URL. */
 				$this->log->add( sprintf( __( 'Got no last modified timestamp for %1$s from Personio!', 'personio-integration-light' ), wp_kses_post( $this->get_link() ) ), 'error', 'import' );
