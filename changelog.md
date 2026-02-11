@@ -23,6 +23,7 @@
 - Fixed missed loading of block scripts
 - Fixed the missing removing of the running flag if an import error occurs during import via WP CLI
 - Fixed an error during activation in a multisite
+- Fixed a possible error if a job description does not contain any text
 
 ## [5.1.4] - 09.02.2026
 

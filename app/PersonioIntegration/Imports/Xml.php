@@ -195,6 +195,9 @@ class Xml extends Imports_Base {
 			// show hint.
 			/* translators: %1$s will be replaced by a URL. */
 			$this->add_error( sprintf( __( 'Error occurred. Check <a href="%1$s">the log</a> for details.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
+
+			// mark import as not running anymore.
+			update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
 		}
 
 		// finalize progress for WP CLI.
@@ -202,14 +205,15 @@ class Xml extends Imports_Base {
 
 		$false = false;
 		/**
-		 * Cancel the import before cleanup the database.
+		 * Cancel the import before clean up the database.
 		 *
 		 * @since 5.0.0 Available since 5.0.0.
 		 * @param bool $false True to prevent the cleanup tasks.
+		 * @param Imports_Base $instance The import object.
 		 *
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
-		if ( apply_filters( 'personio_integration_light_import_bail_before_cleanup', $false ) ) {
+		if ( apply_filters( 'personio_integration_light_import_bail_before_cleanup', $false, $instance ) ) {
 			// mark import as not running anymore.
 			update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
 

@@ -577,16 +577,16 @@ class Position {
 	/**
 	 * Return the language-specific job description.
 	 *
-	 * @return array<string,array<string,mixed>>
+	 * @return array<string,array<string,array<string,string>>>
 	 */
 	public function get_content(): array {
 		return (array) get_post_meta( $this->data['ID'], WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), true );
 	}
 
 	/**
-	 * Get the language-specific content of this position (aka jobDescriptions).
+	 * Return the language-specific content of this position (aka jobDescriptions).
 	 *
-	 * @return array<string,mixed>
+	 * @return array<int,array<string,string>>
 	 */
 	public function get_content_as_array(): array {
 		$content = $this->get_content();

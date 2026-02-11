@@ -5,7 +5,7 @@
  * @param array $attribute List of settings.
  * @param Position $position The position as object.
  *
- * @version: 4.0.0
+ * @version: 5.2.0
  * @package personio-integration-light
  */
 
@@ -22,7 +22,7 @@ use PersonioIntegrationLight\PersonioIntegration\Position;
 	<?php
 	foreach ( $position->get_content_as_array() as $content ) {
 		?>
-		<h3><?php echo esc_html( $content['name'] ); ?></h3><p><?php echo wp_kses_post( trim( $content['value'] ) ); ?></p>
+		<h3><?php echo esc_html( $content['name'] ); ?></h3><p><?php echo wp_kses_post( trim( is_string( $content['value'] ) ? $content['value'] : '' ) ); ?></p>
 		<?php
 	}
 	?>

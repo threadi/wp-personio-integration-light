@@ -23,7 +23,7 @@ if ( ! empty( $content_array ) ) {
 		<?php
 		foreach ( $content_array as $content ) {
 			?>
-			<li><strong><?php echo esc_html( $content['name'] ); ?></strong><p><?php echo wp_kses_post( trim( $content['value'] ) ); ?></p></li>
+			<li><strong><?php echo esc_html( $content['name'] ); ?></strong><p><?php echo wp_kses_post( trim( is_string( $content['value'] ) ? $content['value'] : '' ) ); ?></p></li>
 			<?php
 		}
 		?>

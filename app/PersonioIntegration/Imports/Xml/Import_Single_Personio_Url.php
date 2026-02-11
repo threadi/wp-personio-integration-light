@@ -233,8 +233,13 @@ class Import_Single_Personio_Url {
 				$this->log->add( sprintf( __( 'Last modified timestamp for %1$s from Personio: ', 'personio-integration-light' ), wp_kses_post( $this->get_link() ) ) . Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', absint( strtotime( $last_modified_timestamp ) ) ) ), 'success', 'import' );
 			}
 
+			// if no timestamp was returned and debug is enabled, set a timestamp to run the further processing.
+			if ( is_null( $last_modified_timestamp ) && false !== $this->debug ) {
+				$last_modified_timestamp = time();
+			}
+
 			// if timestamp and XML api is not available set 404 as the HTTP state.
-			if ( is_null( $last_modified_timestamp ) && false === $this->debug ) {
+			if ( is_null( $last_modified_timestamp ) ) {
 				// log this event.
 				/* translators: %1$s will be replaced by the Personio URL. */
 				$this->log->add( sprintf( __( 'Got no last modified timestamp for %1$s from Personio!', 'personio-integration-light' ), wp_kses_post( $this->get_link() ) ), 'error', 'import' );
