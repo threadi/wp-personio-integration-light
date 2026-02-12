@@ -10,8 +10,8 @@
 
 ### Changed
 
+- Checking for timestamp on XML API is now optional as Personio has removed this feature on some Personio accounts
 - Log if Personio does not send any last timestamp for the request of open positions
-- Run import if no timestamp is returned from Personio and debug mode is enabled
 - Optimized output of import results on WP CLI
 - Query debug log is now separated from the debug log to reduce the size of the log table if debug is enabled
 - Set translatable text for a button in site health

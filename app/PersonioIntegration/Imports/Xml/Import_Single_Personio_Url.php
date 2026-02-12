@@ -214,7 +214,7 @@ class Import_Single_Personio_Url {
 		$response = wp_remote_head( $url, $args );
 
 		// check the response and get its http-status and last-modified-date as timestamp.
-		$last_modified_timestamp = 0;
+		$last_modified_timestamp = time();
 		$http_status             = 404;
 
 		if ( is_wp_error( $response ) ) {
@@ -225,30 +225,11 @@ class Import_Single_Personio_Url {
 			$http_status = $response['http_response']->get_status();
 
 			// get the last modified-timestamp from http-response.
-			$last_modified_timestamp = $response['http_response']->get_headers()->offsetGet( 'last-modified' );
+			$last_modified_timestamp_value = $response['http_response']->get_headers()->offsetGet( 'last-modified' );
 
-			// log timestamp if debug is enabled.
-			if ( ! is_null( $last_modified_timestamp ) && false !== $this->debug ) {
-				/* translators: %1$s will be replaced by the Personio URL. */
-				$this->log->add( sprintf( __( 'Last modified timestamp for %1$s from Personio: ', 'personio-integration-light' ), wp_kses_post( $this->get_link() ) ) . Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', absint( strtotime( $last_modified_timestamp ) ) ) ), 'success', 'import' );
-			}
-
-			// if no timestamp was returned and debug is enabled, set a timestamp to run the further processing.
-			if ( is_null( $last_modified_timestamp ) && false !== $this->debug ) {
-				$last_modified_timestamp = time();
-			}
-
-			// if timestamp and XML api is not available set 404 as the HTTP state.
-			if ( is_null( $last_modified_timestamp ) ) {
-				// log this event.
-				/* translators: %1$s will be replaced by the Personio URL. */
-				$this->log->add( sprintf( __( 'Got no last modified timestamp for %1$s from Personio!', 'personio-integration-light' ), wp_kses_post( $this->get_link() ) ), 'error', 'import' );
-
-				// mark this as 404 to prevent further processing.
-				$http_status = 404;
-			} else {
-				// convert timestamp to unix-timestamp.
-				$last_modified_timestamp = absint( strtotime( $last_modified_timestamp ) );
+			// if "last-modified" is set, convert it to timestamp.
+			if( ! is_null( $last_modified_timestamp_value ) ) {
+				$last_modified_timestamp = absint( strtotime( $last_modified_timestamp_value[0] ) );
 			}
 		}
 
