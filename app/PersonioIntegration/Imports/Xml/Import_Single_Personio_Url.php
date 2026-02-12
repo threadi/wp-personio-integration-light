@@ -229,7 +229,7 @@ class Import_Single_Personio_Url {
 
 			// if "last-modified" is set, convert it to timestamp.
 			if ( ! is_null( $last_modified_timestamp_value ) ) {
-				$last_modified_timestamp = absint( strtotime( $last_modified_timestamp_value[0] ) );
+				$last_modified_timestamp = absint( strtotime( $last_modified_timestamp_value ) );
 			}
 		}
 
