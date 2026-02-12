@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle output of log table in admin.
+ * File to handle the output of the log table in admin.
  *
  * @package personio-integration-light
  */
@@ -24,7 +24,7 @@ class Logs {
 	 * @return void
 	 */
 	public static function show(): void {
-		// bail if user has not the capability for this.
+		// bail if the user has not the capability for this.
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
