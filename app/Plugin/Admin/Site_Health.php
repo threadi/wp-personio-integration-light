@@ -207,26 +207,26 @@ class Site_Health {
 	 */
 	public function add_debug_info( array $debug_information ): array {
 		$debug_information['external-files-in-media-library'] = array(
-			'label' => Helper::get_plugin_name(),
-			'fields' => array()
+			'label'  => Helper::get_plugin_name(),
+			'fields' => array(),
 		);
 
 		// loop through all settings and add them as fields if their export is allowed.
-		foreach( Settings::get_instance()->get_settings() as $setting ) {
+		foreach ( Settings::get_instance()->get_settings() as $setting ) {
 			// bail if the source of this setting is not the light plugin.
-			if( is_string( $setting->get_custom_var( 'source' ) ) ) {
+			if ( is_string( $setting->get_custom_var( 'source' ) ) ) {
 				continue;
 			}
 
 			// create the entry.
 			$entry = array(
-				'label' => $setting->get_name(),
-				'value' => $setting->get_value(),
-				'private' => $setting->is_export_prevented()
+				'label'   => $setting->get_name(),
+				'value'   => $setting->get_value(),
+				'private' => $setting->is_export_prevented(),
 			);
 
 			// add it to the list.
-			$debug_information['external-files-in-media-library']['fields'][$setting->get_name()] = $entry;
+			$debug_information['external-files-in-media-library']['fields'][ $setting->get_name() ] = $entry;
 		}
 
 		// return the resulting list of debug information.

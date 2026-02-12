@@ -613,7 +613,8 @@ class Settings {
 		$setting->set_default( 0 );
 		$field = new Checkbox();
 		$field->set_title( __( 'Enable debug of database queries', 'personio-integration-light' ) );
-		$field->set_description( __( 'If activated, the plugin logs all database queries for positions. This information can then be seen in the log.', 'personio-integration-light' ) );;
+		$field->set_description( __( 'If activated, the plugin logs all database queries for positions. This information can then be seen in the log.', 'personio-integration-light' ) );
+
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$field->add_depend( $debug_setting, 1 );
 		$setting->set_field( $field );
@@ -959,6 +960,7 @@ class Settings {
 
 		// forward user to the dashboard.
 		wp_safe_redirect( get_admin_url() );
+		exit;
 	}
 
 	/**

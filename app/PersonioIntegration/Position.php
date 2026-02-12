@@ -586,7 +586,7 @@ class Position {
 	/**
 	 * Return the language-specific content of this position (aka jobDescriptions).
 	 *
-	 * @return array<int,array<string,string>>
+	 * @return array<string,array<string,string>>
 	 */
 	public function get_content_as_array(): array {
 		$content = $this->get_content();

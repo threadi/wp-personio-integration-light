@@ -86,11 +86,11 @@ OR use ant in build/-directory: `ant json-translations`
 
 ## Check for WordPress VIP Coding Standards
 
-Hint: this check runs against the VIP-GO-platform which is not our target for this plugin. Many warnings can be ignored.
+Hint: this check runs against the VIP-GO-platform, which is not our target for this plugin. Many warnings can be ignored.
 
 ### Run
 
-`vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=WordPress-VIP-Go .`
+`vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/*,*/tests/* --standard=WordPress-VIP-Go .`
 
 ## Generate documentation
 

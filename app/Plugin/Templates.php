@@ -996,7 +996,7 @@ class Templates {
 	 */
 	public function get_classes_for_filter( string $classes ): string {
 		// add our own classes.
-		$css_classes = array();
+		$css_classes   = array();
 		$css_classes[] = 'container';
 
 		/**

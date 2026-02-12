@@ -228,7 +228,7 @@ class Import_Single_Personio_Url {
 			$last_modified_timestamp_value = $response['http_response']->get_headers()->offsetGet( 'last-modified' );
 
 			// if "last-modified" is set, convert it to timestamp.
-			if( ! is_null( $last_modified_timestamp_value ) ) {
+			if ( ! is_null( $last_modified_timestamp_value ) ) {
 				$last_modified_timestamp = absint( strtotime( $last_modified_timestamp_value[0] ) );
 			}
 		}

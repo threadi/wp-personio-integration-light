@@ -71,7 +71,7 @@ class Divi extends Compatibilities_Base {
 	 */
 	public function is_active(): bool {
 		// first check for the plugin.
-		if( Helper::is_plugin_active( 'divi-builder/divi-builder.php' ) ) {
+		if ( Helper::is_plugin_active( 'divi-builder/divi-builder.php' ) ) {
 			// get the plugin version.
 			require_once ABSPATH . 'wp-admin/includes/admin.php';
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -82,16 +82,16 @@ class Divi extends Compatibilities_Base {
 		}
 
 		// check for the theme.
-		$theme   = wp_get_theme();
+		$theme = wp_get_theme();
 		if ( 'Divi' === $theme->get( 'Name' ) ) {
 			$version = substr( $theme->get( 'Version' ), 0, 5 );
-			return version_compare( $version, '5.0.0', '<');
+			return version_compare( $version, '5.0.0', '<' );
 		}
 
 		// check for the parent theme.
 		if ( $theme->parent() && 'Divi' === $theme->parent()->get( 'Name' ) ) {
 			$version = substr( $theme->parent()->get( 'Version' ), 0, 5 );
-			return version_compare( $version, '5.0.0', '<');
+			return version_compare( $version, '5.0.0', '<' );
 		}
 
 		// otherwise return false.
