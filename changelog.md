@@ -1,17 +1,17 @@
 # Changelog
 
-## [Unreleased]
+## [5.2.0] - 16.02.2026
 
 ### Added
 
 - Added hint for the usage of salary for positions in Pro plugin
 - Added SBOM (Software Bill of Materials) which will be generated during every release
 - Added the light configuration in Site Health debug info
+- Added check for compatibility with Divi 5
 
 ### Changed
 
 - Checking for timestamp on XML API is now optional as Personio has removed this feature on some Personio accounts
-- Log if Personio does not send any last timestamp for the request of open positions
 - Optimized output of import results on WP CLI
 - Query debug log is now separated from the debug log to reduce the size of the log table if debug is enabled
 - Set translatable text for a button in site health

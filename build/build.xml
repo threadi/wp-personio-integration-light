@@ -64,7 +64,7 @@
         <delete file="${log.dir}/npm-install5.txt"/>
         <delete file="${log.dir}/npm-install6.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${nvm.path}" output="${log.dir}/nvm-install1.txt">
-            <arg line="use --lts"/>
+            <arg line="install latest"/>
         </exec>
         <exec dir="${src.dir}" failonerror="true" executable="${nvm.path}" output="${log.dir}/nvm-install2.txt">
             <arg line="use node"/>

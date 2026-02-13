@@ -43,7 +43,7 @@ class Single extends Widget_Base {
 	protected string $setting_tab = '';
 
 	/**
-	 * Path to Block object.
+	 * Path to the Block object.
 	 *
 	 * @var string
 	 */
@@ -178,7 +178,7 @@ class Single extends Widget_Base {
 		// embed content.
 		include Templates::get_instance()->get_template( 'parts/content.php' );
 
-		// return resulting code.
+		// return the resulting code.
 		$content = ob_get_clean();
 		if ( ! $content ) {
 			return '';
@@ -236,7 +236,7 @@ class Single extends Widget_Base {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param array<string,mixed> $default_values The list of default values for each attribute used to display positions in frontend.
+		 * @param array<string,mixed> $default_values The list of default values for each attribute used to display positions in the frontend.
 		 */
 		return apply_filters( 'personio_integration_position_attribute_defaults', $default_values );
 	}
