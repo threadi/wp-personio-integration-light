@@ -4,6 +4,10 @@
 
 This repository provides the features for the Light version of the WordPress plugin _Personio Integration_. The repository is used as a basis for deploying the plugin to the WordPress repository. It is not intended to run as a plugin as it is, even if that is possible for development.
 
+## Responsive Disclosure
+
+We take security seriously. If you notice anything that could affect security, please send us a confidential message at [security@laolaweb.com](mailto:security@laolaweb.com).
+
 ## Preparations
 
 Add this in your wp-config.php for development:
@@ -14,8 +18,9 @@ define( 'WP_DEVELOPMENT_MODE', 'plugin' );
 ```
 
 You need to install:
+* composer
 * npm
-* node
+* nvm
 
 ## Usage
 
@@ -81,11 +86,11 @@ OR use ant in build/-directory: `ant json-translations`
 
 ## Check for WordPress VIP Coding Standards
 
-Hint: this check runs against the VIP-GO-platform which is not our target for this plugin. Many warnings can be ignored.
+Hint: this check runs against the VIP-GO-platform, which is not our target for this plugin. Many warnings can be ignored.
 
 ### Run
 
-`vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/* --standard=WordPress-VIP-Go .`
+`vendor/bin/phpcs --extensions=php --ignore=*/vendor/*,*/build/*,*/node_modules/*,*/blocks/*,*/svn/*,*/example/*,*/deprecated/*,*/tests/* --standard=WordPress-VIP-Go .`
 
 ## Generate documentation
 

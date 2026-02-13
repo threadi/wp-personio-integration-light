@@ -132,6 +132,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Bold_Page_Builder',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Brizy',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Divi',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Divi5',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Elementor',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Everest_Forms',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Fluent_Forms',

@@ -1,6 +1,6 @@
 <?php
 /**
- * File as base for each pagebuilder support.
+ * File for the base object for each pagebuilder support.
  *
  * @package personio-integration-light
  */
@@ -17,7 +17,7 @@ use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
 use PersonioIntegrationLight\Plugin\Setup;
 
 /**
- * Define the base object for schedules.
+ * Object as the base for each page builder.
  */
 class PageBuilder_Base extends Extensions_Base {
 	/**
@@ -35,7 +35,7 @@ class PageBuilder_Base extends Extensions_Base {
 	protected bool $has_templates = false;
 
 	/**
-	 * This extension can be enabled by user.
+	 * User can enable this extension.
 	 *
 	 * @var bool
 	 */
@@ -53,7 +53,7 @@ class PageBuilder_Base extends Extensions_Base {
 		// actions to run during setup.
 		add_action( 'esfw_process', array( $this, 'run_setup_process' ), 20 );
 
-		// add page builder to list of used page builder in this project.
+		// add page builder to the list of used page builder in this project.
 		Helper::update_page_builder_list( $this->get_name() );
 	}
 
@@ -81,19 +81,19 @@ class PageBuilder_Base extends Extensions_Base {
 	/**
 	 * Installer for templates this page builder is using.
 	 *
-	 * @return bool Returns true if import has been run successfully.
+	 * @return bool Returns true if the import of the templates has been run successfully.
 	 */
 	public function install_templates(): bool {
 		return false;
 	}
 
 	/**
-	 * Add global Elementor-settings, used by setup.
+	 * Add global settings, used by setup.
 	 *
 	 * @return void
 	 */
 	public function add_global_settings(): void {
-		// bail if page builder does not support templates.
+		// bail if the page builder does not support templates.
 		if ( ! $this->has_templates() ) {
 			return;
 		}
@@ -104,7 +104,7 @@ class PageBuilder_Base extends Extensions_Base {
 		// get hidden section.
 		$hidden = \PersonioIntegrationLight\Plugin\Settings::get_instance()->get_hidden_section();
 
-		// bail if hidden section does not exist.
+		// bail if the hidden section does not exist.
 		if ( ! $hidden instanceof Section ) {
 			return;
 		}
@@ -121,12 +121,12 @@ class PageBuilder_Base extends Extensions_Base {
 	}
 
 	/**
-	 * Run tasks on setup process depending on settings.
+	 * Run tasks during the setup process depending on settings.
 	 *
 	 * @return void
 	 */
 	public function run_setup_process(): void {
-		// bail if page builder does not support templates.
+		// bail if the page builder does not support templates.
 		if ( ! $this->has_templates() ) {
 			return;
 		}
@@ -142,7 +142,7 @@ class PageBuilder_Base extends Extensions_Base {
 		// update max step count.
 		$setup_obj->update_max_step( 1 );
 
-		// change label of progressbar in setup.
+		// change the label of the progressbar in setup.
 		$setup_obj->set_process_label( __( 'Import of templates running.', 'personio-integration-light' ) );
 
 		// install templates.

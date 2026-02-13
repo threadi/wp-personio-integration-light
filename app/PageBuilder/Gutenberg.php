@@ -72,7 +72,7 @@ class Gutenberg extends PageBuilder_Base {
 		// add our custom block category.
 		add_filter( 'block_categories_all', array( $this, 'add_block_category' ) );
 
-		// bail if theme is not an FSE-theme with Block support.
+		// bail if the theme is not a FSE theme with block support.
 		if ( ! $this->theme_support_block_templates() ) {
 			return;
 		}
@@ -140,14 +140,19 @@ class Gutenberg extends PageBuilder_Base {
 	}
 
 	/**
-	 * Return list of available blocks.
+	 * Return the list of available blocks.
 	 *
 	 * @return array<string>
 	 */
 	public function get_widgets(): array {
 		$list = array();
 
-		// return the resulting list.
+		/**
+		 * Filter the list of available Gutenberg blocks.
+		 *
+		 * @since 5.0.0 Available since 5.0.0.
+		 * @param array<int,string> $list List of blocks.
+		 */
 		return apply_filters( 'personio_integration_gutenberg_blocks', $list );
 	}
 

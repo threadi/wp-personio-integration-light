@@ -81,10 +81,10 @@ class Blocks_Basis {
 	 * @return void
 	 */
 	public function register(): void {
-		// get block type registry.
+		// get the block type registry.
 		$block_type_registry = WP_Block_Type_Registry::get_instance();
 
-		// bail if block type registry could not be loaded.
+		// bail if the block type registry could not be loaded.
 		if ( ! $block_type_registry instanceof WP_Block_Type_Registry ) { // @phpstan-ignore instanceof.alwaysTrue
 			return;
 		}
@@ -104,7 +104,7 @@ class Blocks_Basis {
 			)
 		);
 
-		// if this is a classic theme, deregister the blocks css. we will use the concatenated blocks.css instead.
+		// if this is a classic theme, deregister the blocks CSS. we will use the concatenated blocks.css instead.
 		if ( ! Helper::theme_is_fse_theme() ) {
 			wp_deregister_style( 'wp-personio-integration-' . $this->get_name() . '-style' );
 		}

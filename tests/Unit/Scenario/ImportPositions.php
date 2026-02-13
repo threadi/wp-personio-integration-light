@@ -22,7 +22,7 @@ class ImportPositions extends PersonioTestCase {
 	public function set_up(): void {
 		parent::set_up();
 
-		// delete positions.
+		// delete all positions to have a clean start.
 		\PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition::get_instance()->delete_positions();
 	}
 
@@ -67,6 +67,20 @@ class ImportPositions extends PersonioTestCase {
 
 		// test it.
 		$this->assertIsNotObject( $position_obj );
+	}
+
+	/**
+	 * Test to run import of positions without the "last-modified" header from Personio.
+	 *
+	 * @return void
+	 */
+	public function test_run_xml_import_without_last_modified(): void {
+		// use the global handler.
+		$position_obj = self::get_single_position( 'without_lm' );
+
+		// test it.
+		$this->assertIsObject( $position_obj );
+		$this->assertInstanceOf( '\PersonioIntegrationLight\PersonioIntegration\Position', $position_obj );
 	}
 
 	/**

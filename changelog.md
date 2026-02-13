@@ -1,18 +1,43 @@
 # Changelog
 
-## [5.1.4] - 09.02.2026
+## [Unreleased]
+
+### Added
+
+- Added hint for the usage of salary for positions in Pro plugin
+- Added SBOM (Software Bill of Materials) which will be generated during every release
+- Added the light configuration in Site Health debug info
 
 ### Changed
 
+- Checking for timestamp on XML API is now optional as Personio has removed this feature on some Personio accounts
 - Log if Personio does not send any last timestamp for the request of open positions
 - Optimized output of import results on WP CLI
+- Query debug log is now separated from the debug log to reduce the size of the log table if debug is enabled
 - Set translatable text for a button in site health
 - Some more PHP Unit Tests
+- WordPress-own SitemapXML now uses the real last change date of the positions as other SEO-plugins do
+- Updated dependencies
 
 ### Fixed
 
 - Fixed missed loading of block scripts
 - Fixed the missing removing of the running flag if an import error occurs during import via WP CLI
+- Fixed an error during activation in a multisite
+- Fixed a possible error if a job description does not contain any text
+
+## [5.1.4] - 09.02.2026
+
+### Added
+
+- Added detection for the new Theme Divi 5
+
+### Changes
+
+- Optimized the checkout of the plugin repository for local developments
+- Do not show the language translation hint if the Personio URL is not set
+- Filter template can now also be used with dynamic CSS classes
+- Some new hooks
 
 ## [5.1.3] - 19.01.2026
 

@@ -808,6 +808,14 @@ class PersonioPosition extends Post_Type {
 			$this->get_name()
 		);
 
+		// add a box with a hint to use salary in Pro plugin.
+		add_meta_box(
+			$this->get_name() . '-pro-salary',
+			__( 'Salary', 'personio-integration' ),
+			array( $this, 'add_meta_box_salary' ),
+			$this->get_name(),
+		);
+
 		add_meta_box(
 			$this->get_name() . '-personio',
 			__( 'Personio Account', 'personio-integration-light' ),
@@ -1383,7 +1391,7 @@ class PersonioPosition extends Post_Type {
 		$position = Positions::get_instance()->get_position( $post->ID );
 
 		// get the date.
-		$entry['lastmod'] = gmdate( 'Y-m-d', absint( $position->get_created_at() ) );
+		$entry['lastmod'] = gmdate( 'Y-m-d', absint( strtotime( $post->post_date_gmt ) ) );
 
 		// set the priority for sitemap.
 		$entry['priority'] = 0.8;
@@ -2186,7 +2194,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Show hint on application forms in Pro plugins.
+	 * Show hint on application forms in Pro plugin.
 	 *
 	 * @return void
 	 */
@@ -2194,6 +2202,17 @@ class PersonioPosition extends Post_Type {
 		// show the hint.
 		/* translators: %1$s will be replaced with the plugin pro-name */
 		echo wp_kses_post( Admin::get_instance()->get_pro_hint( __( 'Use individual application forms for this position with %1$s.', 'personio-integration-light' ) ) );
+	}
+
+	/**
+	 * Show hint on salary in Pro plugin.
+	 *
+	 * @return void
+	 */
+	public function add_meta_box_salary(): void {
+		// show the hint.
+		/* translators: %1$s will be replaced with the plugin pro-name */
+		echo wp_kses_post( Admin::get_instance()->get_pro_hint( __( 'Use output of salary for this position with %1$s.', 'personio-integration-light' ) ) );
 	}
 
 	/**
@@ -2210,7 +2229,7 @@ class PersonioPosition extends Post_Type {
 			return $months;
 		}
 
-		// return an empty list.
+		// return as result an empty list.
 		return array();
 	}
 
@@ -2258,10 +2277,10 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function show_plugin_hint_in_footer( string $content ): string {
 		// get requested post-type.
-		$post_type = (string) filter_input( INPUT_GET, 'post_type' );
+		$post_type = (string) filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// get requested post.
-		$post = absint( filter_input( INPUT_GET, 'post' ) );
+		$post = absint( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
 
 		// bail if this is not the listing or the single view of a position in backend.
 		if ( $post_type !== $this->get_name() && get_post_type( $post ) !== $this->get_name() ) {

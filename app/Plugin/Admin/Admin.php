@@ -1014,8 +1014,8 @@ class Admin {
 	 * @return void
 	 */
 	public function check_language(): void {
-		// bail if englisch.
-		if ( get_locale() === 'en_US' ) {
+		// bail if the language is Englisch or the Personio URL is not set.
+		if ( get_locale() === 'en_US' || ! Helper::is_personio_url_set() ) {
 			return;
 		}
 
