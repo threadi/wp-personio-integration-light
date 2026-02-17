@@ -66,7 +66,7 @@ class Site_Health {
 	}
 
 	/**
-	 * Return list of endpoints the site health should use for our plugin.
+	 * Return the list of endpoints the site health should use for our plugin.
 	 *
 	 * @return array<int,array<string,mixed>>
 	 */
@@ -83,7 +83,7 @@ class Site_Health {
 		/**
 		 * Filter the endpoints for Site Health this plugin is using.
 		 *
-		 * Hint: these are just arrays which define the endpoints.
+		 * Hint: these are just arrays that define the endpoints.
 		 *
 		 * @param array<int,array<string,mixed>> $list List of endpoints.
 		 */
@@ -91,7 +91,7 @@ class Site_Health {
 	}
 
 	/**
-	 * Register each rest api endpoints for site health checks.
+	 * Register each REST API endpoint for site health checks.
 	 *
 	 * @return void
 	 */
@@ -138,7 +138,7 @@ class Site_Health {
 				'label' => __( 'Personio Integration Light', 'personio-integration-light' ),
 				'color' => 'gray',
 			),
-			'description' => __( 'Running cronjobs help to import new positions from Personio automatically.<br><strong>All ok with the cronjob!</strong>', 'personio-integration-light' ),
+			'description' => '<p>' . __( 'Running cronjobs helps to import new positions from Personio automatically.<br><strong>All ok with the cronjob!</strong>', 'personio-integration-light' ) . '</p>',
 			'actions'     => '',
 			'test'        => 'personio_integration_rest_api_import_cron_checks',
 		);
@@ -157,7 +157,7 @@ class Site_Health {
 				get_admin_url() . 'admin.php'
 			);
 			$result['status']      = 'recommended';
-			$result['description'] = __( 'Cronjob to import new Positions from Personio does not exist!', 'personio-integration-light' );
+			$result['description'] = '<p>' . __( 'Cronjob to import new Positions from Personio does not exist!', 'personio-integration-light' ) . '</p>';
 			$result['actions']     = '<p><a href="' . $url . '" class="button button-primary">' . __( 'Recreate the schedules', 'personio-integration-light' ) . '</a></p>';
 
 			// return this result.
@@ -168,7 +168,7 @@ class Site_Health {
 		if ( $scheduled_event->timestamp < time() ) { // @phpstan-ignore property.notFound
 			$result['status'] = 'recommended';
 			/* translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past) */
-			$result['description'] = sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ) );
+			$result['description'] = '<p>' . sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ) ) . '</p>';
 
 			// return this result.
 			return $result;

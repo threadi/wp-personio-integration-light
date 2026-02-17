@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- Optimized styling of messages in site health
+
 ## [5.2.0] - 16.02.2026
 
 ### Added
