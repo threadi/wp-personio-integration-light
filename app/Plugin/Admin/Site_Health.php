@@ -206,7 +206,7 @@ class Site_Health {
 	 * @return array<string,mixed>
 	 */
 	public function add_debug_info( array $debug_information ): array {
-		$debug_information['external-files-in-media-library'] = array(
+		$debug_information['personio-integration-light'] = array(
 			'label'  => Helper::get_plugin_name(),
 			'fields' => array(),
 		);
@@ -218,15 +218,23 @@ class Site_Health {
 				continue;
 			}
 
+			// get the value.
+			$value = $setting->get_value();
+
+			// mask value if it is an email.
+			if ( is_string( $value ) && is_email( $value ) ) {
+				$value = 'masked';
+			}
+
 			// create the entry.
 			$entry = array(
 				'label'   => $setting->get_name(),
-				'value'   => $setting->get_value(),
+				'value'   => $value,
 				'private' => $setting->is_export_prevented(),
 			);
 
 			// add it to the list.
-			$debug_information['external-files-in-media-library']['fields'][ $setting->get_name() ] = $entry;
+			$debug_information['personio-integration-light']['fields'][ $setting->get_name() ] = $entry;
 		}
 
 		// return the resulting list of debug information.
