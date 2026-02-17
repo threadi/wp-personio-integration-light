@@ -222,7 +222,7 @@ class Site_Health {
 			$value = $setting->get_value();
 
 			// mask value if it is an email.
-			if( is_string( $value ) && is_email( $value ) ) {
+			if ( is_string( $value ) && is_email( $value ) ) {
 				$value = 'masked';
 			}
 
