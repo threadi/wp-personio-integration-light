@@ -2,9 +2,14 @@
 
 ## Unreleased
 
+### Added
+
+- Added Bricks compatibility check
+
 ### Changed
 
 - Optimized styling of messages in site health
+- Updated dependencies
 
 ## [5.2.0] - 16.02.2026
 
