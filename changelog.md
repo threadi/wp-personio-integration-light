@@ -5,6 +5,7 @@
 ### Added
 
 - Added Bricks compatibility check
+- Added support for WordPress Consent API
 
 ### Changed
 
