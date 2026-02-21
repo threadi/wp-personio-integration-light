@@ -2,7 +2,7 @@
 /**
  * File to validate the list of emails from MultiField field.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;

@@ -108,6 +108,9 @@ class Third_Party_Plugins {
 
 		// Plugin Duplicate Page.
 		add_action( 'wp_before_admin_bar_render', array( $this, 'duplicate_page_prevent_options' ), 20 );
+
+		// WP Consent API.
+		add_filter( 'wp_consent_api_registered_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'wp_consent_api_register' ) );
 	}
 
 	/**
@@ -501,5 +504,15 @@ class Third_Party_Plugins {
 
 		global $wp_admin_bar;
 		$wp_admin_bar->remove_node( 'duplicate_this' );
+	}
+
+	/**
+	 * We simply return true to register the plugin with WP Consent API although we do not use it
+	 * as this plugin does not set any cookies or collect any personal data.
+	 *
+	 * @return bool
+	 */
+	public function wp_consent_api_register(): bool {
+		return true;
 	}
 }

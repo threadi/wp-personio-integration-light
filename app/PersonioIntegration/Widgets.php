@@ -2,7 +2,7 @@
 /**
  * File to handle widgets in Pro-plugin.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 namespace PersonioIntegrationLight\PersonioIntegration;

@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added Bricks compatibility check
+- Added support for WordPress Consent API
+
+### Changed
+
+- Optimized styling of messages in site health
+- Updated dependencies
+
 ## [5.2.0] - 16.02.2026
 
 ### Added

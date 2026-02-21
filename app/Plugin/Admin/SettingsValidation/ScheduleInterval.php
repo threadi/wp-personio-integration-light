@@ -2,7 +2,7 @@
 /**
  * File to validate a schedule interval setting.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;

@@ -2,7 +2,7 @@
 /**
  * File to handle widget extensions for positions.
  *
- * @package wp-personio-integration
+ * @package personio-integration-light
  */
 
 namespace PersonioIntegrationLight\PersonioIntegration;

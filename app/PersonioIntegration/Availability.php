@@ -519,7 +519,7 @@ class Availability extends Extensions_Base {
 					'label' => __( 'Personio Integration Light', 'personio-integration-light' ),
 					'color' => 'gray',
 				),
-				'description' => __( 'Missing Personio URL for check. Something is wrong with your plugin configuration.', 'personio-integration-light' ),
+				'description' => '<p>' . __( 'Missing Personio URL for check. Something is wrong with your plugin configuration.', 'personio-integration-light' ) . '</p>',
 				'action'      => '',
 				'test'        => 'personio_integration_rest_api_url_availability_check',
 			);
@@ -537,7 +537,7 @@ class Availability extends Extensions_Base {
 				'color' => 'gray',
 			),
 			/* translators: %1$s and %2$s will be replaced by the Personio-URL */
-			'description' => sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ) ),
+			'description' => '<p>' . sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ) ) . '</p>',
 			'actions'     => '',
 			'test'        => 'personio_integration_rest_api_url_availability_check',
 		);
@@ -546,7 +546,7 @@ class Availability extends Extensions_Base {
 		if ( ! PersonioIntegrationUrl::check_url( $personio_obj->get_url() ) ) {
 			$result['status'] = 'recommended';
 			/* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
-			$result['description'] = sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ), esc_url( Helper::get_settings_url() ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) );
+			$result['description'] = '<p>' . sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ), esc_url( Helper::get_settings_url() ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) ) . '</p>';
 		}
 
 		// return result.
