@@ -86,7 +86,7 @@ OR use ant in build/-directory: `ant json-translations`
 
 ## Check for WordPress VIP Coding Standards
 
-Hint: this check runs against the VIP-GO-platform, which is not our target for this plugin. Many warnings can be ignored.
+Hint: this check runs against the VIP-GO platform, which is not our target for this plugin. Many warnings can be ignored.
 
 ### Run
 
@@ -108,7 +108,7 @@ Hint: this check runs against the VIP-GO-platform, which is not our target for t
 
 This runs the plugin check as the plugin check in the WordPress repository does on every plugin update. It should result in no errors.
 
-Hint: run this not in the development environment, it would also check all dependencies that is unnecessary.
+Hint: do not run this in the development environment, it would also check all dependencies, which is not necessary.
 Use a normal WordPress installation with an installed PCP plugin.
 
 `wp plugin check --error-severity=7 --warning-severity=6 --include-low-severity-errors --categories=plugin_repo --format=json --slug=personio-integration-light .`

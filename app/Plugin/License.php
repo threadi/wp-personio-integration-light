@@ -500,7 +500,7 @@ class License {
 				<li><?php echo esc_html__( 'Support for Open Graph (Facebook, LinkedIn, WhatsApp …), Twitter Cards and Dublin Core (optionally configurable for all or single positions)', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Shortcode generator for individual views of lists and details', 'personio-integration-light' ); ?></li>
-				<li><?php echo esc_html__( 'Extensions for the following PageBuilders: Avada, Beaver Builder, Divi, Elementor, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery', 'personio-integration-light' ); ?></li>
+				<li><?php echo esc_html__( 'Extensions for the following PageBuilders: Avada, Beaver Builder, Bricks, Divi 4 & 5, Elementor, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Also compatible with Avia (from Enfold) and Kubio AI', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( 'Every privacy values are encrypted (e.g. applicant data and API credentials)', 'personio-integration-light' ); ?></li>
 				<li><?php echo esc_html__( '.. and much more', 'personio-integration-light' ); ?></li>

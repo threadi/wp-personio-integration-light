@@ -43,30 +43,36 @@ The output of the positions is limited to a maximum of 10. Only in [Personio Int
 
 #### the Pro license includes:
 
-- Customization of slugs (URLs) for list and detailed views of positions
+- Extensions for the following PageBuilders: Avada, Beaver Builder, Bricks, Divi 4 & 5, Elementor, Elements in GeneratePress Premium, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery
+- Also compatible with Avia (from Enfold) and Kubio AI
 - Multiple and customizable application forms incl. export of them via Personio API
-- Supports all languages Personio offers German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech
+- Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Everest Forms, Fluent Forms, Forminator, Ninja Forms and WPForms
+- Customization of slugs (URLs) for list and detailed views of positions
+- Supports all languages Personio offers: German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech
 - Support for multilingual plugins Bogo, Polylang, WPML, Weglot and TranslatePress
-- Support for legal entities and other workplaces in positions
+- Support for legal entities and other workplaces on positions
 - Support for salaries for open positions
 - Use GoogleMaps or OpenStreetMap for show you locations with open positions
-- Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Everest Forms, Fluent Forms, Forminator, Ninja Forms and WPForms
 - Use custom feature image on each position
-- Unlimited custom files for download on each single position
-- Support for tracking of events with Google Analytics 4
+- Assign unlimited custom files for download or videos on each single position
+- Support for tracking of events with Matomo and Google Analytics 4
+- Support for Open Graph (Facebook, LinkedIn, WhatsApp ...), Twitter Cards and Dublin Core (optionally configurable for all or single positions)
 - Support full text search for positions in frontend
-- Multiple Personio-accounts per website
+- Use multiple Personio-accounts per website
 - Additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from position descriptions
 - RichSnippets for optimal findability via search engines like Google Jobs
-- Support for Open Graph (Facebook, LinkedIn, WhatsApp ...), Twitter Cards and Dublin Core (optionally configurable for all or single positions)
 - Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)
 - Shortcode generator for individual views of lists and details
-- Extensions for the following PageBuilders: Avada, Beaver Builder, Divi, Elementor, Elements in GeneratePress Premium, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery
-- Also compatible with Avia (from Enfold) and Kubio AI
-- Every privacy values is encrypted (e.g. applicant data and API credentials)
+- Encrypt all sensitive data (e.g., applicant data and API credentials).
 - ... and much more
 
 [get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
+
+== ClassicPress ==
+
+This plugin is compatible with [ClassicPress](https://www.classicpress.net/).
+
+== Repository, documentation and reliability ==
 
 The development repository is on [GitHub](https://github.com/threadi/wp-personio-integration-light).
 
@@ -74,9 +80,11 @@ We also provide a number of [hooks](https://github.com/threadi/wp-personio-integ
 
 The Personio logo as part of all distributed icons is a trademark of [Personio SE & Co. KG](https://www.personio.com).
 
-== ClassicPress ==
+Each release of this plugin will only be published if it fulfills the following conditions:
 
-This plugin is compatible with [ClassicPress](https://www.classicpress.net/).
+- Compliance with WordPress Coding Standards
+- PHPStan check for possible bugs
+- PHP Unit tests
 
 ---
 
@@ -91,7 +99,7 @@ This plugin is compatible with [ClassicPress](https://www.classicpress.net/).
 
 = Can I use the plugin without a Personio account? =
 
-The plugin can be installed even without Personio account. However, it is not usable without Personio data.
+The plugin can be installed even without a Personio account. However, it is not usable without Personio data.
 
 = Does this plugin use iframes? =
 
@@ -103,7 +111,7 @@ This is supported by the Pro version of the plugin since version 2.0.0. You can 
 
 = Does this plugin set any cookies or load data from external? =
 
-No, this plugin does not set cookies nor does it load data externally within the front end of the website. The exception is when images and videos are embedded in the job descriptions coming from Personio. In this case, please check to what extent this affects the privacy of your own website.
+No, this plugin does not set cookies, nor does it load data externally within the front end of the website. The exception is when images and videos are embedded in the job descriptions coming from Personio. In this case, please check to what extent this affects the privacy of your own website.
 
 = Is this plugin GPRD-compatible? =
 
@@ -125,20 +133,9 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added hint for the usage of salary for positions in Pro plugin
-- Added SBOM (Software Bill of Materials) which will be generated during every release
-- Added the light configuration in Site Health debug info
-- Added check for compatibility with Divi 5
-- Checking for timestamp on XML API is now optional as Personio has removed this feature on some Personio accounts
-- Optimized output of import results on WP CLI
-- Query debug log is now separated from the debug log to reduce the size of the log table if debug is enabled
-- Set translatable text for a button in site health
-- Some more PHP Unit Tests
-- WordPress-own SitemapXML now uses the real last change date of the positions as other SEO-plugins do
+- Added Bricks compatibility check
+- Added support for WordPress Consent API
+- Optimized styling of messages in site health
 - Updated dependencies
-- Fixed missed loading of block scripts
-- Fixed the missing removing of the running flag if an import error occurs during import via WP CLI
-- Fixed an error during activation in a multisite
-- Fixed a possible error if a job description does not contain any text
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

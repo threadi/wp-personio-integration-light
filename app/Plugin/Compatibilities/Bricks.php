@@ -72,7 +72,7 @@ class Bricks extends Compatibilities_Base {
 	public function is_active(): bool {
 		// check for the theme.
 		$is_bricks = false;
-		$theme    = wp_get_theme();
+		$theme     = wp_get_theme();
 		if ( 'Bricks' === $theme->get( 'Name' ) ) {
 			$is_bricks = true;
 		}
