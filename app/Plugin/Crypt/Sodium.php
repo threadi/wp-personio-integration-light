@@ -121,7 +121,7 @@ class Sodium extends Crypt_Base {
 		$wp_config_php_content = preg_replace( "@\n$placeholder@", '', (string) $wp_config_php_content );
 
 		// add the constant.
-		$define                = "define( '" . $this->get_constant() . "', '" . sodium_bin2base64( $this->get_hash(), $this->get_coding_id() ) . "' ); // Added by Personio Integration Pro.\r\n";
+		$define                = "define( '" . $this->get_constant() . "', '" . sodium_bin2base64( $this->get_hash(), $this->get_coding_id() ) . "' ); // Added by Personio Integration Light.\r\n";
 		$wp_config_php_content = preg_replace( '@<\?php\s*@i', "<?php\n$define", (string) $wp_config_php_content, 1 );
 
 		if ( ! is_string( $wp_config_php_content ) ) {
