@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.1] - 09.03.2026
+
+### Changed
+
+- Changed output of values for select filter to optionally use strings instead of integers
+- Updated dependencies
+
 ## [5.3.0] - 02.03.2026
 
 ### Added
