@@ -133,9 +133,7 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added Bricks compatibility check
-- Added support for WordPress Consent API
-- Optimized styling of messages in site health
+- Changed output of values for select filter to optionally use strings instead of integers
 - Updated dependencies
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
