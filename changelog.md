@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed a missing space between CSS-classes for filters which prevents the usage of loading without reloading the page
+
 ## [5.3.1] - 09.03.2026
 
 ### Changed
