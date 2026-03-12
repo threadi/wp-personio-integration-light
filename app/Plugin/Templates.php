@@ -1007,8 +1007,13 @@ class Templates {
 		 */
 		$css_classes = apply_filters( 'personio_integration_light_position_filter_classes', $css_classes );
 
+		$css_classes_string = implode( ' ', $css_classes );
+		if( ! empty( $css_classes_string ) && ! empty( $classes ) ) {
+			$css_classes_string = ' ' . $css_classes_string;
+		}
+
 		// return the resulting list of classes.
-		return $classes . implode( ' ', $css_classes );
+		return $classes . $css_classes_string;
 	}
 
 	/**
