@@ -1008,7 +1008,7 @@ class Templates {
 		$css_classes = apply_filters( 'personio_integration_light_position_filter_classes', $css_classes );
 
 		$css_classes_string = implode( ' ', $css_classes );
-		if( ! empty( $css_classes_string ) && ! empty( $classes ) ) {
+		if ( ! empty( $css_classes_string ) && ! empty( $classes ) ) {
 			$css_classes_string = ' ' . $css_classes_string;
 		}
 
