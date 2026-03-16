@@ -41,6 +41,7 @@ jobs:
                   npm run build:application-button
                   npm run build:details
                   npm run build:description
+                  npm run build:commands
                   npm run global-styles
                   cp inc/constants_urls.php.dist inc/constants_urls.php
                   rm -fr assets

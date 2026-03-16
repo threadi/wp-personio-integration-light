@@ -95,6 +95,7 @@
         <delete file="${log.dir}/npm-build8.txt"/>
         <delete file="${log.dir}/npm-build9.txt"/>
         <delete file="${log.dir}/npm-build10.txt"/>
+        <delete file="${log.dir}/npm-build11.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build1.txt">
             <arg line="run build:show"/>
         </exec>
@@ -116,13 +117,16 @@
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build7.txt">
             <arg line="run build:description"/>
         </exec>
-        <exec dir="${src.dir}/vendor/threadi/easy-dialog-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build8.txt">
+        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build8.txt">
+            <arg line="run build:commands"/>
+        </exec>
+        <exec dir="${src.dir}/vendor/threadi/easy-dialog-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build9.txt">
             <arg line="run build"/>
         </exec>
-        <exec dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build9.txt">
+        <exec dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build10.txt">
             <arg line="run build"/>
         </exec>
-        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build10.txt">
+        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build11.txt">
             <arg line="run global-styles"/>
         </exec>
     </target>
@@ -135,7 +139,7 @@
         </exec>
     </target>
 
-    <!-- set version number in plugin-file for the release -->
+    <!-- set the version number for the release -->
     <target name="setVersionNumber">
         <delete file="${build.dir}/${plugin.slug}-release.php"/>
         <copy file="${src.dir}/${plugin.slug}.php" tofile="${src.dir}/${plugin.slug}-release.php"/>
@@ -240,6 +244,7 @@
             <zipfileset dir="${src.dir}/blocks/application-button/build" prefix="${plugin.slug}/blocks/application-button/build" />
             <zipfileset dir="${src.dir}/blocks/show/" includes="block.json" prefix="${plugin.slug}/blocks/show/" />
             <zipfileset dir="${src.dir}/blocks/show/build" prefix="${plugin.slug}/blocks/show/build" />
+            <zipfileset dir="${src.dir}/blocks/commands/" prefix="${plugin.slug}/blocks/commands/" />
             <zipfileset dir="${src.dir}/blocks/" includes="components.js,index.js,variations.js" prefix="${plugin.slug}/blocks/" />
             <zipfileset dir="${src.dir}/css" prefix="${plugin.slug}/css" />
             <zipfileset dir="${src.dir}/deprecated" prefix="${plugin.slug}/deprecated" />

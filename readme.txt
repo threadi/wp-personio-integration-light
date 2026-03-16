@@ -133,7 +133,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Changed output of values for select filter to optionally use strings instead of integers
-- Updated dependencies
+- Fixed a missing space between CSS-classes for filters
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
