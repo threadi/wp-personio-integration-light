@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleases]
+
+### Added
+
+- Added command palette to quick jump to the positions in the backend
+
 ## [5.3.2] - 16.03.2026
 
 ### Fixed
