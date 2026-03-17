@@ -14,27 +14,11 @@ jQuery(document).ready(function($) {
     })
 
     /**
-     * Create dialog before import is running.
      * Get the content for the dialog via AJAX for dynamic content-changes.
      */
     $('a.personio-integration-import-hint').on('click', function (e) {
       e.preventDefault();
-
-      // get the dialog via AJAX.
-      jQuery.ajax({
-        type: "POST",
-        url: personioIntegrationLightJsVars.ajax_url,
-        data: {
-          'action': 'personio_get_import_dialog',
-          'nonce': personioIntegrationLightJsVars.get_import_dialog_nonce
-        },
-        error: function( jqXHR, textStatus, errorThrown ) {
-          personio_integration_ajax_error_dialog( errorThrown )
-        },
-        success: function( result ) {
-          personio_integration_create_dialog( result );
-        }
-      });
+      personio_integration_light_get_import_dialog();
     });
 
     // create confirm dialog for deletion of all positions.
@@ -637,6 +621,27 @@ function personio_integration_settings_import_dialog_via_setup() {
     data: {
       'action': 'personio_get_settings_import_dialog',
       'nonce': personioIntegrationLightJsVars.settings_import_dialog_nonce
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      personio_integration_ajax_error_dialog( errorThrown )
+    },
+    success: function( result ) {
+      personio_integration_create_dialog( result );
+    }
+  });
+}
+
+/**
+ * Get the import dialog via AJAX.
+ */
+function personio_integration_light_get_import_dialog() {
+  // get the dialog via AJAX.
+  jQuery.ajax({
+    type: "POST",
+    url: personioIntegrationLightJsVars.ajax_url,
+    data: {
+      'action': 'personio_get_import_dialog',
+      'nonce': personioIntegrationLightJsVars.get_import_dialog_nonce
     },
     error: function( jqXHR, textStatus, errorThrown ) {
       personio_integration_ajax_error_dialog( errorThrown )
