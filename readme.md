@@ -10,7 +10,7 @@ We take security seriously. If you notice anything that could affect security, p
 
 ## Preparations
 
-Add this in your wp-config.php for development:
+Add this in your _wp-config.php_ for development:
 
 ```
 define( 'WP_ENVIRONMENT_TYPE', 'local' );
@@ -26,16 +26,55 @@ You need to install:
 
 After checkout go through the following steps:
 
+### By hand
+
+1. `composer install`
+2. `npm i`
+3. `npm run build`
+4. after that, the plugin can be activated in WordPress.
+
+### Using ant
+
 1. copy _build/build.properties.dist_ to _build/build.properties_.
 2. modify the build/build.properties file - note the comments in the file.
 3. execute the command in _build/_: `ant init`
 4. after that the plugin can be activated in WordPress
 
+### Using Taskfile
+
+1. Run this command: `task prepare`
+2. after that, the plugin can be activated in WordPress.
+
 ## Release
+
+### From a local environment by hand
+
+1. `composer install`
+2. `npm i`
+3. `npm run build`
+4. `composer test-install`
+5. `composer test`
+6. `vendor/bin/phpstan analyse`
+7. `vendor/bin/phpcbf --standard=ruleset.xml .`
+8. `vendor/bin/phpcs --standard=ruleset.xml .`
+9. Set version nummer in _readme.txt_ and _personio-integration-light.php_.
+10. Create the release ZIP with all necessary folders and files.
+
+### From a local environment with ant
 
 1. increase the version number in _build/build.properties_.
 2. execute the following command in _build/_: `ant build`
 3. after that you will have a zip file in the release directory which could be used in WordPress to install it.
+
+### From a local environment with Taskfile
+
+1. execute the following command in the main directory: `task release -- 5.4.0` - adjust the version number.
+2. after that you will find a zip file in the release directory, which could be used in WordPress to install it.
+
+### On GitHub
+
+1. Create a new tag with the new version number.
+2. The release zip will be created by a GitHub action.
 
 ## Translations
 

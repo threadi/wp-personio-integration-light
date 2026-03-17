@@ -5,6 +5,7 @@
 ### Added
 
 - Added command palette to quick jump to the positions in the backend
+- Added Taskfile as third option to build releases for the plugin
 
 ### Changed
 

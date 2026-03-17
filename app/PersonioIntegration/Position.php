@@ -34,7 +34,7 @@ class Position {
 	/**
 	 * Array for all properties of this object.
 	 *
-	 * @var array<string,mixed>
+	 * @var array<string|int,mixed>
 	 */
 	protected array $data = array(
 		'ID' => 0,
@@ -782,7 +782,7 @@ class Position {
 	/**
 	 * Return all settings.
 	 *
-	 * @return array<string,mixed>
+	 * @return array<string|int,mixed>
 	 */
 	public function get_settings(): array {
 		return $this->data;

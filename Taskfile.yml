@@ -1,0 +1,70 @@
+version: '3'
+
+tasks:
+  default:
+    - task: prepare
+
+  build_dialog:
+    dir: vendor/threadi/easy-dialog-for-wordpress/
+    cmds:
+      - npm i
+      - npm run build
+
+  build_setup:
+    dir: vendor/threadi/easy-setup-for-wordpress/
+    cmds:
+      - npm i
+      - npm run build
+
+  prepare:
+    cmds:
+      - composer install
+      - composer update
+      - npm i
+      - npm i concurrently
+      - npm run build:show
+      - npm run build:list
+      - npm run build:filter-list
+      - npm run build:filter-select
+      - npm run build:application-button
+      - npm run build:details
+      - npm run build:description
+      - npm run build:commands
+      - npm run global-styles
+      - cp inc/constants_urls.php.dist inc/constants_urls.php
+      - task: build_dialog
+      - task: build_setup
+
+  check:
+    cmds:
+      - vendor/bin/phpstan analyse
+      - vendor/bin/phpcbf --standard=ruleset.xml .
+      - vendor/bin/phpcs --standard=ruleset.xml .
+
+  build_zip:
+    dir: ../
+    cmds:
+      - zip -rq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/ -x "*/.git/*" "*/.github/*" "*/.gitattributes" "*/.phpunit.result.cache" "*/phpunit.xml.dist" "*/blocks/*/src/*" "*/doc/*" "*/phpcs.xml" "*/composer.json" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/ruleset.xml" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "*/.editorconfig" "/build/*" "*/releases/*" "*/svn/*" "*/languages/*" "*/changelog.md" "*/readme.md" "*/ruleset.xml" "*/assets/*" "*/personio-integration-light-dev.php" "*/uninstall-dev.php" "*/tests/*" "*/readme-dev.txt" "*/phpstan.neon" "*/Taskfile.yml" "*/libs/*" "*/src/*"
+      - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/autoload.php
+      - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/composer/*
+      - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/threadi/*/build/*
+      - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/threadi/*/lib/*
+
+  release:
+    cmds:
+      - task: prepare
+      - composer dump-autoload -oa --no-dev
+      - task: check
+      - cp personio-integration-light.php personio-integration-light-dev.php
+      - sed -i -e 's/@@VersionNumber@@/{{.CLI_ARGS}}/g' personio-integration-light.php
+      - cp uninstall.php uninstall-dev.php
+      - sed -i -e 's/@@VersionNumber@@/{{.CLI_ARGS}}/g' uninstall.php
+      - cp readme.txt readme-dev.txt
+      - sed -i -e 's/@@VersionNumber@@/{{.CLI_ARGS}}/g' readme.txt
+      - rm -f releases/personio-integration-light_{{.CLI_ARGS}}.zip
+      - task: build_zip
+      - cp personio-integration-light-dev.php personio-integration-light.php
+      - cp readme-dev.txt readme.txt
+      - cp uninstall-dev.php uninstall.php
+      - rm readme-dev.txt personio-integration-light-dev.php
+      - echo 'Release file generated'
