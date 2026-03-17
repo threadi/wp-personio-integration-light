@@ -1,3 +1,6 @@
+/**
+ * Embed requirements.
+ */
 import { __ } from '@wordpress/i18n';
 import { store as commandsStore } from '@wordpress/commands';
 import { dispatch } from '@wordpress/data';
@@ -5,23 +8,23 @@ import { useSelect } from '@wordpress/data';
 import { store as coreStore } from "@wordpress/core-data";
 import { useMemo } from "@wordpress/element";
 import { addQueryArgs } from '@wordpress/url';
-import {personioIcon} from "./components";
+import { personioIcon } from "./components";
 
 /**
- * Initiate the custom command.
+ * Initiate the custom command to add positions.
  */
 dispatch( commandsStore ).registerCommandLoader( {
-  name: 'personio-integration-light/commands',
+  name: 'personio-integration-light/positions',
   hook: usePersonioPositionsInCommandPalette,
 } );
 
 /**
- * Add our custom command to load positions in the command palette.
+ * Define our custom command to load positions in the command palette.
  *
  * @param search
  * @returns {{commands: *, isLoading: *}}
  */
-function usePersonioPositionsInCommandPalette( {search } ) {
+function usePersonioPositionsInCommandPalette( { search } ) {
   // Retrieve the pages for the "search" term.
   const { records, isLoading } = useSelect(
     (select) => {
@@ -72,4 +75,35 @@ function usePersonioPositionsInCommandPalette( {search } ) {
     commands,
     isLoading,
   };
+}
+
+/**
+ * Initiate the custom command to add action to import positions.
+ */
+dispatch( commandsStore ).registerCommandLoader( {
+  name: 'personio-integration-light/import',
+  hook: addImportCommandInCommandPalette,
+} );
+
+/**
+ * Define our custom action to import positions.
+ *
+ * @returns {{commands: *}}
+ */
+function addImportCommandInCommandPalette() {
+  const commands = useMemo( () => {
+     return [
+      {
+        name: 'personio-integration-light/import',
+        label: __( 'Import positions', 'personio-integration-light' ),
+        icon: personioIcon,
+        callback: ( { close } ) => {
+          close();
+          personio_integration_light_get_import_dialog()
+        },
+      },
+    ];
+  }, [] );
+
+  return { commands };
 }
