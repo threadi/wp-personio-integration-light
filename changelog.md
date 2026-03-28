@@ -10,6 +10,7 @@
 ### Changed
 
 - Set compatibility with WordPress 7.0
+- Updated support for Block components
 - Updated dependencies
 
 ## [5.3.2] - 16.03.2026
