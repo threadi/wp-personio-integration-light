@@ -152,6 +152,7 @@ export default function Edit( object ) {
               label={__('Separator', 'personio-integration-light')}
               value={ object.attributes.separator }
               onChange={ value => onChangeSeparator( value, object ) }
+              __next40pxDefaultSize
             />
             </div>
           }
