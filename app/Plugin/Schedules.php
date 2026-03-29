@@ -10,7 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
+use easySettingsForWordPress\Fields\Checkbox;
 use PersonioIntegrationLight\Log;
 
 /**
@@ -107,7 +107,7 @@ class Schedules {
 	 */
 	public function add_the_settings(): void {
 		// get settings object.
-		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get the section.
 		$advanced_section = $settings_obj->get_section( 'settings_section_advanced' );
@@ -122,7 +122,7 @@ class Schedules {
 		$setting->set_section( $advanced_section );
 		$setting->set_type( 'integer' );
 		$setting->set_default( 0 );
-		$field = new Checkbox();
+		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Check for schedules in frontend', 'personio-integration-light' ) );
 		$field->set_description( __( 'If enabled the plugin will check our own schedules on each request in frontend. This could be slow the performance of your website.', 'personio-integration-light' ) );
 		$setting->set_field( $field );

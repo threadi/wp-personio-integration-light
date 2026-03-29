@@ -10,11 +10,11 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
+use easySettingsForWordPress\Page;
+use easySettingsForWordPress\Section;
+use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object to handle positions.
@@ -369,10 +369,10 @@ class Extensions_Base {
 		}
 
 		// get settings object.
-		$settings_obj = Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get hidden section.
-		$hidden = \PersonioIntegrationLight\Plugin\Settings::get_instance()->get_hidden_section();
+		$hidden = Settings::get_instance()->get_hidden_section();
 
 		// bail if the hidden section does not exist.
 		if ( ! $hidden instanceof Section ) {
@@ -551,7 +551,7 @@ class Extensions_Base {
 	 */
 	protected function get_extension_tab(): Tab|false {
 		// get settings object.
-		$settings_obj = Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get the main settings page.
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );

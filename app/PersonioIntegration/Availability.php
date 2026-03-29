@@ -10,14 +10,14 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
+use easySettingsForWordPress\Fields\Checkbox;
+use easySettingsForWordPress\Page;
+use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl;
+use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\Plugin\Setup;
 use WP_REST_Request;
 
@@ -109,7 +109,7 @@ class Availability extends Extensions_Base {
 	 */
 	public function add_the_settings(): void {
 		// get settings object.
-		$settings_obj = Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get the main settings page.
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
@@ -142,7 +142,7 @@ class Availability extends Extensions_Base {
 		$automatic_import_setting->set_type( 'integer' );
 		$automatic_import_setting->set_default( 1 );
 		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ) );
-		$field = new Checkbox();
+		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Enable availability checks', 'personio-integration-light' ) );
 		$field->set_description( __( 'If enabled the plugin will daily check the availability of position pages on Personio. You will be warned if a position is not available.', 'personio-integration-light' ) );
 		$automatic_import_setting->set_field( $field );
@@ -562,7 +562,7 @@ class Availability extends Extensions_Base {
 	 * @deprecated since 5.0.0
 	 */
 	public function add_settings( mixed $settings ): array {
-		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()' );
+		_deprecated_function( __FUNCTION__, '5.0.0', '\easySettingsForWordPress\Settings()' );
 		if ( ! is_array( $settings ) ) {
 			return array();
 		}

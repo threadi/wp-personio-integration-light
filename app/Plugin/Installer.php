@@ -107,7 +107,7 @@ class Installer {
 		Extensions::get_instance()->activation();
 
 		// initiate the settings.
-		\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->activation();
+		Settings::get_instance()->get_settings_object()->activation();
 
 		// set marker to refresh permalinks.
 		update_option( 'personio_integration_update_slugs', 1 );

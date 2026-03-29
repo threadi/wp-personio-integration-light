@@ -132,7 +132,7 @@ class Update {
 		}
 
 		// initialize the settings.
-		\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->activation();
+		Settings::get_instance()->get_settings_object()->activation();
 
 		// create our schedules.
 		Schedules::get_instance()->create_schedules();

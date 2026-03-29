@@ -10,12 +10,12 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\MultiField;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
+use easySettingsForWordPress\Fields\Button;
+use easySettingsForWordPress\Fields\Checkbox;
+use easySettingsForWordPress\Fields\MultiField;
+use easySettingsForWordPress\Fields\Text;
+use easySettingsForWordPress\Settings;
+use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 
@@ -94,7 +94,7 @@ class Email_Base {
 		$enable_setting->set_section( $email_tab_main );
 		$enable_setting->set_type( 'integer' );
 		$enable_setting->set_default( $this->is_default_enabled() ? 1 : 0 );
-		$field = new Checkbox();
+		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Enable', 'personio-integration-light' ) );
 		$field->set_description( $this->get_description() );
 		$enable_setting->set_field( $field );
@@ -113,11 +113,11 @@ class Email_Base {
 		$setting->set_section( $email_tab_main );
 		$setting->set_type( 'array' );
 		$setting->set_default( array() );
-		$field = new MultiField();
+		$field = new MultiField( $settings_obj );
 		$field->set_title( __( 'Add recipients', 'personio-integration-light' ) );
 		$field->set_description( $description );
 		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\Emails', 'validate' ) );
-		$text_field = new Text();
+		$text_field = new Text( $settings_obj );
 		$text_field->set_placeholder( 'info@example.com' );
 		$text_field->add_depend( $enable_setting, 1 );
 		$field->set_field( $text_field );
@@ -130,7 +130,7 @@ class Email_Base {
 		$setting->set_type( 'string' );
 		$setting->set_default( get_option( 'admin_email' ) );
 		$setting->set_read_callback( array( $this, 'set_from' ) );
-		$field = new Text();
+		$field = new Text( $settings_obj );
 		$field->set_title( __( 'Sender Email', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced by the email address. */
 		$field->set_description( sprintf( __( 'If no email is set, we use the admin-email %1$s as sender. You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . get_option( 'admin_email' ) . '</code>', $wp_general_settings_url ) );
@@ -143,7 +143,7 @@ class Email_Base {
 		$setting->set_section( $email_tab_main );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
-		$field = new Button();
+		$field = new Button( $settings_obj );
 		$field->set_title( __( 'Test-Email', 'personio-integration-light' ) );
 		$field->set_button_title( __( 'Send now', 'personio-integration-light' ) );
 		$field->set_button_url(

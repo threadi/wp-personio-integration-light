@@ -10,10 +10,10 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
+use easySettingsForWordPress\Fields\Button;
+use easySettingsForWordPress\Page;
+use easySettingsForWordPress\Section;
+use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
@@ -269,7 +269,7 @@ class Intro {
 	 */
 	public function add_the_settings(): void {
 		// get settings object.
-		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get the main settings page.
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
@@ -300,7 +300,7 @@ class Intro {
 		$setting->set_section( $advanced_section );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
-		$field = new Button();
+		$field = new Button( $settings_obj );
 		$field->set_title( __( 'Reset intro', 'personio-integration-light' ) );
 		$field->set_button_title( __( 'Rerun the intro', 'personio-integration-light' ) );
 		$field->set_button_url(
@@ -340,7 +340,7 @@ class Intro {
 	 * @deprecated since 5.0.0
 	 */
 	public function add_settings( mixed $settings ): array {
-		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()' );
+		_deprecated_function( __FUNCTION__, '5.0.0', '\easySettingsForWordPress\Settings()' );
 		if ( ! is_array( $settings ) ) {
 			return array();
 		}

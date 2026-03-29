@@ -10,12 +10,12 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\TextInfo;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use easySettingsForWordPress\Fields\Button;
+use easySettingsForWordPress\Fields\Checkbox;
+use easySettingsForWordPress\Fields\TextInfo;
+use easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
+use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object to handle all import extensions.
@@ -90,7 +90,7 @@ class Imports {
 	 */
 	public function add_the_settings(): void {
 		// get settings object.
-		$settings_obj = Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get the settings page.
 		$settings_page = $settings_obj->get_page( 'personioPositions' );
@@ -119,7 +119,7 @@ class Imports {
 		$import_now_setting->set_autoload( false );
 		$import_now_setting->prevent_export( true );
 		if ( ! $imports_obj ) {
-			$field = new TextInfo();
+			$field = new TextInfo( $settings_obj );
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 			/* translators: %1$s will be replaced by a URL. */
 			$field->set_description( sprintf( __( 'No import extension enabled! Go to <a href="%1$s">the extensions</a> and enable the import type you want to use.', 'personio-integration-light' ), Extensions::get_instance()->get_link( 'imports' ) ) );
@@ -131,16 +131,16 @@ class Imports {
 				),
 				get_admin_url() . 'admin.php'
 			);
-			$field = new Button();
+			$field = new Button( $settings_obj );
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 			$field->set_button_title( __( 'Cancel running import', 'personio-integration-light' ) );
 			$field->set_button_url( $url );
 		} elseif ( $running_import > 0 ) {
-			$field = new TextInfo();
+			$field = new TextInfo( $settings_obj );
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 			$field->set_description( __( 'The import is already running. Please wait some moments.', 'personio-integration-light' ) );
 		} else {
-			$field = new Button();
+			$field = new Button( $settings_obj );
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 			$field->set_button_title( __( 'Run import of positions now', 'personio-integration-light' ) );
 			$field->add_class( 'personio-integration-import-hint' );
@@ -153,14 +153,14 @@ class Imports {
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		if ( absint( get_option( 'personioIntegrationPositionCount' ) ) > 0 ) {
-			$field = new Button();
+			$field = new Button( $settings_obj );
 			$field->set_title( __( 'Clear positions', 'personio-integration-light' ) );
 			$field->set_button_title( __( 'Delete all positions', 'personio-integration-light' ) );
 			$field->add_class( 'personio-integration-delete-all' );
 		} else {
-			$field = new TextInfo();
+			$field = new TextInfo( $settings_obj );
 			$field->set_title( __( 'Clear positions', 'personio-integration-light' ) );
-			$field->set_description( __( 'There are currently no positions imported.', 'personio-integration-light' ) );
+			$field->set_description( __( 'No items are currently being imported.', 'personio-integration-light' ) );
 		}
 		$setting->set_field( $field );
 
@@ -173,7 +173,7 @@ class Imports {
 		$automatic_import_setting->set_type( 'integer' );
 		$automatic_import_setting->set_default( 1 );
 		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Import', 'save' ) );
-		$field = new Checkbox();
+		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Enable automatic import', 'personio-integration-light' ) );
 		$field->set_description( __( 'The automatic import is run once per day. You don\'t have to worry about updating your positions on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
 		$automatic_import_setting->set_field( $field );
@@ -359,7 +359,7 @@ class Imports {
 	 * @deprecated since 5.0.0
 	 */
 	public function add_settings( mixed $settings ): array {
-		_deprecated_function( __FUNCTION__, '5.0.0', '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()' );
+		_deprecated_function( __FUNCTION__, '5.0.0', '\easySettingsForWordPress\Settings()' );
 		if ( ! is_array( $settings ) ) {
 			return array();
 		}

@@ -108,11 +108,14 @@ class Uninstaller {
 			 */
 			do_action( 'init' );
 
+			// get the settings object.
+			$settings_obj = Settings::get_instance()->get_settings_object();
+
 			// enable the settings.
-			\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->activation();
+			$settings_obj->activation();
 
 			// clean managed settings.
-			\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance()->delete_settings();
+			$settings_obj->delete_settings();
 
 			// initialize the extensions to call their uninstalling routines later.
 			Extensions::get_instance()->init();
