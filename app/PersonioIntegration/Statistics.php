@@ -10,7 +10,8 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
+use easySettingsForWordPress\Page;
+use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object to handle statistics about the positions.
@@ -66,7 +67,7 @@ class Statistics {
 	 */
 	public function add_the_settings(): void {
 		// get settings object.
-		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get main settings page.
 		$settings_page = $settings_obj->get_page( 'personioPositions' );

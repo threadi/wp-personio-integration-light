@@ -37,3 +37,10 @@ if( ! class_exists( 'PersonioIntegrationLight\Plugin\Transients' ) ) {
 if( ! class_exists( 'PersonioIntegrationLight\Plugin\Transient' ) ) {
 	class_alias('PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transient', 'PersonioIntegrationLight\Plugin\Transient' );
 }
+
+/**
+ * Load alias for old name settings object.
+ */
+if ( ! class_exists( '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings' ) ) {
+	class_alias( '\PersonioIntegrationLight\Plugin\DeprecatedSettings', 'PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings' );
+}

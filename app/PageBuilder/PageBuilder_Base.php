@@ -10,10 +10,10 @@ namespace PersonioIntegrationLight\PageBuilder;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use easySettingsForWordPress\Section;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
+use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\Plugin\Setup;
 
 /**
@@ -99,7 +99,7 @@ class PageBuilder_Base extends Extensions_Base {
 		}
 
 		// get settings object.
-		$settings_obj = Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get hidden section.
 		$hidden = \PersonioIntegrationLight\Plugin\Settings::get_instance()->get_hidden_section();

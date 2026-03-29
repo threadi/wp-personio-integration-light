@@ -10,11 +10,11 @@ namespace PersonioIntegrationLight\Plugin\Emails;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Select;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
+use easySettingsForWordPress\Fields\Select;
+use easySettingsForWordPress\Section;
+use easySettingsForWordPress\Setting;
+use easySettingsForWordPress\Settings;
+use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\PersonioIntegration\Statistics;
 use PersonioIntegrationLight\Plugin\Email_Base;
 
@@ -23,7 +23,7 @@ use PersonioIntegrationLight\Plugin\Email_Base;
  */
 class Report extends Email_Base {
 	/**
-	 * Internal name of this object.
+	 * THe internal name of this object.
 	 *
 	 * @var string
 	 */
@@ -59,7 +59,7 @@ class Report extends Email_Base {
 	 */
 	public function show_description(): void {
 		/* translators: %1$s will be replaced with a link. */
-		echo wp_kses_post( sprintf( __( 'The report contains information about the number of positions on your website, the number of locations where they are advertised and the categories in which they are located. The report can also be viewed <a href="$1%s">here</a> at any time.', 'personio-integration-light' ), '' ) );
+		echo wp_kses_post( sprintf( __( 'The report contains information about the amount of positions on your website, the amount of locations where they are assigned to, and the categories in which they are located. The report can also be viewed <a href="$1%s">here</a> at any time.', 'personio-integration-light' ), '' ) );
 	}
 
 	/**
@@ -98,7 +98,7 @@ class Report extends Email_Base {
 			return;
 		}
 
-		// add callback for the main setting.
+		// add a callback for the main setting.
 		$main_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\ReportInterval', 'save' ) );
 
 		// add setting.
@@ -106,7 +106,7 @@ class Report extends Email_Base {
 		$setting->set_section( $email_tab_main );
 		$setting->set_type( 'string' );
 		$setting->set_default( 'weekly' );
-		$field = new Select();
+		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Choose interval', 'personio-integration-light' ) );
 		$field->set_options( $schedules );
 		$field->add_depend( $main_setting, 1 );
@@ -134,7 +134,7 @@ class Report extends Email_Base {
 	 */
 	public function get_body(): string {
 		// create the body.
-		$body = __( 'This report contains statistical data about the open positions on your WordPress website. It will be sent to you automatically on a regular basis.', 'personio-integration-light' );
+		$body = __( 'This report contains statistical data about the open positions on your WordPress website. It will be sent to you automatically regularly.', 'personio-integration-light' );
 
 		$body .= Statistics::get_instance()->get_table();
 

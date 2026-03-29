@@ -10,7 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
+use easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -81,7 +81,7 @@ class Emails {
 	 */
 	public function add_the_settings(): void {
 		// get settings object.
-		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get the main settings page.
 		$settings_page = $settings_obj->get_page( 'personioPositions' );
@@ -105,7 +105,7 @@ class Emails {
 			// get the object.
 			$obj = new $email_class_name();
 
-			// bail if an object is not Email_Base.
+			// bail if an object is not "Email_Base".
 			if ( ! $obj instanceof Email_Base ) {
 				continue;
 			}

@@ -12,14 +12,14 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
+use easySettingsForWordPress\Fields\Text;
+use easySettingsForWordPress\Page;
+use easySettingsForWordPress\Section;
+use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Crypt;
 use PersonioIntegrationLight\Plugin\Schedules\ApiAccessToken;
+use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object to manage any Personio API tasks.
@@ -85,7 +85,7 @@ class Api {
 	 */
 	public function add_the_settings(): void {
 		// get settings object.
-		$settings_obj = Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get the main settings page.
 		$main_settings_page = $settings_obj->get_page( 'personioPositions' );
@@ -117,7 +117,7 @@ class Api {
 		$setting->set_default( '' );
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
 		$setting->set_save_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
-		$field = new Text();
+		$field = new Text( $settings_obj );
 		$field->set_title( __( 'Your Client-ID', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
@@ -130,13 +130,13 @@ class Api {
 		$setting->set_default( '' );
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
 		$setting->set_save_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
-		$field = new Text();
+		$field = new Text( $settings_obj );
 		$field->set_title( __( 'Access token', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 
 		// get the hidden section.
-		$hidden = \PersonioIntegrationLight\Plugin\Settings::get_instance()->get_hidden_section();
+		$hidden = Settings::get_instance()->get_hidden_section();
 
 		// bail if a hidden section does not exist.
 		if ( ! $hidden instanceof Section ) {
@@ -163,7 +163,7 @@ class Api {
 		}
 
 		/* translators: %1$s will be replaced by a URL. */
-		echo '<p>' . wp_kses_post( sprintf( __( 'You can find this information <a href="%1$s" target="_blank">in your Personio account (opens in new window)</a> under Marketplace > Integrations. For more information, take a look at the <a href="%2$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_personio_api_management_url() ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
+		echo '<p>' . wp_kses_post( sprintf( __( 'You can find this information <a href="%1$s" target="_blank">in your Personio account (open in a new window)</a> under Marketplace > Integrations. For more information, take a look at the <a href="%2$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_personio_api_management_url() ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
 	}
 
 	/**
@@ -188,7 +188,7 @@ class Api {
 			return '';
 		}
 
-		// get the saved token from DB.
+		// get the saved token from the DB.
 		$access_token = Crypt::get_instance()->decrypt( get_transient( 'personio_integration_api_token' ) );
 
 		// return token if it is known.
@@ -252,7 +252,7 @@ class Api {
 	 * @return void
 	 */
 	public function delete_access_token(): void {
-		// get the access token from DB.
+		// get the access token from the DB.
 		$access_token = $this->get_access_token_from_db();
 
 		// bail if a token is not set.
@@ -286,9 +286,9 @@ class Api {
 	}
 
 	/**
-	 * Add this object to the list of objects which add tables in the DB.
+	 * Add this object to the list of objects, which add tables in the DB.
 	 *
-	 * @param array<int,string> $table_objects List of objects which add tables in the DB.
+	 * @param array<int,string> $table_objects List of objects, which add tables in the DB.
 	 *
 	 * @return array<int,string>
 	 */
@@ -338,7 +338,7 @@ class Api {
 	}
 
 	/**
-	 * Set a specific HTTP header for update of the bearer token.
+	 * Set a specific HTTP header for an update of the bearer token.
 	 *
 	 * @return array<string,mixed>
 	 */
@@ -349,7 +349,7 @@ class Api {
 	}
 
 	/**
-	 * Get the decrypted access token from DB.
+	 * Get the decrypted access token from the DB.
 	 *
 	 * @return string
 	 */
@@ -358,12 +358,12 @@ class Api {
 	}
 
 	/**
-	 * Set a specific HTTP header for update of the bearer token.
+	 * Set a specific HTTP header for an update of the bearer token.
 	 *
 	 * @return array<string,mixed>
 	 */
 	public function set_api_request_header(): array {
-		// get the access token from DB.
+		// get the access token from the DB.
 		$access_token = $this->get_access_token_from_db();
 
 		// return the header.

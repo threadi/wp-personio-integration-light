@@ -10,9 +10,9 @@ namespace PersonioIntegrationLight\Plugin\Admin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Schedules\Import;
+use PersonioIntegrationLight\Plugin\Settings;
 use WP_REST_Server;
 
 /**
@@ -212,7 +212,7 @@ class Site_Health {
 		);
 
 		// loop through all settings and add them as fields if their export is allowed.
-		foreach ( Settings::get_instance()->get_settings() as $setting ) {
+		foreach ( Settings::get_instance()->get_settings_object()->get_settings() as $setting ) {
 			// bail if the source of this setting is not the light plugin.
 			if ( is_string( $setting->get_custom_var( 'source' ) ) ) {
 				continue;

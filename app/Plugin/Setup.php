@@ -2,6 +2,8 @@
 /**
  * File to handle setup for this plugin.
  *
+ * TODO Re-Add the import during setup.
+ *
  * @package personio-integration-light
  */
 
@@ -10,12 +12,11 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use easySettingsForWordPress\Fields\Radio;
+use easySettingsForWordPress\Fields\Text;
+use easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transient;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Radio;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Import;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
@@ -101,11 +102,8 @@ class Setup {
 			);
 			$setup_obj->set_display_hook( '_page_personioPositions' );
 
-			// set configuration for setup.
+			// set configuration for the setup.
 			$setup_obj->set_config( $this->get_config() );
-
-			// initialize the import object.
-			Import::get_instance()->init();
 
 			// only load setup if it is not completed.
 			add_filter( 'esfw_completed', array( $this, 'check_completed_value' ), 10, 2 );
@@ -115,7 +113,6 @@ class Setup {
 
 			// add hooks to enable the setup of this plugin.
 			add_action( 'admin_menu', array( $this, 'add_setup_menu' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'add_js_and_css' ) );
 
 			// use own hooks.
 			add_action( 'personio_integration_import_max_count', array( $this, 'update_max_step' ) );
@@ -349,7 +346,7 @@ class Setup {
 	 */
 	public function set_config(): void {
 		// get properties from settings.
-		$settings = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings = Settings::get_instance()->get_settings_object();
 
 		// get URL-settings.
 		$url_settings = $settings->get_setting( 'personioIntegrationUrl' );
@@ -398,7 +395,7 @@ class Setup {
 					'type'                => 'RadioControl',
 					'label'               => $language_field->get_title(),
 					'help'                => $language_field->get_description(),
-					'options'             => $this->convert_options_for_react( $language_field->get_options() ),
+					'options'             => $this->convert_options_for_react( $language_field->get_options() ), // @phpstan-ignore argument.type
 					'validation_callback' => 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\MainLanguage::rest_validate',
 				),
 				'import_settings'                     => array(
@@ -570,14 +567,5 @@ class Setup {
 	 */
 	public function uninstall(): void {
 		\easySetupForWordPress\Setup::get_instance()->uninstall( $this->get_setup_name() );
-	}
-
-	/**
-	 * Add own JS and CSS for the backend.
-	 *
-	 * @return void
-	 */
-	public function add_js_and_css(): void {
-		Import::get_instance()->add_script( 'appearance_page_easy-settings-for-wordpress' );
 	}
 }

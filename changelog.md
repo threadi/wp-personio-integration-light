@@ -10,6 +10,7 @@
 ### Changed
 
 - Set compatibility with WordPress 7.0
+- Updated the settings library
 - Updated support for Block components
 - Updated dependencies
 

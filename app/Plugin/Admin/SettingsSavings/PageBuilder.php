@@ -10,10 +10,10 @@ namespace PersonioIntegrationLight\Plugin\Admin\SettingsSavings;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
+use easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\PageBuilder\Page_Builders;
 use PersonioIntegrationLight\PageBuilder\PageBuilder_Base;
+use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object which saves the page builder import setting for templates and run it if enabled.
@@ -40,10 +40,10 @@ class PageBuilder {
 		// get option.
 		$option = str_replace( 'pre_update_option_', '', (string) current_filter() );
 
-		// get the depends-field-name as this is the field which enables this setting.
-		$field_settings = Settings::get_instance()->get_setting( $option );
+		// get the depends-field-name as this is the field, which enables this setting.
+		$field_settings = Settings::get_instance()->get_settings_object()->get_setting( $option );
 
-		// bail if no settings or page_builder is found.
+		// bail if no settings or "page_builder" is found.
 		if ( ! $field_settings instanceof Setting || empty( $field_settings->get_custom_var( 'page_builder' ) ) ) {
 			return $value;
 		}
@@ -62,7 +62,7 @@ class PageBuilder {
 			// get the object.
 			$page_builder_obj = $classname();
 
-			// bail if it is not PageBuilder_Base.
+			// bail if it is not "PageBuilder_Base".
 			if ( ! $page_builder_obj instanceof PageBuilder_Base ) {
 				continue;
 			}
@@ -72,7 +72,7 @@ class PageBuilder {
 				continue;
 			}
 
-			// set this object as pagebuilder object to use.
+			// set this object as "page_builder" object to use.
 			$page_builder_obj_to_use = $page_builder_obj;
 		}
 

@@ -10,12 +10,13 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
+use easySettingsForWordPress\Fields\Text;
+use easySettingsForWordPress\Page;
+use easySettingsForWordPress\Section;
+use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object to handle files for positions.
@@ -29,7 +30,7 @@ class Personio_Accounts extends Extensions_Base {
 	protected string $name = 'personio_accounts';
 
 	/**
-	 * Name if the setting field which defines its state.
+	 * Name if the setting field, which defines its state.
 	 *
 	 * @var string
 	 */
@@ -97,7 +98,7 @@ class Personio_Accounts extends Extensions_Base {
 	 */
 	public function add_the_settings(): void {
 		// get the settings object.
-		$settings_obj = \PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get the main page.
 		$main_page = $settings_obj->get_page( $this->get_settings_page() );
@@ -129,7 +130,7 @@ class Personio_Accounts extends Extensions_Base {
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
 		$setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationLoginUrl', 'validate' ) );
-		$field = new Text();
+		$field = new Text( $settings_obj );
 		$field->set_title( __( 'Personio Login URL', 'personio-integration-light' ) );
 		/* translators: %1$s is replaced with the URL to the Personio support */
 		$field->set_description( sprintf( __( 'This URL is used by Personio to give you a unique login URL to your Personio account. It will be communicated to you when you register with Personio.<br>Entering this URL activates links in the WordPress backend that allow you to quickly switch from WordPress to Personio to edit positions.<br>This is NOT the URL where your open positions are visible.<br>If you have any questions about this URL, please contact the <a href="%1$s" target="_blank">Personio support (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_support_url() ) ) );

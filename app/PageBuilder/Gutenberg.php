@@ -10,10 +10,9 @@ namespace PersonioIntegrationLight\PageBuilder;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Page;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Section;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings;
-use PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Tab;
+use easySettingsForWordPress\Page;
+use easySettingsForWordPress\Section;
+use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Blocks_Basis;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Patterns;
@@ -21,6 +20,7 @@ use PersonioIntegrationLight\PageBuilder\Gutenberg\Templates;
 use PersonioIntegrationLight\PageBuilder\Gutenberg\Variations;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Settings;
 
 /**
  * Object to handle the Gutenberg support.
@@ -191,7 +191,7 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	public function add_the_settings(): void {
 		// get settings object.
-		$settings_obj = Settings::get_instance();
+		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get the settings page.
 		$settings_page = $settings_obj->get_page( 'personioPositions' );
