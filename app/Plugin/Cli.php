@@ -16,7 +16,7 @@ use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 
 /**
- * Handler for recruitment from HR Personio
+ * Handler for WP CLI commands.
  */
 class Cli {
 	/**

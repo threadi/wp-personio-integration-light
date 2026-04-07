@@ -1,6 +1,6 @@
 <?php
 /**
- * File for handling any requests to the Personio AP v2.
+ * File for handling any requests to the Personio API v2.
  *
  * @source https://developer.personio.de/reference/introduction
  *
