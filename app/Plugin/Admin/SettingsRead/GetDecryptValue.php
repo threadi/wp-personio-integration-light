@@ -1,6 +1,6 @@
 <?php
 /**
- * File to get a given value as decrypted value.
+ * File to get a given value as a decrypted value.
  *
  * @package personio-integration-light
  */
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Plugin\Crypt;
 
 /**
- * Object which get a given value as decrypted value.
+ * Object, which returns a given encrypted value as a decrypted value.
  */
 class GetDecryptValue {
 	/**
@@ -24,7 +24,7 @@ class GetDecryptValue {
 	 * @return string|null
 	 */
 	public static function get( string|null $value ): null|string {
-		// bail if value is empty.
+		// bail if the value is empty.
 		if ( empty( $value ) ) {
 			return '';
 		}

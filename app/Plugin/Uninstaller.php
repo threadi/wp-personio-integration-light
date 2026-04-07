@@ -194,9 +194,6 @@ class Uninstaller {
 
 		// delete our custom database-tables.
 		Init::get_instance()->delete_db_tables();
-
-		// remove crypt settings.
-		Crypt::get_instance()->uninstall();
 	}
 
 	/**

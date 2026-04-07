@@ -110,7 +110,7 @@ class Api extends Imports_Base {
 		// bail if no token is set.
 		if ( empty( $access_token ) ) {
 			// log this as an error.
-			$this->add_error( __( 'No Access Token for API available. Import from API will not run.', 'personio-integration-light' ) );
+			$this->add_error( __( 'No Access token for API available. Import from API will not run.', 'personio-integration-light' ) );
 
 			// reset status.
 			update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, '' );

@@ -12,6 +12,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use easySettingsForWordPress\Fields\Password;
 use easySettingsForWordPress\Fields\Text;
 use easySettingsForWordPress\Page;
 use easySettingsForWordPress\Section;
@@ -130,7 +131,7 @@ class Api {
 		$setting->set_default( '' );
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
 		$setting->set_save_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
-		$field = new Text( $settings_obj );
+		$field = new Password( $settings_obj );
 		$field->set_title( __( 'Access token', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );

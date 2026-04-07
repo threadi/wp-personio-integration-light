@@ -254,6 +254,8 @@
             <zipfileset dir="${src.dir}/vendor/threadi/easy-dialog-for-wordpress/build/" prefix="${plugin.slug}/vendor/threadi/easy-dialog-for-wordpress/build/" />
             <zipfileset dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/build/" prefix="${plugin.slug}/vendor/threadi/easy-setup-for-wordpress/build/" />
             <zipfileset dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/lib/" prefix="${plugin.slug}/vendor/threadi/easy-setup-for-wordpress/lib/" />
+            <zipfileset dir="${src.dir}/vendor/threadi/easy-settings-for-wordpress/" prefix="${plugin.slug}/vendor/threadi/easy-settings-for-wordpress/" />
+            <zipfileset dir="${src.dir}/vendor/threadi/crypt-for-wordpress/" prefix="${plugin.slug}/vendor/threadi/crypt-for-wordpress/" />
             <zipfileset dir="${src.dir}/node_modules/intro.js/minified/" prefix="${plugin.slug}/node_modules/intro.js/minified/" />
             <zipfileset dir="${src.dir}/inc" prefix="${plugin.slug}/inc">
                 <exclude name="**/constants_urls.php.dist" />
