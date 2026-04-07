@@ -49,6 +49,8 @@ tasks:
       - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/composer/*
       - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/threadi/*/build/*
       - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/threadi/*/lib/*
+      - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/threadi/easy-settings-for-wordpress/*
+      - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/threadi/crypt-for-wordpress/*
 
   release:
     cmds:

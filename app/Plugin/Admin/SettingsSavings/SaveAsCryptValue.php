@@ -1,6 +1,6 @@
 <?php
 /**
- * File to save a given value as crypt value.
+ * File to save a given value as an encrypted value.
  *
  * @package personio-integration-light
  */
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Plugin\Crypt;
 
 /**
- * Object which saves crypt values.
+ * Object, which saves an given plain value as encrypt value.
  */
 class SaveAsCryptValue {
 	/**
@@ -24,7 +24,7 @@ class SaveAsCryptValue {
 	 * @return string|null
 	 */
 	public static function save( string|null $value ): null|string {
-		// bail if value is empty.
+		// bail if the value is empty.
 		if ( empty( $value ) ) {
 			return '';
 		}

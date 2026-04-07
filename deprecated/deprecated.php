@@ -39,8 +39,57 @@ if( ! class_exists( 'PersonioIntegrationLight\Plugin\Transient' ) ) {
 }
 
 /**
- * Load alias for old name settings object.
+ * Load alias for old name setting object.
  */
 if ( ! class_exists( '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings' ) ) {
 	class_alias( '\PersonioIntegrationLight\Plugin\DeprecatedSettings', 'PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Settings' );
+}
+
+/**
+ * Load alias for old name setting object.
+ */
+if ( ! class_exists( '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting' ) ) {
+	class_alias( '\PersonioIntegrationLight\Plugin\DeprecatedSetting', 'PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Setting' );
+}
+
+/**
+ * Load alias for old name setting object.
+ */
+if ( ! class_exists( '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text' ) ) {
+	class_alias( '\PersonioIntegrationLight\Plugin\DeprecatedSettings', 'PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Text' );
+}
+
+/**
+ * Load alias for old name setting object.
+ */
+if ( ! class_exists( '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\TextInfo' ) ) {
+	class_alias( '\PersonioIntegrationLight\Plugin\DeprecatedSettings', 'PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\TextInfo' );
+}
+
+/**
+ * Load alias for old name setting object.
+ */
+if ( ! class_exists( '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Select' ) ) {
+	class_alias( '\PersonioIntegrationLight\Plugin\DeprecatedSettings', 'PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Select' );
+}
+
+/**
+ * Load alias for old name setting object.
+ */
+if ( ! class_exists( '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\MultiSelect' ) ) {
+	class_alias( '\PersonioIntegrationLight\Plugin\DeprecatedSettings', 'PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\MultiSelect' );
+}
+
+/**
+ * Load alias for old name setting object.
+ */
+if ( ! class_exists( '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox' ) ) {
+	class_alias( '\PersonioIntegrationLight\Plugin\DeprecatedSettings', 'PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Checkbox' );
+}
+
+/**
+ * Load alias for old name setting object.
+ */
+if ( ! class_exists( '\PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button' ) ) {
+	class_alias( '\PersonioIntegrationLight\Plugin\DeprecatedSettings', 'PersonioIntegrationLight\Dependencies\easySettingsForWordPress\Fields\Button' );
 }

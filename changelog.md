@@ -5,11 +5,12 @@
 ### Added
 
 - Added command palette to quick jump to the positions in the backend
-- Added Taskfile as third option to build releases for the plugin
+- Added Taskfile as the third option to build releases for the plugin
 
 ### Changed
 
 - Set compatibility with WordPress 7.0
+- Switches to Crypt for WordPress as the encryption library
 - Updated the settings library
 - Updated support for Block components
 - Updated dependencies

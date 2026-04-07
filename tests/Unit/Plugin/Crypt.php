@@ -21,7 +21,7 @@ class Crypt extends PersonioTestCase {
 	 */
 	public function test_get_method(): void {
 		$crypt_method = \PersonioIntegrationLight\Plugin\Crypt::get_instance()->get_method();
-		$this->assertInstanceOf( '\PersonioIntegrationLight\Plugin\Crypt_Base', $crypt_method );
+		$this->assertInstanceOf( '\CryptForWordPress\Method_Base', $crypt_method );
 	}
 
 	/**

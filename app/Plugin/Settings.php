@@ -76,7 +76,7 @@ class Settings {
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 30 );
 		add_filter( 'personio_integration_light_settings_tab_title', array( $this, 'add_pro_on_title' ), 10, 2 );
 		add_action( 'personio_integration_light_settings_import', array( $this, 'run_after_import' ) );
-		add_filter( 'personio_integration_light_enqueue_styles_and_scripts', array( $this, 'enqueue_styles_and_scripts' ), 10 , 2 );
+		add_filter( 'personio_integration_light_enqueue_styles_and_scripts', array( $this, 'enqueue_styles_and_scripts' ), 10, 2 );
 
 		// misc.
 		add_action( 'wp_ajax_personio_get_settings_import_dialog', array( $this, 'get_settings_import_dialog_via_ajax' ) );
@@ -661,7 +661,7 @@ class Settings {
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'import_settings' );
-		$setting->set_section( $advanced );
+		$setting->set_section( $advanced_plugin );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		$field = new Button( $settings_obj );
@@ -694,7 +694,7 @@ class Settings {
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'export_settings' );
-		$setting->set_section( $advanced );
+		$setting->set_section( $advanced_plugin );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		$field = new Button( $settings_obj );
@@ -1122,7 +1122,7 @@ class Settings {
 	 * @return bool
 	 */
 	public function enqueue_styles_and_scripts( bool $result, string $hook ): bool {
-		if( ! in_array( $hook, array( 'applications_page_personioApplicationSettings', 'personioposition_page_personioPositions' ), true ) ) {
+		if ( ! in_array( $hook, array( 'applications_page_personioApplicationSettings', 'personioposition_page_personioPositions' ), true ) ) {
 			return $result;
 		}
 		return true;

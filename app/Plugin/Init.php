@@ -120,6 +120,9 @@ class Init {
 		add_action( 'wp', array( $this, 'update_slugs' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 		add_action( 'parse_query', array( $this, 'check_static_front_filter' ) );
+
+		// misc.
+		add_filter( 'personio-integration-light_crypt_constant', array( $this, 'set_crypt_constant_name' ), 10, 0 );
 	}
 
 	/**
@@ -398,7 +401,7 @@ class Init {
 			return;
 		}
 
-		// bail if page on front is not used.
+		// bail if the page on the front is not used.
 		$page_on_front = absint( get_option( 'page_on_front' ) );
 		if ( 0 === $page_on_front ) {
 			return;
@@ -414,5 +417,14 @@ class Init {
 		$query->is_page     = true;
 		$query->is_singular = true;
 		$query->set( 'page_id', $page_on_front );
+	}
+
+	/**
+	 * Set the cryptographic constant name.
+	 *
+	 * @return string
+	 */
+	public function set_crypt_constant_name(): string {
+		return 'PERSONIO_INTEGRATION_LIGHT_HASH';
 	}
 }

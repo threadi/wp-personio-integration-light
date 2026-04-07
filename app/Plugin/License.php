@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use CryptForWordPress\Method_Base;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -528,7 +529,7 @@ class License {
 		$crypt_obj = Crypt::get_instance()->get_method();
 
 		// bail if no crypt method could be loaded.
-		if ( ! $crypt_obj instanceof Crypt_Base ) {
+		if ( ! $crypt_obj instanceof Method_Base ) {
 			return array();
 		}
 
