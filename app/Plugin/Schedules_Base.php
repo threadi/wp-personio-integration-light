@@ -121,6 +121,11 @@ class Schedules_Base {
 			return;
 		}
 
+		// bail if "personio_sqlite" is set.
+		if( 1 === absint( get_option( 'personio_sqlite', 0 ) ) ) {
+			return;
+		}
+
 		// bail if the schedule already exists.
 		if ( wp_next_scheduled( $this->get_name(), $this->get_args() ) ) {
 			return;

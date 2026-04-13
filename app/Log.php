@@ -128,6 +128,11 @@ class Log {
 			return;
 		}
 
+		// bail if "personio_sqlite" is set.
+		if( 1 === absint( get_option( 'personio_sqlite', 0 ) ) ) {
+			return;
+		}
+
 		// get db connection.
 		global $wpdb;
 
