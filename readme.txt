@@ -133,6 +133,12 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Fixed a missing space between CSS-classes for filters
+- Added command palette to quick jump to the positions in the backend
+- Added Taskfile as the third option to build releases for the plugin
+- Set compatibility with WordPress 7.0
+- Switches to Crypt for WordPress as the encryption library
+- Updated the settings library
+- Updated support for Block components
+- Updated dependencies
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
