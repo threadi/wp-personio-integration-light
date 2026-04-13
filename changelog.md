@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleases]
+## [5.4.0] - 13.04.2026
 
 ### Added
 
