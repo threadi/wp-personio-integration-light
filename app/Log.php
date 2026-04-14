@@ -309,7 +309,7 @@ class Log {
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`, `category`
                 FROM `' . $wpdb->prefix . 'personio_import_logs`
-                ORDER BY ' . $order_by . ' ' . $order . '
+                ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
                 LIMIT %d',
 				array( $limit )
 			),

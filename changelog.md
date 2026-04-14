@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Optimized ordering of entries in the log table
+
 ## [5.4.0] - 13.04.2026
 
 ### Added
