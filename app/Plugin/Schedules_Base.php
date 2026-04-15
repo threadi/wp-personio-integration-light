@@ -122,7 +122,7 @@ class Schedules_Base {
 		}
 
 		// bail if "personio_sqlite" is set.
-		if( 1 === absint( get_option( 'personio_sqlite', 0 ) ) ) {
+		if ( 1 === absint( get_option( 'personio_sqlite', 0 ) ) ) {
 			return;
 		}
 

@@ -223,7 +223,8 @@ class Xml extends Imports_Base {
 
 		// clean up the database if no errors occurred.
 		if ( ! $this->has_errors() ) {
-			if ( 0 === $imported_positions ) {
+			// do not clean up if no positions have been imported but positions have been read from XML.
+			if ( 0 === $imported_positions && $this->get_import_count() > 0 ) {
 				// output success-message.
 				Helper::is_cli() ? \WP_CLI::success( 'Import has been run but no changes have been imported.' ) : false;
 

@@ -1,10 +1,12 @@
 # Changelog
 
-## [Unreleased]
+## [5.4.1] - 15.04.2026
 
 ### Changed
 
 - Optimized ordering of entries in the log table
+- Optimize positions after reading an empty XML from Personio
+- Updated dependencies
 
 ## [5.4.0] - 13.04.2026
 
