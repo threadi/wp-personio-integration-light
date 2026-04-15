@@ -128,6 +128,11 @@ class Log {
 			return;
 		}
 
+		// bail if "personio_sqlite" is set.
+		if ( 1 === absint( get_option( 'personio_sqlite', 0 ) ) ) {
+			return;
+		}
+
 		// get db connection.
 		global $wpdb;
 
@@ -304,7 +309,7 @@ class Log {
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`, `category`
                 FROM `' . $wpdb->prefix . 'personio_import_logs`
-                ORDER BY ' . $order_by . ' ' . $order . '
+                ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
                 LIMIT %d',
 				array( $limit )
 			),
