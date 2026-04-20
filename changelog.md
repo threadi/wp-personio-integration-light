@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.4.3] - 20.04.2026
+
+### Fixed
+
+- Fixed a wrong version number in the release via SVN
+
 ## [5.4.2] - 20.04.2026
 
 ### Fixed
