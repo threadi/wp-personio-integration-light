@@ -24,7 +24,7 @@ class Db {
 	private static ?Db $instance = null;
 
 	/**
-	 * Constructor which sets the active method.
+	 * Constructor, which sets the active method.
 	 */
 	private function __construct() {}
 

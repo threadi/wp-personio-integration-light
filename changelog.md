@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Some typos
+
 ## [5.4.3] - 20.04.2026
 
 ### Fixed

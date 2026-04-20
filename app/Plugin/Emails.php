@@ -138,7 +138,7 @@ class Emails {
 	}
 
 	/**
-	 * Return the email object which as the given name.
+	 * Return the email object, which as the given name.
 	 *
 	 * @param string $name The name.
 	 *
@@ -155,7 +155,7 @@ class Emails {
 			// get the object.
 			$obj = new $email_class_name();
 
-			// bail if an object is not Email_Base.
+			// bail if an object is not "Email_Base".
 			if ( ! $obj instanceof Email_Base ) {
 				continue;
 			}
@@ -241,7 +241,7 @@ class Emails {
 		$content .= '<p><strong>' . __( 'Important notes:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ul>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Check and test whether you can send emails to the recipients from your project. This depends on many factors that our plugin does not influence. <a href="%1$s" target="_blank">SMTP plugins (opens new window)</a> may help here.', 'personio-integration-light' ), 'https://wordpress.org/plugins/tags/smtp/' ) . '</li>';
+		$content .= '<li>' . sprintf( __( 'Check and test whether you can send emails to the recipients from your project. This depends on many factors that our plugin does not influence. <a href="%1$s" target="_blank">SMTP plugins (opens a new window)</a> may help here.', 'personio-integration-light' ), 'https://wordpress.org/plugins/tags/smtp/' ) . '</li>';
 		$content .= '</ul>';
 
 		// add help for the positions in general.
@@ -301,12 +301,12 @@ class Emails {
 		// trigger the test-email of this object.
 		$email_obj->send_test();
 
-		// add hint.
+		// add a hint.
 		$transient_obj = Transients::get_instance()->add();
 		$transient_obj->set_name( 'personio_integration_light_email_testmail' );
 		$transient_obj->set_type( 'success' );
 		/* translators: %1$s will be replaced by a name. */
-		$transient_obj->set_message( sprintf( __( 'Test-Email has been send. Check now your inbox in %1$s.', 'personio-integration-light' ), implode( ', ', $email_obj->get_recipients() ) ) );
+		$transient_obj->set_message( sprintf( __( 'Test-Email has been sent. Check now your inbox in %1$s.', 'personio-integration-light' ), implode( ', ', $email_obj->get_recipients() ) ) );
 		$transient_obj->save();
 
 		// let the user return.

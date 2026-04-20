@@ -152,7 +152,7 @@ class Intervals {
 	}
 
 	/**
-	 * Return the prefix we use for each of our own interval names.
+	 * Return the prefix we use for each our own interval names.
 	 *
 	 * @return string
 	 */

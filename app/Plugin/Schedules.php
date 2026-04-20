@@ -14,7 +14,7 @@ use easySettingsForWordPress\Fields\Checkbox;
 use PersonioIntegrationLight\Log;
 
 /**
- * The object which handles schedules.
+ * The object, which handles schedules.
  */
 class Schedules {
 	/**
@@ -124,7 +124,7 @@ class Schedules {
 		$setting->set_default( 0 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Check for schedules in frontend', 'personio-integration-light' ) );
-		$field->set_description( __( 'If enabled the plugin will check our own schedules on each request in frontend. This could be slow the performance of your website.', 'personio-integration-light' ) );
+		$field->set_description( __( 'If enabled the plugin will check our own schedules on each request in the frontend. This could be slow the performance of your website.', 'personio-integration-light' ) );
 		$setting->set_field( $field );
 	}
 
@@ -138,7 +138,7 @@ class Schedules {
 		$our_events = $this->get_wp_events();
 
 		/**
-		 * Filter the list of our own events, e.g., to check if all which are enabled in setting are active.
+		 * Filter the list of our own events, e.g., to check if all, which are enabled in setting are active.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
@@ -327,7 +327,7 @@ class Schedules {
 			// get the object.
 			$obj = new $object_name();
 
-			// bail if the object is not a Schedule_Base object.
+			// bail if the object is not a "Schedule_Base" object.
 			if ( ! $obj instanceof Schedules_Base ) {
 				continue;
 			}

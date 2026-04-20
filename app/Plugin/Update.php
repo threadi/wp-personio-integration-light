@@ -69,7 +69,7 @@ class Update {
 		// get installed plugin-version (version of the actual files in this plugin).
 		$installed_plugin_version = WP_PERSONIO_INTEGRATION_VERSION;
 
-		// get db-version (version which was last installed).
+		// get db-version (version, which was last installed).
 		$db_plugin_version = get_option( 'personioIntegrationVersion', '1.0.0' );
 
 		// compare version if we are not in development-mode.
@@ -97,7 +97,7 @@ class Update {
 			/* translators: %1$s and %2$s are replaced by the old and new version. */
 			Log::get_instance()->add( sprintf( __( 'Personio Integration Light has been updated from %1$s to %2$s.', 'personio-integration-light' ), $db_plugin_version, $installed_plugin_version ), 'success', 'system' );
 
-			// save the new plugin-version in DB.
+			// save the new plugin-version in the DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
 
 			// refresh permalinks.
@@ -106,7 +106,7 @@ class Update {
 	}
 
 	/**
-	 * To run on update to version 3.0.0 or newer.
+	 * To run on an update to version 3.0.0 or newer.
 	 *
 	 * @return void
 	 */
@@ -146,7 +146,7 @@ class Update {
 	}
 
 	/**
-	 * To run on update to version 3.1.0 or newer.
+	 * To run on an update to version 3.1.0 or newer.
 	 *
 	 * @return void
 	 */
@@ -156,7 +156,7 @@ class Update {
 	}
 
 	/**
-	 * To run on update to version 3.2.0 or newer.
+	 * To run on an update to version 3.2.0 or newer.
 	 *
 	 * @return void
 	 */
@@ -168,12 +168,12 @@ class Update {
 	}
 
 	/**
-	 * To run on update to version 4.0.0 or newer.
+	 * To run on an update to version 4.0.0 or newer.
 	 *
 	 * @return void
 	 */
 	private function version400(): void {
-		// get the actual value for setup and save it in the new field, if not already set.
+		// get the actual value for the setup and save it in the new field, if not already set.
 		if ( ! get_option( 'esfw_completed' ) ) {
 			update_option( 'esfw_completed', get_option( 'wp_easy_setup_completed' ) );
 		}
@@ -199,7 +199,7 @@ class Update {
 	}
 
 	/**
-	 * To run on update to version 5.0.0 or newer.
+	 * To run on an update to version 5.0.0 or newer.
 	 *
 	 * @return void
 	 */

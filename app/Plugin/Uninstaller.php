@@ -68,7 +68,7 @@ class Uninstaller {
 		define( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING', 1 );
 
 		if ( is_multisite() ) {
-			// get original blog id.
+			// get original blog ID.
 			$original_blog_id = get_current_blog_id();
 
 			// loop through the blogs.
@@ -91,7 +91,7 @@ class Uninstaller {
 	/**
 	 * Define the tasks to run during deactivation.
 	 *
-	 * @param array<int> $delete_data Whether all data should be removed or not (should be an array with value 1 for yes).
+	 * @param array<int> $delete_data Whether all data should be removed or not (should be an array with value 1 for "yes").
 	 *
 	 * @return void
 	 */
@@ -197,7 +197,7 @@ class Uninstaller {
 	}
 
 	/**
-	 * Return list of options this plugin is using which are not configured via @file Settings.php.
+	 * Return list of options this plugin is using, which are not configured via @file Settings.php.
 	 *
 	 * @return array<string>
 	 */

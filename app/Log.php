@@ -147,7 +147,7 @@ class Log {
 	}
 
 	/**
-	 * Return the list of categories with internal name and their label.
+	 * Return the list of categories with an internal name and their label.
 	 *
 	 * @return array<string,string>
 	 */

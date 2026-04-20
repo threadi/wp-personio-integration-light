@@ -196,7 +196,7 @@ class Schedules_Base {
 	}
 
 	/**
-	 * Return the option name which enabled this schedule.
+	 * Return the option name, which enabled this schedule.
 	 *
 	 * @return string
 	 */

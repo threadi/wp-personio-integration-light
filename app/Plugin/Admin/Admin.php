@@ -250,7 +250,7 @@ class Admin {
 	 * @return string
 	 */
 	public function get_pro_hint( string $hint, bool $do_not_use_ending_p = false ): string {
-		$text = '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . esc_html__( 'Personio Integration Pro (opens new window)', 'personio-integration-light' ) . '</a>';
+		$text = '<a href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">' . esc_html__( 'Personio Integration Pro (opens a new window)', 'personio-integration-light' ) . '</a>';
 		/**
 		 * Filter the hint text for Pro-plugin.
 		 *
@@ -451,7 +451,7 @@ class Admin {
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_limit_hint' );
 			/* translators: %1$s will be replaced by the URL to the Pro-information-page. */
-			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro (opens new window)</a> any number of positions can be displayed - and you get a large number of additional features.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro (opens a new window)</a> any number of positions can be displayed - and you get a large number of additional features.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->set_hide_on(
 				array(
@@ -484,7 +484,7 @@ class Admin {
 				$transient_obj->set_name( 'personio_integration_admin_show_review_hint' );
 				$transient_obj->set_message(
 					/* translators: %1$d is replaced with a day-count, %2$s will be replaced with the review-URL */
-					sprintf( __( 'You use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="%2$s" target="_blank">leave us a review (opens new window)</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ), esc_url( Helper::get_review_url() ) ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
+					sprintf( __( 'You use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="%2$s" target="_blank">leave us a review (opens a new window)</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ), esc_url( Helper::get_review_url() ) ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
 				);
 				$transient_obj->set_type( 'info' );
 				$transient_obj->save();
@@ -786,7 +786,7 @@ class Admin {
 																									'title'   => __( 'How to get the Pro-version?', 'personio-integration-light' ),
 																									'texts'   => array(
 																										/* translators: %1$s will be replaced by the Pro-plugin-URL */
-																										'<p>' . sprintf( __( 'If you want to use the Pro-version of our plugin, check out <a href="%1$s" target="_blank">our website (opens new window)</a> and fill out the order form there.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</p>',
+																										'<p>' . sprintf( __( 'If you want to use the Pro-version of our plugin, check out <a href="%1$s" target="_blank">our website (opens a new window)</a> and fill out the order form there.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</p>',
 																									),
 																									'buttons' => array(
 																										array(
@@ -824,13 +824,13 @@ class Admin {
 		<p>
 			<?php
 			/* translators: %1$s will be replaced by the support-forum-URL. */
-			echo wp_kses_post( sprintf( __( 'If you have any questions, do not hesitate to ask them in our <a href="%1$s" target="_blank">forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) );
+			echo wp_kses_post( sprintf( __( 'If you have any questions, do not hesitate to ask them in our <a href="%1$s" target="_blank">forum (opens a new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) );
 			?>
 		</p>
 		<p>
 			<?php
 			/* translators: %1$s and %2$s will be replaced by external URLs. */
-			echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">GitHub</a>. There you will also find <a href="%2$s" target="_blank">some documentation (opens new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ) ) );
+			echo wp_kses_post( sprintf( __( 'Check out our repository on <a href="%1$s" target="_blank">GitHub</a>. There you will also find <a href="%2$s" target="_blank">some documentation (opens a new window)</a>.', 'personio-integration-light' ), esc_url( 'https://github.com/threadi/wp-personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ) ) );
 			?>
 			</p>
 		<?php

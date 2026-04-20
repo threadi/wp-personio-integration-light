@@ -76,7 +76,7 @@ This plugin is compatible with [ClassicPress](https://www.classicpress.net/).
 
 The development repository is on [GitHub](https://github.com/threadi/wp-personio-integration-light).
 
-We also provide a number of [hooks](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/hooks.md) as help for developers.
+We also provide several [hooks](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/hooks.md) as help for developers.
 
 The Personio logo as part of all distributed icons is a trademark of [Personio SE & Co. KG](https://www.personio.com).
 
@@ -99,7 +99,7 @@ Each release of this plugin will only be published if it fulfills the following 
 
 = Can I use the plugin without a Personio account? =
 
-The plugin can be installed even without a Personio account. However, it is not usable without Personio data.
+The plugin can be installed even without a Personio account. However, it is unusable without Personio data.
 
 = Does this plugin use iframes? =
 
