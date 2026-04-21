@@ -5,6 +5,8 @@
 ### Changed
 
 - Some typos
+- Hide the translation hint after switching the language
+- Hide the translation hint if the user has set "en_US" as language in its own profile
 
 ### Fixed
 

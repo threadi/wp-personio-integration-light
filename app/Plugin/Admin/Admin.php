@@ -1015,12 +1015,14 @@ class Admin {
 	 */
 	public function check_language(): void {
 		// bail if the language is Englisch or the Personio URL is not set.
-		if ( get_locale() === 'en_US' || ! Helper::is_personio_url_set() ) {
+		if ( get_locale() === 'en_US' || get_user_locale() === 'en_US' || ! Helper::is_personio_url_set() ) {
+			Transients::get_instance()->delete_transient( Transients::get_instance()->get_transient_by_name( 'personio_integration_light_translatable' ) );
 			return;
 		}
 
 		// bail if 'Provides recruiting handling for Personio.' is translated.
 		if ( __( 'Provides recruiting handling for Personio.', 'personio-integration-light' ) !== 'Provides recruiting handling for Personio.' ) {
+			Transients::get_instance()->delete_transient( Transients::get_instance()->get_transient_by_name( 'personio_integration_light_translatable' ) );
 			return;
 		}
 
