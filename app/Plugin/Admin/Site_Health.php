@@ -221,6 +221,11 @@ class Site_Health {
 			// get the value.
 			$value = $setting->get_value();
 
+			// bail if the value is an array as this is not compatible with the debug information in WordPress.
+			if( is_array( $value ) ) {
+				continue;
+			}
+
 			// mask value if it is an email.
 			if ( is_string( $value ) && is_email( $value ) ) {
 				$value = 'masked';

@@ -6,6 +6,10 @@
 
 - Some typos
 
+### Fixed
+
+- Fixed to prevent PHP notices in Site Health debug info
+
 ## [5.4.3] - 20.04.2026
 
 ### Fixed
