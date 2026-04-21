@@ -112,7 +112,7 @@ class Installer {
 		// set marker to refresh permalinks.
 		update_option( 'personio_integration_update_slugs', 1 );
 
-		// show a success message on cli.
+		// show a success message on WP CLI.
 		Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin :-)' ) : false;
 	}
 }

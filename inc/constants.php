@@ -140,4 +140,4 @@ const WP_PERSONIO_INTEGRATION_LIGHT_HASH_SODIUM = 'personioIntegrationHashSodium
 /**
  * Include URLs-file.
  */
-require_once 'constants_urls.php';
+require_once __DIR__ . '/constants_urls.php';

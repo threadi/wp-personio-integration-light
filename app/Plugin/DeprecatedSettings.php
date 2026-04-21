@@ -95,7 +95,7 @@ class DeprecatedSettings {
 	}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param string $type The parameter used.
 	 *
@@ -104,7 +104,7 @@ class DeprecatedSettings {
 	public function set_type( string $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param string $type The parameter used.
 	 *
@@ -113,7 +113,7 @@ class DeprecatedSettings {
 	public function set_description( string $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param string $type The parameter used.
 	 *
@@ -122,7 +122,7 @@ class DeprecatedSettings {
 	public function set_placeholder( string $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -131,7 +131,7 @@ class DeprecatedSettings {
 	public function set_sanitize_callback( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -140,7 +140,7 @@ class DeprecatedSettings {
 	public function set_title( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -149,7 +149,7 @@ class DeprecatedSettings {
 	public function set_options( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -158,7 +158,7 @@ class DeprecatedSettings {
 	public function add_depend( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -167,7 +167,7 @@ class DeprecatedSettings {
 	public function set_button_title( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -176,7 +176,7 @@ class DeprecatedSettings {
 	public function set_button_url( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -185,7 +185,7 @@ class DeprecatedSettings {
 	public function add_class( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -194,7 +194,7 @@ class DeprecatedSettings {
 	public function add_data( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -203,7 +203,7 @@ class DeprecatedSettings {
 	public function set_readonly( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -212,7 +212,7 @@ class DeprecatedSettings {
 	public function get_setting( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @param mixed $type The parameter used.
 	 *
@@ -221,7 +221,7 @@ class DeprecatedSettings {
 	public function set_menu_parent_slug( mixed $type ): void {}
 
 	/**
-	 * Pseudo-set the type of the setting.
+	 * Pseudo-set the type for the setting.
 	 *
 	 * @return void
 	 */
