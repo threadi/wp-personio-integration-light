@@ -29,7 +29,7 @@ class Languages {
 	private array $languages;
 
 	/**
-	 * List of languages (format: "xx"), and their mappings to WP-language (format: "xx_YY")
+	 * List of languages (format: "xx") and their mappings to WP-language (format: "xx_YY")
 	 *
 	 * @var array<string,array<string>>
 	 */
@@ -104,8 +104,8 @@ class Languages {
 	/**
 	 * Return the internal name of the main language from plugin settings.
 	 *
-	 * Defaults to ISO-639 language-names (e.g., "de").
-	 * Optional uses the WP-language-names (e.g., "de_DE" but also "af").
+	 * Defaults to ISO-639 language-names (e.g. "de").
+	 * Optional uses the WP-language-names (e.g. "de_DE" but also "af").
 	 *
 	 * @param bool $use_wp_lang True if return value should be WP-language.
 	 *
@@ -178,7 +178,7 @@ class Languages {
 		/**
 		 * Define the fallback-language (only used if defined fallback language is not enabled in the settings).
 		 *
-		 * E.g., if English is not enabled, the fallback language will be set to english.
+		 * E.g. if English is not enabled, the fallback language will be set to english.
 		 */
 		$fallback_language = 'en';
 
@@ -187,7 +187,7 @@ class Languages {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param string $wp_lang The language-name (e.g., "en").
+		 * @param string $wp_lang The language-name (e.g. "en").
 		 */
 		return apply_filters( 'personio_integration_fallback_language', $fallback_language );
 	}
@@ -195,7 +195,7 @@ class Languages {
 	/**
 	 * Return whether the given language is supported or not.
 	 *
-	 * @param string $language_name The requested language name (e.g., "en").
+	 * @param string $language_name The requested language name (e.g. "en").
 	 *
 	 * @return bool
 	 */
@@ -224,7 +224,7 @@ class Languages {
 
 	/**
 	 * Return the current language in frontend and backend
-	 * depending on our own supported languages as 2-char-string (e.g., "en").
+	 * depending on our own supported languages as 2-char-string (e.g. "en").
 	 *
 	 * If detected language is not supported by our plugin, use the fallback language.
 	 *
@@ -243,7 +243,7 @@ class Languages {
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
-		 * @param string $wp_language The language-name (e.g., "en").
+		 * @param string $wp_language The language-name (e.g. "en").
 		 */
 		return apply_filters( 'personio_integration_current_language', $wp_language );
 	}
@@ -251,7 +251,7 @@ class Languages {
 	/**
 	 * Return mapping to WP-language (e.g. 'de_DE') for given language-name (e.g. 'de').
 	 *
-	 * @param string $language_name The requested language name (e.g., 'de').
+	 * @param string $language_name The requested language name (e.g. 'de').
 	 *
 	 * @return string[]
 	 */
@@ -277,9 +277,9 @@ class Languages {
 	}
 
 	/**
-	 * Return mapping language-name (e.g., 'en') for given WP-language (e.g., 'en_US').
+	 * Return mapping language-name (e.g. 'en') for given WP-language (e.g. 'en_US').
 	 *
-	 * @param string $language_name The requested language name (e.g., 'en_US').
+	 * @param string $language_name The requested language name (e.g. 'en_US').
 	 *
 	 * @return string
 	 */

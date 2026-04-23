@@ -47,7 +47,7 @@ class DeprecatedSetting {
 	}
 
 	/**
-	 * Pseudo-set the type for the setting.
+	 * Pseudo-set the type of the setting.
 	 *
 	 * @param string $value The parameter used.
 	 *
@@ -56,7 +56,7 @@ class DeprecatedSetting {
 	public function set_type( mixed $value ): void {}
 
 	/**
-	 * Pseudo-set the type for the setting.
+	 * Pseudo-set the type of the setting.
 	 *
 	 * @param string $value The parameter used.
 	 *
@@ -65,7 +65,7 @@ class DeprecatedSetting {
 	public function set_default( mixed $value ): void {}
 
 	/**
-	 * Pseudo-set the type for the setting.
+	 * Pseudo-set the type of the setting.
 	 *
 	 * @param string $value The parameter used.
 	 *
@@ -74,7 +74,7 @@ class DeprecatedSetting {
 	public function set_show_in_rest( mixed $value ): void {}
 
 	/**
-	 * Pseudo-set the type for the setting.
+	 * Pseudo-set the type of the setting.
 	 *
 	 * @param string $value The parameter used.
 	 *
@@ -83,7 +83,7 @@ class DeprecatedSetting {
 	public function set_section( mixed $value ): void {}
 
 	/**
-	 * Pseudo-set the type for the setting.
+	 * Pseudo-set the type of the setting.
 	 *
 	 * @param string $value The parameter used.
 	 *
@@ -92,7 +92,7 @@ class DeprecatedSetting {
 	public function add_custom_var( mixed $value ): void {}
 
 	/**
-	 * Pseudo-set the type for the setting.
+	 * Pseudo-set the type of the setting.
 	 *
 	 * @param string $value The parameter used.
 	 *
@@ -101,7 +101,7 @@ class DeprecatedSetting {
 	public function set_field( mixed $value ): void {}
 
 	/**
-	 * Pseudo-set the type for the setting.
+	 * Pseudo-set the type of the setting.
 	 *
 	 * @param string $value The parameter used.
 	 *
@@ -110,7 +110,7 @@ class DeprecatedSetting {
 	public function prevent_export( mixed $value ): void {}
 
 	/**
-	 * Pseudo-set the type for the setting.
+	 * Pseudo-set the type of the setting.
 	 *
 	 * @param string $value The parameter used.
 	 *
@@ -119,7 +119,7 @@ class DeprecatedSetting {
 	public function set_read_callback( mixed $value ): void {}
 
 	/**
-	 * Pseudo-set the type for the setting.
+	 * Pseudo-set the type of the setting.
 	 *
 	 * @param string $value The parameter used.
 	 *

@@ -9,9 +9,9 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
-
 use CryptForWordPress\Method_Base;
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Object to handle any crypt tasks in this plugin.

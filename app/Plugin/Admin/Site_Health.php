@@ -222,7 +222,7 @@ class Site_Health {
 			$value = $setting->get_value();
 
 			// bail if the value is an array as this is not compatible with the debug information in WordPress.
-			if( is_array( $value ) ) {
+			if ( is_array( $value ) ) {
 				continue;
 			}
 

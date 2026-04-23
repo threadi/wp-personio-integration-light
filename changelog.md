@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added PHP Unit Test for uninstallation
+
 ### Changed
 
 - Some typos

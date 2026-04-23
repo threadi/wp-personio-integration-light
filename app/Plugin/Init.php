@@ -239,7 +239,7 @@ class Init {
 	}
 
 	/**
-	 * Register our custom "query_vars" for the frontend.
+	 * Register our custom query_vars for the frontend.
 	 *
 	 * @param array<int,string> $query_vars List of query vars.
 	 *
@@ -252,7 +252,7 @@ class Init {
 	}
 
 	/**
-	 * Show info from the "update_notice"-section in the readme.txt in the WordPress repository.
+	 * Show info from the "update_notice"-section in readme.txt in the WordPress repository.
 	 *
 	 * @param array<string,mixed> $data List of plugin-infos.
 	 * @param object              $response The response-data.
@@ -260,7 +260,7 @@ class Init {
 	 * @return void
 	 */
 	public function add_plugin_update_hints( array $data, object $response ): void {
-		// bail if the plugin data is empty.
+		// bail if plugin_data is empty.
 		if ( empty( $data ) ) {
 			return;
 		}
@@ -279,7 +279,7 @@ class Init {
 
 		// if no notices are set, try to get one.
 		if ( empty( $notice_hint ) ) {
-			// get the actual readme.txt from the repository.
+			// get actual readme.txt from repository.
 			$readme_response = wp_safe_remote_get( 'https://plugins.svn.wordpress.org/personio-integration-light/trunk/readme.txt' );
 			if ( ! is_wp_error( $readme_response ) && ! empty( $readme_response['body'] ) ) {
 				$notice_hint = $this->parse_plugin_update_notice( $readme_response['body'], $response->new_version );
@@ -331,7 +331,7 @@ class Init {
 	public function install_db_tables(): void {
 		$objects = array( '\PersonioIntegrationLight\Log' );
 		/**
-		 * Add additional objects for this plugin, which use custom tables.
+		 * Add additional objects for this plugin which use custom tables.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 * @param array<int,string> $objects List of objects.
@@ -363,7 +363,7 @@ class Init {
 	public function delete_db_tables(): void {
 		$objects = array( '\PersonioIntegrationLight\Log' );
 		/**
-		 * Add additional objects for this plugin, which use custom tables.
+		 * Add additional objects for this plugin which use custom tables.
 		 *
 		 * @since 3.0.0 Available since 3.0.0.
 		 * @param array<int,string> $objects List of objects.
@@ -379,7 +379,7 @@ class Init {
 	}
 
 	/**
-	 * Check for static front page with an active filter and change the main query settings to show the page with the filter.
+	 * Check for static front page with active filter and change the main query settings to show the page with the filter.
 	 *
 	 * @param WP_Query $query The query object.
 	 *
@@ -401,7 +401,7 @@ class Init {
 			return;
 		}
 
-		// bail if "page on front" is not used.
+		// bail if the page on the front is not used.
 		$page_on_front = absint( get_option( 'page_on_front' ) );
 		if ( 0 === $page_on_front ) {
 			return;

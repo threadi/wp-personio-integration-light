@@ -97,7 +97,7 @@ class Setup {
 					'title_error' => __( 'Error', 'personio-integration-light' ),
 					'txt_error_1' => __( 'The following error occurred:', 'personio-integration-light' ),
 					/* translators: %1$s will be replaced with the URL of the plugin-forum on wp.org */
-					'txt_error_2' => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens a new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
+					'txt_error_2' => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
 				)
 			);
 			$setup_obj->set_display_hook( '_page_personioPositions' );
@@ -408,7 +408,7 @@ class Setup {
 				'help'                                => array(
 					'type' => 'Text',
 					/* translators: %1$s will be replaced by our support-forum-URL. */
-					'text' => '<p><span class="dashicons dashicons-editor-help"></span> ' . sprintf( __( '<strong>Need help?</strong> Ask in <a href="%1$s" target="_blank">our forum (opens a new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) . '</p>',
+					'text' => '<p><span class="dashicons dashicons-editor-help"></span> ' . sprintf( __( '<strong>Need help?</strong> Ask in <a href="%1$s" target="_blank">our forum (opens new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) . '</p>',
 				),
 			),
 			2 => array(

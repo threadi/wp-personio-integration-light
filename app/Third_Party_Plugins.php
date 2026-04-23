@@ -507,7 +507,7 @@ class Third_Party_Plugins {
 	}
 
 	/**
-	 * We simply return true to register the plugin with WP Consent API although we do not use it
+	 * We simply return true to register the plugin with WP Consent API, although we do not use it
 	 * as this plugin does not set any cookies or collect any personal data.
 	 *
 	 * @return bool

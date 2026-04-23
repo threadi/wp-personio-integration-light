@@ -65,7 +65,9 @@ class Uninstaller {
 	 */
 	public function run( array $delete_data = array() ): void {
 		// set deactivation runner to enable.
-		define( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING', 1 );
+		if ( ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+			define( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING', 1 );
+		}
 
 		if ( is_multisite() ) {
 			// get original blog ID.

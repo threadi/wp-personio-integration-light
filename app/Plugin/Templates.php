@@ -133,7 +133,7 @@ class Templates {
 			return $template;
 		}
 
-		// check if the requested template exists in the theme.
+		// check if the requested template exists in theme.
 		$theme_template = locate_template( trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
 		if ( $theme_template ) {
 			return $theme_template;
@@ -163,11 +163,11 @@ class Templates {
 	/**
 	 * Check if the given template exists.
 	 *
-	 * @param string $template The searched template with a relative path to our plugin directory.
+	 * @param string $template The searched template as to the plugins template directory relative path.
 	 * @return bool
 	 */
 	public function has_template( string $template ): bool {
-		// check if the requested template exists in the theme.
+		// check if the requested template exists in theme.
 		$theme_template = locate_template( trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
 		if ( $theme_template ) {
 			return true;
@@ -406,7 +406,7 @@ class Templates {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param bool $false Return true if our own single template should not be used.
-		 * @param string $single_template The single template, which will be used instead.
+		 * @param string $single_template The single template which will be used instead.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_load_single_template', $false, $single_template ) ) {
@@ -452,7 +452,7 @@ class Templates {
 		 * @since 3.0.0 Available since 3.0.0.
 		 *
 		 * @param bool $false Return true if our own archive template should not be used.
-		 * @param string $archive_template The archive template, which will be used instead.
+		 * @param string $archive_template The archive template which will be used instead.
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_load_archive_template', $false, $archive_template ) ) {
@@ -464,7 +464,7 @@ class Templates {
 	}
 
 	/**
-	 * Change the output of "post_content" for the custom post-type of this plugin.
+	 * Change the output of post_content for the custom post-type of this plugin.
 	 *
 	 * @param string $content The content.
 	 *
@@ -513,7 +513,7 @@ class Templates {
 	}
 
 	/**
-	 * Change the output of "post_content" for the custom post-type of this plugin.
+	 * Change the output of post_content for the custom post-type of this plugin.
 	 *
 	 * @param string $content The content.
 	 *
@@ -590,7 +590,7 @@ class Templates {
 	}
 
 	/**
-	 * Get or return the position details as excerpt via the template.
+	 * Get or return the position details as excerpt via template.
 	 *
 	 * @param Position            $position   The position as an object.
 	 * @param array<string,mixed> $attributes The attributes.
@@ -694,7 +694,7 @@ class Templates {
 	}
 
 	/**
-	 * Show a filter in the frontend restricted to positions, which are visible in the list.
+	 * Show a filter in the frontend restricted to positions which are visible in the list.
 	 *
 	 * @param string              $filter     Name of the filter (taxonomy-slug).
 	 * @param array<string,mixed> $attributes List of attributes for the filter.
@@ -943,7 +943,7 @@ class Templates {
 	public function get_classes_of_position( Position $position_obj ): string {
 		$css_classes = array();
 
-		// add the ID.
+		// add the id.
 		$css_classes[] = 'post-' . $position_obj->get_id();
 
 		// add our cpt.
@@ -1000,7 +1000,7 @@ class Templates {
 		$css_classes[] = 'container';
 
 		/**
-		 * Filter the class list for the filter.
+		 * Filter the class list for filter.
 		 *
 		 * @since 5.2.0 Available since 5.2.0.
 		 * @param array<int,string> $css_classes List of classes.
@@ -1065,7 +1065,7 @@ class Templates {
 			return $url;
 		}
 
-		// return URL with an anchor.
+		// return URL with anchor.
 		return $url . '#' . $anchor;
 	}
 
