@@ -6,6 +6,10 @@
 
 - Some typos
 
+### Fixed
+
+- Fixed potential error with command palette
+
 ## [5.4.3] - 20.04.2026
 
 ### Fixed

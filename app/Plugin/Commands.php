@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Helper;
 
 /**
- * The object which handles schedules.
+ * The object, which handles the command palette for this plugin.
  */
 class Commands {
 	/**
@@ -52,11 +52,6 @@ class Commands {
 	 * @return void
 	 */
 	public function init(): void {
-		// bail if the user does not have capabilities to show positions.
-		if ( ! current_user_can( 'edit_posts' ) ) {
-			return;
-		}
-
 		// add action to enqueue scripts.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
@@ -67,6 +62,11 @@ class Commands {
 	 * @return void
 	 */
 	public function enqueue_scripts(): void {
+		// bail if the user does not have capabilities to show positions.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return;
+		}
+
 		// get the path for the asset script.
 		$script_asset_path = Helper::get_plugin_path() . 'blocks/commands/commands.asset.php';
 
