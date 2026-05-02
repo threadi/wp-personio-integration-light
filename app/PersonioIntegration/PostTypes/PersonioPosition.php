@@ -342,7 +342,7 @@ class PersonioPosition extends Post_Type {
 				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => array( $this, 'change_positions' ),
 				'permission_callback' => function () {
-					return current_user_can( 'edit_posts' );
+					return current_user_can( 'manage_' . PersonioPosition::get_instance()->get_name() );
 				},
 			)
 		);
@@ -355,7 +355,7 @@ class PersonioPosition extends Post_Type {
 				'methods'             => WP_REST_Server::DELETABLE,
 				'callback'            => array( $this, 'delete_positions' ),
 				'permission_callback' => function () {
-					return current_user_can( 'edit_posts' );
+					return current_user_can( 'manage_' . PersonioPosition::get_instance()->get_name() );
 				},
 			)
 		);
