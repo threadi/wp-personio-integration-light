@@ -4,6 +4,8 @@
 
 ### Changed
 
+- Optimized REST API permissions to update or delete positions
+- Extended proof for capability during the availability check
 - Some typos
 
 ## [5.4.3] - 20.04.2026

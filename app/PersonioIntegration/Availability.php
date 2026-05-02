@@ -380,6 +380,11 @@ class Availability extends Extensions_Base {
 		// check none.
 		check_ajax_referer( 'personio-integration-availability-nonce', 'nonce' );
 
+		// bail if user is not allowed to run this.
+		if( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error();
+		}
+
 		// mark as running.
 		update_option( 'personio_integration_availability_check_running', 1 );
 
@@ -403,6 +408,11 @@ class Availability extends Extensions_Base {
 	 * @return void
 	 */
 	public function get_single_check_status(): void {
+		// bail if user is not allowed to run this.
+		if( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error();
+		}
+
 		// get the state.
 		$is_running = 1 === absint( get_option( 'personio-integration-availability-info-nonce', 0 ) );
 
