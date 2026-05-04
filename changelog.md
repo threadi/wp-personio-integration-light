@@ -8,6 +8,10 @@
 - Extended proof for capability during the availability check
 - Some typos
 
+## Fixed
+
+- Fixed missing scripts on setup to import prepared settings
+
 ## [5.4.3] - 20.04.2026
 
 ### Fixed

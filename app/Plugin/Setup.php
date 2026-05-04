@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Radio;
 use easySettingsForWordPress\Fields\Text;
+use easySettingsForWordPress\Import;
 use easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transient;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
@@ -379,6 +380,10 @@ class Setup {
 		if ( ! $language_field instanceof Radio ) {
 			return;
 		}
+
+		// initialize the import.
+		$import = new Import( Settings::get_instance()->get_settings_object() );
+		$import->init();
 
 		// define setup.
 		$this->setup = array(

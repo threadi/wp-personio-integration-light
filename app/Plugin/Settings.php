@@ -1122,7 +1122,7 @@ class Settings {
 	 * @return bool
 	 */
 	public function enqueue_styles_and_scripts( bool $result, string $hook ): bool {
-		if ( ! in_array( $hook, array( 'applications_page_personioApplicationSettings', 'personioposition_page_personioPositions' ), true ) ) {
+		if ( ! in_array( $hook, array( 'applications_page_personioApplicationSettings', 'personioposition_page_personioPositions', 'positions_page_personioPositions' ), true ) ) {
 			return $result;
 		}
 		return true;
