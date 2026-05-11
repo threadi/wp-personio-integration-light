@@ -289,7 +289,7 @@ class Import_Single_Personio_Url {
 					$this->log->add( sprintf( __( 'No changes in positions from %1$s for language %2$s according to the content we got from Personio. No import run.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
 
 					/**
-					 * Run actions for this case.
+					 * Run actions if positions in Personio did not change.
 					 *
 					 * @since 3.0.4 Available since 3.0.4.
 					 *

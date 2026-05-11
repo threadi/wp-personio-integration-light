@@ -1,12 +1,17 @@
 # Changelog
 
-## [Unreleased]
+## [5.4.4] - 11.05.2026
 
 ### Changed
 
 - Optimized REST API permissions to update or delete positions
 - Extended proof for capability during the availability check
+- Update dependencies
 - Some typos
+
+## Fixed
+
+- Fixed missing scripts on setup to import prepared settings
 
 ## [5.4.3] - 20.04.2026
 
