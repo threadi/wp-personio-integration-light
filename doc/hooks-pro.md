@@ -28,6 +28,12 @@ Source: [app/Plugin/Schedules/Application_Export.php](Plugin/Schedules/Applicati
 *Run action after activation of license.*
 
 
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
 Source: [app/Plugin/Admin/SettingsValidation/License.php](Plugin/Admin/SettingsValidation/License.php), [line 66](Plugin/Admin/SettingsValidation/License.php#L66-L71)
 
 ### `personio_integration_pro_license_invalidated`
@@ -697,7 +703,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 377](Plugin/Templates.php#L377-L384)
+Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 378](Plugin/Templates.php#L378-L385)
 
 ### `personio_integration_pro_geolocation_google_url`
 
@@ -1889,7 +1895,7 @@ Version | Description
 
 Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1240](Applications/Applications.php#L1240-L1246)
 
-### `personio_integration_pro_application_file_htaccess`
+### `personio_integration_pro_application_file_web_config`
 
 *Change content of web.config to prevent access of application files.*
 
