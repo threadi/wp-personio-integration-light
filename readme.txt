@@ -133,6 +133,10 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Fixed some issues regarding composer packages used by this plugin
+- Optimized REST API permissions to update or delete positions
+- Extended proof for capability during the availability check
+- Update dependencies
+- Some typos
+- Fixed missing scripts on setup to import prepared settings
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
