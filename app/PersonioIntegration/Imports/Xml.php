@@ -263,7 +263,7 @@ class Xml extends Imports_Base {
 				 * @since 1.0.0 Available since first release.
 				 *
 				 * @param bool $do_delete Marker to delete the position (must be true to check for deletion).
-				 * @param Position $position_obj The position as object.
+				 * @param Position $position_obj The position as an object.
 				 */
 				if ( false === apply_filters( 'personio_integration_delete_single_position', $do_delete, $position_obj ) ) {
 					continue;

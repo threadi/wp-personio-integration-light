@@ -21,12 +21,12 @@ use PersonioIntegrationLight\Plugin\Init;
 use PersonioIntegrationLight\Plugin\Installer;
 use PersonioIntegrationLight\Plugin\Update;
 
-// do nothing if PHP-version is not 8.1 or newer.
+// do nothing if the PHP version is not 8.1 or newer.
 if ( PHP_VERSION_ID < 80100 ) { // @phpstan-ignore smaller.alwaysFalse
 	return;
 }
 
-// set version number.
+// set the version number.
 const WP_PERSONIO_INTEGRATION_VERSION = '@@VersionNumber@@';
 
 // save plugin-path.

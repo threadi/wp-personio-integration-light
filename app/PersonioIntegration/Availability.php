@@ -381,7 +381,7 @@ class Availability extends Extensions_Base {
 		check_ajax_referer( 'personio-integration-availability-nonce', 'nonce' );
 
 		// bail if user is not allowed to run this.
-		if( ! current_user_can( 'edit_posts' ) ) {
+		if ( ! current_user_can( 'edit_posts' ) ) {
 			wp_send_json_error();
 		}
 
@@ -409,7 +409,7 @@ class Availability extends Extensions_Base {
 	 */
 	public function get_single_check_status(): void {
 		// bail if user is not allowed to run this.
-		if( ! current_user_can( 'edit_posts' ) ) {
+		if ( ! current_user_can( 'edit_posts' ) ) {
 			wp_send_json_error();
 		}
 
