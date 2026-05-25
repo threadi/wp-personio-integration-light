@@ -6,6 +6,10 @@
 
 - Added audit check for third party libraries we use for this plugin to fulfill requirements of the Cyber Resilience Act
 
+### Changed
+
+- Updated dependencies
+
 ### Fixed
 
 - Fixed wrong spelled crypt library name in GitHub action, which prevented the building on a release on GitHub
