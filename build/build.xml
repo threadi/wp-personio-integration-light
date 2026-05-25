@@ -221,6 +221,14 @@
         </exec>
     </target>
 
+    <!-- audit-->
+    <target name="audit" depends="composer-install">
+        <delete file="${log.dir}/composer-audit.txt"/>
+        <exec dir="${src.dir}" failonerror="true" executable="${composer.path}" output="${log.dir}/composer-audit.txt">
+            <arg line="audit --abandoned=ignore"/>
+        </exec>
+    </target>
+
     <!-- init project -->
     <target name="init" description="initialize the project" depends="composer-install,npm-build,setUrls,autoloader-generation-dev" />
 
