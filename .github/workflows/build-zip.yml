@@ -52,6 +52,9 @@ jobs:
                   rm -fr example
                   rm readme.md
 
+            - name: Composer audit
+              run: composer audit --abandoned=ignore
+
             - uses: anchore/sbom-action@v0
 
             - name: Set licence server

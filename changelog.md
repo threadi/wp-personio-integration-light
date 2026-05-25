@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Added audit check for third party libraries we use for this plugin to fulfill requirements of the Cyber Resilience Act
+
 ## [5.4.4] - 11.05.2026
 
 ### Changed
