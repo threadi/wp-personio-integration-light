@@ -69,7 +69,7 @@ class Help_System {
 	public function add_help( WP_Screen $screen ): void {
 		$allowed = PersonioPosition::get_instance()->get_name() === $screen->post_type;
 		/**
-		 * Prevent to add the WordPress-internal help for our plugin.
+		 * Prevent adding the WordPress-internal help for our plugin.
 		 *
 		 * @since 5.0.0 Available since 5.0.0.
 		 * @param bool $allowed True if the help should be visible.
@@ -82,7 +82,7 @@ class Help_System {
 		// get the help tabs.
 		$help_tabs = $this->get_help_tabs();
 
-		// bail if list is empty.
+		// bail if the list is empty.
 		if ( empty( $help_tabs ) ) {
 			return;
 		}
@@ -115,7 +115,7 @@ class Help_System {
 		 */
 		$sidebar_content = apply_filters( 'personio_integration_light_help_sidebar_content', $sidebar_content );
 
-		// add help sidebar with the given content.
+		// add the help sidebar with the given content.
 		$screen->set_help_sidebar( $sidebar_content );
 	}
 
@@ -144,7 +144,7 @@ class Help_System {
 	 * @return array<int,array<string,mixed>>
 	 */
 	public function add_applications_help( array $help_list ): array {
-		// add menu entry for applications (with hint to pro).
+		// add menu entry for applications (with a hint to Pro).
 		$false = false;
 		/**
 		 * Hide hint for Pro-plugin.
@@ -176,7 +176,7 @@ class Help_System {
 			'content' => $content,
 		);
 
-		// return resulting list.
+		// return the resulting list.
 		return $help_list;
 	}
 

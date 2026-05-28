@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file.
  *
- * @package Easy_Language
+ * @package personio-integration-light
  */
 
 define( 'TESTS_PLUGIN_DIR', dirname( __DIR__ ) );
