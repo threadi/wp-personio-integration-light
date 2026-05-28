@@ -361,7 +361,7 @@ class Extensions {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( 'personio_integration_extension_toggle_state' );
 			$transient_obj->set_type( 'error' );
-			/* translators: %1$s will be replaced by a name. */
+			/* translators: a name will replace %1$s. */
 			$transient_obj->set_message( sprintf( __( 'Error when calling the status change of an extension! Given extension %1$s could not be loaded.', 'personio-integration-light' ), $extension_name ) );
 			$transient_obj->save();
 
@@ -586,8 +586,8 @@ class Extensions {
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
-			/* translators: %1$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens a new window)</a> to get many more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+			/* translators: %1$s will be replaced by a URL, %2$s will be replaced by an accessibility hint. */
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get many more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		}
 		$content .= '</ol>';
 

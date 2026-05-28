@@ -997,8 +997,8 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// show hint.
-		/* translators: %1$s will be replaced by the URL for Personio, %2$s will be replaced with the URL for the Personio account. */
-		printf( wp_kses_post( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the position data in your <a href="%2$s" target="_blank">Personio account (opens a new window)</a>.', 'personio-integration-light' ) ), esc_html( $position_obj->get_title() ), esc_url( $url ) );
+		/* translators: %1$s will be replaced by the URL for Personio, %2$s will be replaced with the URL for the Personio account, %3$s will be replaced with the window hint. */
+		printf( wp_kses_post( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the position data in your <a href="%2$s" target="_blank">Personio account%3$s</a>.', 'personio-integration-light' ) ), esc_html( $position_obj->get_title() ), esc_url( $url ), Helper::get_a11n_window_hint() );
 	}
 
 	/**
@@ -1129,7 +1129,7 @@ class PersonioPosition extends Post_Type {
 
 		// show the edit link.
 		/* translators: %1$s will be replaced by a URL. */
-		echo '<p>' . wp_kses_post( sprintf( __( '<a href="%1$s" target="_blank">Edit (opens a new window)</a> this position on Personio.', 'personio-integration-light' ), esc_url( $personio_edit_url ) ) ) . '</p>';
+		echo '<p>' . wp_kses_post( sprintf( __( '<a href="%1$s" target="_blank">Edit%2$s</a> this position on Personio.', 'personio-integration-light' ), esc_url( $personio_edit_url ), Helper::get_a11n_window_hint() ) ) . '</p>';
 	}
 
 	/**
@@ -2060,7 +2060,7 @@ class PersonioPosition extends Post_Type {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens a new window)</a> for individual application forms and many more options.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> for individual application forms and many more options.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		}
 		$content .= '</ol>';
 
@@ -2112,8 +2112,8 @@ class PersonioPosition extends Post_Type {
 		$content .= '<p>' . __( 'This shortcode will output a single position with the Personio ID 42. The title, the job description and the link to the application form at Personio are output.', 'personio-integration-light' ) . '</p>';
 		$content .= '<code>[personioPosition templates="title,content,formular" personioid="42"]</code>';
 		$content .= '<p><strong>' . __( 'Documentation:', 'personio-integration-light' ) . '</strong></p>';
-		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<p>' . sprintf( __( 'The complete documentation on the possibilities with shortcodes can be found <a href="%1$s" target="_blank">here (opens a new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_shortcode_documentation_url() ) ) . '</p>';
+		/* translators: %1$s will be replaced by a URL, %2$s will be replaced by a URL. */
+		$content .= '<p>' . sprintf( __( 'The complete documentation on the possibilities with shortcodes can be found <a href="%1$s" target="_blank">here</a>.', 'personio-integration-light' ), esc_url( Helper::get_shortcode_documentation_url() ), Helper::get_a11n_window_hint() ) . '</p>';
 		$content .= '<p><strong>' . __( 'Further notes:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		$content .= '<li>' . __( 'If you want to customize the output of shortcodes in terms of styling, you have to write and store the necessary style properties yourself. If necessary, contact the person responsible for your project.', 'personio-integration-light' ) . '</li>';
@@ -2127,8 +2127,8 @@ class PersonioPosition extends Post_Type {
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
-			/* translators: %1$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens a new window)</a> to get more flexible widgets for your theme or page builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+			/* translators: %1$s will be replaced by a URL, %2$s will be replaced by a URL. */
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get more flexible widgets for your theme or page builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		}
 		$content .= '</ol>';
 

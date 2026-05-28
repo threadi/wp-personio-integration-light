@@ -241,7 +241,7 @@ class Emails {
 		$content .= '<p><strong>' . __( 'Important notes:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ul>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Check and test whether you can send emails to the recipients from your project. This depends on many factors that our plugin does not influence. <a href="%1$s" target="_blank">SMTP plugins (opens a new window)</a> may help here.', 'personio-integration-light' ), 'https://wordpress.org/plugins/tags/smtp/' ) . '</li>';
+		$content .= '<li>' . sprintf( __( 'Check and test whether you can send emails to the recipients from your project. This depends on many factors that our plugin does not influence. <a href="%1$s" target="_blank">SMTP plugins%2$s</a> may help here.', 'personio-integration-light' ), 'https://wordpress.org/plugins/tags/smtp/', Helper::get_a11n_window_hint() ) . '</li>';
 		$content .= '</ul>';
 
 		// add help for the positions in general.
@@ -305,7 +305,7 @@ class Emails {
 		$transient_obj = Transients::get_instance()->add();
 		$transient_obj->set_name( 'personio_integration_light_email_testmail' );
 		$transient_obj->set_type( 'success' );
-		/* translators: %1$s will be replaced by a name. */
+		/* translators: a name will replace %1$s. */
 		$transient_obj->set_message( sprintf( __( 'Test-Email has been sent. Check now your inbox in %1$s.', 'personio-integration-light' ), implode( ', ', $email_obj->get_recipients() ) ) );
 		$transient_obj->save();
 
