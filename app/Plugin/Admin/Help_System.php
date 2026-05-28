@@ -165,8 +165,8 @@ class Help_System {
 		$content .= '<li>' . __( 'Publish your open positions in your website.', 'personio-integration-light' ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
 		$content .= '<li>' . sprintf( __( 'Show the option to apply on each position. Enable this <a href="%1$s">in the template settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
-		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro (opens a new window)</a> to use application forms in your website.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) . '</li>';
+		/* translators: %1$s will be replaced by a URL, %2$s will be replaced by an accessibility hint. */
+		$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to use application forms on your website.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		$content .= '</ol>';
 
 		// add help for the positions in general.
@@ -190,7 +190,7 @@ class Help_System {
 	public function add_documentation_help( array $help_list ): array {
 		// collect the content for the help.
 		/* translators: %1$s will be replaced by a URL. */
-		$content = Helper::get_logo_img( true ) . '<h2>' . __( 'Documentation', 'personio-integration-light' ) . '</h2><p>' . sprintf( __( 'We provide some documentations for the WordPress plugin <i>Personio Integration Light</i> at <a href="%1$s" target="_blank">GitHub (opens a new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ) ) . '</p>';
+		$content = Helper::get_logo_img( true ) . '<h2>' . __( 'Documentation', 'personio-integration-light' ) . '</h2><p>' . sprintf( __( 'We provide some documentation for the WordPress plugin <i>Personio Integration Light</i> at <a href="%1$s" target="_blank">GitHub%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ), Helper::get_a11n_window_hint() ) . '</p>';
 
 		// add help for the positions in general.
 		$help_list[] = array(
@@ -199,7 +199,7 @@ class Help_System {
 			'content' => $content,
 		);
 
-		// return resulting list.
+		// return the resulting list.
 		return $help_list;
 	}
 }
