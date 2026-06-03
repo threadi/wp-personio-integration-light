@@ -15,6 +15,7 @@
 ### Fixed
 
 - Fixed a wrong spelled crypt library name in GitHub action, which prevented the building on a release on GitHub
+- Fixed wrong text domain usage for import and export settings
 
 ## [5.4.4] - 11.05.2026
 
