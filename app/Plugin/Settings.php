@@ -640,21 +640,21 @@ class Settings {
 
 		// create import dialog.
 		$dialog = array(
-			'title'   => __( 'Import settings', 'easy-settings-for-wordpress-demo' ),
+			'title'   => __( 'Import settings', 'personio-integration-light' ),
 			'texts'   => array(
-				'<p><strong>' . __( 'Choose the JSON-file with the settings.', 'easy-settings-for-wordpress-demo' ) . '</strong></p>',
+				'<p><strong>' . __( 'Choose the JSON-file with the settings.', 'personio-integration-light' ) . '</strong></p>',
 				'<input type="file" accept="application/json" name="import_settings_file" id="import_settings_file">',
 			),
 			'buttons' => array(
 				array(
 					'action'  => 'settings_import_file();',
 					'variant' => 'primary',
-					'text'    => __( 'Import now', 'easy-settings-for-wordpress-demo' ),
+					'text'    => __( 'Import now', 'personio-integration-light' ),
 				),
 				array(
 					'action'  => 'closeDialog();',
 					'variant' => 'secondary',
-					'text'    => __( 'Cancel', 'easy-settings-for-wordpress-demo' ),
+					'text'    => __( 'Cancel', 'personio-integration-light' ),
 				),
 			),
 		);
@@ -665,29 +665,29 @@ class Settings {
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		$field = new Button( $settings_obj );
-		$field->set_title( __( 'Import', 'easy-settings-for-wordpress-demo' ) );
-		$field->set_button_title( __( 'Import now', 'easy-settings-for-wordpress-demo' ) );
+		$field->set_title( __( 'Import', 'personio-integration-light' ) );
+		$field->set_button_title( __( 'Import now', 'personio-integration-light' ) );
 		$field->add_class( 'easy-dialog-for-wordpress' );
 		$field->set_custom_attributes( array( 'data-dialog' => (string) wp_json_encode( $dialog ) ) );
 		$setting->set_field( $field );
 
 		// create export dialog.
 		$dialog = array(
-			'title'   => __( 'Export settings', 'easy-settings-for-wordpress-demo' ),
+			'title'   => __( 'Export settings', 'personio-integration-light' ),
 			'texts'   => array(
-				'<p><strong>' . __( 'Click on the following button to download the settings as JSON-file.', 'easy-settings-for-wordpress-demo' ) . '</strong></p>',
-				'<p>' . __( 'You can import this JSON-file in other projects using this WordPress plugin or theme.', 'easy-settings-for-wordpress-demo' ) . '</p>',
+				'<p><strong>' . __( 'Click on the following button to download the settings as JSON-file.', 'personio-integration-light' ) . '</strong></p>',
+				'<p>' . __( 'You can import this JSON-file in other projects using this WordPress plugin or theme.', 'personio-integration-light' ) . '</p>',
 			),
 			'buttons' => array(
 				array(
 					'action'  => 'closeDialog();location.href="' . $settings_obj->get_export_obj()->get_download_url() . '";',
 					'variant' => 'primary',
-					'text'    => __( 'Export now', 'easy-settings-for-wordpress-demo' ),
+					'text'    => __( 'Export now', 'personio-integration-light' ),
 				),
 				array(
 					'action'  => 'closeDialog();',
 					'variant' => 'secondary',
-					'text'    => __( 'Cancel', 'easy-settings-for-wordpress-demo' ),
+					'text'    => __( 'Cancel', 'personio-integration-light' ),
 				),
 			),
 		);
@@ -698,8 +698,8 @@ class Settings {
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		$field = new Button( $settings_obj );
-		$field->set_title( __( 'Export', 'easy-settings-for-wordpress-demo' ) );
-		$field->set_button_title( __( 'Export now', 'easy-settings-for-wordpress-demo' ) );
+		$field->set_title( __( 'Export', 'personio-integration-light' ) );
+		$field->set_button_title( __( 'Export now', 'personio-integration-light' ) );
 		$field->set_button_url( $settings_obj->get_export_obj()->get_download_url() );
 		$field->add_class( 'easy-dialog-for-wordpress' );
 		$field->set_custom_attributes( array( 'data-dialog' => (string) wp_json_encode( $dialog ) ) );
