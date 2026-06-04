@@ -343,7 +343,7 @@ class Emails {
 		}
 
 		// bail if email is already HTML.
-		if ( str_contains( $args['message'], '<html' ) || str_contains( $args['message'], '<HTML' ) || str_contains( $args['message'], '<body' ) ) {
+		if ( function_exists( 'str_contains' ) && ( str_contains( $args['message'], '<html' ) || str_contains( $args['message'], '<HTML' ) || str_contains( $args['message'], '<body' ) ) ) {
 			return $args;
 		}
 

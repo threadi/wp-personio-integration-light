@@ -5,6 +5,9 @@
  * @package personio-integration-light
  */
 
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Name of the custom posttype for positions.
  */
