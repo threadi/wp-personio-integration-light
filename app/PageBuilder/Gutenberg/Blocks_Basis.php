@@ -194,24 +194,25 @@ class Blocks_Basis {
 	 */
 	protected function get_attributes(): array {
 		$single_attributes = $this->attributes;
+		$name = $this->get_name();
 		/**
 		 * Filter the attributes for a Block.
 		 *
 		 * @since 2.0.0 Available since 2.0.0
 		 *
-		 * @param array<string,mixed> $single_attributes The settings as array.
+		 * @param array<string,mixed> $single_attributes The settings as an array.
 		 */
-		$filtername = 'personio_integration_gutenberg_block_' . $this->get_name() . '_attributes';
-		return apply_filters( $filtername, $single_attributes );
+		return apply_filters( 'personio_integration_gutenberg_block_' . $name . '_attributes', $single_attributes );
 	}
 
 	/**
-	 * Return absolute path to JSON of this block.
+	 * Return the absolute path to the JSON of this block.
 	 *
 	 * @return string
 	 */
 	protected function get_path(): string {
 		$path = Helper::get_plugin_path() . $this->path;
+		$name = $this->get_name();
 		/**
 		 * Filter the path of a Block.
 		 *
@@ -219,8 +220,7 @@ class Blocks_Basis {
 		 *
 		 * @param string $path The absolute path to the block.json.
 		 */
-		$filtername = 'personio_integration_gutenberg_block_' . $this->get_name() . '_path';
-		return apply_filters( $filtername, $path );
+		return apply_filters( 'personio_integration_gutenberg_block_' . $name . '_path', $path );
 	}
 
 	/**

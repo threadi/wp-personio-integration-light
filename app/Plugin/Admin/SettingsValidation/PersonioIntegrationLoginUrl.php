@@ -41,11 +41,11 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 				return $value;
 			}
 
-			// cleanup the given URL.
+			// clean up the given URL.
 			$value = self::cleanup_url_string( $value );
 
 			if ( ! empty( $value ) ) {
-				// check if URL ends with ".personio.com" or ".personio.de" with or without "/" on the end.
+				// check if the URL ends with ".personio.com" or ".personio.de" with or without "/" on the end.
 				if ( ! self::check_personio_login_url( $value ) ) {
 					add_settings_error( 'personioIntegrationLoginUrl', 'personioIntegrationLoginUrl', __( 'The Personio Login URL must end with ".personio.com" or ".personio.de"!', 'personio-integration-light' ) );
 					$value = '';
@@ -61,14 +61,14 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	}
 
 	/**
-	 * Check if one of the allowed personio-URL is in the given string.
+	 * Check if one of the allowed Personio-URL is in the given string.
 	 *
 	 * @param string $value The value to check.
 	 *
 	 * @return bool
 	 */
 	public static function check_personio_login_url( string $value ): bool {
-		return ( str_ends_with( $value, '.personio.com' ) || str_ends_with( $value, '.personio.de' ) ) && ! str_contains( $value, '.jobs.personio.' );
+		return function_exists( 'str_ends_with' ) && function_exists( 'str_contains' ) && ( ( str_ends_with( $value, '.personio.com' ) || str_ends_with( $value, '.personio.de' ) ) && ! str_contains( $value, '.jobs.personio.' ) );
 	}
 
 	/**
@@ -90,7 +90,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	 * @return string
 	 */
 	public static function cleanup_url_string( string $value ): string {
-		// remove slash on the end of the given url.
+		// remove the slash on the end of the given url.
 		return rtrim( $value, '/' );
 	}
 }

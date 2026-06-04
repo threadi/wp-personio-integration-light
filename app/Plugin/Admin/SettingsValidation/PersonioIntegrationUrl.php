@@ -48,7 +48,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 			if ( self::has_size( $value ) ) {
 				$value = self::cleanup_url_string( $value );
 
-				// check if URL ends with ".jobs.personio.com" or ".jobs.personio.de" with or without "/" on the end.
+				// check if the URL ends with ".jobs.personio.com" or ".jobs.personio.de" with or without "/" on the end.
 				if ( ! self::check_personio_in_url( $value ) ) {
 					add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'The Personio URL must end with ".jobs.personio.com" or ".jobs.personio.de"!', 'personio-integration-light' ) );
 					$error = true;
@@ -71,7 +71,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 				}
 			}
 
-			// reset transient if url is set.
+			// reset transient if the URL is set.
 			if ( ! $error ) {
 				$transient_obj = $transients_obj->get_transient_by_name( 'personio_integration_no_url_set' );
 				$transient_obj->delete();
@@ -83,7 +83,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	}
 
 	/**
-	 * Check availability of given Personio-URL.
+	 * Check the availability of the given Personio-URL.
 	 *
 	 * @param string $value The value to check.
 	 *
@@ -105,19 +105,14 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 		$body = wp_remote_retrieve_body( $response );
 
 		// return false if URL is not available.
-		if ( ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) || str_starts_with( $body, '<!doctype html>' ) ) {
-			return false;
-		}
-
-		// return true if URL is available.
-		return true;
+		return ! ( ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) || ( function_exists( 'str_starts_with' ) && str_starts_with( $body, '<!doctype html>' ) ) );
 	}
 
 	/**
-	 * Validate given string from REST API.
+	 * Validate the given string from REST API.
 	 *
-	 * Returns an array with list of errors.
-	 * Returns empty array if all is ok.
+	 * Returns an array with a list of errors.
+	 * Returns an empty array if all is ok.
 	 *
 	 * @param string $value The configured URL.
 	 *
@@ -127,9 +122,9 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	public static function rest_validate( string $value ): array {
 		$value = self::cleanup_url_string( $value );
 
-		// check if value has size.
+		// check if the value has size.
 		if ( ! self::has_size( $value ) ) {
-			// return empty string as we do not mark this as failure.
+			// return empty string as we do not mark this as a failure.
 			return array();
 		}
 
@@ -157,19 +152,19 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 			);
 		}
 
-		// return empty value if no error occurred.
+		// return an empty value if no error occurred.
 		return array();
 	}
 
 	/**
-	 * Check if one of the allowed personio-URL is in the given string.
+	 * Check if one of the allowed Personio URL is in the given string.
 	 *
 	 * @param string $value The value to check.
 	 *
 	 * @return bool
 	 */
 	public static function check_personio_in_url( string $value ): bool {
-		return str_ends_with( $value, '.jobs.personio.com' ) || str_ends_with( $value, '.jobs.personio.de' );
+		return function_exists( 'str_ends_with' ) && ( str_ends_with( $value, '.jobs.personio.com' ) || str_ends_with( $value, '.jobs.personio.de' ) );
 	}
 
 	/**
@@ -192,11 +187,11 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 */
 	public static function cleanup_url_string( string $value ): string {
 		// add protocol if this is missing.
-		if ( ! empty( $value ) && ! str_contains( $value, 'https://' ) ) {
+		if ( ! empty( $value ) && function_exists( 'str_contains' ) && ! str_contains( $value, 'https://' ) ) {
 			$value = 'https://' . $value;
 		}
 
-		// remove slash on the end of the given url.
+		// remove the slash on the end of the given url.
 		return rtrim( trim( $value ), '/' );
 	}
 }

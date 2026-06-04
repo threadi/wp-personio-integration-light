@@ -6,6 +6,9 @@
  * @package personio-integration-light
  */
 
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
+
 /**
  * @deprecated since 3.0.0
  */

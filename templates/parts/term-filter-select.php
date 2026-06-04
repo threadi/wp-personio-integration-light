@@ -9,7 +9,7 @@
  * @param array $attributes The attributes.
  *
  * @package personio-integration-light
- * @version: 5.3.1
+ * @version: 5.5.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -23,10 +23,10 @@ defined( 'ABSPATH' ) || exit;
 		<select name="personiofilter[<?php echo esc_attr( $filter ); ?>]" id="personiofilter<?php echo esc_attr( $filter ); ?>">
 			<option value="0"><?php echo esc_html__( 'Please choose', 'personio-integration-light' ); ?></option>
 			<?php
-			$term_count = count( $terms );
-			for ( $t = 0;$t < $term_count;$t++ ) {
+			$personio_integration_term_count = count( $terms );
+			for ( $personio_integration_t = 0;$personio_integration_t < $personio_integration_term_count;$personio_integration_t++ ) {
 				?>
-				<option value="<?php echo esc_attr( $terms[ $t ]->term_id ); ?>"<?php echo ( $terms[ $t ]->term_id === $value ? ' selected="selected"' : '' ); ?> class="<?php echo esc_attr( apply_filters( 'personio_integration_light_term_get_classes', $terms[ $t ] ) ); ?>"><?php echo esc_html( $terms[ $t ]->name ); ?></option>
+				<option value="<?php echo esc_attr( $terms[ $personio_integration_t ]->term_id ); ?>"<?php echo ( $terms[ $personio_integration_t ]->term_id === $value ? ' selected="selected"' : '' ); ?> class="<?php echo esc_attr( apply_filters( 'personio_integration_light_term_get_classes', $terms[ $personio_integration_t ] ) ); ?>"><?php echo esc_html( $terms[ $personio_integration_t ]->name ); ?></option>
 											<?php
 			}
 			?>

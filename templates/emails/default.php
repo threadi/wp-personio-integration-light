@@ -6,8 +6,11 @@
  * @param string $body The email body.
  *
  * @package personio-integration-light
- * @version : 5.0.0
+ * @version: 5.5.0
  */
+
+// prevent direct access.
+defined( 'ABSPATH' ) || exit;
 
 ?>
 <!DOCTYPE html>

@@ -9,7 +9,10 @@
 ### Changed
 
 - Optimized usage of an a11n hint for new window links
+- Completed the documentation for parameter on the archive widget shortcode
 - Some typos
+- Updated the Personio icon in Block Editor
+- Updates some template for better compatibility with the updated WordPress Coding Standards
 - Updated dependencies
 
 ### Fixed

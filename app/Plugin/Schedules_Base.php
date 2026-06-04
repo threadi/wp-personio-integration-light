@@ -157,11 +157,17 @@ class Schedules_Base {
 	}
 
 	/**
-	 * Return the event attributes.
+	 * Return the event.
 	 *
 	 * @return false|object
 	 */
 	public function get_event(): false|object {
+		// bail if the function does not exist.
+		if ( ! function_exists( 'wp_get_scheduled_event' ) ) {
+			return false;
+		}
+
+		// return the event.
 		return wp_get_scheduled_event( $this->get_name(), $this->get_args() );
 	}
 

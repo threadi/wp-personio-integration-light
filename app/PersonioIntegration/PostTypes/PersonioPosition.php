@@ -337,7 +337,7 @@ class PersonioPosition extends Post_Type {
 		// extend our own cpt with methods to change the positions.
 		register_rest_route(
 			'wp/v2',
-			$this->get_name(),
+			$this->get_name(), // @phpstan-ignore argument.type
 			array(
 				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => array( $this, 'change_positions' ),
@@ -350,7 +350,7 @@ class PersonioPosition extends Post_Type {
 		// extend our own cpt with the delete method to delete all positions in one rush.
 		register_rest_route(
 			'wp/v2',
-			$this->get_name(),
+			$this->get_name(), // @phpstan-ignore argument.type
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
 				'callback'            => array( $this, 'delete_positions' ),
@@ -482,7 +482,7 @@ class PersonioPosition extends Post_Type {
 			$username = $user->display_name;
 		}
 
-		// is no username is set, use "automatic import".
+		// if no username is set, use "automatic import".
 		if ( empty( $username ) ) {
 			$username = __( 'Automatic import', 'personio-integration-light' );
 		}
@@ -764,7 +764,7 @@ class PersonioPosition extends Post_Type {
 	/**
 	 * Add boxes to the edit-page of our own cpt.
 	 *
-	 * @param string $post_type The requested post type.
+	 * @param string $post_type The requested post-type.
 	 * @param mixed  $post The post-object.
 	 *
 	 * @return void
@@ -811,7 +811,7 @@ class PersonioPosition extends Post_Type {
 		// add a box with a hint to use salary in Pro plugin.
 		add_meta_box(
 			$this->get_name() . '-pro-salary',
-			__( 'Salary', 'personio-integration' ),
+			__( 'Salary', 'personio-integration-light' ),
 			array( $this, 'add_meta_box_salary' ),
 			$this->get_name(),
 		);
@@ -998,7 +998,7 @@ class PersonioPosition extends Post_Type {
 
 		// show hint.
 		/* translators: %1$s will be replaced by the URL for Personio, %2$s will be replaced with the URL for the Personio account, %3$s will be replaced with the window hint. */
-		printf( wp_kses_post( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the position data in your <a href="%2$s" target="_blank">Personio account%3$s</a>.', 'personio-integration-light' ) ), esc_html( $position_obj->get_title() ), esc_url( $url ), Helper::get_a11n_window_hint() );
+		echo wp_kses_post( sprintf( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the position data in your <a href="%2$s" target="_blank">Personio account%3$s</a>.', 'personio-integration-light' ), esc_html( $position_obj->get_title() ), esc_url( $url ), Helper::get_a11n_window_hint() ) );
 	}
 
 	/**
@@ -1069,7 +1069,7 @@ class PersonioPosition extends Post_Type {
 		// get the content array.
 		$content_array = $position_obj->get_content();
 
-		// bail if array is empty and show hint.
+		// bail if the array is empty and show a hint.
 		if ( empty( $content_array ) ) {
 			/* translators: %1$s will be replaced by a URL. */
 			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description has been provided for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
@@ -1150,7 +1150,7 @@ class PersonioPosition extends Post_Type {
 		// get the terms of this taxonomy on this position.
 		$terms = $position_obj->get_terms_by_field( $taxonomy_name );
 
-		// if no terms could be loaded, show hint.
+		// if no terms could be loaded, show a hint.
 		if ( empty( $terms ) ) {
 			echo '<i>' . esc_html__( 'No data received.', 'personio-integration-light' ) . '</i>';
 		} else {
@@ -1226,7 +1226,7 @@ class PersonioPosition extends Post_Type {
 	public function disable_create_options(): void {
 		global $pagenow, $typenow;
 
-		// bail if requested list is not our cpt.
+		// bail if the requested list is not our cpt.
 		if ( $this->get_name() !== $typenow ) {
 			return;
 		}
@@ -1408,7 +1408,7 @@ class PersonioPosition extends Post_Type {
 	}
 
 	/**
-	 * Add dashboard-widget to show list of positions.
+	 * Add dashboard-widget to show the list of positions.
 	 *
 	 * @param array<int,array<string,mixed>> $dashboard_widgets List of widgets on dashboard.
 	 *
@@ -1659,7 +1659,7 @@ class PersonioPosition extends Post_Type {
 			return;
 		}
 
-		// bail if no post id is set.
+		// bail if no post ID is set.
 		if ( empty( $params['post'] ) ) {
 			return;
 		}
@@ -1762,7 +1762,7 @@ class PersonioPosition extends Post_Type {
 				'title'   => __( 'Run import', 'personio-integration-light' ),
 				'texts'   => array(
 					/* translators: %1$s will be replaced by the Personio URL */
-					'<p>' . sprintf( __( '<strong>Do you really want to import open positions from<br>%1$s ?</strong>', 'personio-integration-light' ), '<a href="' . esc_url( Helper::get_personio_url() ) . '" target="_blank">' . esc_url( Helper::get_personio_url() ) . '</a>' ) . '</p>',
+					'<p><strong>' . sprintf( __( 'Do you really want to import open positions from %1$s?', 'personio-integration-light' ), '<br><a href="' . esc_url( Helper::get_personio_url() ) . '" target="_blank">' . esc_url( Helper::get_personio_url() ) . '</a>' ) . '</strong></p>',
 				),
 				'buttons' => array(
 					array(
@@ -2117,7 +2117,6 @@ class PersonioPosition extends Post_Type {
 		$content .= '<p><strong>' . __( 'Further notes:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		$content .= '<li>' . __( 'If you want to customize the output of shortcodes in terms of styling, you have to write and store the necessary style properties yourself. If necessary, contact the person responsible for your project.', 'personio-integration-light' ) . '</li>';
-		$false    = false;
 		/**
 		 * Hide hint for Pro-plugin.
 		 *

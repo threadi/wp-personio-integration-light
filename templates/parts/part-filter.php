@@ -6,7 +6,7 @@
  * @param string $anchor The ID to use to ID as anchor-target.
  * @param string $link_to_anchor The anchor for any targets (form or link).
  *
- * @version: 4.1.0
+ * @version: 5.5.0
  * @package personio-integration-light
  */
 
@@ -24,8 +24,8 @@ if ( ! empty( $personio_attributes['filter'] ) && ! empty( $personio_attributes[
 
 			do_action( 'personio_integration_filter_pre', $personio_attributes );
 
-			foreach ( $personio_attributes['filter'] as $filter ) :
-				do_action( 'personio_integration_get_filter', $filter, $personio_attributes, $personio_attributes['link_to_anchor'] );
+			foreach ( $personio_attributes['filter'] as $personio_integration_filter ) :
+				do_action( 'personio_integration_get_filter', $personio_integration_filter, $personio_attributes, $personio_attributes['link_to_anchor'] );
 			endforeach;
 
 			do_action( 'personio_integration_filter_post', $personio_attributes );

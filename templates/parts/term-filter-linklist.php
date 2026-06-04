@@ -9,31 +9,31 @@
  * @param array $attributes The attributes.
  *
  * @package personio-integration-light
- * @version: 4.1.0
+ * @version: 5.5.0
  */
 
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Template for output a single term filter as linklist.
+ * Template for output a term filter as "linklist".
  */
 ?>
 	<div<?php echo ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ? ' class="personio-filter-list-selected"' : ''; ?>>
 		<label><?php echo esc_html( $filtername ); ?></label>
 		<ul>
 			<?php
-			$term_count = count( $terms );
-			for ( $t = 0;$t < $term_count;$t++ ) {
-				if ( ! empty( $terms[ $t ] ) ) {
-					$url = apply_filters( 'personio_integration_light_filter_url', add_query_arg( array( 'personiofilter[' . $filter . ']' => $terms[ $t ]->term_id ) ), $attributes['link_to_anchor'] );
+			$personio_integration_term_count = count( $terms );
+			for ( $personio_integration_t = 0;$personio_integration_t < $personio_integration_term_count;$personio_integration_t++ ) {
+				if ( ! empty( $terms[ $personio_integration_t ] ) ) {
+					$personio_integration_url = apply_filters( 'personio_integration_light_filter_url', add_query_arg( array( 'personiofilter[' . $filter . ']' => $terms[ $personio_integration_t ]->term_id ) ), $attributes['link_to_anchor'] );
 					?>
-					<li><a href="<?php echo esc_url( $url ); ?>" class="
+					<li><a href="<?php echo esc_url( $personio_integration_url ); ?>" class="
 											<?php
-											echo esc_attr( apply_filters( 'personio_integration_light_term_get_classes', $terms[ $t ] ) );
-											echo ( $terms[ $t ]->term_id === $value ? ' personio-filter-selected' : '' );
+											echo esc_attr( apply_filters( 'personio_integration_light_term_get_classes', $terms[ $personio_integration_t ] ) );
+											echo ( $terms[ $personio_integration_t ]->term_id === $value ? ' personio-filter-selected' : '' );
 											?>
-					"><?php echo esc_html( $terms[ $t ]->name ); ?></a></li>
+					"><?php echo esc_html( $terms[ $personio_integration_t ]->name ); ?></a></li>
 											<?php
 				}
 			}
