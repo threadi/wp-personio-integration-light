@@ -360,6 +360,11 @@ class Archive extends Widget_Base {
 
 		// return the list of params for this widget.
 		return array(
+			'filter' => array(
+				'label'         => __( 'Show filter (1 to show, 0 to hide)', 'personio-integration-light' ),
+				'example_value' => 1,
+				'required'      => false,
+			),
 			'template'                     => array(
 				'label'         => __( 'Name of chosen template, one of these values:', 'personio-integration-light' ) . $list,
 				'example_value' => $values[0],
@@ -386,17 +391,17 @@ class Archive extends Widget_Base {
 				'required'      => false,
 			),
 			'showTitle'                    => array(
-				'label'         => __( 'Show title', 'personio-integration-light' ),
+				'label'         => __( 'Show title (1 to show, 0 to hide)', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
 			'linkTitle'                    => array(
-				'label'         => __( 'Link title', 'personio-integration-light' ),
+				'label'         => __( 'Link title (1 to show, 0 to hide)', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
 			'showExcerpt'                  => array(
-				'label'         => __( 'Show excerpt', 'personio-integration-light' ),
+				'label'         => __( 'Show excerpt (1 to show, 0 to hide)', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
@@ -406,12 +411,12 @@ class Archive extends Widget_Base {
 				'required'      => false,
 			),
 			'showContent'                  => array(
-				'label'         => __( 'Show content', 'personio-integration-light' ),
+				'label'         => __( 'Show content (1 to show, 0 to hide)', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
 			'showApplicationForm'          => array(
-				'label'         => __( 'Show option to apply', 'personio-integration-light' ),
+				'label'         => __( 'Show option to apply (1 to show, 0 to hide)', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,
 			),
