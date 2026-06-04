@@ -233,7 +233,7 @@ class License {
 		check_admin_referer( 'personio-integration-license-key' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -560,7 +560,7 @@ class License {
 		check_admin_referer( 'personio-integration-light-install-pro', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -737,7 +737,7 @@ class License {
 		check_admin_referer( 'personio-integration-license-costs' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -760,7 +760,7 @@ class License {
 		check_admin_referer( 'personio-integration-license-costs-revoke', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 

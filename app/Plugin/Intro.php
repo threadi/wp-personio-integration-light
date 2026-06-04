@@ -112,7 +112,7 @@ class Intro {
 		check_ajax_referer( 'personio-intro-closed', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -250,7 +250,7 @@ class Intro {
 		check_ajax_referer( 'personio-integration-intro-reset', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 

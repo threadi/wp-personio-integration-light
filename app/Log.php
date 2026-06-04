@@ -181,6 +181,9 @@ class Log {
 		if ( is_null( $order_by ) ) {
 			$order_by = 'date';
 		}
+		if( ! is_array( $order_by, array( 'date' ), true ) ) {
+			$order_by = 'date';
+		}
 		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		if ( is_string( $order ) ) {
 			$order = sanitize_sql_orderby( $order );

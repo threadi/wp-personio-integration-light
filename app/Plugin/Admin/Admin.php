@@ -297,7 +297,7 @@ class Admin {
 		check_admin_referer( 'personio-integration-import', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -346,7 +346,7 @@ class Admin {
 		check_ajax_referer( 'personio-integration-re-import', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -382,7 +382,7 @@ class Admin {
 		check_ajax_referer( 'personio-integration-cancel-import', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -428,7 +428,7 @@ class Admin {
 		check_ajax_referer( 'personio-integration-delete', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -871,7 +871,7 @@ class Admin {
 		check_admin_referer( 'personio-integration-log-export', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -930,7 +930,7 @@ class Admin {
 		check_admin_referer( 'personio-integration-log-empty', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 

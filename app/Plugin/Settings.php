@@ -971,7 +971,7 @@ class Settings {
 		$settings = $this->get_settings_object();
 
 		// bail if capability is missing.
-		if( ! current_user_can( $settings->get_capability() ) ) {
+		if ( ! current_user_can( $settings->get_capability() ) ) {
 			return;
 		}
 
@@ -1016,7 +1016,7 @@ class Settings {
 		check_admin_referer( 'personio-integration-light-reset', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( $this->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( $this->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 

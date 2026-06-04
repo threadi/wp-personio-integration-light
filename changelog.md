@@ -14,6 +14,7 @@
 - Completed the documentation for parameter on the archive widget shortcode
 - Some typos
 - Changed output of extension "Availability" in the table of positions
+- Optimized output in the frontend regarding WCAG
 - Updated the warning for outdated PHP versions 8.2 or older
 - Updated the Personio icon in Block Editor
 - Updates some templates for better compatibility with the updated WordPress Coding Standards

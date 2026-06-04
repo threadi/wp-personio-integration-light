@@ -281,7 +281,7 @@ class Schedules {
 		check_ajax_referer( 'wp-personio-integration-create-schedules', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 

@@ -214,7 +214,7 @@ class Extensions {
 		check_ajax_referer( 'personio-integration-extension-state', 'nonce' );
 
 		// bail if capability is not given.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -339,7 +339,7 @@ class Extensions {
 		check_admin_referer( 'personio-integration-extension-state', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -498,7 +498,7 @@ class Extensions {
 		check_admin_referer( 'personio-integration-extension-disable-all', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -542,7 +542,7 @@ class Extensions {
 		check_admin_referer( 'personio-integration-extension-enable-all', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 

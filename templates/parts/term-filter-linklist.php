@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 	<div<?php echo ! empty( $GLOBALS['wp']->query_vars['personiofilter'][ $filter ] ) ? ' class="personio-filter-list-selected"' : ''; ?>>
-		<label><?php echo esc_html( $filtername ); ?></label>
+		<p><?php echo esc_html( $filtername ); ?></p>
 		<ul>
 			<?php
 			$personio_integration_term_count = count( $terms );
@@ -33,7 +33,11 @@ defined( 'ABSPATH' ) || exit;
 											echo esc_attr( apply_filters( 'personio_integration_light_term_get_classes', $terms[ $personio_integration_t ] ) );
 											echo ( $terms[ $personio_integration_t ]->term_id === $value ? ' personio-filter-selected' : '' );
 											?>
-					"><?php echo esc_html( $terms[ $personio_integration_t ]->name ); ?></a></li>
+					"
+				       <?php
+				       echo ( $terms[ $personio_integration_t ]->term_id === $value ? ' aria-current="true"' : '' );
+					   ?>
+						><?php echo esc_html( $terms[ $personio_integration_t ]->name ); ?></a></li>
 											<?php
 				}
 			}

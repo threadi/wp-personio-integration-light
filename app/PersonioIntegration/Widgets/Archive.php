@@ -360,7 +360,7 @@ class Archive extends Widget_Base {
 
 		// return the list of params for this widget.
 		return array(
-			'filter' => array(
+			'filter'                       => array(
 				'label'         => __( 'Show filter (1 to show, 0 to hide)', 'personio-integration-light' ),
 				'example_value' => 1,
 				'required'      => false,

@@ -244,7 +244,7 @@ class Manual_Import extends Extensions_Base {
 		check_ajax_referer( 'personio-integration-light-manual-import-dialog', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -327,7 +327,7 @@ class Manual_Import extends Extensions_Base {
 		check_ajax_referer( 'personio-integration-light-manual-import', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
@@ -459,7 +459,7 @@ class Manual_Import extends Extensions_Base {
 		check_ajax_referer( 'personio-integration-light-manual-import-save', 'nonce' );
 
 		// bail if capability is missing.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			return;
 		}
 
