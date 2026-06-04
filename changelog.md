@@ -10,6 +10,7 @@
 
 - Optimized usage of an a11n hint for new window links
 - Some typos
+- Updated the Personio icon in Block Editor
 - Updated dependencies
 
 ### Fixed
