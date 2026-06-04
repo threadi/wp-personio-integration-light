@@ -277,7 +277,13 @@ class Schedules {
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function create_schedules_per_request(): void {
+		// check nonce.
 		check_ajax_referer( 'wp-personio-integration-create-schedules', 'nonce' );
+
+		// bail if capability is missing.
+		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// create schedules.
 		$this->create_schedules();

@@ -79,7 +79,7 @@ function personio_integration_intro_exit() {
     type: "POST",
     url: personioIntegrationLightIntroJsVars.ajax_url,
     data: {
-      'action': 'personio_intro_closed',
+      'action': 'personio_integration_light_intro_closed',
       'nonce': personioIntegrationLightIntroJsVars.intro_closed_nonce
     },
     error: function( jqXHR, textStatus, errorThrown ) {

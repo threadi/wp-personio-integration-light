@@ -90,7 +90,7 @@ class Intro {
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_js' ) );
 
 		// add AJAX-actions.
-		add_action( 'wp_ajax_personio_intro_closed', array( $this, 'closed' ) );
+		add_action( 'wp_ajax_personio_integration_light_intro_closed', array( $this, 'closed' ) );
 	}
 
 	/**
@@ -110,6 +110,11 @@ class Intro {
 	public function closed(): void {
 		// check nonce.
 		check_ajax_referer( 'personio-intro-closed', 'nonce' );
+
+		// bail if capability is missing.
+		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// save that intro has been closed.
 		$this->set_closed();
@@ -243,6 +248,11 @@ class Intro {
 	public function reset_intro(): void {
 		// check nonce.
 		check_ajax_referer( 'personio-integration-intro-reset', 'nonce' );
+
+		// bail if capability is missing.
+		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// delete the actual setting.
 		delete_option( 'personio_integration_intro' );

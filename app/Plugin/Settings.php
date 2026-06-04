@@ -79,7 +79,7 @@ class Settings {
 		add_filter( 'personio_integration_light_enqueue_styles_and_scripts', array( $this, 'enqueue_styles_and_scripts' ), 10, 2 );
 
 		// misc.
-		add_action( 'wp_ajax_personio_get_settings_import_dialog', array( $this, 'get_settings_import_dialog_via_ajax' ) );
+		add_action( 'wp_ajax_personio_integration_light_get_settings_import_dialog', array( $this, 'get_settings_import_dialog_via_ajax' ) );
 		add_action( 'admin_action_personio_integration_light_reset', array( $this, 'reset_plugin_by_request' ) );
 	}
 
@@ -255,7 +255,7 @@ class Settings {
 		$template_detail->set_title( __( 'Detail View', 'personio-integration-light' ) );
 		$template_detail->set_setting( $settings_obj );
 
-		// the template other section.
+		// the template "other" section.
 		$template_other = $templates_tab->add_section( 'settings_section_template_other', 30 );
 		$template_other->set_title( __( 'Other settings', 'personio-integration-light' ) );
 		$template_other->set_setting( $settings_obj );
@@ -297,7 +297,7 @@ class Settings {
 		$personio_url_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\PersonioIntegrationUrl', 'save' ) );
 		$field = new Text( $settings_obj );
 		$field->set_title( __( 'Personio URL', 'personio-integration-light' ) );
-		/* translators: %1$s is replaced with the URL to Personio login for account access, %2$s is replaced with the url to the Personio support, %3$s is replaced with the closing HTML-tag. */
+		/* translators: %1$s is replaced with the URL to Personio login for account access, %2$s is replaced with the url to the Personio support, %3$s is replaced with the closing HTML tag. */
 		$field->set_description( sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account%3$s</a> under Settings > Recruiting > Career Page > Activations.<br><strong>Hint:</strong> You have to enable the XML-feed under Settings > Recruiting > Career in your Personio account.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s" target="_blank">Personio support%3$s</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_login_url() ), esc_url( Helper::get_personio_support_url() ), Helper::get_a11n_window_hint() ) . '</p>' . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
 		$field->set_placeholder( Helper::get_personio_url_example() );
 		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ) );
@@ -401,7 +401,7 @@ class Settings {
 		$setting->set_default( 'default' );
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Choose template for listing', 'personio-integration-light' ) );
-		/* translators: %1$s will be replaced with the documentation-URL, %2$s will be replaced with the closing HTML-tag. */
+		/* translators: %1$s will be replaced with the documentation-URL, %2$s will be replaced with the closing HTML tag. */
 		$field->set_description( sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
 		$field->set_options( Templates::get_instance()->get_archive_templates() );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
@@ -887,7 +887,7 @@ class Settings {
 	}
 
 	/**
-	 * Add import category for log view.
+	 * Add an import category for the settings.
 	 *
 	 * @param array<string,string> $categories List of categories.
 	 *
@@ -970,6 +970,11 @@ class Settings {
 		// get properties from settings.
 		$settings = $this->get_settings_object();
 
+		// bail if capability is missing.
+		if( ! current_user_can( $settings->get_capability() ) ) {
+			return;
+		}
+
 		// get import settings.
 		$import_settings = $settings->get_setting( 'import_settings' );
 
@@ -1009,6 +1014,11 @@ class Settings {
 	public function reset_plugin_by_request(): void {
 		// check nonce.
 		check_admin_referer( 'personio-integration-light-reset', 'nonce' );
+
+		// bail if capability is missing.
+		if( ! current_user_can( $this->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// set options.
 		$options = array(

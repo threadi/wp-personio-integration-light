@@ -213,7 +213,7 @@ function personio_start_import() {
     type: "POST",
     url: personioIntegrationLightJsVars.ajax_url,
     data: {
-      'action': 'personio_run_import',
+      'action': 'personio_integration_light_run_import',
       'nonce': personioIntegrationLightJsVars.run_import_nonce
     },
     beforeSend: function() {
@@ -257,7 +257,7 @@ function personio_get_import_info() {
     type: "POST",
     url: personioIntegrationLightJsVars.ajax_url,
     data: {
-      'action': 'personio_get_import_info',
+      'action': 'personio_integration_light_get_import_info',
       'nonce': personioIntegrationLightJsVars.get_import_nonce
     },
     error: function( jqXHR, textStatus, errorThrown ) {
@@ -372,7 +372,7 @@ function personio_get_delete_info( reimport ) {
     type: "POST",
     url: personioIntegrationLightJsVars.ajax_url,
     data: {
-      'action': 'personio_get_deletion_info',
+      'action': 'personio_integration_light_get_deletion_info',
       'nonce': personioIntegrationLightJsVars.get_deletion_nonce
     },
     error: function( jqXHR, textStatus, errorThrown ) {
@@ -573,7 +573,7 @@ function personio_integration_extension_state_button() {
       type: "POST",
       url: personioIntegrationLightJsVars.ajax_url,
       data: {
-        'action': 'personio_extension_state',
+        'action': 'personio_integration_light_extension_state',
         'extension': button.data( 'extension' ),
         'nonce': personioIntegrationLightJsVars.extension_state_nonce
       },
@@ -619,7 +619,7 @@ function personio_integration_settings_import_dialog_via_setup() {
     type: "POST",
     url: personioIntegrationLightJsVars.ajax_url,
     data: {
-      'action': 'personio_get_settings_import_dialog',
+      'action': 'personio_integration_light_get_settings_import_dialog',
       'nonce': personioIntegrationLightJsVars.settings_import_dialog_nonce
     },
     error: function( jqXHR, textStatus, errorThrown ) {
@@ -640,7 +640,7 @@ function personio_integration_light_get_import_dialog() {
     type: "POST",
     url: personioIntegrationLightJsVars.ajax_url,
     data: {
-      'action': 'personio_get_import_dialog',
+      'action': 'personio_integration_light_get_import_dialog',
       'nonce': personioIntegrationLightJsVars.get_import_dialog_nonce
     },
     error: function( jqXHR, textStatus, errorThrown ) {

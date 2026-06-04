@@ -28,6 +28,7 @@ use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Plugin\Compatibilities\Loco;
 use PersonioIntegrationLight\Plugin\Compatibilities\SayWhat;
 use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
 use WP_Post;
@@ -131,10 +132,10 @@ class PersonioPosition extends Post_Type {
 		add_filter( 'admin_footer_text', array( $this, 'show_plugin_hint_in_footer' ), 0 );
 
 		// add ajax-hooks.
-		add_action( 'wp_ajax_personio_get_deletion_info', array( $this, 'get_deletion_info' ) );
-		add_action( 'wp_ajax_personio_run_import', array( $this, 'run_import_via_ajax' ) );
-		add_action( 'wp_ajax_personio_get_import_info', array( $this, 'get_import_info' ) );
-		add_action( 'wp_ajax_personio_get_import_dialog', array( $this, 'get_import_dialog' ) );
+		add_action( 'wp_ajax_personio_integration_light_get_deletion_info', array( $this, 'get_deletion_info' ) );
+		add_action( 'wp_ajax_personio_integration_light_run_import', array( $this, 'run_import_via_ajax' ) );
+		add_action( 'wp_ajax_personio_integration_light_get_import_info', array( $this, 'get_import_info' ) );
+		add_action( 'wp_ajax_personio_integration_light_get_import_dialog', array( $this, 'get_import_dialog' ) );
 
 		// use our own hooks.
 		add_filter( 'personio_integration_get_shortcode_attributes', array( $this, 'check_filter_type' ) );
@@ -1679,6 +1680,14 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function get_deletion_info(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-get-deletion-info', 'nonce' );
+
+		// bail if capability is missing.
+		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// return actual and max count of import steps.
 		wp_send_json(
 			array(
@@ -1700,6 +1709,11 @@ class PersonioPosition extends Post_Type {
 	public function run_import_via_ajax(): void {
 		// check nonce.
 		check_ajax_referer( 'personio-run-import', 'nonce' );
+
+		// bail if capability is missing.
+		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// get the import object.
 		$imports_obj = Imports::get_instance()->get_import_extension();
@@ -1735,6 +1749,11 @@ class PersonioPosition extends Post_Type {
 		// check nonce.
 		check_ajax_referer( 'personio-get-import-info', 'nonce' );
 
+		// bail if capability is missing.
+		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// return actual and max count of import steps.
 		wp_send_json(
 			array(
@@ -1755,6 +1774,11 @@ class PersonioPosition extends Post_Type {
 	public function get_import_dialog(): void {
 		// check nonce.
 		check_ajax_referer( 'personio-import-dialog', 'nonce' );
+
+		// bail if capability is missing.
+		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// define dialog.
 		$dialog = array(

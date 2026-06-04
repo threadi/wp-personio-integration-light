@@ -95,8 +95,8 @@ class Availability extends Extensions_Base {
 		add_action( 'manage_' . PersonioPosition::get_instance()->get_name() . '_posts_custom_column', array( $this, 'add_column_content' ), 10, 2 );
 
 		// AJAX-requests.
-		add_action( 'wp_ajax_personio_run_availability_check', array( $this, 'single_check_via_request' ) );
-		add_action( 'wp_ajax_personio_get_availability_check_info', array( $this, 'get_single_check_status' ) );
+		add_action( 'wp_ajax_personio_integration_light_run_availability_check', array( $this, 'single_check_via_request' ) );
+		add_action( 'wp_ajax_personio_integration_light_get_availability_check_info', array( $this, 'get_single_check_status' ) );
 
 		// misc.
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_js' ), PHP_INT_MAX );
@@ -239,13 +239,13 @@ class Availability extends Extensions_Base {
 	 * @return void
 	 */
 	public function add_column_content( string $column, int $post_id ): void {
-		// get position as object.
+		// get position as an object.
 		$position_obj = Positions::get_instance()->get_position( $post_id );
 
 		// show column for availability.
 		if ( 'personio_integration_position_availability' === $column ) {
 			if ( $this->get_extension( $position_obj )->get_availability() ) {
-				$html = '<a class="dashicons dashicons-yes personio-integration-availability-check" data-post-id="' . absint( $position_obj->get_id() ) . '" href="#" title="' . __( 'Available', 'personio-integration-light' ) . '"></a>';
+				$html = '<span class="dashicons dashicons-yes" title="' . __( 'Available', 'personio-integration-light' ) . '"></span> <a class="dashicons dashicons-performance personio-integration-availability-check" data-post-id="' . absint( $position_obj->get_id() ) . '" href="#" title="' . __( 'Check the availability', 'personio-integration-light' ) . '"></a>';
 				/**
 				 * Filter the availability "yes"-output.
 				 *
@@ -288,7 +288,7 @@ class Availability extends Extensions_Base {
 				 * @since 3.0.0 Available since 3.0.0.
 				 *
 				 * @param string $html The output.
-				 * @param Position $position_obj The position as object.
+				 * @param Position $position_obj The position as an object.
 				 */
 				echo wp_kses_post( apply_filters( 'personio_integration_light_position_availability_no', $html, $position_obj ) );
 			}
@@ -319,7 +319,7 @@ class Availability extends Extensions_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		/* translators: %1$s will be replaced by the URL for the positions list. */
+		/* translators: %1$s will be replaced by the URL for the position list. */
 		return sprintf( __( 'Checks your positions for availability on your Personio career page. This ensures that applicants can reach the application form there. If a position is not available, you will be informed of this in the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) );
 	}
 
@@ -372,7 +372,7 @@ class Availability extends Extensions_Base {
 	}
 
 	/**
-	 * Run single check via AJAX-request.
+	 * Run single check via AJAX request.
 	 *
 	 * @return void
 	 */
@@ -408,6 +408,9 @@ class Availability extends Extensions_Base {
 	 * @return void
 	 */
 	public function get_single_check_status(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-integration-availability-info-nonce', 'nonce' );
+
 		// bail if user is not allowed to run this.
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			wp_send_json_error();

@@ -280,6 +280,11 @@ class Emails {
 		// check referer.
 		check_admin_referer( 'personio-integration-email-test', 'nonce' );
 
+		// bail if capability is missing.
+		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// get the object name.
 		$email_object_name = filter_input( INPUT_GET, 'object', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
