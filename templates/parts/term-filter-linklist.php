@@ -34,9 +34,9 @@ defined( 'ABSPATH' ) || exit;
 											echo ( $terms[ $personio_integration_t ]->term_id === $value ? ' personio-filter-selected' : '' );
 											?>
 					"
-				       <?php
-				       echo ( $terms[ $personio_integration_t ]->term_id === $value ? ' aria-current="true"' : '' );
-					   ?>
+						<?php
+						echo ( $terms[ $personio_integration_t ]->term_id === $value ? ' aria-current="true"' : '' );
+						?>
 						><?php echo esc_html( $terms[ $personio_integration_t ]->name ); ?></a></li>
 											<?php
 				}

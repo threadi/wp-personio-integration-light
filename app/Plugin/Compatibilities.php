@@ -135,6 +135,7 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Divi5',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Elementor',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Everest_Forms',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Filenzo',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Fluent_Forms',
 			'PersonioIntegrationLight\Plugin\Compatibilities\GeneratePressPremium',
 			'PersonioIntegrationLight\Plugin\Compatibilities\JetFormBuilder',

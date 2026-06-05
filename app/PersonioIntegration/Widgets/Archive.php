@@ -45,7 +45,7 @@ class Archive extends Widget_Base {
 	protected string $setting_tab = '';
 
 	/**
-	 * Path to Block object.
+	 * Path to the Block object.
 	 *
 	 * @var string
 	 */
@@ -131,11 +131,11 @@ class Archive extends Widget_Base {
 			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDefaults' ) ),
 			'ids'                     => '',
 			'donotlink'               => ( 0 === absint( get_option( 'personioIntegrationEnableLinkInList' ) ) ),
-			'sort'                    => 'asc',
-			'sortby'                  => 'title',
+			'sort'                    => get_option( 'personioIntegrationTemplateContentListingSort' ),
+			'sortby'                  => get_option( 'personioIntegrationTemplateContentListingSortBy' ),
 			'limit'                   => 0,
 			'nopagination'            => $pagination,
-			'groupby'                 => '',
+			'groupby'                 => get_option( 'personioIntegrationTemplateContentListingGroupBy' ),
 			'styles'                  => '',
 			'classes'                 => $this->get_default_classes(),
 			'anchor'                  => '',
@@ -209,7 +209,7 @@ class Archive extends Widget_Base {
 		 * @since 2.0.0 Available since 2.0.0.
 		 *
 		 * @param int $limit_by_wp The limit define by wp which will be used for the list.
-		 * @param int $limit_by_list The limit explicit set for this listing.
+		 * @param int $limit_by_list The limit explicitly set for this listing.
 		 */
 		$personio_attributes['limit'] = apply_filters( 'personio_integration_limit', $limit_by_wp, $limit_by_list );
 
@@ -281,7 +281,7 @@ class Archive extends Widget_Base {
 	}
 
 	/**
-	 * Return list of default classes depending on main settings.
+	 * Return the list of default classes depending on the main settings.
 	 *
 	 * @return string
 	 */

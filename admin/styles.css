@@ -33,6 +33,8 @@ body.post-type-personioposition {
 
 .personio_integration_light-field-width { width: 100% }
 
+input[type="number"].personio_integration_light-field-width { max-width: 25rem }
+
 .column-dragdrop { width: 20px }
 
 .ui-sortable-handle { cursor: pointer; }

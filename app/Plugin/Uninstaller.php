@@ -108,7 +108,7 @@ class Uninstaller {
 			// run the init hooks to set all settings.
 			Settings::get_instance()->add_the_settings();
 			Schedules::get_instance()->add_the_settings();
-			foreach( Extensions::get_instance()->get_extensions_as_objects() as $page_builder ) {
+			foreach ( Extensions::get_instance()->get_extensions_as_objects() as $page_builder ) {
 				$page_builder->add_the_settings();
 			}
 			Emails::get_instance()->add_the_settings();
