@@ -2135,11 +2135,9 @@ class PersonioPosition extends Post_Type {
 		$content .= '<p><strong>' . __( 'Example 2:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<p>' . __( 'This shortcode will output a single position with the Personio ID 42. The title, the job description and the link to the application form at Personio are output.', 'personio-integration-light' ) . '</p>';
 		$content .= '<code>[personioPosition templates="title,content,formular" personioid="42"]</code>';
-		$content .= '<p><strong>' . __( 'Documentation:', 'personio-integration-light' ) . '</strong></p>';
-		/* translators: %1$s will be replaced by a URL, %2$s will be replaced by a URL. */
-		$content .= '<p>' . sprintf( __( 'The complete documentation on the possibilities with shortcodes can be found <a href="%1$s" target="_blank">here</a>.', 'personio-integration-light' ), esc_url( Helper::get_shortcode_documentation_url() ), Helper::get_a11n_window_hint() ) . '</p>';
 		$content .= '<p><strong>' . __( 'Further notes:', 'personio-integration-light' ) . '</strong></p>';
-		$content .= '<ol>';
+		$content .= '<ul>';
+		$content .= '<li>' . __( 'Each of the 19 widgets provided by this plugin has its own shortcode with its own settings.', 'personio-integration-light' ) . '</li>';
 		$content .= '<li>' . __( 'If you want to customize the output of shortcodes in terms of styling, you have to write and store the necessary style properties yourself. If necessary, contact the person responsible for your project.', 'personio-integration-light' ) . '</li>';
 		/**
 		 * Hide hint for Pro-plugin.
@@ -2152,8 +2150,13 @@ class PersonioPosition extends Post_Type {
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL, %2$s will be replaced by a URL. */
 			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get more flexible widgets for your theme or page builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
+			/* translators: %1$s will be replaced by a URL, %2$s will be replaced by a URL. */
+			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get a shortcode generator, which helps to create the shortcodes you need.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		}
-		$content .= '</ol>';
+		$content .= '</ul>';
+		$content .= '<p><strong>' . __( 'Documentation:', 'personio-integration-light' ) . '</strong></p>';
+		/* translators: %1$s will be replaced by a URL, %2$s will be replaced by a URL. */
+		$content .= '<p>' . sprintf( __( 'The documentation on the possibilities with shortcodes can be found <a href="%1$s" target="_blank">here</a>.', 'personio-integration-light' ), esc_url( Helper::get_shortcode_documentation_url() ), Helper::get_a11n_window_hint() ) . '</p>';
 
 		// add help for the positions in general.
 		$help_list[] = array(
