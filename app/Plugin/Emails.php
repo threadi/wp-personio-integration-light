@@ -231,7 +231,7 @@ class Emails {
 	 */
 	public function add_emails_help( array $help_list ): array {
 		// collect the content for the help.
-		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Emails', 'personio-integration-light' ) . '</h2><p>' . __( 'We enable you to advertise your positions on your own website. Applicants can find them and apply for them.', 'personio-integration-light' ) . '</p>';
+		$content  = Helper::get_logo_img( true ) . '<h2>' . __( 'Emails', 'personio-integration-light' ) . '</h2><p>' . __( 'We let you receive email notifications from the plugin for various situations.', 'personio-integration-light' ) . '</p>';
 		$content .= '<p><strong>' . __( 'How to use emails:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		$content .= '<li>' . __( 'Take a look at the list of emails in the settings.', 'personio-integration-light' ) . '</li>';
@@ -279,6 +279,11 @@ class Emails {
 	public function send_test_email_by_request(): void {
 		// check referer.
 		check_admin_referer( 'personio-integration-email-test', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// get the object name.
 		$email_object_name = filter_input( INPUT_GET, 'object', FILTER_SANITIZE_FULL_SPECIAL_CHARS );

@@ -232,6 +232,11 @@ class License {
 		// check nonce.
 		check_admin_referer( 'personio-integration-license-key' );
 
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// get entered license key.
 		$this->key = filter_input( INPUT_POST, 'licence_key', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
@@ -554,6 +559,11 @@ class License {
 		// check nonce.
 		check_admin_referer( 'personio-integration-light-install-pro', 'nonce' );
 
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// get entered license key.
 		$this->key = filter_input( INPUT_GET, 'key', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
@@ -726,6 +736,11 @@ class License {
 		// check nonce.
 		check_admin_referer( 'personio-integration-license-costs' );
 
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// save the data.
 		update_user_meta( get_current_user_id(), 'personio-integration-acknowledge-costs-loading', 1 );
 
@@ -743,6 +758,11 @@ class License {
 	public function revoke_acknowledge_costs_loading_by_request(): void {
 		// check nonce.
 		check_admin_referer( 'personio-integration-license-costs-revoke', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// save the data.
 		delete_user_meta( get_current_user_id(), 'personio-integration-acknowledge-costs-loading', 1 );

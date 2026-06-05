@@ -194,7 +194,7 @@ class Blocks_Basis {
 	 */
 	protected function get_attributes(): array {
 		$single_attributes = $this->attributes;
-		$name = $this->get_name();
+		$name              = $this->get_name();
 		/**
 		 * Filter the attributes for a Block.
 		 *

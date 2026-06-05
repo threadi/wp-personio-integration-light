@@ -9,10 +9,18 @@
 ### Changed
 
 - Optimized usage of an a11n hint for new window links
+- Optimized AJAX action names to prevent collisions with other plugins
+- Optimized the checks if requests in backend are allowed according to the current capabilities of the WordPress user
 - Completed the documentation for parameter on the archive widget shortcode
 - Some typos
+- Changed output of extension "Availability" in the table of positions
+- Optimized output in the frontend regarding WCAG
+- Show states during the license setup
+- Do not use init hook during uninstallation to prevent errors from third party plugins
+- Updated some of the help texts the plugin provides in the backend
+- Updated the warning for outdated PHP versions 8.2 or older
 - Updated the Personio icon in Block Editor
-- Updates some template for better compatibility with the updated WordPress Coding Standards
+- Updates some templates for better compatibility with the updated WordPress Coding Standards
 - Updated dependencies
 
 ### Fixed

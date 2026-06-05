@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 
@@ -62,7 +63,7 @@ class Extensions {
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 40 );
 
 		// add AJAX-actions.
-		add_action( 'wp_ajax_personio_extension_state', array( $this, 'change_extension_state' ) );
+		add_action( 'wp_ajax_personio_integration_light_extension_state', array( $this, 'change_extension_state' ) );
 
 		// add admin-actions.
 		add_action( 'admin_action_personio_integration_extension_disable_all', array( $this, 'disable_all_by_request' ) );
@@ -212,6 +213,11 @@ class Extensions {
 		// check none.
 		check_ajax_referer( 'personio-integration-extension-state', 'nonce' );
 
+		// bail if capability is not given.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// get the name of the extension to change.
 		$extension_name = filter_input( INPUT_POST, 'extension', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
@@ -331,6 +337,11 @@ class Extensions {
 	public function change_extension_state_by_request(): void {
 		// check none.
 		check_admin_referer( 'personio-integration-extension-state', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// get transients as an object.
 		$transients_obj = Transients::get_instance();
@@ -486,6 +497,11 @@ class Extensions {
 		// check nonce.
 		check_admin_referer( 'personio-integration-extension-disable-all', 'nonce' );
 
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// get the category.
 		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
@@ -524,6 +540,11 @@ class Extensions {
 	public function enable_all_by_request(): void {
 		// check nonce.
 		check_admin_referer( 'personio-integration-extension-enable-all', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// get the category.
 		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );

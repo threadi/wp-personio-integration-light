@@ -17,6 +17,7 @@ use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Intro;
 use PersonioIntegrationLight\Plugin\License;
+use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use WP_Admin_Bar;
@@ -295,6 +296,11 @@ class Admin {
 	public function import_positions(): void {
 		check_admin_referer( 'personio-integration-import', 'nonce' );
 
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// get the import object.
 		$imports_obj = Imports::get_instance()->get_import_extension();
 
@@ -336,7 +342,13 @@ class Admin {
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function reimport_positions(): void {
+		// check nonce.
 		check_ajax_referer( 'personio-integration-re-import', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// delete positions.
 		PersonioPosition::get_instance()->delete_positions();
@@ -366,7 +378,13 @@ class Admin {
 	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function cancel_import(): void {
+		// check nonce.
 		check_ajax_referer( 'personio-integration-cancel-import', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// check if import as running.
 		if ( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) > 0 ) {
@@ -406,7 +424,13 @@ class Admin {
 	 * @noinspection PhpUnused
 	 */
 	public function delete_positions(): void {
+		// check nonce.
 		check_ajax_referer( 'personio-integration-delete', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// delete positions.
 		PersonioPosition::get_instance()->delete_positions();
@@ -484,7 +508,7 @@ class Admin {
 				$transient_obj->set_name( 'personio_integration_admin_show_review_hint' );
 				$transient_obj->set_message(
 					/* translators: %1$d is replaced with a day-count, %2$s will be replaced with the review-URL */
-					sprintf( __( 'You use the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="%2$s" target="_blank">leave us a review%3$s</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ), esc_url( Helper::get_review_url() ), Helper::get_a11n_window_hint() ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
+					sprintf( __( 'You have used the WordPress-plugin Personio Integration Light since more than %1$d days. Do you like it? Feel free to <a href="%2$s" target="_blank">leave us a review%3$s</a>.', 'personio-integration-light' ), ( absint( get_option( 'personioIntegrationLightInstallDate', 1 ) - time() ) / 60 / 60 / 24 ), esc_url( Helper::get_review_url() ), Helper::get_a11n_window_hint() ) . ' <span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>',
 				);
 				$transient_obj->set_type( 'info' );
 				$transient_obj->save();
@@ -545,7 +569,7 @@ class Admin {
 	public function add_custom_toolbar( WP_Admin_Bar $admin_bar ): void {
 		$true = Helper::is_personio_url_set();
 		/**
-		 * Filter whether to show the link to Archive page in admin bar.
+		 * Filter whether to show the link to the archive page in the admin bar.
 		 *
 		 * @since 4.0.0 Available since 4.0.0.
 		 * @param bool $true True if it should be visible.
@@ -564,7 +588,7 @@ class Admin {
 			)
 		);
 
-		// add links in admin-bar in backend.
+		// bail if we are not in the backend.
 		if ( ! is_admin() ) {
 			return;
 		}
@@ -846,6 +870,11 @@ class Admin {
 		// check the nonce.
 		check_admin_referer( 'personio-integration-log-export', 'nonce' );
 
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// get entries.
 		$log     = Log::get_instance();
 		$entries = $log->get_entries();
@@ -897,8 +926,13 @@ class Admin {
 	public function empty_log(): void {
 		global $wpdb;
 
-		// check the nonce.
+		// check nonce.
 		check_admin_referer( 'personio-integration-log-empty', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// empty the table.
 		$wpdb->query( 'TRUNCATE TABLE `' . $wpdb->prefix . 'personio_import_logs`' );
@@ -947,8 +981,8 @@ class Admin {
 			return;
 		}
 
-		// bail if PHP >= 8.1 is used.
-		if ( PHP_VERSION_ID >= 80100 ) { // @phpstan-ignore greaterOrEqual.alwaysTrue
+		// bail if PHP >= 8.3 is used.
+		if ( PHP_VERSION_ID >= 80300 ) { // @phpstan-ignore greaterOrEqual.alwaysTrue
 			$transients_obj->delete_transient( $transients_obj->get_transient_by_name( 'personio_integration_light_php_hint' ) );
 			return;
 		}
@@ -958,7 +992,7 @@ class Admin {
 		$transient_obj->set_type( 'error' );
 		$transient_obj->set_name( 'personio_integration_light_php_hint' );
 		$transient_obj->set_dismissible_days( 90 );
-		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'personio-integration-light' ) . '</strong><br>' . __( 'Future versions of <i>Personio Integration Light</i> will no longer be compatible with PHP 8.0 or older. These versions <a href="https://www.php.net/supported-versions.php" target="_blank">are outdated</a> since December 2023. To continue using the plugins new features, please update your PHP version.', 'personio-integration-light' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'personio-integration-light' ) );
+		$transient_obj->set_message( '<strong>' . __( 'Your website is using an outdated PHP-version!', 'personio-integration-light' ) . '</strong><br>' . __( 'Future versions of <i>Personio Integration Light</i> will no longer be compatible with PHP 8.2 or older. These versions <a href="https://www.php.net/supported-versions.php" target="_blank">have been outdated</a> since December 2026. To continue using the plugins new features, please update your PHP version.', 'personio-integration-light' ) . '<br>' . __( 'Talk to your hosters support team about this.', 'personio-integration-light' ) );
 		$transient_obj->save();
 	}
 

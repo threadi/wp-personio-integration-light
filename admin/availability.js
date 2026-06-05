@@ -13,7 +13,7 @@ function personio_start_availability_check( post_id ) {
     type: "POST",
     url: personioIntegrationLightAvailabilityJsVars.ajax_url,
     data: {
-      'action': 'personio_run_availability_check',
+      'action': 'personio_integration_light_run_availability_check',
       'post': post_id,
       'nonce': personioIntegrationLightAvailabilityJsVars.availability_nonce
     },
@@ -51,7 +51,7 @@ function personio_get_availability_check_info( post_id ) {
       type: "POST",
       url: personioIntegrationLightAvailabilityJsVars.ajax_url,
       data: {
-        'action': 'personio_get_availability_check_info',
+        'action': 'personio_integration_light_get_availability_check_info',
         'post_id': post_id,
         'nonce': personioIntegrationLightAvailabilityJsVars.get_availability_check_nonce
       },

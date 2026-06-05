@@ -28,7 +28,7 @@ class Manual_Import extends Extensions_Base {
 	private array $positions = array();
 
 	/**
-	 * List of Personio IDs of positions to import.
+	 * List of Personio IDs for positions to import.
 	 *
 	 * @var array<int,string>
 	 */
@@ -243,6 +243,11 @@ class Manual_Import extends Extensions_Base {
 		// check nonce.
 		check_ajax_referer( 'personio-integration-light-manual-import-dialog', 'nonce' );
 
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		$show_hint = 1 === absint( get_option( 'personioIntegrationEnablePositionSchedule' ) );
 		/**
 		 * Prevent manual import if automatic import is enabled.
@@ -321,6 +326,11 @@ class Manual_Import extends Extensions_Base {
 		// check nonce.
 		check_ajax_referer( 'personio-integration-light-manual-import', 'nonce' );
 
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
 		// get the actual import object.
 		$import_obj = $this->get_import_object_via_ajax();
 
@@ -328,7 +338,7 @@ class Manual_Import extends Extensions_Base {
 		add_filter( 'personio_integration_light_import_of_url_starting', '__return_false' );
 
 		// add a filter to save the position data in our list for manual import
-		// and prevent the saving of positions on the normal way.
+		// and prevent the saving of positions the normal way.
 		add_filter( 'personio_integration_import_single_position', array( $this, 'save_position' ), 10, 5 );
 
 		// prevent cleanup after import.
@@ -337,7 +347,7 @@ class Manual_Import extends Extensions_Base {
 		// call the import.
 		$import_obj->run();
 
-		// bail if list of positions is empty.
+		// bail if the list of positions is empty.
 		if ( empty( $this->positions ) ) {
 			// define dialog.
 			$dialog = array(
@@ -363,7 +373,7 @@ class Manual_Import extends Extensions_Base {
 		// filter the next query for positions to only get their Personio IDs.
 		add_filter( 'personio_integration_positions_resulting_list', array( $this, 'get_personio_ids_from_db' ) );
 
-		// get list of positions in WordPress as ID-list.
+		// get the list of positions in WordPress as a list of IDs.
 		$positions_in_db = Positions::get_instance()->get_positions();
 
 		// collect all Personio IDs to a string list.
@@ -372,7 +382,7 @@ class Manual_Import extends Extensions_Base {
 		// generate the list of positions to choose, which one should be imported.
 		$list = '<label for="check_all"><input type="checkbox" id="check_all" name="check_all" value="1"> ' . __( 'Check all', 'personio-integration-light' ) . '<ul>';
 		foreach ( $this->positions as $position_obj ) {
-			// set check marker if this position is already in WordPress OR none positions are set.
+			// set the check marker if this position is already in WordPress OR none positions are set.
 			$checked = ( empty( $positions_in_db ) || in_array( $position_obj->get_personio_id(), $positions_in_db, true ) ) ? ' checked' : '';
 
 			// add to the list.
@@ -381,7 +391,7 @@ class Manual_Import extends Extensions_Base {
 			}
 			$personio_id_list .= $position_obj->get_personio_id();
 
-			// add the HTML-code.
+			// add the HTML code.
 			$list .= '<li><label for="position' . $position_obj->get_personio_id() . '"><input type="checkbox" data-personio-id="' . $position_obj->get_personio_id() . '" id="position' . $position_obj->get_personio_id() . '" name="position[' . $position_obj->get_personio_id() . ']" value="1"' . $checked . '> ' . $position_obj->get_title() . ' (' . $position_obj->get_personio_id() . ')</label></li>';
 		}
 		$list .= '</ul>';
@@ -422,7 +432,7 @@ class Manual_Import extends Extensions_Base {
 	 *
 	 * We only save some main data from the position to show them in the dialog.
 	 *
-	 * @param bool         $run_import The return value, should be false here.
+	 * @param bool         $run_import The return value, which should be false here.
 	 * @param object       $source_object The object to import.
 	 * @param string       $language_name The language name.
 	 * @param Personio     $personio_obj The used Personio object.
@@ -432,7 +442,7 @@ class Manual_Import extends Extensions_Base {
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function save_position( bool $run_import, object $source_object, string $language_name, Personio $personio_obj, Imports_Base $imports_obj ): bool {
-		// get the position object from source object.
+		// get the position object from the source object.
 		$this->positions[] = $imports_obj->get_position_from_object( $source_object, $language_name, $personio_obj->get_url() );
 
 		// return false to prevent normal import.
@@ -447,6 +457,11 @@ class Manual_Import extends Extensions_Base {
 	public function import_selected_positions(): void {
 		// check nonce.
 		check_ajax_referer( 'personio-integration-light-manual-import-save', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// get the selected positions.
 		$selected_positions = isset( $_POST['selected_positions'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['selected_positions'] ) ) : array();
@@ -467,7 +482,7 @@ class Manual_Import extends Extensions_Base {
 		 */
 		$this->simple_positions = apply_filters( 'personio_integration_light_manual_import_selected_positions', $selected_positions, $all_positions );
 
-		// bail if list of positions is empty.
+		// bail if the list of positions is empty.
 		if ( empty( $this->simple_positions ) ) {
 			// define dialog.
 			$dialog = array(
@@ -586,7 +601,7 @@ class Manual_Import extends Extensions_Base {
 	/**
 	 * Prevent import of position, which is not in our list.
 	 *
-	 * @param bool         $run_import The return value, should be false here.
+	 * @param bool         $run_import The return value, which should be false here.
 	 * @param object       $source_object The object to import.
 	 * @param string       $language_name The language name.
 	 * @param Personio     $personio_obj The used Personio object.
@@ -599,7 +614,7 @@ class Manual_Import extends Extensions_Base {
 		// get the position object.
 		$position_obj = $imports_obj->get_position_from_object( $source_object, $language_name, $personio_obj->get_url() );
 
-		// bail if Personio ID of this position is in list.
+		// bail if Personio ID of this position is in the list.
 		if ( in_array( $position_obj->get_personio_id(), $this->simple_positions, true ) ) {
 			return $run_import;
 		}
