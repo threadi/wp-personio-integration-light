@@ -6,6 +6,7 @@
 
 - Added audit check for third party libraries we use for this plugin to fulfill requirements of the Cyber Resilience Act
 - Added default settings for "sort by", "sort direction" and "group by" in settings for any archive templates
+- Added compatibility check for the plugin "File Upload for WPForms - Filenzo"
 
 ### Changed
 
