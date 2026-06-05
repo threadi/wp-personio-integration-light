@@ -13,11 +13,13 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transient;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\PageBuilder\Page_Builders;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
+use PersonioIntegrationLight\PersonioIntegration\Statistics;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\Widgets\Widgets;
 
@@ -103,10 +105,14 @@ class Uninstaller {
 			// initialize the plugin.
 			Init::get_instance()->init();
 
-			/**
-			 * Run the global init to initialize all components.
-			 */
-			do_action( 'init' );
+			// run the init hooks to set all settings.
+			Settings::get_instance()->add_the_settings();
+			Schedules::get_instance()->add_the_settings();
+			foreach( Extensions::get_instance()->get_extensions_as_objects() as $page_builder ) {
+				$page_builder->add_the_settings();
+			}
+			Emails::get_instance()->add_the_settings();
+			Statistics::get_instance()->add_the_settings();
 
 			// get the settings object.
 			$settings_obj = Settings::get_instance()->get_settings_object();
