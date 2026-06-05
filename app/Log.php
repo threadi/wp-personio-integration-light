@@ -181,7 +181,7 @@ class Log {
 		if ( is_null( $order_by ) ) {
 			$order_by = 'date';
 		}
-		if( $order_by !== 'date' ) {
+		if ( $order_by !== 'date' ) {
 			$order_by = 'date';
 		}
 		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS );

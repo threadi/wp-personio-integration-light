@@ -408,6 +408,49 @@ class Settings {
 		$setting->set_field( $field );
 
 		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateContentListingSortBy' );
+		$setting->set_section( $template_list );
+		$setting->set_type( 'string' );
+		$setting->set_default( 'title' );
+		$field = new Select( $settings_obj );
+		$field->set_title( __( 'Sort by', 'personio-integration-light' ) );
+		$field->set_options(
+			array(
+				'title' => __( 'Title', 'personio-integration-light' ),
+				'date'  => __( 'Date', 'personio-integration-light' ),
+			)
+		);
+		$field->set_readonly( ! Helper::is_personio_url_set() );
+		$setting->set_field( $field );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateContentListingSort' );
+		$setting->set_section( $template_list );
+		$setting->set_type( 'string' );
+		$setting->set_default( 'asc' );
+		$field = new Select( $settings_obj );
+		$field->set_title( __( 'Sort direction', 'personio-integration-light' ) );
+		$field->set_options(
+			array(
+				'asc'  => __( 'Ascending', 'personio-integration-light' ),
+				'desc' => __( 'Descending', 'personio-integration-light' ),
+			)
+		);
+		$field->set_readonly( ! Helper::is_personio_url_set() );
+		$setting->set_field( $field );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateContentListingGroupBy' );
+		$setting->set_section( $template_list );
+		$setting->set_type( 'string' );
+		$setting->set_default( '' );
+		$field = new Select( $settings_obj );
+		$field->set_title( __( 'Group by', 'personio-integration-light' ) );
+		$field->set_options( array_merge( array( '' => __( 'Ungrouped', 'personio-integration' ) ), Taxonomies::get_instance()->get_taxonomy_labels_for_settings() ) );
+		$field->set_readonly( ! Helper::is_personio_url_set() );
+		$setting->set_field( $field );
+
+		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationTemplateContentList' );
 		$setting->set_section( $template_list );
 		$setting->set_type( 'array' );
