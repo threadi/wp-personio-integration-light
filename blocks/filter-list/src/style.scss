@@ -16,42 +16,50 @@
 
 	a.personio-filter-selected { font-weight: bold }
 
-	&>div, &>a {
-		cursor: pointer;
-		display: inline-block;
-		margin: 0 1.4em 0 0;
-		position: relative;
-		width: auto;
-		z-index :1;
-	}
-
-	&>div {
-		ul {
-			background-color: #fff;
-			display: none;
-			list-style: none;
-			margin: 0;
-			padding: 0;
-			position: absolute;
-			top: 100%;
-			left: 0;
-			z-index: 10;
+	&>fieldset {
+		& > div, & > a {
+			cursor: pointer;
+			display: inline-block;
+			margin: 0 1.4em 0 0;
+			position: relative;
+			width: auto;
+			z-index: 1;
 		}
 
-		li {
-			line-height: 2;
-			list-style: none;
-			margin: 0;
-			padding: 0 4px;
-			white-space: nowrap;
+		& > div {
+			ul {
+				background-color: #fff;
+				display: none;
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				position: absolute;
+				top: 100%;
+				left: 0;
+				z-index: 10;
+			}
+
+			li {
+				line-height: 2;
+				list-style: none;
+				margin: 0;
+				padding: 0 4px;
+				white-space: nowrap;
+			}
+
+			li:before {
+				display: none !important;
+			}
 		}
 
-		li:before {
-			display: none !important;
+		& > div:hover ul {
+			display: block;
 		}
 	}
+}
 
-	&>div:hover ul {
-		display: block;
-	}
+.personio-position-filter > fieldset {
+	border: 0;
+	margin: 0;
+	padding: 0;
 }

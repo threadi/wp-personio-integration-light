@@ -120,7 +120,7 @@ class Filter_List extends Blocks_Basis {
 					$styles_array[] = '.entry.' . $class . ' legend { display: none }';
 				}
 				if ( ! empty( $attributes['space_between'] ) ) {
-					$styles_array[] = '.entry.' . $class . ' .personio-position-filter-linklist > div { margin-right: ' . $attributes['space_between'] . 'px }';
+					$styles_array[] = '.entry.' . $class . ' .personio-position-filter-linklist > fieldset > div { margin-right: ' . $attributes['space_between'] . 'px }';
 				}
 			}
 		}
