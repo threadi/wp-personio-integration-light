@@ -446,7 +446,7 @@ class Settings {
 		$setting->set_default( '' );
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Group by', 'personio-integration-light' ) );
-		$field->set_options( array_merge( array( '' => __( 'Ungrouped', 'personio-integration' ) ), Taxonomies::get_instance()->get_taxonomy_labels_for_settings() ) );
+		$field->set_options( array_merge( array( '' => __( 'Ungrouped', 'personio-integration-light' ) ), Taxonomies::get_instance()->get_taxonomy_labels_for_settings() ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 
