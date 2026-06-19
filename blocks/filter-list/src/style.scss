@@ -1,6 +1,4 @@
 .personio-position-filter-linklist {
-	display: flex;
-	flex-direction: row;
 
 	legend {
 		display: inline-block;
@@ -17,6 +15,7 @@
 	a.personio-filter-selected { font-weight: bold }
 
 	&>fieldset {
+		display: inline-block;
 		& > div, & > a {
 			cursor: pointer;
 			display: inline-block;
