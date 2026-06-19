@@ -19,6 +19,7 @@
 - Optimized output in the frontend regarding WCAG
 - Show states during the license setup
 - Do not use init hook during uninstallation to prevent errors from third party plugins
+- Do not log the deletion of positions during the uninstallation of this plugin
 - Updated some of the help texts the plugin provides in the backend
 - Updated the warning for outdated PHP versions 8.2 or older
 - Updated the Personio icon in Block Editor
