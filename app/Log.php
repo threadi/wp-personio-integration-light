@@ -181,7 +181,7 @@ class Log {
 		if ( is_null( $order_by ) ) {
 			$order_by = 'date';
 		}
-		if ( $order_by !== 'date' ) {
+		if ( 'date' !== $order_by ) {
 			$order_by = 'date';
 		}
 		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
@@ -277,7 +277,7 @@ class Log {
 		}
 
 		// if both are set.
-		if ( ! empty( $category ) && ! empty( $md5 ) ) {
+		if ( ! empty( $category ) ) {
 			// get and return the entries.
 			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
