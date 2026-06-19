@@ -459,6 +459,11 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function delete( int $post_id ): void {
+		// do nothing during uninstallation.
+		if( defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+			return;
+		}
+
 		// bail if this is not our own cpt.
 		if ( $this->get_name() !== get_post_type( $post_id ) ) {
 			return;
