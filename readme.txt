@@ -133,6 +133,25 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Fixed some issues regarding composer packages used by this plugin
+- Added audit check for third party libraries we use for this plugin to fulfill requirements of the Cyber Resilience Act
+- Added default settings for "sort by", "sort direction" and "group by" in settings for any archive templates
+- Added compatibility check for the plugin "File Upload for WPForms - Filenzo"
+- Optimized usage of an a11n hint for new window links
+- Optimized AJAX action names to prevent collisions with other plugins
+- Optimized the checks if requests in backend are allowed according to the current capabilities of the WordPress user
+- Completed the documentation for parameter on the archive widget shortcode
+- Some typos
+- Changed output of extension "Availability" in the table of positions
+- Optimized output in the frontend regarding WCAG
+- Show states during the license setup
+- Do not use init hook during uninstallation to prevent errors from third party plugins
+- Do not log the deletion of positions during the uninstallation of this plugin
+- Updated some of the help texts the plugin provides in the backend
+- Updated the warning for outdated PHP versions 8.2 or older
+- Updated the Personio icon in Block Editor
+- Updates some templates for better compatibility with the updated WordPress Coding Standards
+- Updated dependencies
+- Fixed a wrong spelled crypt library name in GitHub action, which prevented the building on a release on GitHub
+- Fixed wrong text domain usage for import and export settings
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
