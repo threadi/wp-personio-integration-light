@@ -4,7 +4,9 @@
 
 ### Changed
 
+- Show the next time when automatic import will be run
 - Updated crypt library to 2.0.0
+- Typos
 
 ## [5.5.0] - 22.06.2026
 
