@@ -15,6 +15,8 @@ use easySettingsForWordPress\Fields\Checkbox;
 use easySettingsForWordPress\Fields\TextInfo;
 use easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
+use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Plugin\Schedules\Import;
 use PersonioIntegrationLight\Plugin\Settings;
 
 /**
@@ -164,10 +166,20 @@ class Imports {
 		}
 		$setting->set_field( $field );
 
-		// add setting.
 		/* translators: %1$s will be replaced by a link to the Pro plugin page. */
-		$pro_hint                 = __( 'Use more import options with the %1$s. Among other things, you get the possibility to change the time interval for imports and partial imports of very large position lists.', 'personio-integration-light' );
-		$true                     = true;
+		$pro_hint = __( 'Use more import options with the %1$s. Among other things, you get the possibility to change the import interval.', 'personio-integration-light' );
+		$true     = true;
+
+		// get the import schedule object.
+		$import_schedule     = new Import();
+		$import_schedule_obj = $import_schedule->get_event();
+		$description         = __( 'The automatic import is run once per day. You don\'t have to worry about updating your positions on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true );
+		if ( $import_schedule_obj && isset( $import_schedule_obj->timestamp ) ) {
+			/* translators: %1$s will be replaced by the next import date. */
+			$description = sprintf( __( 'The automatic import is run once per day. Next run will be on %1$s. You don\'t have to worry about updating your positions on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ), Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', absint( $import_schedule_obj->timestamp ) ) ) );
+		}
+
+		// add setting.
 		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnablePositionSchedule' );
 		$automatic_import_setting->set_section( $import_section );
 		$automatic_import_setting->set_type( 'integer' );
@@ -175,7 +187,7 @@ class Imports {
 		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Import', 'save' ) );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Enable automatic import', 'personio-integration-light' ) );
-		$field->set_description( __( 'The automatic import is run once per day. You don\'t have to worry about updating your positions on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
+		$field->set_description( $description );
 		$automatic_import_setting->set_field( $field );
 	}
 

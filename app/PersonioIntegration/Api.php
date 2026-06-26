@@ -350,7 +350,7 @@ class Api {
 	}
 
 	/**
-	 * Get the decrypted access token from the DB.
+	 * Get the decrypted access token from the transient with the specific format.
 	 *
 	 * @return string
 	 */
