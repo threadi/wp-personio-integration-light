@@ -16,7 +16,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2654](Applications/Applications.php#L2654-L2659)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2661](Applications/Applications.php#L2661-L2666)
 
 ### `personio_integration_pro_application_saved`
 
@@ -443,7 +443,7 @@ Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [l
 
 ### `personio_integration_pro_application_before_save`
 
-*Run additional tasks before application has been saved.*
+*Run additional tasks before an application has been saved.*
 
 **Arguments**
 
@@ -457,11 +457,11 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 737](FormHandler/Elementor_Forms.php#L737-L744)
+Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 762](FormHandler/Elementor_Forms.php#L762-L769)
 
 ### `personio_integration_pro_application_after_save`
 
-*Run additional tasks after application has been saved.*
+*Run additional tasks after an application has been saved.*
 
 **Arguments**
 
@@ -475,7 +475,7 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 752](FormHandler/Elementor_Forms.php#L752-L759)
+Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 777](FormHandler/Elementor_Forms.php#L777-L784)
 
 ### `personio_integration_pro_application_before_save`
 
@@ -650,7 +650,7 @@ Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.ph
 Argument | Type | Description
 -------- | ---- | -----------
 `$class_name` | `string` | The CSS-classes.
-`$this` | `\PersonioIntegrationPro\PageBuilder\Avada\Fusion_Element` | The widget-object.
+`$instance` | `\PersonioIntegrationPro\PageBuilder\Avada\Fusion_Element` | The widget-object.
 
 **Changelog**
 
@@ -658,7 +658,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PageBuilder/Avada/Fusion_Element.php](PageBuilder/Avada/Fusion_Element.php), [line 288](PageBuilder/Avada/Fusion_Element.php#L288-L296)
+Source: [app/PageBuilder/Avada/Fusion_Element.php](PageBuilder/Avada/Fusion_Element.php), [line 289](PageBuilder/Avada/Fusion_Element.php#L289-L297)
 
 ### `personio_integration_pro_divi5_modules`
 
@@ -1099,7 +1099,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `WP_PERSONIO_INTEGRATION_PRO_FILETYPES` |  | 
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 745](Applications/Applications.php#L745-L745)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 746](Applications/Applications.php#L746-L746)
 
 ### `personio_integration_pro_application_upload_dir`
 
@@ -1109,7 +1109,7 @@ Source: [app/Applications/Applications.php](Applications/Applications.php), [lin
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$upload_dir` | `string` | The directory as absolute path.
+`$upload_dir` | `string` | The directory as an absolute path.
 
 **Changelog**
 
@@ -1117,7 +1117,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1163](Applications/Applications.php#L1163-L1170)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1162](Applications/Applications.php#L1162-L1169)
 
 ### `personio_integration_pro_application_upload_url`
 
@@ -1135,7 +1135,7 @@ Version | Description
 ------- | -----------
 `4.4.5` | Available since 4.4.5.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1182](Applications/Applications.php#L1182-L1189)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1181](Applications/Applications.php#L1181-L1188)
 
 ### `personio_integration_pro_fs_chmod`
 
@@ -1153,7 +1153,7 @@ Version | Description
 ------- | -----------
 `4.4.6` | Available since 4.4.6
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1220](Applications/Applications.php#L1220-L1226)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1219](Applications/Applications.php#L1219-L1225)
 
 ### `personio_integration_pro_application_file_index_php`
 
@@ -1171,11 +1171,11 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1233](Applications/Applications.php#L1233-L1239)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1232](Applications/Applications.php#L1232-L1238)
 
 ### `personio_integration_pro_application_file_htaccess`
 
-*Change content of .htaccess to prevent access of application files.*
+*Change the content of .htaccess to prevent access of application files.*
 
 **Arguments**
 
@@ -1189,7 +1189,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1250](Applications/Applications.php#L1250-L1256)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1249](Applications/Applications.php#L1249-L1255)
 
 ### `personio_integration_pro_application_file_web_config`
 
@@ -1207,7 +1207,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1267](Applications/Applications.php#L1267-L1273)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1266](Applications/Applications.php#L1266-L1272)
 
 ### `personio_integration_pro_application_table_detail_dialog`
 
@@ -1226,7 +1226,7 @@ Version | Description
 ------- | -----------
 `3.2.0` | Available since 3.2.0
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1855](Applications/Applications.php#L1855-L1863)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1854](Applications/Applications.php#L1854-L1862)
 
 ### `personio_integration_pro_application_test_post`
 
@@ -1244,7 +1244,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2077](Applications/Applications.php#L2077-L2083)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2084](Applications/Applications.php#L2084-L2090)
 
 ### `personio_integration_pro_position_api_token`
 
@@ -1255,7 +1255,7 @@ Argument | Type | Description
 `get_option('personioIntegrationAccessToken')` |  | 
 `false` |  | 
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2569](Applications/Applications.php#L2569-L2569)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2576](Applications/Applications.php#L2576-L2576)
 
 ### `personio_integration_pro_position_api_company_id`
 
@@ -1266,7 +1266,7 @@ Argument | Type | Description
 `get_option('personioIntegrationCompanyId')` |  | 
 `false` |  | 
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2569](Applications/Applications.php#L2569-L2569)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2576](Applications/Applications.php#L2576-L2576)
 
 ### `personio_integration_pro_application_delete_intervals`
 
@@ -1284,7 +1284,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2845](Applications/Applications.php#L2845-L2851)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2852](Applications/Applications.php#L2852-L2858)
 
 ### `personio_integration_pro_application_delete_intervals_sql`
 
@@ -1302,7 +1302,7 @@ Version | Description
 ------- | -----------
 `5.0.5` | Available since 5.0.5.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2871](Applications/Applications.php#L2871-L2877)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2878](Applications/Applications.php#L2878-L2884)
 
 ### `personio_integration_pro_application_errors`
 
