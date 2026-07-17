@@ -5,6 +5,82 @@
 
 ## Actions
 
+### `personio_integration_pro_application_transfer_failed`
+
+*Run action if transfer of application failed.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The application as an object.
+`$message` | `string` | The message.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`4.1.0` | Available since 4.1.0.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 261](Applications/Transfer.php#L261-L268)
+
+### `personio_integration_pro_application_transfer_failed`
+
+*Run action if transfer of application failed.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The application as an object.
+`$message` | `string` | The message.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`4.1.0` | Available since 4.1.0.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 301](Applications/Transfer.php#L301-L308)
+
+### `personio_integration_pro_application_transfer_failed`
+
+*Run action if transfer of application failed.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The application as an object.
+`$message` | `string` | The message.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`4.1.0` | Available since 4.1.0.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 602](Applications/Transfer.php#L602-L609)
+
+### `personio_integration_pro_application_transfer_failed`
+
+*Run action if transfer of application failed.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The application as an object.
+`$message` | `string` | The message.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`4.1.0` | Available since 4.1.0.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 624](Applications/Transfer.php#L624-L631)
+
 ### `personio_integration_pro_application_remove_credentials`
 
 *Run additional actions after deleting the API credentials.*
@@ -16,7 +92,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2661](Applications/Applications.php#L2661-L2666)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2671](Applications/Applications.php#L2671-L2676)
 
 ### `personio_integration_pro_application_saved`
 
@@ -110,81 +186,305 @@ Version | Description
 
 Source: [app/Applications/Application.php](Applications/Application.php), [line 506](Applications/Application.php#L506-L513)
 
-### `personio_integration_pro_application_transfer_failed`
+### `personio_integration_pro_license_activated`
 
-*Run action if transfer of application failed.*
+*Run action after activation of license.*
 
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The application as an object.
-`$message` | `string` | The message.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`4.1.0` | Available since 4.1.0.
+`3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 261](Applications/Transfer.php#L261-L268)
+Source: [app/Plugin/Admin/SettingsValidation/License.php](Plugin/Admin/SettingsValidation/License.php), [line 66](Plugin/Admin/SettingsValidation/License.php#L66-L71)
 
-### `personio_integration_pro_application_transfer_failed`
+### `personio_integration_pro_license_invalidated`
 
-*Run action if transfer of application failed.*
+*Run actions if license key is invalid.*
 
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The application as an object.
-`$message` | `string` | The message.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`4.1.0` | Available since 4.1.0.
+`4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 301](Applications/Transfer.php#L301-L308)
+Source: [app/Plugin/License.php](Plugin/License.php), [line 492](Plugin/License.php#L492-L497)
 
-### `personio_integration_pro_application_transfer_failed`
+### `personio_integration_pro_license_key_changed`
 
-*Run action if transfer of application failed.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The application as an object.
-`$message` | `string` | The message.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`4.1.0` | Available since 4.1.0.
-
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 602](Applications/Transfer.php#L602-L609)
-
-### `personio_integration_pro_application_transfer_failed`
-
-*Run action if transfer of application failed.*
+*Run tasks if the license key has been changed.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The application as an object.
-`$message` | `string` | The message.
+`$new_value` | `string` | The new key value.
+`$old_value` | `string` | The old kew value.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`4.1.0` | Available since 4.1.0.
+`5.5.2` | Available since 5.5.2
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 624](Applications/Transfer.php#L624-L631)
+Source: [app/Plugin/License.php](Plugin/License.php), [line 1638](Plugin/License.php#L1638-L1645)
+
+### `personio_integration_pro_prevent_application_export_check`
+
+*Run additional tasks before the transfer is run.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$instance` | `\PersonioIntegrationPro\Plugin\Schedules\Application_Export` | The schedule export object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/Plugin/Schedules/Application_Export.php](Plugin/Schedules/Application_Export.php), [line 105](Plugin/Schedules/Application_Export.php#L105-L111)
+
+### `personio_integration_pro_form_template_init`
+
+*Run additional tasks for initialization of this form.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$instance` | `\PersonioIntegrationPro\FormTemplates\Template` | The template as object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`4.0.0` | Available since 4.0.0.
+
+Source: [app/FormTemplates/Template.php](FormTemplates/Template.php), [line 128](FormTemplates/Template.php#L128-L134)
+
+### `personio_integration_pro_application_before_save`
+
+*Run additional tasks before application has been saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`2.5.0` | Available since 2.5.0.
+
+Source: [app/FormHandler/Forminator.php](FormHandler/Forminator.php), [line 700](FormHandler/Forminator.php#L700-L707)
+
+### `personio_integration_pro_application_after_save`
+
+*Run additional tasks after application has been saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`2.5.0` | Available since 2.5.0.
+
+Source: [app/FormHandler/Forminator.php](FormHandler/Forminator.php), [line 715](FormHandler/Forminator.php#L715-L722)
+
+### `personio_integration_pro_application_before_save`
+
+*Run additional tasks before application has been saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`2.5.0` | Available since 2.5.0.
+
+Source: [app/FormHandler/Fluent_Forms.php](FormHandler/Fluent_Forms.php), [line 1221](FormHandler/Fluent_Forms.php#L1221-L1228)
+
+### `personio_integration_pro_application_after_save`
+
+*Run additional tasks after application has been saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`2.5.0` | Available since 2.5.0.
+
+Source: [app/FormHandler/Fluent_Forms.php](FormHandler/Fluent_Forms.php), [line 1236](FormHandler/Fluent_Forms.php#L1236-L1243)
+
+### `personio_integration_pro_application_template_before_form`
+
+*Run tasks before the application form is visible for Personio Forms.*
+
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/Form_Types/Template.php](FormHandler/Form_Types/Template.php), [line 134](FormHandler/Form_Types/Template.php#L134-L139)
+
+### `personio_integration_pro_application_template_after_form`
+
+*Run tasks after the application form is visible for Personio Forms.*
+
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/Form_Types/Template.php](FormHandler/Form_Types/Template.php), [line 144](FormHandler/Form_Types/Template.php#L144-L149)
+
+### `personio_integration_pro_application_before_save`
+
+*Run additional tasks before application has been saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`2.5.0` | Available since 2.5.0.
+
+Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 1005](FormHandler/Wpforms.php#L1005-L1012)
+
+### `personio_integration_pro_application_after_save`
+
+*Run additional tasks after application has been saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`2.5.0` | Available since 2.5.0.
+
+Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 1020](FormHandler/Wpforms.php#L1020-L1027)
+
+### `personio_integration_pro_application_before_save`
+
+*Run additional tasks before an application has been saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`2.5.0` | Available since 2.5.0.
+
+Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 762](FormHandler/Elementor_Forms.php#L762-L769)
+
+### `personio_integration_pro_application_after_save`
+
+*Run additional tasks after an application has been saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`2.5.0` | Available since 2.5.0.
+
+Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 777](FormHandler/Elementor_Forms.php#L777-L784)
+
+### `personio_integration_pro_after_reset_honeypot`
+
+*Run tasks after honeypot has been reset.*
+
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`4.4.1` | Available since 4.4.1.
+
+Source: [app/FormHandler/PersonioForms/Extensions/Honeypot.php](FormHandler/PersonioForms/Extensions/Honeypot.php), [line 438](FormHandler/PersonioForms/Extensions/Honeypot.php#L438-L443)
+
+### `personio_integration_pro_application_before_save`
+
+*Run additional tasks before application has been saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`2.5.0` | Available since 2.5.0.
+
+Source: [app/FormHandler/Everest_Forms.php](FormHandler/Everest_Forms.php), [line 504](FormHandler/Everest_Forms.php#L504-L511)
+
+### `personio_integration_pro_application_after_save`
+
+*Run additional tasks after application has been saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`2.5.0` | Available since 2.5.0.
+
+Source: [app/FormHandler/Everest_Forms.php](FormHandler/Everest_Forms.php), [line 519](FormHandler/Everest_Forms.php#L519-L526)
 
 ### `personio_integration_pro_application_before_save`
 
@@ -238,42 +538,6 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Fluent_Forms.php](FormHandler/Fluent_Forms.php), [line 1221](FormHandler/Fluent_Forms.php#L1221-L1228)
-
-### `personio_integration_pro_application_after_save`
-
-*Run additional tasks after application has been saved.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`2.5.0` | Available since 2.5.0.
-
-Source: [app/FormHandler/Fluent_Forms.php](FormHandler/Fluent_Forms.php), [line 1236](FormHandler/Fluent_Forms.php#L1236-L1243)
-
-### `personio_integration_pro_application_before_save`
-
-*Run additional tasks before application has been saved.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`2.5.0` | Available since 2.5.0.
-
 Source: [app/FormHandler/Contact_Form_7.php](FormHandler/Contact_Form_7.php), [line 492](FormHandler/Contact_Form_7.php#L492-L499)
 
 ### `personio_integration_pro_application_after_save`
@@ -293,117 +557,6 @@ Version | Description
 `2.5.0` | Available since 2.5.0.
 
 Source: [app/FormHandler/Contact_Form_7.php](FormHandler/Contact_Form_7.php), [line 507](FormHandler/Contact_Form_7.php#L507-L514)
-
-### `personio_integration_pro_application_before_save`
-
-*Run additional tasks before application has been saved.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`2.5.0` | Available since 2.5.0.
-
-Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 1005](FormHandler/Wpforms.php#L1005-L1012)
-
-### `personio_integration_pro_application_after_save`
-
-*Run additional tasks after application has been saved.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`2.5.0` | Available since 2.5.0.
-
-Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 1020](FormHandler/Wpforms.php#L1020-L1027)
-
-### `personio_integration_pro_after_reset_honeypot`
-
-*Run tasks after honeypot has been reset.*
-
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`4.4.1` | Available since 4.4.1.
-
-Source: [app/FormHandler/PersonioForms/Extensions/Honeypot.php](FormHandler/PersonioForms/Extensions/Honeypot.php), [line 438](FormHandler/PersonioForms/Extensions/Honeypot.php#L438-L443)
-
-### `personio_integration_pro_application_template_before_form`
-
-*Run tasks before the application form is visible for Personio Forms.*
-
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/Form_Types/Template.php](FormHandler/Form_Types/Template.php), [line 134](FormHandler/Form_Types/Template.php#L134-L139)
-
-### `personio_integration_pro_application_template_after_form`
-
-*Run tasks after the application form is visible for Personio Forms.*
-
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/Form_Types/Template.php](FormHandler/Form_Types/Template.php), [line 144](FormHandler/Form_Types/Template.php#L144-L149)
-
-### `personio_integration_pro_application_before_save`
-
-*Run additional tasks before application has been saved.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`2.5.0` | Available since 2.5.0.
-
-Source: [app/FormHandler/Everest_Forms.php](FormHandler/Everest_Forms.php), [line 504](FormHandler/Everest_Forms.php#L504-L511)
-
-### `personio_integration_pro_application_after_save`
-
-*Run additional tasks after application has been saved.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`2.5.0` | Available since 2.5.0.
-
-Source: [app/FormHandler/Everest_Forms.php](FormHandler/Everest_Forms.php), [line 519](FormHandler/Everest_Forms.php#L519-L526)
 
 ### `personio_integration_pro_application_before_save`
 
@@ -439,101 +592,11 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 510](FormHandler/Personio_Forms.php#L510-L517)
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 531](FormHandler/Personio_Forms.php#L531-L538)
 
-### `personio_integration_pro_application_before_save`
+### `personio_integration_pro_add_popup_scripts`
 
-*Run additional tasks before an application has been saved.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`2.5.0` | Available since 2.5.0.
-
-Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 762](FormHandler/Elementor_Forms.php#L762-L769)
-
-### `personio_integration_pro_application_after_save`
-
-*Run additional tasks after an application has been saved.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`2.5.0` | Available since 2.5.0.
-
-Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 777](FormHandler/Elementor_Forms.php#L777-L784)
-
-### `personio_integration_pro_application_before_save`
-
-*Run additional tasks before application has been saved.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`2.5.0` | Available since 2.5.0.
-
-Source: [app/FormHandler/Forminator.php](FormHandler/Forminator.php), [line 700](FormHandler/Forminator.php#L700-L707)
-
-### `personio_integration_pro_application_after_save`
-
-*Run additional tasks after application has been saved.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`2.5.0` | Available since 2.5.0.
-
-Source: [app/FormHandler/Forminator.php](FormHandler/Forminator.php), [line 715](FormHandler/Forminator.php#L715-L722)
-
-### `personio_integration_pro_prevent_application_export_check`
-
-*Run additional tasks before the transfer is run.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$instance` | `\PersonioIntegrationPro\Plugin\Schedules\Application_Export` | The schedule export object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/Plugin/Schedules/Application_Export.php](Plugin/Schedules/Application_Export.php), [line 105](Plugin/Schedules/Application_Export.php#L105-L111)
-
-### `personio_integration_pro_license_invalidated`
-
-*Run actions if license key is invalid.*
+*Run the popup scripts on any other cases.*
 
 
 **Changelog**
@@ -542,38 +605,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Plugin/License.php](Plugin/License.php), [line 492](Plugin/License.php#L492-L497)
-
-### `personio_integration_pro_license_activated`
-
-*Run action after activation of license.*
-
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/Plugin/Admin/SettingsValidation/License.php](Plugin/Admin/SettingsValidation/License.php), [line 66](Plugin/Admin/SettingsValidation/License.php#L66-L71)
-
-### `personio_integration_pro_form_template_init`
-
-*Run additional tasks for initialization of this form.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$instance` | `\PersonioIntegrationPro\FormTemplates\Template` | The template as object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`4.0.0` | Available since 4.0.0.
-
-Source: [app/FormTemplates/Template.php](FormTemplates/Template.php), [line 128](FormTemplates/Template.php#L128-L134)
+Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 787](PersonioIntegration/Positions.php#L787-L792)
 
 ### `personio_integration_pro_application_table_buttons_top`
 
@@ -626,237 +658,7 @@ Argument | Type | Description
 
 Source: [app/PersonioIntegration/Personio_Accounts.php](PersonioIntegration/Personio_Accounts.php), [line 363](PersonioIntegration/Personio_Accounts.php#L363-L383)
 
-### `personio_integration_pro_add_popup_scripts`
-
-*Run the popup scripts on any other cases.*
-
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`4.0.0` | Available since 4.0.0.
-
-Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 787](PersonioIntegration/Positions.php#L787-L792)
-
 ## Filters
-
-### `personio_integration_pro_avada_class`
-
-*Filter the used CSS class for Avada widgets.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$class_name` | `string` | The CSS-classes.
-`$instance` | `\PersonioIntegrationPro\PageBuilder\Avada\Fusion_Element` | The widget-object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/PageBuilder/Avada/Fusion_Element.php](PageBuilder/Avada/Fusion_Element.php), [line 289](PageBuilder/Avada/Fusion_Element.php#L289-L297)
-
-### `personio_integration_pro_divi5_modules`
-
-*Filter the available Divi 5 widgets.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$modules_list` | `array<int\|string,string>` | List of modules.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.2.0` | Available since 5.2.0
-
-Source: [app/PageBuilder/Divi5.php](PageBuilder/Divi5.php), [line 365](PageBuilder/Divi5.php#L365-L372)
-
-### `personio_integration_pro_beaver_widgets`
-
-*Filter the Beaver widgets we support.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$list` | `array<int,string>` | List of widgets.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/PageBuilder/Beaver.php](PageBuilder/Beaver.php), [line 103](PageBuilder/Beaver.php#L103-L109)
-
-### `personio_integration_pro_gutenberg_blocks`
-
-*Filter the list of available Gutenberg blocks in the Pro plugin.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$list` | `array<int,string>` | List of blocks.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/PageBuilder/Gutenberg.php](PageBuilder/Gutenberg.php), [line 105](PageBuilder/Gutenberg.php#L105-L111)
-
-### `personio_integration_pro_wpbakery_widgets`
-
-*Filter list of widgets for WpBakery.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$widget_list` | `array<int,string>` | List of widgets.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/PageBuilder/WpBakery.php](PageBuilder/WpBakery.php), [line 124](PageBuilder/WpBakery.php#L124-L131)
-
-### `personio_integration_pro_wpbakery_templates`
-
-*Filter the available WpBakery templates.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$template_list` | `array<int,string>` | List of WP Bakery templates.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0
-
-Source: [app/PageBuilder/WpBakery.php](PageBuilder/WpBakery.php), [line 189](PageBuilder/WpBakery.php#L189-L195)
-
-### `personio_integration_pro_elementor_widgets`
-
-*Filter the list of supported widgets for Elementor.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$list` | `array<int,string>` | List of widgets.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/PageBuilder/Elementor.php](PageBuilder/Elementor.php), [line 231](PageBuilder/Elementor.php#L231-L238)
-
-### `personio_integration_pro_elementor_templates`
-
-*Filter available Elementor-template before they are imported.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$templates` | `array` | List of templates.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/PageBuilder/Elementor.php](PageBuilder/Elementor.php), [line 327](PageBuilder/Elementor.php#L327-L334)
-
-### `personio_integration_pro_avada_widgets`
-
-*Filter the available Avada-widgets.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$widget_list` | `array<int\|string,string>` | List of widgets.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0
-
-Source: [app/PageBuilder/Avada.php](PageBuilder/Avada.php), [line 410](PageBuilder/Avada.php#L410-L417)
-
-### `personio_integration_pro_avia_widgets`
-
-*Filter the list of supported widgets for Avia.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`array()` |  | 
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/PageBuilder/Avia.php](PageBuilder/Avia.php), [line 242](PageBuilder/Avia.php#L242-L249)
-
-### `personio_integration_pro_bricks_elements`
-
-*Filter the list of possible Bricks elements.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$list` | `array<int,string>` | List of elements.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.3.0` | Available since 5.3.0.
-
-Source: [app/PageBuilder/Bricks.php](PageBuilder/Bricks.php), [line 232](PageBuilder/Bricks.php#L232-L238)
-
-### `personio_integration_pro_site_origin`
-
-*Filter the list of supported widgets for SiteOrigin.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$widgets` |  | 
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/PageBuilder/SiteOrigin.php](PageBuilder/SiteOrigin.php), [line 132](PageBuilder/SiteOrigin.php#L132-L139)
 
 ### `personio_integration_pro_cleanup_string_for_meta_value`
 
@@ -944,6 +746,146 @@ Version | Description
 
 Source: [app/Helper.php](Helper.php), [line 379](Helper.php#L379-L385)
 
+### `personio_integration_pro_do_not_run_transfer`
+
+*Filter to run transfer or not.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$false` | `bool` | True if the transfer should not run.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 136](Applications/Transfer.php#L136-L144)
+
+### `personio_integration_pro_application_export_filter`
+
+*Filter query for transferring applications to Personio.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$query` | `array<string,mixed>` | The filter-parameter.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 163](Applications/Transfer.php#L163-L169)
+
+### `personio_integration_pro_prevent_application_export`
+
+*Check if the transfer of this single application should not be run for individual reasons.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$false` | `bool` | True if import should be prevented.
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The object of the application.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 286](Applications/Transfer.php#L286-L294)
+
+### `personio_integration_pro_delete_applications_after_transfer`
+
+*Filter whether to delete the application at this moment.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$delete_now` | `bool` | Marker to delete now.
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The application object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.2` | Available since 5.0.2.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 531](Applications/Transfer.php#L531-L538)
+
+### `personio_integration_pro_personio_application_document_url`
+
+*Filter the Personio application document URL.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$url` | `string` | The URL.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 643](Applications/Transfer.php#L643-L650)
+
+### `personio_integration_pro_personio_http_states`
+
+*Filter the possible HTTP States.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$http_states` | `array<int,string>` | The HTTP states.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 660](Applications/Transfer.php#L660-L667)
+
+### `personio_integration_pro_personio_application_url`
+
+*Filter the Personio application  URL.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$url` | `string` | The URL.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 677](Applications/Transfer.php#L677-L684)
+
+### `personio_integration_pro_personio_http_state`
+
+*Filter the HTTP State.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$http_state` | `string` | The HTTP state.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 700](Applications/Transfer.php#L700-L707)
+
 ### `personio_integration_pro_application_csv_export_state`
 
 *Filter the state of the application during CSV-export.*
@@ -1018,23 +960,90 @@ Version | Description
 
 Source: [app/Applications/Csv_Export.php](Applications/Csv_Export.php), [line 604](Applications/Csv_Export.php#L604-L610)
 
-### `personio_integration_pro_application_backup_dir`
+### `personio_integration_pro_request_time_limit`
 
-*Filter the absolute path to the directory where application backups are stored.*
+*Filter the request time limit for Personio API. We use default 90s (60s from Personio API + 30s puffer).*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$backup_dir` | `string` | The directory as an absolute path.
+`$limit` | `int` | The limit in seconds
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`5.1.0` | Available since 5.1.0.
+`4.4.6` | Available since 4.4.6
 
-Source: [app/Applications/Backup.php](Applications/Backup.php), [line 414](Applications/Backup.php#L414-L421)
+Source: [app/Applications/Request.php](Applications/Request.php), [line 137](Applications/Request.php#L137-L143)
+
+### `personio_integration_pro_request_limit_reached`
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$true` |  | 
+
+Source: [app/Applications/Request.php](Applications/Request.php), [line 166](Applications/Request.php#L166-L166)
+
+### `personio_integration_pro_request_header`
+
+*Filter the headers for the request.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$headers` | `array<string,string>` | List of headers.
+`$instance` | `\PersonioIntegrationPro\Applications\Request` | The request-object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/Applications/Request.php](Applications/Request.php), [line 183](Applications/Request.php#L183-L191)
+
+### `personio_integration_pro_request_token`
+
+*Filter the company id the request is using.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$company_id` | `string` | The token.
+`$instance` | `\PersonioIntegrationPro\Applications\Request` | The request-object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/Applications/Request.php](Applications/Request.php), [line 327](Applications/Request.php#L327-L335)
+
+### `personio_integration_pro_request_token`
+
+*Filter the token the request is using.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$token` | `string` | The token.
+`$instance` | `\PersonioIntegrationPro\Applications\Request` | The request-object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/Applications/Request.php](Applications/Request.php), [line 346](Applications/Request.php#L346-L354)
 
 ### `personio_integration_pro_applications_list_limit`
 
@@ -1099,7 +1108,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `WP_PERSONIO_INTEGRATION_PRO_FILETYPES` |  | 
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 746](Applications/Applications.php#L746-L746)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 751](Applications/Applications.php#L751-L751)
 
 ### `personio_integration_pro_application_upload_dir`
 
@@ -1117,7 +1126,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1162](Applications/Applications.php#L1162-L1169)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1167](Applications/Applications.php#L1167-L1174)
 
 ### `personio_integration_pro_application_upload_url`
 
@@ -1135,7 +1144,7 @@ Version | Description
 ------- | -----------
 `4.4.5` | Available since 4.4.5.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1181](Applications/Applications.php#L1181-L1188)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1186](Applications/Applications.php#L1186-L1193)
 
 ### `personio_integration_pro_fs_chmod`
 
@@ -1153,7 +1162,7 @@ Version | Description
 ------- | -----------
 `4.4.6` | Available since 4.4.6
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1219](Applications/Applications.php#L1219-L1225)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1224](Applications/Applications.php#L1224-L1230)
 
 ### `personio_integration_pro_application_file_index_php`
 
@@ -1171,7 +1180,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1232](Applications/Applications.php#L1232-L1238)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1237](Applications/Applications.php#L1237-L1243)
 
 ### `personio_integration_pro_application_file_htaccess`
 
@@ -1189,7 +1198,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1249](Applications/Applications.php#L1249-L1255)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1254](Applications/Applications.php#L1254-L1260)
 
 ### `personio_integration_pro_application_file_web_config`
 
@@ -1207,7 +1216,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1266](Applications/Applications.php#L1266-L1272)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1271](Applications/Applications.php#L1271-L1277)
 
 ### `personio_integration_pro_application_table_detail_dialog`
 
@@ -1226,7 +1235,7 @@ Version | Description
 ------- | -----------
 `3.2.0` | Available since 3.2.0
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1854](Applications/Applications.php#L1854-L1862)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1874](Applications/Applications.php#L1874-L1882)
 
 ### `personio_integration_pro_application_test_post`
 
@@ -1236,7 +1245,7 @@ Source: [app/Applications/Applications.php](Applications/Applications.php), [lin
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$_POST` | `array<string,mixed>` | List of the post variables.
+`$_POST` | `array<string,mixed>` | List of the POST variables.
 
 **Changelog**
 
@@ -1244,7 +1253,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2084](Applications/Applications.php#L2084-L2090)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2094](Applications/Applications.php#L2094-L2100)
 
 ### `personio_integration_pro_position_api_token`
 
@@ -1255,7 +1264,7 @@ Argument | Type | Description
 `get_option('personioIntegrationAccessToken')` |  | 
 `false` |  | 
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2576](Applications/Applications.php#L2576-L2576)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2586](Applications/Applications.php#L2586-L2586)
 
 ### `personio_integration_pro_position_api_company_id`
 
@@ -1266,7 +1275,7 @@ Argument | Type | Description
 `get_option('personioIntegrationCompanyId')` |  | 
 `false` |  | 
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2576](Applications/Applications.php#L2576-L2576)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2586](Applications/Applications.php#L2586-L2586)
 
 ### `personio_integration_pro_application_delete_intervals`
 
@@ -1284,7 +1293,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2852](Applications/Applications.php#L2852-L2858)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2862](Applications/Applications.php#L2862-L2868)
 
 ### `personio_integration_pro_application_delete_intervals_sql`
 
@@ -1302,7 +1311,7 @@ Version | Description
 ------- | -----------
 `5.0.5` | Available since 5.0.5.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2878](Applications/Applications.php#L2878-L2884)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2888](Applications/Applications.php#L2888-L2894)
 
 ### `personio_integration_pro_application_errors`
 
@@ -1497,230 +1506,23 @@ Version | Description
 
 Source: [app/Applications/Application.php](Applications/Application.php), [line 1117](Applications/Application.php#L1117-L1124)
 
-### `personio_integration_pro_do_not_run_transfer`
+### `personio_integration_pro_application_encrypted_fields`
 
-*Filter to run transfer or not.*
+*Filter the list of fields which should be encrypted.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` | `bool` | True if the transfer should not run.
+`$list` | `array<int,string>` | List of fields.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`3.0.0` | Available since 3.0.0.
+`4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 136](Applications/Transfer.php#L136-L144)
-
-### `personio_integration_pro_application_export_filter`
-
-*Filter query for transferring applications to Personio.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$query` | `array<string,mixed>` | The filter-parameter.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 163](Applications/Transfer.php#L163-L169)
-
-### `personio_integration_pro_prevent_application_export`
-
-*Check if the transfer of this single application should not be run for individual reasons.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$false` | `bool` | True if import should be prevented.
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The object of the application.
-
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 286](Applications/Transfer.php#L286-L294)
-
-### `personio_integration_pro_delete_applications_after_transfer`
-
-*Filter whether to delete the application at this moment.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$delete_now` | `bool` | Marker to delete now.
-`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The application object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.2` | Available since 5.0.2.
-
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 531](Applications/Transfer.php#L531-L538)
-
-### `personio_integration_pro_personio_application_document_url`
-
-*Filter the Personio application document URL.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$url` | `string` | The URL.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 643](Applications/Transfer.php#L643-L650)
-
-### `personio_integration_pro_personio_http_states`
-
-*Filter the possible HTTP States.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$http_states` | `array<int,string>` | The HTTP states.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 660](Applications/Transfer.php#L660-L667)
-
-### `personio_integration_pro_personio_application_url`
-
-*Filter the Personio application  URL.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$url` | `string` | The URL.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 677](Applications/Transfer.php#L677-L684)
-
-### `personio_integration_pro_personio_http_state`
-
-*Filter the HTTP State.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$http_state` | `string` | The HTTP state.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 700](Applications/Transfer.php#L700-L707)
-
-### `personio_integration_pro_request_time_limit`
-
-*Filter the request time limit for Personio API. We use default 90s (60s from Personio API + 30s puffer).*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$limit` | `int` | The limit in seconds
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`4.4.6` | Available since 4.4.6
-
-Source: [app/Applications/Request.php](Applications/Request.php), [line 137](Applications/Request.php#L137-L143)
-
-### `personio_integration_pro_request_limit_reached`
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$true` |  | 
-
-Source: [app/Applications/Request.php](Applications/Request.php), [line 166](Applications/Request.php#L166-L166)
-
-### `personio_integration_pro_request_header`
-
-*Filter the headers for the request.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$headers` | `array<string,string>` | List of headers.
-`$instance` | `\PersonioIntegrationPro\Applications\Request` | The request-object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/Applications/Request.php](Applications/Request.php), [line 183](Applications/Request.php#L183-L191)
-
-### `personio_integration_pro_request_token`
-
-*Filter the company id the request is using.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$company_id` | `string` | The token.
-`$instance` | `\PersonioIntegrationPro\Applications\Request` | The request-object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/Applications/Request.php](Applications/Request.php), [line 327](Applications/Request.php#L327-L335)
-
-### `personio_integration_pro_request_token`
-
-*Filter the token the request is using.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$token` | `string` | The token.
-`$instance` | `\PersonioIntegrationPro\Applications\Request` | The request-object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/Applications/Request.php](Applications/Request.php), [line 346](Applications/Request.php#L346-L354)
+Source: [app/Applications/Encrypt.php](Applications/Encrypt.php), [line 210](Applications/Encrypt.php#L210-L216)
 
 ### `personio_integration_pro_application_table_hide_columns`
 
@@ -1740,34 +1542,33 @@ Version | Description
 
 Source: [app/Applications/Hide_Data.php](Applications/Hide_Data.php), [line 336](Applications/Hide_Data.php#L336-L342)
 
-### `personio_integration_pro_application_encrypted_fields`
+### `personio_integration_pro_application_backup_dir`
 
-*Filter the list of fields which should be encrypted.*
+*Filter the absolute path to the directory where application backups are stored.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$list` | `array<int,string>` | List of fields.
+`$backup_dir` | `string` | The directory as an absolute path.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`4.0.0` | Available since 4.0.0.
+`5.1.0` | Available since 5.1.0.
 
-Source: [app/Applications/Encrypt.php](Applications/Encrypt.php), [line 210](Applications/Encrypt.php#L210-L216)
+Source: [app/Applications/Backup.php](Applications/Backup.php), [line 414](Applications/Backup.php#L414-L421)
 
-### `personio_integration_pro_hide_application_form`
+### `personio_integration_pro_menu`
 
-*Filter whether to hide the application form.*
+*Filter our menu in backend.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` | `bool` | Should be true to prevent the visibility of the form.
-`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | The object of the used position.
+`$new_sort` | `array<int,array<int,string>>` | List of menu entries of our menu in backend.
 
 **Changelog**
 
@@ -1775,458 +1576,35 @@ Version | Description
 ------- | -----------
 `4.2.0` | Available since 4.2.0.
 
-Source: [app/FormHandler/Form_Handlers.php](FormHandler/Form_Handlers.php), [line 155](FormHandler/Form_Handlers.php#L155-L162)
+Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 547](Plugin/Admin/Admin.php#L547-L553)
 
-### `personio_integration_pro_form_file_categories`
-
-*Filter the list of possible categories for application documents on Personio.*
+### `personio_integration_pro_update_check`
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$categories` | `array<string,string>` | List of categories.
+`$true` |  | 
+
+Source: [app/Plugin/Update.php](Plugin/Update.php), [line 152](Plugin/Update.php#L152-L152)
+
+### `personio_integration_pro_update_transient`
+
+*Filter the plugin update transient.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$transient` | `\stdClass` | The list of plugins with its settings.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`3.0.0` | Available since 3.0.0.
+`3.2.0` | Available since 3.2.0
 
-Source: [app/FormHandler/Form_Handlers.php](FormHandler/Form_Handlers.php), [line 1112](FormHandler/Form_Handlers.php#L1112-L1119)
-
-### `personio_integration_pro_avada_field_attributes`
-
-*Filter the attributes for an Avada Forms field.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$additional_attributes` | `array<int,string>` | List of attributes as string.
-`$field_obj` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The field as object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/Avada_Forms.php](FormHandler/Avada_Forms.php), [line 976](FormHandler/Avada_Forms.php#L976-L983)
-
-### `personio_integration_pro_cf7_field_attributes`
-
-*Filter the attributes for a Contact Form 7 field.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$additional_attributes` | `string` | List of attributes as string.
-`$field_obj` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The field as object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/Contact_Form_7.php](FormHandler/Contact_Form_7.php), [line 786](FormHandler/Contact_Form_7.php#L786-L793)
-
-### `personio_integration_pro_cf7_form`
-
-*Filter the configured CF7 form.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$html_form` | `string` | The generated HTML-Code.
-`$template_obj` | `\PersonioIntegrationPro\FormTemplates\Template` | The used template object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/Contact_Form_7.php](FormHandler/Contact_Form_7.php), [line 1089](FormHandler/Contact_Form_7.php#L1089-L1096)
-
-### `personio_integration_pro_wpforms_fields`
-
-*Filter the predefined WPForms-fields.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$wpforms_fields` | `array<string,mixed>` | The predefined WPForms-fields.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.5.0` | Available since 5.5.0.
-
-Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 768](FormHandler/Wpforms.php#L768-L774)
-
-### `personio_integration_pro_wpforms_field_type`
-
-*Filter the field-type for WPForms.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$wpforms_field_type` | `string` | The field-type for WPForms.
-`$field_type` | `string` | The field-type of Field_Base.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.5.0` | Available since 5.5.0.
-
-Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 820](FormHandler/Wpforms.php#L820-L827)
-
-### `personio_integration_pro_personio_forms_result_handlers`
-
-*Filter the list of possible Personio Forms result handlers.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$list` | `array<int,string>` | List of handlers.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/PersonioForms/ResultHandling.php](FormHandler/PersonioForms/ResultHandling.php), [line 153](FormHandler/PersonioForms/ResultHandling.php#L153-L159)
-
-### `personio_integration_pro_application_form_page_slug`
-
-*Filter the slug for the application form page.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$slug` | `string` | The slug to use.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php), [line 460](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php#L460-L466)
-
-### `personio_integration_pro_application_form_page_query_param`
-
-*Filter the query param for the application form page. Change is only useful for usage of simple URLs.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$query_param` | `string` | The query param to use.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php), [line 478](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php#L478-L484)
-
-### `personio_integration_pro_honeypot_value`
-
-*Filter the honeypot value.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$honeypot_value` | `string` | The honeypot value.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.2` | Available since 5.0.2.
-
-Source: [app/FormHandler/PersonioForms/Extensions/Honeypot.php](FormHandler/PersonioForms/Extensions/Honeypot.php), [line 528](FormHandler/PersonioForms/Extensions/Honeypot.php#L528-L534)
-
-### `personio_integration_pro_personio_forms_rest_type`
-
-*Get the result type (name for the resulting object) for the response after REST-submission of an application.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$type` | `string` | The result handler name.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/PersonioForms/Routes.php](FormHandler/PersonioForms/Routes.php), [line 113](FormHandler/PersonioForms/Routes.php#L113-L119)
-
-### `personio_integration_pro_personio_forms_rest_results`
-
-*Get the resulting text for show in frontend.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$message` | `string` | The result message.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/PersonioForms/Routes.php](FormHandler/PersonioForms/Routes.php), [line 122](FormHandler/PersonioForms/Routes.php#L122-L128)
-
-### `personio_integration_pro_personio_forms_rest_fields`
-
-*Get the error fields.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$fields` | `array<string,mixed>` | The resulting error fields.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/PersonioForms/Routes.php](FormHandler/PersonioForms/Routes.php), [line 131](FormHandler/PersonioForms/Routes.php#L131-L137)
-
-### `personio_integration_pro_form_type_template_obj`
-
-*Filter the form template object before the output as a template form type.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$formular_template_obj` | `\PersonioIntegrationPro\FormTemplates\Template` | The template.
-`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position\|null` | The position object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/Form_Types/Template.php](FormHandler/Form_Types/Template.php), [line 116](FormHandler/Form_Types/Template.php#L116-L123)
-
-### `personio_integration_pro_shortcode_form`
-
-*Filter the generated output of a shortcode-based form.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$form` | `string` | The form HTML-code.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since 5.0.0.
-
-Source: [app/FormHandler/Form_Types/Shortcode.php](FormHandler/Form_Types/Shortcode.php), [line 158](FormHandler/Form_Types/Shortcode.php#L158-L164)
-
-### `personio_integration_pro_before_validate_application_submission`
-
-*Validate the submission of an application form before further checks.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$false` | `bool` | True if the validation should break.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 284](FormHandler/Personio_Forms.php#L284-L293)
-
-### `personio_integration_pro_before_validate_application_submission_with_position`
-
-*Validate the submission of an application form before further checks with the requested position object.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$false` | `bool` | True if the validation should break.
-`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | Object of called position.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 335](FormHandler/Personio_Forms.php#L335-L345)
-
-### `personio_integration_pro_display_form_template`
-
-*Filter the template configuration for output in frontend and during save.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$formular_template_obj` | `\PersonioIntegrationPro\FormTemplates\Template\|false` | The template object.
-`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | The object of the displayed position.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 368](FormHandler/Personio_Forms.php#L368-L376)
-
-### `personio_integration_pro_application_fields`
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$formular_template_obj->get_fields()` |  | 
-
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 390](FormHandler/Personio_Forms.php#L390-L390)
-
-### `personio_integration_pro_application_field`
-
-*Filter the field object during processing its data.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$field_obj` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The field object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.2.0` | Available since 3.2.0.
-
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 402](FormHandler/Personio_Forms.php#L402-L409)
-
-### `personio_integration_pro_application_field_results`
-
-*Filter the validation result of a single Personio forms field.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$result` | `array` | List of results.
-`$field_obj` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The checked field object with its value.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`4.0.0` | Available since 4.0.0.
-
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 414](FormHandler/Personio_Forms.php#L414-L421)
-
-### `personio_integration_pro_personio_forms_templates`
-
-*Change the list of possible filter-types.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$templates` | `array<string,string>` | The list of types.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.0.0` | Available since first release.
-
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 871](FormHandler/Personio_Forms.php#L871-L878)
-
-### `personio_integration_pro_templates_prefix`
-
-*Filter the prefix for templates from Personio Integration in third party form plugins*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$prefix` | `string` | The prefix.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/FormHandler/FormHandlers_Base.php](FormHandler/FormHandlers_Base.php), [line 248](FormHandler/FormHandlers_Base.php#L248-L254)
-
-### `personio_integration_pro_fields_prefix`
-
-*Filter the prefix for fields from Personio Integration in third party form plugins.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$prefix` | `string` | The prefix.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/FormHandler/FormHandlers_Base.php](FormHandler/FormHandlers_Base.php), [line 265](FormHandler/FormHandlers_Base.php#L265-L271)
-
-### `personio_integration_pro_form_handler_logo_url`
-
-*Filter the logo URL of the form handler.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$logo` | `string` | The logo.
-`$instance` | `\PersonioIntegrationPro\FormHandler\FormHandlers_Base` | The form handler object.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/FormHandler/FormHandlers_Base.php](FormHandler/FormHandlers_Base.php), [line 356](FormHandler/FormHandlers_Base.php#L356-L363)
+Source: [app/Plugin/Update.php](Plugin/Update.php), [line 263](Plugin/Update.php#L263-L269)
 
 ### `personio_integration_pro_geolocation_apis`
 
@@ -2264,23 +1642,23 @@ Version | Description
 
 Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 379](Plugin/Templates.php#L379-L386)
 
-### `personio_integration_pro_geolocation_openstreetmap_url`
+### `personio_integration_pro_physics_units`
 
-*Filter the used OpenStreetMap-URL for geolocation.*
+*Filter the available units for circle search.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$url` | `string` | The URL to use.
+`$units` | `string[]` | List of unit-object-names.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`4.2.0` | Available since 4.2.0.
+`5.0.0` | Available since 5.0.0.
 
-Source: [app/Plugin/GeoServices/OpenStreetMap.php](Plugin/GeoServices/OpenStreetMap.php), [line 215](Plugin/GeoServices/OpenStreetMap.php#L215-L221)
+Source: [app/Plugin/Physics.php](Plugin/Physics.php), [line 103](Plugin/Physics.php#L103-L109)
 
 ### `personio_integration_pro_geolocation_google_url`
 
@@ -2300,15 +1678,15 @@ Version | Description
 
 Source: [app/Plugin/GeoServices/GoogleGeocodingApi.php](Plugin/GeoServices/GoogleGeocodingApi.php), [line 138](Plugin/GeoServices/GoogleGeocodingApi.php#L138-L144)
 
-### `personio_integration_pro_menu`
+### `personio_integration_pro_geolocation_openstreetmap_url`
 
-*Filter our menu in backend.*
+*Filter the used OpenStreetMap-URL for geolocation.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$new_sort` | `array<int,array<int,string>>` | List of menu entries of our menu in backend.
+`$url` | `string` | The URL to use.
 
 **Changelog**
 
@@ -2316,53 +1694,76 @@ Version | Description
 ------- | -----------
 `4.2.0` | Available since 4.2.0.
 
-Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 547](Plugin/Admin/Admin.php#L547-L553)
+Source: [app/Plugin/GeoServices/OpenStreetMap.php](Plugin/GeoServices/OpenStreetMap.php), [line 215](Plugin/GeoServices/OpenStreetMap.php#L215-L221)
 
-### `personio_integration_pro_physics_units`
+### `personio_integration_pro_form_field_additional_settings`
 
-*Filter the available units for circle search.*
+*Filter the possible additional settings for a field.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$units` | `string[]` | List of unit-object-names.
+`$message` | `array<int,string>` | The fields.
+`$instance` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The field object.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`5.0.0` | Available since 5.0.0.
+`5.2.0` | Available since 5.2.0.
 
-Source: [app/Plugin/Physics.php](Plugin/Physics.php), [line 103](Plugin/Physics.php#L103-L109)
+Source: [app/FormTemplates/Field_Base.php](FormTemplates/Field_Base.php), [line 485](FormTemplates/Field_Base.php#L485-L492)
 
-### `personio_integration_pro_update_check`
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$true` |  | 
-
-Source: [app/Plugin/Update.php](Plugin/Update.php), [line 152](Plugin/Update.php#L152-L152)
-
-### `personio_integration_pro_update_transient`
-
-*Filter the plugin update transient.*
+### `personio_integration_pro_form_template_label_options`
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$transient` | `\stdClass` | The list of plugins with its settings.
+`''` |  | 
+`$this` |  | 
+`$hide_options` |  | 
+
+Source: [app/FormTemplates/Field_Base.php](FormTemplates/Field_Base.php), [line 533](FormTemplates/Field_Base.php#L533-L533)
+
+### `personio_integration_pro_form_field_title`
+
+*Filter the field title.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$title` | `string` | The title.
+`$instance` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The field object.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`3.2.0` | Available since 3.2.0
+`4.0.0` | Available since 4.0.0.
 
-Source: [app/Plugin/Update.php](Plugin/Update.php), [line 263](Plugin/Update.php#L263-L269)
+Source: [app/FormTemplates/Field_Base.php](FormTemplates/Field_Base.php), [line 665](FormTemplates/Field_Base.php#L665-L672)
+
+### `personio_integration_pro_form_field_config`
+
+*Filter the field config.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$config` |  | 
+`$instance` |  | 
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.2.0` | Available since 5.2.0.
+
+Source: [app/FormTemplates/Field_Base.php](FormTemplates/Field_Base.php), [line 970](FormTemplates/Field_Base.php#L970-L975)
 
 ### `personio_integration_pro_field_types`
 
@@ -2480,47 +1881,485 @@ Argument | Type | Description
 
 Source: [app/FormTemplates/Fields/Select.php](FormTemplates/Fields/Select.php), [line 365](FormTemplates/Fields/Select.php#L365-L365)
 
-### `personio_integration_pro_form_field_additional_settings`
+### `personio_integration_pro_templates_prefix`
 
-*Filter the possible additional settings for a field.*
+*Filter the prefix for templates from Personio Integration in third party form plugins*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$message` | `array<int,string>` | The fields.
-`$instance` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The field object.
+`$prefix` | `string` | The prefix.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`5.2.0` | Available since 5.2.0.
+`3.0.0` | Available since 3.0.0.
 
-Source: [app/FormTemplates/Field_Base.php](FormTemplates/Field_Base.php), [line 485](FormTemplates/Field_Base.php#L485-L492)
+Source: [app/FormHandler/FormHandlers_Base.php](FormHandler/FormHandlers_Base.php), [line 248](FormHandler/FormHandlers_Base.php#L248-L254)
 
-### `personio_integration_pro_form_template_label_options`
+### `personio_integration_pro_fields_prefix`
 
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`''` |  | 
-`$this` |  | 
-`$hide_options` |  | 
-
-Source: [app/FormTemplates/Field_Base.php](FormTemplates/Field_Base.php), [line 533](FormTemplates/Field_Base.php#L533-L533)
-
-### `personio_integration_pro_form_field_title`
-
-*Filter the field title.*
+*Filter the prefix for fields from Personio Integration in third party form plugins.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$title` | `string` | The title.
-`$instance` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The field object.
+`$prefix` | `string` | The prefix.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/FormHandler/FormHandlers_Base.php](FormHandler/FormHandlers_Base.php), [line 265](FormHandler/FormHandlers_Base.php#L265-L271)
+
+### `personio_integration_pro_form_handler_logo_url`
+
+*Filter the logo URL of the form handler.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$logo` | `string` | The logo.
+`$instance` | `\PersonioIntegrationPro\FormHandler\FormHandlers_Base` | The form handler object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/FormHandler/FormHandlers_Base.php](FormHandler/FormHandlers_Base.php), [line 356](FormHandler/FormHandlers_Base.php#L356-L363)
+
+### `personio_integration_pro_form_type_template_obj`
+
+*Filter the form template object before the output as a template form type.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$formular_template_obj` | `\PersonioIntegrationPro\FormTemplates\Template` | The template.
+`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position\|null` | The position object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/Form_Types/Template.php](FormHandler/Form_Types/Template.php), [line 116](FormHandler/Form_Types/Template.php#L116-L123)
+
+### `personio_integration_pro_shortcode_form`
+
+*Filter the generated output of a shortcode-based form.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$form` | `string` | The form HTML-code.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/Form_Types/Shortcode.php](FormHandler/Form_Types/Shortcode.php), [line 158](FormHandler/Form_Types/Shortcode.php#L158-L164)
+
+### `personio_integration_pro_wpforms_fields`
+
+*Filter the predefined WPForms-fields.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$wpforms_fields` | `array<string,mixed>` | The predefined WPForms-fields.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.5.0` | Available since 5.5.0.
+
+Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 768](FormHandler/Wpforms.php#L768-L774)
+
+### `personio_integration_pro_wpforms_field_type`
+
+*Filter the field-type for WPForms.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$wpforms_field_type` | `string` | The field-type for WPForms.
+`$field_type` | `string` | The field-type of Field_Base.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.5.0` | Available since 5.5.0.
+
+Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 820](FormHandler/Wpforms.php#L820-L827)
+
+### `personio_integration_pro_personio_forms_rest_type`
+
+*Get the result type (name for the resulting object) for the response after REST-submission of an application.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$type` | `string` | The result handler name.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/PersonioForms/Routes.php](FormHandler/PersonioForms/Routes.php), [line 114](FormHandler/PersonioForms/Routes.php#L114-L120)
+
+### `personio_integration_pro_personio_forms_rest_results`
+
+*Get the resulting text for show in frontend.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$message` | `string` | The result message.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/PersonioForms/Routes.php](FormHandler/PersonioForms/Routes.php), [line 123](FormHandler/PersonioForms/Routes.php#L123-L129)
+
+### `personio_integration_pro_personio_forms_rest_fields`
+
+*Get the error fields.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$fields` | `array<string,mixed>` | The resulting error fields.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/PersonioForms/Routes.php](FormHandler/PersonioForms/Routes.php), [line 132](FormHandler/PersonioForms/Routes.php#L132-L138)
+
+### `personio_integration_pro_personio_forms_result_handlers`
+
+*Filter the list of possible Personio Forms result handlers.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$list` | `array<int,string>` | List of handlers.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/PersonioForms/ResultHandling.php](FormHandler/PersonioForms/ResultHandling.php), [line 153](FormHandler/PersonioForms/ResultHandling.php#L153-L159)
+
+### `personio_integration_pro_honeypot_value`
+
+*Filter the honeypot value.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$honeypot_value` | `string` | The honeypot value.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.2` | Available since 5.0.2.
+
+Source: [app/FormHandler/PersonioForms/Extensions/Honeypot.php](FormHandler/PersonioForms/Extensions/Honeypot.php), [line 528](FormHandler/PersonioForms/Extensions/Honeypot.php#L528-L534)
+
+### `personio_integration_pro_application_form_page_slug`
+
+*Filter the slug for the application form page.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$slug` | `string` | The slug to use.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php), [line 460](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php#L460-L466)
+
+### `personio_integration_pro_application_form_page_query_param`
+
+*Filter the query param for the application form page. Change is only useful for usage of simple URLs.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$query_param` | `string` | The query param to use.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php), [line 478](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php#L478-L484)
+
+### `personio_integration_pro_rate_limit_ip`
+
+*Filter the property used by Rate Limit for Personio Forms. This is per default an IP address.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$ip` | `string` | The IP of the request.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.5.2` | Available since 5.5.2.
+
+Source: [app/FormHandler/PersonioForms/Extensions/RateLimit.php](FormHandler/PersonioForms/Extensions/RateLimit.php), [line 267](FormHandler/PersonioForms/Extensions/RateLimit.php#L267-L273)
+
+### `personio_integration_pro_rate_limit_trusted_headers`
+
+*Filter the list of potential headers to use for the IP address in the rate limit extension.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$trusted_headers` | `array<int,string>` | List of potential headers.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.5.2` | Available since 5.5.2.
+
+Source: [app/FormHandler/PersonioForms/Extensions/RateLimit.php](FormHandler/PersonioForms/Extensions/RateLimit.php), [line 364](FormHandler/PersonioForms/Extensions/RateLimit.php#L364-L370)
+
+### `personio_integration_pro_hide_application_form`
+
+*Filter whether to hide the application form.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$false` | `bool` | Should be true to prevent the visibility of the form.
+`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | The object of the used position.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`4.2.0` | Available since 4.2.0.
+
+Source: [app/FormHandler/Form_Handlers.php](FormHandler/Form_Handlers.php), [line 155](FormHandler/Form_Handlers.php#L155-L162)
+
+### `personio_integration_pro_form_file_categories`
+
+*Filter the list of possible categories for application documents on Personio.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$categories` | `array<string,string>` | List of categories.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/FormHandler/Form_Handlers.php](FormHandler/Form_Handlers.php), [line 1114](FormHandler/Form_Handlers.php#L1114-L1121)
+
+### `personio_integration_pro_avada_field_attributes`
+
+*Filter the attributes for an Avada Forms field.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$additional_attributes` | `array<int,string>` | List of attributes as string.
+`$field_obj` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The field as object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/Avada_Forms.php](FormHandler/Avada_Forms.php), [line 976](FormHandler/Avada_Forms.php#L976-L983)
+
+### `personio_integration_pro_cf7_field_attributes`
+
+*Filter the attributes for a Contact Form 7 field.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$additional_attributes` | `string` | List of attributes as string.
+`$field_obj` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The field as object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/Contact_Form_7.php](FormHandler/Contact_Form_7.php), [line 786](FormHandler/Contact_Form_7.php#L786-L793)
+
+### `personio_integration_pro_cf7_form`
+
+*Filter the configured CF7 form.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$html_form` | `string` | The generated HTML-Code.
+`$template_obj` | `\PersonioIntegrationPro\FormTemplates\Template` | The used template object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/FormHandler/Contact_Form_7.php](FormHandler/Contact_Form_7.php), [line 1089](FormHandler/Contact_Form_7.php#L1089-L1096)
+
+### `personio_integration_pro_before_validate_application_submission`
+
+*Validate the submission of an application form before further checks.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$false` | `bool` | True if the validation should break.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 284](FormHandler/Personio_Forms.php#L284-L293)
+
+### `personio_integration_pro_before_validate_application_submission_with_position`
+
+*Validate the submission of an application form before further checks with the requested position object.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$false` | `bool` | True if the validation should break.
+`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | Object of called position.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 335](FormHandler/Personio_Forms.php#L335-L345)
+
+### `personio_integration_pro_display_form_template`
+
+*Filter the template configuration for output in frontend and during save.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$formular_template_obj` | `\PersonioIntegrationPro\FormTemplates\Template\|false` | The template object.
+`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | The object of the displayed position.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 368](FormHandler/Personio_Forms.php#L368-L376)
+
+### `personio_integration_pro_application_fields`
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$formular_template_obj->get_fields()` |  | 
+
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 390](FormHandler/Personio_Forms.php#L390-L390)
+
+### `personio_integration_pro_application_field`
+
+*Filter the field object during processing its data.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$field_obj` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The field object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.2.0` | Available since 3.2.0.
+
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 402](FormHandler/Personio_Forms.php#L402-L409)
+
+### `personio_integration_pro_application_field_results`
+
+*Filter the validation result of a single Personio forms field.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$result` | `array` | List of results.
+`$field_obj` | `\PersonioIntegrationPro\FormTemplates\Field_Base` | The checked field object with its value.
 
 **Changelog**
 
@@ -2528,18 +2367,58 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/FormTemplates/Field_Base.php](FormTemplates/Field_Base.php), [line 665](FormTemplates/Field_Base.php#L665-L672)
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 414](FormHandler/Personio_Forms.php#L414-L421)
 
-### `personio_integration_pro_form_field_config`
+### `personio_integration_pro_application_prevent_saving`
 
-*Filter the field config.*
+*Prevent saving of an application after any validation and just before saving it.*
+
+Hint: this filter should also trigger any errors for the applicant.
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$config` |  | 
-`$instance` |  | 
+`$false` | `bool` | True if the application should not be saved.
+`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | Object of the position.
+`$application_obj` | `\PersonioIntegrationPro\Applications\Application` | Object of the application.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.5.2` | Available since 5.5.2.
+
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 496](FormHandler/Personio_Forms.php#L496-L507)
+
+### `personio_integration_pro_personio_forms_templates`
+
+*Change the list of possible filter-types.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$templates` | `array<string,string>` | The list of types.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since first release.
+
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 915](FormHandler/Personio_Forms.php#L915-L922)
+
+### `personio_integration_pro_form_template_fields_before_saving`
+
+*Filter the fields of a form template before they are saved.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$fields` | `array<string,\PersonioIntegrationPro\FormTemplates\Field_Base>` | The fields of the form template.
+`$field_key` | `string` | The key of the field that is being saved.
 
 **Changelog**
 
@@ -2547,7 +2426,84 @@ Version | Description
 ------- | -----------
 `5.2.0` | Available since 5.2.0.
 
-Source: [app/FormTemplates/Field_Base.php](FormTemplates/Field_Base.php), [line 970](FormTemplates/Field_Base.php#L970-L975)
+Source: [app/PersonioIntegration/PostTypes/Personio_Form_Template.php](PersonioIntegration/PostTypes/Personio_Form_Template.php), [line 1504](PersonioIntegration/PostTypes/Personio_Form_Template.php#L1504-L1511)
+
+### `personio_integration_pro_videos_list`
+
+*Filters the list of videos for the actual position.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$videos` | `array<int,array<string,mixed>>` | List of videos.
+`$personio_attributes` | `array<string,mixed>` | List of attributes to use.
+`$video_attributes` | `array<string,mixed>` | List of attributes to use for the video element.
+`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | Object of the requested position.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.3.0` | Available since 5.3.0.
+
+Source: [app/PersonioIntegration/Videos.php](PersonioIntegration/Videos.php), [line 157](PersonioIntegration/Videos.php#L157-L167)
+
+### `personio_integration_pro_position_table_personio_id`
+
+*Filter the Personio ID for output in the table of positions.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$personio_id` | `string` | The Personio ID.
+`$post_id` | `int` | The requested post-ID.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 304](PersonioIntegration/Positions.php#L304-L312)
+
+### `personio_integration_pro_popup_dialog`
+
+*Change the dialog.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$dialog` | `array` | The dialog.
+`$position_obj` | `\PersonioIntegrationLight\PersonioIntegration\Position` | The position object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.2.0` | Available since 3.2.0.
+
+Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 748](PersonioIntegration/Positions.php#L748-L755)
+
+### `personio_integration_pro_ga_tracking_options`
+
+*Filter the tracking options.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$options` | `\stdClass` | List of options.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0
+
+Source: [app/PersonioIntegration/Tracking/Google_Analytics.php](PersonioIntegration/Tracking/Google_Analytics.php), [line 116](PersonioIntegration/Tracking/Google_Analytics.php#L116-L122)
 
 ### `personio_integration_pro_run_taxonomy_translation`
 
@@ -2617,42 +2573,6 @@ Version | Description
 `3.2.0` | Available since 3.2.0
 
 Source: [app/PersonioIntegration/Taxonomies.php](PersonioIntegration/Taxonomies.php), [line 1128](PersonioIntegration/Taxonomies.php#L1128-L1149)
-
-### `personio_integration_pro_polylang_strings`
-
-*Filter the possible list of strings (option-field-names) to translate via Polylang.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$strings` | `array<int,string>` | List of strings.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/PersonioIntegration/Multilingual/Polylang.php](PersonioIntegration/Multilingual/Polylang.php), [line 482](PersonioIntegration/Multilingual/Polylang.php#L482-L489)
-
-### `personio_integration_pro_wpml_strings`
-
-*Filter the possible list of strings (option-field-names) to translate via WPML.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$strings` | `array<int,string>` | List of strings.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/PersonioIntegration/Multilingual/Wpml.php](PersonioIntegration/Multilingual/Wpml.php), [line 389](PersonioIntegration/Multilingual/Wpml.php#L389-L396)
 
 ### `personio_integration_pro_application_table_column_name`
 
@@ -2733,84 +2653,6 @@ Version | Description
 
 Source: [app/PersonioIntegration/Tables/Applications.php](PersonioIntegration/Tables/Applications.php), [line 299](PersonioIntegration/Tables/Applications.php#L299-L307)
 
-### `personio_integration_pro_taxonomy_thumbnail`
-
-*Choose which image to use via filter.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$image_id` | `int` | The image to use.
-`$taxonomy_images` | `array` | List of images.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.1.0` | Available since 3.1.0.
-
-Source: [app/PersonioIntegration/Feature_Image.php](PersonioIntegration/Feature_Image.php), [line 193](PersonioIntegration/Feature_Image.php#L193-L200)
-
-### `personio_integration_pro_taxonomy_thumbnail`
-
-*Choose which image to use via filter.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$image_id` | `int` | The image to use.
-`$taxonomy_images` | `array` | List of images.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.1.0` | Available since 3.1.0.
-
-Source: [app/PersonioIntegration/Feature_Image.php](PersonioIntegration/Feature_Image.php), [line 267](PersonioIntegration/Feature_Image.php#L267-L274)
-
-### `personio_integration_pro_videos_list`
-
-*Filters the list of videos for the actual position.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$videos` | `array<int,array<string,mixed>>` | List of videos.
-`$personio_attributes` | `array<string,mixed>` | List of attributes to use.
-`$video_attributes` | `array<string,mixed>` | List of attributes to use for the video element.
-`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | Object of the requested position.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`5.3.0` | Available since 5.3.0.
-
-Source: [app/PersonioIntegration/Videos.php](PersonioIntegration/Videos.php), [line 157](PersonioIntegration/Videos.php#L157-L167)
-
-### `personio_integration_pro_files_list`
-
-*Filters the list of files for the actual position.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$files` | `array<int,array<string,mixed>>` | List of files.
-`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | Object of the requested position.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`3.0.0` | Available since 3.0.0.
-
-Source: [app/PersonioIntegration/Files.php](PersonioIntegration/Files.php), [line 157](PersonioIntegration/Files.php#L157-L165)
-
 ### `personio_integration_pro_hide_form`
 
 *Filter to hide the application form.*
@@ -2882,53 +2724,54 @@ Argument | Type | Description
 
 Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 342](PersonioIntegration/Position.php#L342-L348)
 
-### `personio_integration_pro_ga_tracking_options`
+### `personio_integration_pro_taxonomy_thumbnail`
 
-*Filter the tracking options.*
+*Choose which image to use via filter.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$options` | `\stdClass` | List of options.
+`$image_id` | `int` | The image to use.
+`$taxonomy_images` | `array` | List of images.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`3.0.0` | Available since 3.0.0
+`3.1.0` | Available since 3.1.0.
 
-Source: [app/PersonioIntegration/Tracking/Google_Analytics.php](PersonioIntegration/Tracking/Google_Analytics.php), [line 116](PersonioIntegration/Tracking/Google_Analytics.php#L116-L122)
+Source: [app/PersonioIntegration/Feature_Image.php](PersonioIntegration/Feature_Image.php), [line 193](PersonioIntegration/Feature_Image.php#L193-L200)
 
-### `personio_integration_pro_form_template_fields_before_saving`
+### `personio_integration_pro_taxonomy_thumbnail`
 
-*Filter the fields of a form template before they are saved.*
+*Choose which image to use via filter.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$fields` | `array<string,\PersonioIntegrationPro\FormTemplates\Field_Base>` | The fields of the form template.
-`$field_key` | `string` | The key of the field that is being saved.
+`$image_id` | `int` | The image to use.
+`$taxonomy_images` | `array` | List of images.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`5.2.0` | Available since 5.2.0.
+`3.1.0` | Available since 3.1.0.
 
-Source: [app/PersonioIntegration/PostTypes/Personio_Form_Template.php](PersonioIntegration/PostTypes/Personio_Form_Template.php), [line 1476](PersonioIntegration/PostTypes/Personio_Form_Template.php#L1476-L1483)
+Source: [app/PersonioIntegration/Feature_Image.php](PersonioIntegration/Feature_Image.php), [line 267](PersonioIntegration/Feature_Image.php#L267-L274)
 
-### `personio_integration_pro_position_table_personio_id`
+### `personio_integration_pro_files_list`
 
-*Filter the Personio ID for output in the table of positions.*
+*Filters the list of files for the actual position.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$personio_id` | `string` | The Personio ID.
-`$post_id` | `int` | The requested post-ID.
+`$files` | `array<int,array<string,mixed>>` | List of files.
+`$position_obj` | `\PersonioIntegrationPro\PersonioIntegration\Position` | Object of the requested position.
 
 **Changelog**
 
@@ -2936,26 +2779,260 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 304](PersonioIntegration/Positions.php#L304-L312)
+Source: [app/PersonioIntegration/Files.php](PersonioIntegration/Files.php), [line 157](PersonioIntegration/Files.php#L157-L165)
 
-### `personio_integration_pro_popup_dialog`
+### `personio_integration_pro_wpml_strings`
 
-*Change the dialog.*
+*Filter the possible list of strings (option-field-names) to translate via WPML.*
 
 **Arguments**
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$dialog` | `array` | The dialog.
-`$position_obj` | `\PersonioIntegrationLight\PersonioIntegration\Position` | The position object.
+`$strings` | `array<int,string>` | List of strings.
 
 **Changelog**
 
 Version | Description
 ------- | -----------
-`3.2.0` | Available since 3.2.0.
+`3.0.0` | Available since 3.0.0.
 
-Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 748](PersonioIntegration/Positions.php#L748-L755)
+Source: [app/PersonioIntegration/Multilingual/Wpml.php](PersonioIntegration/Multilingual/Wpml.php), [line 389](PersonioIntegration/Multilingual/Wpml.php#L389-L396)
+
+### `personio_integration_pro_polylang_strings`
+
+*Filter the possible list of strings (option-field-names) to translate via Polylang.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$strings` | `array<int,string>` | List of strings.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/PersonioIntegration/Multilingual/Polylang.php](PersonioIntegration/Multilingual/Polylang.php), [line 482](PersonioIntegration/Multilingual/Polylang.php#L482-L489)
+
+### `personio_integration_pro_avada_widgets`
+
+*Filter the available Avada-widgets.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$widget_list` | `array<int\|string,string>` | List of widgets.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0
+
+Source: [app/PageBuilder/Avada.php](PageBuilder/Avada.php), [line 411](PageBuilder/Avada.php#L411-L418)
+
+### `personio_integration_pro_divi5_modules`
+
+*Filter the available Divi 5 widgets.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$modules_list` | `array<int\|string,string>` | List of modules.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.2.0` | Available since 5.2.0
+
+Source: [app/PageBuilder/Divi5.php](PageBuilder/Divi5.php), [line 365](PageBuilder/Divi5.php#L365-L372)
+
+### `personio_integration_pro_wpbakery_widgets`
+
+*Filter list of widgets for WpBakery.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$widget_list` | `array<int,string>` | List of widgets.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/PageBuilder/WpBakery.php](PageBuilder/WpBakery.php), [line 124](PageBuilder/WpBakery.php#L124-L131)
+
+### `personio_integration_pro_wpbakery_templates`
+
+*Filter the available WpBakery templates.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$template_list` | `array<int,string>` | List of WP Bakery templates.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0
+
+Source: [app/PageBuilder/WpBakery.php](PageBuilder/WpBakery.php), [line 189](PageBuilder/WpBakery.php#L189-L195)
+
+### `personio_integration_pro_elementor_widgets`
+
+*Filter the list of supported widgets for Elementor.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$list` | `array<int,string>` | List of widgets.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/PageBuilder/Elementor.php](PageBuilder/Elementor.php), [line 232](PageBuilder/Elementor.php#L232-L239)
+
+### `personio_integration_pro_elementor_templates`
+
+*Filter available Elementor-template before they are imported.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$templates` | `array` | List of templates.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/PageBuilder/Elementor.php](PageBuilder/Elementor.php), [line 328](PageBuilder/Elementor.php#L328-L335)
+
+### `personio_integration_pro_site_origin`
+
+*Filter the list of supported widgets for SiteOrigin.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$widgets` |  | 
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/PageBuilder/SiteOrigin.php](PageBuilder/SiteOrigin.php), [line 132](PageBuilder/SiteOrigin.php#L132-L139)
+
+### `personio_integration_pro_bricks_elements`
+
+*Filter the list of possible Bricks elements.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$list` | `array<int,string>` | List of elements.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.3.0` | Available since 5.3.0.
+
+Source: [app/PageBuilder/Bricks.php](PageBuilder/Bricks.php), [line 232](PageBuilder/Bricks.php#L232-L238)
+
+### `personio_integration_pro_avada_class`
+
+*Filter the used CSS class for Avada widgets.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$class_name` | `string` | The CSS-classes.
+`$instance` | `\PersonioIntegrationPro\PageBuilder\Avada\Fusion_Element` | The widget-object.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/PageBuilder/Avada/Fusion_Element.php](PageBuilder/Avada/Fusion_Element.php), [line 289](PageBuilder/Avada/Fusion_Element.php#L289-L297)
+
+### `personio_integration_pro_gutenberg_blocks`
+
+*Filter the list of available Gutenberg blocks in the Pro plugin.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$list` | `array<int,string>` | List of blocks.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/PageBuilder/Gutenberg.php](PageBuilder/Gutenberg.php), [line 105](PageBuilder/Gutenberg.php#L105-L111)
+
+### `personio_integration_pro_avia_widgets`
+
+*Filter the list of supported widgets for Avia.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`array()` |  | 
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`5.0.0` | Available since 5.0.0.
+
+Source: [app/PageBuilder/Avia.php](PageBuilder/Avia.php), [line 242](PageBuilder/Avia.php#L242-L249)
+
+### `personio_integration_pro_beaver_widgets`
+
+*Filter the Beaver widgets we support.*
+
+**Arguments**
+
+Argument | Type | Description
+-------- | ---- | -----------
+`$list` | `array<int,string>` | List of widgets.
+
+**Changelog**
+
+Version | Description
+------- | -----------
+`3.0.0` | Available since 3.0.0.
+
+Source: [app/PageBuilder/Beaver.php](PageBuilder/Beaver.php), [line 103](PageBuilder/Beaver.php#L103-L109)
 
 
 <p align="center"><a href="https://github.com/pronamic/wp-documentor"><img src="https://cdn.jsdelivr.net/gh/pronamic/wp-documentor@main/logos/pronamic-wp-documentor.svgo-min.svg" alt="Pronamic WordPress Documentor" width="32" height="32"></a><br><em>Generated by <a href="https://github.com/pronamic/wp-documentor">Pronamic WordPress Documentor</a> <code>1.2.0</code></em><p>
