@@ -309,11 +309,11 @@ class Api {
 		// initialize the database-tables.
 		$charset_collate = $wpdb->get_charset_collate();
 
-		// table for applications meta-data.
+		// table for API meta-data.
 		$table_name = $wpdb->prefix . 'personio_api_requests';
 		$sql        = "CREATE TABLE $table_name (
                 `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-                `insertdate` datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+                `insertdate` datetime DEFAULT '1970-01-01 00:00:00' NOT NULL,
                 `md5` varchar(32) NOT NULL,
                 UNIQUE KEY id (id)
             ) $charset_collate;";
