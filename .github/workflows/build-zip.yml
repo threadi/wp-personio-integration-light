@@ -129,7 +129,7 @@ jobs:
                 rm CODE_OF_CONDUCT.md
                 rm .editorconfig
                 rm inc/constants_urls.php.dist
-                rm phpunix.xml.dist
+                rm phpunit.xml.dist
                 rm -fr bin
                 rm -fr tests
 
