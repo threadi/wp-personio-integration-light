@@ -133,8 +133,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Show the next time when automatic import will be run
-- Updated crypt library to 2.0.0
-- Typos
+- Renamed the filter 'get_xy' for taxonomy translations for 'personio_integration_light_get_xy'
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

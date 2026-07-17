@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.5.2] - 20.07.2026
+
+### Changed
+
+- Renamed the filter 'get_xy' for taxonomy translations for 'personio_integration_light_get_xy'
+
 ## [5.5.1] - 13.07.2026
 
 ### Changed

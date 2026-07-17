@@ -144,6 +144,7 @@ class Taxonomies {
 				$taxonomy_array['rewrite'] = false;
 			}
 
+			$taxonomy_array = apply_filters_deprecated( 'get_' . $taxonomy_name . '_translate_taxonomy', array( $taxonomy_array, $taxonomy_name ), '5.5.2', 'personio_integration_light_get_' . $taxonomy_name . '_translate_taxonomy_deprecated' );
 			/**
 			 * Filter the taxonomy array just before it is registered.
 			 *
@@ -152,13 +153,13 @@ class Taxonomies {
 			 * @param array<string,mixed> $taxonomy_array List of settings for the taxonomy.
 			 * @param string $taxonomy_name Name of the taxonomy.
 			 */
-			$taxonomy_array = apply_filters( 'get_' . $taxonomy_name . '_translate_taxonomy', $taxonomy_array, $taxonomy_name );
+			$taxonomy_array = apply_filters( 'personio_integration_light_get_' . $taxonomy_name . '_translate_taxonomy', $taxonomy_array, $taxonomy_name );
 
 			// register this taxonomy.
 			register_taxonomy( $taxonomy_name, array( PersonioPosition::get_instance()->get_name() ), $taxonomy_array );
 
 			// filter for translations of entries in this taxonomy.
-			add_filter( 'get_' . $taxonomy_name, array( $this, 'translate' ), 10, 2 );
+			add_filter( 'personio_integration_light_get_' . $taxonomy_name, array( $this, 'translate' ), 10, 2 );
 		}
 	}
 
