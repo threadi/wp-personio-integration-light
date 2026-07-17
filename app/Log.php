@@ -65,11 +65,11 @@ class Log {
 		// definition for the table for log-entries.
 		$sql = 'CREATE TABLE ' . $wpdb->prefix . "personio_import_logs (
             `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-            `time` datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-            `log` text DEFAULT '' NOT NULL,
-            `md5` text DEFAULT '' NOT NULL,
-            `category` varchar(40) DEFAULT '' NOT NULL,
-            `state` varchar(40) DEFAULT '' NOT NULL,
+            `time` datetime DEFAULT '1970-01-01 00:00:00' NOT NULL,
+            `log` text NOT NULL,
+            `md5` text NOT NULL,
+            `category` varchar(40) NOT NULL DEFAULT '',
+            `state` varchar(40) NOT NULL DEFAULT '',
             UNIQUE KEY id (id)
         ) $charset_collate;";
 
