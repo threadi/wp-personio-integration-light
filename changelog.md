@@ -6,6 +6,7 @@
 
 - Renamed the filter 'get_xy' for taxonomy translations for 'personio_integration_light_get_xy'
 - Updated the definition for custom database tables for better compatibility with different database engines
+- Updated dialog library to 1.0.6
 
 ## [5.5.1] - 13.07.2026
 
