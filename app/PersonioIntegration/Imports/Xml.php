@@ -89,16 +89,14 @@ class Xml extends Imports_Base {
 	 */
 	public function run(): void {
 		// if debug mode is enabled, log this event.
-		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-			Log::get_instance()->add( __( 'Import of positions is now running.', 'personio-integration-light' ), 'success', 'import' );
-		}
+		Log::get_instance()->add( __( 'Import of positions is now running.', 'personio-integration-light' ), 'info', 'import' );
 
 		// set a mark that import is running in WP.
 		if ( ! defined( 'WP_IMPORTING' ) ) {
 			define( 'WP_IMPORTING', true );
 		}
 
-		// mark process as running import.
+		// mark the process as the running import.
 		if ( ! defined( 'PERSONIO_INTEGRATION_IMPORT_RUNNING' ) ) {
 			define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
 		}
@@ -111,11 +109,11 @@ class Xml extends Imports_Base {
 		// get and check the Personio URLs.
 		$personio_urls = Personio_Accounts::get_instance()->get_personio_urls();
 		if ( empty( $personio_urls ) ) {
-			/* translators: %1$s will be replaced by the URL for main settings. */
-			$this->add_error( sprintf( __( 'Personio URL not configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
+			/* translators: %1$s will be replaced by the URL for the main settings. */
+			$this->add_error( sprintf( __( 'Personio URL is not configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
 		}
 
-		// check if PHP-extension SimpleXML exists.
+		// check if the PHP extension SimpleXML exists.
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
 			$this->add_error( __( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' ) );
 		}
@@ -125,7 +123,7 @@ class Xml extends Imports_Base {
 
 		// check if languages are enabled.
 		if ( empty( $languages ) ) {
-			/* translators: %1$s will be replaced by the URL for main settings. */
+			/* translators: %1$s will be replaced by the URL for the main settings. */
 			$this->add_error( sprintf( __( 'No active language configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
 		}
 
@@ -179,7 +177,7 @@ class Xml extends Imports_Base {
 					$import_obj->set_url( $import_url );
 					$import_obj->run();
 
-					// add errors from import to global list.
+					// add errors from import to the global list.
 					foreach ( $import_obj->get_errors() as $error ) {
 						$this->add_error( $error );
 					}
@@ -223,7 +221,7 @@ class Xml extends Imports_Base {
 
 		// clean up the database if no errors occurred.
 		if ( ! $this->has_errors() ) {
-			// do not clean up if no positions have been imported but positions have been read from XML.
+			// do not clean up if no positions have been imported, but positions have been read from XML.
 			if ( 0 === $imported_positions && $this->get_import_count() > 0 ) {
 				// output success-message.
 				Helper::is_cli() ? \WP_CLI::success( 'Import has been run but no changes have been imported.' ) : false;
@@ -272,7 +270,7 @@ class Xml extends Imports_Base {
 				// get Personio ID.
 				$personio_id = $position_obj->get_personio_id();
 
-				// if this postion has been changed.
+				// if this position has been changed.
 				if ( 1 === absint( get_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, true ) ) ) {
 					// delete the marker.
 					if ( false === delete_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED ) ) {
@@ -353,9 +351,9 @@ class Xml extends Imports_Base {
 	}
 
 	/**
-	 * Import single position.
+	 * Import a single position.
 	 *
-	 * This is the main function which defines the object during import of position data.
+	 * This is the main function, which defines the object during import of position data.
 	 * It calls the save-function to add all in the DB.
 	 *
 	 * @param SimpleXMLElement $xml_object      The XML-object of a single position.
@@ -381,7 +379,7 @@ class Xml extends Imports_Base {
 	}
 
 	/**
-	 * Return a complete position object with data from source object.
+	 * Return a complete position object with data from the source object.
 	 *
 	 * @param object $xml_object The source object.
 	 * @param string $language_name The used language.
@@ -390,12 +388,12 @@ class Xml extends Imports_Base {
 	 * @return Position
 	 */
 	public function get_position_from_object( object $xml_object, string $language_name, string $personio_url ): Position {
-		// bail if object is not a SimpleXMLElement.
+		// bail if the object is not a SimpleXMLElement.
 		if ( ! $xml_object instanceof SimpleXMLElement ) {
 			return new Position( 0 );
 		}
 
-		// create position object to handle all values and save them to database.
+		// create the position object to handle all values and save them to the database.
 		$position_object = new Position( 0 );
 		$position_object->set_lang( $language_name );
 		$position_object->set_title( (string) $xml_object->name );

@@ -23,6 +23,7 @@ use easySettingsForWordPress\Section;
 use easySettingsForWordPress\Setting;
 use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -266,8 +267,13 @@ class Settings {
 		$advanced->set_setting( $settings_obj );
 		$advanced->set_callback( array( $this, 'show_advanced_hint' ) );
 
+		// the debug section.
+		$debug_plugin = $advanced_tab->add_section( 'settings_section_advanced_debug', 20 );
+		$debug_plugin->set_title( __( 'Debug', 'personio-integration-light' ) );
+		$debug_plugin->set_setting( $settings_obj );
+
 		// the advanced plugin-handling section.
-		$advanced_plugin = $advanced_tab->add_section( 'settings_section_advanced_plugin', 10 );
+		$advanced_plugin = $advanced_tab->add_section( 'settings_section_advanced_plugin', 30 );
 		$advanced_plugin->set_title( __( 'Plugin handling', 'personio-integration-light' ) );
 		$advanced_plugin->set_setting( $settings_obj );
 
@@ -656,31 +662,6 @@ class Settings {
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 
-		// add setting.
-		$debug_setting = $settings_obj->add_setting( 'personioIntegration_debug' );
-		$debug_setting->set_section( $advanced );
-		$debug_setting->set_type( 'integer' );
-		$debug_setting->set_default( 0 );
-		$field = new Checkbox( $settings_obj );
-		$field->set_title( __( 'Debug-Mode', 'personio-integration-light' ) );
-		$field->set_readonly( ! Helper::is_personio_url_set() );
-		/* translators: %1$s will be replaced by a URL. */
-		$field->set_description( sprintf( __( 'When activated, the plugin logs many processes. This information can then be seen <a href="%1$s">in the log</a>. This helps to analyze any problems that may occur. At the same time, all open positions are retrieved in full at any time - it will not be checked whether anything has been changed in Personio. <strong>We do not recommend using this mode permanently in a productive system.</strong>', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
-		$debug_setting->set_field( $field );
-
-		// add setting.
-		$setting = $settings_obj->add_setting( 'personioIntegrationQueryDebug' );
-		$setting->set_section( $advanced );
-		$setting->set_type( 'integer' );
-		$setting->set_default( 0 );
-		$field = new Checkbox( $settings_obj );
-		$field->set_title( __( 'Enable debug of database queries', 'personio-integration-light' ) );
-		$field->set_description( __( 'If activated, the plugin logs all database queries for positions. This information can then be seen in the log.', 'personio-integration-light' ) );
-
-		$field->set_readonly( ! Helper::is_personio_url_set() );
-		$field->add_depend( $debug_setting, 1 );
-		$setting->set_field( $field );
-
 		// create import dialog.
 		$dialog = array(
 			'title'   => __( 'Import settings', 'personio-integration-light' ),
@@ -701,6 +682,43 @@ class Settings {
 				),
 			),
 		);
+
+		// add setting.
+		$debug_setting = $settings_obj->add_setting( 'personioIntegration_debug' );
+		$debug_setting->set_section( $debug_plugin );
+		$debug_setting->set_type( 'integer' );
+		$debug_setting->set_default( 0 );
+		$field = new Checkbox( $settings_obj );
+		$field->set_title( __( 'Debug-Mode', 'personio-integration-light' ) );
+		$field->set_readonly( ! Helper::is_personio_url_set() );
+		/* translators: %1$s will be replaced by a URL. */
+		$field->set_description( sprintf( __( 'When activated, the plugin logs many processes. This information can then be seen <a href="%1$s">in the log</a>. This helps to analyze any problems that may occur. At the same time, all open positions are retrieved in full at any time - it will not be checked whether anything has been changed in Personio. <strong>We do not recommend using this mode permanently in a productive system.</strong>', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
+		$debug_setting->set_field( $field );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegration_debug_categories' );
+		$setting->set_section( $debug_plugin );
+		$setting->set_type( 'array' );
+		$setting->set_default( array() );
+		$field = new MultiSelect( $settings_obj );
+		$field->set_title( __( 'Categories to debug', 'personio-integration-light' ) );
+		$field->set_readonly( ! Helper::is_personio_url_set() );
+		$field->set_description( __( 'Select the topics for which you want to see debug output in the log. If nothing is selected, everything will be logged.', 'personio-integration-light' ) );
+		$field->set_options( Log::get_instance()->get_categories() );
+		$field->add_depend( $debug_setting, 1 );
+		$setting->set_field( $field );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personioIntegrationQueryDebug' );
+		$setting->set_section( $debug_plugin );
+		$setting->set_type( 'integer' );
+		$setting->set_default( 0 );
+		$field = new Checkbox( $settings_obj );
+		$field->set_title( __( 'Enable debug of database queries', 'personio-integration-light' ) );
+		$field->set_description( __( 'If activated, the plugin logs all database queries for positions. This information can then be seen in the log.', 'personio-integration-light' ) );
+		$field->set_readonly( ! Helper::is_personio_url_set() );
+		$field->add_depend( $debug_setting, 1 );
+		$setting->set_field( $field );
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'import_settings' );

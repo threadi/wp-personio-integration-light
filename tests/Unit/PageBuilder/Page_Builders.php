@@ -70,4 +70,31 @@ class Page_Builders extends PersonioTestCase {
 			$this->hasFailed();
 		}
 	}
+
+	/**
+	 * Test the base object.
+	 *
+	 * @return void
+	 */
+	public function test_page_builders_as_objects_share_the_base_type(): void {
+		$builders = \PersonioIntegrationLight\PageBuilder\Page_Builders::get_instance()->get_page_builders_as_objects();
+		$this->assertNotEmpty( $builders );
+		foreach ( $builders as $builder ) {
+			$this->assertInstanceOf( \PersonioIntegrationLight\PageBuilder\PageBuilder_Base::class, $builder );
+			$this->assertNotEmpty( $builder->get_name(), 'each page builder must expose a non-empty name' );
+		}
+	}
+
+	/**
+	 * Test if the Gutenberg object is registered.
+	 *
+	 * @return void
+	 */
+	public function test_gutenberg_is_a_registered_page_builder(): void {
+		$names = array_map(
+			static fn( $b ) => $b->get_name(),
+			\PersonioIntegrationLight\PageBuilder\Page_Builders::get_instance()->get_page_builders_as_objects()
+		);
+		$this->assertContains( 'gutenberg', $names );
+	}
 }

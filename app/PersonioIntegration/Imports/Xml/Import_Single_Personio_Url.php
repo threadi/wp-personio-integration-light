@@ -26,14 +26,6 @@ use SimpleXMLElement;
  * Import-handling for positions from a single Personio-account in the given language.
  */
 class Import_Single_Personio_Url {
-
-	/**
-	 * Debug-marker.
-	 *
-	 * @var bool
-	 */
-	private bool $debug;
-
 	/**
 	 * Array to collect all errors on import.
 	 *
@@ -89,9 +81,6 @@ class Import_Single_Personio_Url {
 	public function __construct() {
 		// get log-object.
 		$this->log = Log::get_instance();
-
-		// get debug-mode.
-		$this->debug = 1 === absint( get_option( 'personioIntegration_debug' ) );
 	}
 
 	/**
@@ -195,7 +184,7 @@ class Import_Single_Personio_Url {
 		 */
 		$url = apply_filters( 'personio_integration_import_url', $url, $language_name );
 
-		$check_for_changes = $this->debug;
+		$check_for_changes = 1 === absint( get_option( 'personioIntegration_debug' ) );
 		/**
 		 * Set marker to check for timestamp and md5-hash-compare.
 		 *
@@ -356,7 +345,8 @@ class Import_Single_Personio_Url {
 					if ( false !== apply_filters( 'personio_integration_import_single_position', $run_import, $xml_object, $language_name, $personio_obj, $imports_obj ) ) {
 						// import the position and add it to the list.
 						$this->imported_postions[] = $imports_obj->import_single_position( $xml_object, $language_name, $personio_obj->get_url() );
-					} elseif ( false !== $this->debug ) {
+					} else {
+						// log this event.
 						/* translators: %1$s will be replaced by the Personio ID, %2$s by a URL, %3$s by the name of the language. */
 						$this->log->add( sprintf( __( 'Position %1$s has not been imported from %2$s in language %3$s.', 'personio-integration-light' ), esc_html( $xml_object->id ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'info', 'import' );
 					}
