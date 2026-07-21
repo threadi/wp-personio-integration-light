@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Use the log categories to choose which debug log entries you want to see
 - Note the user locale for the hint about missing translations for this plugin
 - Show errors during encryption in the log
 

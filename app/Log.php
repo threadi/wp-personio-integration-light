@@ -88,7 +88,14 @@ class Log {
 	}
 
 	/**
-	 * Add a single log-entry.
+	 * Add a single log entry.
+	 *
+	 * If debug is disabled, we log only errors and successful import entries.
+	 *
+	 * If debug is enabled:
+	 * - successful import entries are always logged,
+	 * - any entries in the configured debug categories are logged,
+	 * - if no debug categories are configured, all entries are logged.
 	 *
 	 * @param string $log   The text to log.
 	 * @param string $state The state to log.
@@ -99,6 +106,36 @@ class Log {
 	 */
 	public function add( string $log, string $state, string $category = '', string $md5 = '' ): void {
 		global $wpdb;
+
+		// if debug is disabled, we only log errors.
+		if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
+			$is_error          = 'error' === $state;
+			$is_import_success = 'import' === $category && 'success' === $state;
+
+			if ( ! $is_error && ! $is_import_success ) {
+				return;
+			}
+		} else {
+			// get the debug categories.
+			$log_categories = get_option( 'personioIntegration_debug_categories' );
+
+			// check if it is an array.
+			if ( ! is_array( $log_categories ) ) {
+				$log_categories = array();
+			}
+
+			// check if this is a success import entry.
+			$is_import_success = 'import' === $category && 'success' === $state;
+
+			// bail if this is not a success import entry and the given category is not in the list.
+			if (
+				! $is_import_success &&
+				! empty( $log_categories ) &&
+				! in_array( $category, $log_categories, true )
+			) {
+				return;
+			}
+		}
 
 		// insert the log entry.
 		Db::get_instance()->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery

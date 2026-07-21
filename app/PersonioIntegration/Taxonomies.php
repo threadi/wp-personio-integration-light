@@ -1211,9 +1211,7 @@ class Taxonomies {
 			delete_option( $taxonomy_name . '_children' );
 
 			// log in debug-mode.
-			if ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
-				Log::get_instance()->add( 'Taxonomy ' . $taxonomy_name . ' has been deleted.', 'success', 'import' );
-			}
+			Log::get_instance()->add( 'Taxonomy ' . $taxonomy_name . ' has been deleted.', 'info', 'import' );
 
 			// show progress.
 			$progress ? $progress->tick() : false;

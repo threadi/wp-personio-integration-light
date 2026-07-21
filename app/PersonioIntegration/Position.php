@@ -48,21 +48,11 @@ class Position {
 	private array $taxonomy_terms = array();
 
 	/**
-	 * Marker if debug-Mode is active
-	 *
-	 * @var bool
-	 */
-	private bool $debug;
-
-	/**
 	 * Constructor for this position.
 	 *
 	 * @param int $post_id The post_id of this position.
 	 */
 	public function __construct( int $post_id ) {
-		// get debug-mode.
-		$this->debug = 1 === absint( get_option( 'personioIntegration_debug' ) );
-
 		// bail if no ID is given.
 		if ( 0 === $post_id ) {
 			return;
@@ -303,16 +293,14 @@ class Position {
 			// mark as changed.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_UPDATED, 1 );
 
-			// add log in debug-mode.
-			if ( false !== $this->debug ) {
-				/* translators: %1$s will be replaced by the PersonioID, %2$s by the language name. */
-				Log::get_instance()->add( sprintf( __( 'Position %1$s successfully imported or updated in %2$s.', 'personio-integration-light' ), '<em>' . esc_html( $this->get_personio_id() . ' (' . $this->get_title() . ')' ) . '</em>', esc_html( Languages::get_instance()->get_language_title( $this->get_lang() ) ) ), 'success', 'import' );
-			}
+			// log this event.
+			/* translators: %1$s will be replaced by the PersonioID, %2$s by the language name. */
+			Log::get_instance()->add( sprintf( __( 'Position %1$s successfully imported or updated in %2$s.', 'personio-integration-light' ), '<em>' . esc_html( $this->get_personio_id() . ' (' . $this->get_title() . ')' ) . '</em>', esc_html( Languages::get_instance()->get_language_title( $this->get_lang() ) ) ), 'info', 'import' );
 		}
 	}
 
 	/**
-	 * Update terms of single taxonomy for this position.
+	 * Update the terms of a single taxonomy for this position.
 	 *
 	 * @param string $value The value of the term.
 	 * @param string $taxonomy The taxonom the term is assigned to.
@@ -355,8 +343,9 @@ class Position {
 			$term_array = wp_insert_term( $value, $taxonomy );
 			if ( ! is_wp_error( $term_array ) ) {
 				$term = get_term( $term_array['term_id'], $taxonomy );
-			} elseif ( false !== $this->debug ) {
-				Log::get_instance()->add( 'Term ' . $value . ' could not be imported in ' . $taxonomy, 'error', 'import' );
+			} elseif ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
+				/* translators: %1$s will be replaced by the term name, %2$s by the taxonomy name. */
+				Log::get_instance()->add( sprintf( __( 'Term %1$s could not be imported in %2$s', 'personio-integration-light' ), $value, $taxonomy ), 'error', 'import' );
 			}
 		}
 

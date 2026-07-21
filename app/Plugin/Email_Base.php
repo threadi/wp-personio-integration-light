@@ -315,10 +315,8 @@ class Email_Base {
 
 		// send email.
 		if ( wp_mail( $this->get_recipients(), $this->get_subject(), $this->get_body(), $this->get_headers() ) ) {
-			// log this event if debug mode is enabled.
-			if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-				Log::get_instance()->add( __( 'Sent email:', 'personio-integration-light' ) . ' <code>' . $configuration_json . '</code>', 'success', 'emails' );
-			}
+			// log this event.
+			Log::get_instance()->add( __( 'Sent email:', 'personio-integration-light' ) . ' <code>' . $configuration_json . '</code>', 'info', 'emails' );
 			return;
 		}
 

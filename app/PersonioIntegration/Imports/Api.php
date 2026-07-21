@@ -97,9 +97,7 @@ class Api extends Imports_Base {
 	 */
 	public function run(): void {
 		// if debug mode is enabled, log this event.
-		if ( 1 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
-			Log::get_instance()->add( __( 'Import of positions is now running.', 'personio-integration-light' ), 'success', 'import' );
-		}
+		Log::get_instance()->add( __( 'Import of positions is now running.', 'personio-integration-light' ), 'info', 'import' );
 
 		// get the API object.
 		$api_obj = \PersonioIntegrationLight\PersonioIntegration\Api::get_instance();
@@ -124,7 +122,7 @@ class Api extends Imports_Base {
 			define( 'WP_IMPORTING', true );
 		}
 
-		// mark process as running import.
+		// mark the process as running import.
 		if ( ! defined( 'PERSONIO_INTEGRATION_IMPORT_RUNNING' ) ) {
 			define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
 		}
