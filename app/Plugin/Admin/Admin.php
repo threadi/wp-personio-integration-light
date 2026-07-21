@@ -1048,18 +1048,23 @@ class Admin {
 	 * @return void
 	 */
 	public function check_language(): void {
+		// get the object for transients.
+		$transients_obj = Transients::get_instance();
+
 		// bail if the language is Englisch or the Personio URL is not set.
-		if ( get_locale() === 'en_US' || ! Helper::is_personio_url_set() ) {
+		if ( get_locale() === 'en_US' || get_user_locale() === 'en_US' || ! Helper::is_personio_url_set() ) {
+			$transients_obj->get_transient_by_name( 'personio_integration_light_translatable' )->delete();
 			return;
 		}
 
 		// bail if 'Provides recruiting handling for Personio.' is translated.
 		if ( __( 'Provides recruiting handling for Personio.', 'personio-integration-light' ) !== 'Provides recruiting handling for Personio.' ) {
+			$transients_obj->get_transient_by_name( 'personio_integration_light_translatable' )->delete();
 			return;
 		}
 
 		// show hint that the plugin could be translated in the actually used language.
-		$transient_obj = Transients::get_instance()->add();
+		$transient_obj = $transients_obj->add();
 		$transient_obj->set_type( 'hint' );
 		$transient_obj->set_name( 'personio_integration_light_translatable' );
 		$transient_obj->set_dismissible_days( 180 );
