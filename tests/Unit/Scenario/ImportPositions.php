@@ -111,4 +111,90 @@ class ImportPositions extends PersonioTestCase {
 		// test it.
 		$this->assertIsNotObject( $position_obj );
 	}
+
+	/**
+	 * Run one XML-import against a given Personio URL (unconditionally).
+	 */
+	private function run_import_for_url( string $url ): void {
+		update_option( 'personioIntegrationUrl', $url );
+		( new \PersonioIntegrationLight\PersonioIntegration\Imports\Xml() )->run();
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+	}
+
+	/**
+	 * Count all currently imported positions.
+	 *
+	 * @return int
+	 */
+	private function count_positions(): int {
+		return count( \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_positions( -1 ) );
+	}
+
+	/**
+	 * Intended behavior: an empty feed after having positions removes them all.
+	 * This test locks the intent in, so it cannot be "fixed" away by accident.
+	 *
+	 * @return void
+	 */
+	public function test_empty_feed_deletes_all_positions(): void {
+		$this->run_import_for_url( self::$personio_url );
+		$this->assertGreaterThan( 0, $this->count_positions() );
+
+		$this->run_import_for_url( self::$personio_empty_url );
+		$this->assertSame( 0, $this->count_positions() );
+	}
+
+	/**
+	 * Safety guard: a broken/faulty feed must NOT delete existing positions.
+	 * Currently only "faulty feed creates nothing" is covered, not "faulty feed deletes nothing".
+	 *
+	 * @return void
+	 */
+	public function test_error_feed_does_not_delete_positions(): void {
+		$this->run_import_for_url( self::$personio_url );
+		$count_before = $this->count_positions();
+		$this->assertGreaterThan( 0, $count_before );
+
+		$this->run_import_for_url( self::$personio_faulty_url );
+		$this->assertSame( $count_before, $this->count_positions() );
+	}
+
+	/**
+	 * Safety guard: a Personio outage (HTTP 503) must NOT delete existing positions.
+	 *
+	 * @return void
+	 */
+	public function test_http_error_does_not_delete_positions(): void {
+		$this->run_import_for_url( self::$personio_url );
+		$count_before = $this->count_positions();
+		$this->assertGreaterThan( 0, $count_before );
+
+		$this->run_import_for_url( self::$personio_error_url );
+		$this->assertSame( $count_before, $this->count_positions() );
+	}
+
+	/**
+	 * A position imported in one language must survive an empty feed in another language.
+	 *
+	 * The cleanup runs once after all languages; the "de" (empty) feed must not delete
+	 * the positions that "en" just imported and flagged as updated.
+	 *
+	 * @return void
+	 */
+	public function test_empty_feed_in_one_language_keeps_positions_from_another(): void {
+		// baseline: the main language "en" only, from the multilingual feed.
+		update_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, 'en' );
+		update_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION, array( 'en' => 1 ) );
+		$this->run_import_for_url( self::$personio_multilang_url );
+
+		$baseline = $this->count_positions();
+		$this->assertGreaterThan( 0, $baseline );
+
+		// now also activate "de", whose feed is empty, and re-import.
+		update_option( WP_PERSONIO_INTEGRATION_LANGUAGE_OPTION, array( 'en' => 1, 'de' => 1 ) );
+		$this->run_import_for_url( self::$personio_multilang_url );
+
+		// the empty "de" feed must not remove any "en" position.
+		$this->assertSame( $baseline, $this->count_positions() );
+	}
 }

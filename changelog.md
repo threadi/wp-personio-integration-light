@@ -7,6 +7,7 @@
 - Use the log categories to choose which debug log entries you want to see
 - Note the user locale for the hint about missing translations for this plugin
 - Show errors during encryption in the log
+- Extended the PHP Unit test to check for more use cases of this plugin
 
 ## [5.5.2] - 20.07.2026
 

@@ -52,6 +52,20 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 	protected static string $personio_faulty_url = 'https://personio-integration-fauly-test.jobs.personio.com';
 
 	/**
+	 * Pseudo Personio URL that simulates a temporary outage (HTTP 503).
+	 *
+	 * @var string
+	 */
+	protected static string $personio_error_url = 'https://personio-integration-error-test.jobs.personio.com';
+
+	/**
+	 * Pseudo Personio URL for the multilingual test: "de" is empty, every other language has positions.
+	 *
+	 * @var string
+	 */
+	protected static string $personio_multilang_url = 'https://personio-integration-multilang-test.jobs.personio.com';
+
+	/**
 	 * Prepare the test environment for each test class.
 	 *
 	 * @return void
@@ -98,6 +112,18 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 			// create the header response.
 			return array(
 				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] )
+			);
+		}
+
+		// simulate a Personio outage: HEAD returns a non-200 status -> import errors out.
+		if ( 'HEAD' === $parsed_args['method'] && str_starts_with( $url, self::$personio_error_url ) ) {
+			// create the response object.
+			$requests_response              = new \WpOrg\Requests\Response();
+			$requests_response->status_code = 503;
+
+			// create the header response.
+			return array(
+				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
 			);
 		}
 
@@ -181,6 +207,32 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 			return array(
 				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
 				'body' => $json
+			);
+		}
+
+		// multilingual test: HEAD is fine for every language.
+		if ( 'HEAD' === $parsed_args['method'] && str_starts_with( $url, self::$personio_multilang_url ) ) {
+			$requests_response                           = new \WpOrg\Requests\Response();
+			$requests_response->status_code              = 200;
+			$requests_response->headers['last-modified'] = time();
+
+			return array(
+				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
+			);
+		}
+
+		// multilingual test: "de" delivers an empty feed, every other language delivers positions.
+		if ( 'GET' === $parsed_args['method'] && str_starts_with( $url, self::$personio_multilang_url ) ) {
+			$file = str_contains( $url, 'language=de' ) ? 'personio_empty.xml' : 'positions.xml';
+			$xml  = \PersonioIntegrationLight\Helper::get_wp_filesystem()->get_contents( UNIT_TESTS_DATA_PLUGIN_DIR . $file );
+
+			$requests_response                           = new \WpOrg\Requests\Response();
+			$requests_response->status_code              = 200;
+			$requests_response->headers['last-modified'] = time();
+
+			return array(
+				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
+				'body'          => $xml,
 			);
 		}
 
