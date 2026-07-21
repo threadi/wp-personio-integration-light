@@ -105,6 +105,9 @@ class Admin {
 		add_action( 'admin_action_personioPositionsDelete', array( $this, 'delete_positions' ) );
 		add_action( 'admin_action_personio_integration_log_export', array( $this, 'export_log' ) );
 		add_action( 'admin_action_personio_integration_log_empty', array( $this, 'empty_log' ) );
+
+		// misc.
+		add_action( 'personio-integration-light_error', array( $this, 'save_crypt_error' ), 10, 3 );
 	}
 
 	/**
@@ -1071,5 +1074,39 @@ class Admin {
 		/* translators: URLs will replace %1$s and %2$s. */
 		$transient_obj->set_message( sprintf( __( '<strong>You are using a language in your WordPress that has not yet been translated for the plugin "Personio Integration Light".</strong> You are welcome to help by providing translations for your language <a href="%1$s" target="_blank">here</a>. If you have any questions, please feel free to contact us <a href="%2$s" target="_blank">in the support forum</a>.', 'personio-integration-light' ), 'https://translate.wordpress.org/projects/wp-plugins/personio-integration-light/', Helper::get_plugin_support_url() ) );
 		$transient_obj->save();
+	}
+
+	/**
+	 * Save any error from the crypt library.
+	 *
+	 * @param string              $code    The error code.
+	 * @param string              $message The message.
+	 * @param array<string,mixed> $data    The data.
+	 *
+	 * @return void
+	 */
+	public function save_crypt_error( string $code, string $message, array $data ): void {
+		// collect the data for the log entry.
+		$log_entry = array(
+			__( 'Error Code', 'personio-integration-light' ) => '<code>' . $code . '</code>',
+			__( 'Message', 'personio-integration-light' ) => '<code>' . $message . '</code>',
+			__( 'Data', 'personio-integration-light' )    => '<code>' . Helper::get_json( $data ) . '</code>',
+		);
+
+		// log the data.
+		Log::get_instance()->add(
+			'<strong>' . __( 'Error in encryption:', 'personio-integration-light' ) . '</strong><br>' . wp_kses_post(
+				implode(
+					'<br>',
+					array_map(
+						static fn( $key, $value ) => "$key: $value",
+						array_keys( $log_entry ),
+						$log_entry
+					)
+				)
+			),
+			'error',
+			'system'
+		);
 	}
 }

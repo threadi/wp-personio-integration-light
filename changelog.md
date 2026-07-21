@@ -5,6 +5,7 @@
 ### Changed
 
 - Note the user locale for the hint about missing translations for this plugin
+- Show errors during encryption in the log
 
 ## [5.5.2] - 20.07.2026
 
