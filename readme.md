@@ -55,8 +55,8 @@ After checkout go through the following steps:
 4. `composer test-install`
 5. `composer test`
 6. `vendor/bin/phpstan analyse`
-7. `vendor/bin/phpcbf --standard=ruleset.xml .`
-8. `vendor/bin/phpcs --standard=ruleset.xml .`
+7. `vendor/bin/phpcbf .`
+8. `vendor/bin/phpcs .`
 9. Set version nummer in _readme.txt_ and _personio-integration-light.php_.
 10. Create the release ZIP with all necessary folders and files.
 
@@ -117,11 +117,11 @@ OR use ant in build/-directory: `ant json-translations`
 
 ### Run
 
-`vendor/bin/phpcs --standard=ruleset.xml .`
+`vendor/bin/phpcs .`
 
 ### Repair
 
-`vendor/bin/phpcbf --standard=ruleset.xml .`
+`vendor/bin/phpcbf .`
 
 ## Check for WordPress VIP Coding Standards
 

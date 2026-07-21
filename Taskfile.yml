@@ -38,13 +38,13 @@ tasks:
   check:
     cmds:
       - vendor/bin/phpstan analyse
-      - vendor/bin/phpcbf --standard=ruleset.xml .
-      - vendor/bin/phpcs --standard=ruleset.xml .
+      - vendor/bin/phpcbf .
+      - vendor/bin/phpcs .
 
   build_zip:
     dir: ../
     cmds:
-      - zip -rq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/ -x "*/.git/*" "*/.github/*" "*/.gitattributes" "*/.phpunit.result.cache" "*/phpunit.xml.dist" "*/blocks/*/src/*" "*/doc/*" "*/phpcs.xml" "*/composer.json" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/ruleset.xml" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "*/.editorconfig" "/build/*" "*/releases/*" "*/svn/*" "*/languages/*" "*/changelog.md" "*/readme.md" "*/ruleset.xml" "*/assets/*" "*/personio-integration-light-dev.php" "*/uninstall-dev.php" "*/tests/*" "*/readme-dev.txt" "*/phpstan.neon" "*/Taskfile.yml" "*/libs/*" "*/src/*"
+      - zip -rq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/ -x "*/.git/*" "*/.github/*" "*/.gitattributes" "*/.phpunit.result.cache" "*/phpunit.xml.dist" "*/blocks/*/src/*" "*/doc/*" "*/phpcs.xml" "*/composer.json" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/phpcs.xml.dist" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "*/.editorconfig" "/build/*" "*/releases/*" "*/svn/*" "*/languages/*" "*/changelog.md" "*/readme.md" "*/assets/*" "*/personio-integration-light-dev.php" "*/uninstall-dev.php" "*/tests/*" "*/readme-dev.txt" "*/phpstan.neon" "*/Taskfile.yml" "*/libs/*" "*/src/*"
       - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/autoload.php
       - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/composer/*
       - zip -urq personio-integration-light/releases/personio-integration-light_{{.CLI_ARGS}}.zip personio-integration-light/vendor/threadi/*/build/*
