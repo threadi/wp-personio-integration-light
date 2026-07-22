@@ -8,12 +8,13 @@
 - Note the user locale for the hint about missing translations for this plugin
 - Show errors during encryption in the log
 - Extended the PHP Unit test to check for more use cases of this plugin
+- Optimized the GitHub action to check the plugin quality
 
 ## [5.5.2] - 20.07.2026
 
 ### Changed
 
-- Renamed the filter 'get_xy' for taxonomy translations for 'personio_integration_light_get_xy'
+- Renamed the filter 'get_xy' for taxonomy translations for 'personio_integration_light_get_xy' to be more compatible with other plugins
 - Updated the definition for custom database tables for better compatibility with different database engines
 - Updated dialog library to 1.0.6
 

@@ -112,9 +112,19 @@ class Log {
 			$is_error          = 'error' === $state;
 			$is_import_success = 'import' === $category && 'success' === $state;
 
-			if ( ! $is_error && ! $is_import_success ) {
-				return;
-			}
+			$should_log = $is_error || $is_import_success;
+			/**
+			 * Filter whether a log entry should be written when debug mode is disabled.
+			 *
+			 * @since 5.5.3 Available since 5.5.3.
+			 *
+			 * @param bool   $should_log Whether the entry should be logged.
+			 * @param string $category   The log entry category.
+			 * @param string $state      The log entry state.
+			 * @param string $log        The log message.
+			 * @param string $md5        The unique marker.
+			 */
+			$should_log = apply_filters( 'personio_integration_light_log_without_debug', $should_log, $category, $state, $log, $md5 );
 		} else {
 			// get the debug categories.
 			$log_categories = get_option( 'personioIntegration_debug_categories' );
@@ -127,14 +137,26 @@ class Log {
 			// check if this is a success import entry.
 			$is_import_success = 'import' === $category && 'success' === $state;
 
-			// bail if this is not a success import entry and the given category is not in the list.
-			if (
-				! $is_import_success &&
-				! empty( $log_categories ) &&
-				! in_array( $category, $log_categories, true )
-			) {
-				return;
-			}
+			// check if we should log this entry.
+			$should_log = $is_import_success || empty( $log_categories ) || in_array( $category, $log_categories, true );
+
+			/**
+			 * Filter whether a log entry should be written when debug mode is enabled.
+			 *
+			 * @since 5.5.3 Available since 5.5.3.
+			 *
+			 * @param bool   $should_log Whether the entry should be logged.
+			 * @param string $category   The log entry category.
+			 * @param string $state      The log entry state.
+			 * @param string $log        The log message.
+			 * @param string $md5        The unique marker.
+			 */
+			$should_log = apply_filters( 'personio_integration_light_log_with_debug', $should_log, $category, $state, $log, $md5 );
+		}
+
+		// bail if we should not log.
+		if ( ! $should_log ) {
+			return;
 		}
 
 		// insert the log entry.
