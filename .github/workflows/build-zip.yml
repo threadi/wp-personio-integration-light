@@ -12,14 +12,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
 
             - name: Setup WP-CLI
               uses: godaddy-wordpress/setup-wp-cli@1
 
             - name: Run package installs and builds
               run: |
-                  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+                  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash
                   export NVM_DIR=~/.nvm
                   source ~/.nvm/nvm.sh
                   composer install

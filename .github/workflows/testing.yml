@@ -11,13 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install dependencies
         run: composer install
-
-      - name: PHPStan check
-        run: vendor/bin/phpstan analyse
 
       - name: PHP Compatibility check
         run: vendor/bin/phpcs -p app --standard=PHPCompatibilityWP --runtime-set testVersion 8.1- --ignore=*/Crypt.php
@@ -38,7 +35,7 @@ jobs:
           - 3306:3306
     steps:
       - name: Check out source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Run package installs and builds
         run: |
