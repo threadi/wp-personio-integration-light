@@ -66,6 +66,20 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 	protected static string $personio_multilang_url = 'https://personio-integration-multilang-test.jobs.personio.com';
 
 	/**
+	 * The shortcircuit Personio URL we use as a test for valid XMLs.
+	 *
+	 * @var string
+	 */
+	protected static string $personio_shortcircuit_url = 'https://personio-integration-shortcircuit-test.jobs.personio.com';
+
+	/**
+	 * The shortcircuit Personio URL we use as a test for valid XMLs.
+	 *
+	 * @var string
+	 */
+	protected static string $personio_shortcircuit_nolm_url = 'https://personio-integration-shortcircuit-nolm-test.jobs.personio.com';
+
+	/**
 	 * Prepare the test environment for each test class.
 	 *
 	 * @return void
@@ -104,27 +118,12 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 	public static function add_url_filter( false|array|WP_Error $false, array $parsed_args, string $url ): false|array|WP_Error {
 		// create a local response for the HEAD request.
 		if( 'HEAD' === $parsed_args['method'] && ( str_starts_with( $url, self::$personio_url ) || str_starts_with( $url, self::$personio_faulty_url ) || str_starts_with( $url, self::$personio_empty_url ) ) ) {
-			// create the response object.
-			$requests_response = new \WpOrg\Requests\Response();
-			$requests_response->status_code = 200;
-			$requests_response->headers['last-modified'] = time();
-
-			// create the header response.
-			return array(
-				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] )
-			);
+			return self::mock_http_response( 200, $parsed_args['filename'] );
 		}
 
 		// simulate a Personio outage: HEAD returns a non-200 status -> import errors out.
 		if ( 'HEAD' === $parsed_args['method'] && str_starts_with( $url, self::$personio_error_url ) ) {
-			// create the response object.
-			$requests_response              = new \WpOrg\Requests\Response();
-			$requests_response->status_code = 503;
-
-			// create the header response.
-			return array(
-				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
-			);
+			return self::mock_http_response( 503, $parsed_args['filename'] );
 		}
 
 		// create a local response for the GET request of valid Personio XML without the "last-modified" header.
@@ -132,15 +131,7 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 			// get our XML file and return its content.
 			$xml = \PersonioIntegrationLight\Helper::get_wp_filesystem()->get_contents( UNIT_TESTS_DATA_PLUGIN_DIR . 'positions.xml' );
 
-			// create the response object.
-			$requests_response = new \WpOrg\Requests\Response();
-			$requests_response->status_code = 200;
-
-			// create the header response.
-			return array(
-				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
-				'body' => $xml
-			);
+			return self::mock_http_response( 200, $parsed_args['filename'], $xml );
 		}
 
 		// create a local response for the GET request of valid Personio XML.
@@ -148,16 +139,7 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 			// get our XML file and return its content.
 			$xml = \PersonioIntegrationLight\Helper::get_wp_filesystem()->get_contents( UNIT_TESTS_DATA_PLUGIN_DIR . 'positions.xml' );
 
-			// create the response object.
-			$requests_response = new \WpOrg\Requests\Response();
-			$requests_response->status_code = 200;
-			$requests_response->headers['last-modified'] = time();
-
-			// create the header response.
-			return array(
-				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
-				'body' => $xml
-			);
+			return self::mock_http_response( 200, $parsed_args['filename'], $xml );
 		}
 
 		// create a local response for the GET request of invalid Personio XML.
@@ -165,16 +147,7 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 			// get our XML file and return its content.
 			$xml = \PersonioIntegrationLight\Helper::get_wp_filesystem()->get_contents( UNIT_TESTS_DATA_PLUGIN_DIR . 'positions_faulty.xml' );
 
-			// create the response object.
-			$requests_response = new \WpOrg\Requests\Response();
-			$requests_response->status_code = 200;
-			$requests_response->headers['last-modified'] = time();
-
-			// create the header response.
-			return array(
-				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
-				'body' => $xml
-			);
+			return self::mock_http_response( 200, $parsed_args['filename'], $xml );
 		}
 
 		// create a local response for the GET request of invalid Personio XML.
@@ -182,16 +155,7 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 			// get our XML file and return its content.
 			$xml = \PersonioIntegrationLight\Helper::get_wp_filesystem()->get_contents( UNIT_TESTS_DATA_PLUGIN_DIR . 'positions_empty.xml' );
 
-			// create the response object.
-			$requests_response = new \WpOrg\Requests\Response();
-			$requests_response->status_code = 200;
-			$requests_response->headers['last-modified'] = time();
-
-			// create the header response.
-			return array(
-				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
-				'body' => $xml
-			);
+			return self::mock_http_response( 200, $parsed_args['filename'], $xml );
 		}
 
 		// create a local response for the POST request to Personio API.
@@ -199,40 +163,70 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 			// get the response.
 			$json = \PersonioIntegrationLight\Helper::get_wp_filesystem()->get_contents( UNIT_TESTS_DATA_PLUGIN_DIR . 'api_' . $parsed_args['body']['client_id'] . '.json' );
 
-			// create the response object.
-			$requests_response = new \WpOrg\Requests\Response();
-			$requests_response->status_code = 200;
-
-			// create the header response.
-			return array(
-				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
-				'body' => $json
-			);
+			return self::mock_http_response( 200, $parsed_args['filename'], $json );
 		}
 
 		// multilingual test: HEAD is fine for every language.
 		if ( 'HEAD' === $parsed_args['method'] && str_starts_with( $url, self::$personio_multilang_url ) ) {
-			$requests_response                           = new \WpOrg\Requests\Response();
-			$requests_response->status_code              = 200;
-			$requests_response->headers['last-modified'] = time();
-
-			return array(
-				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
-			);
+			return self::mock_http_response( 200, $parsed_args['filename'] );
 		}
 
 		// multilingual test: "de" delivers an empty feed, every other language delivers positions.
 		if ( 'GET' === $parsed_args['method'] && str_starts_with( $url, self::$personio_multilang_url ) ) {
 			$file = str_contains( $url, 'language=de' ) ? 'personio_empty.xml' : 'positions.xml';
 			$xml  = \PersonioIntegrationLight\Helper::get_wp_filesystem()->get_contents( UNIT_TESTS_DATA_PLUGIN_DIR . $file );
+			return self::mock_http_response( 200, $parsed_args['filename'], $xml );
+		}
 
-			$requests_response                           = new \WpOrg\Requests\Response();
-			$requests_response->status_code              = 200;
-			$requests_response->headers['last-modified'] = time();
+		// simulate a third-party plugin short-circuiting pre_http_request.
+		if ( str_starts_with( $url, self::$personio_shortcircuit_url ) ) {
+			// the HEAD request only needs the status and the last-modified header.
+			if ( 'HEAD' === $parsed_args['method'] ) {
+				return array(
+					'headers'  => array( 'last-modified' => gmdate( 'D, d M Y H:i:s' ) . ' GMT' ),
+					'body'     => '',
+					'response' => array(
+						'code'    => 200,
+						'message' => 'OK',
+					),
+					'cookies'  => array(),
+				);
+			}
+
+			// the GET request delivers the positions.
+			return array(
+				'headers'  => array(),
+				'body'     => \PersonioIntegrationLight\Helper::get_wp_filesystem()->get_contents( UNIT_TESTS_DATA_PLUGIN_DIR . 'positions.xml' ),
+				'response' => array(
+					'code'    => 200,
+					'message' => 'OK',
+				),
+				'cookies'  => array(),
+			);
+		}
+
+		// same as the short-circuit case above, but WITHOUT the last-modified header.
+		if ( str_starts_with( $url, self::$personio_shortcircuit_nolm_url ) ) {
+			if ( 'HEAD' === $parsed_args['method'] ) {
+				return array(
+					'headers'  => array(),
+					'body'     => '',
+					'response' => array(
+						'code'    => 200,
+						'message' => 'OK',
+					),
+					'cookies'  => array(),
+				);
+			}
 
 			return array(
-				'http_response' => new WP_HTTP_Requests_Response( $requests_response, $parsed_args['filename'] ),
-				'body'          => $xml,
+				'headers'  => array(),
+				'body'     => \PersonioIntegrationLight\Helper::get_wp_filesystem()->get_contents( UNIT_TESTS_DATA_PLUGIN_DIR . 'positions.xml' ),
+				'response' => array(
+					'code'    => 200,
+					'message' => 'OK',
+				),
+				'cookies'  => array(),
 			);
 		}
 
@@ -289,5 +283,28 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 
 		// get the first entry.
 		return $positions[0];
+	}
+
+	/**
+	 * Prepare a mock response for the HTTP request.
+	 *
+	 * @param int         $status_code The status code of the response.
+	 * @param string|null $filename The filename of the response.
+	 * @param string      $body The body of the response.
+	 *
+	 * @return array
+	 */
+	private static function mock_http_response( int $status_code, ?string $filename = null, string $body = '' ): array {
+		$requests_response              = new \WpOrg\Requests\Response();
+		$requests_response->status_code = $status_code;
+
+		$response = array(
+			'http_response' => new WP_HTTP_Requests_Response( $requests_response, (string) $filename ),
+			'response'      => array( 'code' => $status_code, 'message' => '' ),
+		);
+		if ( '' !== $body ) {
+			$response['body'] = $body;
+		}
+		return $response;
 	}
 }

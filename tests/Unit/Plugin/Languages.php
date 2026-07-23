@@ -46,4 +46,22 @@ class Languages extends PersonioTestCase {
 		$this->assertIsArray( $active_languages );
 		$this->assertArrayHasKey( 'en', $active_languages );
 	}
+
+	/**
+	 * Test if the main language survives a missing mapping.
+	 *
+	 * @return void
+	 */
+	public function test_main_language_survives_missing_mapping(): void {
+		// a third-party filter adds a supported language without a mapping.
+		add_filter( 'personio_integration_supported_languages', static function ( array $languages ): array {
+			$languages['xx'] = 'Test language';
+			return $languages;
+		} );
+
+		update_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, 'xx' );
+
+		// must not fatal, must return a string.
+		$this->assertIsString( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language( true ) );
+	}
 }

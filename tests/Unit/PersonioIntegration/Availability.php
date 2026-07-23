@@ -144,4 +144,37 @@ class Availability extends PersonioTestCase {
 		$this->assertIsBool( $is_active );
 		$this->assertFalse( $is_active );
 	}
+
+	/**
+	 * Test if the returning variable is a string.
+	 *
+	 * @return void
+	 */
+	public function test_availability_marks_position_as_not_available_on_error_status(): void {
+		// get a test position object.
+		$position_obj = self::get_single_position();
+
+		// the check bails without this option, so enable it explicitly.
+		update_option( 'personioIntegrationEnableAvailabilityCheck', 1 );
+
+		// force a 404 for every HEAD request within this test.
+		add_filter( 'pre_http_request', static function ( $false, $parsed_args ) {
+			if ( 'HEAD' !== $parsed_args['method'] ) {
+				return $false;
+			}
+			return array(
+				'headers'  => array(),
+				'body'     => '',
+				'response' => array( 'code' => 404, 'message' => 'Not Found' ),
+				'cookies'  => array(),
+			);
+		}, 20, 2 );
+
+		// run the availability check.
+		\PersonioIntegrationLight\PersonioIntegration\Availability::get_instance()->run();
+
+		// test it.
+		$extension = new \PersonioIntegrationLight\PersonioIntegration\Extensions\Availability( $position_obj->get_id() );
+		$this->assertFalse( $extension->get_availability() );
+	}
 }

@@ -10,7 +10,6 @@ namespace PersonioIntegrationLight\PersonioIntegration\Widgets;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Widget_Base;
 use PersonioIntegrationLight\Plugin\Templates;
@@ -41,7 +40,7 @@ class Filter_List extends Widget_Base {
 	protected string $setting_tab = '';
 
 	/**
-	 * Path to Block object.
+	 * Path to the Block object.
 	 *
 	 * @var string
 	 */
@@ -114,6 +113,7 @@ class Filter_List extends Widget_Base {
 
 		include Templates::get_instance()->get_template( 'parts/part-filter.php' );
 
+		// get and return the resulting HTML.
 		$content = ob_get_clean();
 		if ( ! $content ) {
 			return '';

@@ -10,7 +10,6 @@ namespace PersonioIntegrationLight\PersonioIntegration\Widgets;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -45,7 +44,7 @@ class Details extends Widget_Base {
 	protected string $setting_tab = '';
 
 	/**
-	 * Path to Block object.
+	 * Path to the Block object.
 	 *
 	 * @var string
 	 */
@@ -149,7 +148,7 @@ class Details extends Widget_Base {
 
 			// loop through each configured detail taxonomy.
 			foreach ( $attributes['excerpt'] as $taxonomy_slug ) {
-				// get taxonomy name by given slug (e.g. office => personioOffice).
+				// get the taxonomy name by the given slug (e.g., office => personioOffice).
 				$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $taxonomy_slug );
 
 				// bail if taxonomy for the given slug could not be found.
@@ -173,7 +172,7 @@ class Details extends Widget_Base {
 
 				$false = false;
 				/**
-				 * Filter whether to show terms of single taxonomy as list or not.
+				 * Filter whether to show terms of a single taxonomy as a list or not.
 				 *
 				 * @since 3.0.8 Available since 3.0.8.
 				 * @param bool $false True to show the list.
@@ -182,14 +181,14 @@ class Details extends Widget_Base {
 				 */
 				$show_term_list = apply_filters( 'personio_integration_show_term_list', $false, $terms );
 
-				// if term exist, get the corresponding term-label.
+				// if the term exists, get the corresponding term-label.
 				if ( ! empty( $terms ) ) {
 					$values = '';
 					foreach ( $terms as $term ) {
 						// set the name to use.
 						$name = $term->name;
 
-						// if terms slug is in list of default term labels, use this.
+						// if terms slug is in the list of default term labels, use this.
 						if ( ! empty( $terms_label[ $term->slug ] ) ) {
 							$name = $terms_label[ $term->slug ];
 						}
@@ -199,7 +198,7 @@ class Details extends Widget_Base {
 							$values .= $separator;
 						}
 
-						// add terms name to the list.
+						// add the term name to the list.
 						$values .= $term->name;
 					}
 
@@ -215,7 +214,7 @@ class Details extends Widget_Base {
 		}
 
 		if ( ! empty( $details ) ) {
-			// get configured template if none has been set for this output.
+			// get the configured template if none has been set for this output.
 			if ( empty( $attributes['excerpt_template'] ) ) {
 				$template = get_option( is_singular() ? 'personioIntegrationTemplateDetailsExcerptsTemplate' : 'personioIntegrationTemplateListingExcerptsTemplate' );
 			} else {
@@ -224,7 +223,7 @@ class Details extends Widget_Base {
 
 			$personio_attributes = $attributes;
 
-			// get template and return it.
+			// get the template and return it.
 			ob_start();
 
 			/**

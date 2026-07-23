@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added more PHP Unit tests to check for more use cases of this plugin
+
 ### Changed
 
 - Use the log categories to choose which debug log entries you want to see
@@ -9,11 +13,15 @@
 - Show errors during encryption in the log
 - Extended the PHP Unit test to check for more use cases of this plugin
 - Optimized the GitHub action to check the plugin quality
+- Optimized check for correct datatypes of array values
+- Optimized handling to uninstall the plugin in a multisite
 
 ### Fixed
 
 - Fixed a wrong spelled name for the function to import settings
-- Fixed a wrong usage of default settings for description widget which results in default usage everywhere
+- Fixed a wrong usage of default settings for the description widget, which results in default usage everywhere
+- Removed a wrong-placed empty space during the update check
+- Fixed a missing deletion of user settings during uninstallation of this plugin
 
 ## [5.5.2] - 20.07.2026
 

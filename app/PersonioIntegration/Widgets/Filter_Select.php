@@ -40,7 +40,7 @@ class Filter_Select extends Widget_Base {
 	protected string $setting_tab = '';
 
 	/**
-	 * Path to Block object.
+	 * Path to the Block object.
 	 *
 	 * @var string
 	 */
@@ -113,7 +113,7 @@ class Filter_Select extends Widget_Base {
 
 		include Templates::get_instance()->get_template( 'parts/part-filter.php' );
 
-		// get and return resulting html.
+		// get and return the resulting HTML.
 		$content = ob_get_clean();
 		if ( ! $content ) {
 			return '';

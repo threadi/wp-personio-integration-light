@@ -57,7 +57,9 @@ class Installer {
 	 */
 	public function activation(): void {
 		// mark the activation runner as running.
-		define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 1 );
+		if( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
+			define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 1 );
+		}
 
 		if ( is_multisite() ) {
 			// loop through the blogs.
