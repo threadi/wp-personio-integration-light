@@ -16,6 +16,9 @@ jobs:
       - name: Install dependencies
         run: composer install
 
+      - name: Prepare generated files
+        run: cp inc/constants_urls.php.dist inc/constants_urls.php
+
       - name: Run PHPStan check
         run: vendor/bin/phpstan analyse
 
