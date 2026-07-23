@@ -10,7 +10,6 @@ namespace PersonioIntegrationLight\PersonioIntegration\Widgets;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
-use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -44,7 +43,7 @@ class Description extends Widget_Base {
 	protected string $setting_tab = '';
 
 	/**
-	 * Path to Block object.
+	 * Path to the Block object.
 	 *
 	 * @var string
 	 */

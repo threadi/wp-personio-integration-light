@@ -43,7 +43,7 @@ class Application_Button extends Widget_Base {
 	protected string $setting_tab = '';
 
 	/**
-	 * Path to Block object.
+	 * Path to the Block object.
 	 *
 	 * @var string
 	 */

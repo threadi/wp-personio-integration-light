@@ -147,7 +147,7 @@ class Single extends Widget_Base {
 			return '';
 		}
 
-		// get the attributes defaults.
+		// get the attribute defaults.
 		$default_attributes = $this->get_single_shortcode_attributes_defaults();
 
 		/**

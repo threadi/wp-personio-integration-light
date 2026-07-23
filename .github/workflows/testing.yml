@@ -16,6 +16,9 @@ jobs:
       - name: Install dependencies
         run: composer install
 
+      - name: Run PHPStan check
+        run: vendor/bin/phpstan analyse
+
       - name: PHP Compatibility check
         run: vendor/bin/phpcs -p app --standard=PHPCompatibilityWP --runtime-set testVersion 8.1- --ignore=*/Crypt.php
 
