@@ -177,7 +177,7 @@ jobs:
 
                 npx @wp-playground/cli@latest run-blueprint \
                   --blueprint=./.github/blueprints/smoke.json \
-                  --mount=/tmp/smoke/personio-integration:/wordpress/wp-content/plugins/personio-integration-light \
+                  --mount=/tmp/smoke/personio-integration-light:/wordpress/wp-content/plugins/personio-integration-light \
                   --verbosity=debug \
                   --debug \
                   2>&1 | tee /tmp/smoke.log
