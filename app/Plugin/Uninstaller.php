@@ -13,7 +13,6 @@ defined( 'ABSPATH' ) || exit;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transient;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
-use PersonioIntegrationLight\PageBuilder\Page_Builders;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Post_Type;
@@ -67,12 +66,11 @@ class Uninstaller {
 	 */
 	public function run( array $delete_data = array() ): void {
 		// set deactivation runner to enable.
-		define( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING', 1 );
+		if( ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+			define( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING', 1 );
+		}
 
 		if ( is_multisite() ) {
-			// get original blog ID.
-			$original_blog_id = get_current_blog_id();
-
 			// loop through the blogs.
 			foreach ( Helper::get_blogs() as $blog ) {
 				// switch to the blog.
@@ -83,7 +81,7 @@ class Uninstaller {
 			}
 
 			// switch back to the original blog.
-			switch_to_blog( $original_blog_id );
+			restore_current_blog();
 		} else {
 			// simply run the tasks on single-site-install.
 			$this->deinstallation_tasks( $delete_data );
@@ -164,7 +162,7 @@ class Uninstaller {
 				}
 
 				// delete the settings of this object from user meta.
-				$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => $obj->get_name() ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => 'manageedit-' . $obj->get_name() . 'columnshidden' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			}
 
 			// uninstall extensions.

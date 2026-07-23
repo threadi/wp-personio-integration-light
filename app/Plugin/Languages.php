@@ -107,12 +107,12 @@ class Languages {
 	 * Defaults to ISO-639 language-names (e.g., "de").
 	 * Optional uses the WP-language-names (e.g., "de_DE" but also "af").
 	 *
-	 * @param bool $use_wp_lang True if return value should be WP-language.
+	 * @param bool $use_wp_lang True if the return value should be WP-language.
 	 *
 	 * @return string
 	 */
 	public function get_main_language( bool $use_wp_lang = false ): string {
-		// get setting for main language.
+		// get setting for the main language.
 		$language_name = get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE );
 
 		// return its name of it is a known language.
@@ -120,7 +120,10 @@ class Languages {
 
 			// return the wp-language.
 			if ( $use_wp_lang ) {
-				return $this->get_lang_mappings( $language_name )[0];
+				$mappings = $this->get_lang_mappings( $language_name );
+				if( isset( $mappings[0] ) ) {
+					return $mappings[0];
+				}
 			}
 
 			// return the ISO-639-language.

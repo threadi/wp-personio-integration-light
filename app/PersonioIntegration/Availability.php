@@ -429,14 +429,14 @@ class Availability extends Extensions_Base {
 	}
 
 	/**
-	 * Run check of single position.
+	 * Run check of a single position.
 	 *
 	 * @param Position $position_obj The object of the position.
 	 *
 	 * @return void
 	 */
 	private function run_single_check( Position $position_obj ): void {
-		// define settings for second request to get the contents.
+		// define settings for the second request to get the contents.
 		$args     = array(
 			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
 			'redirection' => 0,
@@ -447,8 +447,8 @@ class Availability extends Extensions_Base {
 			// log possible error.
 			Log::get_instance()->add( 'Error on request to get position availability: ' . $response->get_error_message(), 'error', 'availability' );
 		} else {
-			// get the http-status to check if call results in acceptable results.
-			$http_status = $response['http_response']->get_status();
+			// get the HTTP status to check if the request resulted in acceptable results.
+			$http_status = absint( wp_remote_retrieve_response_code( $response ) );
 
 			// if http-status is not 200, mark the position as not available.
 			$this->get_extension( $position_obj )->set_availability( 200 === $http_status );

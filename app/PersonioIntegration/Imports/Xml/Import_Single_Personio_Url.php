@@ -211,13 +211,13 @@ class Import_Single_Personio_Url {
 			$this->log->add( __( 'Error on request to get Personio timestamp: ', 'personio-integration-light' ) . ' <code>' . $response->get_error_message() . '</code>', 'error', 'import' );
 		} else {
 			// get the http-status to check if the call results in acceptable results.
-			$http_status = $response['http_response']->get_status();
+			$http_status = absint( wp_remote_retrieve_response_code( $response ) );
 
 			// get the last modified-timestamp from http-response.
-			$last_modified_timestamp_value = $response['http_response']->get_headers()->offsetGet( 'last-modified' );
+			$last_modified_timestamp_value = wp_remote_retrieve_header( $response, 'last-modified' );
 
 			// if "last-modified" is set, convert it to timestamp.
-			if ( ! is_null( $last_modified_timestamp_value ) ) {
+			if ( ! empty( $last_modified_timestamp_value ) ) {
 				$last_modified_timestamp = absint( strtotime( $last_modified_timestamp_value ) );
 			}
 		}

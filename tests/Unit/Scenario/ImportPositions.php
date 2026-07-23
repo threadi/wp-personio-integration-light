@@ -197,4 +197,30 @@ class ImportPositions extends PersonioTestCase {
 		// the empty "de" feed must not remove any "en" position.
 		$this->assertSame( $baseline, $this->count_positions() );
 	}
+
+	/**
+	 * The import must survive a short-circuited HTTP response without the http_response object.
+	 *
+	 * @return void
+	 */
+	public function test_import_works_without_http_response_object(): void {
+		// run the import against the short-circuited URL.
+		$this->run_import_for_url( self::$personio_shortcircuit_url );
+
+		// the positions must have been imported.
+		$this->assertGreaterThan( 0, $this->count_positions() );
+	}
+
+	/**
+	 * Test the import works without the "last-modified" header from Personio.
+	 *
+	 * @return void
+	 */
+	public function test_import_works_without_last_modified_header(): void {
+		// run the import against the short-circuited URL.
+		$this->run_import_for_url( self::$personio_shortcircuit_nolm_url );
+
+		// the positions must have been imported.
+		$this->assertGreaterThan( 0, $this->count_positions() );
+	}
 }

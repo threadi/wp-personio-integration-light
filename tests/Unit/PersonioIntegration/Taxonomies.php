@@ -48,5 +48,4 @@ class Taxonomies extends PersonioTestCase {
 		$this->assertIsArray( $taxonomy_labels );
 		$this->assertNotEmpty( $taxonomy_labels );
 	}
-
 }

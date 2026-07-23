@@ -400,7 +400,7 @@ class Helper {
 			return admin_url( basename( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) );
 		}
 
-		// set return value for page url.
+		// set the return value for the page url.
 		$page_url = '';
 
 		// get actual object.
@@ -831,33 +831,6 @@ class Helper {
 
 		// return the requested filesystem object.
 		return $wp_filesystem;
-	}
-
-	/**
-	 * Return the writable wp-config.php path.
-	 *
-	 * @return string
-	 */
-	public static function get_wp_config_path(): string {
-		$wp_config_php = 'wp-config';
-		/**
-		 * Filter to change the filename of the used wp-config.php without its extension .php.
-		 *
-		 * @since 5.0.0 Available since 5.0.0.
-		 * @param string $wp_config_php The filename.
-		 */
-		$wp_config_php = apply_filters( 'personio_integration_light_wp_config_name', $wp_config_php );
-
-		// get the path for wp-config.php.
-		$wp_config_php_path = ABSPATH . $wp_config_php . '.php';
-
-		/**
-		 * Filter the path for the wp-config.php before we return it.
-		 *
-		 * @since 5.0.0 Available since 5.0.0.
-		 * @param string $wp_config_php_path The path.
-		 */
-		return apply_filters( 'personio_integration_light_wp_config_path', $wp_config_php_path );
 	}
 
 	/**

@@ -702,8 +702,13 @@ class Templates {
 	 * @return void
 	 */
 	public function get_filter_template( string $filter, array $attributes ): void {
-		// bail if no filtertype is set.
-		if ( empty( $attributes['filtertype'] ) ) {
+		// bail if no filtertype is set or not a string.
+		if ( empty( $attributes['filtertype'] ) || ! is_string( $attributes['filtertype'] ) ) {
+			return;
+		}
+
+		// bail if the given filtertype is not supported.
+		if ( empty( Helper::get_filter_types()[ $attributes['filtertype'] ] ) ) {
 			return;
 		}
 

@@ -74,7 +74,7 @@ class Update {
 
 		// compare version if we are not in development-mode.
 		if ( ! Helper::is_development_mode_active() && version_compare( $installed_plugin_version, $db_plugin_version, '>' ) ) {
-			if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING ' ) ) {
+			if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) ) {
 				define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
 			}
 			if ( version_compare( $db_plugin_version, '3.0.0', '<' ) ) {

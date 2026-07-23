@@ -15,6 +15,7 @@ use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Db;
 use PersonioIntegrationLight\Plugin\Languages;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Server;
 use WP_Screen;
@@ -569,10 +570,17 @@ class Taxonomies {
 	private function add_terms( array $list_or_terms, string $taxonomy_name, array $callback ): void {
 		foreach ( $list_or_terms as $term => $term_title ) {
 			if ( ! term_exists( $term, $taxonomy_name ) ) {
-				wp_insert_term(
+				// add the term.
+				$new_term = wp_insert_term(
 					$term,
 					$taxonomy_name
 				);
+
+				// log error if term could not be added.
+				if( $new_term instanceof WP_Error ) {
+					/* translators: %1$s: term name */
+					Log::get_instance()->add( sprintf( __( 'Could not add term %1$s. Error:', 'personio-integration-light' ), $term ) . ' <code>' . $new_term->get_error_message() . '</code>', 'error', 'system' );
+				}
 			}
 
 			// update steps via callback.

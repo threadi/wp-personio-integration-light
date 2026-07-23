@@ -200,7 +200,7 @@ class Third_Party_Plugins {
 	}
 
 	/**
-	 * Get position content as a string.
+	 * Return position content as a string.
 	 *
 	 * @param int $post_id The ID of the requested position.
 	 *
@@ -210,9 +210,15 @@ class Third_Party_Plugins {
 		$position = new Position( $post_id );
 		$position->set_lang( Languages::get_instance()->get_current_lang() );
 		$description = $position->get_content();
-		if ( ! empty( $description ) && ! empty( $description['jobDescription'] ) ) {
+		if ( ! empty( $description ) && ! empty( $description['jobDescription'] ) && is_array( $description['jobDescription'] ) ) {
 			$text = '';
 			foreach ( $description['jobDescription'] as $content ) {
+				// bail if name or value are not set.
+				if( empty( $content['name'] ) || empty( $content['value'] ) ) {
+					continue;
+				}
+
+				// use this content.
 				$text .= $content['name'] . ' ' . $content['value'];
 			}
 

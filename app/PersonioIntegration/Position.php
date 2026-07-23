@@ -269,7 +269,7 @@ class Position {
 			}
 
 			// add the split language-specific texts.
-			if ( ! empty( $job_description['jobDescription'] ) ) {
+			if ( ! empty( $job_description['jobDescription'] ) && is_array( $job_description['jobDescription'] ) ) {
 				foreach ( $job_description['jobDescription'] as $index => $description_part ) {
 					update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_' . $index, $description_part );
 				}
