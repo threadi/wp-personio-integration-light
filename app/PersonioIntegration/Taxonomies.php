@@ -158,8 +158,8 @@ class Taxonomies {
 			// register this taxonomy.
 			register_taxonomy( $taxonomy_name, array( PersonioPosition::get_instance()->get_name() ), $taxonomy_array );
 
-			// filter for translations of entries in this taxonomy.
-			add_filter( 'personio_integration_light_get_' . $taxonomy_name, array( $this, 'translate' ), 10, 2 );
+			// filter for translations of entries in this taxonomy using the WP-own hook.
+			add_filter( 'get_' . $taxonomy_name, array( $this, 'translate' ), 10, 2 );
 		}
 	}
 
