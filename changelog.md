@@ -10,6 +10,11 @@
 - Extended the PHP Unit test to check for more use cases of this plugin
 - Optimized the GitHub action to check the plugin quality
 
+### Fixed
+
+- Fixed a wrong spelled name for the function to import settings
+- Fixed a wrong usage of default settings for description widget which results in default usage everywhere
+
 ## [5.5.2] - 20.07.2026
 
 ### Changed

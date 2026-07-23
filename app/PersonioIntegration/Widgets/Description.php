@@ -126,12 +126,12 @@ class Description extends Widget_Base {
 
 		// collect the attributes.
 		$attributes = array_merge(
-			$attributes,
 			array(
 				'personioid'              => absint( $position->get_personio_id() ),
 				'jobdescription_template' => empty( $attributes['template'] ) ? get_option( 'personioIntegrationTemplateJobDescription' ) : $attributes['template'],
 				'templates'               => array( 'content' ),
-			)
+			),
+			$attributes,
 		);
 
 		// generate styles.
