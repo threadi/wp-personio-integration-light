@@ -57,7 +57,7 @@ class Installer {
 	 */
 	public function activation(): void {
 		// mark the activation runner as running.
-		if( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
+		if ( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
 			define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 1 );
 		}
 

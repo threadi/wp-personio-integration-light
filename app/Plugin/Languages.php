@@ -121,7 +121,7 @@ class Languages {
 			// return the wp-language.
 			if ( $use_wp_lang ) {
 				$mappings = $this->get_lang_mappings( $language_name );
-				if( isset( $mappings[0] ) ) {
+				if ( isset( $mappings[0] ) ) {
 					return $mappings[0];
 				}
 			}

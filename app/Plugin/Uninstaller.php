@@ -66,7 +66,7 @@ class Uninstaller {
 	 */
 	public function run( array $delete_data = array() ): void {
 		// set deactivation runner to enable.
-		if( ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+		if ( ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			define( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING', 1 );
 		}
 
