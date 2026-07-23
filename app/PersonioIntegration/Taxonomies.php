@@ -577,7 +577,7 @@ class Taxonomies {
 				);
 
 				// log error if term could not be added.
-				if( $new_term instanceof WP_Error ) {
+				if ( $new_term instanceof WP_Error ) {
 					/* translators: %1$s: term name */
 					Log::get_instance()->add( sprintf( __( 'Could not add term %1$s. Error:', 'personio-integration-light' ), $term ) . ' <code>' . $new_term->get_error_message() . '</code>', 'error', 'system' );
 				}

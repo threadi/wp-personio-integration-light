@@ -49,7 +49,6 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           composer install
-          composer update
           npm i
           npm i concurrently
           cd vendor/threadi/easy-dialog-for-wordpress/

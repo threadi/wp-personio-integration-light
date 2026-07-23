@@ -210,11 +210,11 @@ class Third_Party_Plugins {
 		$position = new Position( $post_id );
 		$position->set_lang( Languages::get_instance()->get_current_lang() );
 		$description = $position->get_content();
-		if ( ! empty( $description ) && ! empty( $description['jobDescription'] ) && is_array( $description['jobDescription'] ) ) {
+		if ( ! empty( $description ) && ! empty( $description['jobDescription'] ) && is_array( $description['jobDescription'] ) ) { // @phpstan-ignore booleanAnd.rightAlwaysTrue
 			$text = '';
 			foreach ( $description['jobDescription'] as $content ) {
 				// bail if name or value are not set.
-				if( empty( $content['name'] ) || empty( $content['value'] ) ) {
+				if ( empty( $content['name'] ) || empty( $content['value'] ) ) {
 					continue;
 				}
 

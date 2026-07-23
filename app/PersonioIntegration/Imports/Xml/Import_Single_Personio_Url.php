@@ -217,7 +217,7 @@ class Import_Single_Personio_Url {
 			$last_modified_timestamp_value = wp_remote_retrieve_header( $response, 'last-modified' );
 
 			// if "last-modified" is set, convert it to timestamp.
-			if ( ! empty( $last_modified_timestamp_value ) ) {
+			if ( ! empty( $last_modified_timestamp_value ) && is_string( $last_modified_timestamp_value ) ) {
 				$last_modified_timestamp = absint( strtotime( $last_modified_timestamp_value ) );
 			}
 		}
