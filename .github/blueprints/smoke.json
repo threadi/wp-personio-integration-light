@@ -1,0 +1,15 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "preferredVersions": { "php": "8.4", "wp": "latest" },
+    "login": true,
+    "steps": [
+        {
+            "step": "activatePlugin",
+            "pluginPath": "personio-integration-light/personio-integration-light.php"
+        },
+        {
+            "step": "runPHP",
+            "code": "<?php require_once '/wordpress/wp-load.php'; if ( ! defined( 'WP_PERSONIO_INTEGRATION_VERSION' ) ) { throw new Exception( 'plugin constants missing' ); } if ( ! post_type_exists( WP_PERSONIO_INTEGRATION_MAIN_CPT ) ) { throw new Exception( 'post type not registered' ); } if ( ! taxonomy_exists( 'personioOffice' ) ) { throw new Exception( 'taxonomy missing' ); } file_put_contents( '/wordpress/wp-content/plugins/personio-integration-light/smoke-result.txt', 'SMOKE_OK' );"
+        }
+    ]
+}

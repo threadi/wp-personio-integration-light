@@ -168,3 +168,27 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
                   files: personio-integration-light_${{ github.ref_name }}.zip
+
+            - name: Smoke test the release zip in WordPress Playground
+              run: |
+                set -o pipefail
+                mkdir -p /tmp/smoke
+                unzip -q personio-integration-light_*.zip -d /tmp/smoke
+
+                npx @wp-playground/cli@latest run-blueprint \
+                  --blueprint=./.github/blueprints/smoke.json \
+                  --mount=/tmp/smoke/personio-integration:/wordpress/wp-content/plugins/personio-integration-light \
+                  --verbosity=debug \
+                  --debug \
+                  2>&1 | tee /tmp/smoke.log
+
+                echo "----- Vollständiges Playground-Log -----"
+                cat /tmp/smoke.log
+
+                echo "----- Inhalt smoke-result.txt -----"
+                cat /tmp/smoke/personio-integration-light/smoke-result.txt || echo "(File not found)"
+
+                if ! grep -q "SMOKE_OK" /tmp/smoke/personio-integration-light/smoke-result.txt; then
+                  echo "::error::SMOKE_OK not found in smoke-result.txt - check log above."
+                  exit 1
+                fi
