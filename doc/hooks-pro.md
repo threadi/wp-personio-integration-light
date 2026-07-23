@@ -22,7 +22,7 @@ Version | Description
 ------- | -----------
 `4.1.0` | Available since 4.1.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 261](Applications/Transfer.php#L261-L268)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 251](Applications/Transfer.php#L251-L258)
 
 ### `personio_integration_pro_application_transfer_failed`
 
@@ -41,7 +41,7 @@ Version | Description
 ------- | -----------
 `4.1.0` | Available since 4.1.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 301](Applications/Transfer.php#L301-L308)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 291](Applications/Transfer.php#L291-L298)
 
 ### `personio_integration_pro_application_transfer_failed`
 
@@ -60,7 +60,7 @@ Version | Description
 ------- | -----------
 `4.1.0` | Available since 4.1.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 602](Applications/Transfer.php#L602-L609)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 590](Applications/Transfer.php#L590-L597)
 
 ### `personio_integration_pro_application_transfer_failed`
 
@@ -79,7 +79,7 @@ Version | Description
 ------- | -----------
 `4.1.0` | Available since 4.1.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 624](Applications/Transfer.php#L624-L631)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 612](Applications/Transfer.php#L612-L619)
 
 ### `personio_integration_pro_application_remove_credentials`
 
@@ -92,7 +92,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2671](Applications/Applications.php#L2671-L2676)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2676](Applications/Applications.php#L2676-L2681)
 
 ### `personio_integration_pro_application_saved`
 
@@ -110,7 +110,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 361](Applications/Application.php#L361-L367)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 349](Applications/Application.php#L349-L355)
 
 ### `personio_integration_pro_application_updated`
 
@@ -128,7 +128,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 374](Applications/Application.php#L374-L380)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 362](Applications/Application.php#L362-L368)
 
 ### `personio_integration_pro_application_metas_updated`
 
@@ -146,7 +146,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 405](Applications/Application.php#L405-L411)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 393](Applications/Application.php#L393-L399)
 
 ### `personio_integration_pro_application_delete`
 
@@ -165,7 +165,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 447](Applications/Application.php#L447-L454)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 435](Applications/Application.php#L435-L442)
 
 ### `personio_integration_pro_application_deleted`
 
@@ -184,7 +184,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 506](Applications/Application.php#L506-L513)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 489](Applications/Application.php#L489-L496)
 
 ### `personio_integration_pro_license_activated`
 
@@ -210,7 +210,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Plugin/License.php](Plugin/License.php), [line 492](Plugin/License.php#L492-L497)
+Source: [app/Plugin/License.php](Plugin/License.php), [line 486](Plugin/License.php#L486-L491)
 
 ### `personio_integration_pro_license_key_changed`
 
@@ -229,7 +229,7 @@ Version | Description
 ------- | -----------
 `5.5.2` | Available since 5.5.2
 
-Source: [app/Plugin/License.php](Plugin/License.php), [line 1638](Plugin/License.php#L1638-L1645)
+Source: [app/Plugin/License.php](Plugin/License.php), [line 1630](Plugin/License.php#L1630-L1637)
 
 ### `personio_integration_pro_prevent_application_export_check`
 
@@ -247,7 +247,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Schedules/Application_Export.php](Plugin/Schedules/Application_Export.php), [line 105](Plugin/Schedules/Application_Export.php#L105-L111)
+Source: [app/Plugin/Schedules/Application_Export.php](Plugin/Schedules/Application_Export.php), [line 98](Plugin/Schedules/Application_Export.php#L98-L104)
 
 ### `personio_integration_pro_form_template_init`
 
@@ -319,7 +319,7 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Fluent_Forms.php](FormHandler/Fluent_Forms.php), [line 1221](FormHandler/Fluent_Forms.php#L1221-L1228)
+Source: [app/FormHandler/Fluent_Forms.php](FormHandler/Fluent_Forms.php), [line 1197](FormHandler/Fluent_Forms.php#L1197-L1204)
 
 ### `personio_integration_pro_application_after_save`
 
@@ -337,7 +337,7 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Fluent_Forms.php](FormHandler/Fluent_Forms.php), [line 1236](FormHandler/Fluent_Forms.php#L1236-L1243)
+Source: [app/FormHandler/Fluent_Forms.php](FormHandler/Fluent_Forms.php), [line 1212](FormHandler/Fluent_Forms.php#L1212-L1219)
 
 ### `personio_integration_pro_application_template_before_form`
 
@@ -381,7 +381,7 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 1005](FormHandler/Wpforms.php#L1005-L1012)
+Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 1013](FormHandler/Wpforms.php#L1013-L1020)
 
 ### `personio_integration_pro_application_after_save`
 
@@ -399,7 +399,7 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 1020](FormHandler/Wpforms.php#L1020-L1027)
+Source: [app/FormHandler/Wpforms.php](FormHandler/Wpforms.php), [line 1028](FormHandler/Wpforms.php#L1028-L1035)
 
 ### `personio_integration_pro_application_before_save`
 
@@ -417,7 +417,7 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 762](FormHandler/Elementor_Forms.php#L762-L769)
+Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 735](FormHandler/Elementor_Forms.php#L735-L742)
 
 ### `personio_integration_pro_application_after_save`
 
@@ -435,11 +435,11 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 777](FormHandler/Elementor_Forms.php#L777-L784)
+Source: [app/FormHandler/Elementor_Forms.php](FormHandler/Elementor_Forms.php), [line 750](FormHandler/Elementor_Forms.php#L750-L757)
 
 ### `personio_integration_pro_after_reset_honeypot`
 
-*Run tasks after honeypot has been reset.*
+*Run tasks after the honeypot has been reset.*
 
 
 **Changelog**
@@ -448,7 +448,7 @@ Version | Description
 ------- | -----------
 `4.4.1` | Available since 4.4.1.
 
-Source: [app/FormHandler/PersonioForms/Extensions/Honeypot.php](FormHandler/PersonioForms/Extensions/Honeypot.php), [line 438](FormHandler/PersonioForms/Extensions/Honeypot.php#L438-L443)
+Source: [app/FormHandler/PersonioForms/Extensions/Honeypot.php](FormHandler/PersonioForms/Extensions/Honeypot.php), [line 428](FormHandler/PersonioForms/Extensions/Honeypot.php#L428-L433)
 
 ### `personio_integration_pro_application_before_save`
 
@@ -574,7 +574,7 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 487](FormHandler/Personio_Forms.php#L487-L494)
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 478](FormHandler/Personio_Forms.php#L478-L485)
 
 ### `personio_integration_pro_application_after_save`
 
@@ -592,7 +592,7 @@ Version | Description
 ------- | -----------
 `2.5.0` | Available since 2.5.0.
 
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 531](FormHandler/Personio_Forms.php#L531-L538)
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 522](FormHandler/Personio_Forms.php#L522-L529)
 
 ### `personio_integration_pro_add_popup_scripts`
 
@@ -710,42 +710,6 @@ Version | Description
 
 Source: [app/Helper.php](Helper.php), [line 229](Helper.php#L229-L235)
 
-### `personio_integration_pro_wp_config_name`
-
-*Filter to change the filename of the used wp-config.php without its extension .php.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$wp_config_php` | `string` | The filename.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`4.0.0` | Available since 4.0.0.
-
-Source: [app/Helper.php](Helper.php), [line 368](Helper.php#L368-L374)
-
-### `personio_integration_pro_wp_config_path`
-
-*Filter the path for the wp-config.php before we return it.*
-
-**Arguments**
-
-Argument | Type | Description
--------- | ---- | -----------
-`$wp_config_php_path` | `string` | The path.
-
-**Changelog**
-
-Version | Description
-------- | -----------
-`4.0.0` | Available since 4.0.0.
-
-Source: [app/Helper.php](Helper.php), [line 379](Helper.php#L379-L385)
-
 ### `personio_integration_pro_do_not_run_transfer`
 
 *Filter to run transfer or not.*
@@ -762,7 +726,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 136](Applications/Transfer.php#L136-L144)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 126](Applications/Transfer.php#L126-L134)
 
 ### `personio_integration_pro_application_export_filter`
 
@@ -780,7 +744,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 163](Applications/Transfer.php#L163-L169)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 153](Applications/Transfer.php#L153-L159)
 
 ### `personio_integration_pro_prevent_application_export`
 
@@ -793,7 +757,7 @@ Argument | Type | Description
 `$false` | `bool` | True if import should be prevented.
 `$application_obj` | `\PersonioIntegrationPro\Applications\Application` | The object of the application.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 286](Applications/Transfer.php#L286-L294)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 276](Applications/Transfer.php#L276-L284)
 
 ### `personio_integration_pro_delete_applications_after_transfer`
 
@@ -812,7 +776,7 @@ Version | Description
 ------- | -----------
 `5.0.2` | Available since 5.0.2.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 531](Applications/Transfer.php#L531-L538)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 519](Applications/Transfer.php#L519-L526)
 
 ### `personio_integration_pro_personio_application_document_url`
 
@@ -830,7 +794,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 643](Applications/Transfer.php#L643-L650)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 631](Applications/Transfer.php#L631-L638)
 
 ### `personio_integration_pro_personio_http_states`
 
@@ -848,7 +812,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 660](Applications/Transfer.php#L660-L667)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 648](Applications/Transfer.php#L648-L655)
 
 ### `personio_integration_pro_personio_application_url`
 
@@ -866,7 +830,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 677](Applications/Transfer.php#L677-L684)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 665](Applications/Transfer.php#L665-L672)
 
 ### `personio_integration_pro_personio_http_state`
 
@@ -884,7 +848,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 700](Applications/Transfer.php#L700-L707)
+Source: [app/Applications/Transfer.php](Applications/Transfer.php), [line 688](Applications/Transfer.php#L688-L695)
 
 ### `personio_integration_pro_application_csv_export_state`
 
@@ -1061,7 +1025,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 190](Applications/Applications.php#L190-L196)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 192](Applications/Applications.php#L192-L198)
 
 ### `personio_integration_pro_use_application_history`
 
@@ -1079,7 +1043,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 267](Applications/Applications.php#L267-L276)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 269](Applications/Applications.php#L269-L278)
 
 ### `personio_integration_pro_dashboard_application_name`
 
@@ -1098,7 +1062,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 430](Applications/Applications.php#L430-L437)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 432](Applications/Applications.php#L432-L439)
 
 ### `personio_integration_pro_application_file_type`
 
@@ -1108,7 +1072,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `WP_PERSONIO_INTEGRATION_PRO_FILETYPES` |  | 
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 751](Applications/Applications.php#L751-L751)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 753](Applications/Applications.php#L753-L753)
 
 ### `personio_integration_pro_application_upload_dir`
 
@@ -1126,7 +1090,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1167](Applications/Applications.php#L1167-L1174)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1169](Applications/Applications.php#L1169-L1176)
 
 ### `personio_integration_pro_application_upload_url`
 
@@ -1144,7 +1108,7 @@ Version | Description
 ------- | -----------
 `4.4.5` | Available since 4.4.5.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1186](Applications/Applications.php#L1186-L1193)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1188](Applications/Applications.php#L1188-L1195)
 
 ### `personio_integration_pro_fs_chmod`
 
@@ -1162,7 +1126,7 @@ Version | Description
 ------- | -----------
 `4.4.6` | Available since 4.4.6
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1224](Applications/Applications.php#L1224-L1230)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1226](Applications/Applications.php#L1226-L1232)
 
 ### `personio_integration_pro_application_file_index_php`
 
@@ -1180,7 +1144,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1237](Applications/Applications.php#L1237-L1243)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1239](Applications/Applications.php#L1239-L1245)
 
 ### `personio_integration_pro_application_file_htaccess`
 
@@ -1198,7 +1162,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1254](Applications/Applications.php#L1254-L1260)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1256](Applications/Applications.php#L1256-L1262)
 
 ### `personio_integration_pro_application_file_web_config`
 
@@ -1216,7 +1180,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1271](Applications/Applications.php#L1271-L1277)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1273](Applications/Applications.php#L1273-L1279)
 
 ### `personio_integration_pro_application_table_detail_dialog`
 
@@ -1235,7 +1199,7 @@ Version | Description
 ------- | -----------
 `3.2.0` | Available since 3.2.0
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1874](Applications/Applications.php#L1874-L1882)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 1877](Applications/Applications.php#L1877-L1885)
 
 ### `personio_integration_pro_application_test_post`
 
@@ -1253,7 +1217,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2094](Applications/Applications.php#L2094-L2100)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2097](Applications/Applications.php#L2097-L2103)
 
 ### `personio_integration_pro_position_api_token`
 
@@ -1264,7 +1228,7 @@ Argument | Type | Description
 `get_option('personioIntegrationAccessToken')` |  | 
 `false` |  | 
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2586](Applications/Applications.php#L2586-L2586)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2591](Applications/Applications.php#L2591-L2591)
 
 ### `personio_integration_pro_position_api_company_id`
 
@@ -1275,7 +1239,7 @@ Argument | Type | Description
 `get_option('personioIntegrationCompanyId')` |  | 
 `false` |  | 
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2586](Applications/Applications.php#L2586-L2586)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2591](Applications/Applications.php#L2591-L2591)
 
 ### `personio_integration_pro_application_delete_intervals`
 
@@ -1293,7 +1257,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2862](Applications/Applications.php#L2862-L2868)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2867](Applications/Applications.php#L2867-L2873)
 
 ### `personio_integration_pro_application_delete_intervals_sql`
 
@@ -1311,7 +1275,7 @@ Version | Description
 ------- | -----------
 `5.0.5` | Available since 5.0.5.
 
-Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2888](Applications/Applications.php#L2888-L2894)
+Source: [app/Applications/Applications.php](Applications/Applications.php), [line 2893](Applications/Applications.php#L2893-L2899)
 
 ### `personio_integration_pro_application_errors`
 
@@ -1330,7 +1294,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 234](Applications/Application.php#L234-L241)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 222](Applications/Application.php#L222-L229)
 
 ### `personio_integration_pro_application_main`
 
@@ -1349,7 +1313,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 276](Applications/Application.php#L276-L284)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 264](Applications/Application.php#L264-L272)
 
 ### `personio_integration_pro_application_meta`
 
@@ -1368,7 +1332,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 286](Applications/Application.php#L286-L294)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 274](Applications/Application.php#L274-L282)
 
 ### `personio_integration_pro_application_identifier`
 
@@ -1387,7 +1351,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 525](Applications/Application.php#L525-L532)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 508](Applications/Application.php#L508-L515)
 
 ### `personio_integration_pro_application_get_field`
 
@@ -1407,7 +1371,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 735](Applications/Application.php#L735-L743)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 718](Applications/Application.php#L718-L726)
 
 ### `personio_integration_pro_application_get_field`
 
@@ -1427,7 +1391,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 769](Applications/Application.php#L769-L777)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 752](Applications/Application.php#L752-L760)
 
 ### `personio_integration_pro_application_get_field`
 
@@ -1447,7 +1411,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 803](Applications/Application.php#L803-L811)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 786](Applications/Application.php#L786-L794)
 
 ### `personio_integration_pro_application_get_data`
 
@@ -1466,7 +1430,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 840](Applications/Application.php#L840-L847)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 823](Applications/Application.php#L823-L830)
 
 ### `personio_integration_pro_application_delete_dialog`
 
@@ -1485,7 +1449,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 1080](Applications/Application.php#L1080-L1087)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 1063](Applications/Application.php#L1063-L1070)
 
 ### `personio_integration_pro_application_transfer_dialog`
 
@@ -1504,7 +1468,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/Applications/Application.php](Applications/Application.php), [line 1117](Applications/Application.php#L1117-L1124)
+Source: [app/Applications/Application.php](Applications/Application.php), [line 1100](Applications/Application.php#L1100-L1107)
 
 ### `personio_integration_pro_application_encrypted_fields`
 
@@ -1558,7 +1522,7 @@ Version | Description
 ------- | -----------
 `5.1.0` | Available since 5.1.0.
 
-Source: [app/Applications/Backup.php](Applications/Backup.php), [line 414](Applications/Backup.php#L414-L421)
+Source: [app/Applications/Backup.php](Applications/Backup.php), [line 410](Applications/Backup.php#L410-L417)
 
 ### `personio_integration_pro_menu`
 
@@ -2098,7 +2062,7 @@ Version | Description
 ------- | -----------
 `5.0.2` | Available since 5.0.2.
 
-Source: [app/FormHandler/PersonioForms/Extensions/Honeypot.php](FormHandler/PersonioForms/Extensions/Honeypot.php), [line 528](FormHandler/PersonioForms/Extensions/Honeypot.php#L528-L534)
+Source: [app/FormHandler/PersonioForms/Extensions/Honeypot.php](FormHandler/PersonioForms/Extensions/Honeypot.php), [line 518](FormHandler/PersonioForms/Extensions/Honeypot.php#L518-L524)
 
 ### `personio_integration_pro_application_form_page_slug`
 
@@ -2116,11 +2080,11 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php), [line 460](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php#L460-L466)
+Source: [app/FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php), [line 468](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php#L468-L474)
 
 ### `personio_integration_pro_application_form_page_query_param`
 
-*Filter the query param for the application form page. Change is only useful for usage of simple URLs.*
+*Filter the query param for the application form page. Change is only useful to use simple URLs.*
 
 **Arguments**
 
@@ -2134,7 +2098,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since 5.0.0.
 
-Source: [app/FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php), [line 478](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php#L478-L484)
+Source: [app/FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php), [line 486](FormHandler/PersonioForms/Extensions/SingleApplicationFormPage.php#L486-L492)
 
 ### `personio_integration_pro_rate_limit_ip`
 
@@ -2152,7 +2116,7 @@ Version | Description
 ------- | -----------
 `5.5.2` | Available since 5.5.2.
 
-Source: [app/FormHandler/PersonioForms/Extensions/RateLimit.php](FormHandler/PersonioForms/Extensions/RateLimit.php), [line 267](FormHandler/PersonioForms/Extensions/RateLimit.php#L267-L273)
+Source: [app/FormHandler/PersonioForms/Extensions/RateLimit.php](FormHandler/PersonioForms/Extensions/RateLimit.php), [line 265](FormHandler/PersonioForms/Extensions/RateLimit.php#L265-L271)
 
 ### `personio_integration_pro_rate_limit_trusted_headers`
 
@@ -2170,7 +2134,7 @@ Version | Description
 ------- | -----------
 `5.5.2` | Available since 5.5.2.
 
-Source: [app/FormHandler/PersonioForms/Extensions/RateLimit.php](FormHandler/PersonioForms/Extensions/RateLimit.php), [line 364](FormHandler/PersonioForms/Extensions/RateLimit.php#L364-L370)
+Source: [app/FormHandler/PersonioForms/Extensions/RateLimit.php](FormHandler/PersonioForms/Extensions/RateLimit.php), [line 358](FormHandler/PersonioForms/Extensions/RateLimit.php#L358-L364)
 
 ### `personio_integration_pro_hide_application_form`
 
@@ -2389,7 +2353,7 @@ Version | Description
 ------- | -----------
 `5.5.2` | Available since 5.5.2.
 
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 496](FormHandler/Personio_Forms.php#L496-L507)
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 487](FormHandler/Personio_Forms.php#L487-L498)
 
 ### `personio_integration_pro_personio_forms_templates`
 
@@ -2407,7 +2371,7 @@ Version | Description
 ------- | -----------
 `5.0.0` | Available since first release.
 
-Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 915](FormHandler/Personio_Forms.php#L915-L922)
+Source: [app/FormHandler/Personio_Forms.php](FormHandler/Personio_Forms.php), [line 906](FormHandler/Personio_Forms.php#L906-L913)
 
 ### `personio_integration_pro_form_template_fields_before_saving`
 
