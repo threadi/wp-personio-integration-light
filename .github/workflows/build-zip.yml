@@ -124,7 +124,6 @@ jobs:
               run: |
                 rm .gitattributes
                 rm .gitignore
-                rm -fr .github
                 rm CODE_OF_CONDUCT.md
                 rm .editorconfig
                 rm inc/constants_urls.php.dist
@@ -136,7 +135,7 @@ jobs:
               uses: wordpress/plugin-check-action@v1
               with:
                   exclude-directories:
-                      app/Dependencies/easyTransientsForWordPress/
+                      .github/,app/Dependencies/easyTransientsForWordPress/
                   ignore-codes:
                       WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
                   include-experimental: false
