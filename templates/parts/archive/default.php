@@ -16,7 +16,7 @@ use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Templates;
 
 // mark to use LI for group titles.
-$personio_integration_use_li = true;
+$personio_integration_use_li = false;
 
 ?><div class="<?php echo esc_attr( $personio_attributes['classes'] ); ?>">
 <?php
