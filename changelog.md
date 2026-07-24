@@ -22,6 +22,7 @@
 - Fixed a wrong usage of default settings for the description widget, which results in default usage everywhere
 - Removed a wrong-placed empty space during the update check
 - Fixed a missing deletion of user settings during uninstallation of this plugin
+- Fixed a wrong HTML output for grouped archives
 
 ## [5.5.2] - 20.07.2026
 

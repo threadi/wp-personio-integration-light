@@ -1,6 +1,6 @@
 <?php
 /**
- * Template for output of a list of positions.
+ * Template for output for a list of positions.
  *
  * @param array    $personio_attributes List of settings.
  *
@@ -15,7 +15,7 @@ use PersonioIntegrationLight\Plugin\Templates;
 
 if ( ! empty( $personio_attributes['listing_template'] ) && ! empty( $personio_attributes['templates'] ) ) {
 
-	// loop through the list by using set listing template.
+	// loop through the list by using the set listing template.
 	if ( $GLOBALS['personio_query_results']->have_posts() ) :
 		include Templates::get_instance()->get_template( 'parts/archive/' . $personio_attributes['listing_template'] . '.php' );
 		include Templates::get_instance()->get_template( 'parts/part-pagination.php' );
