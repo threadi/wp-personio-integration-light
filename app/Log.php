@@ -90,7 +90,7 @@ class Log {
 	/**
 	 * Add a single log entry.
 	 *
-	 * If debug is disabled, we log only errors and successful import entries.
+	 * If debug is disabled, we log only errors and successful import entries or system info.
 	 *
 	 * If debug is enabled:
 	 * - successful import entries are always logged,
@@ -110,7 +110,7 @@ class Log {
 		// if debug is disabled, we only log errors.
 		if ( 1 !== absint( get_option( 'personioIntegration_debug' ) ) ) {
 			$is_error          = 'error' === $state;
-			$is_import_success = 'import' === $category && 'success' === $state;
+			$is_import_success = ( 'import' === $category && 'success' === $state ) || ( 'system' === $category && 'info' === $state );
 
 			$should_log = $is_error || $is_import_success;
 			/**
