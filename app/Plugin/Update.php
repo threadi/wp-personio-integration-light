@@ -92,10 +92,13 @@ class Update {
 			if ( version_compare( $db_plugin_version, '5.0.0', '<' ) ) {
 				$this->version500();
 			}
+			if ( version_compare( $db_plugin_version, '5.5.3', '<' ) ) {
+				$this->version553();
+			}
 
 			// log that this update has been run.
 			/* translators: %1$s and %2$s are replaced by the old and new version. */
-			Log::get_instance()->add( sprintf( __( 'Personio Integration Light has been updated from %1$s to %2$s.', 'personio-integration-light' ), $db_plugin_version, $installed_plugin_version ), 'success', 'system' );
+			Log::get_instance()->add( sprintf( __( 'Personio Integration Light has been updated from %1$s to %2$s.', 'personio-integration-light' ), $db_plugin_version, $installed_plugin_version ), 'info', 'system' );
 
 			// save the new plugin-version in the DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
@@ -221,5 +224,14 @@ class Update {
 		foreach ( Widgets::get_instance()->get_widgets_as_objects() as $widget_obj ) {
 			$widget_obj->set_enabled();
 		}
+	}
+
+	/**
+	 * To run on an update to version 5.5.3 or newer.
+	 *
+	 * @return void
+	 */
+	private function version553(): void {
+		Init::get_instance()->install_db_tables();
 	}
 }

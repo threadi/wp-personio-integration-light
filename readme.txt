@@ -133,6 +133,18 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Renamed the filter 'get_xy' for taxonomy translations for 'personio_integration_light_get_xy'
+- Added more PHP Unit tests to check for more use cases of this plugin
+- Use the log categories to choose which debug log entries you want to see
+- Note the user locale for the hint about missing translations for this plugin
+- Show errors during encryption in the log
+- Extended the PHP Unit test to check for more use cases of this plugin
+- Optimized the GitHub action to check the plugin quality
+- Optimized check for correct datatypes of array values
+- Optimized handling to uninstall the plugin in a multisite
+- Fixed a wrong spelled name for the function to import settings
+- Fixed a wrong usage of default settings for the description widget, which results in default usage everywhere
+- Removed a wrong-placed empty space during the update check
+- Fixed a missing deletion of user settings during uninstallation of this plugin
+- Fixed a wrong HTML output for grouped archives
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
