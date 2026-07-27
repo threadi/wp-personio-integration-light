@@ -57,21 +57,21 @@ jobs:
             - uses: anchore/sbom-action@v0
 
             - name: Set licence server
-              uses: richardrigutins/replace-in-files@v2
+              uses: richardrigutins/replace-in-files@v3
               with:
                 files: 'inc/constants_urls.php'
                 search-text: '@@UrlLicense@@'
                 replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/'
 
             - name: Set update server
-              uses: richardrigutins/replace-in-files@v2
+              uses: richardrigutins/replace-in-files@v3
               with:
                 files: 'inc/constants_urls.php'
                 search-text: '@@UrlUpdate@@'
                 replacement-text: 'https://laolaweb.com/wp-json/lwreleases/personio-integration/'
 
             - name: Set costs server
-              uses: richardrigutins/replace-in-files@v2
+              uses: richardrigutins/replace-in-files@v3
               with:
                 files: 'inc/constants_urls.php'
                 search-text: '@@UrlCosts@@'
@@ -127,6 +127,7 @@ jobs:
                 rm CODE_OF_CONDUCT.md
                 rm .editorconfig
                 rm inc/constants_urls.php.dist
+                rm phpcs.xml.dist
                 rm phpunit.xml.dist
                 rm -fr bin
                 rm -fr tests
@@ -161,7 +162,7 @@ jobs:
                   cp personio-integration-light_${{ github.ref_name }}.zip ${{ github.event.repository.name }}/
 
             - name: Create Release
-              uses: softprops/action-gh-release@v2
+              uses: softprops/action-gh-release@v3
               if: startsWith(github.ref, 'refs/tags/')
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
