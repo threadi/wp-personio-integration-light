@@ -1482,7 +1482,7 @@ Argument | Type | Description
 -------- | ---- | -----------
 `$true` |  | 
 
-Source: [app/Plugin/Update.php](Plugin/Update.php), [line 152](Plugin/Update.php#L152-L152)
+Source: [app/Plugin/Update.php](Plugin/Update.php), [line 151](Plugin/Update.php#L151-L151)
 
 ### `personio_integration_pro_update_transient`
 
@@ -1500,7 +1500,7 @@ Version | Description
 ------- | -----------
 `3.2.0` | Available since 3.2.0
 
-Source: [app/Plugin/Update.php](Plugin/Update.php), [line 263](Plugin/Update.php#L263-L269)
+Source: [app/Plugin/Update.php](Plugin/Update.php), [line 262](Plugin/Update.php#L262-L268)
 
 ### `personio_integration_pro_application_form_link_targets`
 
