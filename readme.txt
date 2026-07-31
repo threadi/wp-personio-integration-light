@@ -21,52 +21,52 @@ Show application forms on your positions and transfer applications from your web
 
 #### Features
 
-- manual or automatic import of open positions in German and English (other languages only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/))
-- positions are indexable by search engines (SEO)
-- each open position (incl. job description) under its own URL on your website
-- data protection-friendly, as no applicant data is collected and stored
-- multiple Blocks for Block Editor, 2 classic widgets and [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
-- support for classic as well as block themes
-- optionally group the lists by categories, departments, offices etc.
-- some [WP CLI commands](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/cli.md) for simplified handling of data
-- compatible with WCAG
-- compatible with Content Security Policy settings
+✅ manual or automatic import of open positions in German and English (other languages only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/))
+✅ positions are indexable by search engines (SEO)
+✅ each open position (incl. job description) under its own URL on your website
+✅ data protection-friendly, as no applicant data is collected and stored
+✅ multiple Blocks for Block Editor, 2 classic widgets and [shortcodes](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/shortcodes.md)
+✅ support for classic as well as block themes
+✅ optionally group the lists by categories, departments, offices etc.
+✅ some [WP CLI commands](https://github.com/threadi/wp-personio-integration-light/blob/master/doc/cli.md) for simplified handling of data
+✅ compatible with WCAG
+✅ compatible with Content Security Policy settings
 
 #### Requirements
 
-- Personio account with enabled XML interface
-- PHP module SimpleXML
+🔌 Personio account with enabled XML interface
+🔌 PHP module SimpleXML
 
 #### Hint ####
 
-The output of the positions is limited to a maximum of 10. Only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/) there is no limitation.
+The output of the positions as list is limited to a maximum of 10. Only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/) there is no limitation.
 
 #### the Pro license includes:
 
-- Extensions for the following PageBuilders: Avada, Beaver Builder, Bricks, Divi 4 & 5, Elementor, Elements in GeneratePress Premium, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery
-- Also compatible with Avia (from Enfold) and Kubio AI
-- Multiple and customizable application forms incl. export of them via Personio API
-- Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Everest Forms, Fluent Forms, Forminator, Ninja Forms and WPForms
-- Customization of slugs (URLs) for list and detailed views of positions
-- Supports all languages Personio offers: German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech
-- Support for multilingual plugins Bogo, Polylang, WPML, Weglot and TranslatePress
-- Support for legal entities and other workplaces on positions
-- Support for salaries for open positions
-- Use GoogleMaps or OpenStreetMap for show you locations with open positions
-- Use custom feature image on each position
-- Assign unlimited custom files for download or videos on each single position
-- Support for tracking of events with Matomo and Google Analytics 4
-- Support for Open Graph (Facebook, LinkedIn, WhatsApp ...), Twitter Cards and Dublin Core (optionally configurable for all or single positions)
-- Support full text search for positions in frontend
-- Use multiple Personio-accounts per website
-- Additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from position descriptions
-- RichSnippets for optimal findability via search engines like Google Jobs
-- Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)
-- Shortcode generator for individual views of lists and details
-- Encrypt all sensitive data (e.g., applicant data and API credentials).
-- ... and much more
+➕ Native support for following PageBuilders: Avada, Beaver Builder, Bricks, Divi 4 & 5, Elementor, Elements in GeneratePress Premium, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery
+➕ Also compatible with Avia (from Enfold) and Kubio AI
+➕ Multiple and customizable application forms incl. export of them via Personio API
+➕ Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Everest Forms, Fluent Forms, Forminator, Ninja Forms and WPForms
+➕ Customization of slugs (URLs) for list and detailed views of positions
+➕ Supports all languages Personio offers: German, English, French, Spanish, Dutch, Italian, Portuguese, Swedish, Finnish, Polish, Czech
+➕ Support for multilingual plugins Bogo, Polylang, WPML, Weglot and TranslatePress
+➕ Support for legal entities and other workplaces on positions
+➕ Support for salaries for open positions
+➕ Use GoogleMaps or OpenStreetMap for show you locations with open positions
+➕ Use custom feature image on each position
+➕ Assign unlimited custom files for download or videos on each single position
+➕ Support for tracking of events with Matomo and Google Analytics 4
+➕ Support for Open Graph (Facebook, LinkedIn, WhatsApp ...), Twitter Cards and Dublin Core (optionally configurable for all or single positions)
+➕ Support full text search for positions in frontend
+➕ Use multiple Personio-accounts in one website
+➕ Additional import settings, e.g. intervals and partial import for very large lists of open positions and removing of inline styles from position descriptions
+➕ RichSnippets for optimal findability via search engines like Google Jobs
+➕ Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)
+➕ Shortcode generator for individual views of lists and details
+➕ Encrypt all sensitive data (e.g., applicant data and API credentials).
+➕ ... and much more
 
-[get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
+🆙 [Get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
 
 == ClassicPress ==
 
@@ -82,9 +82,9 @@ The Personio logo as part of all distributed icons is a trademark of [Personio S
 
 Each release of this plugin will only be published if it fulfills the following conditions:
 
-- Compliance with WordPress Coding Standards
-- PHPStan check for possible bugs
-- PHP Unit tests
+✅ Compliance with WordPress Coding Standards
+✅ PHPStan check for possible bugs
+✅ PHP Unit tests
 
 ---
 
@@ -119,10 +119,10 @@ Yes, it is without any further settings.
 
 == Screenshots ==
 
-1. Field to insert your Personio URL
-2. Import-Settings
-3. List of imported positions
-4. Gutenberg Block for listings
+1. Setup leads you through the first import of your positions from Personio
+2. The imported positions in WordPress
+3. Main settings for the plugin
+4. Your positions from Personio in the frontend of your website
 
 == Upgrade Notice ==
 
