@@ -62,7 +62,6 @@
         <delete file="${log.dir}/npm-install3.txt"/>
         <delete file="${log.dir}/npm-install4.txt"/>
         <delete file="${log.dir}/npm-install5.txt"/>
-        <delete file="${log.dir}/npm-install6.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${nvm.path}" output="${log.dir}/nvm-install1.txt">
             <arg line="install latest"/>
         </exec>
@@ -75,10 +74,7 @@
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-install4.txt">
             <arg line="install concurrently"/>
         </exec>
-        <exec dir="${src.dir}/vendor/threadi/easy-dialog-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-install5.txt">
-            <arg line="install"/>
-        </exec>
-        <exec dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-install6.txt">
+        <exec dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-install5.txt">
             <arg line="install"/>
         </exec>
     </target>
@@ -95,7 +91,6 @@
         <delete file="${log.dir}/npm-build8.txt"/>
         <delete file="${log.dir}/npm-build9.txt"/>
         <delete file="${log.dir}/npm-build10.txt"/>
-        <delete file="${log.dir}/npm-build11.txt"/>
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build1.txt">
             <arg line="run build:show"/>
         </exec>
@@ -120,13 +115,10 @@
         <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build8.txt">
             <arg line="run build:commands"/>
         </exec>
-        <exec dir="${src.dir}/vendor/threadi/easy-dialog-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build9.txt">
+        <exec dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build9.txt">
             <arg line="run build"/>
         </exec>
-        <exec dir="${src.dir}/vendor/threadi/easy-setup-for-wordpress/" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build10.txt">
-            <arg line="run build"/>
-        </exec>
-        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build11.txt">
+        <exec dir="${src.dir}" failonerror="true" executable="${npm.path}" output="${log.dir}/npm-build10.txt">
             <arg line="run global-styles"/>
         </exec>
     </target>

@@ -21,6 +21,7 @@ use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use WP_Admin_Bar;
+use WP_Error;
 use WP_Screen;
 use WP_User;
 
@@ -90,6 +91,7 @@ class Admin {
 		add_action( 'admin_init', array( $this, 'check_language' ) );
 		add_action( 'admin_init', array( $this, 'show_review_hint' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
+		add_action( 'admin_init', array( $this, 'get_setting_errors' ), 100 );
 		add_action( 'init', array( $this, 'configure_transients' ), 5 );
 		add_action( 'admin_bar_menu', array( $this, 'add_custom_toolbar' ), 100 );
 
@@ -1108,5 +1110,33 @@ class Admin {
 			'error',
 			'system'
 		);
+	}
+
+	/**
+	 * Collect errors from settings library.
+	 *
+	 * @return void
+	 */
+	public function get_setting_errors(): void {
+		// get the settings object.
+		$settings_obj = Settings::get_instance()->get_settings_object();
+
+		// bail if no errors occurred.
+		if ( ! method_exists( $settings_obj, 'has_errors' ) || $settings_obj->has_errors() ) {  // @phpstan-ignore function.alreadyNarrowedType
+			return;
+		}
+
+		// get the errors.
+		$errors = $settings_obj->get_errors();
+
+		// bail if errors are not set.
+		if ( ! $errors instanceof WP_Error ) {
+			return;
+		}
+
+		// log these errors.
+		foreach ( $errors->errors as $key => $errors ) {
+			Log::get_instance()->add( __( 'Error in plugin settings:', 'personio-integration-light' ) . ' <em>' . esc_html( $key ) . '</em>: ' . esc_html( implode( ' ', $errors ) ), 'error', 'system' );
+		}
 	}
 }
