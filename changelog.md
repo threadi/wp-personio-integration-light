@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Now required PHP 8.2 or newer
+- Updated dialog lib to 2.0.0
+- Updated settings lib to 2.0.0
+- Updated crypt lib to 3.0.0
+- Logging each error for any technical crypt or setting problem
+
 ## [5.5.3] - 27.07.2026
 
 ### Added

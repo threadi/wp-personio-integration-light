@@ -182,7 +182,6 @@ class Imports {
 		// add setting.
 		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnablePositionSchedule' );
 		$automatic_import_setting->set_section( $import_section );
-		$automatic_import_setting->set_type( 'integer' );
 		$automatic_import_setting->set_default( 1 );
 		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Import', 'save' ) );
 		$field = new Checkbox( $settings_obj );

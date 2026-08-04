@@ -331,6 +331,7 @@ class Settings {
 		$setting->set_type( 'array' );
 		$setting->set_default( array( Languages::get_instance()->get_current_lang() => 1 ) );
 		$setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\Languages', 'validate' ) );
+		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
 		$field = new Checkboxes( $settings_obj );
 		$field->set_title( __( 'Used languages', 'personio-integration-light' ) );
 		$field->set_description( __( 'Activate the languages in which your positions should be displayed on the website.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
@@ -345,7 +346,6 @@ class Settings {
 		$setting_enable_filter = $settings_obj->add_setting( 'personioIntegrationEnableFilter' );
 		$setting_enable_filter->set_section( $template_list );
 		$setting_enable_filter->set_show_in_rest( true );
-		$setting_enable_filter->set_type( 'integer' );
 		$setting_enable_filter->set_default( 0 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Enable filter on list-view', 'personio-integration-light' ) );
@@ -357,6 +357,7 @@ class Settings {
 		$setting->set_section( $template_list );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( 'recruitingCategory', 'schedule', 'office' ) );
+		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
 		$field = new MultiSelect( $settings_obj );
 		$field->set_title( __( 'Available filter for details', 'personio-integration-light' ) );
 		$field->set_description( __( 'Mark multiple default filter for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ) );
@@ -381,7 +382,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationHideFilterTitle' );
 		$setting->set_section( $template_list );
-		$setting->set_type( 'integer' );
 		$setting->set_default( 1 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Hide filter title', 'personio-integration-light' ) );
@@ -392,7 +392,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationHideFilterReset' );
 		$setting->set_section( $template_list );
-		$setting->set_type( 'integer' );
 		$setting->set_default( 0 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Hide reset link', 'personio-integration-light' ) );
@@ -461,6 +460,7 @@ class Settings {
 		$setting->set_section( $template_list );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( 'title', 'excerpt' ) );
+		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
 		$field = new MultiSelect( $settings_obj );
 		$field->set_title( __( 'List View', 'personio-integration-light' ) );
 		$field->set_description( __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ) );
@@ -486,6 +486,7 @@ class Settings {
 		$setting->set_section( $template_list );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( 'recruitingCategory', 'schedule', 'office' ) );
+		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
 		$field = new MultiSelect( $settings_obj );
 		$field->set_title( __( 'Choose details for positions in list-view', 'personio-integration-light' ) );
 		$field->set_description( __( 'Mark multiple default templates for each list-view of positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ) );
@@ -511,7 +512,6 @@ class Settings {
 		$setting = $settings_obj->add_setting( 'personioIntegrationEnableLinkInList' );
 		$setting->set_section( $template_list );
 		$setting->set_show_in_rest( true );
-		$setting->set_type( 'integer' );
 		$setting->set_default( 1 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Enable link to single on list-view', 'personio-integration-light' ) );
@@ -526,6 +526,7 @@ class Settings {
 		$setting->set_section( $template_detail );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( 'title', 'content', 'formular' ) );
+		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
 		$field = new MultiSelect( $settings_obj );
 		$field->set_title( __( 'Choose templates', 'personio-integration-light' ) );
 		$field->set_description( __( 'Mark multiple default templates for each detail-view of single positions. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ) );
@@ -551,6 +552,7 @@ class Settings {
 		$setting->set_section( $template_detail );
 		$setting->set_type( 'array' );
 		$setting->set_default( array( 'recruitingCategory', 'schedule', 'office' ) );
+		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
 		$field = new MultiSelect( $settings_obj );
 		$field->set_title( __( 'Choose details', 'personio-integration-light' ) );
 		$field->set_description( __( 'Mark multiple details for single-view of positions. Only used if template "detail" is enabled for detail-view. This setting will be overridden by individual settings on the blocks or widgets of your shortcode or PageBuilder.', 'personio-integration-light' ) );
@@ -574,7 +576,6 @@ class Settings {
 		// add setting.
 		$setting_back_to_list_button = $settings_obj->add_setting( 'personioIntegrationTemplateBackToListButton' );
 		$setting_back_to_list_button->set_section( $template_detail );
-		$setting_back_to_list_button->set_type( 'integer' );
 		$setting_back_to_list_button->set_default( 0 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Enable back to list-link', 'personio-integration-light' ) );
@@ -612,7 +613,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationExtendSearch' );
 		$setting->set_section( $advanced );
-		$setting->set_type( 'integer' );
 		$setting->set_default( 0 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Note the position-keywords in search in frontend', 'personio-integration-light' ) );
@@ -623,7 +623,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationMaxAgeLogEntries' );
 		$setting->set_section( $advanced );
-		$setting->set_type( 'integer' );
 		$setting->set_default( 20 );
 		$field = new Number( $settings_obj );
 		$field->set_title( __( 'max. Age for log entries in days', 'personio-integration-light' ) );
@@ -633,7 +632,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationUrlTimeout' );
 		$setting->set_section( $advanced );
-		$setting->set_type( 'integer' );
 		$setting->set_default( 30 );
 		$field = new Number( $settings_obj );
 		$field->set_title( __( 'Timeout for URL-request in Seconds', 'personio-integration-light' ) );
@@ -644,7 +642,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationShowHelp' );
 		$setting->set_section( $advanced );
-		$setting->set_type( 'integer' );
 		$setting->set_default( 1 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Show help', 'personio-integration-light' ) );
@@ -655,7 +652,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationDeleteOnUninstall' );
 		$setting->set_section( $advanced );
-		$setting->set_type( 'integer' );
 		$setting->set_default( 1 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Delete all imported data on uninstall', 'personio-integration-light' ) );
@@ -686,7 +682,6 @@ class Settings {
 		// add setting.
 		$debug_setting = $settings_obj->add_setting( 'personioIntegration_debug' );
 		$debug_setting->set_section( $debug_plugin );
-		$debug_setting->set_type( 'integer' );
 		$debug_setting->set_default( 0 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Debug-Mode', 'personio-integration-light' ) );
@@ -700,6 +695,7 @@ class Settings {
 		$setting->set_section( $debug_plugin );
 		$setting->set_type( 'array' );
 		$setting->set_default( array() );
+		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
 		$field = new MultiSelect( $settings_obj );
 		$field->set_title( __( 'Categories to debug', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
@@ -711,7 +707,6 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationQueryDebug' );
 		$setting->set_section( $debug_plugin );
-		$setting->set_type( 'integer' );
 		$setting->set_default( 0 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Enable debug of database queries', 'personio-integration-light' ) );
@@ -729,7 +724,7 @@ class Settings {
 		$field->set_title( __( 'Import', 'personio-integration-light' ) );
 		$field->set_button_title( __( 'Import now', 'personio-integration-light' ) );
 		$field->add_class( 'easy-dialog-for-wordpress' );
-		$field->set_custom_attributes( array( 'data-dialog' => (string) wp_json_encode( $dialog ) ) );
+		$field->add_data( 'dialog', Helper::get_json( $dialog ) );
 		$setting->set_field( $field );
 
 		// create export dialog.
@@ -763,7 +758,7 @@ class Settings {
 		$field->set_button_title( __( 'Export now', 'personio-integration-light' ) );
 		$field->set_button_url( $settings_obj->get_export_obj()->get_download_url() );
 		$field->add_class( 'easy-dialog-for-wordpress' );
-		$field->set_custom_attributes( array( 'data-dialog' => (string) wp_json_encode( $dialog ) ) );
+		$field->add_data( 'dialog', Helper::get_json( $dialog ) );
 		$setting->set_field( $field );
 
 		// create reset URL.
@@ -817,6 +812,7 @@ class Settings {
 		$setting = $settings_obj->add_setting( WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST );
 		$setting->set_section( $hidden );
 		$setting->set_type( 'array' );
+		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
 		$setting->set_default( array() );
 		$setting->prevent_export( true );
 
@@ -851,6 +847,7 @@ class Settings {
 		$setting->set_section( $hidden );
 		$setting->set_type( 'array' );
 		$setting->set_default( array() );
+		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationPositionCount' );
@@ -864,6 +861,7 @@ class Settings {
 		$setting->set_section( $hidden );
 		$setting->set_type( 'array' );
 		$setting->set_default( array() );
+		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
 	}
 
 	/**

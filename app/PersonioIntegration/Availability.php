@@ -139,7 +139,6 @@ class Availability extends Extensions_Base {
 		// add setting.
 		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnableAvailabilityCheck' );
 		$automatic_import_setting->set_section( $availability_section );
-		$automatic_import_setting->set_type( 'integer' );
 		$automatic_import_setting->set_default( 1 );
 		$automatic_import_setting->set_save_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsSavings\Availability', 'save' ) );
 		$field = new Checkbox( $settings_obj );

@@ -92,7 +92,6 @@ class Email_Base {
 		// add setting.
 		$enable_setting = $settings_obj->add_setting( 'personio_integration_email_' . $this->get_name() );
 		$enable_setting->set_section( $email_tab_main );
-		$enable_setting->set_type( 'integer' );
 		$enable_setting->set_default( $this->is_default_enabled() ? 1 : 0 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Enable', 'personio-integration-light' ) );

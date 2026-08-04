@@ -120,7 +120,6 @@ class Schedules {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationEnableCronCheckInFrontend' );
 		$setting->set_section( $advanced_section );
-		$setting->set_type( 'integer' );
 		$setting->set_default( 0 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Check for schedules in frontend', 'personio-integration-light' ) );
