@@ -274,7 +274,6 @@ class Emails {
 	 * Send test-email by request.
 	 *
 	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function send_test_email_by_request(): void {
 		// check referer.
