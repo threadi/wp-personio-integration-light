@@ -243,7 +243,6 @@ class Intro {
 	 * Reset intro via request.
 	 *
 	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function reset_intro(): void {
 		// check nonce.
