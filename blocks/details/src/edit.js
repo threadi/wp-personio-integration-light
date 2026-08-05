@@ -36,10 +36,12 @@ import { TextControl } from '@wordpress/components';
  */
 export default function Edit( object ) {
 
-	// secure id of this block
-	useEffect(() => {
-		object.setAttributes({blockId: object.clientId});
-	});
+  // secure id of this block
+  useEffect( () => {
+    if ( ! object.attributes.blockId ) {
+      object.setAttributes( { blockId: object.clientId } );
+    }
+  }, [ object.attributes.blockId, object.clientId ] );
 
   // get possible templates.
   let templates = [];

@@ -9,6 +9,7 @@
 - Updated settings lib to 2.0.0
 - Updated crypt lib to 3.0.0
 - Logging each error for any technical crypt or setting problem
+- Optimized performance for each supported Block
 
 ## [5.5.3] - 27.07.2026
 
