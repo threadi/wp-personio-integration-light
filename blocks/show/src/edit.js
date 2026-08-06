@@ -49,14 +49,14 @@ export default function Edit( object ) {
     }
   }, [ object.attributes.blockId, object.clientId ] );
 
-	// useSelect to retrieve all entries on our own cpt
-	const positions = useSelect(
-		(select) => select('core').getEntityRecords('postType', 'personioposition', { per_page: -1 }), []
-	);
-
-  // get taxonomies
+  // get taxonomies and positions.
   let personioTaxonomies = [];
+  let positions = [];
   if( !object.attributes.preview ) {
+    positions = useSelect(
+      (select) => select( 'core' ).getEntityRecords( 'postType', 'personioposition', {per_page: -1} ), []
+    );
+
     useEffect(() => {
       dispatch('core').addEntities([
         {
