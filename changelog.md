@@ -5,6 +5,7 @@
 ### Changed
 
 - Now required PHP 8.2 or newer
+- Compatible with WordPress 7.1
 - Updated dialog lib to 2.0.0
 - Updated settings lib to 2.0.0
 - Updated crypt lib to 3.0.0
