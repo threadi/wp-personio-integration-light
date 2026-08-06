@@ -17,7 +17,7 @@ import {
 	useBlockProps
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
-import {onChangeTemplate, Personio_Helper_Panel} from "../../components";
+import {onChangeTemplate, Personio_Helper_Panel, registerPersonioEntity} from "../../components";
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
 
@@ -43,14 +43,8 @@ export default function Edit( object ) {
 	let templates = [];
 	if( !object.attributes.preview ) {
 		useEffect(() => {
-			dispatch('core').addEntities([
-				{
-					name: 'jobdescription-templates',
-					kind: 'personio/v1',
-					baseURL: '/personio/v1/jobdescription-templates'
-				}
-			]);
-		}, []);
+      registerPersonioEntity( 'jobdescription-templates', '/personio/v1/jobdescription-templates' );
+    }, []);
 		templates = useSelect((select) => {
 				return select('core').getEntityRecords('personio/v1', 'jobdescription-templates', { per_page: 20 }) || [];
 			}

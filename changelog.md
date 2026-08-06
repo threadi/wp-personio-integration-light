@@ -11,6 +11,7 @@
 - Updated crypt lib to 3.0.0
 - Logging each error for any technical crypt or setting problem
 - Optimized performance for each supported Block
+- Extended the database helper to load multiple positions by their Personio ID
 
 ## [5.5.3] - 27.07.2026
 

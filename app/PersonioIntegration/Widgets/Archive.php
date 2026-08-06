@@ -190,11 +190,8 @@ class Archive extends Widget_Base {
 		if ( is_array( $personio_attributes['ids'] ) && ! empty( $personio_attributes['ids'][0] ) ) {
 			// convert id-list from PersonioId in post_id.
 			$resulting_list = array();
-			foreach ( $personio_attributes['ids'] as $personio_id ) {
-				$position = $positions_obj->get_position_by_personio_id( $personio_id );
-				if ( $position instanceof Position ) {
-					$resulting_list[] = $position->get_id();
-				}
+			foreach ( $positions_obj->get_positions( -1, array( 'personioids' => $personio_attributes['ids'] ) ) as $position_obj ) {
+				$resulting_list[] = $position_obj->get_id();
 			}
 			$personio_attributes['ids'] = $resulting_list;
 		}

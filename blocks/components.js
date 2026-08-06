@@ -106,5 +106,37 @@ export class Personio_Helper_Panel extends React.Component {
   }
 }
 
+/**
+ * Helper for the Personio logo on each block.
+ */
 const el = wp.element.createElement;
 export const personioIcon = el('img', {src: ' data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kb9Lw0AcxV/TaotUHOwg4pChOlkQK+IoVSyChdJWaNXB5NJf0MSQpLg4Cq4FB38sVh1cnHV1cBUEwR8g/gHipOgiJX4vKbSI8eC4D+/uPe7eAUKzxlQzMAGommVkkgkxX1gRg6/oRQAhCIhLzNRT2YUcPMfXPXx8vYvxLO9zf45+pWgywCcSzzLdsIjXiac3LZ3zPnGEVSSF+Jx43KALEj9yXXb5jXPZYYFnRoxcZo44QiyWu1juYlYxVOIp4qiiapQv5F1WOG9xVmt11r4nf2G4qC1nuU5zBEksIoU0RMioo4oaLMRo1UgxkaH9hId/2PGnySWTqwpGjnlsQIXk+MH/4He3Zik+6SaFE0DPi21/jALBXaDVsO3vY9tunQD+Z+BK6/g3msDMJ+mNjhY9Aga2gYvrjibvAZc7wNCTLhmSI/lpCqUS8H5G31QABm+BvlW3t/Y+Th+AHHW1dAMcHAJjZcpe83h3qLu3f8+0+/sBSnFyl3LH5EwAAAAGYktHRAA2AE0AXiOzlDkAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfqBgQIBQlxke3qAAABo0lEQVRIx83WTYhNYRgH8N+DrZUFjUzyUays7KTUtZmUhdS4gyxkwZadlJWVDUlZKSWW1poonynNApthc2tErGRc3evmtXnTmeOcOffOdMuzec/7nOf5/9/zPl8nUkrJGGWNMcuKCSJiKiJuRsRcRPQiQkTMR8ShJXajXFFETOAczmADXmAWb9HFNA6nlNb/dUpDCHbhDnro4AI2VtgdR2+Jbgjwq+jjJY7iBLaW7TqdTiuT3xqKIAN9xgLaBf1PHCna9vv925jDu39wasDvY4ArJf0UBoPB4HFBtxvzeIOJRgK8xlccrHh3HU8L+xl8w6PamygBPMsZMVnzZe9xsdvtXsY9/MKlZWNYcD6F79hSA74DCdfwBR+wrylJioU2ibU4UFMG03k9jRsppe0ppSeNxVM6ZRs7C/vNOIbn+fSvsC2NIBpqYDEH8W4mOJlGlCaCTXndj99VaThKDKqu71N+bOUi+jiubtrCw3G2671lgohoR8SPkbJomVicramL802+Me6Rua5iqMysEnMxpfSgkiAi9uROuhpZWPHI/C//Kv4AmQdH64cSClkAAAAASUVORK5CYII='});
+
+/**
+ * Register a Personio REST-API entity with the core-data store, but only once
+ * per entity name - no matter how many block instances (or block types, since
+ * each block is built as its own webpack bundle) call this on the same page.
+ *
+ * Without this guard, every mounted block instance of every block type calls
+ * dispatch('core').addEntities() again for the same entity (e.g. 'taxonomies'),
+ * which is redundant work on every editor load.
+ *
+ * @param {string} name    Entity route name (e.g. 'taxonomies').
+ * @param {string} baseURL REST base URL without /wp-json (e.g. '/personio/v1/taxonomies').
+ */
+export const registerPersonioEntity = ( name, baseURL ) => {
+  if ( ! window.personioRegisteredEntities ) {
+    window.personioRegisteredEntities = new Set();
+  }
+  if ( window.personioRegisteredEntities.has( name ) ) {
+    return;
+  }
+  window.personioRegisteredEntities.add( name );
+  wp.data.dispatch('core').addEntities([
+    {
+      name: name,
+      kind: 'personio/v1',
+      baseURL: baseURL
+    }
+  ]);
+}

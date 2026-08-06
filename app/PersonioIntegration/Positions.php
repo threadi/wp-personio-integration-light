@@ -145,6 +145,15 @@ class Positions {
 				),
 			);
 		}
+		if ( ! empty( $parameter_to_add['personioids'] ) ) {
+			$query['meta_query'] = array(
+				array(
+					'key'     => WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID,
+					'value'   => $parameter_to_add['personioids'],
+					'compare' => 'IN',
+				),
+			);
+		}
 
 		// add taxonomies as a filter.
 		$tax_query = array();

@@ -19,7 +19,7 @@ import {
 } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import {
-  onChangeExcerptTemplates, onChangeTemplate, Personio_Helper_Panel,
+  onChangeExcerptTemplates, onChangeTemplate, Personio_Helper_Panel, registerPersonioEntity
 } from '../../components';
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -47,13 +47,7 @@ export default function Edit( object ) {
   let templates = [];
   if( !object.attributes.preview ) {
     useEffect(() => {
-      dispatch('core').addEntities([
-        {
-          name: 'details-templates',
-          kind: 'personio/v1',
-          baseURL: '/personio/v1/details-templates'
-        }
-      ]);
+      registerPersonioEntity( 'details-templates', '/personio/v1/details-templates' );
     }, []);
     templates = useSelect((select) => {
         return select('core').getEntityRecords('personio/v1', 'details-templates', { per_page: 20 }) || [];
@@ -65,13 +59,7 @@ export default function Edit( object ) {
   let personioTaxonomies = [];
   if( !object.attributes.preview ) {
     useEffect(() => {
-      dispatch('core').addEntities([
-        {
-          name: 'taxonomies', // route name
-          kind: 'personio/v1', // namespace
-          baseURL: '/personio/v1/taxonomies' // API path without /wp-json
-        }
-      ]);
+      registerPersonioEntity( 'taxonomies', '/personio/v1/taxonomies' );
     }, []);
     personioTaxonomies = useSelect((select) => {
         return select('core').getEntityRecords('personio/v1', 'taxonomies', { per_page: 20 }) || [];

@@ -26,10 +26,11 @@ import {
   onChangeExcerptTemplates,
   onChangeId,
   onChangeLinkingTitle,
-  Personio_Helper_Panel
+  Personio_Helper_Panel,
+  registerPersonioEntity
 } from '../../components';
 const { dispatch, useSelect } = wp.data;
-const { useEffect } = wp.element;
+const { useEffect, useMemo } = wp.element;
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -58,13 +59,7 @@ export default function Edit( object ) {
     );
 
     useEffect(() => {
-      dispatch('core').addEntities([
-        {
-          name: 'taxonomies', // route name
-          kind: 'personio/v1', // namespace
-          baseURL: '/personio/v1/taxonomies' // API path without /wp-json
-        }
-      ]);
+      registerPersonioEntity( 'taxonomies', '/personio/v1/taxonomies' );
     }, []);
     personioTaxonomies = useSelect((select) => {
         return select('core').getEntityRecords('personio/v1', 'taxonomies', { per_page: 20 }) || [];
@@ -72,42 +67,45 @@ export default function Edit( object ) {
     );
   }
 
-	// Options expects [{label: ..., value: ...}]
-	// noinspection JSUnresolvedVariable
-	let positionOptions = !Array.isArray(positions) ? positions : positions
-		.map(
-			// Format the options for display in the <SelectControl/>
-			(position) => ({
-				label: position.title.raw,
-				value: position.meta.personioId, // the value saved as postType in attributes
-			})
-		);
+  // Options expects [{label: ..., value: ...}]
+  // Only rebuild this list when the fetched positions actually change, instead of
+  // on every re-render of the Edit component (e.g. on every Inspector-toggle).
+  const positionOptions = useMemo(() => {
+    let options = !Array.isArray(positions) ? positions : positions
+      .map(
+        // Format the options for display in the <SelectControl/>
+        (position) => ({
+          label: position.title.raw,
+          value: position.meta.personioId, // the value saved as postType in attributes
+        })
+      );
 
-	// create an array if it is empty until now
-	if( !Array.isArray(positionOptions) ) {
-		positionOptions = [];
-	}
+    // create an array if it is empty until now
+    if( !Array.isArray(options) ) {
+      options = [];
+    }
 
-	// add entry on first index of list of positions
-	positionOptions.unshift({
-		label: __( 'Please choose', 'personio-integration-light' ),
-		value: 0
-	});
+    // add entry on first index of list of positions
+    options.unshift({
+      label: __( 'Please choose', 'personio-integration-light' ),
+      value: 0
+    });
 
-	// disable fields if no position is selected
-	let disabledFields = false;
-	if( object.attributes.id === 0 ) {
-		disabledFields = true;
-	}
-	else {
-		let found = false;
-		positionOptions.map(function(position) { if( position.value === object.attributes.id ) { found = true; } });
-		if( !found ) {
-			disabledFields = true;
-		}
-	}
+    return options;
+  }, [ positions ]);
 
-	/**
+
+  // disable fields if no position is selected.
+  // Depends only on positionOptions and the selected id, so it is recalculated
+  // only when either of those actually changes.
+  const disabledFields = useMemo(() => {
+    if( object.attributes.id === 0 ) {
+      return true;
+    }
+    return !positionOptions.some((position) => position.value === object.attributes.id);
+  }, [ positionOptions, object.attributes.id ]);
+
+  /**
 	 * Collect return for the edit-function
 	 */
 	return (

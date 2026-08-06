@@ -33,10 +33,13 @@ import {
   onChangeSortBy,
   onChangeGroupBy,
   onChangeTemplate,
-  Personio_Helper_Panel, onChangePositionBackgroundColor, onChangePositionBackgroundColorHover
+  Personio_Helper_Panel,
+  onChangePositionBackgroundColor,
+  onChangePositionBackgroundColorHover,
+  registerPersonioEntity
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
-const { useEffect } = wp.element;
+const { useEffect, useMemo } = wp.element;
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -60,50 +63,39 @@ export default function Edit( object ) {
 	let archive_templates = [];
 	if( !object.attributes.preview ) {
 		useEffect(() => {
-			dispatch('core').addEntities([
-				{
-					name: 'archive-templates',
-					kind: 'personio/v1',
-					baseURL: '/personio/v1/archive-templates'
-				}
-			]);
-		}, []);
+      registerPersonioEntity( 'archive-templates', '/personio/v1/archive-templates' );
+
+    }, []);
 		archive_templates = useSelect((select) => {
 				return select('core').getEntityRecords('personio/v1', 'archive-templates', { per_page: 20 }) || [];
 			}
 		);
 	}
 
-	// get filter types.
-	let filter_types = wp.hooks.applyFilters('personio_integration_filter_types', [
-		{ label: __('list of links', 'personio-integration-light'), value: 'linklist' },
-		{ label: __('select-box', 'personio-integration-light'), value: 'select' }
-	], object.attributes.preview);
-
 	// get taxonomies.
 	let personioTaxonomies = [];
-  let personioTaxonomiesGrouped = [];
 	if( !object.attributes.preview ) {
 		useEffect(() => {
-			dispatch('core').addEntities([
-				{
-					name: 'taxonomies', // route name
-					kind: 'personio/v1', // namespace
-					baseURL: '/personio/v1/taxonomies' // API path without /wp-json
-				}
-			]);
-		}, []);
+      registerPersonioEntity( 'taxonomies', '/personio/v1/taxonomies' );
+    }, []);
 		personioTaxonomies = useSelect((select) => {
 				return select('core').getEntityRecords('personio/v1', 'taxonomies', { per_page: 20 }) || [];
 			}
 		);
-    personioTaxonomiesGrouped = personioTaxonomies.map((x) => x);
-    if( personioTaxonomiesGrouped[0] && personioTaxonomiesGrouped[0].id !== 0 ) {
-      personioTaxonomiesGrouped.unshift( {id: 0, label: __( 'Ungrouped', 'personio-integration-light' ), value: ''} );
-    }
 	}
 
-	// set max amount for listings.
+  // build the grouped taxonomy list only when the underlying taxonomies actually change,
+  // instead of recalculating it on every re-render of the Edit component.
+  let personioTaxonomiesGrouped = useMemo(() => {
+    const grouped = personioTaxonomies.map((x) => x);
+    if( grouped[0] && grouped[0].id !== 0 ) {
+      grouped.unshift( {id: 0, label: __( 'Ungrouped', 'personio-integration-light' ), value: ''} );
+    }
+    return grouped;
+  }, [ personioTaxonomies ]);
+
+
+  // set max amount for listings.
 	let max_amount = wp.hooks.applyFilters('personio.list.amount', 10);
 
   // get the color gradient settings.

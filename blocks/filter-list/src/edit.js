@@ -27,7 +27,8 @@ import {
   onChangeHideResetLink,
   onChangeSpaceBetween,
   onChangeLinkToAnchor,
-  Personio_Helper_Panel
+  Personio_Helper_Panel,
+  registerPersonioEntity
 } from '../../components'
 const { dispatch, useSelect } = wp.data;
 const { useEffect } = wp.element;
@@ -54,14 +55,9 @@ export default function Edit( object ) {
 	let personioTaxonomies = [];
 	if( !object.attributes.preview ) {
 		useEffect(() => {
-			dispatch('core').addEntities([
-				{
-					name: 'taxonomies', // route name
-					kind: 'personio/v1', // namespace
-					baseURL: '/personio/v1/taxonomies' // API path without /wp-json
-				}
-			]);
-		}, []);
+      registerPersonioEntity( 'taxonomies', '/personio/v1/taxonomies' );
+
+    }, []);
 		personioTaxonomies = useSelect((select) => {
 				return select('core').getEntityRecords('personio/v1', 'taxonomies', { per_page: 20 } ) || [];
 			}
