@@ -111,6 +111,9 @@ class Third_Party_Plugins {
 
 		// WP Consent API.
 		add_filter( 'wp_consent_api_registered_' . plugin_basename( WP_PERSONIO_INTEGRATION_PLUGIN ), array( $this, 'wp_consent_api_register' ) );
+
+		// Brizy.
+		add_filter( 'brizy_settings_post_types', array( $this, 'brizy_settings_post_types' ) );
 	}
 
 	/**
@@ -520,5 +523,25 @@ class Third_Party_Plugins {
 	 */
 	public function wp_consent_api_register(): bool {
 		return true;
+	}
+
+	/**
+	 * Remove our post type from the list of supported post types in Brizy.
+	 *
+	 * @param array<string,mixed> $post_types List of post types.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function brizy_settings_post_types( array $post_types ): array {
+		// bail if our cpt is not in list.
+		if( ! isset( $post_types[ PersonioPosition::get_instance()->get_name() ] ) ) {
+			return $post_types;
+		}
+
+		// remove the entry.
+		unset( $post_types[ PersonioPosition::get_instance()->get_name() ] );
+
+		// return the resulting post types.
+		return $post_types;
 	}
 }
