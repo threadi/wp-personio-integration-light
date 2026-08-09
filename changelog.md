@@ -10,6 +10,7 @@
 - Updated crypt lib to 3.0.0
 - Logging each error for any technical crypt or setting problem
 - Optimized performance for each supported Block
+- Removed support for Brizy post types as we do not allow editing of positions with any editor
 
 ## [5.5.3] - 27.07.2026
 
