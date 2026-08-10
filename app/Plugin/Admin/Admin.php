@@ -109,7 +109,7 @@ class Admin {
 		add_action( 'admin_action_personio_integration_log_empty', array( $this, 'empty_log' ) );
 
 		// misc.
-		add_action( 'personio-integration-light_error', array( $this, 'save_crypt_error' ), 10, 3 );
+		add_action( 'personio-integration-light_crypt_error', array( $this, 'save_crypt_error' ), 10, 3 );
 	}
 
 	/**
