@@ -159,6 +159,13 @@ class Log {
 			return;
 		}
 
+		// add error counter if this is an error.
+		if ( 'error' === $state ) {
+			$error_counter = absint( get_option( 'personio_integration_light_log_error_count' ) );
+			++$error_counter;
+			update_option( 'personio_integration_light_log_error_count', $error_counter );
+		}
+
 		// insert the log entry.
 		Db::get_instance()->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->prefix . 'personio_import_logs',

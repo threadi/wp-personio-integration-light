@@ -188,7 +188,7 @@ class Log_Table extends WP_List_Table {
 				get_admin_url() . 'admin.php'
 			);
 
-			// create download-dialog.
+			// create empty-log-dialog.
 			$empty_dialog = array(
 				'title'   => __( 'Empty log entries', 'personio-integration-light' ),
 				'texts'   => array(
@@ -210,9 +210,49 @@ class Log_Table extends WP_List_Table {
 			);
 
 			?>
-			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
-			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary easy-dialog<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary easy-dialog-for-wordpress<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary easy-dialog-for-wordpress<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
 			<?php
+
+			// show button only if setting is enabled.
+			if ( 1 === absint( get_option( 'personio_integration_light_enable_log_error_count' ) ) ) {
+				// define reset-marker-URL.
+				$reset_error_marker_url = add_query_arg(
+					array(
+						'action' => 'personio_integration_log_reset_marker',
+						'nonce'  => wp_create_nonce( 'personio-integration-log-reset-marker' ),
+					),
+					get_admin_url() . 'admin.php'
+				);
+
+				// create reset-marker-dialog.
+				$reset_error_marker_dialog = array(
+					'title'   => __( 'Reset error marker', 'personio-integration-light' ),
+					'texts'   => array(
+						'<p><strong>' . __( 'Are you sure you want to reset the error marker?', 'personio-integration-light' ) . '</strong></p>',
+						'<p>' . __( 'As soon as a new error occurs, the marker reappears on the screen..', 'personio-integration-light' ) . '</p>',
+					),
+					'buttons' => array(
+						array(
+							'action'  => 'location.href="' . esc_url( $reset_error_marker_url ) . '";',
+							'variant' => 'primary',
+							'text'    => __( 'Yes, reset the marker', 'personio-integration-light' ),
+						),
+						array(
+							'action'  => 'closeDialog();',
+							'variant' => 'secondary',
+							'text'    => __( 'Cancel', 'personio-integration-light' ),
+						),
+					),
+				);
+
+				// get the error count.
+				$errors = absint( get_option( 'personio_integration_light_log_error_count' ) );
+
+				?>
+					<a href="<?php echo esc_url( $reset_error_marker_url ); ?>" class="button button-secondary easy-dialog-for-wordpress<?php echo ( 0 === count( $this->items ) || 0 === $errors ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $reset_error_marker_dialog ) ); ?>"><?php echo esc_html__( 'Reset error marker', 'personio-integration-light' ); ?></a>
+				<?php
+			}
 		}
 	}
 

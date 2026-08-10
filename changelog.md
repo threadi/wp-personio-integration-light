@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added a marker in the WordPress backend menu if any error is logged
+- Added an option in settings to disable this marker (default: enabled to show it)
+
 ### Changed
 
 - Now required PHP 8.2 or newer
@@ -11,6 +16,10 @@
 - Logging each error for any technical crypt or setting problem
 - Optimized performance for each supported Block
 - Removed support for Brizy post types as we do not allow editing of positions with any editor
+
+### Fixed
+
+- Fixed missing dialogs on log page
 
 ## [5.5.3] - 27.07.2026
 
