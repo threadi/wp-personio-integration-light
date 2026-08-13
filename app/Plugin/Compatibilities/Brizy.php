@@ -10,6 +10,8 @@ namespace PersonioIntegrationLight\Plugin\Compatibilities;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Compatibilities_Base;
 
 /**
@@ -42,13 +44,25 @@ class Brizy extends Compatibilities_Base {
 		return self::$instance;
 	}
 
-
 	/**
-	 * Do nothing on check as we can not support this builder with functions.
+	 * Run the check.
 	 *
 	 * @return void
 	 */
-	public function check(): void {}
+	public function check(): void {
+		$transients_obj = Transients::get_instance();
+		if ( $this->is_active() ) {
+			$transient_obj = $transients_obj->add();
+			$transient_obj->set_name( $this->get_name() );
+			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
+			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Brizy - very nice!</strong> <a href="%1$s" target="_blank"><i>Personio Integration Pro</i> (opens a new window)</a> allows you to design the output of positions in Brizy.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_type( 'success' );
+			$transient_obj->set_dismissible_days( 30 );
+			$transient_obj->save();
+		} else {
+			$transients_obj->get_transient_by_name( $this->get_name() )->delete();
+		}
+	}
 
 	/**
 	 * Return whether this component is active (true) or not (false).
