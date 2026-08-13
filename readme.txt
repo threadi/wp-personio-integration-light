@@ -2,7 +2,7 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
 Requires at least: 4.9.24
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 8.2
 Requires CP:  2.0
 License: GPL-2.0-or-later
@@ -39,7 +39,7 @@ Show application forms on your positions and transfer applications from your web
 
 #### Hint ####
 
-The output of the positions as list is limited to a maximum of 10. Only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/) there is no limitation.
+The output of the positions as a list is limited to a maximum of 10. Only in [Personio Integration Pro](https://laolaweb.com/plugins/personio-wordpress-plugin/) there is no limitation.
 
 #### the Pro license includes:
 
@@ -133,18 +133,16 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added more PHP Unit tests to check for more use cases of this plugin
-- Use the log categories to choose which debug log entries you want to see
-- Note the user locale for the hint about missing translations for this plugin
-- Show errors during encryption in the log
-- Extended the PHP Unit test to check for more use cases of this plugin
-- Optimized the GitHub action to check the plugin quality
-- Optimized check for correct datatypes of array values
-- Optimized handling to uninstall the plugin in a multisite
-- Fixed a wrong spelled name for the function to import settings
-- Fixed a wrong usage of default settings for the description widget, which results in default usage everywhere
-- Removed a wrong-placed empty space during the update check
-- Fixed a missing deletion of user settings during uninstallation of this plugin
-- Fixed a wrong HTML output for grouped archives
+- Added a marker in the WordPress backend menu if any error is logged
+- Added an option in settings to disable this marker (default: enabled to show it)
+- Added hint for Brizy users
+- Now required PHP 8.2 or newer
+- Updated dialog lib to 2.0.0
+- Updated settings lib to 2.0.0
+- Updated crypt lib to 3.0.0
+- Logging each error for any technical crypt or setting problem
+- Optimized performance for each supported Block
+- Removed support for Brizy post types as we do not allow editing of positions with any editor
+- Fixed missing dialogs on the page of logs
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

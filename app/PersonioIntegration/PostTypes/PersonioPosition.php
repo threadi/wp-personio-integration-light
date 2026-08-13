@@ -1889,7 +1889,7 @@ class PersonioPosition extends Post_Type {
 			array(
 				'name'        => 'personio_forms',
 				'label'       => __( 'Application forms', 'personio-integration-light' ),
-				'description' => __( 'Use application forms directly on your website. Use our own form handler, WPForms, Contact Form 7 or Ninja Forms.', 'personio-integration-light' ),
+				'description' => __( 'Use application forms directly on your website. Use our own form handler, Avada Forms, Elementor Forms, Contact Form 7, Ninja Forms or WPForms.', 'personio-integration-light' ),
 				'category'    => 'forms',
 			),
 			array(
@@ -1941,8 +1941,26 @@ class PersonioPosition extends Post_Type {
 				'category'    => 'pagebuilder',
 			),
 			array(
+				'name'        => 'gutenberg',
+				'label'       => __( 'Block Editor', 'personio-integration-light' ),
+				'description' => __( 'Use 18 blocks, including Google Maps, more filter options, and radius search.', 'personio-integration-light' ),
+				'category'    => 'pagebuilder',
+			),
+			array(
+				'name'        => 'Bricks',
+				'label'       => __( 'Bricks', 'personio-integration-light' ),
+				'description' => __( 'Use one of the most interesting page builder to style your positions in your website.', 'personio-integration-light' ),
+				'category'    => 'pagebuilder',
+			),
+			array(
+				'name'        => 'Brizy',
+				'label'       => __( 'Brizy', 'personio-integration-light' ),
+				'description' => __( 'Use one of the fastest page builder to style your positions in your website.', 'personio-integration-light' ),
+				'category'    => 'pagebuilder',
+			),
+			array(
 				'name'        => 'divi',
-				'label'       => __( 'Divi', 'personio-integration-light' ),
+				'label'       => __( 'Divi 4 & 5', 'personio-integration-light' ),
 				'description' => __( 'Use one of the most used page builder to style your positions in your website.', 'personio-integration-light' ),
 				'category'    => 'pagebuilder',
 			),
@@ -1950,12 +1968,6 @@ class PersonioPosition extends Post_Type {
 				'name'        => 'elementor',
 				'label'       => __( 'Elementor', 'personio-integration-light' ),
 				'description' => __( 'Use the most used page builder to style your positions in your website.', 'personio-integration-light' ),
-				'category'    => 'pagebuilder',
-			),
-			array(
-				'name'        => 'gutenberg',
-				'label'       => __( 'Block Editor', 'personio-integration-light' ),
-				'description' => __( 'Use 18 blocks, including Google Maps, more filter options, and radius search.', 'personio-integration-light' ),
 				'category'    => 'pagebuilder',
 			),
 			array(

@@ -968,7 +968,7 @@ class Admin {
 	}
 
 	/**
-	 * Check if the website is using an old PHP version and show warning if is it using such.
+	 * Show a warning, if the website is using an old PHP version.
 	 *
 	 * @return void
 	 */

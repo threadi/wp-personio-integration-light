@@ -10,6 +10,7 @@
 
 ### Changed
 
+- Compatible with WordPress 7.1
 - Now required PHP 8.2 or newer
 - Updated dialog lib to 2.0.0
 - Updated settings lib to 2.0.0
@@ -20,7 +21,7 @@
 
 ### Fixed
 
-- Fixed missing dialogs on log page
+- Fixed missing dialogs on the page of logs
 
 ## [5.5.3] - 27.07.2026
 
