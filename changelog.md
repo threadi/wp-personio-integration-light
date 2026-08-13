@@ -15,15 +15,20 @@
 - Updated dialog lib to 2.0.0
 - Updated settings lib to 2.0.0
 - Updated crypt lib to 3.0.0
+- Set DataView as the new modern default view of our plugin settings, changeable under "Advanced Settings"
 - Logging each error for any technical crypt or setting problem
 - Optimized performance for each supported Block
 - Removed support for Brizy post types as we do not allow editing of positions with any editor
 - Do not register schedule problems as errors as they are solved by the plugin automatically
-- Updated infos about possible extensions
+- Updated info about possible extensions
 
 ### Fixed
 
 - Fixed missing dialogs on the page of logs
+
+### Removed
+
+- Removed the deprecated old advanced tab from versions before 5.1.0
 
 ## [5.5.3] - 27.07.2026
 

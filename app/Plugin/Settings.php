@@ -75,7 +75,6 @@ class Settings {
 		// use our own hooks.
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 30 );
-		add_filter( 'personio_integration_light_settings_tab_title', array( $this, 'add_pro_on_title' ), 10, 2 );
 		add_action( 'personio_integration_light_settings_import', array( $this, 'run_after_import' ) );
 		add_filter( 'personio_integration_light_enqueue_styles_and_scripts', array( $this, 'enqueue_styles_and_scripts' ), 10, 2 );
 
@@ -181,6 +180,9 @@ class Settings {
 				'drag_n_drop'                        => __( 'Hold to drag & drop', 'personio-integration-light' ),
 			)
 		);
+		if ( method_exists( $settings_obj, 'set_view' ) ) { // @phpstan-ignore function.alreadyNarrowedType
+			$settings_obj->set_view( get_option( 'personio_integration_light_setting_view', 'dataview' ) );
+		}
 
 		// initialize this setting object if setup has been completed or if this is a REST API request.
 		if ( Helper::is_rest_request() || Setup::get_instance()->is_completed() ) {
@@ -202,7 +204,9 @@ class Settings {
 		// the Pro-tab.
 		$pro_tab = $settings_page->add_tab( 'use_pro', 30 );
 		$pro_tab->set_title( __( 'Applications, SEO & more', 'personio-integration-light' ) );
-		$pro_tab->set_not_linked( true );
+		$pro_tab->set_url( Helper::get_pro_url() );
+		$pro_tab->set_url_target( '_blank' );
+		$pro_tab->set_tab_class( 'nav-tab-pro' );
 
 		// add the extension tab.
 		$extensions_tab = $settings_page->add_tab( 'extensions', 40 );
@@ -213,10 +217,6 @@ class Settings {
 		// the advanced tab.
 		$advanced_tab = $settings_page->add_tab( 'personio_integration_advanced', 50 );
 		$advanced_tab->set_title( __( 'Additional settings', 'personio-integration-light' ) );
-
-		// the advanced tab with the old name for compatibility with < 5.1.0.
-		$comp_advanced_tab = $settings_page->add_tab( 'advanced', 5000 );
-		$comp_advanced_tab->set_tab_class( 'hidden' );
 
 		// the log tab.
 		$logs_tab = $settings_page->add_tab( 'logs', 60 );
@@ -283,6 +283,7 @@ class Settings {
 
 		// create a hidden tab on this page.
 		$hidden_tab = $hidden_page->add_tab( 'hidden_tab', 10 );
+		$hidden_tab->set_tab_class( 'nav-tab-hidden' );
 
 		// the hidden section for any not visible settings.
 		$hidden = $hidden_tab->add_section( 'hidden_section', 20 );
@@ -668,6 +669,22 @@ class Settings {
 		$field->set_description( __( 'When enabled, a marker appears in the backend menu as soon as any error is logged. Clicking the markers path takes you directly to the log, where you can review the error.', 'personio-integration-light' ) );
 		$setting->set_field( $field );
 
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personio_integration_light_setting_view' );
+		$setting->set_section( $advanced );
+		$setting->set_type( 'string' );
+		$setting->set_default( 'dataview' );
+		$field = new Select( $settings_obj );
+		$field->set_title( __( 'Settings view', 'personio-integration-light' ) );
+		$field->set_description( __( 'Choose the view for the settings of this plugin. DataView is only available for WordPress 7 or newer.', 'personio-integration-light' ) );
+		$field->set_options(
+			array(
+				'classic'  => __( 'Classic', 'personio-integration-light' ),
+				'dataview' => __( 'DataView', 'personio-integration-light' ),
+			)
+		);
+		$setting->set_field( $field );
+
 		// create import dialog.
 		$dialog = array(
 			'title'   => __( 'Import settings', 'personio-integration-light' ),
@@ -942,24 +959,6 @@ class Settings {
 
 		// return the resulting list.
 		return $help_list;
-	}
-
-	/**
-	 * Add a Pro hint on the tab title.
-	 *
-	 * @param string $title The title of the tab.
-	 * @param Tab    $tab The used tab.
-	 *
-	 * @return string
-	 */
-	public function add_pro_on_title( string $title, Tab $tab ): string {
-		// bail if the tab is not "use_pro".
-		if ( 'use_pro' !== $tab->get_name() ) {
-			return $title;
-		}
-
-		// add the title.
-		return $title . ' <a class="pro-marker" href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">Pro</a>';
 	}
 
 	/**

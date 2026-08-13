@@ -198,6 +198,19 @@ body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text:last-o
 	margin-right: 8px;
 }
 
+.nav-tab-pro, #tab-panel-0-use_pro .esfw-tab-title {
+	background-color: var(--personio-pro-hint-bg);
+}
+
+.nav-tab-pro:before, #tab-panel-0-use_pro .esfw-tab-title:before {
+	content: "🆙";
+	display: inline-block;
+	font-size: 12px;
+	margin-right: 8px;
+}
+
+.nav-tab-hidden { display: none }
+
 body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication'], body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication']:hover, body:not(.personio-integration) #menu-posts-personioposition a[href='#']:visited, body:not(.personio-integration) #menu-posts-personioposition a[href='#']:active, body:not(.personio-integration) #menu-posts-personioposition a[href*='personioApplication']:focus {
 	color: var(--personio-pro-hint-bg);
 }
