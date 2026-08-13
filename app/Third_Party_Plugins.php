@@ -534,7 +534,7 @@ class Third_Party_Plugins {
 	 */
 	public function brizy_settings_post_types( array $post_types ): array {
 		// bail if our cpt is not in list.
-		if( ! isset( $post_types[ PersonioPosition::get_instance()->get_name() ] ) ) {
+		if ( ! isset( $post_types[ PersonioPosition::get_instance()->get_name() ] ) ) {
 			return $post_types;
 		}
 

@@ -91,6 +91,7 @@ class Admin {
 		add_action( 'admin_init', array( $this, 'check_language' ) );
 		add_action( 'admin_init', array( $this, 'show_review_hint' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
+		add_action( 'admin_menu', array( $this, 'mark_errors_in_menu' ), 999 );
 		add_action( 'admin_init', array( $this, 'get_setting_errors' ), 100 );
 		add_action( 'init', array( $this, 'configure_transients' ), 5 );
 		add_action( 'admin_bar_menu', array( $this, 'add_custom_toolbar' ), 100 );
@@ -107,6 +108,7 @@ class Admin {
 		add_action( 'admin_action_personioPositionsDelete', array( $this, 'delete_positions' ) );
 		add_action( 'admin_action_personio_integration_log_export', array( $this, 'export_log' ) );
 		add_action( 'admin_action_personio_integration_log_empty', array( $this, 'empty_log' ) );
+		add_action( 'admin_action_personio_integration_log_reset_marker', array( $this, 'reset_error_marker_by_request' ) );
 
 		// misc.
 		add_action( 'personio-integration-light_crypt_error', array( $this, 'save_crypt_error' ), 10, 3 );
@@ -1138,5 +1140,71 @@ class Admin {
 		foreach ( $errors->errors as $key => $errors ) {
 			Log::get_instance()->add( __( 'Error in plugin settings:', 'personio-integration-light' ) . ' <em>' . esc_html( $key ) . '</em>: ' . esc_html( implode( ' ', $errors ) ), 'error', 'system' );
 		}
+	}
+
+	/**
+	 * Mark errors in log in menu.
+	 *
+	 * @return void
+	 */
+	public function mark_errors_in_menu(): void {
+		global $menu, $submenu;
+
+		// bail if user has no capability to change settings.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
+		// bail if setting is disabled.
+		if ( 1 !== absint( get_option( 'personio_integration_light_enable_log_error_count' ) ) ) {
+			return;
+		}
+
+		// get the count of errors.
+		$error_count = absint( get_option( 'personio_integration_light_log_error_count' ) );
+
+		// define the main menu slug.
+		$menu_slug = 'edit.php?post_type=' . PersonioPosition::get_instance()->get_name();
+
+		// bail if no errors are given or our submenu is missing.
+		if ( $error_count < 1 || ! isset( $submenu[ $menu_slug ] ) ) {
+			return;
+		}
+
+		// change the main menu item.
+		foreach ( $menu as $key => $item ) {
+			if ( isset( $item[2] ) && $item[2] === $menu_slug ) {
+				$menu[ $key ][0] .= ' <span class="update-plugins"><span class="update-count">!</span></span>';
+			}
+		}
+
+		// change the settings menu item.
+		foreach ( $submenu[ $menu_slug ] as $key => $item ) {
+			if ( 'personioPositions' === $item[2] ) {
+				$submenu[ $menu_slug ][ $key ][0] .= ' <span class="update-plugins"><span class="update-count">!</span></span>';
+			}
+		}
+	}
+
+	/**
+	 * Reset the error marker.
+	 *
+	 * @return void
+	 */
+	public function reset_error_marker_by_request(): void {
+		// check nonce.
+		check_admin_referer( 'personio-integration-log-reset-marker', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			return;
+		}
+
+		// reset the marker.
+		update_option( 'personio_integration_light_log_error_count', 0 );
+
+		// redirect user.
+		wp_safe_redirect( wp_get_referer() );
+		exit;
 	}
 }

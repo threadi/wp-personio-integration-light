@@ -222,6 +222,7 @@ class Settings {
 		$logs_tab = $settings_page->add_tab( 'logs', 60 );
 		$logs_tab->set_title( __( 'Logs', 'personio-integration-light' ) );
 		$logs_tab->set_hide_save( true );
+		$logs_tab->set_tab_class( 1 === absint( get_option( 'personio_integration_light_enable_log_error_count' ) ) && absint( get_option( 'personio_integration_light_log_error_count' ) ) > 0 ? 'errors' : '' );
 		$logs_tab->set_callback( array( '\PersonioIntegrationLight\Plugin\Admin\Logs', 'show' ) );
 
 		// the copyright tab.
@@ -658,6 +659,15 @@ class Settings {
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personio_integration_light_enable_log_error_count' );
+		$setting->set_section( $advanced );
+		$setting->set_default( 1 );
+		$field = new Checkbox( $settings_obj );
+		$field->set_title( __( 'Show error marker', 'personio-integration-light' ) );
+		$field->set_description( __( 'When enabled, a marker appears in the backend menu as soon as any error is logged. Clicking the markers path takes you directly to the log, where you can review the error.', 'personio-integration-light' ) );
+		$setting->set_field( $field );
+
 		// create import dialog.
 		$dialog = array(
 			'title'   => __( 'Import settings', 'personio-integration-light' ),
@@ -806,7 +816,7 @@ class Settings {
 		$setting->set_field( $field );
 
 		/**
-		 * Add the settings for the template other section.
+		 * Add the settings for the hidden section.
 		 */
 		// add setting.
 		$setting = $settings_obj->add_setting( WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST );
@@ -862,6 +872,13 @@ class Settings {
 		$setting->set_type( 'array' );
 		$setting->set_default( array() );
 		$setting->set_show_in_rest( array( 'schema' => array( 'items' => array( 'type' => 'string' ) ) ) );
+
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personio_integration_light_log_error_count' );
+		$setting->set_section( $hidden );
+		$setting->set_type( 'integer' );
+		$setting->set_default( 0 );
+		$setting->prevent_export( true );
 	}
 
 	/**
