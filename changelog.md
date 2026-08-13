@@ -18,6 +18,8 @@
 - Logging each error for any technical crypt or setting problem
 - Optimized performance for each supported Block
 - Removed support for Brizy post types as we do not allow editing of positions with any editor
+- Do not register schedule problems as errors as they are solved by the plugin automatically
+- Updated infos about possible extensions
 
 ### Fixed
 
