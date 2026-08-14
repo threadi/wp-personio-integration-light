@@ -201,7 +201,6 @@ class Settings {
 			$settings_obj->set_error_help( $error_help );
 		}
 
-
 		// initialize this setting object if setup has been completed or if this is a REST API request.
 		if ( Helper::is_rest_request() || Setup::get_instance()->is_completed() ) {
 			$settings_obj->init();
