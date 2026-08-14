@@ -150,7 +150,7 @@ body.easy-dialog-for-wordpress.wp-core-ui .components-modal__frame.easy-dialog {
 }
 
 body.easy-dialog-for-wordpress.wp-core-ui .components-modal__frame.easy-dialog:after {
-	background-image: url(/wp-content/plugins/personio-integration-light/gfx/personio_logo_big.png);
+	background-image: url(../gfx/personio_logo_big.png);
 	height: 41px;
 	float: right;
 	content: "";
@@ -190,10 +190,32 @@ body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text:last-o
 	z-index: 1;
 }
 
-.nav-tab-help:before {
+.nav-tab-help:not(.components-button):before {
 	content: "\f125";
 	display: inline-block;
 	font-family: "dashicons", sans-serif;
+	font-size: 12px;
+	margin-right: 8px;
+}
+
+.nav-tab-help.components-button {
+	margin-left: auto;
+	.esfw-tab-title:before {
+		content: "\f125";
+		display: inline-block;
+		font-family: "dashicons", sans-serif;
+		font-size: 12px;
+		margin-right: 8px;
+	}
+}
+
+.nav-tab-pro, #tab-panel-0-use_pro .esfw-tab-title {
+	background-color: var(--personio-pro-hint-bg);
+}
+
+.nav-tab-pro:before, #tab-panel-0-use_pro .esfw-tab-title:before {
+	content: "🆙";
+	display: inline-block;
 	font-size: 12px;
 	margin-right: 8px;
 }
@@ -219,13 +241,29 @@ body.post-type-personioposition a.review-hint-button:after {
 	margin-left: 8px;
 }
 
-.nav-tab.copyright { position: relative;z-index: 1 }
+.nav-tab.copyright {
+	padding: 17px 10px;
+	position: relative;
+	z-index: 1
+}
 
 .nav-tab.copyright:after {
 	content: '®';
 	font-size: 22px;
 	position: absolute;
 	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	z-index: 1;
+	text-align: center;
+}
+
+.copyright.components-button:before {
+	content: '®';
+	font-size: 22px;
+	position: absolute;
+	top: 10px;
 	right: 0;
 	left: 0;
 	bottom: 0;
@@ -244,6 +282,25 @@ body.post-type-personioposition a.review-hint-button:after {
 	margin-left: .4em;
 	padding: 0 8px;
 	font-size: .9em;
+}
+
+.errors.components-button {
+	padding-right: 26px;
+}
+
+.errors.components-button:before {
+	content: '!';
+	display: inline-block;
+	background-color: #d63638;
+	color: #fff;
+	border-radius: 16px;
+	padding: 0 8px;
+	font-size: .9em;
+	position: absolute;
+	right: 0;
+	left: auto;
+	bottom: auto;
+	top: 17px;
 }
 
 .tab-content img.logo {

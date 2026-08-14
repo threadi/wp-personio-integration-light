@@ -304,6 +304,26 @@ class Intro {
 			return;
 		}
 
+		// create dialog.
+		$dialog = array(
+			'title'   => __( 'Reset intro', 'personio-integration-light' ),
+			'texts'   => array(
+				'<p><strong>' . __( 'Are your sure you want to reset the intro?', 'personio-integration-light' ) . '</strong></p>',
+			),
+			'buttons' => array(
+				array(
+					'action'  => 'esefw_settings_import_file();',
+					'variant' => 'primary',
+					'text'    => __( 'Yes', 'personio-integration-light' ),
+				),
+				array(
+					'action'  => 'closeDialog();',
+					'variant' => 'secondary',
+					'text'    => __( 'No', 'personio-integration-light' ),
+				),
+			),
+		);
+
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationResetIntro' );
 		$setting->set_section( $advanced_section );
@@ -321,6 +341,8 @@ class Intro {
 				get_admin_url() . 'admin.php'
 			)
 		);
+		$field->add_class( 'easy-dialog-for-wordpress' );
+		$field->add_data( 'dialog', Helper::get_json( $dialog ) );
 		$field->add_class( 'personio-integration-reset-intro' );
 		$setting->set_field( $field );
 

@@ -10,17 +10,26 @@
 
 ### Changed
 
+- Compatible with WordPress 7.1
 - Now required PHP 8.2 or newer
 - Updated dialog lib to 2.0.0
 - Updated settings lib to 2.0.0
 - Updated crypt lib to 3.0.0
+- Change the view of any settings to the modern DataView under "Advanced Settings"
 - Logging each error for any technical crypt or setting problem
 - Optimized performance for each supported Block
 - Removed support for Brizy post types as we do not allow editing of positions with any editor
+- Do not register schedule problems as errors as they are solved by the plugin automatically
+- Updated info about possible extensions
 
 ### Fixed
 
-- Fixed missing dialogs on log page
+- Fixed missing dialogs on the page of logs
+- Fixed usage of block-styles if a classic theme is used with block editor
+
+### Removed
+
+- Removed the deprecated old advanced tab from versions before 5.1.0
 
 ## [5.5.3] - 27.07.2026
 

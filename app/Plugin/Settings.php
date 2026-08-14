@@ -75,13 +75,13 @@ class Settings {
 		// use our own hooks.
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
 		add_filter( 'personio_integration_light_help_tabs', array( $this, 'add_help' ), 30 );
-		add_filter( 'personio_integration_light_settings_tab_title', array( $this, 'add_pro_on_title' ), 10, 2 );
 		add_action( 'personio_integration_light_settings_import', array( $this, 'run_after_import' ) );
 		add_filter( 'personio_integration_light_enqueue_styles_and_scripts', array( $this, 'enqueue_styles_and_scripts' ), 10, 2 );
 
 		// misc.
 		add_action( 'wp_ajax_personio_integration_light_get_settings_import_dialog', array( $this, 'get_settings_import_dialog_via_ajax' ) );
 		add_action( 'admin_action_personio_integration_light_reset', array( $this, 'reset_plugin_by_request' ) );
+		add_action( 'admin_action_personio_integration_light_use_classic_view', array( $this, 'use_classic_view' ) );
 	}
 
 	/**
@@ -181,6 +181,25 @@ class Settings {
 				'drag_n_drop'                        => __( 'Hold to drag & drop', 'personio-integration-light' ),
 			)
 		);
+		if ( method_exists( $settings_obj, 'set_view' ) ) { // @phpstan-ignore function.alreadyNarrowedType
+			$settings_obj->set_view( get_option( 'personio_integration_light_setting_view', 'dataview' ) );
+		}
+		if ( method_exists( $settings_obj, 'set_update_version' ) ) {
+			$settings_obj->set_update_version( WP_PERSONIO_INTEGRATION_VERSION );
+		}
+
+		// create help in case of error during loading of the settings.
+		if ( method_exists( $settings_obj, 'set_error_help' ) ) {
+			$url = add_query_arg(
+				array(
+					'action' => 'personio_integration_light_use_classic_view',
+					'nonce' => wp_create_nonce( 'personio-integration-light-use-classic-view' ),
+				),
+				admin_url( 'admin.php' )
+			);
+			$error_help = '<div class="personio-integration-transient notice notice-success"><h3>' . wp_kses_post( Helper::get_logo_img() ) . ' ' . esc_html( apply_filters( 'personio_integration_light_transient_title', Helper::get_plugin_name() ) ) . '</h3><p><strong>' . __( 'Page is loading', 'personio-integration-light' ) . '</strong><br>' . __( 'Please wait while we load the page.', 'personio-integration-light' ) . '<br>' . __( 'This may take a moment.', 'personio-integration-light' ) . '<br>' . sprintf( __( '<a href="%1$s">Click this link</a> to switch to the classic view.', 'personio-integration-light' ), $url ) . '</p></div>';
+			$settings_obj->set_error_help( $error_help );
+		}
 
 		// initialize this setting object if setup has been completed or if this is a REST API request.
 		if ( Helper::is_rest_request() || Setup::get_instance()->is_completed() ) {
@@ -202,7 +221,9 @@ class Settings {
 		// the Pro-tab.
 		$pro_tab = $settings_page->add_tab( 'use_pro', 30 );
 		$pro_tab->set_title( __( 'Applications, SEO & more', 'personio-integration-light' ) );
-		$pro_tab->set_not_linked( true );
+		$pro_tab->set_url( Helper::get_pro_url() );
+		$pro_tab->set_url_target( '_blank' );
+		$pro_tab->set_tab_class( 'nav-tab-pro' );
 
 		// add the extension tab.
 		$extensions_tab = $settings_page->add_tab( 'extensions', 40 );
@@ -214,10 +235,6 @@ class Settings {
 		$advanced_tab = $settings_page->add_tab( 'personio_integration_advanced', 50 );
 		$advanced_tab->set_title( __( 'Additional settings', 'personio-integration-light' ) );
 
-		// the advanced tab with the old name for compatibility with < 5.1.0.
-		$comp_advanced_tab = $settings_page->add_tab( 'advanced', 5000 );
-		$comp_advanced_tab->set_tab_class( 'hidden' );
-
 		// the log tab.
 		$logs_tab = $settings_page->add_tab( 'logs', 60 );
 		$logs_tab->set_title( __( 'Logs', 'personio-integration-light' ) );
@@ -227,7 +244,7 @@ class Settings {
 
 		// the copyright tab.
 		$copyright_tab = $settings_page->add_tab( 'copyright', 900 );
-		$copyright_tab->set_title( '&nbsp;' );
+		$copyright_tab->set_title( ' ' );
 		$copyright_tab->set_tab_class( 'copyright' );
 		$copyright_tab->set_hide_save( true );
 		$copyright_tab->set_callback( array( $this, 'show_copyright' ) );
@@ -283,6 +300,7 @@ class Settings {
 
 		// create a hidden tab on this page.
 		$hidden_tab = $hidden_page->add_tab( 'hidden_tab', 10 );
+		$hidden_tab->set_tab_class( 'nav-tab-hidden' );
 
 		// the hidden section for any not visible settings.
 		$hidden = $hidden_tab->add_section( 'hidden_section', 20 );
@@ -668,6 +686,22 @@ class Settings {
 		$field->set_description( __( 'When enabled, a marker appears in the backend menu as soon as any error is logged. Clicking the markers path takes you directly to the log, where you can review the error.', 'personio-integration-light' ) );
 		$setting->set_field( $field );
 
+		// add setting.
+		$setting = $settings_obj->add_setting( 'personio_integration_light_setting_view' );
+		$setting->set_section( $advanced );
+		$setting->set_type( 'string' );
+		$setting->set_default( 'classic' );
+		$field = new Select( $settings_obj );
+		$field->set_title( __( 'Settings view', 'personio-integration-light' ) );
+		$field->set_description( __( 'Choose the view for the settings of this plugin. DataView is only available for WordPress 7 or newer.', 'personio-integration-light' ) );
+		$field->set_options(
+			array(
+				'classic'  => __( 'Classic', 'personio-integration-light' ),
+				'dataview' => __( 'DataView', 'personio-integration-light' ),
+			)
+		);
+		$setting->set_field( $field );
+
 		// create import dialog.
 		$dialog = array(
 			'title'   => __( 'Import settings', 'personio-integration-light' ),
@@ -931,6 +965,8 @@ class Settings {
 			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get many more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		}
 		$content .= '</ol>';
+		$content .= '<p><strong>' . __( 'Hint:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<p>' . __( 'You can switch to the modern DataView under "Advanced Settings".', 'personio-integration-light' ) . '</p>';
 
 		// add help for the positions in general.
 		$help_list[] = array(
@@ -942,24 +978,6 @@ class Settings {
 
 		// return the resulting list.
 		return $help_list;
-	}
-
-	/**
-	 * Add a Pro hint on the tab title.
-	 *
-	 * @param string $title The title of the tab.
-	 * @param Tab    $tab The used tab.
-	 *
-	 * @return string
-	 */
-	public function add_pro_on_title( string $title, Tab $tab ): string {
-		// bail if the tab is not "use_pro".
-		if ( 'use_pro' !== $tab->get_name() ) {
-			return $title;
-		}
-
-		// add the title.
-		return $title . ' <a class="pro-marker" href="' . esc_url( Helper::get_pro_url() ) . '" target="_blank">Pro</a>';
 	}
 
 	/**
@@ -1212,5 +1230,23 @@ class Settings {
 			return $result;
 		}
 		return true;
+	}
+
+	/**
+	 * Set to use the classic view by request.
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function use_classic_view(): void {
+		// check nonce.
+		check_admin_referer( 'personio-integration-light-use-classic-view', 'nonce' );
+
+		// change the setting.
+		update_option( 'personio_integration_light_setting_view', 'classic' );
+
+		// forward user to the dashboard.
+		wp_safe_redirect( (string) wp_get_referer() );
+		exit;
 	}
 }

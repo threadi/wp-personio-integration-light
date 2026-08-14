@@ -107,6 +107,7 @@ class Init {
 		add_action( 'cli_init', array( $this, 'cli' ) );
 
 		// register frontend scripts.
+		add_action( 'enqueue_block_assets', array( $this, 'add_styles_frontend' ), PHP_INT_MAX );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_styles_frontend' ), PHP_INT_MAX );
 
 		// add action links on the plugin-list.
@@ -144,30 +145,30 @@ class Init {
 	}
 
 	/**
-	 * Add own CSS and JS for the frontend.
+	 * Add own CSS and JS for the frontend and block editor if classic theme is used.
 	 *
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
 	public function add_styles_frontend(): void {
-		/**
-		 * Load listing-style from Block "list" if NO FSE theme is used.
-		 */
-		if ( ! Helper::theme_is_fse_theme() ) {
-			$css_file = 'css/blocks.css';
-			// if debug-mode is not enabled, use a minified file.
-			if ( ! defined( 'WP_DEBUG' ) || ( defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
-				$css_file = str_replace( '.css', '.min.css', $css_file );
-			}
-
-			// enqueue the css-file.
-			wp_enqueue_style(
-				'personio-integration',
-				Helper::get_plugin_url() . $css_file,
-				array(),
-				Helper::get_file_version( Helper::get_plugin_path() . $css_file )
-			);
+		// bail if this is a block theme.
+		if ( Helper::theme_is_fse_theme() ) {
+			return;
 		}
+
+		$css_file = 'css/blocks.css';
+		// if debug-mode is not enabled, use a minified file.
+		if ( ! defined( 'WP_DEBUG' ) || ( defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
+			$css_file = str_replace( '.css', '.min.css', $css_file );
+		}
+
+		// enqueue the css-file.
+		wp_enqueue_style(
+			'personio-integration',
+			Helper::get_plugin_url() . $css_file,
+			array(),
+			Helper::get_file_version( Helper::get_plugin_path() . $css_file )
+		);
 	}
 
 	/**

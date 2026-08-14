@@ -121,6 +121,7 @@ class Email_Base {
 		$text_field->add_depend( $enable_setting, 1 );
 		$field->set_field( $text_field );
 		$field->set_quantity( count( $setting->get_value() ? $setting->get_value() : array() ) + 1 );
+		$field->add_depend( $enable_setting, 1 );
 		$setting->set_field( $field );
 
 		// add setting.

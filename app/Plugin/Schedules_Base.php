@@ -137,7 +137,7 @@ class Schedules_Base {
 		// log event if the schedule could not be created.
 		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType
 			/* translators: %1$s will be replaced by the name of the schedule. */
-			Log::get_instance()->add( sprintf( __( 'Error during creation of schedule %1$s:', 'personio-integration-light' ), $this->get_name() ) . ' <code>' . wp_json_encode( wp_json_encode( $result->get_error_messages() ) ) . '</code>', 'error', $this->get_log_category() );
+			Log::get_instance()->add( sprintf( __( 'Error during creation of schedule %1$s:', 'personio-integration-light' ), $this->get_name() ) . ' <code>' . wp_json_encode( wp_json_encode( $result->get_error_messages() ) ) . '</code>', 'info', $this->get_log_category() );
 		}
 	}
 
@@ -152,7 +152,7 @@ class Schedules_Base {
 
 		// log event if the schedule could not be deleted.
 		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType
-			Log::get_instance()->add( __( 'Error during deleting of schedule:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $result->get_error_message() ) . '</code>', 'error', $this->get_log_category() );
+			Log::get_instance()->add( __( 'Error during deleting of schedule:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $result->get_error_message() ) . '</code>', 'info', $this->get_log_category() );
 		}
 	}
 
