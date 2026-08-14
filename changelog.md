@@ -15,7 +15,7 @@
 - Updated dialog lib to 2.0.0
 - Updated settings lib to 2.0.0
 - Updated crypt lib to 3.0.0
-- Set DataView as the new modern default view of our plugin settings, changeable under "Advanced Settings"
+- Change the view of any settings to the modern DataView under "Advanced Settings"
 - Logging each error for any technical crypt or setting problem
 - Optimized performance for each supported Block
 - Removed support for Brizy post types as we do not allow editing of positions with any editor
@@ -25,6 +25,7 @@
 ### Fixed
 
 - Fixed missing dialogs on the page of logs
+- Fixed usage of block-styles if a classic theme is used with block editor
 
 ### Removed
 
