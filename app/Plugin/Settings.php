@@ -183,6 +183,9 @@ class Settings {
 		if ( method_exists( $settings_obj, 'set_view' ) ) { // @phpstan-ignore function.alreadyNarrowedType
 			$settings_obj->set_view( get_option( 'personio_integration_light_setting_view', 'dataview' ) );
 		}
+		if ( method_exists( $settings_obj, 'set_update_version' ) ) {
+			$settings_obj->set_update_version( WP_PERSONIO_INTEGRATION_VERSION );
+		}
 
 		// initialize this setting object if setup has been completed or if this is a REST API request.
 		if ( Helper::is_rest_request() || Setup::get_instance()->is_completed() ) {
@@ -673,7 +676,7 @@ class Settings {
 		$setting = $settings_obj->add_setting( 'personio_integration_light_setting_view' );
 		$setting->set_section( $advanced );
 		$setting->set_type( 'string' );
-		$setting->set_default( 'dataview' );
+		$setting->set_default( 'classic' );
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Settings view', 'personio-integration-light' ) );
 		$field->set_description( __( 'Choose the view for the settings of this plugin. DataView is only available for WordPress 7 or newer.', 'personio-integration-light' ) );

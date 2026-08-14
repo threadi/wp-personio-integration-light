@@ -95,9 +95,6 @@ class Update {
 			if ( version_compare( $db_plugin_version, '5.5.3', '<' ) ) {
 				$this->version553();
 			}
-			if ( version_compare( $db_plugin_version, '5.6.0', '<' ) ) {
-				$this->version560();
-			}
 
 			// log that this update has been run.
 			/* translators: %1$s and %2$s are replaced by the old and new version. */
@@ -236,17 +233,5 @@ class Update {
 	 */
 	private function version553(): void {
 		Init::get_instance()->install_db_tables();
-	}
-
-	/**
-	 * To run on an update to version 5.6.0 or newer.
-	 *
-	 * @return void
-	 */
-	private function version560(): void {
-		$settings_view = get_option( 'personio_integration_light_setting_view' );
-		if( empty( $settings_view ) ) {
-			add_option( 'personio_integration_light_setting_view', 'dataview', '', true );
-		}
 	}
 }
