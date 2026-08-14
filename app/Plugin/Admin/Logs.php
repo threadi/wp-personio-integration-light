@@ -43,18 +43,16 @@ class Logs {
 
 		// output.
 		?>
-		<div class="wrap">
-			<h2><?php echo esc_html__( 'Logs', 'personio-integration-light' ); ?></h2>
-			<form action="<?php echo esc_url( get_admin_url() . 'edit.php' ); ?>" method="get">
-				<input type="hidden" name="page" value="<?php echo esc_attr( $page ); ?>">
-				<input type="hidden" name="tab" value="logs">
-				<input type="hidden" name="post_type" value="<?php echo esc_attr( PersonioPosition::get_instance()->get_name() ); ?>">
-				<?php
-				$log->views();
-				$log->display();
-				?>
-			</form>
-		</div>
+		<h2><?php echo esc_html__( 'Logs', 'personio-integration-light' ); ?></h2>
+		<form action="<?php echo esc_url( get_admin_url() . 'edit.php' ); ?>" method="get">
+			<input type="hidden" name="page" value="<?php echo esc_attr( $page ); ?>">
+			<input type="hidden" name="tab" value="logs">
+			<input type="hidden" name="post_type" value="<?php echo esc_attr( PersonioPosition::get_instance()->get_name() ); ?>">
+			<?php
+			$log->views();
+			$log->display();
+			?>
+		</form>
 		<?php
 	}
 }

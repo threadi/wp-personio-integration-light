@@ -227,7 +227,7 @@ class Settings {
 
 		// the copyright tab.
 		$copyright_tab = $settings_page->add_tab( 'copyright', 900 );
-		$copyright_tab->set_title( '&nbsp;' );
+		$copyright_tab->set_title( ' ' );
 		$copyright_tab->set_tab_class( 'copyright' );
 		$copyright_tab->set_hide_save( true );
 		$copyright_tab->set_callback( array( $this, 'show_copyright' ) );

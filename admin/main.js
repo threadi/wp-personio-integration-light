@@ -16,37 +16,46 @@ jQuery(document).ready(function($) {
     /**
      * Get the content for the dialog via AJAX for dynamic content-changes.
      */
-    $('a.personio-integration-import-hint').on('click', function (e) {
-      e.preventDefault();
-      personio_integration_light_get_import_dialog();
-    });
+    $(document).on(
+      'click',
+      'a.personio-integration-import-hint',
+      function (e) {
+        e.preventDefault();
+        personio_integration_light_get_import_dialog();
+      }
+    );
 
     // create confirm dialog for deletion of all positions.
-    $('a.personio-integration-delete-all').on('click', function (e) {
-      e.preventDefault();
+    $(document).on(
+      'click',
+      'a.personio-integration-delete-all',
+      function (e) {
+        e.preventDefault();
 
-      let dialog_config = {
-        detail: {
-          title: personioIntegrationLightJsVars.title_delete_positions,
-          texts: [
-            '<p>' + personioIntegrationLightJsVars.txt_delete_positions + '</p>'
-          ],
-          buttons: [
-            {
-              'action': 'personio_delete_positions();',
-              'variant': 'primary',
-              'text': personioIntegrationLightJsVars.lbl_yes
-            },
-            {
-              'action': 'closeDialog();',
-              'variant': 'secondary',
-              'text': personioIntegrationLightJsVars.lbl_no
-            }
-          ]
-        }
+        let dialog_config = {
+          detail: {
+            title: personioIntegrationLightJsVars.title_delete_positions,
+            texts: [
+              '<p>' + personioIntegrationLightJsVars.txt_delete_positions + '</p>'
+            ],
+            buttons: [
+              {
+                'action': 'personio_delete_positions();',
+                'variant': 'primary',
+                'text': personioIntegrationLightJsVars.lbl_yes
+              },
+              {
+                'action': 'closeDialog();',
+                'variant': 'secondary',
+                'text': personioIntegrationLightJsVars.lbl_no
+              }
+            ]
+          }
+        };
+
+        personio_integration_create_dialog( dialog_config );
       }
-      personio_integration_create_dialog( dialog_config );
-    });
+    );
 
     /**
      * Add hint for applications in Pro-version in menu.
