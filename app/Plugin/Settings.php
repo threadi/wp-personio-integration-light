@@ -81,6 +81,7 @@ class Settings {
 		// misc.
 		add_action( 'wp_ajax_personio_integration_light_get_settings_import_dialog', array( $this, 'get_settings_import_dialog_via_ajax' ) );
 		add_action( 'admin_action_personio_integration_light_reset', array( $this, 'reset_plugin_by_request' ) );
+		add_action( 'admin_action_personio_integration_light_use_classic_view', array( $this, 'use_classic_view' ) );
 	}
 
 	/**
@@ -186,6 +187,20 @@ class Settings {
 		if ( method_exists( $settings_obj, 'set_update_version' ) ) {
 			$settings_obj->set_update_version( WP_PERSONIO_INTEGRATION_VERSION );
 		}
+
+		// create help in case of error during loading of the settings.
+		if ( method_exists( $settings_obj, 'set_error_help' ) ) {
+			$url = add_query_arg(
+				array(
+					'action' => 'personio_integration_light_use_classic_view',
+					'nonce' => wp_create_nonce( 'personio-integration-light-use-classic-view' ),
+				),
+				admin_url( 'admin.php' )
+			);
+			$error_help = '<div class="personio-integration-transient notice notice-success"><h3>' . wp_kses_post( Helper::get_logo_img() ) . ' ' . esc_html( apply_filters( 'personio_integration_light_transient_title', Helper::get_plugin_name() ) ) . '</h3><p><strong>' . __( 'Page is loading', 'personio-integration-light' ) . '</strong><br>' . __( 'Please wait while we load the page.', 'personio-integration-light' ) . '<br>' . __( 'This may take a moment.', 'personio-integration-light' ) . '<br>' . sprintf( __( '<a href="%1$s">Click this link</a> to switch to the classic view.', 'personio-integration-light' ), $url ) . '</p></div>';
+			$settings_obj->set_error_help( $error_help );
+		}
+
 
 		// initialize this setting object if setup has been completed or if this is a REST API request.
 		if ( Helper::is_rest_request() || Setup::get_instance()->is_completed() ) {
@@ -951,6 +966,8 @@ class Settings {
 			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get many more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		}
 		$content .= '</ol>';
+		$content .= '<p><strong>' . __( 'Hint:', 'personio-integration-light' ) . '</strong></p>';
+		$content .= '<p>' . __( 'You can switch to the modern DataView under "Advanced Settings".', 'personio-integration-light' ) . '</p>';
 
 		// add help for the positions in general.
 		$help_list[] = array(
@@ -1214,5 +1231,23 @@ class Settings {
 			return $result;
 		}
 		return true;
+	}
+
+	/**
+	 * Set to use the classic view by request.
+	 *
+	 * @return void
+	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+	 */
+	public function use_classic_view(): void {
+		// check nonce.
+		check_admin_referer( 'personio-integration-light-use-classic-view', 'nonce' );
+
+		// change the setting.
+		update_option( 'personio_integration_light_setting_view', 'classic' );
+
+		// forward user to the dashboard.
+		wp_safe_redirect( (string) wp_get_referer() );
+		exit;
 	}
 }
