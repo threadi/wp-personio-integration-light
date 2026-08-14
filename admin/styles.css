@@ -213,7 +213,7 @@ body.easy-dialog-for-wordpress.wp-core-ui .easy-dialog-for-wordpress-text:last-o
 	background-color: var(--personio-pro-hint-bg);
 }
 
-.nav-tab-pro:before, #tab-panel-0-use_pro .esfw-tab-title:before {
+.nav-tab-pro:not(.components-button):before, #tab-panel-0-use_pro .esfw-tab-title:before {
 	content: "🆙";
 	display: inline-block;
 	font-size: 12px;
