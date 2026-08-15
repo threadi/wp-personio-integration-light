@@ -28,6 +28,7 @@
 - Fixed missing dialogs on the page of logs
 - Fixed usage of block-styles if a classic theme is used with block editor
 - Fixed the usage of lower capability to delete terms of all supported taxonomies
+- Fixed possible usage of path traversals in template loader
 
 ### Removed
 
