@@ -182,7 +182,7 @@ class Settings {
 			)
 		);
 		if ( method_exists( $settings_obj, 'set_view' ) ) { // @phpstan-ignore function.alreadyNarrowedType
-			$settings_obj->set_view( get_option( 'personio_integration_light_setting_view', 'dataview' ) );
+			$settings_obj->set_view( get_option( 'personio_integration_light_setting_view', 'classic' ) );
 		}
 		if ( method_exists( $settings_obj, 'set_update_version' ) ) {
 			$settings_obj->set_update_version( WP_PERSONIO_INTEGRATION_VERSION );
@@ -289,6 +289,10 @@ class Settings {
 		$debug_plugin = $advanced_tab->add_section( 'settings_section_advanced_debug', 20 );
 		$debug_plugin->set_title( __( 'Debug', 'personio-integration-light' ) );
 		$debug_plugin->set_setting( $settings_obj );
+
+		// add a section.
+		$import_export_section = $advanced_tab->add_section( 'personio_integration_import_export_section', 20 );
+		$import_export_section->set_title( __( 'Secure settings', 'personio-integration-light' ) );
 
 		// the advanced plugin-handling section.
 		$advanced_plugin = $advanced_tab->add_section( 'settings_section_advanced_plugin', 30 );
@@ -493,7 +497,7 @@ class Settings {
 		$setting->set_type( 'string' );
 		$setting->set_default( 'default' );
 		$field = new Select( $settings_obj );
-		$field->set_title( __( 'Choose template for position details', 'personio-integration-light' ) );
+		$field->set_title( __( 'Choose a template for position details', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced with the documentation-URL */
 		$field->set_description( sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
 		$field->set_options( Templates::get_instance()->get_excerpts_templates() );
@@ -761,7 +765,7 @@ class Settings {
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'import_settings' );
-		$setting->set_section( $advanced_plugin );
+		$setting->set_section( $import_export_section );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		$field = new Button( $settings_obj );
@@ -794,7 +798,7 @@ class Settings {
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'export_settings' );
-		$setting->set_section( $advanced_plugin );
+		$setting->set_section( $import_export_section );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		$field = new Button( $settings_obj );
@@ -878,7 +882,7 @@ class Settings {
 		$setting = $settings_obj->add_setting( 'personioIntegrationPositionScheduleInterval' );
 		$setting->set_section( $hidden );
 		$setting->set_type( 'string' );
-		$setting->set_default( 'daily' );
+		$setting->set_default( 'personio_integration_daily' );
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationVersion' );
