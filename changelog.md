@@ -31,7 +31,8 @@
 
 ### Removed
 
-- Removed the deprecated old advanced tab from versions before 5.1.0
+- Removed the deprecated old advanced tab from versions before plugin version 5.1.0
+- Removed check for valid URL before WordPress version 5.1.0
 
 ## [5.5.3] - 27.07.2026
 
