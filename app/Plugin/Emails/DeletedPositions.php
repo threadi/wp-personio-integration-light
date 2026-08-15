@@ -51,7 +51,7 @@ class DeletedPositions extends Email_Base {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( 'If activated, an email is sent to the specified email address each time a position is been deleted in WordPress.', 'personio-integration-light' );
+		return __( 'If activated, an email is sent to the specified email address each time a position is being deleted in WordPress.', 'personio-integration-light' );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class DeletedPositions extends Email_Base {
 	 * @return void
 	 */
 	public function show_description(): void {
-		echo esc_html__( 'This email is sent when a position has been deleted in WordPress. This only happens if the position in question is no longer reported by Personio or if a setting in the plugin excludes the position in future.', 'personio-integration-light' );
+		echo esc_html__( 'This email is sent when a position has been deleted in WordPress. This only happens if the position in question is no longer reported by Personio or if a setting in the plugin excludes the position in the future.', 'personio-integration-light' );
 	}
 
 	/**

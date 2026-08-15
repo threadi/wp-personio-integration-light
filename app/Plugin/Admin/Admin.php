@@ -169,7 +169,7 @@ class Admin {
 				'title_pro_hint'                     => __( 'Use applications with Personio Integration Pro', 'personio-integration-light' ),
 				'txt_pro_hint'                       => __( 'With <strong>Personio Integration Pro</strong> you will be able to capture applications within your website.<br>Several form templates are available for this purpose, which you can also customize individually.<br>Incoming applications are automatically transferred to your Personio account via the Personio API.', 'personio-integration-light' ),
 				'lbl_get_more_information'           => __( 'Get more information', 'personio-integration-light' ),
-				'lbl_look_later'                     => __( 'I\'ll look later', 'personio-integration-light' ),
+				'lbl_look_later'                     => __( 'I will look later', 'personio-integration-light' ),
 				'import_title_error'                 => __( 'Error during import of positions', 'personio-integration-light' ),
 				'import_txt_error'                   => __( 'The following error occurred:', 'personio-integration-light' ),
 				'lbl_ok'                             => __( 'OK', 'personio-integration-light' ),
@@ -476,13 +476,14 @@ class Admin {
 			 * @since 3.0.0 Available since 3.0.0
 			 *
 			 * @param bool $false Set true to hide the buttons.
+			 * @noinspection PhpConditionAlreadyCheckedInspection
 			 */
 		} elseif ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) && absint( get_option( 'personioIntegrationPositionCount', 0 ) ) > 10 ) {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_dismissible_days( 60 );
 			$transient_obj->set_name( 'personio_integration_limit_hint' );
 			/* translators: %1$s will be replaced by the URL to the Pro-information-page, %2$s will be replaced by the a11y-window-hint. */
-			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro%2$s</a> any number of positions can be displayed - and you get a large number of additional features.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) );
+			$transient_obj->set_message( sprintf( __( 'The list of positions is limited to a maximum of 10 entries in the frontend. With <a href="%1$s">Personio Integration Pro%2$s</a> all positions can be displayed - and you get many additional features.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->set_hide_on(
 				array(
@@ -540,6 +541,7 @@ class Admin {
 		 * @since 3.0.0 Available since 3.0.0
 		 *
 		 * @param bool $false Set true to hide the buttons.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) || ! Helper::is_personio_url_set() ) {
 			$classes .= ' personio-integration-hide-buttons';
@@ -1040,13 +1042,14 @@ class Admin {
 		 * @since 3.0.0 Available since 3.0.0
 		 *
 		 * @param bool $false Set true to hide the buttons.
+		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			return;
 		}
 
 		// show the hint for Pro plugin.
-		echo '<a href="' . esc_url( Helper::get_pro_url() ) . '" class="page-title-action" target="_blank">' . esc_html__( 'Use more then 60 extensions in Personio Integration Pro', 'personio-integration-light' ) . '</a>';
+		echo '<a href="' . esc_url( Helper::get_pro_url() ) . '" class="page-title-action" target="_blank">' . esc_html__( 'Use more than 60 extensions in Personio Integration Pro', 'personio-integration-light' ) . '</a>';
 	}
 
 	/**

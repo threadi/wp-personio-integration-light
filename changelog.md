@@ -21,6 +21,8 @@
 - Removed support for Brizy post types as we do not allow editing of positions with any editor
 - Do not register schedule problems as errors as they are solved by the plugin automatically
 - Optimized check for Personio URL
+- Optimized check for registered cron schedules
+- Optimized sections for plugin handling and settings
 - Updated info about possible extensions
 
 ### Fixed
@@ -29,6 +31,7 @@
 - Fixed usage of block-styles if a classic theme is used with block editor
 - Fixed the usage of lower capability to delete terms of all supported taxonomies
 - Fixed possible usage of path traversals in template loader
+- Fixed wrong named cron intervall name for new installations
 
 ### Removed
 

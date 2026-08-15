@@ -61,7 +61,7 @@ class NewPositions extends Email_Base {
 	 * @return void
 	 */
 	public function show_description(): void {
-		echo esc_html__( 'This email is sent when a new position from Personio is saved in WordPress. The fact that a new position has been added is documented in the log even without this email.', 'personio-integration-light' );
+		echo esc_html__( 'This email is sent when a new position from Personio is saved in WordPress. If a new position has been added is documented in the log even without this email.', 'personio-integration-light' );
 	}
 
 	/**
