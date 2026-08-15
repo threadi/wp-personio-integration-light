@@ -54,7 +54,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 					$error = true;
 					$value = '';
 				} elseif ( ! self::validate_url( $value ) ) {
-					add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'Please enter a valid URL, e.g. https://example.jobs.personio.com. See also the hints below.', 'personio-integration-light' ) );
+					add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'Please enter a valid URL, e.g., https://example.jobs.personio.com. See also the hints below.', 'personio-integration-light' ) );
 					$error = true;
 					$value = '';
 				} elseif ( Helper::get_personio_url() !== $value ) {
@@ -164,7 +164,18 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function check_personio_in_url( string $value ): bool {
-		return function_exists( 'str_ends_with' ) && ( str_ends_with( $value, '.jobs.personio.com' ) || str_ends_with( $value, '.jobs.personio.de' ) );
+		if ( ! function_exists( 'str_ends_with' ) ) {
+			return false;
+		}
+
+		$host = wp_parse_url( $value, PHP_URL_HOST );
+
+		// bail if the URL has no parsable host at all.
+		if ( ! is_string( $host ) || '' === $host ) {
+			return false;
+		}
+
+		return str_ends_with( $host, '.jobs.personio.com' ) || str_ends_with( $host, '.jobs.personio.de' );
 	}
 
 	/**

@@ -20,6 +20,7 @@
 - Optimized performance for each supported Block
 - Removed support for Brizy post types as we do not allow editing of positions with any editor
 - Do not register schedule problems as errors as they are solved by the plugin automatically
+- Optimized check for Personio URL
 - Updated info about possible extensions
 
 ### Fixed
