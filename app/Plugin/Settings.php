@@ -289,15 +289,23 @@ class Settings {
 		$debug_plugin = $advanced_tab->add_section( 'settings_section_advanced_debug', 20 );
 		$debug_plugin->set_title( __( 'Debug', 'personio-integration-light' ) );
 		$debug_plugin->set_setting( $settings_obj );
+		if( method_exists( $debug_plugin, 'set_collapsed' ) ) {
+			$debug_plugin->set_collapsed( 1 !== absint( get_option( 'personioIntegration_debug' ) ) );
+		}
 
 		// add a section.
 		$import_export_section = $advanced_tab->add_section( 'personio_integration_import_export_section', 20 );
 		$import_export_section->set_title( __( 'Secure settings', 'personio-integration-light' ) );
+		if( method_exists( $import_export_section, 'set_collapsed' ) ) {
+			$import_export_section->set_collapsed( true );
+		}
 
 		// the advanced plugin-handling section.
 		$advanced_plugin = $advanced_tab->add_section( 'settings_section_advanced_plugin', 30 );
 		$advanced_plugin->set_title( __( 'Plugin handling', 'personio-integration-light' ) );
-		$advanced_plugin->set_setting( $settings_obj );
+		if( method_exists( $advanced_plugin, 'set_collapsed' ) ) {
+			$advanced_plugin->set_collapsed( true );
+		}
 
 		// create a hidden page for hidden settings.
 		$hidden_page = $settings_obj->add_page( 'hidden_page' );
@@ -704,6 +712,9 @@ class Settings {
 				'dataview' => __( 'DataView', 'personio-integration-light' ),
 			)
 		);
+		if( method_exists( $setting, 'set_reload_on_save' ) ) {
+			$setting->set_reload_on_save( true );
+		}
 		$setting->set_field( $field );
 
 		// create import dialog.

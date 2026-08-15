@@ -88,6 +88,9 @@ class Email_Base {
 		$email_tab_main->set_title( sprintf( __( 'Settings for %1$s', 'personio-integration-light' ), $this->get_title() ) );
 		$email_tab_main->set_callback( array( $this, 'show_description' ) );
 		$email_tab_main->set_setting( $settings_obj );
+		if( method_exists( $email_tab_main, 'set_collapsed' ) ) {
+			$email_tab_main->set_collapsed( 1 !== absint( get_option( 'personio_integration_email_' . $this->get_name() ) ) );
+		}
 
 		// add setting.
 		$enable_setting = $settings_obj->add_setting( 'personio_integration_email_' . $this->get_name() );
