@@ -903,6 +903,12 @@ class Settings {
 		$setting->set_default( WP_PERSONIO_INTEGRATION_VERSION );
 
 		// add setting.
+		$setting = $settings_obj->add_setting( 'personio_integration_db_version' );
+		$setting->set_section( $hidden );
+		$setting->set_type( 'string' );
+		$setting->set_default( WP_PERSONIO_INTEGRATION_VERSION );
+
+		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationPageBuilder' );
 		$setting->set_section( $hidden );
 		$setting->set_type( 'array' );
