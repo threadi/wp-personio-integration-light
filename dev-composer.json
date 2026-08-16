@@ -94,6 +94,13 @@
             "options": {
                 "symlink": true
             }
+        },
+        {
+            "type": "path",
+            "url": "../../../crypt-for-wordpress/",
+            "options": {
+                "symlink": true
+            }
         }
     ]
 }

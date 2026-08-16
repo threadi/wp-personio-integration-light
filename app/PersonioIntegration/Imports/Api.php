@@ -119,7 +119,7 @@ class Api extends Imports_Base {
 
 		// set the mark that import is running in WP.
 		if ( ! defined( 'WP_IMPORTING' ) ) {
-			define( 'WP_IMPORTING', true );
+			define( 'WP_IMPORTING', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- WP core constant, intentionally set to signal an import is running.
 		}
 
 		// mark the process as running import.

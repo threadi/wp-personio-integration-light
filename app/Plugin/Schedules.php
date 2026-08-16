@@ -353,7 +353,7 @@ class Schedules {
 		$our_events = array();
 		foreach ( _get_cron_array() as $events ) {
 			// bail if this is not an array.
-			if( ! is_array( $events ) ) {
+			if ( ! is_array( $events ) ) { // @phpstan-ignore function.alreadyNarrowedType
 				continue;
 			}
 

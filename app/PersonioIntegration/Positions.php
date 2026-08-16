@@ -132,12 +132,12 @@ class Positions {
 			$query['personio_explicit_sort'] = 1;
 		}
 		if ( ! empty( $parameter_to_add['sortby'] ) && 'date' === $parameter_to_add['sortby'] ) {
-			$query['meta_key']               = WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT;
+			$query['meta_key']               = WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Core position sorting.
 			$query['orderby']                = 'meta_value';
 			$query['personio_explicit_sort'] = 1;
 		}
 		if ( ! empty( $parameter_to_add['personioid'] ) ) {
-			$query['meta_query'] = array(
+			$query['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Core position filtering by Personio ID.
 				array(
 					'key'     => WP_PERSONIO_INTEGRATION_MAIN_CPT_PM_PID,
 					'value'   => $parameter_to_add['personioid'],
@@ -159,12 +159,12 @@ class Positions {
 		}
 		if ( ! empty( $tax_query ) ) {
 			if ( count( $tax_query ) > 1 ) {
-				$query['tax_query'] = array(
+				$query['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Core position filtering by taxonomy.
 					'relation' => 'AND',
 					$tax_query,
 				);
 			} else {
-				$query['tax_query'] = $tax_query;
+				$query['tax_query'] = $tax_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Core position filtering by taxonomy.
 			}
 		} elseif ( ! empty( $parameter_to_add['groupby'] ) ) {
 			$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $parameter_to_add['groupby'] );
@@ -177,7 +177,7 @@ class Positions {
 					)
 				);
 				if ( is_array( $terms ) && ! empty( $terms ) ) {
-					$query['tax_query'] = array(
+					$query['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Core position grouping by taxonomy.
 						array(
 							'taxonomy' => $taxonomy_name,
 							'field'    => 'term_id',

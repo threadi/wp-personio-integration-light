@@ -93,7 +93,7 @@ class Xml extends Imports_Base {
 
 		// set a mark that import is running in WP.
 		if ( ! defined( 'WP_IMPORTING' ) ) {
-			define( 'WP_IMPORTING', true );
+			define( 'WP_IMPORTING', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- WP core constant, intentionally set to signal an import is running.
 		}
 
 		// mark the process as the running import.

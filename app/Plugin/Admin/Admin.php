@@ -1127,7 +1127,7 @@ class Admin {
 		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// bail if no errors occurred.
-		if ( ! method_exists( $settings_obj, 'has_errors' ) || $settings_obj->has_errors() ) {  // @phpstan-ignore function.alreadyNarrowedType
+		if ( ! method_exists( $settings_obj, 'has_errors' ) || $settings_obj->has_errors() ) { // @phpstan-ignore function.alreadyNarrowedType
 			return;
 		}
 

@@ -237,7 +237,7 @@ class Templates {
 			'post_type'      => $template_type,
 			'posts_per_page' => -1,
 			'no_found_rows'  => true,
-			'tax_query'      => array(
+			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Filter block templates by wp_theme taxonomy.
 				array(
 					'taxonomy' => 'wp_theme',
 					'field'    => 'name',
