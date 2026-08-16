@@ -193,6 +193,12 @@ class Log {
 	 * @noinspection PhpUnused
 	 */
 	public function clean_log(): void {
+		// prevent re-entry: on a log-table error add() calls clean_log() again → infinite loop.
+		static $is_running = false;
+		if ( $is_running ) {
+			return;
+		}
+
 		// bail on uninstalling.
 		if ( defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
@@ -203,10 +209,10 @@ class Log {
 			return;
 		}
 
-		// get db connection.
 		global $wpdb;
 
-		// run the deletion.
+		$is_running = true;
+
 		$table_name = (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ); // @phpstan-ignore cast.string
 		$max_age    = absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) );
 
@@ -216,8 +222,10 @@ class Log {
 		// log if any error occurred.
 		if ( ! empty( $wpdb->last_error ) ) {
 			/* translators: %1$s will be replaced by a DB-error-message. */
-			$this->add( sprintf( __( 'Database error during plugin activation: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
+			$this->add( sprintf( __( 'Database error: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
 		}
+
+		$is_running = false;
 	}
 
 	/**

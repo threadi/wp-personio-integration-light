@@ -25,6 +25,7 @@
 - Optimized check for registered cron schedules
 - Optimized sections for plugin handling and settings
 - Updated info about possible extensions
+- Optimized the log cleanup
 
 ### Fixed
 
