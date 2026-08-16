@@ -226,4 +226,11 @@ class DeprecatedSettings {
 	 * @return void
 	 */
 	public function display(): void {}
+
+	/**
+	 * Pseudo-activation function.
+	 *
+	 * @return void
+	 */
+	public function activation(): void {}
 }
