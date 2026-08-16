@@ -127,14 +127,17 @@ jobs:
                 rm phpunit.xml.dist
                 rm -fr bin
                 rm -fr tests
+                rm dev-composer.sh
+                rm dev-composer.json
 
             - name: Run PCP check
               uses: wordpress/plugin-check-action@v1
               with:
-                  exclude-directories:
-                      .github/,app/Dependencies/easyTransientsForWordPress/
-                  ignore-codes:
-                      WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+                  exclude-directories: |
+                    app/Dependencies/easyTransientsForWordPress
+                  ignore-codes: |
+                    WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+                    github_directory
                   include-experimental: false
                   error-severity: 7
                   warning-severity: 6

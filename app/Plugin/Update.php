@@ -57,6 +57,7 @@ class Update {
 	 * @return void
 	 */
 	public function init(): void {
+		add_action( 'init', array( $this, 'check_db' ), 5 );
 		add_action( 'init', array( $this, 'run' ) );
 	}
 
@@ -105,6 +106,18 @@ class Update {
 
 			// refresh permalinks.
 			update_option( 'personio_integration_update_slugs', 1 );
+		}
+	}
+
+	/**
+	 * Check the DB-version to run the table installation if necessary.
+	 *
+	 * @return void
+	 */
+	public function check_db(): void {
+		if ( WP_PERSONIO_INTEGRATION_VERSION !== get_option( 'personio_integration_db_version', '' ) ) {
+			Init::get_instance()->install_db_tables();
+			update_option( 'personio_integration_db_version', WP_PERSONIO_INTEGRATION_VERSION );
 		}
 	}
 
