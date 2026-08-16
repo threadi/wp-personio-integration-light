@@ -96,21 +96,21 @@ jobs:
               run: vendor/bin/phpcs .
 
             - name: Set version number 1
-              uses: richardrigutins/replace-in-files@v2
+              uses: richardrigutins/replace-in-files@v3
               with:
                   files: 'personio-integration-light.php'
                   search-text: '@@VersionNumber@@'
                   replacement-text: ${{ github.ref_name }}
 
             - name: Set version number 2
-              uses: richardrigutins/replace-in-files@v2
+              uses: richardrigutins/replace-in-files@v3
               with:
                   files: 'uninstall.php'
                   search-text: '@@VersionNumber@@'
                   replacement-text: ${{ github.ref_name }}
 
             - name: Set version number 3
-              uses: richardrigutins/replace-in-files@v2
+              uses: richardrigutins/replace-in-files@v3
               with:
                   files: 'readme.txt'
                   search-text: '@@VersionNumber@@'

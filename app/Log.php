@@ -84,7 +84,11 @@ class Log {
 	 */
 	public function delete_table(): void {
 		global $wpdb;
-		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ) ) ); // @phpstan-ignore cast.string
+
+		$table_name = (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ); // @phpstan-ignore cast.string
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.NotPrepared -- Custom log table; fixed table name, esc_sql-escaped, identifier can't be a placeholder.
+		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', $table_name ) );
 	}
 
 	/**
@@ -203,7 +207,11 @@ class Log {
 		global $wpdb;
 
 		// run the deletion.
-		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ), absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) ) ); // @phpstan-ignore cast.string
+		$table_name = (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ); // @phpstan-ignore cast.string
+		$max_age    = absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) );
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.NotPrepared -- Custom log table; fixed table name, esc_sql-escaped, %d via absint().
+		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', $table_name, $max_age ) );
 
 		// log if any error occurred.
 		if ( ! empty( $wpdb->last_error ) ) {
@@ -250,12 +258,8 @@ class Log {
 		if ( 'date' !== $order_by ) {
 			$order_by = 'date';
 		}
-		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( is_string( $order ) ) {
-			$order = sanitize_sql_orderby( $order );
-		} else {
-			$order = 'DESC';
-		}
+		$order = strtoupper( (string) filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
+		$order = in_array( $order, array( 'ASC', 'DESC' ), true ) ? $order : 'DESC';
 
 		$limit = 10000;
 		/**
@@ -313,6 +317,7 @@ class Log {
 		// if only category is set.
 		if ( ! empty( $category ) && empty( $md5 ) ) {
 			// get and return the entries.
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where is a fixed literal; values use %s/%d.
 			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
@@ -324,12 +329,14 @@ class Log {
 				),
 				ARRAY_A
 			);
+			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 		}
 
 		// if only md5 is set.
 		if ( empty( $category ) && ! empty( $md5 ) ) {
 			// get and return the entries.
-			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where is a fixed literal; values use %s/%d.
+			return Db::get_instance()->get_results(
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
@@ -340,12 +347,14 @@ class Log {
 				),
 				ARRAY_A
 			);
+			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 		}
 
 		// if both are set.
 		if ( ! empty( $category ) ) {
 			// get and return the entries.
-			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where is a fixed literal; values use %s/%d.
+			return Db::get_instance()->get_results(
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                     FROM `' . $wpdb->prefix . 'personio_import_logs`
@@ -356,11 +365,13 @@ class Log {
 				),
 				ARRAY_A
 			);
+			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 		}
 
 		if ( 1 === $errors ) {
 			// return all.
-			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where is a fixed literal; values use %s/%d.
+			return Db::get_instance()->get_results(
 				$wpdb->prepare(
 					'SELECT `state`, `time` AS `date`, `log`, `category`
                 FROM `' . $wpdb->prefix . 'personio_import_logs`
@@ -371,10 +382,12 @@ class Log {
 				),
 				ARRAY_A
 			);
+			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 		}
 
 		// return all.
-		return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where is a fixed literal; values use %s/%d.
+		return Db::get_instance()->get_results(
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`, `category`
                 FROM `' . $wpdb->prefix . 'personio_import_logs`
@@ -384,6 +397,7 @@ class Log {
 			),
 			ARRAY_A
 		);
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	/**

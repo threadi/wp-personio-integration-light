@@ -11,7 +11,8 @@
 ### Changed
 
 - Compatible with WordPress 7.1
-- Now required PHP 8.2 or newer
+- Now requires PHP 8.2 or newer
+- Now requires WordPress 5.9 or newer
 - Updated dialog lib to 2.0.0
 - Updated settings lib to 2.0.0
 - Updated crypt lib to 3.0.0
@@ -20,16 +21,23 @@
 - Optimized performance for each supported Block
 - Removed support for Brizy post types as we do not allow editing of positions with any editor
 - Do not register schedule problems as errors as they are solved by the plugin automatically
+- Optimized check for Personio URL
+- Optimized check for registered cron schedules
+- Optimized sections for plugin handling and settings
 - Updated info about possible extensions
 
 ### Fixed
 
 - Fixed missing dialogs on the page of logs
 - Fixed usage of block-styles if a classic theme is used with block editor
+- Fixed the usage of lower capability to delete terms of all supported taxonomies
+- Fixed possible usage of path traversals in template loader
+- Fixed wrong named cron intervall name for new installations
 
 ### Removed
 
-- Removed the deprecated old advanced tab from versions before 5.1.0
+- Removed the deprecated old advanced tab from versions before plugin version 5.1.0
+- Removed check for valid URL before WordPress version 5.1.0
 
 ## [5.5.3] - 27.07.2026
 

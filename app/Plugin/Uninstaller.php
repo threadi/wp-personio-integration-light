@@ -162,7 +162,7 @@ class Uninstaller {
 				}
 
 				// delete the settings of this object from user meta.
-				$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => 'manageedit-' . $obj->get_name() . 'columnshidden' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => 'manageedit-' . $obj->get_name() . 'columnshidden' ) );// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Direct usermeta cleanup on uninstallation.
 			}
 
 			// uninstall extensions.

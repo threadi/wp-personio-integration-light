@@ -352,13 +352,23 @@ class Schedules {
 	public function get_wp_events(): array {
 		$our_events = array();
 		foreach ( _get_cron_array() as $events ) {
+			// bail if this is not an array.
+			if ( ! is_array( $events ) ) { // @phpstan-ignore function.alreadyNarrowedType
+				continue;
+			}
+
+			// check each entry.
 			foreach ( $events as $event_name => $event_settings ) {
-				if ( str_contains( $event_name, 'personio_integration' ) ) {
-					$our_events[ $event_name ] = array(
-						'name'     => $event_name,
-						'settings' => $event_settings,
-					);
+				// bail if this is not our own event.
+				if ( ! str_contains( $event_name, 'personio_integration' ) ) {
+					continue;
 				}
+
+				// add this event to the list.
+				$our_events[ $event_name ] = array(
+					'name'     => $event_name,
+					'settings' => $event_settings,
+				);
 			}
 		}
 

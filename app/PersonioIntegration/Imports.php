@@ -140,7 +140,7 @@ class Imports {
 		} elseif ( $running_import > 0 ) {
 			$field = new TextInfo( $settings_obj );
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
-			$field->set_description( __( 'The import is already running. Please wait some moments.', 'personio-integration-light' ) );
+			$field->set_description( __( 'The import is already running. Please wait for some moments.', 'personio-integration-light' ) );
 		} else {
 			$field = new Button( $settings_obj );
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );

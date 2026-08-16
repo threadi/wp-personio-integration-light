@@ -286,7 +286,7 @@ class Manual_Import extends Extensions_Base {
 				'texts'   => array(
 					'<p><strong>' . __( 'Do you really want to import open positions manually?', 'personio-integration-light' ) . '</strong></p>',
 					'<p>' . __( 'First, we will download the current positions, but not import them.', 'personio-integration-light' ) . '</p>',
-					'<p>' . __( 'We will then show you each positions for confirmation. This allows you to choose, which positions should be imported and which should not.', 'personio-integration-light' ) . '</p>',
+					'<p>' . __( 'We will then show you each positions for confirmation. This allows you to choose, which positions should be imported and, which should not.', 'personio-integration-light' ) . '</p>',
 					'<p>' . __( 'Positions you have not selected will also be removed from WordPress if they already exist there.', 'personio-integration-light' ) . '</p>',
 					/* translators: %1$s will be replaced by a URL. */
 					'<p><strong>' . sprintf( __( 'Please note that positions you did not select would still be imported during automatic import. With <a href="%1$s" target="_blank">Personio Integration Pro</a>, you can prevent this from happening.', 'personio-integration-light' ), Helper::get_pro_url() ) . '</strong></p>',

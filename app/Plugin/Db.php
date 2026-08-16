@@ -60,7 +60,7 @@ class Db {
 		global $wpdb;
 
 		// add the data.
-		$wpdb->insert( $table, $data );
+		$wpdb->insert( $table, $data ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Custom plugin log table; WP caching/query APIs don't apply.
 
 		// check for any errors, but not if this is the log table itself as it might cause an infinite loop.
 		if ( $wpdb->last_error && ( $wpdb->prefix . 'personio_import_logs' ) !== $table && ! isset( $data['log'] ) ) {
@@ -83,7 +83,7 @@ class Db {
 		global $wpdb;
 
 		// add the data.
-		$wpdb->update( $table, $data, $where );
+		$wpdb->update( $table, $data, $where ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Custom plugin log table; WP caching/query APIs don't apply.
 
 		// check for any errors, but not if this is the log table itself as it might cause an infinite loop.
 		if ( $wpdb->last_error ) {
@@ -110,7 +110,7 @@ class Db {
 		}
 
 		// get the results.
-		$results = $wpdb->get_results( $sql, $data_type );
+		$results = $wpdb->get_results( $sql, $data_type ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,PluginCheck.Security.DirectDB.UnescapedDBParameter,WordPress.DB.PreparedSQL.NotPrepared -- Custom log table; $sql is always a prepared statement supplied by the caller (see method contract).
 
 		// check for any errors.
 		if ( $wpdb->last_error ) {

@@ -133,6 +133,11 @@ class Templates {
 			return $template;
 		}
 
+		// reject path traversal outright.
+		if ( str_contains( $template, '..' ) ) {
+			return '';
+		}
+
 		// check if the requested template exists in the theme.
 		$theme_template = locate_template( trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
 		if ( $theme_template ) {
@@ -167,6 +172,11 @@ class Templates {
 	 * @return bool
 	 */
 	public function has_template( string $template ): bool {
+		// reject path traversal outright.
+		if ( str_contains( $template, '..' ) ) {
+			return false;
+		}
+
 		// check if the requested template exists in the theme.
 		$theme_template = locate_template( trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
 		if ( $theme_template ) {

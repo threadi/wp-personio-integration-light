@@ -15,6 +15,7 @@ use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Db;
 use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Settings;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Server;
@@ -1099,7 +1100,7 @@ class Taxonomies {
 				'methods'             => WP_REST_Server::DELETABLE,
 				'callback'            => array( $this, 'delete_all' ),
 				'permission_callback' => function () {
-					return current_user_can( 'edit_posts' );
+					return current_user_can( Settings::get_instance()->get_settings_object()->get_capability() );
 				},
 			)
 		);

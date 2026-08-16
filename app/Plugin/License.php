@@ -87,8 +87,6 @@ class License {
 		global $wp_version;
 		if ( version_compare( $wp_version, '5.1.0', '>' ) ) {
 			add_filter( 'http_request_reject_unsafe_urls', array( $this, 'allow_own_safe_domain' ), 10, 2 );
-		} else {
-			add_filter( 'http_request_reject_unsafe_urls', '__return_false' );
 		}
 	}
 

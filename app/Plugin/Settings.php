@@ -182,21 +182,22 @@ class Settings {
 			)
 		);
 		if ( method_exists( $settings_obj, 'set_view' ) ) { // @phpstan-ignore function.alreadyNarrowedType
-			$settings_obj->set_view( get_option( 'personio_integration_light_setting_view', 'dataview' ) );
+			$settings_obj->set_view( get_option( 'personio_integration_light_setting_view', 'classic' ) );
 		}
-		if ( method_exists( $settings_obj, 'set_update_version' ) ) {
+		if ( method_exists( $settings_obj, 'set_update_version' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
 			$settings_obj->set_update_version( WP_PERSONIO_INTEGRATION_VERSION );
 		}
 
 		// create help in case of error during loading of the settings.
-		if ( method_exists( $settings_obj, 'set_error_help' ) ) {
+		if ( method_exists( $settings_obj, 'set_error_help' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
 			$url = add_query_arg(
 				array(
 					'action' => 'personio_integration_light_use_classic_view',
-					'nonce' => wp_create_nonce( 'personio-integration-light-use-classic-view' ),
+					'nonce'  => wp_create_nonce( 'personio-integration-light-use-classic-view' ),
 				),
 				admin_url( 'admin.php' )
 			);
+			/* translators: %1$s will be replaced by a URL */
 			$error_help = '<div class="personio-integration-transient notice notice-success"><h3>' . wp_kses_post( Helper::get_logo_img() ) . ' ' . esc_html( apply_filters( 'personio_integration_light_transient_title', Helper::get_plugin_name() ) ) . '</h3><p><strong>' . __( 'Page is loading', 'personio-integration-light' ) . '</strong><br>' . __( 'Please wait while we load the page.', 'personio-integration-light' ) . '<br>' . __( 'This may take a moment.', 'personio-integration-light' ) . '<br>' . sprintf( __( '<a href="%1$s">Click this link</a> to switch to the classic view.', 'personio-integration-light' ), $url ) . '</p></div>';
 			$settings_obj->set_error_help( $error_help );
 		}
@@ -289,11 +290,23 @@ class Settings {
 		$debug_plugin = $advanced_tab->add_section( 'settings_section_advanced_debug', 20 );
 		$debug_plugin->set_title( __( 'Debug', 'personio-integration-light' ) );
 		$debug_plugin->set_setting( $settings_obj );
+		if ( method_exists( $debug_plugin, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
+			$debug_plugin->set_collapsed( 1 !== absint( get_option( 'personioIntegration_debug' ) ) );
+		}
+
+		// add a section.
+		$import_export_section = $advanced_tab->add_section( 'personio_integration_import_export_section', 20 );
+		$import_export_section->set_title( __( 'Secure settings', 'personio-integration-light' ) );
+		if ( method_exists( $import_export_section, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
+			$import_export_section->set_collapsed( true );
+		}
 
 		// the advanced plugin-handling section.
 		$advanced_plugin = $advanced_tab->add_section( 'settings_section_advanced_plugin', 30 );
 		$advanced_plugin->set_title( __( 'Plugin handling', 'personio-integration-light' ) );
-		$advanced_plugin->set_setting( $settings_obj );
+		if ( method_exists( $advanced_plugin, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
+			$advanced_plugin->set_collapsed( true );
+		}
 
 		// create a hidden page for hidden settings.
 		$hidden_page = $settings_obj->add_page( 'hidden_page' );
@@ -493,7 +506,7 @@ class Settings {
 		$setting->set_type( 'string' );
 		$setting->set_default( 'default' );
 		$field = new Select( $settings_obj );
-		$field->set_title( __( 'Choose template for position details', 'personio-integration-light' ) );
+		$field->set_title( __( 'Choose a template for position details', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced with the documentation-URL */
 		$field->set_description( sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
 		$field->set_options( Templates::get_instance()->get_excerpts_templates() );
@@ -700,6 +713,9 @@ class Settings {
 				'dataview' => __( 'DataView', 'personio-integration-light' ),
 			)
 		);
+		if ( method_exists( $setting, 'set_reload_on_save' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
+			$setting->set_reload_on_save( true );
+		}
 		$setting->set_field( $field );
 
 		// create import dialog.
@@ -761,7 +777,7 @@ class Settings {
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'import_settings' );
-		$setting->set_section( $advanced_plugin );
+		$setting->set_section( $import_export_section );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		$field = new Button( $settings_obj );
@@ -794,7 +810,7 @@ class Settings {
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'export_settings' );
-		$setting->set_section( $advanced_plugin );
+		$setting->set_section( $import_export_section );
 		$setting->set_autoload( false );
 		$setting->prevent_export( true );
 		$field = new Button( $settings_obj );
@@ -878,7 +894,7 @@ class Settings {
 		$setting = $settings_obj->add_setting( 'personioIntegrationPositionScheduleInterval' );
 		$setting->set_section( $hidden );
 		$setting->set_type( 'string' );
-		$setting->set_default( 'daily' );
+		$setting->set_default( 'personio_integration_daily' );
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationVersion' );

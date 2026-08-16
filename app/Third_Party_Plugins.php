@@ -481,7 +481,7 @@ class Third_Party_Plugins {
 			return $query;
 		}
 
-		$query['suppress_filters'] = true;
+		$query['suppress_filters'] = true; // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters -- Intentional: bypass WPML query rewriting for this internal query.
 		return $query;
 	}
 
