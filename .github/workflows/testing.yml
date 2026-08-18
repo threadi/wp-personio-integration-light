@@ -66,21 +66,21 @@ jobs:
           cp inc/constants_urls.php.dist inc/constants_urls.php
 
       - name: Set licence server
-        uses: richardrigutins/replace-in-files@v2
+        uses: richardrigutins/replace-in-files@v3
         with:
           files: 'inc/constants_urls.php'
           search-text: '@@UrlLicense@@'
           replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/'
 
       - name: Set update server
-        uses: richardrigutins/replace-in-files@v2
+        uses: richardrigutins/replace-in-files@v3
         with:
           files: 'inc/constants_urls.php'
           search-text: '@@UrlUpdate@@'
           replacement-text: 'https://laolaweb.com/wp-json/lwreleases/personio-integration/'
 
       - name: Set costs server
-        uses: richardrigutins/replace-in-files@v2
+        uses: richardrigutins/replace-in-files@v3
         with:
           files: 'inc/constants_urls.php'
           search-text: '@@UrlCosts@@'

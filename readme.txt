@@ -136,13 +136,31 @@ Complete revision of the plugin. Please create a backup before installing versio
 - Added a marker in the WordPress backend menu if any error is logged
 - Added an option in settings to disable this marker (default: enabled to show it)
 - Added hint for Brizy users
-- Now required PHP 8.2 or newer
+
+### Changed
+
+- Compatible with WordPress 7.1
+- Now requires PHP 8.2 or newer
+- Now requires WordPress 5.9 or newer
 - Updated dialog lib to 2.0.0
 - Updated settings lib to 2.0.0
 - Updated crypt lib to 3.0.0
+- Change the view of any settings to the modern DataView under "Advanced Settings"
 - Logging each error for any technical crypt or setting problem
 - Optimized performance for each supported Block
 - Removed support for Brizy post types as we do not allow editing of positions with any editor
+- Do not register schedule problems as errors as they are solved by the plugin automatically
+- Optimized check for Personio URL
+- Optimized check for registered cron schedules
+- Optimized sections for plugin handling and settings
+- Updated info about possible extensions
+- Optimized the log cleanup
 - Fixed missing dialogs on the page of logs
+- Fixed usage of block-styles if a classic theme is used with the block editor
+- Fixed the usage of lower capability to delete terms of all supported taxonomies
+- Fixed possible usage of path traversals in the template loader
+- Fixed wrong named cron intervall name for new installations
+- Removed the deprecated old advanced tab from versions before plugin version 5.1.0
+- Removed check for valid URL before WordPress version 5.1.0
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
