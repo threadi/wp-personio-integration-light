@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [5.6.0] - 18.08.2026
 
 ### Added
 
@@ -30,9 +30,9 @@
 ### Fixed
 
 - Fixed missing dialogs on the page of logs
-- Fixed usage of block-styles if a classic theme is used with block editor
+- Fixed usage of block-styles if a classic theme is used with the block editor
 - Fixed the usage of lower capability to delete terms of all supported taxonomies
-- Fixed possible usage of path traversals in template loader
+- Fixed possible usage of path traversals in the template loader
 - Fixed wrong named cron intervall name for new installations
 
 ### Removed
