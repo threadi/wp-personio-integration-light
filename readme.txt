@@ -139,6 +139,9 @@ Complete revision of the plugin. Please create a backup before installing versio
 
 ### Changed
 
+- Added a marker in the WordPress backend menu if any error is logged
+- Added an option in settings to disable this marker (default: enabled to show it)
+- Added hint for Brizy users
 - Compatible with WordPress 7.1
 - Now requires PHP 8.2 or newer
 - Now requires WordPress 5.9 or newer
