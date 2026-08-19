@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed the statement to get our own Block templates from the database (thanks @philipp-marquardt)
+
 ## [5.6.0] - 18.08.2026
 
 ### Added

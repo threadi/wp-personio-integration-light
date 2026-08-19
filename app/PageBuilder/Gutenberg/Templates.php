@@ -223,7 +223,7 @@ class Templates {
 	}
 
 	/**
-	 * Get templates from DB to override the template from files.
+	 * Return our own templates from DB.
 	 *
 	 * @param array<string> $slugs The slugs.
 	 * @param string        $template_type The template type.
@@ -238,6 +238,7 @@ class Templates {
 			'posts_per_page' => -1,
 			'no_found_rows'  => true,
 			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Filter block templates by wp_theme taxonomy.
+				'relation' => 'AND',
 				array(
 					'taxonomy' => 'wp_theme',
 					'field'    => 'name',
@@ -246,9 +247,19 @@ class Templates {
 			),
 		);
 
-		if ( count( $slugs ) > 0 ) {
-			$query['post_name__in'] = $slugs;
+		// get our own template slug.
+		$own_slugs = array_keys( $this->get_templates() );
+
+		// intersect them with the given slugs.
+		$slugs = count( $slugs ) > 0 ? array_intersect( $slugs, $own_slugs ) : $own_slugs;
+
+		// bail early: an empty post_name__in is ignored by WP_Query and would match everything.
+		if ( empty( $slugs ) ) {
+			return array();
 		}
+
+		// filter for the slugs of our own templates.
+		$query['post_name__in'] = $slugs;
 
 		// run the query.
 		$check_query = new WP_Query( $query );
