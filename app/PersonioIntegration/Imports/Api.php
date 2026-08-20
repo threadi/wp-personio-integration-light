@@ -97,7 +97,7 @@ class Api extends Imports_Base {
 	 */
 	public function run(): void {
 		// if debug mode is enabled, log this event.
-		Log::get_instance()->add( __( 'Import of positions is now running.', 'personio-integration-light' ), 'info', 'import' );
+		Log::get_instance()->add( __( 'Trying to authenticate on the Personio API.', 'personio-integration-light' ), 'info', 'import' );
 
 		// get the API object.
 		$api_obj = \PersonioIntegrationLight\PersonioIntegration\Api::get_instance();
@@ -108,7 +108,7 @@ class Api extends Imports_Base {
 		// bail if no token is set.
 		if ( empty( $access_token ) ) {
 			// log this as an error.
-			$this->add_error( __( 'No Access token for API available. Import from API will not run.', 'personio-integration-light' ) );
+			$this->add_error( __( 'No access token for API available. Import from API will not run.', 'personio-integration-light' ) );
 
 			// reset status.
 			update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, '' );
@@ -116,6 +116,9 @@ class Api extends Imports_Base {
 			// do nothing more.
 			return;
 		}
+
+		// if debug mode is enabled, log this event.
+		Log::get_instance()->add( __( 'Import of positions is now running.', 'personio-integration-light' ), 'info', 'import' );
 
 		// set the mark that import is running in WP.
 		if ( ! defined( 'WP_IMPORTING' ) ) {

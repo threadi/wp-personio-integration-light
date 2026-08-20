@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Small updates for die API v2, but still not usable as Personio do not deliver the most of v1 data for positions
+
 ### Fixed
 
 - Fixed the statement to get our own Block templates from the database (thanks @philipp-marquardt)
