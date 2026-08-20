@@ -112,6 +112,17 @@ class Extensions {
 	}
 
 	/**
+	 * Run tasks for extensions during plugin deactivation.
+	 *
+	 * @return void
+	 */
+	public function deactivation(): void {
+		foreach ( $this->get_extensions_as_objects() as $extension_obj ) {
+			$extension_obj->deactivation();
+		}
+	}
+
+	/**
 	 * Get extensions as a list of Extension_Base-objects.
 	 *
 	 * @return array<Extensions_Base>

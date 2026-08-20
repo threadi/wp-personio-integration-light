@@ -174,7 +174,7 @@ class Api {
 	 *
 	 * @return bool
 	 */
-	private function is_credential_prepared(): bool {
+	public function is_credential_prepared(): bool {
 		return ! empty( get_option( 'personioIntegrationClientId' ) ) && ! empty( get_option( 'personioIntegrationApiSecret' ) );
 	}
 

@@ -131,6 +131,8 @@ class Schedules_Base {
 			return;
 		}
 
+		error_log( 'install schedule: ' . $this->get_name() );
+
 		// create the schedule.
 		$result = wp_schedule_event( time(), $this->get_interval(), $this->get_name(), $this->get_args(), true );
 
@@ -149,6 +151,7 @@ class Schedules_Base {
 	public function delete(): void {
 		// delete the schedule and get the result.
 		$result = wp_clear_scheduled_hook( $this->get_name(), $this->get_args() );
+		error_log( 'deleted schedule: ' . $this->get_name() );
 
 		// log event if the schedule could not be deleted.
 		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType

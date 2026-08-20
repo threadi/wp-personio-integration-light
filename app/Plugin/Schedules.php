@@ -388,7 +388,7 @@ class Schedules {
 	}
 
 	/**
-	 * Run check for cronjobs in the frontend, if enabled.
+	 * Run check for cronjob in the frontend, if enabled.
 	 *
 	 * @return void
 	 */

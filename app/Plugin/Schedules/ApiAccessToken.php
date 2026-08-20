@@ -75,4 +75,18 @@ class ApiAccessToken extends Schedules_Base {
 		// install this schedule.
 		parent::install();
 	}
+
+	/**
+	 * Return whether this schedule should be enabled and active according to configuration.
+	 *
+	 * @return bool
+	 */
+	public function is_enabled(): bool {
+		if ( ! parent::is_enabled() ) {
+			return false;
+		}
+
+		// additionally require that the "Import via API"-extension is enabled.
+		return \PersonioIntegrationLight\PersonioIntegration\Imports\Api::get_instance()->is_enabled();
+	}
 }

@@ -21,6 +21,7 @@ use PersonioIntegrationLight\PersonioIntegration\Imports_Base;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
+use PersonioIntegrationLight\Plugin\Schedules\ApiAccessToken;
 use stdClass;
 use WP_Post;
 
@@ -561,5 +562,37 @@ class Api extends Imports_Base {
 	 */
 	public function can_be_enabled_by_user(): bool {
 		return Helper::is_development_mode_active();
+	}
+
+	/**
+	 * Toggle the state of this extension and manage its schedule accordingly.
+	 *
+	 * @return void
+	 */
+	public function toggle_state(): void {
+		parent::toggle_state();
+
+		// get the schedule object.
+		$schedule_obj = new ApiAccessToken();
+
+		// get the actual state of this extension.
+		$state = absint( get_option( $this->get_settings_field_name() ) );
+
+		if ( 1 === $state ) {
+			// install the schedule if credentials are set.
+			if( \PersonioIntegrationLight\PersonioIntegration\Api::get_instance()->is_credential_prepared() ) {
+				update_option( 'personioIntegrationEnableApiAccessToken', 1 );
+				$schedule_obj->install();
+			}
+
+			// do nothing more.
+			return;
+		}
+
+		// extension has been disabled: remove the schedule and the token, independent of the secret.
+		$schedule_obj->delete();
+
+		// set token to "disabled".
+		update_option( 'personioIntegrationEnableApiAccessToken', 0 );
 	}
 }
