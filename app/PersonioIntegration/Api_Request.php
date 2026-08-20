@@ -196,7 +196,7 @@ class Api_Request {
 		// bail if the response is false.
 		if ( false === $response ) {
 			// add event in the log.
-			$this->add_error( __( 'Got not response from Personio API.', 'personio-integration-light' ) );
+			$this->add_error( __( 'Got no response from Personio API.', 'personio-integration-light' ) );
 
 			// return false as request resulted in unspecific http error.
 			return false;

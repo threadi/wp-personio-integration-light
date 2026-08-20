@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 
 /**
@@ -113,6 +114,9 @@ class Installer {
 
 		// set marker to refresh permalinks.
 		update_option( 'personio_integration_update_slugs', 1 );
+
+		// log the plugin activation.
+		Log::get_instance()->add( __( 'Personio Integration Light has been activated.', 'personio-integration' ), 'info', 'system' );
 
 		// show a success message on WP CLI.
 		Helper::is_cli() ? \WP_CLI::success( 'Personio Integration Light activated. Thank you for using our plugin :-)' ) : false;

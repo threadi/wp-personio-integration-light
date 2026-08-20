@@ -68,6 +68,8 @@ class Widgets {
 	/**
 	 * Disable our own widgets if Block widgets are enabled OR uninstallation is running.
 	 *
+	 * @deprcated Remove in future updates.
+	 *
 	 * @return void
 	 */
 	public function deactivate(): void {

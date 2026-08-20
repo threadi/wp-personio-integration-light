@@ -18,6 +18,7 @@ use easySettingsForWordPress\Page;
 use easySettingsForWordPress\Section;
 use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\Plugin\Crypt;
 use PersonioIntegrationLight\Plugin\Schedules\ApiAccessToken;
 use PersonioIntegrationLight\Plugin\Settings;
@@ -109,6 +110,7 @@ class Api {
 		$api_section->set_title( __( 'Settings for API', 'personio-integration-light' ) );
 		$api_section->set_setting( $settings_obj );
 		$api_section->set_callback( array( $this, 'show_api_settings_hint' ) );
+		$api_section->set_hidden( ! \PersonioIntegrationLight\PersonioIntegration\Imports\Api::get_instance()->is_enabled() );
 
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationClientId' );
@@ -172,7 +174,7 @@ class Api {
 	 *
 	 * @return bool
 	 */
-	private function is_credential_prepared(): bool {
+	public function is_credential_prepared(): bool {
 		return ! empty( get_option( 'personioIntegrationClientId' ) ) && ! empty( get_option( 'personioIntegrationApiSecret' ) );
 	}
 
@@ -221,6 +223,13 @@ class Api {
 
 		// bail if HTTP status is not 200.
 		if ( 200 !== $request_object->get_http_status() ) {
+			// log this event.
+			Log::get_instance()->add( __( 'Could not get access token. Response:', 'personio-integration-light' ) . ' ' . $request_object->get_http_status(), 'error', 'import' );
+
+			// show on WP CLI.
+			Helper::is_cli() ? \WP_CLI::error( __( 'Could not get access token. See logs for details. Response:', 'personio-integration-light' ) . ' ' . $request_object->get_http_status() ) : '';
+
+			// do nothing more.
 			return '';
 		}
 
@@ -345,6 +354,7 @@ class Api {
 	 */
 	public function set_api_request_header_for_bearer_update(): array {
 		return array(
+			'accept' => 'application/json',
 			'Content-Type' => 'application/x-www-form-urlencoded',
 		);
 	}
@@ -371,7 +381,6 @@ class Api {
 		return array(
 			'Content-Type'  => 'application/x-www-form-urlencoded',
 			'Authorization' => 'Bearer ' . $access_token,
-			'Beta'          => 'true',
 		);
 	}
 

@@ -200,7 +200,7 @@ class Schedules {
 
 				// log this event.
 				/* translators: %1$s will be replaced by the event name. */
-				Log::get_instance()->add( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
+				Log::get_instance()->add( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'info', $obj->get_log_category() );
 
 				// re-run the check for WP-cron-events.
 				$our_events = $this->get_wp_events();
@@ -212,7 +212,7 @@ class Schedules {
 
 				// log this event.
 				/* translators: %1$s will be replaced by the event name. */
-				Log::get_instance()->add( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
+				Log::get_instance()->add( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'info', $obj->get_log_category() );
 
 				// re-run the check for WP-cron-events.
 				$our_events = $this->get_wp_events();
@@ -224,11 +224,14 @@ class Schedules {
 	}
 
 	/**
-	 * Delete all our registered schedules.
+	 * Delete all of our own registered schedules.
 	 *
 	 * @return void
 	 */
 	public function delete_all(): void {
+		// get the list of our own schedules.
+		$events = $this->get_wp_events();
+
 		// delete the simple schedules from our plugin.
 		foreach ( $this->get_schedule_object_names() as $obj_name ) {
 			// get the object.
@@ -237,6 +240,14 @@ class Schedules {
 			// bail if the object is not a Schedules_Base object.
 			if ( ! $schedule_obj instanceof Schedules_Base ) {
 				continue;
+			}
+
+			// get the schedule name.
+			$schedule_name = $schedule_obj->get_name();
+
+			// set attributes on the object, if available.
+			if ( isset( $events[ $schedule_name ] ) && ! empty( $events[ $schedule_name ]['settings'][ array_key_first( $events[ $schedule_name ]['settings'] ) ]['args'] ) ) {
+				$schedule_obj->set_args( $events[ $schedule_name ]['settings'][ array_key_first( $events[ $schedule_name ]['settings'] ) ]['args'] );
 			}
 
 			// delete the schedule.
@@ -377,7 +388,7 @@ class Schedules {
 	}
 
 	/**
-	 * Run check for cronjobs in the frontend, if enabled.
+	 * Run check for cronjob in the frontend, if enabled.
 	 *
 	 * @return void
 	 */

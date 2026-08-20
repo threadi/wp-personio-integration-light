@@ -147,6 +147,13 @@ class Extensions_Base {
 	public function activation(): void {}
 
 	/**
+	 * Tasks to run during plugin deactivation for this extension.
+	 *
+	 * @return void
+	 */
+	public function deactivation(): void {}
+
+	/**
 	 * Return the internal name of this extension.
 	 *
 	 * @return string
