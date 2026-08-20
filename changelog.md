@@ -5,6 +5,7 @@
 ### Added
 
 - Added Personio icon in the WordPress icon library (for WordPress >= 7.1)
+- Added new logging events during plugin activation and deactivation
 
 ### Changed
 
@@ -13,6 +14,7 @@
 ### Fixed
 
 - Fixed the statement to get our own Block templates from the database (thanks @philipp-marquardt)
+- Fixed removing of schedules with attributes during deactivation of plugin
 
 ## [5.6.0] - 18.08.2026
 
