@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added Personio icon in the WordPress icon library (for WordPress >= 7.1)
+
 ### Changed
 
 - Small updates for die API v2, but still not usable as Personio do not deliver the most of v1 data for positions
