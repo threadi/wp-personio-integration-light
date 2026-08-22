@@ -19,7 +19,6 @@
 - Fixed removing of schedules with attributes during deactivation of plugin
 - Fixed a wrong default interval for the report by email
 - Fixed wrong selection of intervals for the report by email
-- Fixed potential error of icon collection has been already registered
 
 ## [5.6.0] - 18.08.2026
 
