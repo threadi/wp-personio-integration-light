@@ -354,7 +354,7 @@ class Api {
 	 */
 	public function set_api_request_header_for_bearer_update(): array {
 		return array(
-			'accept' => 'application/json',
+			'accept'       => 'application/json',
 			'Content-Type' => 'application/x-www-form-urlencoded',
 		);
 	}

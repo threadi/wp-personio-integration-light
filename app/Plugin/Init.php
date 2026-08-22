@@ -439,20 +439,31 @@ class Init {
 	 */
 	public function register_icon(): void {
 		// bail if the required functions does not exist.
-		if( ! function_exists( 'wp_register_icon_collection' ) || ! function_exists( 'wp_register_icon' ) ) {
+		if ( ! function_exists( 'wp_register_icon_collection' ) || ! function_exists( 'wp_register_icon' ) ) {
 			return;
 		}
 
-		// register the collection "Personio".
-		wp_register_icon_collection( 'personio-integration-light', array(
-			'label'       => __( 'Personio', 'personio-integration-light' ),
-			'description' => __( 'Icons from Personio.', 'personio-integration-light' )
-		));
+		// bail if our collection is already registered.
+		if ( \WP_Icon_Collections_Registry::get_instance()->is_registered( 'personio-integration-light' ) ) {
+			return;
+		}
+
+		// register the collection.
+		wp_register_icon_collection(
+			'personio-integration-light',
+			array(
+				'label'       => __( 'Personio', 'personio-integration-light' ),
+				'description' => __( 'Icons from Personio.', 'personio-integration-light' ),
+			)
+		);
 
 		// register the icon in this collection.
-		wp_register_icon('personio-integration-light/logo', [
-			'label'   => __( 'Logo', 'personio-integration-light' ),
-			'content' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><path fill="currentColor" d="M72.52,79c-4.77,17-8.71,31.28-9,33.22-.78,5.22-8.49,4.38-8.05-.92.18-1.59,3.37-13.35,7.28-27.33-5.52,2.57-10.06,4.23-12.86,4.58-3.8.62-7-1.55-6.68-4.85A4.07,4.07,0,0,1,49,80.48c2.4-.34,8.56-2.87,16.65-7.07C69.7,59,73.9,44.26,76,36.94c1.67-4.94,9-2.85,7.78,2.22C81.29,47.86,78.4,58,75.6,67.93c3.49-2,7.19-4.26,10.9-6.67,20.22-13.07,34-25.57,36.78-33.54,1-3,.28-4.35-1.2-5.5-3.54-2.75-14.44-3.09-34.39,4.2-29.9,10.91-61.5,32.1-64.51,43.15,1.37.12,2.87,0,3.94,1.08a4.08,4.08,0,0,1-1.06,6.74C21.53,79,13.45,75.57,15.19,68.25c2-9.43,14.89-19.76,25.33-26.82A214.83,214.83,0,0,1,84.94,18.81c14.27-5.23,33.16-9.95,42.13-3,4.19,3.27,5.71,8,4.28,13.25-1.84,6.84-9.94,18.9-38.08,37.45C86.25,71.14,79.06,75.42,72.52,79Z"/><path fill="currentColor" d="M23.65,129.06h106.8v7.45h-106.8Z"/><path fill="currentColor" transform="translate(-36.02 174.82) rotate(-75.1)" d="M90.17,110.84a5.52,4.97,0,1,0,11.04,0a5.52,4.97,0,1,0,-11.04,0Z"/></svg>'
-		]);
+		wp_register_icon(
+			'personio-integration-light/logo',
+			array(
+				'label'   => __( 'Logo', 'personio-integration-light' ),
+				'content' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><path fill="currentColor" d="M72.52,79c-4.77,17-8.71,31.28-9,33.22-.78,5.22-8.49,4.38-8.05-.92.18-1.59,3.37-13.35,7.28-27.33-5.52,2.57-10.06,4.23-12.86,4.58-3.8.62-7-1.55-6.68-4.85A4.07,4.07,0,0,1,49,80.48c2.4-.34,8.56-2.87,16.65-7.07C69.7,59,73.9,44.26,76,36.94c1.67-4.94,9-2.85,7.78,2.22C81.29,47.86,78.4,58,75.6,67.93c3.49-2,7.19-4.26,10.9-6.67,20.22-13.07,34-25.57,36.78-33.54,1-3,.28-4.35-1.2-5.5-3.54-2.75-14.44-3.09-34.39,4.2-29.9,10.91-61.5,32.1-64.51,43.15,1.37.12,2.87,0,3.94,1.08a4.08,4.08,0,0,1-1.06,6.74C21.53,79,13.45,75.57,15.19,68.25c2-9.43,14.89-19.76,25.33-26.82A214.83,214.83,0,0,1,84.94,18.81c14.27-5.23,33.16-9.95,42.13-3,4.19,3.27,5.71,8,4.28,13.25-1.84,6.84-9.94,18.9-38.08,37.45C86.25,71.14,79.06,75.42,72.52,79Z"/><path fill="currentColor" d="M23.65,129.06h106.8v7.45h-106.8Z"/><path fill="currentColor" transform="translate(-36.02 174.82) rotate(-75.1)" d="M90.17,110.84a5.52,4.97,0,1,0,11.04,0a5.52,4.97,0,1,0,-11.04,0Z"/></svg>',
+			)
+		);
 	}
 }
