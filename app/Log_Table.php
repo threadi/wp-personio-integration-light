@@ -193,7 +193,7 @@ class Log_Table extends WP_List_Table {
 				'title'   => __( 'Empty log entries', 'personio-integration-light' ),
 				'texts'   => array(
 					'<p><strong>' . __( 'Are you sure you want to empty the log?', 'personio-integration-light' ) . '</strong></p>',
-					'<p>' . __( 'You will lost any log until now.', 'personio-integration-light' ) . '</p>',
+					'<p>' . __( 'You will lose any log until now.', 'personio-integration-light' ) . '</p>',
 				),
 				'buttons' => array(
 					array(
