@@ -14,7 +14,7 @@ use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 
 /**
- * Object which validates the given URL.
+ * Object that validates the languages-setting.
  */
 class Languages {
 	/**
@@ -27,13 +27,13 @@ class Languages {
 	public static function validate( mixed $values ): array {
 		// if empty set fallback language.
 		if ( empty( $values ) ) {
-			add_settings_error( 'personioIntegrationLanguages', 'personioIntegrationLanguages', __( 'You must enable one language. English will be set.', 'personio-integration-light' ) );
+			add_settings_error( 'personioPositionLanguages', 'personioPositionLanguages', __( 'You must enable one language. English will be set.', 'personio-integration-light' ) );
 			return array( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_fallback_language_name() => '1' );
 		}
 
 		// check if new configuration would change anything.
 		$actual_languages = array();
-		foreach ( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_active_languages( false ) as $language_name => $label ) {
+		foreach ( \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_active_languages() as $language_name => $label ) {
 			$actual_languages[ $language_name ] = '1';
 		}
 		if ( $values !== $actual_languages ) {
