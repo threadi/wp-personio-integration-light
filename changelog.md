@@ -15,6 +15,7 @@
 - Changed the collapsible handling of settings in DataView
 - Updated settings lib, which is now able to use all settings in DataView
 - Changed the spelling of the subject for each email, which could send to the website-owner to be compatible with WordPress defaults
+- Send test emails via AJAX to prevent site reload in the settings page
 
 ### Fixed
 

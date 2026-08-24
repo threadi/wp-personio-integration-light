@@ -143,6 +143,27 @@ class Email_Base {
 		$field->add_depend( $enable_setting, 1 );
 		$setting->set_field( $field );
 
+		// create dialog before test email is sent.
+		$dialog = array(
+			'title'   => __( 'Send test email', 'personio-integration-light' ),
+			'texts'   => array(
+				'<p><strong>' . __( 'Are you sure you want to sent this test email?', 'personio-integration-light' ) . '</strong></p>',
+				'<p>' . __( 'If the email does not reach the specified recipient, check whether your project is able to send emails at all.', 'personio-integration-light' ) . '</p>',
+			),
+			'buttons' => array(
+				array(
+					'action'  => 'personio_integration_send_testmail( "' . $this->get_name() . '" );',
+					'variant' => 'primary',
+					'text'    => __( 'Send now', 'personio-integration-light' ),
+				),
+				array(
+					'action'  => 'closeDialog();',
+					'variant' => 'secondary',
+					'text'    => __( 'Cancel', 'personio-integration-light' ),
+				),
+			),
+		);
+
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personio_integration_email_test_' . $this->get_name() );
 		$setting->set_section( $email_tab_main );
@@ -161,6 +182,8 @@ class Email_Base {
 				get_admin_url() . 'admin.php'
 			)
 		);
+		$field->add_class( 'easy-dialog-for-wordpress' );
+		$field->add_data( 'dialog', Helper::get_json( $dialog ) );
 		$field->add_depend( $enable_setting, 1 );
 		$setting->set_field( $field );
 	}
