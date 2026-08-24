@@ -96,6 +96,9 @@ class Update {
 			if ( version_compare( $db_plugin_version, '5.5.3', '<' ) ) {
 				$this->version553();
 			}
+			if ( version_compare( $db_plugin_version, '5.6.1', '<' ) ) {
+				$this->version561();
+			}
 
 			// log that this update has been run.
 			/* translators: %1$s and %2$s are replaced by the old and new version. */
@@ -246,5 +249,16 @@ class Update {
 	 */
 	private function version553(): void {
 		Init::get_instance()->install_db_tables();
+	}
+
+	/**
+	 * To run on an update to version 5.6.1 or newer.
+	 *
+	 * @return void
+	 */
+	private function version561(): void {
+		if ( 'weekly' === get_option( 'personio_integration_email_interval_report' ) ) {
+			update_option( 'personio_integration_email_interval_report', '' );
+		}
 	}
 }

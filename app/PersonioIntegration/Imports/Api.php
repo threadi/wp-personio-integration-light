@@ -580,7 +580,7 @@ class Api extends Imports_Base {
 
 		if ( 1 === $state ) {
 			// install the schedule if credentials are set.
-			if( \PersonioIntegrationLight\PersonioIntegration\Api::get_instance()->is_credential_prepared() ) {
+			if ( \PersonioIntegrationLight\PersonioIntegration\Api::get_instance()->is_credential_prepared() ) {
 				update_option( 'personioIntegrationEnableApiAccessToken', 1 );
 				$schedule_obj->install();
 			}

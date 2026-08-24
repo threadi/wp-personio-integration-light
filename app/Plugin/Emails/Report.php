@@ -17,6 +17,7 @@ use easySettingsForWordPress\Settings;
 use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\PersonioIntegration\Statistics;
 use PersonioIntegrationLight\Plugin\Email_Base;
+use PersonioIntegrationLight\Plugin\Intervals;
 
 /**
  * Object that handles the report about the positions.
@@ -75,12 +76,7 @@ class Report extends Email_Base {
 		parent::add_settings( $settings_obj, $email_tab );
 
 		// get possible schedules.
-		$schedules = array_map(
-			static function ( $schedule ) {
-				return $schedule['display'];
-			},
-			wp_get_schedules()
-		);
+		$schedules = Intervals::get_instance()->get_intervals_for_settings();
 
 		// get our own section.
 		$email_tab_main = $email_tab->get_section( 'settings_section_email_' . $this->get_name() );
@@ -105,7 +101,7 @@ class Report extends Email_Base {
 		$setting = $settings_obj->add_setting( 'personio_integration_email_interval_' . $this->get_name() );
 		$setting->set_section( $email_tab_main );
 		$setting->set_type( 'string' );
-		$setting->set_default( 'weekly' );
+		$setting->set_default( 'personio_integration_weekly' );
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Choose interval', 'personio-integration-light' ) );
 		$field->set_options( $schedules );

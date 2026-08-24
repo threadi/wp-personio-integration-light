@@ -5,7 +5,7 @@
  * @package personio-integration-light
  */
 
-namespace PersonioIntegrationLight\Tests\Unit\Scenario;
+namespace PersonioIntegrationLight\Tests\Unit\Scenarios;
 
 use PersonioIntegrationLight\Tests\PersonioTestCase;
 

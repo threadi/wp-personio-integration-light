@@ -62,7 +62,7 @@ class Schedules {
 		Intervals::get_instance()->init();
 
 		// use our own hooks.
-		if ( is_admin() ) {
+		if ( is_admin() || wp_doing_cron() ) {
 			add_filter( 'personio_integration_schedule_our_events', array( $this, 'check_events' ) );
 		}
 		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
@@ -178,6 +178,23 @@ class Schedules {
 			return $our_events;
 		}
 
+		// run the reconcile of our schedule events (guards passed).
+		return $this->reconcile_events( $our_events );
+	}
+
+	/**
+	 * Reconcile our schedule events against the WP-cron array: install missing
+	 * enabled events, remove present disabled events and heal interval drift on
+	 * existing enabled events.
+	 *
+	 * Split out from check_events() so the reconcile can run - and be tested -
+	 * independently of the activation guard in check_events().
+	 *
+	 * @param array<string,mixed> $our_events The currently scheduled events.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function reconcile_events( array $our_events ): array {
 		// check the schedule objects if they are set.
 		foreach ( $this->get_schedule_object_names() as $object_name ) {
 			// bail if the class name does not exist.
@@ -200,10 +217,17 @@ class Schedules {
 
 				// log this event.
 				/* translators: %1$s will be replaced by the event name. */
-				Log::get_instance()->add( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'info', $obj->get_log_category() );
+				Log::get_instance()->add( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 
 				// re-run the check for WP-cron-events.
 				$our_events = $this->get_wp_events();
+			} elseif ( $obj->is_enabled() && isset( $our_events[ $obj->get_name() ] ) ) {
+				// the event exists and is enabled: make sure its interval still
+				// matches the configuration. install() reschedules only if the
+				// interval drifted (e.g. after the user picked another interval);
+				// otherwise it is a no-op. This is what makes a changed interval
+				// take effect without any extra wiring.
+				$obj->install();
 			}
 
 			// delete it if the schedule is in the list of our events and not enabled.
@@ -212,7 +236,7 @@ class Schedules {
 
 				// log this event.
 				/* translators: %1$s will be replaced by the event name. */
-				Log::get_instance()->add( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'info', $obj->get_log_category() );
+				Log::get_instance()->add( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 
 				// re-run the check for WP-cron-events.
 				$our_events = $this->get_wp_events();
