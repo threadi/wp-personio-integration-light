@@ -89,6 +89,7 @@ class Email_Base {
 		$email_tab_main->set_callback( array( $this, 'show_description' ) );
 		$email_tab_main->set_setting( $settings_obj );
 		if ( method_exists( $email_tab_main, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
+			$email_tab_main->set_collapsible( true );
 			$email_tab_main->set_collapsed( 1 !== absint( get_option( 'personio_integration_email_' . $this->get_name() ) ) );
 		}
 
@@ -120,6 +121,7 @@ class Email_Base {
 		$field->set_description( $description );
 		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\Emails', 'validate' ) );
 		$text_field = new Text( $settings_obj );
+		$text_field->set_title( __( 'Recipient', 'personio-integration-light' ) );
 		$text_field->set_placeholder( 'info@example.com' );
 		$text_field->add_depend( $enable_setting, 1 );
 		$field->set_field( $text_field );
