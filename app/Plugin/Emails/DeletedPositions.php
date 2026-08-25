@@ -70,7 +70,7 @@ class DeletedPositions extends Email_Base {
 	 */
 	public function get_subject(): string {
 		// set our custom subject.
-		$this->subject = get_bloginfo( 'name' ) . ': ' . _n( 'Position deleted after import from Personio', 'Positions deleted after imported from Personio', count( $this->get_deleted_positions() ), 'personio-integration-light' );
+		$this->subject = '[' . get_bloginfo( 'name' ) . '] ' . _n( 'Position deleted after import from Personio', 'Positions deleted after imported from Personio', count( $this->get_deleted_positions() ), 'personio-integration-light' );
 
 		// return the parent tasks for the subject.
 		return parent::get_subject();

@@ -81,6 +81,7 @@ class Statistics {
 		$statistics_tab = $settings_page->add_tab( 'statistics', 90 );
 		$statistics_tab->set_title( __( 'Statistics', 'personio-integration-light' ) );
 		$statistics_tab->set_callback( array( $this, 'show_statistic' ) );
+		$statistics_tab->set_hide_save( true );
 	}
 
 	/**

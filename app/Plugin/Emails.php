@@ -69,6 +69,7 @@ class Emails {
 
 		// use actions.
 		add_action( 'admin_action_personioPositionsEmailTest', array( $this, 'send_test_email_by_request' ) );
+		add_action( 'wp_ajax_personio_integration_light_sent_test_email', array( $this, 'send_test_email_by_ajax' ) );
 
 		// add our email template.
 		add_filter( 'wp_mail', array( $this, 'set_email_template' ) );
@@ -276,7 +277,7 @@ class Emails {
 	 * @return void
 	 */
 	public function send_test_email_by_request(): void {
-		// check referer.
+		// check nonce.
 		check_admin_referer( 'personio-integration-email-test', 'nonce' );
 
 		// bail if capability is missing.
@@ -316,6 +317,71 @@ class Emails {
 		// let the user return.
 		wp_safe_redirect( wp_get_referer() );
 		exit;
+	}
+
+	/**
+	 * Send test-email by ajax.
+	 *
+	 * @return void
+	 */
+	public function send_test_email_by_ajax(): void {
+		// check nonce.
+		check_ajax_referer( 'personio-integration-light-test-email', 'nonce' );
+
+		// prepare the answer.
+		$answer_dialog = array(
+			'title'   => __( 'Error sending test email', 'personio-integration-light' ),
+			'texts'   => array(
+				'<p>' . __( 'An error occurred during sending the test email.', 'personio-integration-light' ) . '</p>',
+			),
+			'buttons' => array(
+				array(
+					'action'  => 'closeDialog();',
+					'variant' => 'secondary',
+					'text'    => __( 'OK', 'personio-integration-light' ),
+				),
+			),
+		);
+
+		// bail if capability is missing.
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			wp_send_json( array( 'detail' => $answer_dialog ) );
+		}
+
+		// get the object name.
+		$email_object_name = filter_input( INPUT_POST, 'object', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// bail if no object name is given.
+		if ( empty( $email_object_name ) ) {
+			wp_send_json( array( 'detail' => $answer_dialog ) );
+		}
+
+		// get the object.
+		$email_obj = $this->get_email_trigger_by_name( $email_object_name );
+
+		// bail if no object could be found.
+		if ( ! $email_obj instanceof Email_Base ) {
+			wp_send_json( array( 'detail' => $answer_dialog ) );
+		}
+
+		// trigger the test-email of this object.
+		$email_obj->send_test();
+
+		// prepare the answer.
+		$answer_dialog = array(
+			'title'   => __( 'Test-Email has been sent', 'personio-integration-light' ),
+			'texts'   => array(
+				'<p>' . sprintf( __( 'Check now your inbox in %1$s.', 'personio-integration-light' ), implode( ',', $email_obj->get_recipients() ) ) . '</p>',
+			),
+			'buttons' => array(
+				array(
+					'action'  => 'closeDialog();',
+					'variant' => 'primary',
+					'text'    => __( 'OK', 'personio-integration-light' ),
+				)
+			)
+		);
+		wp_send_json( array( 'detail' => $answer_dialog ) );
 	}
 
 	/**

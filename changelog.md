@@ -10,16 +10,21 @@
 
 ### Changed
 
-- Small updates for die API v2, but still not usable as Personio do not deliver the most of v1 data for positions
+- Small updates for die API v2, but still not usable as Personio does not deliver most of the v1 data for positions
 - Optimized cronjob handling, which now also supports automatic cron-healing if a server-side cronjob is used
+- Changed the collapsible handling of settings in DataView
+- Updated settings lib, which is now able to use all settings in DataView
+- Changed the spelling of the subject for each email, which could send to the website-owner to be compatible with WordPress defaults
+- Send test emails via AJAX to prevent site reload on the settings page
 - Save the collapse state of sections in settings
 
 ### Fixed
 
 - Fixed the statement to get our own Block templates from the database (thanks @philipp-marquardt)
-- Fixed removing of schedules with attributes during deactivation of plugin
+- Fixed the removing of schedules with attributes during deactivation of the plugin
 - Fixed a wrong default interval for the report by email
-- Fixed wrong selection of intervals for the report by email
+- Fixed the wrong selection of intervals for the report by email
+- Fixed to prevent trigger the re-import hint on every settings save
 
 ## [5.6.0] - 18.08.2026
 
