@@ -187,6 +187,9 @@ class Settings {
 		if ( method_exists( $settings_obj, 'set_update_version' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
 			$settings_obj->set_update_version( WP_PERSONIO_INTEGRATION_VERSION );
 		}
+		if ( method_exists( $settings_obj, 'set_persist_section_collapse' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
+			$settings_obj->set_persist_section_collapse( true );
+		}
 
 		// create help in case of error during loading of the settings.
 		if ( method_exists( $settings_obj, 'set_error_help' ) ) {  // @phpstan-ignore function.alreadyNarrowedType

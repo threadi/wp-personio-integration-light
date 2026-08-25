@@ -1,16 +1,16 @@
-## Verwendung der WP CLI
+# Verwendung der WP CLI
 
-# Überblick
+## Überblick
 
 Die WP Cli führt Wordpress-Kommandos an der Konsole aus. Diese sollte nur mit entsprechendem Vorwissen ausgeführt werden. Das Plugin stellt eine ganze Reihe an Kommandos für die schnelle Bearbeitung von offenen Stellen in der Datenbank bereit.
 
-# Main command
+## Main command
 
 Liste der verfügbaren Befehle für dieses Plugin anzeigen:
 
 `wp personio`
 
-# Kommandos
+## Kommandos
 
 `wp personio delete_all`
 => alle aktuell importierten Stellen und alle Werte in den Taxonomien
@@ -29,11 +29,11 @@ Liste der verfügbaren Befehle für dieses Plugin anzeigen:
 => löscht alle Daten
 => initiiert das Plugin, als ob es neu installiert worden wäre
 
-# weitere Kommandos im Pro-Plugin
+## weitere Kommandos im Pro-Plugin
 
 `wp personio delete_partials`
 `wp personio run_partial_import`
 
-# Hint
+## Hint
 
 Abhängig von Ihrem Hosting-System müssen diese Befehle im Benutzerkontext Ihrer Website ausgeführt werden.

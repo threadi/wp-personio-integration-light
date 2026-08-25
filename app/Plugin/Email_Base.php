@@ -89,6 +89,7 @@ class Email_Base {
 		$email_tab_main->set_callback( array( $this, 'show_description' ) );
 		$email_tab_main->set_setting( $settings_obj );
 		if ( method_exists( $email_tab_main, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
+			$email_tab_main->set_collapsible( true );
 			$email_tab_main->set_collapsed( 1 !== absint( get_option( 'personio_integration_email_' . $this->get_name() ) ) );
 		}
 
