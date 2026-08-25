@@ -371,6 +371,7 @@ class Emails {
 		$answer_dialog = array(
 			'title'   => __( 'Test-Email has been sent', 'personio-integration-light' ),
 			'texts'   => array(
+				/* translators: %1$s will be replaced with an email or list of emails. */
 				'<p>' . sprintf( __( 'Check now your inbox in %1$s.', 'personio-integration-light' ), implode( ',', $email_obj->get_recipients() ) ) . '</p>',
 			),
 			'buttons' => array(
@@ -378,8 +379,8 @@ class Emails {
 					'action'  => 'closeDialog();',
 					'variant' => 'primary',
 					'text'    => __( 'OK', 'personio-integration-light' ),
-				)
-			)
+				),
+			),
 		);
 		wp_send_json( array( 'detail' => $answer_dialog ) );
 	}

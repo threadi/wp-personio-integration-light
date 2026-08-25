@@ -327,7 +327,7 @@ class Schedules_Base {
 		if ( isset( $this->default_interval, $schedules[ $this->default_interval ] ) && '' !== $this->default_interval ) {
 			// log the fallback so the misconfiguration is visible.
 			/* translators: %1$s will be replaced by the invalid interval, %2$s by the name of the schedule, %3$s by the fallback interval. */
-			Log::get_instance()->add( sprintf( __( 'The configured interval %1$s for schedule %2$s is not registered - falling back to %3$s.', 'personio-integration-light' ), $interval, $this->get_name(), $this->default_interval ), 'error', $this->get_log_category() );
+			Log::get_instance()->add( sprintf( __( 'The configured interval %1$s for schedule %2$s is not registered - falling back to %3$s.', 'personio-integration-light' ), '<code>' . $interval . '</code>', '<code>' . $this->get_name() . '</code>', '<code>' . $this->default_interval . '</code>' ), 'info', $this->get_log_category() );
 
 			// return the default interval.
 			return $this->default_interval;

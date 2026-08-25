@@ -36,7 +36,8 @@ class Emails extends PersonioTestCase {
 		$email = $phpmailer->getSentMIMEMessage();
 		$this->assertIsString( $email );
 		$this->assertNotEmpty( $email );
-		$this->assertStringContainsString( get_option( 'blogname' ), $email );
+		$headers = iconv_mime_decode_headers( $email, 0, 'UTF-8' );
+		$this->assertStringContainsString( get_option( 'blogname' ), $headers['Subject'] );
 		$this->assertStringContainsString( $email_recipient, $email );
 	}
 
@@ -84,7 +85,8 @@ class Emails extends PersonioTestCase {
 		$email = $phpmailer->getSentMIMEMessage();
 		$this->assertIsString( $email );
 		$this->assertNotEmpty( $email );
-		$this->assertStringContainsString( get_option( 'blogname' ), $email );
+		$headers = iconv_mime_decode_headers( $email, 0, 'UTF-8' );
+		$this->assertStringContainsString( get_option( 'blogname' ), $headers['Subject'] );
 		$this->assertStringContainsString( $email_recipient, $email );
 	}
 }
