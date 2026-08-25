@@ -85,7 +85,7 @@ class ImportError extends Email_Base {
 	 */
 	public function get_subject(): string {
 		// set our custom subject.
-		$this->subject = get_bloginfo( 'name' ) . ': ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
+		$this->subject = '[' . get_bloginfo( 'name' ) . '] ' . __( 'Error during Import of positions from Personio', 'personio-integration-light' );
 
 		// return the parent tasks for the subject.
 		return parent::get_subject();

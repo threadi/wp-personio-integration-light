@@ -60,7 +60,7 @@ class Report extends Email_Base {
 	 */
 	public function show_description(): void {
 		/* translators: %1$s will be replaced with a link. */
-		echo wp_kses_post( sprintf( __( 'The report contains information about the amount of positions on your website, the amount of locations where they are assigned to, and the categories in which they are located. The report can also be viewed <a href="$1%s">here</a> at any time.', 'personio-integration-light' ), '' ) );
+		echo wp_kses_post( sprintf( __( 'The report contains information about the number of positions on your website, the number of locations where they are assigned to, and the categories in which they are located. The report can also be viewed <a href="$1%s">here</a> at any time.', 'personio-integration-light' ), '' ) );
 	}
 
 	/**
@@ -117,7 +117,7 @@ class Report extends Email_Base {
 	 */
 	public function get_subject(): string {
 		// set our custom subject.
-		$this->subject = get_bloginfo( 'name' ) . ': ' . __( 'Report about your positions', 'personio-integration-light' );
+		$this->subject = '[' . get_bloginfo( 'name' ) . '] ' . __( 'Report about your positions', 'personio-integration-light' );
 
 		// return the parent tasks for the subject.
 		return parent::get_subject();

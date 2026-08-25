@@ -660,3 +660,25 @@ function personio_integration_light_get_import_dialog() {
     }
   });
 }
+
+/**
+ * Send testmail via AJAX.
+ */
+function personio_integration_send_testmail( obj_name ) {
+  // get the dialog via AJAX.
+  jQuery.ajax({
+    type: "POST",
+    url: personioIntegrationLightJsVars.ajax_url,
+    data: {
+      'action': 'personio_integration_light_sent_test_email',
+      'nonce': personioIntegrationLightJsVars.test_email_nonce,
+      'object': obj_name
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      personio_integration_ajax_error_dialog( errorThrown )
+    },
+    success: function( result ) {
+      personio_integration_create_dialog( result );
+    }
+  });
+}

@@ -232,7 +232,6 @@ class Settings {
 		// add the extension tab.
 		$extensions_tab = $settings_page->add_tab( 'extensions', 40 );
 		$extensions_tab->set_title( __( 'Extensions', 'personio-integration-light' ) );
-		$extensions_tab->set_hide_save( true );
 		$extensions_tab->set_callback( array( $this, 'show_extensions_hint' ) );
 
 		// the advanced tab.
