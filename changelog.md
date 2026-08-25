@@ -10,13 +10,13 @@
 
 ### Changed
 
-- Small updates for die API v2, but still not usable as Personio does not deliver most of the v1 data for positions
+- Small updates for the API v2, but still not usable as Personio does not deliver most of the v1 data for positions
 - Optimized cronjob handling, which now also supports automatic cron-healing if a server-side cronjob is used
 - Changed the collapsible handling of settings in DataView
-- Updated settings lib, which is now able to use all settings in DataView
+- Updated settings lib, now able to use all settings in DataView
 - Changed the spelling of the subject for each email, which could send to the website-owner to be compatible with WordPress defaults
 - Send test emails via AJAX to prevent site reload on the settings page
-- Save the collapse state of sections in settings
+- Save the user-specific collapse state of sections in settings
 
 ### Fixed
 
