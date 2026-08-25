@@ -1,20 +1,20 @@
-## Using WP CLI
+# Using WP CLI
 
-# General
+## General
 
 The WP Cli executes WordPress commands at the console. This should only be executed with appropriate prior knowledge. The plugin provides a whole set of commands for quick editing of open positions in the database.
 
-# Main command
+## Main command
 
 Show list of available commands for this plugin:
 
 `wp personio`
 
-# Get help
+## Get help
 
 `wp help personio`
 
-# Commands
+## Commands
 
 `wp personio delete_all`
 => delete all actual imported positions and all terms in the taxonomies
@@ -33,11 +33,11 @@ Show list of available commands for this plugin:
 => deletes all data
 => initiate the plugin as if it was fresh installed
 
-# Additional commands in Pro-plugin
+## Additional commands in Pro-plugin
 
 `wp personio delete_partials`
 `wp personio run_partial_import`
 
-# Hint
+## Hint
 
 Depending on your hosting-system this commands has to be run in the user-context of your website.
