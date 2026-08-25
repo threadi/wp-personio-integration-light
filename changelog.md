@@ -12,6 +12,7 @@
 
 - Small updates for die API v2, but still not usable as Personio do not deliver the most of v1 data for positions
 - Optimized cronjob handling, which now also supports automatic cron-healing if a server-side cronjob is used
+- Save the collapse state of sections in settings
 
 ### Fixed
 
