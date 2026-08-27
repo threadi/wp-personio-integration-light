@@ -24,7 +24,7 @@
 - Fixed the removing of schedules with attributes during deactivation of the plugin
 - Fixed a wrong default interval for the report by email
 - Fixed the wrong selection of intervals for the report by email
-- Fixed to prevent trigger the re-import hint on every settings save
+- Fixed to prevent triggering the re-import hint on every settings save
 
 ## [5.6.0] - 18.08.2026
 

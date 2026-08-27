@@ -103,3 +103,24 @@ In dieser Box kann man ein Custom Field hinzufügen. Die Schritte dazu sind wie 
 * Textarea
   * Kann für Personio-Attribut-Felder vom Typ "Text" verwendet werden.
   * Wird durch Personio noch nicht unterstützt.
+
+## Hooks
+
+Das Plugin ermöglicht es neben den PHP-Hooks auch JavaScript-Hooks zu verwenden um den Ablauf der Formularverarbeitung zu beeinflussen. Hier ein Beispiel:
+
+```
+document.querySelectorAll('.personio-application-form').forEach(function (form) {
+    form.addEventListener('personio-forms:before-submit', function (e) {
+        console.log('Form will be submitted:', e.detail.form);
+
+        // add your own logic here.
+
+        // option: disable the form submission.
+        // e.preventDefault();
+    });
+
+    form.addEventListener('personio-forms:after-disable', function (e) {
+        console.log('Button wurde disabled:', e.detail.button);
+    });
+});
+```
