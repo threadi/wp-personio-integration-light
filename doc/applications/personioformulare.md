@@ -94,3 +94,24 @@ The boxes in the editing page are structured as follows:
 * Textarea
   * Can be used for Personio attribute fields of type "Text".
   * Not yet supported by Personio.
+
+## Hooks
+
+In addition to PHP hooks, the plugin also allows you to use JavaScript hooks to influence the form processing flow. Here's an example:
+
+```
+document.querySelectorAll('.personio-application-form').forEach(function (form) {
+    form.addEventListener('personio-forms:before-submit', function (e) {
+        console.log('Form will be submitted:', e.detail.form);
+
+        // add your own logic here.
+
+        // option: disable the form submission.
+        // e.preventDefault();
+    });
+
+    form.addEventListener('personio-forms:after-disable', function (e) {
+        console.log('Button wurde disabled:', e.detail.button);
+    });
+});
+```
