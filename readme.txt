@@ -136,34 +136,21 @@ Complete revision of the plugin. Please create a backup before installing versio
 - Added a marker in the WordPress backend menu if any error is logged
 - Added an option in settings to disable this marker (default: enabled to show it)
 - Added hint for Brizy users
-
-### Changed
-
-- Added a marker in the WordPress backend menu if any error is logged
-- Added an option in settings to disable this marker (default: enabled to show it)
-- Added hint for Brizy users
-- Compatible with WordPress 7.1
-- Now requires PHP 8.2 or newer
-- Now requires WordPress 5.9 or newer
-- Updated dialog lib to 2.0.0
-- Updated settings lib to 2.0.0
-- Updated crypt lib to 3.0.0
-- Change the view of any settings to the modern DataView under "Advanced Settings"
-- Logging each error for any technical crypt or setting problem
-- Optimized performance for each supported Block
-- Removed support for Brizy post types as we do not allow editing of positions with any editor
-- Do not register schedule problems as errors as they are solved by the plugin automatically
-- Optimized check for Personio URL
-- Optimized check for registered cron schedules
-- Optimized sections for plugin handling and settings
-- Updated info about possible extensions
-- Optimized the log cleanup
-- Fixed missing dialogs on the page of logs
-- Fixed usage of block-styles if a classic theme is used with the block editor
-- Fixed the usage of lower capability to delete terms of all supported taxonomies
-- Fixed possible usage of path traversals in the template loader
-- Fixed wrong named cron intervall name for new installations
-- Removed the deprecated old advanced tab from versions before plugin version 5.1.0
-- Removed check for valid URL before WordPress version 5.1.0
+- Added Personio icon in the WordPress icon library (for WordPress >= 7.1)
+- Added new logging events during plugin activation and deactivation
+- Added more PHP Unit Tests running before each release
+- Small updates for the API v2, but still not usable as Personio does not deliver most of the v1 data for positions
+- Optimized cronjob handling, which now also supports automatic cron-healing if a server-side cronjob is used
+- Changed the collapsible handling of settings in DataView
+- Updated settings lib, now able to use all settings in DataView
+- Changed the spelling of the subject for each email, which could send to the website-owner to be compatible with WordPress defaults
+- Send test emails via AJAX to prevent site reload on the settings page
+- Save the user-specific collapse state of sections in settings
+- Updated settings lib to 3.3.1
+- Fixed the statement to get our own Block templates from the database (thanks @philipp-marquardt)
+- Fixed the removing of schedules with attributes during deactivation of the plugin
+- Fixed a wrong default interval for the report by email
+- Fixed the wrong selection of intervals for the report by email
+- Fixed to prevent triggering the re-import hint on every settings save
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

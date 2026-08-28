@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [5.6.1] - 31.08.2026
 
 ### Added
 
@@ -17,6 +17,7 @@
 - Changed the spelling of the subject for each email, which could send to the website-owner to be compatible with WordPress defaults
 - Send test emails via AJAX to prevent site reload on the settings page
 - Save the user-specific collapse state of sections in settings
+- Updated settings lib to 3.3.1
 
 ### Fixed
 
@@ -40,7 +41,7 @@
 - Now requires PHP 8.2 or newer
 - Now requires WordPress 5.9 or newer
 - Updated dialog lib to 2.0.0
-- Updated settings lib to 2.0.0
+- Updated settings lib to 3.0.0
 - Updated crypt lib to 3.0.0
 - Change the view of any settings to the modern DataView under "Advanced Settings"
 - Logging each error for any technical crypt or setting problem
