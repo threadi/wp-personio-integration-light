@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Log errors if cronjob could not be deleted
+
 ## [5.6.1] - 31.08.2026
 
 ### Added

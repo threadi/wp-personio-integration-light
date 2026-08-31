@@ -423,7 +423,7 @@ class Schedules {
 		}
 
 		// run the check.
-		$this->check_events( $this->get_events() );
+		$this->check_events( $this->get_wp_events() );
 	}
 
 	/**
@@ -440,8 +440,13 @@ class Schedules {
 			return $event;
 		}
 
+		// bail if hook entity does not exist.
+		if ( ! isset( $event->hook ) ) {
+			return $event;
+		}
+
 		// get our object.
-		$schedule_obj = $this->get_schedule_object_by_name( $event->hook ); // @phpstan-ignore property.notFound
+		$schedule_obj = $this->get_schedule_object_by_name( $event->hook );
 
 		// bail if this is not an event of our plugin.
 		if ( ! $schedule_obj ) {

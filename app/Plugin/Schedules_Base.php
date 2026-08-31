@@ -168,11 +168,11 @@ class Schedules_Base {
 	 */
 	public function delete(): void {
 		// delete the schedule and get the result.
-		$result = wp_clear_scheduled_hook( $this->get_name(), $this->get_args() );
+		$result = wp_clear_scheduled_hook( $this->get_name(), $this->get_args(), true );
 
 		// log event if the schedule could not be deleted.
 		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType
-			Log::get_instance()->add( __( 'Error during deleting of schedule:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $result->get_error_message() ) . '</code>', 'info', $this->get_log_category() );
+			Log::get_instance()->add( __( 'Error during deleting of schedule:', 'personio-integration-light' ) . ' <code>' . esc_html( $result->get_error_message() ) . '</code>', 'error', $this->get_log_category() );
 		}
 	}
 
