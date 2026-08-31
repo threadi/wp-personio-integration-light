@@ -133,9 +133,6 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added a marker in the WordPress backend menu if any error is logged
-- Added an option in settings to disable this marker (default: enabled to show it)
-- Added hint for Brizy users
 - Added Personio icon in the WordPress icon library (for WordPress >= 7.1)
 - Added new logging events during plugin activation and deactivation
 - Added more PHP Unit Tests running before each release
