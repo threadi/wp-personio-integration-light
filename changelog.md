@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Added hint for Breakdance users
+
+### Fixed
+
+- Fixed missing hint for Brizy users
+
 ## [5.6.1] - 31.08.2026
 
 ### Added
