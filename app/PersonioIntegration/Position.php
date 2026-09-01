@@ -20,7 +20,7 @@ use SimpleXMLElement;
 use WP_Term;
 
 /**
- * Object which represents a single position.
+ * Object that represents a single position.
  *
  * $data is an array which holds all contents for a position:
  * - post-data-rows (saved by their post-table-row-names)
@@ -152,7 +152,7 @@ class Position {
 			if ( 1 === count( $posts ) ) {
 				// get the post-id to update its data.
 				$this->data['ID'] = $posts[0];
-				// get the menu_order to obtain its value during the update.
+				// get the menu_order to get its value during the update.
 				$this->data['menu_order'] = get_post_field( 'menu_order', $posts[0] );
 			} elseif ( 1 < count( $posts ) ) {
 				// something is wrong.
@@ -208,9 +208,9 @@ class Position {
 		$array = apply_filters( 'personio_integration_import_single_position_filter_before_saving', $array, $instance );
 
 		// save the position.
-		$result = wp_insert_post( $array );
+		$result = wp_insert_post( $array, true );
 
-		// if error occurred log it.
+		// if error occurred, log it.
 		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType
 			// log this event.
 			Log::get_instance()->add( 'Position with personioId ' . $this->data['personioId'] . ' could not be saved! Error: ' . $result->get_error_message(), 'error', 'import' );
@@ -326,7 +326,7 @@ class Position {
 	}
 
 	/**
-	 * Update single term of single taxonomy for this position.
+	 * Update a single term of a single taxonomy for this position.
 	 *
 	 * @param string $value    The value of the term.
 	 * @param string $taxonomy The taxonom the term is assigned to.
@@ -778,7 +778,7 @@ class Position {
 	}
 
 	/**
-	 * Extend the data-setting for single position.
+	 * Extend the data-setting of a single position.
 	 *
 	 * @param string $setting_name The name of the setting.
 	 * @param string $value Its value.
