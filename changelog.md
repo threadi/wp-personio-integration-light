@@ -6,6 +6,10 @@
 
 - Added hint for Breakdance users
 
+### Changed
+
+- Changed to get errors during creation and update of open positions from WordPress
+
 ### Fixed
 
 - Fixed missing hint for Brizy users
