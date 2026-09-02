@@ -130,6 +130,8 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Beaver',
 			'PersonioIntegrationLight\Plugin\Compatibilities\BitForm',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Bold_Page_Builder',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Breakdance',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Bricks',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Brizy',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Divi',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Divi5',

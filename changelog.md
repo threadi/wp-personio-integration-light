@@ -8,8 +8,13 @@
 
 ### Changed
 
+- Changed to get errors during creation and update of open positions from WordPress
 - Log errors if cronjob could not be deleted
 - Optimized some texts
+
+### Fixed
+
+- Fixed missing hint for Brizy users
 
 ## [5.6.1] - 31.08.2026
 
