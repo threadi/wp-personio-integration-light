@@ -214,9 +214,6 @@ class Position {
 		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType
 			// log this event.
 			Log::get_instance()->add( 'Position with personioId ' . $this->data['personioId'] . ' could not be saved! Error: ' . $result->get_error_message(), 'error', 'import' );
-		} elseif ( 0 === absint( $result ) ) {
-			// log this event.
-			Log::get_instance()->add( 'Position with personioId ' . $this->data['personioId'] . ' could not be saved! Got no error from WordPress.', 'error', 'import' );
 		} elseif ( absint( $result ) > 0 ) { // @phpstan-ignore greater.alwaysTrue
 			// save the post-ID in the object.
 			$this->data['ID'] = absint( $result );

@@ -258,7 +258,7 @@ class Update {
 	 */
 	private function version561(): void {
 		if ( 'weekly' === get_option( 'personio_integration_email_interval_report' ) ) {
-			update_option( 'personio_integration_email_interval_report', 'personio_integration_weekly' );
+			update_option( 'personio_integration_email_interval_report', '' );
 		}
 	}
 }
