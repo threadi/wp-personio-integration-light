@@ -155,6 +155,8 @@ class Compatibilities {
 			'PersonioIntegrationLight\Plugin\Compatibilities\Visual_Composer',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Salient_WpBakery',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WpBakery',
+			'PersonioIntegrationLight\Plugin\Compatibilities\Wpforms',
+			'PersonioIntegrationLight\Plugin\Compatibilities\WpformsLite',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Wpml',
 			'PersonioIntegrationLight\Plugin\Compatibilities\WPMultilang',
 			'PersonioIntegrationLight\Plugin\Compatibilities\Ws_Form',

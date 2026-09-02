@@ -2,9 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added check for Breakdance compatibility
+
 ### Changed
 
 - Log errors if cronjob could not be deleted
+- Optimized some texts
 
 ## [5.6.1] - 31.08.2026
 

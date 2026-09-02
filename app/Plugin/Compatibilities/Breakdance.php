@@ -1,6 +1,6 @@
 <?php
 /**
- * File to handle the compatibility-check for Contact Form 7.
+ * File to handle the compatibility-check for Breakdance.
  *
  * @package personio-integration-light
  */
@@ -17,26 +17,26 @@ use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 /**
  * Object for this check.
  */
-class Contact_Form_7 extends Compatibilities_Base {
+class Breakdance extends Compatibilities_Base {
 
 	/**
 	 * Name of this object.
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_cf7';
+	protected string $name = 'personio_integration_compatibility_breakdance';
 
 	/**
 	 * Instance of this object.
 	 *
-	 * @var ?Contact_Form_7
+	 * @var ?Breakdance
 	 */
-	private static ?Contact_Form_7 $instance = null;
+	private static ?Breakdance $instance = null;
 
 	/**
 	 * Return the instance of this Singleton object.
 	 */
-	public static function get_instance(): Contact_Form_7 {
+	public static function get_instance(): Breakdance {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -55,7 +55,7 @@ class Contact_Form_7 extends Compatibilities_Base {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Contact Form 7 - very nice!</strong> <a href="%1$s" target="_blank"><i>Personio Integration Pro</i> (opens a new window)</a> allows you to design your application forms with Contact Form 7.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
+			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using Breakdance - very nice!</strong> <a href="%1$s" target="_blank"><i>Personio Integration Pro</i> (opens a new window)</a> allows you to design the output of positions in Breakdance.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ) ) );
 			$transient_obj->set_type( 'success' );
 			$transient_obj->set_dismissible_days( 30 );
 			$transient_obj->save();
@@ -65,11 +65,11 @@ class Contact_Form_7 extends Compatibilities_Base {
 	}
 
 	/**
-	 * Check if the plugin is active.
+	 * Check if Breakdance and its necessary plugins are active.
 	 *
 	 * @return bool
 	 */
 	public function is_active(): bool {
-		return Helper::is_plugin_active( 'contact-form-7/wp-contact-form-7.php' );
+		return Helper::is_plugin_active( 'breakdance/plugin.php' );
 	}
 }
