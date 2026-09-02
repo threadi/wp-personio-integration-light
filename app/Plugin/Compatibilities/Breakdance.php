@@ -65,7 +65,7 @@ class Breakdance extends Compatibilities_Base {
 	}
 
 	/**
-	 * Check if Bricks and its necessary plugins are active.
+	 * Check if Breakdance and its necessary plugins are active.
 	 *
 	 * @return bool
 	 */

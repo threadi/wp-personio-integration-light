@@ -4,11 +4,13 @@
 
 ### Added
 
-- Added hint for Breakdance users
+- Added check for Breakdance compatibility
 
 ### Changed
 
 - Changed to get errors during creation and update of open positions from WordPress
+- Log errors if cronjob could not be deleted
+- Optimized some texts
 
 ### Fixed
 
