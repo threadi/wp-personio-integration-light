@@ -63,7 +63,7 @@ The output of the positions as a list is limited to a maximum of 10. Only in [Pe
 ➕ RichSnippets for optimal findability via search engines like Google Jobs
 ➕ Support to embed positions from your website in other website via oEmbed (optionally configurable for all or single positions)
 ➕ Shortcode generator for individual views of lists and details
-➕ Encrypt all sensitive data (e.g., applicant data and API credentials).
+➕ ISO 27001/27002 compliant encryption all sensitive data (e.g., applicant data and API credentials).
 ➕ ... and much more
 
 🆙 [Get the Pro-Version](https://laolaweb.com/plugins/personio-wordpress-plugin/)
