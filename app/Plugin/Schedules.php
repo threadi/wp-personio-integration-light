@@ -11,6 +11,8 @@ namespace PersonioIntegrationLight\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Checkbox;
+use easySettingsForWordPress\Page;
+use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Log;
 
 /**
@@ -109,8 +111,24 @@ class Schedules {
 		// get settings object.
 		$settings_obj = Settings::get_instance()->get_settings_object();
 
+		// get the settings page.
+		$settings_page = $settings_obj->get_page( Settings::get_instance()->ge() );
+
+		// bail if page could not be found.
+		if( ! $settings_page instanceof Page ) {
+			return;
+		}
+
+		// get the tab.
+		$tab = $settings_page->get_tab( 'personio_integration_advanced' );
+
+		// bail if tab could not be found.
+		if( ! $tab instanceof Tab ) {
+			return;
+		}
+
 		// get the section.
-		$advanced_section = $settings_obj->get_section( 'settings_section_advanced' );
+		$advanced_section = $tab->get_section( 'settings_section_advanced' );
 
 		// bail if the tab does not exist.
 		if ( ! $advanced_section ) {
@@ -304,7 +322,6 @@ class Schedules {
 	 * Create our schedules per request.
 	 *
 	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function create_schedules_per_request(): void {
 		// check nonce.
