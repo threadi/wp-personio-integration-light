@@ -133,21 +133,10 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added Personio icon in the WordPress icon library (for WordPress >= 7.1)
-- Added new logging events during plugin activation and deactivation
-- Added more PHP Unit Tests running before each release
-- Small updates for the API v2, but still not usable as Personio does not deliver most of the v1 data for positions
-- Optimized cronjob handling, which now also supports automatic cron-healing if a server-side cronjob is used
-- Changed the collapsible handling of settings in DataView
-- Updated settings lib, now able to use all settings in DataView
-- Changed the spelling of the subject for each email, which could send to the website-owner to be compatible with WordPress defaults
-- Send test emails via AJAX to prevent site reload on the settings page
-- Save the user-specific collapse state of sections in settings
-- Updated settings lib to 3.3.1
-- Fixed the statement to get our own Block templates from the database (thanks @philipp-marquardt)
-- Fixed the removing of schedules with attributes during deactivation of the plugin
-- Fixed a wrong default interval for the report by email
-- Fixed the wrong selection of intervals for the report by email
-- Fixed to prevent triggering the re-import hint on every settings save
+- Added check for Breakdance compatibility
+- Changed to get errors during creation and update of open positions from WordPress
+- Log errors if cronjob could not be deleted
+- Optimized some texts
+- Fixed missing hint for Brizy users
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
