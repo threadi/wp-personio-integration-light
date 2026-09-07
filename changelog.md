@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Optimized output of CSV for MS Excel
+
 ### Fixed
 
 - Fixed a wrong text domain in installer which prevents the translation of some texts there

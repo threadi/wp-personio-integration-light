@@ -920,7 +920,18 @@ class Admin {
 
 		// add the entries.
 		foreach ( $entries as $data ) {
-			fputcsv( $fp, $data );
+			fputcsv(
+				$fp,
+				array_map(
+					static function ( $value ) {
+						$value = (string) $value;
+
+						// prefix values Excel would evaluate as a formula.
+						return preg_match( '/^[=+\-@\t\r]/', $value ) ? "'" . $value : $value;
+					},
+					$data
+				)
+			);
 		}
 
 		// do nothing more.
