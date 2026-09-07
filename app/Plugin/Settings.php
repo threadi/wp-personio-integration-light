@@ -657,6 +657,7 @@ class Settings {
 		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationMaxAgeLogEntries' );
 		$setting->set_section( $advanced );
+		$setting->set_type( 'integer' );
 		$setting->set_default( 20 );
 		$field = new Number( $settings_obj );
 		$field->set_title( __( 'max. Age for log entries in days', 'personio-integration-light' ) );
