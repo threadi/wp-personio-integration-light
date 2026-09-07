@@ -10,8 +10,10 @@ namespace PersonioIntegrationLight\Plugin\Admin\SettingsSavings;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Plugin\Schedules\Report;
+
 /**
- * Object which saves the import schedule.
+ * Object which saves the report schedule.
  */
 class ReportInterval {
 	/**
@@ -22,12 +24,12 @@ class ReportInterval {
 	 * @return string|null
 	 */
 	public static function save( ?string $value ): null|string {
-		$import_schedule_obj = new \PersonioIntegrationLight\Plugin\Schedules\Report();
-		$import_schedule_obj->set_interval( get_option( 'personio_integration_email_interval_report' ) );
+		$report_schedule_obj = new Report();
+		$report_schedule_obj->set_interval( get_option( 'personio_integration_email_interval_report' ) );
 		if ( 1 === absint( $value ) ) {
-			$import_schedule_obj->reset();
+			$report_schedule_obj->reset();
 		} else {
-			$import_schedule_obj->delete();
+			$report_schedule_obj->delete();
 		}
 
 		// return the new value to save it via WP.
