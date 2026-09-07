@@ -112,10 +112,10 @@ class Schedules {
 		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// get the settings page.
-		$settings_page = $settings_obj->get_page( Settings::get_instance()->ge() );
+		$settings_page = $settings_obj->get_page( Settings::get_instance()->get_settings_object()->get_menu_slug() );
 
 		// bail if page could not be found.
-		if( ! $settings_page instanceof Page ) {
+		if ( ! $settings_page instanceof Page ) {
 			return;
 		}
 
@@ -123,7 +123,7 @@ class Schedules {
 		$tab = $settings_page->get_tab( 'personio_integration_advanced' );
 
 		// bail if tab could not be found.
-		if( ! $tab instanceof Tab ) {
+		if ( ! $tab instanceof Tab ) {
 			return;
 		}
 
