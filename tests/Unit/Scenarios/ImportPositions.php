@@ -223,4 +223,72 @@ class ImportPositions extends PersonioTestCase {
 		// the positions must have been imported.
 		$this->assertGreaterThan( 0, $this->count_positions() );
 	}
+
+	/**
+	 * The shutdown handler must log a fatal error and reset the running-flag.
+	 *
+	 * @return void
+	 */
+	public function test_shutdown_handler_logs_and_resets_running_flag(): void {
+		// simulate a running import.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
+
+		$xml_import = new \PersonioIntegrationLight\PersonioIntegration\Imports\Xml();
+		$xml_import->process_shutdown_error(
+			array(
+				'type'    => E_ERROR,
+				'message' => 'Allowed memory size of 134217728 bytes exhausted',
+				'file'    => __FILE__,
+				'line'    => __LINE__,
+			)
+		);
+
+		// the running-flag must be reset.
+		$this->assertSame( 0, absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING ) ) );
+
+		// the error must show up in the log.
+		$entries = \PersonioIntegrationLight\Log::get_instance()->get_entries();
+		$found   = false;
+		foreach ( $entries as $entry ) {
+			if ( str_contains( $entry['log'], 'Allowed memory size' ) ) {
+				$found = true;
+			}
+		}
+		$this->assertTrue( $found );
+	}
+
+	/**
+	 * Non-fatal errors (e.g. a warning) must NOT touch the running-flag.
+	 *
+	 * @return void
+	 */
+	public function test_shutdown_handler_ignores_non_fatal_errors(): void {
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
+
+		$xml_import = new \PersonioIntegrationLight\PersonioIntegration\Imports\Xml();
+		$xml_import->process_shutdown_error(
+			array(
+				'type'    => E_WARNING,
+				'message' => 'just a warning',
+				'file'    => __FILE__,
+				'line'    => __LINE__,
+			)
+		);
+
+		$this->assertGreaterThan( 0, absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING ) ) );
+	}
+
+	/**
+	 * A null error (no fatal error occurred) must NOT touch the running-flag.
+	 *
+	 * @return void
+	 */
+	public function test_shutdown_handler_ignores_no_error(): void {
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
+
+		$xml_import = new \PersonioIntegrationLight\PersonioIntegration\Imports\Xml();
+		$xml_import->process_shutdown_error( null );
+
+		$this->assertGreaterThan( 0, absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING ) ) );
+	}
 }

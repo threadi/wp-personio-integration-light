@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Optimized catch of fatal error during import via XML or API v2
 - Optimized output of CSV for MS Excel
 
 ### Fixed
