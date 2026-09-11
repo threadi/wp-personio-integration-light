@@ -175,6 +175,11 @@ class Diagnostics {
 		// check nonce.
 		check_ajax_referer( 'personio-integration-light-diagnostics', 'nonce' );
 
+		// bail on missing capabilities.
+		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			wp_send_json_error();
+		}
+
 		// run the diagnostics.
 		$this->run_diagnostics();
 
@@ -187,7 +192,7 @@ class Diagnostics {
 				case 'external_ip':
 					$ip      = $result['value'];
 					$report .= '--- ' . esc_html__( 'External IP', 'personio-integration-light' ) . " ---\n";
-					$report .= $ip ? esc_html__( 'Your external IP:', 'personio-integration-light' ) . ' ' . $ip . "\n\n" : esc_html__( 'The external IP address could not be determined.', 'personio-integration-light' ) . "\n\n";
+					$report .= $ip ? esc_html__( 'Your external IP:', 'personio-integration-light' ) . ' ' . esc_html( $ip ) . "\n\n" : esc_html__( 'The external IP address could not be determined.', 'personio-integration-light' ) . "\n\n";
 					break;
 				case 'dns':
 					$report .= '--- ' . esc_html__( 'DNS resolution', 'personio-integration-light' ) . " ---\n";
