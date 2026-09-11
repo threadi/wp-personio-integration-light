@@ -176,7 +176,7 @@ class Diagnostics {
 		check_ajax_referer( 'personio-integration-light-diagnostics', 'nonce' );
 
 		// bail on missing capabilities.
-		if( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
 			wp_send_json_error();
 		}
 
@@ -260,11 +260,6 @@ class Diagnostics {
 	public function run_diagnostics(): void {
 		// get the domain from the license URL.
 		$domain = wp_parse_url( WP_PERSONIO_INTEGRATION_LIGHT_LICENCE_URL, PHP_URL_HOST );
-
-		// bail if domain could not be parsed.
-		if ( ! is_string( $domain ) || empty( $domain ) ) { // @phpstan-ignore function.impossibleType,function.alreadyNarrowedType,booleanOr.alwaysFalse,empty.variable
-			return;
-		}
 
 		// get the analyzer object.
 		$tcp_analyzer = new TcpAnalyzer();
