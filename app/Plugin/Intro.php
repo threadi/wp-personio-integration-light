@@ -296,8 +296,16 @@ class Intro {
 			return;
 		}
 
+		// get the advanced tab.
+		$advanced_settings_tab = $advanced_tab->get_tab( 'personio_integration_advanced_settings' );
+
+		// bail if the page could not be loaded.
+		if ( ! $advanced_settings_tab instanceof Tab ) {
+			return;
+		}
+
 		// get the advanced section.
-		$advanced_section = $advanced_tab->get_section( 'settings_section_advanced' );
+		$advanced_section = $advanced_settings_tab->get_section( 'settings_section_advanced' );
 
 		// bail if the section could not be loaded.
 		if ( ! $advanced_section instanceof Section ) {

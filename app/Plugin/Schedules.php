@@ -127,8 +127,16 @@ class Schedules {
 			return;
 		}
 
+		// get the tab.
+		$settings_tab = $settings_page->get_tab( 'personio_integration_advanced_settings' );
+
+		// bail if tab could not be found.
+		if ( ! $settings_tab instanceof Tab ) {
+			return;
+		}
+
 		// get the section.
-		$advanced_section = $tab->get_section( 'settings_section_advanced' );
+		$advanced_section = $settings_tab->get_section( 'settings_section_advanced' );
 
 		// bail if the tab does not exist.
 		if ( ! $advanced_section ) {

@@ -1,0 +1,11 @@
+.personio-integration-light-diagnostics-results {
+	background:#fff;
+	border:1px solid #ccd0d4;
+	padding:15px;
+	white-space:pre-wrap;
+	display:none;
+	.spinner {
+		visibility: visible;
+		float: none;
+	}
+}

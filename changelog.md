@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added a diagnostics tool to analyze details if the connection from the local hosting to laolaweb.com does not work
+
 ### Changed
 
 - Optimized catch of fatal error during import via XML or API v2
