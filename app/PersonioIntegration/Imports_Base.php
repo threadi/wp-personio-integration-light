@@ -341,7 +341,7 @@ class Imports_Base extends Extensions_Base {
 	/**
 	 * Testable core of the shutdown handling.
 	 *
-	 * @param array{type:int,message:string,file:string,line:int}|null $error
+	 * @param array{type:int,message:string,file:string,line:int}|null $error The error.
 	 *
 	 * @return void
 	 */
