@@ -1,5 +1,20 @@
 # Changelog
 
+## [5.7.1] - 14.09.2026
+
+### Added
+
+- Added a diagnostics tool to analyze details if the connection from the local hosting to laolaweb.com does not work
+
+### Changed
+
+- Optimized catch of fatal error during import via XML or API v2
+- Optimized output of CSV for MS Excel
+
+### Fixed
+
+- Fixed a wrong text domain in installer which prevents the translation of some texts there
+
 ## [5.7.0] - 07.09.2026
 
 ### Added

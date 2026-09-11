@@ -133,10 +133,9 @@ Complete revision of the plugin. Please create a backup before installing versio
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added check for Breakdance compatibility
-- Changed to get errors during creation and update of open positions from WordPress
-- Log errors if cronjob could not be deleted
-- Optimized some texts
-- Fixed missing hint for Brizy users
+- Added a diagnostics tool to analyze details if the connection from the local hosting to laolaweb.com does not work
+- Optimized catch of fatal error during import via XML or API v2
+- Optimized output of CSV for MS Excel
+- Fixed a wrong text domain in installer which prevents the translation of some texts there
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

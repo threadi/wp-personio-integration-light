@@ -238,6 +238,11 @@ class Settings {
 		$advanced_tab = $settings_page->add_tab( 'personio_integration_advanced', 50 );
 		$advanced_tab->set_title( __( 'Additional settings', 'personio-integration-light' ) );
 
+		// the advanced tab.
+		$advanced_settings_tab = $advanced_tab->add_tab( 'personio_integration_advanced_settings', 10 );
+		$advanced_settings_tab->set_title( __( 'More settings', 'personio-integration-light' ) );
+		$advanced_tab->set_default_tab( $advanced_settings_tab );
+
 		// the log tab.
 		$logs_tab = $settings_page->add_tab( 'logs', 60 );
 		$logs_tab->set_title( __( 'Logs', 'personio-integration-light' ) );
@@ -283,13 +288,13 @@ class Settings {
 		$template_other->set_setting( $settings_obj );
 
 		// the advanced section.
-		$advanced = $advanced_tab->add_section( 'settings_section_advanced', 10 );
+		$advanced = $advanced_settings_tab->add_section( 'settings_section_advanced', 10 );
 		$advanced->set_title( __( 'Additional settings', 'personio-integration-light' ) );
 		$advanced->set_setting( $settings_obj );
 		$advanced->set_callback( array( $this, 'show_advanced_hint' ) );
 
 		// the debug section.
-		$debug_plugin = $advanced_tab->add_section( 'settings_section_advanced_debug', 20 );
+		$debug_plugin = $advanced_settings_tab->add_section( 'settings_section_advanced_debug', 20 );
 		$debug_plugin->set_title( __( 'Debug', 'personio-integration-light' ) );
 		$debug_plugin->set_setting( $settings_obj );
 		if ( method_exists( $debug_plugin, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
@@ -297,14 +302,14 @@ class Settings {
 		}
 
 		// add a section.
-		$import_export_section = $advanced_tab->add_section( 'personio_integration_import_export_section', 20 );
+		$import_export_section = $advanced_settings_tab->add_section( 'personio_integration_import_export_section', 20 );
 		$import_export_section->set_title( __( 'Secure settings', 'personio-integration-light' ) );
 		if ( method_exists( $import_export_section, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
 			$import_export_section->set_collapsed( true );
 		}
 
 		// the advanced plugin-handling section.
-		$advanced_plugin = $advanced_tab->add_section( 'settings_section_advanced_plugin', 30 );
+		$advanced_plugin = $advanced_settings_tab->add_section( 'settings_section_advanced_plugin', 30 );
 		$advanced_plugin->set_title( __( 'Plugin handling', 'personio-integration-light' ) );
 		if ( method_exists( $advanced_plugin, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
 			$advanced_plugin->set_collapsed( true );

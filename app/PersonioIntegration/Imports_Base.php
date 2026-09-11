@@ -328,4 +328,42 @@ class Imports_Base extends Extensions_Base {
 		// return resulting dialog.
 		return $dialog;
 	}
+
+	/**
+	 * Catch fatal errors that try/catch cannot handle and clean up the running-state.
+	 *
+	 * @return void
+	 */
+	public function handle_fatal_shutdown(): void {
+		$this->process_shutdown_error( error_get_last() );
+	}
+
+	/**
+	 * Testable core of the shutdown handling.
+	 *
+	 * @param array{type:int,message:string,file:string,line:int}|null $error The error.
+	 *
+	 * @return void
+	 */
+	public function process_shutdown_error( ?array $error ): void {
+		// bail if there was no fatal error.
+		if ( null === $error || ! in_array( $error['type'], array( E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ), true ) ) {
+			return;
+		}
+
+		// bail if import already finished cleanly.
+		if ( 0 === absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) ) {
+			return;
+		}
+
+		// log this event.
+		Log::get_instance()->add(
+			__( 'Import was aborted by a fatal PHP error:', 'personio-integration-light' ) . '<br><code>' . esc_html( $error['message'] ) . '</code> ' . esc_html( $error['file'] ) . ':' . absint( $error['line'] ),
+			'error',
+			'imports'
+		);
+
+		// reset the running-flag so the user is not stuck.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+	}
 }

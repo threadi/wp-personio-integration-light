@@ -163,6 +163,9 @@ class Api extends Imports_Base {
 		$this->set_import_count( 0 );
 		$this->set_import_max_count( 0 );
 
+		// register a shutdown handler to catch fatal errors during the import.
+		register_shutdown_function( array( $this, 'handle_fatal_shutdown' ) );
+
 		try {
 			/**
 			 * Use a loop to get all positions.

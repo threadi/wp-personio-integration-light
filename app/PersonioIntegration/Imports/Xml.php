@@ -165,6 +165,9 @@ class Xml extends Imports_Base {
 		$this->set_import_count( 0 );
 		$this->set_import_max_count( 0 );
 
+		// register a shutdown handler to catch fatal errors during the import.
+		register_shutdown_function( array( $this, 'handle_fatal_shutdown' ) );
+
 		try {
 			// run the imports in loops through Personio URLs and active languages.
 			foreach ( $personio_urls as $import_url ) {
