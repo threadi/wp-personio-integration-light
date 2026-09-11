@@ -262,7 +262,7 @@ class Diagnostics {
 		$domain = wp_parse_url( WP_PERSONIO_INTEGRATION_LIGHT_LICENCE_URL, PHP_URL_HOST );
 
 		// bail if domain could not be parsed.
-		if ( ! is_string( $domain ) || empty( $domain ) ) { // @phpstan-ignore function.alreadyNarrowedType,booleanOr.alwaysFalse,empty.variable
+		if ( ! is_string( $domain ) || empty( $domain ) ) { // @phpstan-ignore function.impossibleType,function.alreadyNarrowedType,booleanOr.alwaysFalse,empty.variable
 			return;
 		}
 
