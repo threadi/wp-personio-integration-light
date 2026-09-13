@@ -1,6 +1,6 @@
 <?php
 /**
- * File for handling site health options of this plugin.
+ * File for handling dashboard tasks in this plugin.
  *
  * @package personio-integration-light
  */
