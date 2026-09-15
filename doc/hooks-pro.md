@@ -411,7 +411,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Admin/SettingsValidation/License.php](Plugin/Admin/SettingsValidation/License.php), [line 66](Plugin/Admin/SettingsValidation/License.php#L66-L71)
+Source: [app/Plugin/Admin/SettingsValidation/License.php](Plugin/Admin/SettingsValidation/License.php), [line 73](Plugin/Admin/SettingsValidation/License.php#L73-L78)
 
 ### `personio_integration_pro_application_saved`
 
