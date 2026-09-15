@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added compatibility check for Enfold
+
 ### Changed
 
 - Updated the settings library to 3.5.0
