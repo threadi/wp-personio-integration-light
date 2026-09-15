@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Updated the setup library
+
 ## [5.7.1] - 14.09.2026
 
 ### Added
