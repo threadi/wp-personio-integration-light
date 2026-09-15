@@ -8,6 +8,7 @@
 
 ### Changed
 
+- Optimized some visiblity conditions for settings on our blocks
 - Updated the settings library to 3.5.0
 - Updated the setup library
 
