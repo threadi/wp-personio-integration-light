@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Updated the settings library to 3.5.0
 - Updated the setup library
 
 ## [5.7.1] - 14.09.2026
