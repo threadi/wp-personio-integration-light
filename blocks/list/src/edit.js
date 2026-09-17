@@ -172,28 +172,27 @@ export default function Edit( object ) {
 						checked={ object.attributes.showTitle }
 						onChange={ value => onChangeTitleVisibility( value, object ) }
 					/>
-					<ToggleControl
+          {object.attributes.showTitle && <ToggleControl
             __nextHasNoMarginBottom
 						label={__('Link title', 'personio-integration-light')}
 						checked={ object.attributes.linkTitle }
 						onChange={ value => onChangeLinkingTitle( value, object ) }
-					/>
+					/>}
 					<ToggleControl
 						__nextHasNoMarginBottom
 						label={__('Show excerpt', 'personio-integration-light')}
 						checked={ object.attributes.showExcerpt }
 						onChange={ value => onChangeExcerptVisibility( value, object ) }
 					/>
-					<SelectControl
+          {object.attributes.showExcerpt && <SelectControl
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
 						label={__('Choose details', 'personio-integration-light')}
 						value={object.attributes.excerptTemplates}
 						options={ personioTaxonomies }
 						multiple={true}
-						disabled={ !object.attributes.showExcerpt }
 						onChange={value => onChangeExcerptTemplates(value, object)}
-					/>
+					/>}
 					<ToggleControl
 						__nextHasNoMarginBottom
 						label={__('View content', 'personio-integration-light')}
