@@ -70,6 +70,6 @@ class Elementor extends Compatibilities_Base {
 	 * @return bool
 	 */
 	public function is_active(): bool {
-		return defined( 'ELEMENTOR_PRO_VERSION' ) || class_exists( '\ElementorPro\Plugin' );
+		return did_action( 'elementor/loaded' ) > 0;
 	}
 }
