@@ -8,7 +8,8 @@
 
 ### Changed
 
-- Optimized some visiblity conditions for settings on our blocks
+- Optimized some visibility conditions for settings on our blocks
+- Optimized check for Elementor Pro and POR Elements
 - Updated the settings library to 3.5.0
 - Updated the setup library
 
