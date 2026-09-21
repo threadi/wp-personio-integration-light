@@ -379,7 +379,7 @@ Version | Description
 ------- | -----------
 `4.0.0` | Available since 4.0.0.
 
-Source: [app/Plugin/License.php](Plugin/License.php), [line 530](Plugin/License.php#L530-L535)
+Source: [app/Plugin/License.php](Plugin/License.php), [line 538](Plugin/License.php#L538-L543)
 
 ### `personio_integration_pro_license_key_changed`
 
@@ -398,7 +398,7 @@ Version | Description
 ------- | -----------
 `5.5.2` | Available since 5.5.2
 
-Source: [app/Plugin/License.php](Plugin/License.php), [line 1677](Plugin/License.php#L1677-L1684)
+Source: [app/Plugin/License.php](Plugin/License.php), [line 1695](Plugin/License.php#L1695-L1702)
 
 ### `personio_integration_pro_license_activated`
 
@@ -411,7 +411,7 @@ Version | Description
 ------- | -----------
 `3.0.0` | Available since 3.0.0.
 
-Source: [app/Plugin/Admin/SettingsValidation/License.php](Plugin/Admin/SettingsValidation/License.php), [line 73](Plugin/Admin/SettingsValidation/License.php#L73-L78)
+Source: [app/Plugin/Admin/SettingsValidation/License.php](Plugin/Admin/SettingsValidation/License.php), [line 74](Plugin/Admin/SettingsValidation/License.php#L74-L79)
 
 ### `personio_integration_pro_application_saved`
 
