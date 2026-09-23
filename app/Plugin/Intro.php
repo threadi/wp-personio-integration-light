@@ -193,7 +193,7 @@ class Intro {
 				'step_2_title'                 => __( 'Your positions', 'personio-integration-light' ),
 				'step_2_intro'                 => __( 'This is the list of your positions from Personio. This will be updated daily or if you run the import.', 'personio-integration-light' ),
 				'step_3_title'                 => __( 'Change the view', 'personio-integration-light' ),
-				'step_3_intro'                 => __( 'Choose the columns you need in you position list. Which columns are filled depends on the data in your Personio account.', 'personio-integration-light' ),
+				'step_3_intro'                 => __( 'Choose the columns you need in your position list. Which columns are filled depends on the data in your Personio account.', 'personio-integration-light' ),
 				'step_4_title'                 => __( 'Run the import', 'personio-integration-light' ),
 				'step_4_intro'                 => __( 'On this button you could run the import of new Positions any time. They can be displayed immediately afterwards in the frontend to your visitors.', 'personio-integration-light' ),
 				'step_5_title'                 => __( 'Frontend view', 'personio-integration-light' ),
@@ -320,7 +320,7 @@ class Intro {
 			),
 			'buttons' => array(
 				array(
-					'action'  => 'esefw_settings_import_file();',
+					'action'  => 'location.href="' . $this->get_reset_url() . '";',
 					'variant' => 'primary',
 					'text'    => __( 'Yes', 'personio-integration-light' ),
 				),
@@ -340,18 +340,9 @@ class Intro {
 		$field = new Button( $settings_obj );
 		$field->set_title( __( 'Reset intro', 'personio-integration-light' ) );
 		$field->set_button_title( __( 'Rerun the intro', 'personio-integration-light' ) );
-		$field->set_button_url(
-			add_query_arg(
-				array(
-					'action' => 'personioPositionsIntroReset',
-					'nonce'  => wp_create_nonce( 'personio-integration-intro-reset' ),
-				),
-				get_admin_url() . 'admin.php'
-			)
-		);
+		$field->set_button_url( $this->get_reset_url() );
 		$field->add_class( 'easy-dialog-for-wordpress' );
 		$field->add_data( 'dialog', Helper::get_json( $dialog ) );
-		$field->add_class( 'personio-integration-reset-intro' );
 		$setting->set_field( $field );
 
 		// get hidden section.
@@ -384,5 +375,20 @@ class Intro {
 			return array();
 		}
 		return $settings;
+	}
+
+	/**
+	 * Return the URL to reset the intro.
+	 *
+	 * @return string
+	 */
+	private function get_reset_url(): string {
+		return add_query_arg(
+			array(
+				'action' => 'personioPositionsIntroReset',
+				'nonce'  => wp_create_nonce( 'personio-integration-intro-reset' ),
+			),
+			get_admin_url() . 'admin.php'
+		);
 	}
 }

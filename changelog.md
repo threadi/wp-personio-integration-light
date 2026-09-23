@@ -9,9 +9,14 @@
 ### Changed
 
 - Optimized some visibility conditions for settings on our blocks
-- Optimized check for Elementor Pro and POR Elements
+- Optimized check for Elementor Pro and PRO Elements
 - Updated the settings library to 3.5.0
 - Updated the setup library
+
+### Fixed
+
+- Fixed the intro handling
+- Fixed some typos
 
 ## [5.7.1] - 14.09.2026
 
