@@ -5,9 +5,9 @@
   "author": "laOlaWeb GmbH",
   "license": "GPL-2.0-or-later",
   "scripts": {
-    "build": "concurrently --kill-others-on-fail \"npm run build:list\" \"npm run build:show\" \"npm run build:filter-list\" \"npm run build:filter-select\" \"npm run build:application-button\" \"npm run build:details\" \"npm run build:description\" \"npm run build:commands\"",
+    "build": "concurrently --kill-others-on-fail \"npm run build:list\" \"npm run build:show\" \"npm run build:filter-list\" \"npm run build:filter-select\" \"npm run build:application-button\" \"npm run build:details\" \"npm run build:description\" \"npm run build:commands\" \"npm run copy:driver\"",
     "format": "wp-scripts format",
-    "start": "concurrently --kill-others-on-fail \"npm run start:list\" \"npm run start:show\" \"npm run start:filter-list\" \"npm run start:filter-select\" \"npm run start:application-button\" \"npm run start:details\" \"npm run start:description\" \"npm run start:commands\"",
+    "start": "concurrently --kill-others-on-fail \"npm run start:list\" \"npm run start:show\" \"npm run start:filter-list\" \"npm run start:filter-select\" \"npm run start:application-button\" \"npm run start:details\" \"npm run start:description\" \"npm run start:commands\" \"npm run copy:driver\"",
     "packages-update": "wp-scripts packages-update",
     "start:application-button": "wp-scripts start blocks/application-button/src/index.js --output-path=blocks/application-button/build/",
     "build:application-button": "wp-scripts build blocks/application-button/src/index.js --output-path=blocks/application-button/build/",
@@ -27,7 +27,8 @@
     "make-json": "wp i18n make-json languages",
     "start:commands": "wp-scripts start blocks/commands.js --output-path=blocks/commands",
     "build:commands": "wp-scripts build blocks/commands.js --output-path=blocks/commands",
-    "global-styles": "cat blocks/*/build/style-index.css > css/blocks.css"
+    "global-styles": "cat blocks/*/build/style-index.css > css/blocks.css",
+    "copy:driver": "mkdir -p admin/driver && cp node_modules/driver.js/dist/driver.js.iife.js node_modules/driver.js/dist/driver.css admin/driver/ && cp node_modules/driver.js/license admin/driver/"
   },
   "devDependencies": {
     "@wordpress/scripts": "~34.2",
@@ -38,6 +39,6 @@
     "@babel/runtime": "^7.28.4",
     "@wordpress/i18n": "^6.2.0",
     "concurrently": "^9.2.3",
-    "intro.js": "^8.3.2"
+    "driver.js": "^1.8.0"
   }
 }

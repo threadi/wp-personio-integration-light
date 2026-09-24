@@ -10,7 +10,8 @@
 
 - Optimized some visibility conditions for settings on our blocks
 - Optimized check for Elementor Pro and PRO Elements
-- Updated the settings library to 3.5.0
+- Switches from introJS to driver.js as technical base for the intro
+- Updated the settings library to 3.6.1
 - Updated the setup library
 
 ### Fixed

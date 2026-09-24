@@ -87,120 +87,160 @@ jQuery(document).ready(function($) {
       personio_integration_create_dialog( dialog_config );
     });
 
-    /**
-     * Import intro.
-     */
-    $("body.personio-integration-import-intro").each( function() {
-        introJs().setOptions( {
-          nextLabel: personioIntegrationLightIntroJsVars.button_title_next,
-          prevLabel: personioIntegrationLightIntroJsVars.button_title_back,
-          doneLabel: personioIntegrationLightIntroJsVars.button_title_done,
-          exitOnEsc: false,
-          exitOnOverlayClick: false,
-          disableInteraction: true,
-          steps: [
-            {
-              title: personioIntegrationLightIntroJsVars.import_intro_step_1_title,
-              intro: personioIntegrationLightIntroJsVars.import_intro_step_1_intro,
-            },
-            {
-              element: document.querySelector('tr.personio-integration-import-now'),
-              title: personioIntegrationLightIntroJsVars.import_intro_step_2_title,
-              intro: personioIntegrationLightIntroJsVars.import_intro_step_2_intro,
-            },
-            {
-              element: document.querySelector('tr.personio-integration-delete-now'),
-              title: personioIntegrationLightIntroJsVars.import_intro_step_3_title,
-              intro: personioIntegrationLightIntroJsVars.import_intro_step_3_intro,
-            },
-            {
-              element: document.querySelector('tr.personio-integration-automatic-import'),
-              title: personioIntegrationLightIntroJsVars.import_intro_step_4_title,
-              intro: personioIntegrationLightIntroJsVars.import_intro_step_4_intro,
-            },
-            {
-              title: personioIntegrationLightIntroJsVars.import_intro_step_5_title,
-              intro: personioIntegrationLightIntroJsVars.import_intro_step_5_intro,
-              tooltipClass: 'intro-width'
-            }
-          ]
-        } ).onexit( function() {
-          location.href=window.location.href.replace( /import_intro=1/, '' )
-        } ).start();
-    });
-
-    /**
-     * Templates intro
-     */
-    $("body.personio-integration-template-intro").each( function() {
-      introJs().setOptions( {
-        nextLabel: personioIntegrationLightIntroJsVars.button_title_next,
-        prevLabel: personioIntegrationLightIntroJsVars.button_title_back,
-        doneLabel: personioIntegrationLightIntroJsVars.button_title_done,
-        exitOnEsc: false,
-        exitOnOverlayClick: false,
-        disableInteraction: true,
-        steps: [
-          {
-            title: personioIntegrationLightIntroJsVars.template_intro_step_1_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_1_intro,
-            tooltipClass: 'intro-width'
-          },
-          {
-            element: document.querySelector('tr.personio-integration-template-filter'),
-            title: personioIntegrationLightIntroJsVars.template_intro_step_2_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_2_intro,
-          },
-          {
-            element: document.querySelector('tr.personio-integration-template-listing-template'),
-            title: personioIntegrationLightIntroJsVars.template_intro_step_3_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_3_intro,
-          },
-          {
-            element: document.querySelector('tr.personio-integration-template-content-list'),
-            title: personioIntegrationLightIntroJsVars.template_intro_step_4_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_4_intro,
-          },
-          {
-            element: document.querySelector('tr.personio-integration-template-excerpts-template'),
-            title: personioIntegrationLightIntroJsVars.template_intro_step_5_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_5_intro,
-          },
-          {
-            element: document.querySelector('tr.personio-integration-template-excerpts-defaults'),
-            title: personioIntegrationLightIntroJsVars.template_intro_step_6_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_6_intro,
-          },
-          {
-            element: document.querySelector('tr.personio-integration-template-content-template'),
-            title: personioIntegrationLightIntroJsVars.template_intro_step_7_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_7_intro,
-          },
-          {
-            element: document.querySelector('tr.personio-integration-template-content-template-2'),
-            title: personioIntegrationLightIntroJsVars.template_intro_step_8_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_8_intro,
-          },
-          {
-            element: document.querySelector('tr.personio-integration-template-excerpts-template-2'),
-            title: personioIntegrationLightIntroJsVars.template_intro_step_9_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_9_intro,
-          },
-          {
-            element: document.querySelector('tr.personio-integration-template-excerpt-detail-2'),
-            title: personioIntegrationLightIntroJsVars.template_intro_step_10_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_10_intro,
-          },
-          {
-            title: personioIntegrationLightIntroJsVars.template_intro_step_11_title,
-            intro: personioIntegrationLightIntroJsVars.template_intro_step_11_intro,
-            tooltipClass: 'intro-width'
+  /**
+   * Import intro.
+   */
+  $("body.personio-integration-import-intro").each( function() {
+    window.driver.js.driver( {
+      nextBtnText: personioIntegrationLightIntroJsVars.button_title_next,
+      prevBtnText: personioIntegrationLightIntroJsVars.button_title_back,
+      doneBtnText: personioIntegrationLightIntroJsVars.button_title_done,
+      popoverClass: 'personio-integration-intro',
+      disableActiveInteraction: true,
+      overlayClickBehavior: function() {}, // ignore clicks on the overlay.
+      onCloseClick: personio_integration_tour_close,
+      onDestroyStarted: personio_integration_tour_destroy_started,
+      onDestroyed: function() {
+        location.href=window.location.href.replace( /import_intro=1/, '' )
+      },
+      steps: [
+        {
+          popover: {
+            title: personioIntegrationLightIntroJsVars.import_intro_step_1_title,
+            description: personioIntegrationLightIntroJsVars.import_intro_step_1_intro,
+            showButtons: [ 'next', 'close' ]
           }
-        ]
-      } ).onexit( function() {
+        },
+        {
+          element: 'tr.personio-integration-import-now',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.import_intro_step_2_title,
+            description: personioIntegrationLightIntroJsVars.import_intro_step_2_intro
+          }
+        },
+        {
+          element: 'tr.personio-integration-delete-now',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.import_intro_step_3_title,
+            description: personioIntegrationLightIntroJsVars.import_intro_step_3_intro
+          }
+        },
+        {
+          element: 'tr.personio-integration-automatic-import',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.import_intro_step_4_title,
+            description: personioIntegrationLightIntroJsVars.import_intro_step_4_intro
+          }
+        },
+        {
+          popover: {
+            title: personioIntegrationLightIntroJsVars.import_intro_step_5_title,
+            description: personioIntegrationLightIntroJsVars.import_intro_step_5_intro,
+            popoverClass: 'personio-integration-intro personio-integration-intro-wide'
+          }
+        }
+      ]
+    } ).drive();
+  });
+
+  /**
+   * Templates intro
+   */
+  $("body.personio-integration-template-intro").each( function() {
+    window.driver.js.driver( {
+      nextBtnText: personioIntegrationLightIntroJsVars.button_title_next,
+      prevBtnText: personioIntegrationLightIntroJsVars.button_title_back,
+      doneBtnText: personioIntegrationLightIntroJsVars.button_title_done,
+      popoverClass: 'personio-integration-intro',
+      disableActiveInteraction: true,
+      overlayClickBehavior: function() {}, // ignore clicks on the overlay.
+      onCloseClick: personio_integration_tour_close,
+      onDestroyStarted: personio_integration_tour_destroy_started,
+      onDestroyed: function() {
         location.href=window.location.href.replace( /template_intro=1/, '' ).replace( /template_intro=2/, '' )
-      } ).start();
-    });
+      },
+      steps: [
+        {
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_1_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_1_intro,
+            popoverClass: 'personio-integration-intro personio-integration-intro-wide',
+            showButtons: [ 'next', 'close' ]
+          }
+        },
+        {
+          element: 'tr.personio-integration-template-filter',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_2_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_2_intro
+          }
+        },
+        {
+          element: 'tr.personio-integration-template-listing-template',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_3_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_3_intro
+          }
+        },
+        {
+          element: 'tr.personio-integration-template-content-list',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_4_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_4_intro
+          }
+        },
+        {
+          element: 'tr.personio-integration-template-excerpts-template',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_5_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_5_intro
+          }
+        },
+        {
+          element: 'tr.personio-integration-template-excerpts-defaults',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_6_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_6_intro
+          }
+        },
+        {
+          element: 'tr.personio-integration-template-content-template',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_7_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_7_intro
+          }
+        },
+        {
+          element: 'tr.personio-integration-template-content-template-2',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_8_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_8_intro
+          }
+        },
+        {
+          element: 'tr.personio-integration-template-excerpts-template-2',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_9_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_9_intro
+          }
+        },
+        {
+          element: 'tr.personio-integration-template-excerpt-detail-2',
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_10_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_10_intro
+          }
+        },
+        {
+          popover: {
+            title: personioIntegrationLightIntroJsVars.template_intro_step_11_title,
+            description: personioIntegrationLightIntroJsVars.template_intro_step_11_intro,
+            popoverClass: 'personio-integration-intro personio-integration-intro-wide'
+          }
+        }
+      ]
+    } ).drive();
+  });
 
     personio_integration_extension_state_button();
 
@@ -681,4 +721,28 @@ function personio_integration_send_testmail( obj_name ) {
       personio_integration_create_dialog( result );
     }
   });
+}
+
+/**
+ * Close a tour via its close button.
+ *
+ * @param element The actual element.
+ * @param step The actual step.
+ * @param opts The options with the driver object.
+ */
+function personio_integration_tour_close( element, step, opts ) {
+  opts.driver.destroy();
+}
+
+/**
+ * End a tour via escape key or done button only on its last step.
+ *
+ * @param element The actual element.
+ * @param step The actual step.
+ * @param opts The options with the driver object.
+ */
+function personio_integration_tour_destroy_started( element, step, opts ) {
+  if ( opts.driver.isLastStep() ) {
+    opts.driver.destroy();
+  }
 }
