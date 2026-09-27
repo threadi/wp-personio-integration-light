@@ -1,0 +1,39 @@
+/* keep the admin bar below the overlay of the intro. */
+body.driver-active #wpadminbar { z-index: 9999; }
+
+.personio-integration-intro.driver-popover { max-width: 400px; }
+
+/* leave room for the close button. */
+.personio-integration-intro .driver-popover-title { padding-right: 28px; }
+
+.personio-integration-intro .driver-popover-description { line-height: 1.8; }
+
+.personio-integration-intro.personio-integration-intro-wide {
+	max-width: none;
+	min-width: min(800px, 90vw);
+}
+
+.personio-integration-intro .driver-popover-title:before {
+	background-image: url(../gfx/personio_icon.png);
+	background-size: cover;
+	background-repeat: no-repeat;
+	content: "";
+	display: inline-block;
+	height: 20px;
+	margin-right: 8px;
+	vertical-align: middle;
+	width: 20px;
+	position: relative;
+	top: -3px;
+	z-index: 1
+}
+
+.personio-integration-intro .driver-popover-footer-btn {
+	font-size: 14px;
+	padding: 6px 12px;
+}
+
+.personio-integration-intro .driver-popover-done-btn {
+	background-color: var(--wp-admin-theme-color);
+	color: #fff;
+}

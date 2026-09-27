@@ -136,46 +136,46 @@ class Intro {
 		}
 
 		// embed the necessary scripts for the dialog.
-		$path = Helper::get_plugin_path() . 'node_modules/intro.js/minified/';
-		$url  = Helper::get_plugin_url() . 'node_modules/intro.js/minified/';
+		$path = Helper::get_plugin_path() . 'admin/driver/';
+		$url  = Helper::get_plugin_url() . 'admin/driver/';
 
 		// bail if a path does not exist.
 		if ( ! file_exists( $path ) ) {
 			return;
 		}
 
-		// embed the JS script from "intro.js".
+		// embed the JS script from "driver.js".
 		wp_enqueue_script(
-			'personio-integration-intro',
-			$url . 'intro.min.js',
+			'personio-integration-driver',
+			$url . 'driver.js.iife.js',
 			array(),
-			Helper::get_file_version( trailingslashit( $path ) . 'intro.min.js' ),
+			Helper::get_file_version( trailingslashit( $path ) . 'driver.js.iife.js' ),
 			true
 		);
 
 		// embed our own JS script.
 		wp_enqueue_script(
 			'personio-integration-intro-custom',
-			Helper::get_plugin_url() . 'admin/intro.js',
-			array( 'personio-integration-intro', 'personio-integration-admin' ),
-			Helper::get_file_version( Helper::get_plugin_path() . '/admin/intro.js' ),
+			Helper::get_plugin_url() . 'admin/driver.js',
+			array( 'personio-integration-driver', 'personio-integration-admin' ),
+			Helper::get_file_version( Helper::get_plugin_path() . '/admin/driver.js' ),
 			true
 		);
 
 		// embed the CSS file.
 		wp_enqueue_style(
-			'personio-integration-intro',
-			$url . 'introjs.min.css',
+			'personio-integration-driver',
+			$url . 'driver.css',
 			array(),
-			Helper::get_file_version( trailingslashit( $path ) . 'introjs.min.css' ),
+			Helper::get_file_version( trailingslashit( $path ) . 'driver.css' ),
 		);
 
 		// embed the CSS file.
 		wp_enqueue_style(
 			'personio-integration-intro-custom',
-			Helper::get_plugin_url() . 'admin/intro.css',
-			array(),
-			Helper::get_file_version( Helper::get_plugin_path() . '/admin/intro.css' ),
+			Helper::get_plugin_url() . 'admin/driver.css',
+			array( 'personio-integration-driver' ),
+			Helper::get_file_version( Helper::get_plugin_path() . '/admin/driver.css' ),
 		);
 
 		// add php-vars to our js-script.
@@ -189,11 +189,11 @@ class Intro {
 				'button_title_back'            => __( 'Back', 'personio-integration-light' ),
 				'button_title_done'            => __( 'Done', 'personio-integration-light' ),
 				'step_1_title'                 => __( 'Intro', 'personio-integration-light' ),
-				'step_1_intro'                 => __( 'Thank you for installing Personio Integration Light. We will show you some basics to use this plugin.', 'personio-integration-light' ),
+				'step_1_intro'                 => __( 'Thank you for installing <em>Personio Integration Light</em>. We will show you some basics to use this plugin.', 'personio-integration-light' ),
 				'step_2_title'                 => __( 'Your positions', 'personio-integration-light' ),
 				'step_2_intro'                 => __( 'This is the list of your positions from Personio. This will be updated daily or if you run the import.', 'personio-integration-light' ),
 				'step_3_title'                 => __( 'Change the view', 'personio-integration-light' ),
-				'step_3_intro'                 => __( 'Choose the columns you need in you position list. Which columns are filled depends on the data in your Personio account.', 'personio-integration-light' ),
+				'step_3_intro'                 => __( 'Choose the columns you need in your position list. Which columns are filled depends on the data in your Personio account.', 'personio-integration-light' ),
 				'step_4_title'                 => __( 'Run the import', 'personio-integration-light' ),
 				'step_4_intro'                 => __( 'On this button you could run the import of new Positions any time. They can be displayed immediately afterwards in the frontend to your visitors.', 'personio-integration-light' ),
 				'step_5_title'                 => __( 'Frontend view', 'personio-integration-light' ),
@@ -305,7 +305,7 @@ class Intro {
 		}
 
 		// get the advanced section.
-		$advanced_section = $advanced_settings_tab->get_section( 'settings_section_advanced' );
+		$advanced_section = $advanced_settings_tab->get_section( 'settings_section_advanced_plugin' );
 
 		// bail if the section could not be loaded.
 		if ( ! $advanced_section instanceof Section ) {
@@ -320,7 +320,7 @@ class Intro {
 			),
 			'buttons' => array(
 				array(
-					'action'  => 'esefw_settings_import_file();',
+					'action'  => 'location.href="' . $this->get_reset_url() . '";',
 					'variant' => 'primary',
 					'text'    => __( 'Yes', 'personio-integration-light' ),
 				),
@@ -340,18 +340,9 @@ class Intro {
 		$field = new Button( $settings_obj );
 		$field->set_title( __( 'Reset intro', 'personio-integration-light' ) );
 		$field->set_button_title( __( 'Rerun the intro', 'personio-integration-light' ) );
-		$field->set_button_url(
-			add_query_arg(
-				array(
-					'action' => 'personioPositionsIntroReset',
-					'nonce'  => wp_create_nonce( 'personio-integration-intro-reset' ),
-				),
-				get_admin_url() . 'admin.php'
-			)
-		);
+		$field->set_button_url( $this->get_reset_url() );
 		$field->add_class( 'easy-dialog-for-wordpress' );
 		$field->add_data( 'dialog', Helper::get_json( $dialog ) );
-		$field->add_class( 'personio-integration-reset-intro' );
 		$setting->set_field( $field );
 
 		// get hidden section.
@@ -384,5 +375,20 @@ class Intro {
 			return array();
 		}
 		return $settings;
+	}
+
+	/**
+	 * Return the URL to reset the intro.
+	 *
+	 * @return string
+	 */
+	private function get_reset_url(): string {
+		return add_query_arg(
+			array(
+				'action' => 'personioPositionsIntroReset',
+				'nonce'  => wp_create_nonce( 'personio-integration-intro-reset' ),
+			),
+			get_admin_url() . 'admin.php'
+		);
 	}
 }
