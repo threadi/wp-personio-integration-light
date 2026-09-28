@@ -190,6 +190,9 @@ class Uninstaller {
 		// remove plugin update transient.
 		delete_transient( 'personio_integration_light_plugin_update_notices' );
 
+		// force to reload the permalink cache.
+		delete_option( 'rewrite_rules' );
+
 		// remove setup-options.
 		Setup::get_instance()->uninstall();
 
