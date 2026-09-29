@@ -630,12 +630,9 @@ class Abilities {
 		if ( $with_description ) {
 			$description = array();
 			foreach ( $position_obj->get_content_as_array() as $part ) {
-				if ( ! \is_array( $part ) ) {
-					continue;
-				}
 				$description[] = array(
-					'name'  => isset( $part['name'] ) && \is_scalar( $part['name'] ) ? (string) $part['name'] : '',
-					'value' => isset( $part['value'] ) && \is_scalar( $part['value'] ) ? wp_kses_post( (string) $part['value'] ) : '',
+					'name'  => $part['name'] ?? '',
+					'value' => wp_kses_post( $part['value'] ?? '' ),
 				);
 			}
 			$data['description']     = $description;

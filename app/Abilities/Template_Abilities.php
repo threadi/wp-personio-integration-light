@@ -950,7 +950,7 @@ class Template_Abilities {
 	 */
 	public function get_allowed_values( string $name ): array {
 		$values = $this->get_values();
-		if ( empty( $values[ $name ] ) || ! \is_array( $values[ $name ] ) ) {
+		if ( empty( $values[ $name ] ) ) {
 			return array();
 		}
 		return array_values( array_map( 'strval', wp_list_pluck( $values[ $name ], 'name' ) ) );
