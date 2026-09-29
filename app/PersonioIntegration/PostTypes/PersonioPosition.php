@@ -620,6 +620,25 @@ class PersonioPosition extends Post_Type {
 			$new_actions['edit'] = '<a href="' . esc_url( $edit_url ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
 		}
 
+		// get the position.
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+
+		// bail if the position is not valid.
+		if ( ! $position_obj->is_valid() ) {
+			return $new_actions;
+		}
+
+		// get the edit URL.
+		$url = Personio_Accounts::get_instance()->get_edit_link_on_personio( $position_obj );
+
+		// use the main Personio URL if no edit URL could be loaded.
+		if ( empty( $url ) ) {
+			$url = Personio_Accounts::get_instance()->get_login_url();
+		}
+
+		// add the URL to edit the position in Personio.
+		$new_actions['edit_in_personio'] = '<a href="' . esc_url( $url ) . '" target="_blank">' . __( 'Edit in Personio', 'personio-integration-light' ) . '</a>';
+
 		// return the resulting list.
 		return $new_actions;
 	}
