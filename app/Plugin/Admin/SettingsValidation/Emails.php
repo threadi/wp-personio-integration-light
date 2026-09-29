@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 
@@ -25,7 +25,7 @@ class Emails {
 	 */
 	public static function validate( null|array $values ): array {
 		// if it is not an array, create one.
-		if ( ! is_array( $values ) ) {
+		if ( ! \is_array( $values ) ) {
 			$values = array();
 		}
 

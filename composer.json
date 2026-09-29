@@ -68,6 +68,7 @@
     },
     "require-dev": {
         "wp-coding-standards/wpcs": "^3.4.1",
+        "slevomat/coding-standard": "^8.0",
         "pronamic/wp-documentor": "^1.3",
         "matthiasmullie/minify": "^1.3",
         "automattic/vipwpcs": "^3.0",

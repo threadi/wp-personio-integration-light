@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Intervals;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Plugin\Interval_Base;
 
@@ -42,7 +42,7 @@ class Weekly extends Interval_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Weekly {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 

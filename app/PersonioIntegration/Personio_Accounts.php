@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Text;
 use easySettingsForWordPress\Page;
@@ -70,7 +70,7 @@ class Personio_Accounts extends Extensions_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Personio_Accounts {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -133,7 +133,7 @@ class Personio_Accounts extends Extensions_Base {
 		$field = new Text( $settings_obj );
 		$field->set_title( __( 'Personio Login URL', 'personio-integration-light' ) );
 		/* translators: %1$s is replaced with the URL to the Personio support, %2$s is replaced with the a11y window hint. */
-		$field->set_description( sprintf( __( 'This URL is used by Personio to give you a unique login URL to your Personio account. It will be communicated to you when you register with Personio.<br>Entering this URL activates links in the WordPress backend that allow you to quickly switch from WordPress to Personio to edit positions.<br>This is NOT the URL where your open positions are visible.<br>If you have any questions about this URL, please contact the <a href="%1$s" target="_blank">Personio support%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_support_url() ), Helper::get_a11n_window_hint() ) );
+		$field->set_description( \sprintf( __( 'This URL is used by Personio to give you a unique login URL to your Personio account. It will be communicated to you when you register with Personio.<br>Entering this URL activates links in the WordPress backend that allow you to quickly switch from WordPress to Personio to edit positions.<br>This is NOT the URL where your open positions are visible.<br>If you have any questions about this URL, please contact the <a href="%1$s" target="_blank">Personio support%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_support_url() ), Helper::get_a11n_window_hint() ) );
 		$field->set_placeholder( $this->get_login_url_example() );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationLoginUrl', 'validate' ) );

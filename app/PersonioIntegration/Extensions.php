@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -44,7 +44,7 @@ class Extensions {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Extensions {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -148,7 +148,7 @@ class Extensions {
 			$obj_name = $extension_name . '::get_instance';
 
 			// bail if the method is not callable.
-			if ( ! is_callable( $obj_name ) ) {
+			if ( ! \is_callable( $obj_name ) ) {
 				continue;
 			}
 
@@ -286,18 +286,18 @@ class Extensions {
 		$title        = __( 'Extension has been disabled', 'personio-integration-light' );
 		$text         = array(
 			/* translators: %1$s will be replaced by the name of the extension. */
-			'<p>' . sprintf( __( 'The extension %1$s has been disabled.', 'personio-integration-light' ), '<i>' . esc_html( $obj->get_label() ) . '</i>' ) . '</p>',
+			'<p>' . \sprintf( __( 'The extension %1$s has been disabled.', 'personio-integration-light' ), '<i>' . esc_html( $obj->get_label() ) . '</i>' ) . '</p>',
 		);
 		$button_title = __( 'Disabled', 'personio-integration-light' );
 		if ( $obj->is_enabled() ) {
 			$title = __( 'Extension has been enabled', 'personio-integration-light' );
 			$text  = array(
 				/* translators: %1$s will be replaced by the name of the extension. */
-				'<p><strong>' . sprintf( __( 'The extension %1$s has been successfully enabled.', 'personio-integration-light' ), '<i>' . esc_html( $obj->get_label() ) . '</i>' ) . '</strong></p>',
+				'<p><strong>' . \sprintf( __( 'The extension %1$s has been successfully enabled.', 'personio-integration-light' ), '<i>' . esc_html( $obj->get_label() ) . '</i>' ) . '</strong></p>',
 			);
 			if ( ! empty( $obj->get_setting_sub_tab() ) ) {
 				/* translators: %1$s will be replaced by a URL. */
-				$text[] = '<p>' . sprintf( __( 'Now <a href="%1$s">go to the settings</a> to configure the extension.', 'personio-integration-light' ), esc_url( $obj->get_settings_link() ) ) . '</p>';
+				$text[] = '<p>' . \sprintf( __( 'Now <a href="%1$s">go to the settings</a> to configure the extension.', 'personio-integration-light' ), esc_url( $obj->get_settings_link() ) ) . '</p>';
 			}
 			$button_title = __( 'Enabled', 'personio-integration-light' );
 		}
@@ -384,7 +384,7 @@ class Extensions {
 			$transient_obj->set_name( 'personio_integration_extension_toggle_state' );
 			$transient_obj->set_type( 'error' );
 			/* translators: a name will replace %1$s. */
-			$transient_obj->set_message( sprintf( __( 'Error when calling the status change of an extension! Given extension %1$s could not be loaded.', 'personio-integration-light' ), $extension_name ) );
+			$transient_obj->set_message( \sprintf( __( 'Error when calling the status change of an extension! Given extension %1$s could not be loaded.', 'personio-integration-light' ), $extension_name ) );
 			$transient_obj->save();
 
 			// redirect user.
@@ -400,7 +400,7 @@ class Extensions {
 		$transient_obj->set_name( 'personio_integration_extension_toggle_state' );
 		$transient_obj->set_type( 'success' );
 		/* translators: %1$s will be replaced by a name, %2$s by "enabled" or "disabled". */
-		$transient_obj->set_message( sprintf( __( 'The extension %1$s has been %2$s.', 'personio-integration-light' ), $obj->get_label(), $obj->is_enabled() ? __( 'enabled', 'personio-integration-light' ) : __( 'disabled', 'personio-integration-light' ) ) );
+		$transient_obj->set_message( \sprintf( __( 'The extension %1$s has been %2$s.', 'personio-integration-light' ), $obj->get_label(), $obj->is_enabled() ? __( 'enabled', 'personio-integration-light' ) : __( 'disabled', 'personio-integration-light' ) ) );
 		$transient_obj->save();
 
 		// redirect user.
@@ -605,7 +605,7 @@ class Extensions {
 		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Call up the <a href="%1$s">list of extensions</a>.', 'personio-integration-light' ), esc_url( $this->get_link() ) ) . '</li>';
+		$content .= '<li>' . \sprintf( __( 'Call up the <a href="%1$s">list of extensions</a>.', 'personio-integration-light' ), esc_url( $this->get_link() ) ) . '</li>';
 		$content .= '<li>' . __( 'Activate the extension you require by clicking on the button provided.', 'personio-integration-light' ) . '</li>';
 		$content .= '<li>' . __( 'Check whether the extension still offers settings. Follow the instructions that are displayed.', 'personio-integration-light' ) . '</li>';
 		$false    = false;
@@ -619,7 +619,7 @@ class Extensions {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL, %2$s will be replaced by an accessibility hint. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get many more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
+			$content .= '<li>' . \sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get many more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		}
 		$content .= '</ol>';
 
@@ -628,7 +628,7 @@ class Extensions {
 			'id'       => PersonioPosition::get_instance()->get_name() . '-extensions',
 			'title'    => __( 'Extensions', 'personio-integration-light' ),
 			'content'  => $content,
-			'priority' => function_exists( 'str_starts_with' ) && str_starts_with( Helper::get_current_url(), Helper::get_settings_url( 'personioPositionExtensions' ) ) ? 1 : 30,
+			'priority' => \function_exists( 'str_starts_with' ) && str_starts_with( Helper::get_current_url(), Helper::get_settings_url( 'personioPositionExtensions' ) ) ? 1 : 30,
 		);
 
 		// return the resulting list.

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
@@ -46,7 +46,7 @@ class Third_Party_Plugins {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Third_Party_Plugins {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -213,7 +213,7 @@ class Third_Party_Plugins {
 		$position = new Position( $post_id );
 		$position->set_lang( Languages::get_instance()->get_current_lang() );
 		$description = $position->get_content();
-		if ( ! empty( $description ) && ! empty( $description['jobDescription'] ) && is_array( $description['jobDescription'] ) ) { // @phpstan-ignore booleanAnd.rightAlwaysTrue
+		if ( ! empty( $description ) && ! empty( $description['jobDescription'] ) && \is_array( $description['jobDescription'] ) ) { // @phpstan-ignore booleanAnd.rightAlwaysTrue
 			$text = '';
 			foreach ( $description['jobDescription'] as $content ) {
 				// bail if name or value are not set.

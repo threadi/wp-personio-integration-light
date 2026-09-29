@@ -9,7 +9,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use CryptForWordPress\Method_Base;
 
@@ -47,7 +47,7 @@ class Crypt {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Crypt {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 

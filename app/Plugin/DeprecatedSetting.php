@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Object, which handles the deprecated settings usage of this plugin.
@@ -39,7 +39,7 @@ class DeprecatedSetting {
 	 * @return DeprecatedSetting
 	 */
 	public static function get_instance(): DeprecatedSetting {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new static();
 		}
 

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Page;
 
@@ -41,7 +41,7 @@ class DeprecatedSettings {
 	 * @return DeprecatedSettings
 	 */
 	public static function get_instance(): DeprecatedSettings {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new static();
 		}
 

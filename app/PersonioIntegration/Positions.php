@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
@@ -59,7 +59,7 @@ class Positions {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Positions {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -158,7 +158,7 @@ class Positions {
 			}
 		}
 		if ( ! empty( $tax_query ) ) {
-			if ( count( $tax_query ) > 1 ) {
+			if ( \count( $tax_query ) > 1 ) {
 				$query['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Core position filtering by taxonomy.
 					'relation' => 'AND',
 					$tax_query,
@@ -176,7 +176,7 @@ class Positions {
 						'hide_empty' => true,
 					)
 				);
-				if ( is_array( $terms ) && ! empty( $terms ) ) {
+				if ( \is_array( $terms ) && ! empty( $terms ) ) {
 					$query['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Core position grouping by taxonomy.
 						array(
 							'taxonomy' => $taxonomy_name,
@@ -320,7 +320,7 @@ class Positions {
 	 * @return int
 	 */
 	public function get_positions_count(): int {
-		return count( $this->get_positions() );
+		return \count( $this->get_positions() );
 	}
 
 	/**

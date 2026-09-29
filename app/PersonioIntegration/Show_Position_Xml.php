@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions\Show_Xml;
@@ -59,7 +59,7 @@ class Show_Position_Xml extends Extensions_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Show_Position_Xml {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -75,7 +75,7 @@ class Show_Position_Xml extends Extensions_Base {
 		add_filter( 'personio_integration_light_extension_state_changed_dialog', array( $this, 'add_hint_after_enabling' ), 10, 2 );
 
 		// bail if extension is not enabled.
-		if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
+		if ( ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
 			return;
 		}
 
@@ -148,7 +148,7 @@ class Show_Position_Xml extends Extensions_Base {
 	 */
 	public function get_description(): string {
 		/* translators: %1$s will be replaced by the URL for the positions list. */
-		return sprintf( __( 'Show the last used XML from Personio for a single position on their edit page. You find the edit pages in the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) );
+		return \sprintf( __( 'Show the last used XML from Personio for a single position on their edit page. You find the edit pages in the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) );
 	}
 
 	/**
@@ -164,7 +164,7 @@ class Show_Position_Xml extends Extensions_Base {
 		$xml = $xml_object->asXML();
 
 		// bail if no XML code given.
-		if ( ! is_string( $xml ) ) {
+		if ( ! \is_string( $xml ) ) {
 			return $position_obj;
 		}
 
@@ -208,9 +208,9 @@ class Show_Position_Xml extends Extensions_Base {
 		// add hint.
 		$dialog['texts'][] = '<p>' . __( 'Follow these steps to be able to see the XML which has been published by Personio for each position:', 'personio-integration-light' ) . '</></p>';
 		/* translators: %1$s will be replaced by a URL. */
-		$list = '<ol><li>' . sprintf( __( 'Import the positions as usual, e.g. <a href="%1$s">here</a>, to update its data.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'import' ) ) ) . '</li>';
+		$list = '<ol><li>' . \sprintf( __( 'Import the positions as usual, e.g. <a href="%1$s">here</a>, to update its data.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'import' ) ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
-		$list .= '<li>' . sprintf( __( 'Go to the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) ) . '</li>';
+		$list .= '<li>' . \sprintf( __( 'Go to the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) ) . '</li>';
 		$list .= '<li>' . __( 'Edit the individual positions to see the XML output there.', 'personio-integration-light' ) . '</li></ol>';
 
 		$dialog['texts'][] = $list;

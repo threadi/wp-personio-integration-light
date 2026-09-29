@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Schedules\Import;
@@ -42,7 +42,7 @@ class Site_Health {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Site_Health {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -168,7 +168,7 @@ class Site_Health {
 		if ( $scheduled_event->timestamp < time() ) { // @phpstan-ignore property.notFound
 			$result['status'] = 'recommended';
 			/* translators: %1$s will be replaced by the date of the planned next schedule run (which is in the past) */
-			$result['description'] = '<p>' . sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ) ) . '</p>';
+			$result['description'] = '<p>' . \sprintf( __( 'Cronjob to import new Positions from Personio should have been run at %1$s, but was not executed!<br><strong>Please check the cron-system of your WordPress-installation.</strong>', 'personio-integration-light' ), Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $scheduled_event->timestamp ) ) ) . '</p>';
 
 			// return this result.
 			return $result;
@@ -214,7 +214,7 @@ class Site_Health {
 		// loop through all settings and add them as fields if their export is allowed.
 		foreach ( Settings::get_instance()->get_settings_object()->get_settings() as $setting ) {
 			// bail if the source of this setting is not the light plugin.
-			if ( is_string( $setting->get_custom_var( 'source' ) ) ) {
+			if ( \is_string( $setting->get_custom_var( 'source' ) ) ) {
 				continue;
 			}
 
@@ -222,7 +222,7 @@ class Site_Health {
 			$value = $setting->get_value();
 
 			// mask value if it is an email.
-			if ( is_string( $value ) && is_email( $value ) ) {
+			if ( \is_string( $value ) && is_email( $value ) ) {
 				$value = 'masked';
 			}
 

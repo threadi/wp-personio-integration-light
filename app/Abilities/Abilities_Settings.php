@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace PersonioIntegrationLight\Abilities;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Checkbox;
 use easySettingsForWordPress\Page;
@@ -78,7 +78,7 @@ class Abilities_Settings {
 	 * @return Abilities_Settings
 	 */
 	public static function get_instance(): Abilities_Settings {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -111,7 +111,7 @@ class Abilities_Settings {
 	 * @return bool
 	 */
 	public function is_api_available(): bool {
-		return function_exists( 'wp_register_ability' );
+		return \function_exists( 'wp_register_ability' );
 	}
 
 	/**
@@ -258,7 +258,7 @@ class Abilities_Settings {
 		// the MCP Adapter (optional, other MCP plugins with support for abilities work as well).
 		if ( $this->is_mcp_adapter_active() ) {
 			/* translators: %1$s will be replaced by a URL. */
-			$lines[] = $this->get_status_line( true, sprintf( __( 'The MCP Adapter is active. Its default endpoint for connected applications is %1$s', 'personio-integration-light' ), '<code>' . esc_html( rest_url( 'mcp/mcp-adapter-default-server' ) ) . '</code>' ) );
+			$lines[] = $this->get_status_line( true, \sprintf( __( 'The MCP Adapter is active. Its default endpoint for connected applications is %1$s', 'personio-integration-light' ), '<code>' . esc_html( rest_url( 'mcp/mcp-adapter-default-server' ) ) . '</code>' ) );
 		} else {
 			$lines[] = '<li><span class="dashicons dashicons-info"></span> ' . esc_html__( 'To connect applications like AI assistants, you need an MCP plugin with support for the abilities of WordPress.', 'personio-integration-light' ) . '</li>';
 		}
@@ -325,7 +325,7 @@ class Abilities_Settings {
 
 			// show the reason, if the page builder is not available.
 			if ( ! $adapter->is_available() ) {
-				$html .= '<td colspan="' . count( $adapter->get_template_types() ) . '">' . esc_html( $adapter->get_unavailable_reason() ) . '</td></tr>';
+				$html .= '<td colspan="' . \count( $adapter->get_template_types() ) . '">' . esc_html( $adapter->get_unavailable_reason() ) . '</td></tr>';
 				continue;
 			}
 
@@ -362,8 +362,8 @@ class Abilities_Settings {
 
 		// the template is not saved via abilities.
 		if ( empty( $template['is_customized'] ) ) {
-			$id     = isset( $template['id'] ) && is_scalar( $template['id'] ) ? (string) $template['id'] : '';
-			$source = isset( $template['source'] ) && is_string( $template['source'] ) ? $template['source'] : '';
+			$id     = isset( $template['id'] ) && \is_scalar( $template['id'] ) ? (string) $template['id'] : '';
+			$source = isset( $template['source'] ) && \is_string( $template['source'] ) ? $template['source'] : '';
 			if ( '' === $id || 'none' === $source ) {
 				return esc_html__( 'Classic template of this plugin', 'personio-integration-light' );
 			}
@@ -375,7 +375,7 @@ class Abilities_Settings {
 			}
 			if ( ctype_digit( $id ) ) {
 				/* translators: %1$s will be replaced by an ID. */
-				return esc_html( sprintf( __( 'Template of the page builder (ID %1$s)', 'personio-integration-light' ), $id ) );
+				return esc_html( \sprintf( __( 'Template of the page builder (ID %1$s)', 'personio-integration-light' ), $id ) );
 			}
 			return esc_html__( 'Template of the page builder', 'personio-integration-light' );
 		}
@@ -424,10 +424,10 @@ class Abilities_Settings {
 	public function get_guide_html(): string {
 		$html = '<ol>';
 		/* translators: %1$s will be replaced by a URL. */
-		$html .= '<li>' . sprintf( __( 'Install and activate an MCP plugin of your choice, which supports the abilities of WordPress (e.g. the <a href="%1$s" target="_blank">MCP Adapter</a>).', 'personio-integration-light' ), esc_url( 'https://github.com/WordPress/mcp-adapter' ) ) . '</li>';
+		$html .= '<li>' . \sprintf( __( 'Install and activate an MCP plugin of your choice, which supports the abilities of WordPress (e.g. the <a href="%1$s" target="_blank">MCP Adapter</a>).', 'personio-integration-light' ), esc_url( 'https://github.com/WordPress/mcp-adapter' ) ) . '</li>';
 		$html .= '<li>' . esc_html__( 'Make sure the abilities of this plugin are available in your MCP plugin. Depending on the plugin, you may have to enable them in its settings.', 'personio-integration-light' ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
-		$html .= '<li>' . sprintf( __( 'Set up the access for your application as described by your MCP plugin, e.g. with an <a href="%1$s">application password</a> for your user.', 'personio-integration-light' ), esc_url( admin_url( 'profile.php#application-passwords-section' ) ) ) . '</li>';
+		$html .= '<li>' . \sprintf( __( 'Set up the access for your application as described by your MCP plugin, e.g. with an <a href="%1$s">application password</a> for your user.', 'personio-integration-light' ), esc_url( admin_url( 'profile.php#application-passwords-section' ) ) ) . '</li>';
 		$html .= '<li>' . esc_html__( 'Connect your application (e.g. an AI assistant with MCP support) with the endpoint of your MCP plugin and the access data.', 'personio-integration-light' ) . '</li>';
 		$html .= '</ol>';
 
@@ -456,7 +456,7 @@ class Abilities_Settings {
 
 		// get the target URL.
 		$referer = wp_get_referer();
-		$url     = is_string( $referer ) ? $referer : $this->get_url();
+		$url     = \is_string( $referer ) ? $referer : $this->get_url();
 
 		// bail if the user is not allowed to change templates.
 		if ( ! current_user_can( 'edit_theme_options' ) ) {
@@ -505,7 +505,7 @@ class Abilities_Settings {
 		}
 
 		// check the template type.
-		if ( ! array_key_exists( $type, $adapter->get_template_types() ) ) {
+		if ( ! \array_key_exists( $type, $adapter->get_template_types() ) ) {
 			return new WP_Error( 'personio_integration_unknown_type', __( 'The template type is unknown.', 'personio-integration-light' ) );
 		}
 
@@ -527,13 +527,13 @@ class Abilities_Settings {
 	 */
 	public function add_post_state( mixed $states, mixed $post ): mixed {
 		// bail without usable data.
-		if ( ! is_array( $states ) || ! $post instanceof WP_Post ) {
+		if ( ! \is_array( $states ) || ! $post instanceof WP_Post ) {
 			return $states;
 		}
 
 		// mark the templates with our marker.
 		$marker = get_post_meta( $post->ID, self::MARKER_META, true );
-		if ( is_string( $marker ) && preg_match( '/^ai_[a-z0-9_]*(single|archive)_template$/', $marker ) ) {
+		if ( \is_string( $marker ) && preg_match( '/^ai_[a-z0-9_]*(single|archive)_template$/', $marker ) ) {
 			$states['personio_integration_abilities'] = __( 'Created via abilities', 'personio-integration-light' );
 		}
 		return $states;

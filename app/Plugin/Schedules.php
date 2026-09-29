@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Checkbox;
 use easySettingsForWordPress\Page;
@@ -42,7 +42,7 @@ class Schedules {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Schedules {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -200,7 +200,7 @@ class Schedules {
 		}
 
 		// bail if plugin activation is running.
-		if ( defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
+		if ( \defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
 			return $our_events;
 		}
 
@@ -243,7 +243,7 @@ class Schedules {
 
 				// log this event.
 				/* translators: %1$s will be replaced by the event name. */
-				Log::get_instance()->add( sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
+				Log::get_instance()->add( \sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 
 				// re-run the check for WP-cron-events.
 				$our_events = $this->get_wp_events();
@@ -262,7 +262,7 @@ class Schedules {
 
 				// log this event.
 				/* translators: %1$s will be replaced by the event name. */
-				Log::get_instance()->add( sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
+				Log::get_instance()->add( \sprintf( __( 'Not enabled cron event <i>%1$s</i> automatically removed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
 
 				// re-run the check for WP-cron-events.
 				$our_events = $this->get_wp_events();
@@ -413,7 +413,7 @@ class Schedules {
 		$our_events = array();
 		foreach ( _get_cron_array() as $events ) {
 			// bail if this is not an array.
-			if ( ! is_array( $events ) ) { // @phpstan-ignore function.alreadyNarrowedType
+			if ( ! \is_array( $events ) ) { // @phpstan-ignore function.alreadyNarrowedType
 				continue;
 			}
 
@@ -461,7 +461,7 @@ class Schedules {
 	 */
 	public function add_schedule_to_list( object|bool $event ): object|bool {
 		// bail if the event is not an object.
-		if ( ! is_object( $event ) ) {
+		if ( ! \is_object( $event ) ) {
 			return $event;
 		}
 
@@ -483,7 +483,7 @@ class Schedules {
 
 		// get the actual list.
 		$list = get_option( 'personio_integration_schedules' );
-		if ( ! is_array( $list ) ) {
+		if ( ! \is_array( $list ) ) {
 			$list = array();
 		}
 		$list[ $schedule_obj->get_name() ] = $schedule_obj->get_args();

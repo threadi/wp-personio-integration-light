@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace PersonioIntegrationLight\Abilities;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
@@ -58,7 +58,7 @@ class Abilities {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Abilities {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -111,7 +111,7 @@ class Abilities {
 	 */
 	public function add_ability_category(): void {
 		// bail if function does not exist.
-		if ( ! function_exists( 'wp_register_ability_category' ) ) {
+		if ( ! \function_exists( 'wp_register_ability_category' ) ) {
 			return;
 		}
 
@@ -132,7 +132,7 @@ class Abilities {
 	 */
 	public function add_abilities(): void {
 		// bail if support for abilities is missing.
-		if ( ! function_exists( 'wp_register_ability' ) ) {
+		if ( ! \function_exists( 'wp_register_ability' ) ) {
 			return;
 		}
 
@@ -192,7 +192,7 @@ class Abilities {
 			self::ABILITY_CATEGORY . '/get-positions',
 			array(
 				'label'               => __( 'Get list of positions', 'personio-integration-light' ),
-				'description'         => __( 'Returns the open positions from Personio in WordPress. The positions are managed in Personio and cannot be changed here. Use the returned post_id to request the details of a single position. To design how positions are shown on the website (templates for the detail view and the list), use get-builders and get-template-catalog instead of building it from these values.', 'personio-integration-light' ),
+				'description'         => __( 'Returns the open positions from Personio in WordPress. The positions are managed in Personio and can not be changed here. Use the returned post_id to request the details of a single position. To design how positions are shown on the website (templates for the detail view and the list), use get-builders and get-template-catalog instead of building it from these values.', 'personio-integration-light' ),
 				'category'            => self::ABILITY_CATEGORY,
 				'input_schema'        => array(
 					'type'       => 'object',
@@ -207,7 +207,7 @@ class Abilities {
 						),
 						'taxonomies'       => array(
 							'type'                 => 'object',
-							'description'          => __( 'Limit the results to positions with these terms: the slug of the taxonomy as key, and the slug of a term as value, e.g. {"office":"berlin"}. See get-taxonomies.', 'personio-integration-light' ),
+							'description'          => __( 'Limit the results to positions with these terms: the slug of the taxonomy as key and the slug of a term as value, e.g. {"office":"berlin"}. See get-taxonomies.', 'personio-integration-light' ),
 							'additionalProperties' => array( 'type' => 'string' ),
 						),
 						'limit'            => array(
@@ -255,7 +255,7 @@ class Abilities {
 			self::ABILITY_CATEGORY . '/get-position',
 			array(
 				'label'               => __( 'Get a single position', 'personio-integration-light' ),
-				'description'         => __( 'Returns a single position from Personio in WordPress with all of its data, including the job description. The position is managed in Personio and cannot be changed here.', 'personio-integration-light' ),
+				'description'         => __( 'Returns a single position from Personio in WordPress with all of its data, including the job description. The position is managed in Personio and can not be changed here.', 'personio-integration-light' ),
 				'category'            => self::ABILITY_CATEGORY,
 				'input_schema'        => array(
 					'type'       => 'object',
@@ -380,7 +380,7 @@ class Abilities {
 						),
 						'position_count'   => array(
 							'type'        => 'integer',
-							'description' => __( 'The amount of positions, which exist in WordPress.', 'personio-integration-light' ),
+							'description' => __( 'The amount of positions which exist in WordPress.', 'personio-integration-light' ),
 						),
 						'has_personio_url' => array(
 							'type'        => 'boolean',
@@ -429,13 +429,13 @@ class Abilities {
 		$main_language = Languages::get_instance()->get_main_language();
 
 		// bail if no language is requested.
-		if ( empty( $input['language'] ) || ! is_scalar( $input['language'] ) ) {
+		if ( empty( $input['language'] ) || ! \is_scalar( $input['language'] ) ) {
 			return $main_language;
 		}
 
 		// use the requested language only if it is active.
 		$language = sanitize_key( (string) $input['language'] );
-		if ( ! array_key_exists( $language, Languages::get_instance()->get_active_languages() ) ) {
+		if ( ! \array_key_exists( $language, Languages::get_instance()->get_active_languages() ) ) {
 			return $main_language;
 		}
 		return $language;
@@ -472,10 +472,10 @@ class Abilities {
 	 * @return array<string,mixed>|WP_Error
 	 */
 	public function get_positions( mixed $input = array() ): array|WP_Error {
-		$input = is_array( $input ) ? $input : array();
+		$input = \is_array( $input ) ? $input : array();
 
 		// get the limit.
-		$limit = isset( $input['limit'] ) && is_scalar( $input['limit'] ) ? min( 100, max( 1, absint( $input['limit'] ) ) ) : 20;
+		$limit = isset( $input['limit'] ) && \is_scalar( $input['limit'] ) ? min( 100, max( 1, absint( $input['limit'] ) ) ) : 20;
 
 		// create the query.
 		$query = array(
@@ -488,21 +488,21 @@ class Abilities {
 		);
 
 		// limit the results to a search text, if given.
-		if ( ! empty( $input['search'] ) && is_scalar( $input['search'] ) ) {
+		if ( ! empty( $input['search'] ) && \is_scalar( $input['search'] ) ) {
 			$query['s'] = sanitize_text_field( (string) $input['search'] );
 		}
 
 		// limit the results to terms of taxonomies, if given.
-		if ( ! empty( $input['taxonomies'] ) && is_array( $input['taxonomies'] ) ) {
+		if ( ! empty( $input['taxonomies'] ) && \is_array( $input['taxonomies'] ) ) {
 			$tax_query = array();
 			foreach ( $input['taxonomies'] as $taxonomy_slug => $term_slug ) {
 				// get the taxonomy name.
 				$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( (string) $taxonomy_slug );
 
 				// bail if the taxonomy is unknown.
-				if ( empty( $taxonomy_name ) || ! is_scalar( $term_slug ) ) {
+				if ( empty( $taxonomy_name ) || ! \is_scalar( $term_slug ) ) {
 					/* translators: %1$s will be replaced by the slug of a taxonomy. */
-					return new WP_Error( 'personio_integration_unknown_taxonomy', sprintf( __( 'The taxonomy %1$s is unknown. Use a slug from get-taxonomies.', 'personio-integration-light' ), (string) $taxonomy_slug ), array( 'status' => 400 ) );
+					return new WP_Error( 'personio_integration_unknown_taxonomy', \sprintf( __( 'The taxonomy %1$s is unknown. Use a slug from get-taxonomies.', 'personio-integration-light' ), (string) $taxonomy_slug ), array( 'status' => 400 ) );
 				}
 
 				$tax_query[] = array(
@@ -524,7 +524,7 @@ class Abilities {
 		// collect the positions.
 		$positions = array();
 		foreach ( $results->get_posts() as $post_id ) {
-			$position_obj = Positions::get_instance()->get_position( absint( is_object( $post_id ) ? $post_id->ID : $post_id ), $language );
+			$position_obj = Positions::get_instance()->get_position( absint( \is_object( $post_id ) ? $post_id->ID : $post_id ), $language );
 
 			// bail if position is not valid.
 			if ( ! $position_obj->is_valid() ) {
@@ -536,7 +536,7 @@ class Abilities {
 
 		// return the resulting list.
 		return array(
-			'count'     => count( $positions ),
+			'count'     => \count( $positions ),
 			'total'     => absint( $results->found_posts ),
 			'positions' => $positions,
 		);
@@ -550,13 +550,13 @@ class Abilities {
 	 * @return array<string,mixed>|WP_Error
 	 */
 	public function get_position( mixed $input = array() ): array|WP_Error {
-		$input = is_array( $input ) ? $input : array();
+		$input = \is_array( $input ) ? $input : array();
 
 		// get the post-ID.
-		$post_id = isset( $input['post_id'] ) && is_scalar( $input['post_id'] ) ? absint( $input['post_id'] ) : 0;
+		$post_id = isset( $input['post_id'] ) && \is_scalar( $input['post_id'] ) ? absint( $input['post_id'] ) : 0;
 
 		// get the post-ID by the Personio-ID, if no post-ID is given.
-		if ( 0 === $post_id && ! empty( $input['personio_id'] ) && is_scalar( $input['personio_id'] ) ) {
+		if ( 0 === $post_id && ! empty( $input['personio_id'] ) && \is_scalar( $input['personio_id'] ) ) {
 			$position_obj = Positions::get_instance()->get_position_by_personio_id( sanitize_text_field( (string) $input['personio_id'] ) );
 			if ( $position_obj instanceof Position ) {
 				$post_id = $position_obj->get_id();
@@ -569,7 +569,7 @@ class Abilities {
 		}
 
 		// bail if this is not a published position.
-		if ( 'publish' !== get_post_status( $post_id ) || PersonioPosition::get_instance()->get_name() !== get_post_type( $post_id ) ) {
+		if ( PersonioPosition::get_instance()->get_name() !== get_post_type( $post_id ) || 'publish' !== get_post_status( $post_id ) ) {
 			return new WP_Error( 'personio_integration_position_not_found', __( 'No position could be found for the given ID.', 'personio-integration-light' ), array( 'status' => 404 ) );
 		}
 
@@ -630,12 +630,12 @@ class Abilities {
 		if ( $with_description ) {
 			$description = array();
 			foreach ( $position_obj->get_content_as_array() as $part ) {
-				if ( ! is_array( $part ) ) {
+				if ( ! \is_array( $part ) ) {
 					continue;
 				}
 				$description[] = array(
-					'name'  => isset( $part['name'] ) && is_scalar( $part['name'] ) ? (string) $part['name'] : '',
-					'value' => isset( $part['value'] ) && is_scalar( $part['value'] ) ? wp_kses_post( (string) $part['value'] ) : '',
+					'name'  => isset( $part['name'] ) && \is_scalar( $part['name'] ) ? (string) $part['name'] : '',
+					'value' => isset( $part['value'] ) && \is_scalar( $part['value'] ) ? wp_kses_post( (string) $part['value'] ) : '',
 				);
 			}
 			$data['description']     = $description;
@@ -664,10 +664,10 @@ class Abilities {
 	 * @return array<string,mixed>
 	 */
 	public function get_taxonomies( mixed $input = array() ): array {
-		$input = is_array( $input ) ? $input : array();
+		$input = \is_array( $input ) ? $input : array();
 
 		// get the requested taxonomy, if given.
-		$requested = isset( $input['taxonomy'] ) && is_scalar( $input['taxonomy'] ) ? sanitize_text_field( (string) $input['taxonomy'] ) : '';
+		$requested = isset( $input['taxonomy'] ) && \is_scalar( $input['taxonomy'] ) ? sanitize_text_field( (string) $input['taxonomy'] ) : '';
 
 		// collect the taxonomies.
 		$taxonomies = array();
@@ -687,7 +687,7 @@ class Abilities {
 
 			// collect the terms.
 			$term_list = array();
-			if ( is_array( $terms ) ) {
+			if ( \is_array( $terms ) ) {
 				foreach ( $terms as $term ) {
 					// bail if this is not a term object.
 					if ( ! $term instanceof WP_Term ) { // @phpstan-ignore instanceof.alwaysTrue
@@ -709,7 +709,7 @@ class Abilities {
 			$taxonomies[] = array(
 				'slug'  => (string) $taxonomy['slug'],
 				'name'  => $taxonomy_name,
-				'label' => ! empty( $labels['name'] ) ? $labels['name'] : (string) $taxonomy['slug'],
+				'label' => ! empty( $labels['name'] ) ? (string) $labels['name'] : (string) $taxonomy['slug'],
 				'terms' => $term_list,
 			);
 		}
@@ -729,12 +729,12 @@ class Abilities {
 	public function get_import_status(): array {
 		// get the errors of the last import.
 		$errors = get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() );
-		$errors = is_array( $errors ) ? array_values( array_map( 'wp_strip_all_tags', array_filter( $errors, 'is_string' ) ) ) : array();
+		$errors = \is_array( $errors ) ? array_values( array_map( 'wp_strip_all_tags', array_filter( $errors, 'is_string' ) ) ) : array();
 
 		// get the next scheduled import (the event is scheduled with arguments, so we search the cron list).
 		$next_import = false;
-		$cronjobs       = _get_cron_array();
-		foreach ( $cronjobs as $timestamp => $hooks ) {
+		$crons       = _get_cron_array();
+		foreach ( $crons as $timestamp => $hooks ) {
 			if ( isset( $hooks['personio_integration_schedule_events'] ) ) {
 				$next_import = absint( $timestamp );
 				break;
@@ -748,7 +748,7 @@ class Abilities {
 			'errors'           => $errors,
 			'position_count'   => Positions::get_instance()->get_positions_count(),
 			'has_personio_url' => ! empty( get_option( 'personioIntegrationUrl' ) ),
-			'next_import'      => is_int( $next_import ) ? gmdate( 'c', $next_import ) : '',
+			'next_import'      => \is_int( $next_import ) ? gmdate( 'c', $next_import ) : '',
 		);
 	}
 }

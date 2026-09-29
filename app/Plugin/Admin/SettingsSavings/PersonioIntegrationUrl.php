@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsSavings;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 
@@ -28,7 +28,7 @@ class PersonioIntegrationUrl {
 		$value = \PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::cleanup_url_string( $value );
 
 		// trigger re-import hint if URL will be changed and a URL is set.
-		if ( ! empty( $value ) && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! empty( get_option( 'personioIntegrationUrl' ) ) && get_option( 'personioIntegrationUrl' ) !== $value ) {
+		if ( ! empty( $value ) && ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! empty( get_option( 'personioIntegrationUrl' ) ) && get_option( 'personioIntegrationUrl' ) !== $value ) {
 			Positions::get_instance()->trigger_reimport_hint();
 		}
 

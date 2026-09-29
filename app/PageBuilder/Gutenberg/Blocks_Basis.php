@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use WP_Block_Type_Registry;
@@ -68,7 +68,7 @@ class Blocks_Basis {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Blocks_Basis {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 

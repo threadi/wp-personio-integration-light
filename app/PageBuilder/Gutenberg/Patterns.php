@@ -10,7 +10,7 @@ namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 // prevent direct access.
 use PersonioIntegrationLight\Helper;
 
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Object to handle all Gutenberg-patterns of this plugin.
@@ -39,7 +39,7 @@ class Patterns {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Patterns {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -96,7 +96,7 @@ class Patterns {
 	 */
 	private function register_patterns(): void {
 		// bail if needed function is not available.
-		if ( ! function_exists( 'register_block_pattern' ) ) {
+		if ( ! \function_exists( 'register_block_pattern' ) ) {
 			return;
 		}
 

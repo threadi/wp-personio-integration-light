@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace PersonioIntegrationLight\Plugin\Admin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\TextInfo;
 
@@ -52,12 +52,12 @@ class Callback_TextInfo extends TextInfo {
 	 * @return string
 	 */
 	public function get_description(): string {
-		if ( is_null( $this->callback ) ) {
+		if ( \is_null( $this->callback ) ) {
 			return parent::get_description();
 		}
-		if ( is_null( $this->generated ) ) {
-			$description     = call_user_func( $this->callback );
-			$this->generated = is_string( $description ) ? $description : '';
+		if ( \is_null( $this->generated ) ) {
+			$description     = \call_user_func( $this->callback );
+			$this->generated = \is_string( $description ) ? $description : '';
 		}
 		return $this->generated;
 	}

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace PersonioIntegrationLight\Abilities;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use WP_Error;
 

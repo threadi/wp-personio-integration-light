@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -44,7 +44,7 @@ class Update {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Update {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -75,8 +75,8 @@ class Update {
 
 		// compare version if we are not in development-mode.
 		if ( ! Helper::is_development_mode_active() && version_compare( $installed_plugin_version, $db_plugin_version, '>' ) ) {
-			if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) ) {
-				define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
+			if ( ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) ) {
+				\define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
 			}
 			if ( version_compare( $db_plugin_version, '3.0.0', '<' ) ) {
 				$this->version300();
@@ -102,7 +102,7 @@ class Update {
 
 			// log that this update has been run.
 			/* translators: %1$s and %2$s are replaced by the old and new version. */
-			Log::get_instance()->add( sprintf( __( 'Personio Integration Light has been updated from %1$s to %2$s.', 'personio-integration-light' ), $db_plugin_version, $installed_plugin_version ), 'info', 'system' );
+			Log::get_instance()->add( \sprintf( __( 'Personio Integration Light has been updated from %1$s to %2$s.', 'personio-integration-light' ), $db_plugin_version, $installed_plugin_version ), 'info', 'system' );
 
 			// save the new plugin-version in the DB.
 			update_option( 'personioIntegrationVersion', $installed_plugin_version );
@@ -199,10 +199,10 @@ class Update {
 
 		// clean the setup completed from multiple entries.
 		$setup_completed = get_option( 'esfw_completed' );
-		if ( is_array( $setup_completed ) ) {
+		if ( \is_array( $setup_completed ) ) {
 			$setup_completed_new = array();
 			foreach ( $setup_completed as $config_name ) {
-				if ( in_array( $config_name, $setup_completed_new, true ) ) {
+				if ( \in_array( $config_name, $setup_completed_new, true ) ) {
 					continue;
 				}
 				$setup_completed_new[] = $config_name;

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Widgets;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use const WP_CLI;
 
@@ -23,7 +23,7 @@ trait Helper {
 	 * @return bool
 	 */
 	public static function is_cli(): bool {
-		return defined( 'WP_CLI' ) && WP_CLI;
+		return \defined( 'WP_CLI' ) && WP_CLI;
 	}
 
 	/**
@@ -44,10 +44,10 @@ trait Helper {
 					$multiple = '';
 					if ( isset( $field['multiple'] ) && false !== $field['multiple'] ) {
 						$multiple = ' multiple="multiple"';
-						if ( ! empty( $instance[ $name ] ) && is_array( $instance[ $name ] ) ) {
+						if ( ! empty( $instance[ $name ] ) && \is_array( $instance[ $name ] ) ) {
 							$selected_value = array();
 							foreach ( $field['values'] as $n => $v ) {
-								if ( false !== in_array( $n, $instance[ $name ], true ) ) {
+								if ( false !== \in_array( $n, $instance[ $name ], true ) ) {
 									$selected_value[] = $n;
 								}
 							}
@@ -68,7 +68,7 @@ trait Helper {
 							<?php
 							foreach ( $field['values'] as $value => $title ) {
 								?>
-								<option value="<?php echo esc_attr( $value ); ?>"<?php echo ( in_array( $value, $selected_value, true ) ? ' selected="selected"' : '' ); ?>><?php echo esc_html( $title ); ?></option>
+								<option value="<?php echo esc_attr( $value ); ?>"<?php echo ( \in_array( $value, $selected_value, true ) ? ' selected="selected"' : '' ); ?>><?php echo esc_html( $title ); ?></option>
 															<?php
 							}
 							?>

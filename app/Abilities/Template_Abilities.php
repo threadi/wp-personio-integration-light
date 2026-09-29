@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace PersonioIntegrationLight\Abilities;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
@@ -58,7 +58,7 @@ class Template_Abilities {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Template_Abilities {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -125,7 +125,7 @@ class Template_Abilities {
 
 		// use the only available one if none is requested.
 		if ( empty( $builder ) ) {
-			if ( 1 === count( $available ) ) {
+			if ( 1 === \count( $available ) ) {
 				return reset( $available );
 			}
 			if ( empty( $available ) ) {
@@ -191,7 +191,7 @@ class Template_Abilities {
 	 */
 	public function add_abilities(): void {
 		// bail if support for abilities is missing.
-		if ( ! function_exists( 'wp_register_ability' ) ) {
+		if ( ! \function_exists( 'wp_register_ability' ) ) {
 			return;
 		}
 
@@ -659,7 +659,7 @@ class Template_Abilities {
 		}
 
 		// limit the length of the HTML.
-		if ( strlen( $html ) > self::MAX_PREVIEW_LENGTH ) {
+		if ( \strlen( $html ) > self::MAX_PREVIEW_LENGTH ) {
 			$html                = substr( $html, 0, self::MAX_PREVIEW_LENGTH );
 			$result['truncated'] = true;
 		}
@@ -691,7 +691,7 @@ class Template_Abilities {
 
 		// get the parameters.
 		$content = isset( $input['content'] ) ? (string) $input['content'] : '';
-		$css     = isset( $input['css'] ) && is_scalar( $input['css'] ) ? (string) $input['css'] : null;
+		$css     = isset( $input['css'] ) && \is_scalar( $input['css'] ) ? (string) $input['css'] : null;
 		$dry_run = ! isset( $input['dry_run'] ) || (bool) $input['dry_run'];
 
 		// prepare the result.
@@ -714,13 +714,13 @@ class Template_Abilities {
 		}
 
 		// check the CSS: it requires the same capability as the additional CSS of WordPress.
-		if ( ! is_null( $css ) ) {
+		if ( ! \is_null( $css ) ) {
 			if ( ! current_user_can( 'edit_css' ) ) {
 				$result['errors'][] = __( 'You are not allowed to save CSS. Omit the parameter "css".', 'personio-integration-light' );
 			}
-			if ( strlen( $css ) > self::MAX_CSS_LENGTH ) {
+			if ( \strlen( $css ) > self::MAX_CSS_LENGTH ) {
 				/* translators: %1$d will be replaced by a number. */
-				$result['errors'][] = sprintf( __( 'The CSS is too long, the maximum are %1$d characters.', 'personio-integration-light' ), self::MAX_CSS_LENGTH );
+				$result['errors'][] = \sprintf( __( 'The CSS is too long, the maximum are %1$d characters.', 'personio-integration-light' ), self::MAX_CSS_LENGTH );
 			}
 		}
 
@@ -746,7 +746,7 @@ class Template_Abilities {
 		$result['done']   = ! $dry_run;
 
 		// add the notes of the page builder, e.g. about other templates which are affected.
-		if ( ! empty( $saved['notes'] ) && is_array( $saved['notes'] ) ) {
+		if ( ! empty( $saved['notes'] ) && \is_array( $saved['notes'] ) ) {
 			$result['warnings'] = array_merge( $result['warnings'], array_values( array_map( 'strval', $saved['notes'] ) ) );
 		}
 
@@ -814,7 +814,7 @@ class Template_Abilities {
 		$result['done']   = ! $dry_run && 'reset' === $result['action'];
 
 		// add the notes of the page builder, e.g. about other templates which are affected.
-		if ( ! empty( $reset['notes'] ) && is_array( $reset['notes'] ) ) {
+		if ( ! empty( $reset['notes'] ) && \is_array( $reset['notes'] ) ) {
 			$result['warnings'] = array_merge( $result['warnings'], array_values( array_map( 'strval', $reset['notes'] ) ) );
 		}
 
@@ -841,7 +841,7 @@ class Template_Abilities {
 	 */
 	private function get_type( Template_Adapter_Base $adapter, array $input ): string|WP_Error {
 		$type = isset( $input['type'] ) ? sanitize_key( (string) $input['type'] ) : 'single';
-		if ( ! array_key_exists( $type, $adapter->get_template_types() ) ) {
+		if ( ! \array_key_exists( $type, $adapter->get_template_types() ) ) {
 			return new WP_Error( 'personio_integration_unknown_template_type', __( 'The requested template type is not supported by this page builder.', 'personio-integration-light' ) );
 		}
 		return $type;
@@ -879,7 +879,7 @@ class Template_Abilities {
 			return new WP_Error( 'personio_integration_no_positions', __( 'There are no positions for the preview. Import positions first.', 'personio-integration-light' ) );
 		}
 		$first = $query->posts[0];
-		return is_int( $first ) ? $first : absint( $first->ID );
+		return \is_int( $first ) ? $first : absint( $first->ID );
 	}
 
 	/**
@@ -894,7 +894,7 @@ class Template_Abilities {
 		foreach ( $entries as $name => $label ) {
 			$result[] = array(
 				'name'  => (string) $name,
-				'label' => wp_strip_all_tags( is_scalar( $label ) ? (string) $label : '' ),
+				'label' => wp_strip_all_tags( \is_scalar( $label ) ? (string) $label : '' ),
 			);
 		}
 		return $result;
@@ -950,7 +950,7 @@ class Template_Abilities {
 	 */
 	public function get_allowed_values( string $name ): array {
 		$values = $this->get_values();
-		if ( empty( $values[ $name ] ) || ! is_array( $values[ $name ] ) ) {
+		if ( empty( $values[ $name ] ) || ! \is_array( $values[ $name ] ) ) {
 			return array();
 		}
 		return array_values( array_map( 'strval', wp_list_pluck( $values[ $name ], 'name' ) ) );

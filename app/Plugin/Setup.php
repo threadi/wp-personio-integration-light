@@ -10,7 +10,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Radio;
 use easySettingsForWordPress\Fields\Text;
@@ -59,7 +59,7 @@ class Setup {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Setup {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -98,7 +98,7 @@ class Setup {
 					'title_error' => __( 'Error', 'personio-integration-light' ),
 					'txt_error_1' => __( 'The following error occurred:', 'personio-integration-light' ),
 					/* translators: %1$s will be replaced with the URL of the plugin-forum on wp.org */
-					'txt_error_2' => sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens a new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
+					'txt_error_2' => \sprintf( __( '<strong>If reason is unclear</strong> please contact our <a href="%1$s" target="_blank">support-forum (opens a new window)</a> with as much detail as possible.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ),
 				)
 			);
 			$setup_obj->set_display_hook( '_page_personioPositions' );
@@ -176,7 +176,7 @@ class Setup {
 			// add a hint to run setup.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_start_setup_hint' );
-			$transient_obj->set_message( __( '<strong>You have installed Personio Integration Light - nice, and thank you!</strong> Now run the setup to expand your website with the possibilities of this plugin to promote your open positions from Personio.', 'personio-integration-light' ) . '<br><br>' . sprintf( '<a href="%1$s" class="button button-primary">' . __( 'Start setup', 'personio-integration-light' ) . '</a>', esc_url( $this->get_setup_link() ) ) );
+			$transient_obj->set_message( __( '<strong>You have installed Personio Integration Light - nice, and thank you!</strong> Now run the setup to expand your website with the possibilities of this plugin to promote your open positions from Personio.', 'personio-integration-light' ) . '<br><br>' . \sprintf( '<a href="%1$s" class="button button-primary">' . __( 'Start setup', 'personio-integration-light' ) . '</a>', esc_url( $this->get_setup_link() ) ) );
 			$transient_obj->set_type( 'error' );
 			$transient_obj->set_dismissible_days( 2 );
 			$transient_obj->set_hide_on(
@@ -413,7 +413,7 @@ class Setup {
 				'help'                                => array(
 					'type' => 'Text',
 					/* translators: %1$s will be replaced by our support-forum-URL. */
-					'text' => '<p><span class="dashicons dashicons-editor-help"></span> ' . sprintf( __( '<strong>Need help?</strong> Ask in <a href="%1$s" target="_blank">our forum (opens a new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) . '</p>',
+					'text' => '<p><span class="dashicons dashicons-editor-help"></span> ' . \sprintf( __( '<strong>Need help?</strong> Ask in <a href="%1$s" target="_blank">our forum (opens a new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) ) . '</p>',
 				),
 			),
 			2 => array(
@@ -450,7 +450,7 @@ class Setup {
 		}
 
 		// update the max steps for this process.
-		$this->update_max_step( Taxonomies::get_instance()->get_taxonomy_defaults_count() + count( Personio_Accounts::get_instance()->get_personio_urls() ) );
+		$this->update_max_step( Taxonomies::get_instance()->get_taxonomy_defaults_count() + \count( Personio_Accounts::get_instance()->get_personio_urls() ) );
 
 		// step 1: Run import of taxonomies.
 		$this->set_process_label( __( 'Import of Personio labels running.', 'personio-integration-light' ) );

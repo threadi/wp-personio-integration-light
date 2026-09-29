@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 
@@ -48,7 +48,7 @@ class Template_Styles {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Template_Styles {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -73,7 +73,7 @@ class Template_Styles {
 	 */
 	public function get_css( string $type ): string {
 		$list = get_option( self::OPTION, array() );
-		if ( ! is_array( $list ) || ! isset( $list[ $type ] ) || ! is_string( $list[ $type ] ) ) {
+		if ( ! \is_array( $list ) || ! isset( $list[ $type ] ) || ! \is_string( $list[ $type ] ) ) {
 			return '';
 		}
 		return $list[ $type ];
@@ -89,7 +89,7 @@ class Template_Styles {
 	 */
 	public function set_css( string $type, string $css ): void {
 		$list = get_option( self::OPTION, array() );
-		if ( ! is_array( $list ) ) {
+		if ( ! \is_array( $list ) ) {
 			$list = array();
 		}
 

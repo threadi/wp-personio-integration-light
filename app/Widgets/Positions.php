@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Widgets;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\PersonioIntegration\Widgets\Archive;
@@ -179,18 +179,18 @@ class Positions extends WP_Widget {
 			$templates .= 'title';
 		}
 		if ( 'yes' === $settings['showExcerpt'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'excerpt';
+			$templates .= ( \strlen( $templates ) > 0 ? ',' : '' ) . 'excerpt';
 		}
 		if ( 'yes' === $settings['showContent'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'content';
+			$templates .= ( \strlen( $templates ) > 0 ? ',' : '' ) . 'content';
 		}
 		if ( 'yes' === $settings['showApplicationForm'] ) {
-			$templates .= ( strlen( $templates ) > 0 ? ',' : '' ) . 'formular';
+			$templates .= ( \strlen( $templates ) > 0 ? ',' : '' ) . 'formular';
 		}
 
 		// get the excerpt-templates.
 		$excerpt_templates = '';
-		if ( is_array( $settings['excerptTemplates'] ) ) {
+		if ( \is_array( $settings['excerptTemplates'] ) ) {
 			$excerpt_templates = implode( ',', $settings['excerptTemplates'] );
 		}
 

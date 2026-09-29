@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Compatibilities;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -38,7 +38,7 @@ class Pdf_Generator_For_Wp extends Compatibilities_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Pdf_Generator_For_Wp {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -55,7 +55,7 @@ class Pdf_Generator_For_Wp extends Compatibilities_Base {
 		if ( $this->is_active() ) {
 			// if post-type is set, to nothing more.
 			$pdf_generator_advanced_settings = get_option( 'pgfw_advanced_save_settings' );
-			if ( ! empty( $pdf_generator_advanced_settings ) && ! empty( $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'] ) && in_array( PersonioPosition::get_instance()->get_name(), $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'], true ) ) {
+			if ( ! empty( $pdf_generator_advanced_settings ) && ! empty( $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'] ) && \in_array( PersonioPosition::get_instance()->get_name(), $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'], true ) ) {
 				$transients_obj->get_transient_by_name( $this->get_name() )->delete();
 				return;
 			}
@@ -73,7 +73,7 @@ class Pdf_Generator_For_Wp extends Compatibilities_Base {
 			$transient_obj = $transients_obj->add();
 			$transient_obj->set_name( $this->get_name() );
 			/* translators: %1$s will be replaced by the URL to the Pro-version-info-page. */
-			$transient_obj->set_message( sprintf( __( '<strong>We realized that you are using PDF Generator for WP - very nice!</strong> If you want to print your open positions as PDF, go to the <a href="%1$s" target="_blank">advanced settings of PDF Generator for WP</a> and choose "personioposition" as allowed post type.', 'personio-integration-light' ), esc_url( $url ) ) );
+			$transient_obj->set_message( \sprintf( __( '<strong>We realized that you are using PDF Generator for WP - very nice!</strong> If you want to print your open positions as PDF, go to the <a href="%1$s" target="_blank">advanced settings of PDF Generator for WP</a> and choose "personioposition" as allowed post type.', 'personio-integration-light' ), esc_url( $url ) ) );
 			$transient_obj->set_type( 'success' );
 			$transient_obj->set_dismissible_days( 182 );
 			$transient_obj->save();

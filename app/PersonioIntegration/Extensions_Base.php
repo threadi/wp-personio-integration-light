@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Page;
 use easySettingsForWordPress\Section;
@@ -125,7 +125,7 @@ class Extensions_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Extensions_Base {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -262,7 +262,7 @@ class Extensions_Base {
 				$classname = $extension_class_name . '::get_instance';
 
 				// bail if "get_instance" is not callable.
-				if ( ! is_callable( $classname ) ) {
+				if ( ! \is_callable( $classname ) ) {
 					continue;
 				}
 
@@ -474,12 +474,12 @@ class Extensions_Base {
 	 */
 	protected function is_required(): bool {
 		// get the actual class name.
-		$class_name = get_class( $this );
+		$class_name = \get_class( $this );
 
 		// get all extension and check if they required the actual one.
 		foreach ( Extensions::get_instance()->get_extensions_as_objects() as $extension_obj ) {
 			// bail if this extension does not require the actual one.
-			if ( ! in_array( $class_name, $extension_obj->get_required_extensions(), true ) ) {
+			if ( ! \in_array( $class_name, $extension_obj->get_required_extensions(), true ) ) {
 				continue;
 			}
 
@@ -518,7 +518,7 @@ class Extensions_Base {
 		$enabled_extensions = 0;
 		foreach ( Extensions::get_instance()->get_extensions_as_objects() as $extension_obj ) {
 			// bail if this extension does not require the actual one.
-			if ( ! in_array( get_class( $extension_obj ), $this->get_required_extensions(), true ) ) {
+			if ( ! \in_array( \get_class( $extension_obj ), $this->get_required_extensions(), true ) ) {
 				continue;
 			}
 
@@ -532,7 +532,7 @@ class Extensions_Base {
 		}
 
 		// return true if enabled extension matches the count of extensions.
-		return count( $this->get_required_extensions() ) === $enabled_extensions;
+		return \count( $this->get_required_extensions() ) === $enabled_extensions;
 	}
 
 	/**

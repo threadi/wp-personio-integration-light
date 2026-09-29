@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Abilities\Abilities;
 use PersonioIntegrationLight\Helper;
@@ -47,7 +47,7 @@ class Init {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Init {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -168,7 +168,7 @@ class Init {
 
 		$css_file = 'css/blocks.css';
 		// if debug-mode is not enabled, use a minified file.
-		if ( ! defined( 'WP_DEBUG' ) || ( defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
+		if ( ! \defined( 'WP_DEBUG' ) || ( \defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
 			$css_file = str_replace( '.css', '.min.css', $css_file );
 		}
 
@@ -446,7 +446,7 @@ class Init {
 	 */
 	public function register_icon(): void {
 		// bail if the required functions does not exist.
-		if ( ! function_exists( 'wp_register_icon_collection' ) || ! function_exists( 'wp_register_icon' ) ) {
+		if ( ! \function_exists( 'wp_register_icon_collection' ) || ! \function_exists( 'wp_register_icon' ) ) {
 			return;
 		}
 

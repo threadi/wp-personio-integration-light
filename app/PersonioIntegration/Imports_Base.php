@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use cli\progress\Bar;
 use PersonioIntegrationLight\Helper;
@@ -54,7 +54,7 @@ class Imports_Base extends Extensions_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Imports_Base {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -95,7 +95,7 @@ class Imports_Base extends Extensions_Base {
 	 */
 	protected function add_error( string|WP_Error $text ): void {
 		// create the WP_Error object with the text.
-		if ( is_string( $text ) ) {
+		if ( \is_string( $text ) ) {
 			$error = new WP_Error();
 			$error->add_data( $text );
 		} else {
@@ -310,7 +310,7 @@ class Imports_Base extends Extensions_Base {
 
 			// add hint.
 			/* translators: %1$s will be replaced by a URL. */
-			$dialog['texts'][] = '<p><strong>' . sprintf( __( 'There is no import extension for Personio positions enabled!', 'personio-integration-light' ) . '</strong> ' . __( 'Please <a href="%1$s">go to the list of import extensions</a> and enable one to import and update your positions on your website.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link( 'imports' ) ) ) . '</p>';
+			$dialog['texts'][] = '<p><strong>' . \sprintf( __( 'There is no import extension for Personio positions enabled!', 'personio-integration-light' ) . '</strong> ' . __( 'Please <a href="%1$s">go to the list of import extensions</a> and enable one to import and update your positions on your website.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link( 'imports' ) ) ) . '</p>';
 
 			// return the dialog.
 			return $dialog;
@@ -319,10 +319,10 @@ class Imports_Base extends Extensions_Base {
 		// add hint.
 		$dialog['texts'][] = '<p>' . __( 'Follow these steps to use this import extension.', 'personio-integration-light' ) . '</p>';
 		/* translators: %1$s will be replaced by a URL. */
-		$list  = '<ol><li>' . sprintf( __( 'Check the <a href="%1$s">settings</a> for imports.', 'personio-integration-light' ), Helper::get_settings_url( 'personioPositions', 'import' ) ) . '</li>';
+		$list  = '<ol><li>' . \sprintf( __( 'Check the <a href="%1$s">settings</a> for imports.', 'personio-integration-light' ), Helper::get_settings_url( 'personioPositions', 'import' ) ) . '</li>';
 		$list .= '<li>' . __( 'Run the import of positions.', 'personio-integration-light' ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
-		$list             .= '<li>' . sprintf( __( 'Go to the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) ) . '</li></ol>';
+		$list             .= '<li>' . \sprintf( __( 'Go to the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) ) . '</li></ol>';
 		$dialog['texts'][] = $list;
 
 		// return resulting dialog.
@@ -347,7 +347,7 @@ class Imports_Base extends Extensions_Base {
 	 */
 	public function process_shutdown_error( ?array $error ): void {
 		// bail if there was no fatal error.
-		if ( null === $error || ! in_array( $error['type'], array( E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ), true ) ) {
+		if ( null === $error || ! \in_array( $error['type'], array( E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ), true ) ) {
 			return;
 		}
 

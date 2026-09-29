@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Abilities\Abilities_Settings;
 use PersonioIntegrationLight\Abilities\Template_Abilities;
@@ -192,13 +192,13 @@ class Template_Adapter extends Template_Adapter_Base {
 			// collect the attributes, without the internal ones.
 			$attributes = array();
 			foreach ( (array) $block_type->attributes as $name => $settings ) {
-				if ( in_array( $name, array( 'blockId', 'preview', 'lock', 'metadata', 'className', 'style' ), true ) ) {
+				if ( \in_array( $name, array( 'blockId', 'preview', 'lock', 'metadata', 'className', 'style' ), true ) ) {
 					continue;
 				}
 				$attributes[ $name ] = array(
-					'type'        => is_array( $settings ) && isset( $settings['type'] ) ? $settings['type'] : 'string',
+					'type'        => \is_array( $settings ) && isset( $settings['type'] ) ? $settings['type'] : 'string',
 					'description' => $attribute_descriptions[ $name ] ?? '',
-					'default'     => is_array( $settings ) && isset( $settings['default'] ) ? $settings['default'] : null,
+					'default'     => \is_array( $settings ) && isset( $settings['default'] ) ? $settings['default'] : null,
 				);
 			}
 
@@ -292,7 +292,7 @@ class Template_Adapter extends Template_Adapter_Base {
 		}
 		if ( ! empty( $template_parts ) ) {
 			/* translators: %1$s will be replaced by a list of slugs. */
-			$hints[] = sprintf( __( 'Available template parts of the active theme: %1$s.', 'personio-integration-light' ), implode( ', ', array_unique( $template_parts ) ) );
+			$hints[] = \sprintf( __( 'Available template parts of the active theme: %1$s.', 'personio-integration-light' ), implode( ', ', array_unique( $template_parts ) ) );
 		}
 
 		return $hints;
@@ -451,7 +451,7 @@ class Template_Adapter extends Template_Adapter_Base {
 		update_post_meta( $post_id, Abilities_Settings::MARKER_META, Abilities_Settings::get_instance()->get_marker( $this->get_name(), $type ) );
 
 		// save the CSS, if given.
-		if ( ! is_null( $css ) ) {
+		if ( ! \is_null( $css ) ) {
 			Template_Styles::get_instance()->set_css( $type, $css );
 		}
 
@@ -556,10 +556,10 @@ class Template_Adapter extends Template_Adapter_Base {
 		if ( 'single' === $type && empty( preg_grep( '/^' . preg_quote( self::BLOCK_PREFIX, '/' ) . '/', $used_blocks ) ) ) {
 			$warnings[] = __( 'The template for the detail view uses no block of this plugin. The data of positions is only shown with the blocks of this plugin, see get-template-catalog.', 'personio-integration-light' );
 		}
-		if ( 'archive' === $type && ! in_array( self::BLOCK_PREFIX . 'list', $used_blocks, true ) && ! in_array( 'core/query', $used_blocks, true ) ) {
+		if ( 'archive' === $type && ! \in_array( self::BLOCK_PREFIX . 'list', $used_blocks, true ) && ! \in_array( 'core/query', $used_blocks, true ) ) {
 			$warnings[] = __( 'The template for the list of positions contains no block which shows positions (wp-personio-integration/list or core/query).', 'personio-integration-light' );
 		}
-		if ( ! in_array( 'core/template-part', $used_blocks, true ) ) {
+		if ( ! \in_array( 'core/template-part', $used_blocks, true ) ) {
 			$warnings[] = __( 'The template contains no template part. Header and footer of the theme will be missing.', 'personio-integration-light' );
 		}
 
@@ -589,14 +589,14 @@ class Template_Adapter extends Template_Adapter_Base {
 		}
 
 		// get the values as list.
-		$values = is_array( $value ) ? $value : array( $value );
+		$values = \is_array( $value ) ? $value : array( $value );
 		foreach ( $values as $single_value ) {
-			if ( ! is_scalar( $single_value ) || '' === (string) $single_value ) {
+			if ( ! \is_scalar( $single_value ) || '' === (string) $single_value ) {
 				continue;
 			}
-			if ( ! in_array( (string) $single_value, $allowed, true ) ) {
+			if ( ! \in_array( (string) $single_value, $allowed, true ) ) {
 				/* translators: %1$s will be replaced by a value, %2$s by an attribute name, %3$s by a block name, %4$s by the name of a list. */
-				$errors[] = sprintf( __( 'The value %1$s of the attribute %2$s of the block %3$s is unknown. Use a name from values.%4$s.', 'personio-integration-light' ), (string) $single_value, $attribute, $block_name, $list_name );
+				$errors[] = \sprintf( __( 'The value %1$s of the attribute %2$s of the block %3$s is unknown. Use a name from values.%4$s.', 'personio-integration-light' ), (string) $single_value, $attribute, $block_name, $list_name );
 			}
 		}
 	}
@@ -617,11 +617,11 @@ class Template_Adapter extends Template_Adapter_Base {
 		$registry = WP_Block_Type_Registry::get_instance();
 
 		foreach ( $blocks as $block ) {
-			$block_name = isset( $block['blockName'] ) && is_string( $block['blockName'] ) ? $block['blockName'] : '';
+			$block_name = isset( $block['blockName'] ) && \is_string( $block['blockName'] ) ? $block['blockName'] : '';
 
 			// check content outside of blocks.
 			if ( empty( $block_name ) ) {
-				$inner_html = isset( $block['innerHTML'] ) && is_string( $block['innerHTML'] ) ? $block['innerHTML'] : '';
+				$inner_html = isset( $block['innerHTML'] ) && \is_string( $block['innerHTML'] ) ? $block['innerHTML'] : '';
 				// a block comment, which could not be parsed, e.g. because of invalid JSON in its attributes.
 				if ( str_contains( $inner_html, '<!-- wp:' ) ) {
 					$errors[] = __( 'The template contains invalid block markup, e.g. a block comment with invalid JSON attributes.', 'personio-integration-light' );
@@ -635,14 +635,14 @@ class Template_Adapter extends Template_Adapter_Base {
 			// check the block type.
 			if ( ! $registry->is_registered( $block_name ) ) {
 				/* translators: %1$s will be replaced by the block name. */
-				$errors[] = sprintf( __( 'The block %1$s is unknown.', 'personio-integration-light' ), $block_name );
+				$errors[] = \sprintf( __( 'The block %1$s is unknown.', 'personio-integration-light' ), $block_name );
 			}
 
 			// check the attributes.
 			$attributes = $block['attrs'] ?? array();
-			if ( ! is_array( $attributes ) ) {
+			if ( ! \is_array( $attributes ) ) {
 				/* translators: %1$s will be replaced by the block name. */
-				$errors[]   = sprintf( __( 'The attributes of the block %1$s are not valid JSON.', 'personio-integration-light' ), $block_name );
+				$errors[]   = \sprintf( __( 'The attributes of the block %1$s are not valid JSON.', 'personio-integration-light' ), $block_name );
 				$attributes = array();
 			}
 
@@ -671,16 +671,16 @@ class Template_Adapter extends Template_Adapter_Base {
 					$this->check_values( $attributes['filter'] ?? array(), $allowed['taxonomies'], $block_name, 'filter', 'taxonomies', $errors );
 					break;
 				case 'core/template-part':
-					$slug = isset( $attributes['slug'] ) && is_scalar( $attributes['slug'] ) ? (string) $attributes['slug'] : '';
-					if ( ! in_array( $slug, $template_parts, true ) ) {
+					$slug = isset( $attributes['slug'] ) && \is_scalar( $attributes['slug'] ) ? (string) $attributes['slug'] : '';
+					if ( ! \in_array( $slug, $template_parts, true ) ) {
 						/* translators: %1$s will be replaced by the slug. */
-						$warnings[] = sprintf( __( 'The template part %1$s does not exist in the active theme.', 'personio-integration-light' ), $slug );
+						$warnings[] = \sprintf( __( 'The template part %1$s does not exist in the active theme.', 'personio-integration-light' ), $slug );
 					}
 					break;
 			}
 
 			// check the inner blocks.
-			if ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+			if ( ! empty( $block['innerBlocks'] ) && \is_array( $block['innerBlocks'] ) ) {
 				$this->check_blocks( $block['innerBlocks'], $errors, $warnings, $used_blocks, $allowed, $template_parts );
 			}
 		}

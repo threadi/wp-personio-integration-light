@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
@@ -50,7 +50,7 @@ class Templates {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Templates {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -139,7 +139,7 @@ class Templates {
 		}
 
 		// check if the requested template exists in the theme.
-		$theme_template = locate_template( trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
+		$theme_template = locate_template( trailingslashit( basename( \dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
 		if ( $theme_template ) {
 			return $theme_template;
 		}
@@ -178,7 +178,7 @@ class Templates {
 		}
 
 		// check if the requested template exists in the theme.
-		$theme_template = locate_template( trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
+		$theme_template = locate_template( trailingslashit( basename( \dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) ) . $template );
 		if ( $theme_template ) {
 			return true;
 		}
@@ -400,7 +400,7 @@ class Templates {
 		$post_type = get_post_type( $post_id );
 
 		// bail if post-type could not be loaded.
-		if ( ! is_string( $post_type ) ) {
+		if ( ! \is_string( $post_type ) ) {
 			return $single_template;
 		}
 
@@ -446,7 +446,7 @@ class Templates {
 		$post_type = get_post_type( $post_id );
 
 		// bail if post-type could not be loaded.
-		if ( ! is_string( $post_type ) ) {
+		if ( ! \is_string( $post_type ) ) {
 			return $archive_template;
 		}
 
@@ -493,7 +493,7 @@ class Templates {
 		$post_type = get_post_type( $post_id );
 
 		// bail if post-type could not be loaded.
-		if ( ! is_string( $post_type ) ) {
+		if ( ! \is_string( $post_type ) ) {
 			return $content;
 		}
 
@@ -542,7 +542,7 @@ class Templates {
 		$post_type = get_post_type( $post_id );
 
 		// bail if post-type could not be loaded.
-		if ( ! is_string( $post_type ) ) {
+		if ( ! \is_string( $post_type ) ) {
 			return $content;
 		}
 
@@ -682,7 +682,7 @@ class Templates {
 		}
 
 		// get the post-ID as int if it is a string.
-		if ( is_string( $post_id ) ) {
+		if ( \is_string( $post_id ) ) {
 			$post_id = absint( $post_id );
 		}
 
@@ -713,7 +713,7 @@ class Templates {
 	 */
 	public function get_filter_template( string $filter, array $attributes ): void {
 		// bail if no filtertype is set or not a string.
-		if ( empty( $attributes['filtertype'] ) || ! is_string( $attributes['filtertype'] ) ) {
+		if ( empty( $attributes['filtertype'] ) || ! \is_string( $attributes['filtertype'] ) ) {
 			return;
 		}
 
@@ -1071,7 +1071,7 @@ class Templates {
 	 */
 	public function format_filter_url( string $url, string|null $anchor ): string {
 		// bail if anchor is null.
-		if ( is_null( $anchor ) ) {
+		if ( \is_null( $anchor ) ) {
 			return $url;
 		}
 

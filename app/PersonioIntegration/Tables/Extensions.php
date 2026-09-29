@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\Tables;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
@@ -54,7 +54,7 @@ class Extensions extends WP_List_Table {
 	private function table_data(): array {
 		// get filter.
 		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( is_null( $category ) ) {
+		if ( \is_null( $category ) ) {
 			$category = '';
 		}
 

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Compatibilities;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Compatibilities_Base;
@@ -43,7 +43,7 @@ class Loco extends Compatibilities_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Loco {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -92,7 +92,7 @@ class Loco extends Compatibilities_Base {
 		);
 
 		/* translators: %1$s will be replaced by the URL for Loco Settings of this plugin. */
-		$dialog['texts'][1] = '<p>' . sprintf( __( 'You already have Loco Translate installed. Follow <a href="%1$s">this link</a> to edit the texts there.', 'personio-integration-light' ), esc_url( $url ) ) . '</p>';
+		$dialog['texts'][1] = '<p>' . \sprintf( __( 'You already have Loco Translate installed. Follow <a href="%1$s">this link</a> to edit the texts there.', 'personio-integration-light' ), esc_url( $url ) ) . '</p>';
 
 		// return the resulting dialog.
 		return $dialog;

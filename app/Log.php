@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Plugin\Db;
 
@@ -46,7 +46,7 @@ class Log {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Log {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -88,7 +88,7 @@ class Log {
 		$table_name = (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ); // @phpstan-ignore cast.string
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.NotPrepared -- Custom log table; fixed table name, esc_sql-escaped, identifier can't be a placeholder.
-		$wpdb->query( sprintf( 'DROP TABLE IF EXISTS %s', $table_name ) );
+		$wpdb->query( \sprintf( 'DROP TABLE IF EXISTS %s', $table_name ) );
 	}
 
 	/**
@@ -134,7 +134,7 @@ class Log {
 			$log_categories = get_option( 'personioIntegration_debug_categories' );
 
 			// check if it is an array.
-			if ( ! is_array( $log_categories ) ) {
+			if ( ! \is_array( $log_categories ) ) {
 				$log_categories = array();
 			}
 
@@ -142,7 +142,7 @@ class Log {
 			$is_import_success = 'import' === $category && 'success' === $state;
 
 			// check if we should log this entry.
-			$should_log = $is_import_success || empty( $log_categories ) || in_array( $category, $log_categories, true );
+			$should_log = $is_import_success || empty( $log_categories ) || \in_array( $category, $log_categories, true );
 
 			/**
 			 * Filter whether a log entry should be written when debug mode is enabled.
@@ -200,7 +200,7 @@ class Log {
 		}
 
 		// bail on uninstalling.
-		if ( defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+		if ( \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
 		}
 
@@ -217,12 +217,12 @@ class Log {
 		$max_age    = absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) );
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.NotPrepared -- Custom log table; fixed table name, esc_sql-escaped, %d via absint().
-		$wpdb->query( sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', $table_name, $max_age ) );
+		$wpdb->query( \sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', $table_name, $max_age ) );
 
 		// log if any error occurred.
 		if ( ! empty( $wpdb->last_error ) ) {
 			/* translators: %1$s will be replaced by a DB-error-message. */
-			$this->add( sprintf( __( 'Database error: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
+			$this->add( \sprintf( __( 'Database error: %1$s - This usually indicates that the database system of your hosting does not meet the minimum requirements of WordPress. Please contact your hosts support team for clarification.', 'personio-integration-light' ), '<code>' . esc_html( $wpdb->last_error ) . '</code>' ), 'error', 'system' );
 		}
 
 		$is_running = false;
@@ -260,14 +260,14 @@ class Log {
 
 		// order table.
 		$order_by = filter_input( INPUT_GET, 'orderby', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( is_null( $order_by ) ) {
+		if ( \is_null( $order_by ) ) {
 			$order_by = 'date';
 		}
 		if ( 'date' !== $order_by ) {
 			$order_by = 'date';
 		}
 		$order = strtoupper( (string) filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
-		$order = in_array( $order, array( 'ASC', 'DESC' ), true ) ? $order : 'DESC';
+		$order = \in_array( $order, array( 'ASC', 'DESC' ), true ) ? $order : 'DESC';
 
 		$limit = 10000;
 		/**

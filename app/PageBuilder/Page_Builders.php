@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Extensions_Base;
 
@@ -35,7 +35,7 @@ class Page_Builders extends Extensions_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Page_Builders {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -90,7 +90,7 @@ class Page_Builders extends Extensions_Base {
 			$classname = $page_builder . '::get_instance';
 
 			// bail if it is not callable.
-			if ( ! is_callable( $classname ) ) {
+			if ( ! \is_callable( $classname ) ) {
 				continue;
 			}
 

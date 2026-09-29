@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Button;
 use easySettingsForWordPress\Fields\Checkbox;
@@ -85,7 +85,7 @@ class Email_Base {
 		// add a section.
 		$email_tab_main = $email_tab->add_section( 'settings_section_email_' . $this->get_name(), 10 );
 		/* translators: %1$s will be replaced by the email title. */
-		$email_tab_main->set_title( sprintf( __( 'Settings for %1$s', 'personio-integration-light' ), $this->get_title() ) );
+		$email_tab_main->set_title( \sprintf( __( 'Settings for %1$s', 'personio-integration-light' ), $this->get_title() ) );
 		$email_tab_main->set_callback( array( $this, 'show_description' ) );
 		$email_tab_main->set_setting( $settings_obj );
 		if ( method_exists( $email_tab_main, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
@@ -106,7 +106,7 @@ class Email_Base {
 		$description = __( 'Add one or more recipients for this email. One email per field. Get more fields after saving the settings.', 'personio-integration-light' ) . ' ';
 		if ( ! empty( $this->get_default_recipient() ) ) {
 			/* translators: %1$s will be replaced by the email address. */
-			$description .= sprintf( __( '<strong>If no email is set, we use the admin-email %1$s as the recipient.</strong> You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . $this->get_default_recipient() . '</code>', $wp_general_settings_url );
+			$description .= \sprintf( __( '<strong>If no email is set, we use the admin-email %1$s as the recipient.</strong> You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . $this->get_default_recipient() . '</code>', $wp_general_settings_url );
 		} else {
 			$description .= '<strong>' . __( 'Without recipient this email will not be sent.', 'personio-integration-light' ) . '</strong>';
 		}
@@ -125,7 +125,7 @@ class Email_Base {
 		$text_field->set_placeholder( 'info@example.com' );
 		$text_field->add_depend( $enable_setting, 1 );
 		$field->set_field( $text_field );
-		$field->set_quantity( count( $setting->get_value() ? $setting->get_value() : array() ) + 1 );
+		$field->set_quantity( \count( $setting->get_value() ? $setting->get_value() : array() ) + 1 );
 		$field->add_depend( $enable_setting, 1 );
 		$setting->set_field( $field );
 
@@ -138,7 +138,7 @@ class Email_Base {
 		$field = new Text( $settings_obj );
 		$field->set_title( __( 'Sender Email', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced by the email address. */
-		$field->set_description( sprintf( __( 'If no email is set, we use the admin-email %1$s as sender. You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . get_option( 'admin_email' ) . '</code>', $wp_general_settings_url ) );
+		$field->set_description( \sprintf( __( 'If no email is set, we use the admin-email %1$s as sender. You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . get_option( 'admin_email' ) . '</code>', $wp_general_settings_url ) );
 		$field->set_placeholder( 'info@example.com' );
 		$field->add_depend( $enable_setting, 1 );
 		$setting->set_field( $field );
@@ -271,9 +271,9 @@ class Email_Base {
 
 		$support_part = '<div id="signature">---------------------------------------------------------';
 		/* translators: %1$s will be replaced by a URL. */
-		$support_part .= '<br><br>' . sprintf( __( 'This email was sent to you by the WordPress-plugin Personio Integration Light, which is installed in your website under <a href="%1$s">%2$s</a>. You can disable this email <a href="%3$s">here</a>.', 'personio-integration-light' ), esc_url( $domain ), esc_html( $domain ), esc_url( $email_config_url ) );
+		$support_part .= '<br><br>' . \sprintf( __( 'This email was sent to you by the WordPress-plugin Personio Integration Light, which is installed in your website under <a href="%1$s">%2$s</a>. You can disable this email <a href="%3$s">here</a>.', 'personio-integration-light' ), esc_url( $domain ), esc_html( $domain ), esc_url( $email_config_url ) );
 		/* translators: %1$s will be replaced by a URL. */
-		$support_part .= '<br><br>' . sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="%1$s">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
+		$support_part .= '<br><br>' . \sprintf( __( 'If you have any questions about the message, please feel free to contact us in <a href="%1$s">our support forum</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ) );
 		$support_part .= '</div>';
 
 		/**
@@ -314,21 +314,21 @@ class Email_Base {
 		// bail if no recipients are set.
 		if ( empty( $this->get_recipients() ) ) {
 			/* translators: %1$s will be replaced by the title of the email object. */
-			Log::get_instance()->add( sprintf( __( 'Recipients missing to sent email for %1$s!', 'personio-integration-light' ), $this->get_title() ), 'error', 'emails' );
+			Log::get_instance()->add( \sprintf( __( 'Recipients missing to sent email for %1$s!', 'personio-integration-light' ), $this->get_title() ), 'error', 'emails' );
 			return;
 		}
 
 		// bail if no subject is set.
 		if ( empty( $this->get_subject() ) ) {
 			/* translators: %1$s will be replaced by the title of the email object. */
-			Log::get_instance()->add( sprintf( __( 'Subject missing to sent email for %1$s!', 'personio-integration-light' ), $this->get_title() ), 'error', 'emails' );
+			Log::get_instance()->add( \sprintf( __( 'Subject missing to sent email for %1$s!', 'personio-integration-light' ), $this->get_title() ), 'error', 'emails' );
 			return;
 		}
 
 		// bail if body is not set.
 		if ( empty( $this->get_body() ) ) {
 			/* translators: %1$s will be replaced by the title of the email object. */
-			Log::get_instance()->add( sprintf( __( 'Body missing to sent email for %1$s!', 'personio-integration-light' ), $this->get_title() ), 'error', 'emails' );
+			Log::get_instance()->add( \sprintf( __( 'Body missing to sent email for %1$s!', 'personio-integration-light' ), $this->get_title() ), 'error', 'emails' );
 			return;
 		}
 
@@ -484,7 +484,7 @@ class Email_Base {
 	 */
 	public function set_from( string|null $value ): string {
 		// if value is null, create a string.
-		if ( is_null( $value ) ) {
+		if ( \is_null( $value ) ) {
 			$value = '';
 		}
 

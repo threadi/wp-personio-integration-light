@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use WP_List_Table;
 
@@ -53,7 +53,7 @@ class Log_Table extends WP_List_Table {
 
 		$per_page     = 100;
 		$current_page = $this->get_pagenum();
-		$total_items  = count( $data );
+		$total_items  = \count( $data );
 
 		$this->set_pagination_args(
 			array(
@@ -62,7 +62,7 @@ class Log_Table extends WP_List_Table {
 			)
 		);
 
-		$data = array_slice( $data, ( ( $current_page - 1 ) * $per_page ), $per_page );
+		$data = \array_slice( $data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->items           = $data;
@@ -210,8 +210,8 @@ class Log_Table extends WP_List_Table {
 			);
 
 			?>
-			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary easy-dialog-for-wordpress<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
-			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary easy-dialog-for-wordpress<?php echo ( 0 === count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $download_url ); ?>" class="button button-secondary easy-dialog-for-wordpress<?php echo ( 0 === \count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $download_dialog ) ); ?>"><?php echo esc_html__( 'Export as CSV', 'personio-integration-light' ); ?></a>
+			<a href="<?php echo esc_url( $empty_url ); ?>" class="button button-secondary easy-dialog-for-wordpress<?php echo ( 0 === \count( $this->items ) ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $empty_dialog ) ); ?>"><?php echo esc_html__( 'Empty the log', 'personio-integration-light' ); ?></a>
 			<?php
 
 			// show button only if setting is enabled.
@@ -250,7 +250,7 @@ class Log_Table extends WP_List_Table {
 				$errors = absint( get_option( 'personio_integration_light_log_error_count' ) );
 
 				?>
-					<a href="<?php echo esc_url( $reset_error_marker_url ); ?>" class="button button-secondary easy-dialog-for-wordpress<?php echo ( 0 === count( $this->items ) || 0 === $errors ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $reset_error_marker_dialog ) ); ?>"><?php echo esc_html__( 'Reset error marker', 'personio-integration-light' ); ?></a>
+					<a href="<?php echo esc_url( $reset_error_marker_url ); ?>" class="button button-secondary easy-dialog-for-wordpress<?php echo ( 0 === \count( $this->items ) || 0 === $errors ? ' disabled' : '' ); ?>" data-dialog="<?php echo esc_attr( Helper::get_json( $reset_error_marker_dialog ) ); ?>"><?php echo esc_html__( 'Reset error marker', 'personio-integration-light' ); ?></a>
 				<?php
 			}
 		}
@@ -327,7 +327,7 @@ class Log_Table extends WP_List_Table {
 		$category = filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// return empty if nothing has been in request.
-		if ( is_null( $category ) ) {
+		if ( \is_null( $category ) ) {
 			return '';
 		}
 
@@ -345,7 +345,7 @@ class Log_Table extends WP_List_Table {
 		$md5 = filter_input( INPUT_GET, 'md5', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// return empty if nothing has been in request.
-		if ( is_null( $md5 ) ) {
+		if ( \is_null( $md5 ) ) {
 			return '';
 		}
 

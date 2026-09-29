@@ -11,6 +11,7 @@
 
 - Optimized some visibility conditions for settings on our blocks
 - Optimized check for Elementor Pro and PRO Elements
+- Modernize usage of global functions to speed up loading times
 - Switches from introJS to driver.js as technical base for the intro
 - Force to reload the WordPress-own permalink cache on uninstallation
 - Updated the settings library to 3.6.2

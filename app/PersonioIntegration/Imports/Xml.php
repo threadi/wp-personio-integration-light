@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\Imports;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use Error;
 use JsonException;
@@ -66,7 +66,7 @@ class Xml extends Imports_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Xml {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -92,13 +92,13 @@ class Xml extends Imports_Base {
 		Log::get_instance()->add( __( 'Import of positions is now running.', 'personio-integration-light' ), 'info', 'import' );
 
 		// set a mark that import is running in WP.
-		if ( ! defined( 'WP_IMPORTING' ) ) {
-			define( 'WP_IMPORTING', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- WP core constant, intentionally set to signal an import is running.
+		if ( ! \defined( 'WP_IMPORTING' ) ) {
+			\define( 'WP_IMPORTING', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- WP core constant, intentionally set to signal an import is running.
 		}
 
 		// mark the process as the running import.
-		if ( ! defined( 'PERSONIO_INTEGRATION_IMPORT_RUNNING' ) ) {
-			define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
+		if ( ! \defined( 'PERSONIO_INTEGRATION_IMPORT_RUNNING' ) ) {
+			\define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
 		}
 
 		// do not import if it is already running in another process.
@@ -110,11 +110,11 @@ class Xml extends Imports_Base {
 		$personio_urls = Personio_Accounts::get_instance()->get_personio_urls();
 		if ( empty( $personio_urls ) ) {
 			/* translators: %1$s will be replaced by the URL for the main settings. */
-			$this->add_error( sprintf( __( 'Personio URL is not configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
+			$this->add_error( \sprintf( __( 'Personio URL is not configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
 		}
 
 		// check if the PHP extension SimpleXML exists.
-		if ( ! function_exists( 'simplexml_load_string' ) ) {
+		if ( ! \function_exists( 'simplexml_load_string' ) ) {
 			$this->add_error( __( 'The PHP extension simplexml is missing on the system. Please contact your hoster about this.', 'personio-integration-light' ) );
 		}
 
@@ -124,7 +124,7 @@ class Xml extends Imports_Base {
 		// check if languages are enabled.
 		if ( empty( $languages ) ) {
 			/* translators: %1$s will be replaced by the URL for the main settings. */
-			$this->add_error( sprintf( __( 'No active language configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
+			$this->add_error( \sprintf( __( 'No active language configured. Please check your <a href="%1$s">settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) );
 		}
 
 		// bail if any error occurred.
@@ -137,7 +137,7 @@ class Xml extends Imports_Base {
 		}
 
 		// set max counter.
-		$language_count = count( $languages );
+		$language_count = \count( $languages );
 
 		// mark the import as running with its start-time.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
@@ -186,7 +186,7 @@ class Xml extends Imports_Base {
 					}
 
 					// update counter for imported positions.
-					$imported_positions += (int) count( $import_obj->get_imported_positions() );
+					$imported_positions += (int) \count( $import_obj->get_imported_positions() );
 				}
 			}
 		} catch ( Error $e ) {
@@ -195,7 +195,7 @@ class Xml extends Imports_Base {
 
 			// show hint.
 			/* translators: %1$s will be replaced by a URL. */
-			$this->add_error( sprintf( __( 'Error occurred. Check <a href="%1$s">the log</a> for details.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
+			$this->add_error( \sprintf( __( 'Error occurred. Check <a href="%1$s">the log</a> for details.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
 
 			// mark import as not running anymore.
 			update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
@@ -279,7 +279,7 @@ class Xml extends Imports_Base {
 					if ( false === delete_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED ) ) {
 						// log this event.
 						/* translators: %1$s will be replaced by the PersonioId. */
-						Log::get_instance()->add( sprintf( __( 'Removing the update flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
+						Log::get_instance()->add( \sprintf( __( 'Removing the update flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
 					}
 				} else {
 					// delete this position from the database without using trash.
@@ -298,11 +298,11 @@ class Xml extends Imports_Base {
 
 						// log this event.
 						/* translators: %1$s will be replaced by the PersonioID. */
-						Log::get_instance()->add( sprintf( __( 'Position %1$s has been deleted as it was not updated during the last import run.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'success', 'import' );
+						Log::get_instance()->add( \sprintf( __( 'Position %1$s has been deleted as it was not updated during the last import run.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'success', 'import' );
 					} else {
 						// deletion failed, so log this event.
 						/* translators: %1$s will be replaced by the PersonioID. */
-						Log::get_instance()->add( sprintf( __( 'Removing of not updated position %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
+						Log::get_instance()->add( \sprintf( __( 'Removing of not updated position %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
 					}
 				}
 			}
@@ -475,6 +475,6 @@ class Xml extends Imports_Base {
 	 * @return bool
 	 */
 	public function can_be_enabled_by_user(): bool {
-		return function_exists( 'simplexml_load_string' );
+		return \function_exists( 'simplexml_load_string' );
 	}
 }

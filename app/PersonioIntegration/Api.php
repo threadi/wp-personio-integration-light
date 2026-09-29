@@ -10,7 +10,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Password;
 use easySettingsForWordPress\Fields\Text;
@@ -50,7 +50,7 @@ class Api {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Api {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -161,12 +161,12 @@ class Api {
 	public function show_api_settings_hint(): void {
 		if ( empty( get_option( 'personioIntegrationLoginUrl' ) ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p>' . wp_kses_post( sprintf( __( 'You can find this information in your Personio account (opens in a new window) under Marketplace > Integrations. For more information, take a look at the <a href="%1$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
+			echo '<p>' . wp_kses_post( \sprintf( __( 'You can find this information in your Personio account (opens in a new window) under Marketplace > Integrations. For more information, take a look at the <a href="%1$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
 			return;
 		}
 
 		/* translators: %1$s will be replaced by a URL. */
-		echo '<p>' . wp_kses_post( sprintf( __( 'You can find this information <a href="%1$s" target="_blank">in your Personio account (open in a new window)</a> under Marketplace > Integrations. For more information, take a look at the <a href="%2$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_personio_api_management_url() ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
+		echo '<p>' . wp_kses_post( \sprintf( __( 'You can find this information <a href="%1$s" target="_blank">in your Personio account (open in a new window)</a> under Marketplace > Integrations. For more information, take a look at the <a href="%2$s">Personio documentation about API credentials</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_personio_api_management_url() ), esc_url( Helper::get_personio_api_documentation_url() ) ) ) . '</p>';
 	}
 
 	/**

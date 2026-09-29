@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Define the base object for compatibilities.
@@ -51,7 +51,7 @@ class Compatibilities_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Compatibilities_Base {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 

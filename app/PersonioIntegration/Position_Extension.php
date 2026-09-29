@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Object for extensions of the position object.
@@ -40,7 +40,7 @@ class Position_Extension extends Position {
 		$title = get_post_meta( $this->get_id(), 'pi_' . $this->get_extension_name() . '_title', true );
 
 		// bail if the title could not be loaded.
-		if ( ! is_string( $title ) ) {
+		if ( ! \is_string( $title ) ) {
 			return '';
 		}
 

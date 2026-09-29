@@ -11,7 +11,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Object for our own intervals.
@@ -40,7 +40,7 @@ class Intervals {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Intervals {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -92,7 +92,7 @@ class Intervals {
 			$class_name = $interval_class_name . '::get_instance';
 
 			// bail if it is not callable.
-			if ( ! is_callable( $class_name ) ) {
+			if ( ! \is_callable( $class_name ) ) {
 				continue;
 			}
 

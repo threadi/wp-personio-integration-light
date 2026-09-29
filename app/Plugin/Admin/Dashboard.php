@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Helper-function for Dashboard options of this plugin.
@@ -37,7 +37,7 @@ class Dashboard {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Dashboard {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 

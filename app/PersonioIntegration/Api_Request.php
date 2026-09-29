@@ -10,7 +10,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -148,7 +148,7 @@ class Api_Request {
 			),
 			ARRAY_A
 		);
-		if ( count( $results ) >= 150 ) {
+		if ( \count( $results ) >= 150 ) {
 			// log this as an error.
 			$this->add_error( __( 'More than 150 requests were sent to Personio in the last 90 seconds - we will try it later to get around the limitation of Personio.', 'personio-integration-light' ) );
 
@@ -320,7 +320,7 @@ class Api_Request {
 	 * @return void
 	 */
 	public function set_method( string $method ): void {
-		if ( ! in_array( $method, array( 'POST', 'GET' ), true ) ) {
+		if ( ! \in_array( $method, array( 'POST', 'GET' ), true ) ) {
 			return;
 		}
 		$this->method = $method;

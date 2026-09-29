@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Widgets\Archive;
 use PersonioIntegrationLight\PersonioIntegration\Widgets\Single;
@@ -40,7 +40,7 @@ class Widgets {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Widgets {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -103,7 +103,7 @@ class Widgets {
 			$classname = $widget_class_name . '::get_instance';
 
 			// bail if the classname is not callable.
-			if ( ! is_callable( $classname ) ) {
+			if ( ! \is_callable( $classname ) ) {
 				continue;
 			}
 
