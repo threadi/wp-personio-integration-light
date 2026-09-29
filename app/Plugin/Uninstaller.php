@@ -225,6 +225,7 @@ class Uninstaller {
 			'personio_integration_settings',
 			'personio_integration_intro',
 			'personioIntegrationPageBuilder',
+			\PersonioIntegrationLight\PageBuilder\Gutenberg\Template_Styles::OPTION,
 		);
 	}
 }

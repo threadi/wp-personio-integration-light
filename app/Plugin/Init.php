@@ -10,6 +10,7 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\Abilities\Abilities;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
@@ -103,6 +104,9 @@ class Init {
 
 		// init the diagnose tool.
 		Diagnostics::get_instance()->init();
+
+		// initialize the abilities.
+		Abilities::get_instance()->init();
 
 		// install db tables on plugin-installation.
 		add_action( 'personio_integration_install_db_tables', array( $this, 'install_db_tables' ) );

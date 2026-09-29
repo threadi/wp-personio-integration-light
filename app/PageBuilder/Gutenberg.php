@@ -57,6 +57,12 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return void
 	 */
 	public function init(): void {
+		// make the block templates accessible for abilities (the adapter reports whether they are available).
+		add_filter( 'personio_integration_template_ability_adapters', array( $this, 'add_template_adapter' ) );
+
+		// output the CSS of the templates, which have been saved via abilities.
+		Gutenberg\Template_Styles::get_instance()->init();
+
 		// add our custom blocks.
 		add_action( 'init', array( $this, 'register_blocks' ) );
 
@@ -353,5 +359,17 @@ class Gutenberg extends PageBuilder_Base {
 
 		// return resulting list.
 		return $block_categories;
+	}
+
+	/**
+	 * Add the adapter, which makes the block templates accessible for abilities.
+	 *
+	 * @param array<int,\PersonioIntegrationLight\Abilities\Template_Adapter_Base> $adapters List of adapters.
+	 *
+	 * @return array<int,\PersonioIntegrationLight\Abilities\Template_Adapter_Base>
+	 */
+	public function add_template_adapter( array $adapters ): array {
+		$adapters[] = new Gutenberg\Template_Adapter();
+		return $adapters;
 	}
 }
