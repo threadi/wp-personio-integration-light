@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 
@@ -83,7 +83,7 @@ class Themes_Base {
 		$css_file = $this->css_file;
 
 		// if debug-mode is not enabled, use a minified file.
-		if ( ! defined( 'WP_DEBUG' ) || ( defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
+		if ( ! \defined( 'WP_DEBUG' ) || ( \defined( 'WP_DEBUG' ) && ! WP_DEBUG ) ) {
 			$css_file = str_replace( '.css', '.min.css', $css_file );
 		}
 

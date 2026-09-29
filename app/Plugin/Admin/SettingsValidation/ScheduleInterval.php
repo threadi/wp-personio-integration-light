@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Plugin\Intervals;
 
@@ -39,7 +39,7 @@ class ScheduleInterval {
 		$intervals = Intervals::get_instance()->get_intervals_for_settings();
 		if ( empty( $intervals[ $value ] ) ) {
 			/* translators: %1$s will be replaced by the name of the used interval */
-			add_settings_error( $option, $option, sprintf( __( 'The given interval %1$s does not exists.', 'personio-integration-light' ), esc_html( $value ) ) );
+			add_settings_error( $option, $option, \sprintf( __( 'The given interval %1$s does not exists.', 'personio-integration-light' ), esc_html( $value ) ) );
 
 			// return the old value.
 			return (string) get_option( $option );

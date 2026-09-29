@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Log;
 
@@ -148,7 +148,7 @@ class Schedules_Base {
 
 			// log the re-schedule.
 			/* translators: %1$s will be replaced by the name of the schedule, %2$s by the old interval, %3$s by the new interval. */
-			Log::get_instance()->add( sprintf( __( 'Interval of schedule %1$s changed from %2$s to %3$s - rescheduling.', 'personio-integration-light' ), $this->get_name(), (string) $current_interval, $interval ), 'info', $this->get_log_category() );
+			Log::get_instance()->add( \sprintf( __( 'Interval of schedule %1$s changed from %2$s to %3$s - rescheduling.', 'personio-integration-light' ), $this->get_name(), (string) $current_interval, $interval ), 'info', $this->get_log_category() );
 		}
 
 		// create the schedule.
@@ -157,7 +157,7 @@ class Schedules_Base {
 		// log event if the schedule could not be created.
 		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType
 			/* translators: %1$s will be replaced by the name of the schedule. */
-			Log::get_instance()->add( sprintf( __( 'Error during creation of schedule %1$s:', 'personio-integration-light' ), $this->get_name() ) . ' <code>' . wp_json_encode( wp_json_encode( $result->get_error_messages() ) ) . '</code>', 'info', $this->get_log_category() );
+			Log::get_instance()->add( \sprintf( __( 'Error during creation of schedule %1$s:', 'personio-integration-light' ), $this->get_name() ) . ' <code>' . wp_json_encode( wp_json_encode( $result->get_error_messages() ) ) . '</code>', 'info', $this->get_log_category() );
 		}
 	}
 
@@ -183,7 +183,7 @@ class Schedules_Base {
 	 */
 	public function get_event(): false|object {
 		// bail if the function does not exist.
-		if ( ! function_exists( 'wp_get_scheduled_event' ) ) {
+		if ( ! \function_exists( 'wp_get_scheduled_event' ) ) {
 			return false;
 		}
 
@@ -327,7 +327,7 @@ class Schedules_Base {
 		if ( isset( $this->default_interval, $schedules[ $this->default_interval ] ) && '' !== $this->default_interval ) {
 			// log the fallback so the misconfiguration is visible.
 			/* translators: %1$s will be replaced by the invalid interval, %2$s by the name of the schedule, %3$s by the fallback interval. */
-			Log::get_instance()->add( sprintf( __( 'The configured interval %1$s for schedule %2$s is not registered - falling back to %3$s.', 'personio-integration-light' ), '<code>' . $interval . '</code>', '<code>' . $this->get_name() . '</code>', '<code>' . $this->default_interval . '</code>' ), 'info', $this->get_log_category() );
+			Log::get_instance()->add( \sprintf( __( 'The configured interval %1$s for schedule %2$s is not registered - falling back to %3$s.', 'personio-integration-light' ), '<code>' . $interval . '</code>', '<code>' . $this->get_name() . '</code>', '<code>' . $this->default_interval . '</code>' ), 'info', $this->get_log_category() );
 
 			// return the default interval.
 			return $this->default_interval;

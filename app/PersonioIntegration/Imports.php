@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Button;
 use easySettingsForWordPress\Fields\Checkbox;
@@ -46,7 +46,7 @@ class Imports {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Imports {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -124,7 +124,7 @@ class Imports {
 			$field = new TextInfo( $settings_obj );
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 			/* translators: %1$s will be replaced by a URL. */
-			$field->set_description( sprintf( __( 'No import extension enabled! Go to <a href="%1$s">the extensions</a> and enable the import type you want to use.', 'personio-integration-light' ), Extensions::get_instance()->get_link( 'imports' ) ) );
+			$field->set_description( \sprintf( __( 'No import extension enabled! Go to <a href="%1$s">the extensions</a> and enable the import type you want to use.', 'personio-integration-light' ), Extensions::get_instance()->get_link( 'imports' ) ) );
 		} elseif ( $running_import > 0 && ( $running_import + HOUR_IN_SECONDS ) < time() ) {
 			$url   = add_query_arg(
 				array(
@@ -176,7 +176,7 @@ class Imports {
 		$description         = __( 'The automatic import is run once per day. You don\'t have to worry about updating your positions on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true );
 		if ( $import_schedule_obj && isset( $import_schedule_obj->timestamp ) ) {
 			/* translators: %1$s will be replaced by the next import date. */
-			$description = sprintf( __( 'The automatic import is run once per day. Next run will be on %1$s. You don\'t have to worry about updating your positions on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ), Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', absint( $import_schedule_obj->timestamp ) ) ) );
+			$description = \sprintf( __( 'The automatic import is run once per day. Next run will be on %1$s. You don\'t have to worry about updating your positions on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ), Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', absint( $import_schedule_obj->timestamp ) ) ) );
 		}
 
 		// add setting.
@@ -250,7 +250,7 @@ class Imports {
 			$class_name = $import_extension_name . '::get_instance';
 
 			// bail if class is not callable.
-			if ( ! is_callable( $class_name ) ) {
+			if ( ! \is_callable( $class_name ) ) {
 				continue;
 			}
 
@@ -371,7 +371,7 @@ class Imports {
 	 */
 	public function add_settings( mixed $settings ): array {
 		_deprecated_function( __FUNCTION__, '5.0.0', '\easySettingsForWordPress\Settings()' );
-		if ( ! is_array( $settings ) ) {
+		if ( ! \is_array( $settings ) ) {
 			return array();
 		}
 		return $settings;

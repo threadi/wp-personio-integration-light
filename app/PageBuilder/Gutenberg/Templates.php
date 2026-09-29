@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -43,7 +43,7 @@ class Templates {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Templates {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -94,7 +94,7 @@ class Templates {
 			// hide template if post-types does not match.
 			if ( $post_type &&
 				isset( $block_template->post_types ) &&
-				! in_array( $post_type, $block_template->post_types, true )
+				! \in_array( $post_type, $block_template->post_types, true )
 			) {
 				continue;
 			}
@@ -121,7 +121,7 @@ class Templates {
 		// loop through the block templates and add them as template-objects to the array.
 		foreach ( $this->get_templates() as $template_slug => $settings ) {
 			// ignore template if it does not match a requested slug (if given).
-			if ( ! empty( $slugs ) && ! in_array( $template_slug, $slugs, true ) ) {
+			if ( ! empty( $slugs ) && ! \in_array( $template_slug, $slugs, true ) ) {
 				continue;
 			}
 
@@ -153,7 +153,7 @@ class Templates {
 	public function get_block_file_template( null|WP_Block_Template $template, string $id, string $template_type ): null|WP_Block_Template {
 		$template_name_parts = explode( '//', $id );
 
-		if ( count( $template_name_parts ) < 2 ) {
+		if ( \count( $template_name_parts ) < 2 ) {
 			return $template;
 		}
 
@@ -251,7 +251,7 @@ class Templates {
 		$own_slugs = array_keys( $this->get_templates() );
 
 		// intersect them with the given slugs.
-		$slugs = count( $slugs ) > 0 ? array_intersect( $slugs, $own_slugs ) : $own_slugs;
+		$slugs = \count( $slugs ) > 0 ? array_intersect( $slugs, $own_slugs ) : $own_slugs;
 
 		// bail early: an empty post_name__in is ignored by WP_Query and would match everything.
 		if ( empty( $slugs ) ) {

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Page;
 use easySettingsForWordPress\Section;
@@ -44,7 +44,7 @@ class Gutenberg extends PageBuilder_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Gutenberg {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -57,6 +57,12 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return void
 	 */
 	public function init(): void {
+		// make the block templates accessible for abilities (the adapter reports whether they are available).
+		add_filter( 'personio_integration_template_ability_adapters', array( $this, 'add_template_adapter' ) );
+
+		// output the CSS of the templates, which have been saved via abilities.
+		Gutenberg\Template_Styles::get_instance()->init();
+
 		// add our custom blocks.
 		add_action( 'init', array( $this, 'register_blocks' ) );
 
@@ -107,7 +113,7 @@ class Gutenberg extends PageBuilder_Base {
 	public function theme_support_block_templates(): bool {
 		if (
 			! $this->current_theme_is_fse_theme() &&
-			( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
+			( ! \function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
 		) {
 			return false;
 		}
@@ -123,10 +129,10 @@ class Gutenberg extends PageBuilder_Base {
 	 */
 	private function current_theme_is_fse_theme(): bool {
 		$resulting_value = false;
-		if ( function_exists( 'wp_is_block_theme' ) ) {
+		if ( \function_exists( 'wp_is_block_theme' ) ) {
 			$resulting_value = (bool) wp_is_block_theme();
 		}
-		if ( function_exists( 'gutenberg_is_fse_theme' ) ) {
+		if ( \function_exists( 'gutenberg_is_fse_theme' ) ) {
 			$resulting_value = (bool) gutenberg_is_fse_theme();
 		}
 
@@ -167,7 +173,7 @@ class Gutenberg extends PageBuilder_Base {
 			$class_name = $block_class_name . '::get_instance';
 
 			// bail if it is not callable.
-			if ( ! is_callable( $class_name ) ) {
+			if ( ! \is_callable( $class_name ) ) {
 				continue;
 			}
 
@@ -254,7 +260,7 @@ class Gutenberg extends PageBuilder_Base {
 	 * @return bool
 	 */
 	public function is_enabled(): bool {
-		return class_exists( 'WP_Block_Type_Registry' ) && function_exists( 'register_block_type' ) && ! Helper::is_plugin_active( 'classic-editor/classic-editor.php' );
+		return class_exists( 'WP_Block_Type_Registry' ) && \function_exists( 'register_block_type' ) && ! Helper::is_plugin_active( 'classic-editor/classic-editor.php' );
 	}
 
 	/**
@@ -325,7 +331,7 @@ class Gutenberg extends PageBuilder_Base {
 		);
 
 		/* translators: %1$s will be replaced with the name of the theme, %2$s will be replaced by the URL for the editor */
-		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'You are using with <i>%1$s</i> a modern block theme. The settings here will therefore might not work. Edit the archive- and single-template under <a href="%2$s">Appearance > Editor > Templates > Manage</a>.', 'personio-integration-light' ), esc_html( Helper::get_theme_title() ), esc_url( $editor_url ) ) ) . '</p>';
+		echo '<p class="personio-integration-hint">' . wp_kses_post( \sprintf( __( 'You are using with <i>%1$s</i> a modern block theme. The settings here will therefore might not work. Edit the archive- and single-template under <a href="%2$s">Appearance > Editor > Templates > Manage</a>.', 'personio-integration-light' ), esc_html( Helper::get_theme_title() ), esc_url( $editor_url ) ) ) . '</p>';
 	}
 
 	/**
@@ -353,5 +359,17 @@ class Gutenberg extends PageBuilder_Base {
 
 		// return resulting list.
 		return $block_categories;
+	}
+
+	/**
+	 * Add the adapter, which makes the block templates accessible for abilities.
+	 *
+	 * @param array<int,\PersonioIntegrationLight\Abilities\Template_Adapter_Base> $adapters List of adapters.
+	 *
+	 * @return array<int,\PersonioIntegrationLight\Abilities\Template_Adapter_Base>
+	 */
+	public function add_template_adapter( array $adapters ): array {
+		$adapters[] = new Gutenberg\Template_Adapter();
+		return $adapters;
 	}
 }

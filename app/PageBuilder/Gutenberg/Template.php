@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder\Gutenberg;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use WP_Block_Template;
@@ -321,7 +321,7 @@ class Template {
 		foreach ( $blocks as &$block ) {
 			$queue[] = &$block;
 		}
-		$queue_count = count( $queue );
+		$queue_count = \count( $queue );
 
 		while ( $queue_count > 0 ) {
 			$block = &$queue[0];
@@ -334,7 +334,7 @@ class Template {
 				}
 			}
 
-			$queue_count = count( $queue );
+			$queue_count = \count( $queue );
 		}
 
 		return $all_blocks;

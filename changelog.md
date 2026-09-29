@@ -5,13 +5,17 @@
 ### Added
 
 - Added compatibility check for Enfold
+- Added more abilities to manage your position templates with AI
+- Added a link to edit a single position in your Personio account in the list of all positions in backend
 
 ### Changed
 
 - Optimized some visibility conditions for settings on our blocks
 - Optimized check for Elementor Pro and PRO Elements
+- Modernize usage of global functions to speed up loading times
 - Switches from introJS to driver.js as technical base for the intro
-- Updated the settings library to 3.6.1
+- Force to reload the WordPress-own permalink cache on uninstallation
+- Updated the settings library to 3.6.2
 - Updated the setup library
 
 ### Fixed
@@ -27,12 +31,12 @@
 
 ### Changed
 
-- Optimized catch of fatal error during import via XML or API v2
+- Optimized the catch of fatal errors during import via XML or API v2
 - Optimized output of CSV for MS Excel
 
 ### Fixed
 
-- Fixed a wrong text domain in installer which prevents the translation of some texts there
+- Fixed a wrong text domain in the installer, which prevents the translation of some texts there
 
 ## [5.7.0] - 07.09.2026
 

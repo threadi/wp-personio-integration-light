@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PageBuilder;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Section;
 use PersonioIntegrationLight\Helper;

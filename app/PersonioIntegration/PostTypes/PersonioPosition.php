@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\PostTypes;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -73,7 +73,7 @@ class PersonioPosition extends Post_Type {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): PersonioPosition {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -180,10 +180,10 @@ class PersonioPosition extends Post_Type {
 
 		if ( Helper::is_personio_url_set() ) {
 			/* translators: %1$s will be replaced by a URL. */
-			$labels['not_found'] .= '. ' . sprintf( __( 'Start import <a href="%1$s" class="personio-integration-import-hint">now</a>.', 'personio-integration-light' ), Helper::get_import_url() );
+			$labels['not_found'] .= '. ' . \sprintf( __( 'Start import <a href="%1$s" class="personio-integration-import-hint">now</a>.', 'personio-integration-light' ), Helper::get_import_url() );
 		} else {
 			/* translators: %1$s will be replaced by a URL. */
-			$labels['not_found'] .= '. ' . sprintf( __( 'Add your Personio URL <a href="%1$s">in the settings</a>.', 'personio-integration-light' ), Helper::get_settings_url() );
+			$labels['not_found'] .= '. ' . \sprintf( __( 'Add your Personio URL <a href="%1$s">in the settings</a>.', 'personio-integration-light' ), Helper::get_settings_url() );
 		}
 
 		// get slugs.
@@ -460,7 +460,7 @@ class PersonioPosition extends Post_Type {
 	 */
 	public function delete( int $post_id ): void {
 		// do nothing during uninstallation.
-		if ( defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+		if ( \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			return;
 		}
 
@@ -494,7 +494,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// log the deletion.
-		Log::get_instance()->add( sprintf( 'Position %1$s has been deleted by %2$s.', '<em>' . esc_html( $position_obj->get_personio_id() ) . '</em>', esc_html( $username ) ), 'success', 'import' );
+		Log::get_instance()->add( \sprintf( 'Position %1$s has been deleted by %2$s.', '<em>' . esc_html( $position_obj->get_personio_id() ) . '</em>', esc_html( $username ) ), 'success', 'import' );
 	}
 
 	/**
@@ -513,7 +513,7 @@ class PersonioPosition extends Post_Type {
 		// replace language-column with our own.
 		if ( ! empty( $columns[ 'taxonomy-' . WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES ] ) ) {
 			unset( $columns[ 'taxonomy-' . WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES ] );
-			$columns = Helper::add_array_in_array_on_position( $columns, count( $columns ) - 1, array( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES => __( 'Languages', 'personio-integration-light' ) ) );
+			$columns = Helper::add_array_in_array_on_position( $columns, \count( $columns ) - 1, array( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES => __( 'Languages', 'personio-integration-light' ) ) );
 		}
 
 		// add column for PersonioId.
@@ -616,9 +616,28 @@ class PersonioPosition extends Post_Type {
 		$edit_url = get_edit_post_link( $post->ID );
 
 		// add the edit-URL to the action-list if it is set.
-		if ( ! is_null( $edit_url ) ) {
+		if ( ! \is_null( $edit_url ) ) {
 			$new_actions['edit'] = '<a href="' . esc_url( $edit_url ) . '">' . __( 'Edit', 'personio-integration-light' ) . '</a>';
 		}
+
+		// get the position.
+		$position_obj = Positions::get_instance()->get_position( $post->ID );
+
+		// bail if the position is not valid.
+		if ( ! $position_obj->is_valid() ) {
+			return $new_actions;
+		}
+
+		// get the edit URL.
+		$url = Personio_Accounts::get_instance()->get_edit_link_on_personio( $position_obj );
+
+		// use the main Personio URL if no edit URL could be loaded.
+		if ( empty( $url ) ) {
+			$url = Personio_Accounts::get_instance()->get_login_url();
+		}
+
+		// add the URL to edit the position in Personio.
+		$new_actions['edit_in_personio'] = '<a href="' . esc_url( $url ) . '" target="_blank">' . __( 'Edit in Personio', 'personio-integration-light' ) . '</a>';
 
 		// return the resulting list.
 		return $new_actions;
@@ -634,7 +653,7 @@ class PersonioPosition extends Post_Type {
 		$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// bail if no post-type is given.
-		if ( is_null( $post_type ) ) {
+		if ( \is_null( $post_type ) ) {
 			return;
 		}
 
@@ -662,7 +681,7 @@ class PersonioPosition extends Post_Type {
 			$terms = get_terms( array( 'taxonomy' => $taxonomy_name ) );
 
 			// list terms only if they are available.
-			if ( is_array( $terms ) && ! empty( $terms ) ) {
+			if ( \is_array( $terms ) && ! empty( $terms ) ) {
 				?>
 				<!--suppress HtmlFormInputWithoutLabel -->
 				<select name="admin_filter_<?php echo esc_attr( $taxonomy_name ); ?>">
@@ -726,7 +745,7 @@ class PersonioPosition extends Post_Type {
 		}
 
 		// set query depending on size.
-		if ( count( $tax_query ) > 1 ) {
+		if ( \count( $tax_query ) > 1 ) {
 			$query->set(
 				'tax_query',
 				array(
@@ -859,7 +878,7 @@ class PersonioPosition extends Post_Type {
 					'texts'   => array(
 						'<p><strong>' . __( 'The texts of this taxonomy could be changed.', 'personio-integration-light' ) . '</strong></p>',
 						/* translators: %1$s will be replaced by the plugin URL for Loco Translate. */
-						'<p>' . sprintf( __( 'They are in the language file of the plugin and can be changed with any plugin that supports their editing.<br>For example, with <a href="%1$s" target="_blank">Loco Translate (opens a new window)</a> or <a href="%2$s" target="_blank">Say What (opens a new window)</a>.', 'personio-integration-light' ), esc_url( Loco::get_instance()->get_plugin_url() ), esc_url( SayWhat::get_instance()->get_plugin_url() ) ) . '</p>',
+						'<p>' . \sprintf( __( 'They are in the language file of the plugin and can be changed with any plugin that supports their editing.<br>For example, with <a href="%1$s" target="_blank">Loco Translate (opens a new window)</a> or <a href="%2$s" target="_blank">Say What (opens a new window)</a>.', 'personio-integration-light' ), esc_url( Loco::get_instance()->get_plugin_url() ), esc_url( SayWhat::get_instance()->get_plugin_url() ) ) . '</p>',
 					),
 					'buttons' => array(
 						array(
@@ -947,7 +966,7 @@ class PersonioPosition extends Post_Type {
 			foreach ( $priority_boxes as $boxes ) {
 				foreach ( $boxes as $box ) {
 					// bail of box is not an array.
-					if ( ! is_array( $box ) ) {
+					if ( ! \is_array( $box ) ) {
 						continue;
 					}
 
@@ -1004,7 +1023,7 @@ class PersonioPosition extends Post_Type {
 
 		// show hint.
 		/* translators: %1$s will be replaced by the URL for Personio, %2$s will be replaced with the URL for the Personio account, %3$s will be replaced with the window hint. */
-		echo wp_kses_post( sprintf( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the position data in your <a href="%2$s" target="_blank">Personio account%3$s</a>.', 'personio-integration-light' ), esc_html( $position_obj->get_title() ), esc_url( $url ), Helper::get_a11n_window_hint() ) );
+		echo wp_kses_post( \sprintf( __( 'These are the data of your open position <i>%1$s</i> we imported from Personio. Please edit the position data in your <a href="%2$s" target="_blank">Personio account%3$s</a>.', 'personio-integration-light' ), esc_html( $position_obj->get_title() ), esc_url( $url ), Helper::get_a11n_window_hint() ) );
 	}
 
 	/**
@@ -1078,14 +1097,14 @@ class PersonioPosition extends Post_Type {
 		// bail if the array is empty and show a hint.
 		if ( empty( $content_array ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description has been provided for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
+			echo '<p class="personio-pro-hint">' . wp_kses_post( \sprintf( __( 'No description has been provided for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
 			return;
 		}
 
 		// bail if the jobdescription entry is empty and show hint.
 		if ( empty( $content_array['jobDescription'] ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p class="personio-pro-hint">' . wp_kses_post( sprintf( __( 'No description has been provided for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
+			echo '<p class="personio-pro-hint">' . wp_kses_post( \sprintf( __( 'No description has been provided for this position. Please add it <a href="%1$s" target="_blank">in your Personio account</a>.', 'personio-integration-light' ), esc_url( $url ) ) ) . '</p>';
 			return;
 		}
 
@@ -1127,7 +1146,7 @@ class PersonioPosition extends Post_Type {
 		if ( empty( $personio_edit_url ) ) {
 			// show hint.
 			/* translators: %1$s will be replaced by a URL. */
-			echo '<p>' . wp_kses_post( sprintf( __( 'Please add your Personio Login URL on <a href="%1$s">the settings page</a> to get a link to the edit-page of this position in Personio.', 'personio-integration-light' ), Helper::get_settings_url() ) ) . '</p>';
+			echo '<p>' . wp_kses_post( \sprintf( __( 'Please add your Personio Login URL on <a href="%1$s">the settings page</a> to get a link to the edit-page of this position in Personio.', 'personio-integration-light' ), Helper::get_settings_url() ) ) . '</p>';
 
 			// do nothing more.
 			return;
@@ -1135,7 +1154,7 @@ class PersonioPosition extends Post_Type {
 
 		// show the edit link.
 		/* translators: %1$s will be replaced by a URL. */
-		echo '<p>' . wp_kses_post( sprintf( __( '<a href="%1$s" target="_blank">Edit%2$s</a> this position on Personio.', 'personio-integration-light' ), esc_url( $personio_edit_url ), Helper::get_a11n_window_hint() ) ) . '</p>';
+		echo '<p>' . wp_kses_post( \sprintf( __( '<a href="%1$s" target="_blank">Edit%2$s</a> this position on Personio.', 'personio-integration-light' ), esc_url( $personio_edit_url ), Helper::get_a11n_window_hint() ) ) . '</p>';
 	}
 
 	/**
@@ -1569,14 +1588,14 @@ class PersonioPosition extends Post_Type {
 
 		// get positions.
 		$positions      = Positions::get_instance()->get_positions();
-		$position_count = count( $positions );
+		$position_count = \count( $positions );
 
 		// get Personio URLs and languages.
 		$personio_urls = Personio_Accounts::get_instance()->get_personio_urls();
 		$languages     = Languages::get_instance()->get_languages();
 
 		// set max count.
-		update_option( WP_PERSONIO_INTEGRATION_DELETE_MAX, $position_count + ( count( $personio_urls ) * count( $languages ) ) );
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_MAX, $position_count + ( \count( $personio_urls ) * \count( $languages ) ) );
 
 		// show cli hint.
 		$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Deleting all local positions', $position_count ) : false;
@@ -1622,14 +1641,14 @@ class PersonioPosition extends Post_Type {
 		// get current user for logging.
 		$user = wp_get_current_user();
 
-		if ( is_null( $user ) ) { // @phpstan-ignore function.impossibleType
+		if ( \is_null( $user ) ) { // @phpstan-ignore function.impossibleType
 			$username = 'WP CLI';
 		} else {
 			$username = $user->display_name;
 		}
 
 		// log this event.
-		Log::get_instance()->add( sprintf( 'Positions has been deleted by %1$s.', esc_html( $username ) ), 'success', 'import' );
+		Log::get_instance()->add( \sprintf( 'Positions has been deleted by %1$s.', esc_html( $username ) ), 'success', 'import' );
 
 		/**
 		 * Run custom actions after deletion of all positions has been done.
@@ -1727,7 +1746,7 @@ class PersonioPosition extends Post_Type {
 		if ( ! $imports_obj ) {
 			// log this.
 			/* translators: %1$s will be replaced by a URL. */
-			Log::get_instance()->add( sprintf( __( 'No import extension enabled! Go to <a href="%1$s">the extensions</a> and enable the import type you want to use.', 'personio-integration-light' ), Extensions::get_instance()->get_link( 'imports' ) ), 'error', 'import' );
+			Log::get_instance()->add( \sprintf( __( 'No import extension enabled! Go to <a href="%1$s">the extensions</a> and enable the import type you want to use.', 'personio-integration-light' ), Extensions::get_instance()->get_link( 'imports' ) ), 'error', 'import' );
 
 			// log this as error.
 			update_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array( __( 'No import extension enabled!', 'personio-integration-light' ) ) );
@@ -1791,7 +1810,7 @@ class PersonioPosition extends Post_Type {
 				'title'   => __( 'Run import', 'personio-integration-light' ),
 				'texts'   => array(
 					/* translators: %1$s will be replaced by the Personio URL */
-					'<p><strong>' . sprintf( __( 'Do you really want to import open positions from %1$s?', 'personio-integration-light' ), '<br><a href="' . esc_url( Helper::get_personio_url() ) . '" target="_blank">' . esc_url( Helper::get_personio_url() ) . '</a>' ) . '</strong></p>',
+					'<p><strong>' . \sprintf( __( 'Do you really want to import open positions from %1$s?', 'personio-integration-light' ), '<br><a href="' . esc_url( Helper::get_personio_url() ) . '" target="_blank">' . esc_url( Helper::get_personio_url() ) . '</a>' ) . '</strong></p>',
 				),
 				'buttons' => array(
 					array(
@@ -2082,13 +2101,13 @@ class PersonioPosition extends Post_Type {
 		$content .= '<p><strong>' . __( 'Steps to use:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Add your Personio URL <a href="%1$s">in the settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) . '</li>';
+		$content .= '<li>' . \sprintf( __( 'Add your Personio URL <a href="%1$s">in the settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Import your positions <a href="%1$s" class="personio-integration-import-hint">via click on the button</a>.', 'personio-integration-light' ), esc_url( Helper::get_import_url() ) ) . '</li>';
+		$content .= '<li>' . \sprintf( __( 'Import your positions <a href="%1$s" class="personio-integration-import-hint">via click on the button</a>.', 'personio-integration-light' ), esc_url( Helper::get_import_url() ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Check the positions <a href="%1$s">in your frontend</a>.', 'personio-integration-light' ), esc_url( $this->get_archive_url() ) ) . '</li>';
+		$content .= '<li>' . \sprintf( __( 'Check the positions <a href="%1$s">in your frontend</a>.', 'personio-integration-light' ), esc_url( $this->get_archive_url() ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Change settings <a href="%1$s">for the template</a> to optimize the view.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
+		$content .= '<li>' . \sprintf( __( 'Change settings <a href="%1$s">for the template</a> to optimize the view.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
 		// add menu entry for applications (with a hint to Pro).
 		$false = false;
 		/**
@@ -2101,7 +2120,7 @@ class PersonioPosition extends Post_Type {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> for individual application forms and many more options.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
+			$content .= '<li>' . \sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> for individual application forms and many more options.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		}
 		$content .= '</ol>';
 
@@ -2166,14 +2185,14 @@ class PersonioPosition extends Post_Type {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL, %2$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get more flexible widgets for your theme or page builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
+			$content .= '<li>' . \sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get more flexible widgets for your theme or page builder.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 			/* translators: %1$s will be replaced by a URL, %2$s will be replaced by a URL. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get a shortcode generator, which helps to create the shortcodes you need.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
+			$content .= '<li>' . \sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get a shortcode generator, which helps to create the shortcodes you need.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		}
 		$content .= '</ul>';
 		$content .= '<p><strong>' . __( 'Documentation:', 'personio-integration-light' ) . '</strong></p>';
 		/* translators: %1$s will be replaced by a URL, %2$s will be replaced by a URL. */
-		$content .= '<p>' . sprintf( __( 'The documentation on the possibilities with shortcodes can be found <a href="%1$s" target="_blank">here</a>.', 'personio-integration-light' ), esc_url( Helper::get_shortcode_documentation_url() ), Helper::get_a11n_window_hint() ) . '</p>';
+		$content .= '<p>' . \sprintf( __( 'The documentation on the possibilities with shortcodes can be found <a href="%1$s" target="_blank">here</a>.', 'personio-integration-light' ), esc_url( Helper::get_shortcode_documentation_url() ), Helper::get_a11n_window_hint() ) . '</p>';
 
 		// add help for the positions in general.
 		$help_list[] = array(
@@ -2332,6 +2351,6 @@ class PersonioPosition extends Post_Type {
 
 		// show hint for our plugin.
 		/* translators: %1$s will be replaced by the plugin name. */
-		return $content . ' ' . sprintf( __( 'This page is provided by the plugin %1$s.', 'personio-integration-light' ), '<em>' . Helper::get_plugin_name() . '</em>' );
+		return $content . ' ' . \sprintf( __( 'This page is provided by the plugin %1$s.', 'personio-integration-light' ), '<em>' . Helper::get_plugin_name() . '</em>' );
 	}
 }

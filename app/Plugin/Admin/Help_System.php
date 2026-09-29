@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -41,7 +41,7 @@ class Help_System {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Help_System {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -164,9 +164,9 @@ class Help_System {
 		$content .= '<ol>';
 		$content .= '<li>' . __( 'Publish your open positions in your website.', 'personio-integration-light' ) . '</li>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Show the option to apply on each position. Enable this <a href="%1$s">in the template settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
+		$content .= '<li>' . \sprintf( __( 'Show the option to apply on each position. Enable this <a href="%1$s">in the template settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'templates' ) ) ) . '</li>';
 		/* translators: %1$s will be replaced by a URL, %2$s will be replaced by an accessibility hint. */
-		$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to use application forms on your website.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
+		$content .= '<li>' . \sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to use application forms on your website.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		$content .= '</ol>';
 
 		// add help for the positions in general.
@@ -190,7 +190,7 @@ class Help_System {
 	public function add_documentation_help( array $help_list ): array {
 		// collect the content for the help.
 		/* translators: %1$s will be replaced by a URL. */
-		$content = Helper::get_logo_img( true ) . '<h2>' . __( 'Documentation', 'personio-integration-light' ) . '</h2><p>' . sprintf( __( 'We provide some documentation for the WordPress plugin <i>Personio Integration Light</i> at <a href="%1$s" target="_blank">GitHub%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ), Helper::get_a11n_window_hint() ) . '</p>';
+		$content = Helper::get_logo_img( true ) . '<h2>' . __( 'Documentation', 'personio-integration-light' ) . '</h2><p>' . \sprintf( __( 'We provide some documentation for the WordPress plugin <i>Personio Integration Light</i> at <a href="%1$s" target="_blank">GitHub%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_github_documentation_link() ), Helper::get_a11n_window_hint() ) . '</p>';
 
 		// add help for the positions in general.
 		$help_list[] = array(

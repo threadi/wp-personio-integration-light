@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\Widgets;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
@@ -60,7 +60,7 @@ class Single extends Widget_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Single {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -106,7 +106,7 @@ class Single extends Widget_Base {
 		$personio_attributes = $this->get_single_shortcode_attributes( $attributes );
 
 		// check if Personio ID is given and a string.
-		if ( ! is_string( $personio_attributes['personioid'] ) ) {
+		if ( ! \is_string( $personio_attributes['personioid'] ) ) {
 			$personio_attributes['personioid'] = '';
 		}
 

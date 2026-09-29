@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Field_Base;
 use easySettingsForWordPress\Setting;
@@ -73,7 +73,7 @@ class Manual_Import extends Extensions_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Manual_Import {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -89,7 +89,7 @@ class Manual_Import extends Extensions_Base {
 		add_filter( 'personio_integration_light_extension_state_changed_dialog', array( $this, 'add_hint_after_enabling' ), 10, 2 );
 
 		// bail if extension is not enabled.
-		if ( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
+		if ( ! \defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) && ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
 			return;
 		}
 
@@ -152,7 +152,7 @@ class Manual_Import extends Extensions_Base {
 
 		// add a hint.
 		/* translators: %1$s will be replaced by a URL. */
-		$dialog['texts'][] = '<p>' . sprintf( __( 'Go to <a href="%1$s">import settings</a> to run the manual import.', 'personio-integration-light' ), Helper::get_settings_url( 'personioPositions', 'import' ) ) . '</p>';
+		$dialog['texts'][] = '<p>' . \sprintf( __( 'Go to <a href="%1$s">import settings</a> to run the manual import.', 'personio-integration-light' ), Helper::get_settings_url( 'personioPositions', 'import' ) ) . '</p>';
 
 		// return resulting dialog.
 		return $dialog;
@@ -289,7 +289,7 @@ class Manual_Import extends Extensions_Base {
 					'<p>' . __( 'We will then show you each positions for confirmation. This allows you to choose, which positions should be imported and, which should not.', 'personio-integration-light' ) . '</p>',
 					'<p>' . __( 'Positions you have not selected will also be removed from WordPress if they already exist there.', 'personio-integration-light' ) . '</p>',
 					/* translators: %1$s will be replaced by a URL. */
-					'<p><strong>' . sprintf( __( 'Please note that positions you did not select would still be imported during automatic import. With <a href="%1$s" target="_blank">Personio Integration Pro</a>, you can prevent this from happening.', 'personio-integration-light' ), Helper::get_pro_url() ) . '</strong></p>',
+					'<p><strong>' . \sprintf( __( 'Please note that positions you did not select would still be imported during automatic import. With <a href="%1$s" target="_blank">Personio Integration Pro</a>, you can prevent this from happening.', 'personio-integration-light' ), Helper::get_pro_url() ) . '</strong></p>',
 				),
 				'buttons' => array(
 					array(
@@ -383,7 +383,7 @@ class Manual_Import extends Extensions_Base {
 		$list = '<label for="check_all"><input type="checkbox" id="check_all" name="check_all" value="1"> ' . __( 'Check all', 'personio-integration-light' ) . '<ul>';
 		foreach ( $this->positions as $position_obj ) {
 			// set the check marker if this position is already in WordPress OR none positions are set.
-			$checked = ( empty( $positions_in_db ) || in_array( $position_obj->get_personio_id(), $positions_in_db, true ) ) ? ' checked' : '';
+			$checked = ( empty( $positions_in_db ) || \in_array( $position_obj->get_personio_id(), $positions_in_db, true ) ) ? ' checked' : '';
 
 			// add to the list.
 			if ( ! empty( $personio_id_list ) ) {
@@ -552,7 +552,7 @@ class Manual_Import extends Extensions_Base {
 					'title'   => __( 'Error', 'personio-integration-light' ),
 					'texts'   => array(
 						/* translators: %1$s will be replaced by a URL. */
-						'<p>' . sprintf( __( 'No import extension is activated. Please <a href="%1$s" target="_blank">go to Extensions</a> and activate the import option you want.', 'personio-integration-light' ), add_query_arg( array( 'category' => 'imports' ), Helper::get_settings_url( 'personioPositionExtensions' ) ) ) . '</p>',
+						'<p>' . \sprintf( __( 'No import extension is activated. Please <a href="%1$s" target="_blank">go to Extensions</a> and activate the import option you want.', 'personio-integration-light' ), add_query_arg( array( 'category' => 'imports' ), Helper::get_settings_url( 'personioPositionExtensions' ) ) ) . '</p>',
 					),
 					'buttons' => array(
 						array(
@@ -577,7 +577,7 @@ class Manual_Import extends Extensions_Base {
 					'title'   => __( 'Error', 'personio-integration-light' ),
 					'texts'   => array(
 						/* translators: a URL will replace %1$s. */
-						'<p>' . sprintf( __( 'Import cannot be run. Please <a href="%1$s" target="_blank">go to logs</a> for details.', 'personio-integration-light' ), Helper::get_settings_url( 'personioPositions', 'logs' ) ) . '</p>',
+						'<p>' . \sprintf( __( 'Import cannot be run. Please <a href="%1$s" target="_blank">go to logs</a> for details.', 'personio-integration-light' ), Helper::get_settings_url( 'personioPositions', 'logs' ) ) . '</p>',
 					),
 					'buttons' => array(
 						array(
@@ -615,7 +615,7 @@ class Manual_Import extends Extensions_Base {
 		$position_obj = $imports_obj->get_position_from_object( $source_object, $language_name, $personio_obj->get_url() );
 
 		// bail if Personio ID of this position is in the list.
-		if ( in_array( $position_obj->get_personio_id(), $this->simple_positions, true ) ) {
+		if ( \in_array( $position_obj->get_personio_id(), $this->simple_positions, true ) ) {
 			return $run_import;
 		}
 

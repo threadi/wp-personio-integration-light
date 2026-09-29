@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Log;
 
@@ -39,7 +39,7 @@ class Db {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Db {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -105,7 +105,7 @@ class Db {
 		global $wpdb;
 
 		// bail if no statement is given.
-		if ( ! is_string( $sql ) ) {
+		if ( ! \is_string( $sql ) ) {
 			return array();
 		}
 

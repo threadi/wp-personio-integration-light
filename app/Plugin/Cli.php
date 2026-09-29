@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Imports;

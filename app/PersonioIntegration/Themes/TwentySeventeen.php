@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\Themes;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Themes_Base;
 

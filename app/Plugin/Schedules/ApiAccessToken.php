@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Schedules;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\Plugin\Schedules_Base;

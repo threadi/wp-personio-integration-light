@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Base-Object for each validation-object.

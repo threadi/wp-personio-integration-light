@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -42,7 +42,7 @@ class Installer {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Installer {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -58,8 +58,8 @@ class Installer {
 	 */
 	public function activation(): void {
 		// mark the activation runner as running.
-		if ( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
-			define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 1 );
+		if ( ! \defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
+			\define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 1 );
 		}
 
 		if ( is_multisite() ) {

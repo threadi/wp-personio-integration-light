@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Button;
 use easySettingsForWordPress\Page;
@@ -44,7 +44,7 @@ class Intro {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Intro {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -202,7 +202,7 @@ class Intro {
 				'step_6_intro'                 => __( 'The settings of this plugin help you to individualize the use of your Personio positions on your website.', 'personio-integration-light' ),
 				'step_7_title'                 => __( 'Thank you for using Personio Integration Light', 'personio-integration-light' ),
 				/* translators: %1$s, %2$s and %3$s will be replaced by URLs */
-				'step_7_intro'                 => sprintf( __( 'If you have any questions, please do not hesitate to ask them <a href="%1$s" target="_blank">in our forum (opens a new window)</a>.<br>You are also welcome to <a href="%2$s" target="_blank">rate the plugin (opens a new window)</a>.<br>If you also want to collect applications on your website, take a look at our <a href="%3$s" target="_blank">Personio Integration Pro (opens a new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ), esc_url( Helper::get_review_url() ), esc_url( Helper::get_pro_url() ) ),
+				'step_7_intro'                 => \sprintf( __( 'If you have any questions, please do not hesitate to ask them <a href="%1$s" target="_blank">in our forum (opens a new window)</a>.<br>You are also welcome to <a href="%2$s" target="_blank">rate the plugin (opens a new window)</a>.<br>If you also want to collect applications on your website, take a look at our <a href="%3$s" target="_blank">Personio Integration Pro (opens a new window)</a>.', 'personio-integration-light' ), esc_url( Helper::get_plugin_support_url() ), esc_url( Helper::get_review_url() ), esc_url( Helper::get_pro_url() ) ),
 				'import_intro_step_1_title'    => __( 'Import positions', 'personio-integration-light' ),
 				'import_intro_step_1_intro'    => __( 'On this page you will find all settings regarding the import. Lets check the options.', 'personio-integration-light' ),
 				'import_intro_step_2_title'    => __( 'Import positions', 'personio-integration-light' ),
@@ -371,7 +371,7 @@ class Intro {
 	 */
 	public function add_settings( mixed $settings ): array {
 		_deprecated_function( __FUNCTION__, '5.0.0', '\easySettingsForWordPress\Settings()' );
-		if ( ! is_array( $settings ) ) {
+		if ( ! \is_array( $settings ) ) {
 			return array();
 		}
 		return $settings;

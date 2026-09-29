@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Plugin\Admin\Settings_Validation_Base;
@@ -26,7 +26,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	 */
 	public static function validate( ?string $value ): string {
 		// set value as string if null is given.
-		if ( is_null( $value ) ) {
+		if ( \is_null( $value ) ) {
 			$value = '';
 		}
 
@@ -68,7 +68,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function check_personio_login_url( string $value ): bool {
-		return function_exists( 'str_ends_with' ) && function_exists( 'str_contains' ) && ( ( str_ends_with( $value, '.personio.com' ) || str_ends_with( $value, '.personio.de' ) ) && ! str_contains( $value, '.jobs.personio.' ) );
+		return \function_exists( 'str_ends_with' ) && \function_exists( 'str_contains' ) && ( ( str_ends_with( $value, '.personio.com' ) || str_ends_with( $value, '.personio.de' ) ) && ! str_contains( $value, '.jobs.personio.' ) );
 	}
 
 	/**
@@ -79,7 +79,7 @@ class PersonioIntegrationLoginUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function validate_url( string $value ): bool {
-		return is_string( wp_http_validate_url( $value ) );
+		return \is_string( wp_http_validate_url( $value ) );
 	}
 
 	/**

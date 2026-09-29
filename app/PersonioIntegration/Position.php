@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use JsonException;
 use PersonioIntegrationLight\Helper;
@@ -62,7 +62,7 @@ class Position {
 		$post_array = get_post( $post_id, ARRAY_A );
 
 		// if a result is not an array, create an empty array.
-		if ( ! is_array( $post_array ) ) {
+		if ( ! \is_array( $post_array ) ) {
 			$post_array = array();
 		}
 
@@ -94,7 +94,7 @@ class Position {
 		// do not save anything without language setting.
 		if ( empty( $this->get_lang() ) ) {
 			/* translators: %1$s will be replaced by the Personio ID. */
-			Log::get_instance()->add( sprintf( __( 'Position with PersonioId %1$s could not be saved as the position does not have a language set.', 'personio-integration-light' ), esc_html( $this->data['personioId'] ) ), 'error', 'import' );
+			Log::get_instance()->add( \sprintf( __( 'Position with PersonioId %1$s could not be saved as the position does not have a language set.', 'personio-integration-light' ), esc_html( $this->data['personioId'] ) ), 'error', 'import' );
 			return;
 		}
 
@@ -149,12 +149,12 @@ class Position {
 					$posts[] = $position_obj->get_id();
 				}
 			}
-			if ( 1 === count( $posts ) ) {
+			if ( 1 === \count( $posts ) ) {
 				// get the post-id to update its data.
 				$this->data['ID'] = $posts[0];
 				// get the menu_order to get its value during the update.
 				$this->data['menu_order'] = get_post_field( 'menu_order', $posts[0] );
-			} elseif ( 1 < count( $posts ) ) {
+			} elseif ( 1 < \count( $posts ) ) {
 				// something is wrong.
 				// -> delete all entries with this personioId without trash.
 				// -> it will be saved as a new entry after this.
@@ -252,7 +252,7 @@ class Position {
 
 			// convert the job description from JSON to array.
 			$job_description = json_decode( $this->data['jobdescription'], true, 512, JSON_THROW_ON_ERROR );
-			if ( is_null( $job_description ) ) {
+			if ( \is_null( $job_description ) ) {
 				$job_description = array( 'jobDescription' => array() );
 			}
 
@@ -266,13 +266,13 @@ class Position {
 			}
 
 			// add the split language-specific texts.
-			if ( ! empty( $job_description['jobDescription'] ) && is_array( $job_description['jobDescription'] ) ) {
+			if ( ! empty( $job_description['jobDescription'] ) && \is_array( $job_description['jobDescription'] ) ) {
 				foreach ( $job_description['jobDescription'] as $index => $description_part ) {
 					update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_' . $index, $description_part );
 				}
 
 				// save the count of split texts.
-				update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', count( $job_description['jobDescription'] ) );
+				update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', \count( $job_description['jobDescription'] ) );
 			} else {
 				// save the count of split texts.
 				update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang() . '_split', 0 );
@@ -292,7 +292,7 @@ class Position {
 
 			// log this event.
 			/* translators: %1$s will be replaced by the PersonioID, %2$s by the language name. */
-			Log::get_instance()->add( sprintf( __( 'Position %1$s successfully imported or updated in %2$s.', 'personio-integration-light' ), '<em>' . esc_html( $this->get_personio_id() . ' (' . $this->get_title() . ')' ) . '</em>', esc_html( Languages::get_instance()->get_language_title( $this->get_lang() ) ) ), 'info', 'import' );
+			Log::get_instance()->add( \sprintf( __( 'Position %1$s successfully imported or updated in %2$s.', 'personio-integration-light' ), '<em>' . esc_html( $this->get_personio_id() . ' (' . $this->get_title() . ')' ) . '</em>', esc_html( Languages::get_instance()->get_language_title( $this->get_lang() ) ) ), 'info', 'import' );
 		}
 	}
 
@@ -312,7 +312,7 @@ class Position {
 		}
 
 		// import multiple values from given array.
-		if ( is_array( $this->data[ $value ] ) ) {
+		if ( \is_array( $this->data[ $value ] ) ) {
 			foreach ( $this->data[ $value ] as $term_value ) {
 				$this->update_term( $term_value, $taxonomy, $append );
 			}
@@ -342,7 +342,7 @@ class Position {
 				$term = get_term( $term_array['term_id'], $taxonomy );
 			} elseif ( 1 === absint( get_option( 'personioIntegration_debug' ) ) ) {
 				/* translators: %1$s will be replaced by the term name, %2$s by the taxonomy name. */
-				Log::get_instance()->add( sprintf( __( 'Term %1$s could not be imported in %2$s', 'personio-integration-light' ), $value, $taxonomy ), 'error', 'import' );
+				Log::get_instance()->add( \sprintf( __( 'Term %1$s could not be imported in %2$s', 'personio-integration-light' ), $value, $taxonomy ), 'error', 'import' );
 			}
 		}
 
@@ -364,13 +364,13 @@ class Position {
 	public function get_term_by_field( string $taxonomy, string $field, bool $no_list = false ): string {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$taxonomy_terms = get_the_terms( $this->get_id(), $taxonomy );
-			if ( is_array( $taxonomy_terms ) ) {
+			if ( \is_array( $taxonomy_terms ) ) {
 				$this->taxonomy_terms[ $taxonomy ] = $taxonomy_terms;
 			}
 		}
 		if ( ! empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$term_string = '';
-			if ( false === $no_list && is_array( $this->taxonomy_terms[ $taxonomy ] ) ) {
+			if ( false === $no_list && \is_array( $this->taxonomy_terms[ $taxonomy ] ) ) {
 				foreach ( $this->taxonomy_terms[ $taxonomy ] as $term ) {
 					if ( ! empty( $term_string ) ) {
 						$term_string .= ', ';
@@ -396,7 +396,7 @@ class Position {
 		if ( empty( $this->taxonomy_terms[ $taxonomy ] ) ) {
 			$this->taxonomy_terms[ $taxonomy ] = array();
 			$taxonomy_terms                    = get_the_terms( $this->get_id(), $taxonomy );
-			if ( is_array( $taxonomy_terms ) ) {
+			if ( \is_array( $taxonomy_terms ) ) {
 				$this->taxonomy_terms[ $taxonomy ] = $taxonomy_terms;
 			}
 		}
@@ -501,7 +501,7 @@ class Position {
 		$url = '#';
 		if ( ! empty( $this->data['ID'] ) ) {
 			$url = get_permalink( $this->data['ID'] );
-			if ( ! is_string( $url ) ) {
+			if ( ! \is_string( $url ) ) {
 				$url = '';
 			}
 		}

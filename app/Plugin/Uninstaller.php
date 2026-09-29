@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transient;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
@@ -49,7 +49,7 @@ class Uninstaller {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Uninstaller {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -66,8 +66,8 @@ class Uninstaller {
 	 */
 	public function run( array $delete_data = array() ): void {
 		// set deactivation runner to enable.
-		if ( ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
-			define( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING', 1 );
+		if ( ! \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
+			\define( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING', 1 );
 		}
 
 		if ( is_multisite() ) {
@@ -144,7 +144,7 @@ class Uninstaller {
 				$classname = $post_type . '::get_instance';
 
 				// bail if the classname is not callable.
-				if ( ! is_callable( $classname ) ) {
+				if ( ! \is_callable( $classname ) ) {
 					continue;
 				}
 
@@ -190,6 +190,9 @@ class Uninstaller {
 		// remove plugin update transient.
 		delete_transient( 'personio_integration_light_plugin_update_notices' );
 
+		// force to reload the permalink cache.
+		delete_option( 'rewrite_rules' );
+
 		// remove setup-options.
 		Setup::get_instance()->uninstall();
 
@@ -222,6 +225,7 @@ class Uninstaller {
 			'personio_integration_settings',
 			'personio_integration_intro',
 			'personioIntegrationPageBuilder',
+			\PersonioIntegrationLight\PageBuilder\Gutenberg\Template_Styles::OPTION,
 		);
 	}
 }

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Checkbox;
 use easySettingsForWordPress\Page;
@@ -64,7 +64,7 @@ class Availability extends Extensions_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Availability {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -78,7 +78,7 @@ class Availability extends Extensions_Base {
 	 */
 	public function init(): void {
 		// bail if extension is not enabled.
-		if ( ! defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
+		if ( ! \defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) && ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! $this->is_enabled() ) {
 			return;
 		}
 
@@ -160,7 +160,7 @@ class Availability extends Extensions_Base {
 
 		// get the list of positions.
 		$positions      = Positions::get_instance()->get_positions();
-		$position_count = count( $positions );
+		$position_count = \count( $positions );
 
 		/**
 		 * Add max count on third party components (like Setup).
@@ -178,7 +178,7 @@ class Availability extends Extensions_Base {
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'We check the availability of each position.', 'personio-integration-light' ) );
 
 		// show cli hint.
-		$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Run availability checks', count( $positions ) ) : false;
+		$progress = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Run availability checks', \count( $positions ) ) : false;
 
 		// loop through the positions and check each.
 		foreach ( $positions as $position_obj ) {
@@ -262,7 +262,7 @@ class Availability extends Extensions_Base {
 						'<p><strong>' . __( 'If the Personio page for this position is not available, no one will be able to apply for it directly.', 'personio-integration-light' ) . '</strong></p>',
 						'<p>' . __( 'We will check the availability after every import of positions for you.', 'personio-integration-light' ) . '</p>',
 						/* translators: %1$s will be replaced by the link to the Personio account */
-						'<p>' . sprintf( __( 'Check in your <a href="%1$s" target="_blank">Personio account (opens a new window)</a> why the page is not available.<br>You may have only deactivated the career page.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) ) . '</p>',
+						'<p>' . \sprintf( __( 'Check in your <a href="%1$s" target="_blank">Personio account (opens a new window)</a> why the page is not available.<br>You may have only deactivated the career page.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) ) . '</p>',
 						'<p>' . __( 'With <strong>Personio Integration Pro</strong>, you can also enter applications directly in the WordPress website and transfer them to Personio.<br>The career page of a position in Personio does not need to be enabled for this.', 'personio-integration-light' ) . '</p>',
 					),
 					'buttons'   => array(
@@ -319,7 +319,7 @@ class Availability extends Extensions_Base {
 	 */
 	public function get_description(): string {
 		/* translators: %1$s will be replaced by the URL for the position list. */
-		return sprintf( __( 'Checks your positions for availability on your Personio career page. This ensures that applicants can reach the application form there. If a position is not available, you will be informed of this in the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) );
+		return \sprintf( __( 'Checks your positions for availability on your Personio career page. This ensures that applicants can reach the application form there. If a position is not available, you will be informed of this in the <a href="%1$s">list of positions</a>.', 'personio-integration-light' ), esc_url( PersonioPosition::get_instance()->get_link() ) );
 	}
 
 	/**
@@ -549,7 +549,7 @@ class Availability extends Extensions_Base {
 				'color' => 'gray',
 			),
 			/* translators: %1$s and %2$s will be replaced by the Personio-URL */
-			'description' => '<p>' . sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens a new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ) ) . '</p>',
+			'description' => '<p>' . \sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens a new window)</a> is necessary to import new positions.<br><strong>All ok with the URL!</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ) ) . '</p>',
 			'actions'     => '',
 			'test'        => 'personio_integration_rest_api_url_availability_check',
 		);
@@ -558,7 +558,7 @@ class Availability extends Extensions_Base {
 		if ( ! PersonioIntegrationUrl::check_url( $personio_obj->get_url() ) ) {
 			$result['status'] = 'recommended';
 			/* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
-			$result['description'] = '<p>' . sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens a new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens a new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ), esc_url( Helper::get_settings_url() ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) ) . '</p>';
+			$result['description'] = '<p>' . \sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens a new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens a new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ), esc_url( Helper::get_settings_url() ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) ) . '</p>';
 		}
 
 		// return result.
@@ -575,7 +575,7 @@ class Availability extends Extensions_Base {
 	 */
 	public function add_settings( mixed $settings ): array {
 		_deprecated_function( __FUNCTION__, '5.0.0', '\easySettingsForWordPress\Settings()' );
-		if ( ! is_array( $settings ) ) {
+		if ( ! \is_array( $settings ) ) {
 			return array();
 		}
 		return $settings;

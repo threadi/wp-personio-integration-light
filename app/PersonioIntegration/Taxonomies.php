@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -51,7 +51,7 @@ class Taxonomies {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Taxonomies {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -120,8 +120,8 @@ class Taxonomies {
 				if ( 0 === $i % 100 ) {
 					wp_cache_flush();
 				}
-			} elseif ( ! empty( $callback ) && is_callable( $callback ) ) {
-				$callback( count( $defaults ) );
+			} elseif ( ! empty( $callback ) && \is_callable( $callback ) ) {
+				$callback( \count( $defaults ) );
 			}
 		}
 
@@ -580,12 +580,12 @@ class Taxonomies {
 				// log error if term could not be added.
 				if ( $new_term instanceof WP_Error ) {
 					/* translators: %1$s: term name */
-					Log::get_instance()->add( sprintf( __( 'Could not add term %1$s. Error:', 'personio-integration-light' ), $term ) . ' <code>' . $new_term->get_error_message() . '</code>', 'error', 'system' );
+					Log::get_instance()->add( \sprintf( __( 'Could not add term %1$s. Error:', 'personio-integration-light' ), $term ) . ' <code>' . $new_term->get_error_message() . '</code>', 'error', 'system' );
 				}
 			}
 
 			// update steps via callback.
-			if ( ! empty( $callback ) && is_callable( $callback ) ) {
+			if ( ! empty( $callback ) && \is_callable( $callback ) ) {
 				$callback( 1 );
 			}
 		}
@@ -615,7 +615,7 @@ class Taxonomies {
 	public function get_taxonomy_defaults_count(): int {
 		$count = 0;
 		foreach ( $this->get_taxonomy_defaults() as $labels ) {
-			$count += count( $labels );
+			$count += \count( $labels );
 		}
 		return $count;
 	}
@@ -1055,7 +1055,7 @@ class Taxonomies {
 	 * @return array<string,string>
 	 */
 	public function get_labels_for_settings( array|bool $taxonomies ): array {
-		if ( is_bool( $taxonomies ) ) {
+		if ( \is_bool( $taxonomies ) ) {
 			$taxonomies = array();
 		}
 
@@ -1127,7 +1127,7 @@ class Taxonomies {
 			$terms_as_objects = get_terms( array( 'taxonomy' => $taxonomy_name ) );
 
 			// bail if terms is not an array.
-			if ( ! is_array( $terms_as_objects ) ) {
+			if ( ! \is_array( $terms_as_objects ) ) {
 				continue;
 			}
 
@@ -1187,7 +1187,7 @@ class Taxonomies {
 		// delete the content of all taxonomies.
 		// -> hint: some will be newly inserted after the next wp-init.
 		$taxonomies = $this->get_taxonomies();
-		$progress   = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', count( $taxonomies ) ) : false;
+		$progress   = Helper::is_cli() ? \WP_CLI\Utils\make_progress_bar( 'Delete all local taxonomies', \count( $taxonomies ) ) : false;
 		foreach ( $taxonomies as $taxonomy_name => $settings ) {
 			// get all terms with direct db access.
 			$terms = Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
@@ -1229,7 +1229,7 @@ class Taxonomies {
 		$progress ? $progress->finish() : false;
 
 		// output success-message.
-		Helper::is_cli() ? \WP_CLI::success( count( $taxonomies ) . ' taxonomies from local database has been cleaned.' ) : false;
+		Helper::is_cli() ? \WP_CLI::success( \count( $taxonomies ) . ' taxonomies from local database has been cleaned.' ) : false;
 	}
 
 	/**

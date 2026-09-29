@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Object to handle positions.
@@ -37,7 +37,7 @@ class Post_Types {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Post_Types {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -65,7 +65,7 @@ class Post_Types {
 			$class_name = $post_type . '::get_instance';
 
 			// check if it is callable.
-			if ( ! is_callable( $class_name ) ) {
+			if ( ! \is_callable( $class_name ) ) {
 				continue;
 			}
 

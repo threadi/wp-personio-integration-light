@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Plugin\Settings;
@@ -43,7 +43,7 @@ class Statistics {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Statistics {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -103,20 +103,20 @@ class Statistics {
 		$positions = Positions::get_instance()->get_positions();
 
 		// add entry about the positions.
-		$statistics[ __( 'Count of positions:', 'personio-integration-light' ) ] = count( $positions );
+		$statistics[ __( 'Count of positions:', 'personio-integration-light' ) ] = \count( $positions );
 
 		// get all taxonomies.
 		$taxonomies = Taxonomies::get_instance()->get_taxonomies();
 
 		// add entry about the taxonomies.
-		$statistics[ __( 'Count of taxonomies:', 'personio-integration-light' ) ] = count( $taxonomies );
+		$statistics[ __( 'Count of taxonomies:', 'personio-integration-light' ) ] = \count( $taxonomies );
 
 		// add entry about the used locations.
 		$terms = get_terms( array( 'taxonomy' => WP_PERSONIO_INTEGRATION_TAXONOMY_OFFICE ) );
-		if ( ! is_array( $terms ) ) {
+		if ( ! \is_array( $terms ) ) {
 			$terms = array();
 		}
-		$statistics[ __( 'Used main workplaces:', 'personio-integration-light' ) ] = count( $terms );
+		$statistics[ __( 'Used main workplaces:', 'personio-integration-light' ) ] = \count( $terms );
 
 		/**
 		 * Filter the statistics.

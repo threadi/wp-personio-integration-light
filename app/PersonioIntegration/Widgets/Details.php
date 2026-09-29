@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\Widgets;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
@@ -61,7 +61,7 @@ class Details extends Widget_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Details {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 

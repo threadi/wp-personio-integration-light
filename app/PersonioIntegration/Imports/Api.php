@@ -10,7 +10,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\Imports;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use Error;
 use JsonException;
@@ -75,7 +75,7 @@ class Api extends Imports_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Api {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -122,13 +122,13 @@ class Api extends Imports_Base {
 		Log::get_instance()->add( __( 'Import of positions is now running.', 'personio-integration-light' ), 'info', 'import' );
 
 		// set the mark that import is running in WP.
-		if ( ! defined( 'WP_IMPORTING' ) ) {
-			define( 'WP_IMPORTING', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- WP core constant, intentionally set to signal an import is running.
+		if ( ! \defined( 'WP_IMPORTING' ) ) {
+			\define( 'WP_IMPORTING', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- WP core constant, intentionally set to signal an import is running.
 		}
 
 		// mark the process as running import.
-		if ( ! defined( 'PERSONIO_INTEGRATION_IMPORT_RUNNING' ) ) {
-			define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
+		if ( ! \defined( 'PERSONIO_INTEGRATION_IMPORT_RUNNING' ) ) {
+			\define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
 		}
 
 		// mark the import as running with its start-time.
@@ -298,7 +298,7 @@ class Api extends Imports_Base {
 				if ( empty( $data ) ) {
 					// log this as error.
 					/* translators: %1$s will be replaced by the Personio ID. */
-					$this->add_error( sprintf( __( 'Got no data for position %1$s from Personio API.', 'personio-integration-light' ), esc_html( $personio_id ) ) );
+					$this->add_error( \sprintf( __( 'Got no data for position %1$s from Personio API.', 'personio-integration-light' ), esc_html( $personio_id ) ) );
 
 					// do nothing more.
 					continue;
@@ -380,7 +380,7 @@ class Api extends Imports_Base {
 
 			// show hint.
 			/* translators: %1$s will be replaced by a URL. */
-			$this->add_error( sprintf( __( 'Error occurred. Check <a href="%1$s">the log</a> for details.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
+			$this->add_error( \sprintf( __( 'Error occurred. Check <a href="%1$s">the log</a> for details.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
 		}
 
 		// finalize progress for WP CLI.
@@ -457,7 +457,7 @@ class Api extends Imports_Base {
 				if ( false === delete_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_UPDATED ) ) {
 					// log this event.
 					/* translators: %1$s will be replaced by the PersonioId. */
-					Log::get_instance()->add( sprintf( __( 'Removing updated flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
+					Log::get_instance()->add( \sprintf( __( 'Removing updated flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
 				}
 			} else {
 				// delete this position from database without using trash.
@@ -467,11 +467,11 @@ class Api extends Imports_Base {
 				if ( $result instanceof WP_Post ) {
 					// log this event.
 					/* translators: %1$s will be replaced by the PersonioID. */
-					Log::get_instance()->add( sprintf( __( 'Position %1$s has been deleted as it was not updated during the last import run.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'success', 'import' );
+					Log::get_instance()->add( \sprintf( __( 'Position %1$s has been deleted as it was not updated during the last import run.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'success', 'import' );
 				} else {
 					// deletion failed, so log this event.
 					/* translators: %1$s will be replaced by the PersonioID. */
-					Log::get_instance()->add( sprintf( __( 'Removing of not updated position %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
+					Log::get_instance()->add( \sprintf( __( 'Removing of not updated position %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
 				}
 			}
 		}

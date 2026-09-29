@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration\Widgets;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Position;
@@ -62,7 +62,7 @@ class Archive extends Widget_Base {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Archive {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -187,7 +187,7 @@ class Archive extends Widget_Base {
 		$positions_obj = Positions::get_instance();
 
 		// filter for specific ids.
-		if ( is_array( $personio_attributes['ids'] ) && ! empty( $personio_attributes['ids'][0] ) ) {
+		if ( \is_array( $personio_attributes['ids'] ) && ! empty( $personio_attributes['ids'][0] ) ) {
 			// convert id-list from PersonioId in post_id.
 			$resulting_list = array();
 			foreach ( $personio_attributes['ids'] as $personio_id ) {
@@ -249,7 +249,7 @@ class Archive extends Widget_Base {
 			'total'   => $positions_obj->get_results()->max_num_pages,
 		);
 		$pagination = paginate_links( $query );
-		if ( is_null( $pagination ) ) {
+		if ( \is_null( $pagination ) ) {
 			$pagination = '';
 		}
 

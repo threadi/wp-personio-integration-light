@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use CryptForWordPress\Method_Base;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
@@ -51,7 +51,7 @@ class License {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): License {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -206,7 +206,7 @@ class License {
 					<strong><?php echo esc_html__( 'You do not have a key?', 'personio-integration-light' ); ?></strong>
 					<?php
 					/* translators: %1$s will be replaced by a URL. */
-					echo wp_kses_post( sprintf( __( 'Get one <a href="%1$s" target="_blank">here</a>.', 'personio-integration-light' ), Helper::get_pro_url() ) );
+					echo wp_kses_post( \sprintf( __( 'Get one <a href="%1$s" target="_blank">here</a>.', 'personio-integration-light' ), Helper::get_pro_url() ) );
 					?>
 				</p>
 			</div>
@@ -584,7 +584,7 @@ class License {
 			// activate the plugin.
 			require_once ABSPATH . 'wp-admin/includes/admin.php';
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-			if ( ! is_null( activate_plugin( 'personio-integration/personio-integration.php' ) ) ) {
+			if ( ! \is_null( activate_plugin( 'personio-integration/personio-integration.php' ) ) ) {
 				// show error message.
 				$transient_obj = Transients::get_instance()->add();
 				$transient_obj->set_name( 'personio_integration_install_error' );
@@ -677,7 +677,7 @@ class License {
 		$download_url = apply_filters( 'personio_integration_light_download_pro_url', $download_url );
 
 		// install and activate the plugin.
-		if ( ! is_null( Helper::install_plugin( $download_url, 'personio-integration' ) ) ) {
+		if ( ! \is_null( Helper::install_plugin( $download_url, 'personio-integration' ) ) ) {
 			// show error message.
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_install_error' );

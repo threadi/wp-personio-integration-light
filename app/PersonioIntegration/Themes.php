@@ -12,7 +12,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Object to handle different themes to output templates of our plugin.
@@ -49,7 +49,7 @@ class Themes {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Themes {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -72,7 +72,7 @@ class Themes {
 	 */
 	public function init_theme_support(): void {
 		// bail if theme-support is already known.
-		if ( ! is_null( $this->theme ) ) {
+		if ( ! \is_null( $this->theme ) ) {
 			return;
 		}
 
@@ -152,7 +152,7 @@ class Themes {
 	 */
 	public function get_theme_wrapper_classes(): string {
 		// bail if no theme is set.
-		if ( is_null( $this->theme ) ) {
+		if ( \is_null( $this->theme ) ) {
 			return '';
 		}
 

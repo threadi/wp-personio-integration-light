@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Widgets;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Handler for Widgets.
@@ -37,7 +37,7 @@ class Widgets {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Widgets {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -59,7 +59,7 @@ class Widgets {
 	 * @return void
 	 */
 	public function activate(): void {
-		if ( function_exists( 'wp_use_widgets_block_editor' ) && ! wp_use_widgets_block_editor() ) {
+		if ( \function_exists( 'wp_use_widgets_block_editor' ) && ! wp_use_widgets_block_editor() ) {
 			register_widget( 'PersonioIntegrationLight\Widgets\Position' );
 			register_widget( 'PersonioIntegrationLight\Widgets\Positions' );
 		}
@@ -73,7 +73,7 @@ class Widgets {
 	 * @return void
 	 */
 	public function deactivate(): void {
-		if ( function_exists( 'wp_use_widgets_block_editor' ) && wp_use_widgets_block_editor() ) {
+		if ( \function_exists( 'wp_use_widgets_block_editor' ) && wp_use_widgets_block_editor() ) {
 			$this->uninstall_all();
 		}
 	}

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Page;
 use easySettingsForWordPress\Tab;
@@ -49,7 +49,7 @@ class Diagnostics {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Diagnostics {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -200,28 +200,28 @@ class Diagnostics {
 						$report .= esc_html__( 'ERROR: Could not resolve {$host} ({$ms} ms).', 'personio-integration-light' ) . "\n\n";
 					} else {
 						/* translators: %1$s will be replaced by the domain, %2$s by the IP and %3$s by the time to check.*/
-						$report .= wp_kses_post( sprintf( __( '%1$s resolves to %2$s (%3$s ms)', 'personio-integration-light' ), $result['data']['host'], $result['value'], $result['duration_ms'] ) ) . "\n\n";
+						$report .= wp_kses_post( \sprintf( __( '%1$s resolves to %2$s (%3$s ms)', 'personio-integration-light' ), $result['data']['host'], $result['value'], $result['duration_ms'] ) ) . "\n\n";
 					}
 					break;
 				case 'tcp_connect':
 					/* translators: %1$s will be replaced by the port. */
-					$report .= '--- ' . wp_kses_post( sprintf( __( 'TCP connection test to the license server (port %1$s)', 'personio-integration-light' ), $result['data']['port'] ) ) . " ---\n";
+					$report .= '--- ' . wp_kses_post( \sprintf( __( 'TCP connection test to the license server (port %1$s)', 'personio-integration-light' ), $result['data']['port'] ) ) . " ---\n";
 					if ( 'success' === $result['status'] ) {
 						/* translators: %1$s will be replaced by the host, %2$s by the port. */
-						$report .= wp_kses_post( sprintf( __( 'OK: TCP connection to %1$s:%2$s established successfully in %3$s ms.', 'personio-integration-light' ), $result['data']['host'], $result['data']['port'], $result['duration_ms'] ) ) . "\n\n";
+						$report .= wp_kses_post( \sprintf( __( 'OK: TCP connection to %1$s:%2$s established successfully in %3$s ms.', 'personio-integration-light' ), $result['data']['host'], $result['data']['port'], $result['duration_ms'] ) ) . "\n\n";
 					} else {
 						/* translators: %1$s will be replaced by the host, %2$s by the port. */
-						$report .= wp_kses_post( sprintf( __( 'ERROR: TCP connection to %1$s:%2$s could not be established. Error code: %3$s - this suggests a firewall or blocking issue (timeout) rather than a DNS or application problem.', 'personio-integration-light' ), $result['data']['host'], $result['data']['port'], $result['errno'] ) ) . "\n\n";
+						$report .= wp_kses_post( \sprintf( __( 'ERROR: TCP connection to %1$s:%2$s could not be established. Error code: %3$s - this suggests a firewall or blocking issue (timeout) rather than a DNS or application problem.', 'personio-integration-light' ), $result['data']['host'], $result['data']['port'], $result['errno'] ) ) . "\n\n";
 					}
 					break;
 				case 'http':
 					$report .= '--- ' . esc_html__( 'HTTP Request to the License Server', 'personio-integration-light' ) . " ---\n";
 					if ( 'success' === $result['status'] ) {
 						/* translators: %1$s will be replaced by the HTTP state. */
-						$report .= wp_kses_post( sprintf( __( 'HTTP Status: %1$s<br>DNS Lookup: %2$s ms | TCP Connect: %3$s ms | SSL Handshake: %4$s ms | Time to First Byte: %5$s ms | Total: %6$s ms', 'personio-integration-light' ), $result['value'], $result['data']['timing']['dns_ms'], $result['data']['timing']['connect_ms'], $result['data']['timing']['tls_ms'], $result['data']['timing']['ttfb_ms'], $result['data']['timing']['total_ms'] ) ) . "\n\n";
+						$report .= wp_kses_post( \sprintf( __( 'HTTP Status: %1$s<br>DNS Lookup: %2$s ms | TCP Connect: %3$s ms | SSL Handshake: %4$s ms | Time to First Byte: %5$s ms | Total: %6$s ms', 'personio-integration-light' ), $result['value'], $result['data']['timing']['dns_ms'], $result['data']['timing']['connect_ms'], $result['data']['timing']['tls_ms'], $result['data']['timing']['ttfb_ms'], $result['data']['timing']['total_ms'] ) ) . "\n\n";
 					} else {
 						/* translators: %1$s will be replaced by the error code. */
-						$report .= wp_kses_post( sprintf( __( 'ERROR: Got error: %1$s', 'personio-integration-light' ), '<code>' . $result['error_code'] . '</code>' ) ) . "\n\n";
+						$report .= wp_kses_post( \sprintf( __( 'ERROR: Got error: %1$s', 'personio-integration-light' ), '<code>' . $result['error_code'] . '</code>' ) ) . "\n\n";
 					}
 					break;
 				case 'traceroute':
@@ -233,10 +233,10 @@ class Diagnostics {
 							$times = array();
 
 							foreach ( $value['times_ms'] as $time_ms ) {
-								$times[] = sprintf( '%.3f ms', $time_ms );
+								$times[] = \sprintf( '%.3f ms', $time_ms );
 							}
 
-							$report .= sprintf(
+							$report .= \sprintf(
 								"%2d  %-15s  %s\n",
 								$value['hop'],
 								$value['ip'] ?? '*',

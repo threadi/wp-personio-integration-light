@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsSavings;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Setting;
 use PersonioIntegrationLight\PageBuilder\Page_Builders;
@@ -28,7 +28,7 @@ class PageBuilder {
 	 */
 	public static function save( string|null $value ): string {
 		// convert value to string.
-		if ( is_null( $value ) ) {
+		if ( \is_null( $value ) ) {
 			$value = '';
 		}
 
@@ -55,7 +55,7 @@ class PageBuilder {
 			$classname = $page_builder . '::get_instance';
 
 			// bail if it is not callable.
-			if ( ! is_callable( $classname ) ) {
+			if ( ! \is_callable( $classname ) ) {
 				continue;
 			}
 

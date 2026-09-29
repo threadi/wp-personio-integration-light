@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsRead;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Plugin\Crypt;
 

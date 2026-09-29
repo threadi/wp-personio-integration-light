@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use WP_Role;
@@ -40,7 +40,7 @@ class Roles {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Roles {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -64,10 +64,10 @@ class Roles {
 	public function install(): void {
 		// add a user role to manage positions if it does not exist.
 		$personio_position_manager_role = get_role( 'manage_personio_positions' );
-		if ( is_null( $personio_position_manager_role ) ) {
+		if ( \is_null( $personio_position_manager_role ) ) {
 			$personio_position_manager_role = add_role( 'manage_personio_positions', __( 'Manage Personio-based Positions', 'personio-integration-light' ) );
 		}
-		if ( ! is_null( $personio_position_manager_role ) ) {
+		if ( ! \is_null( $personio_position_manager_role ) ) {
 			$personio_position_manager_role->add_cap( 'read' ); // to enter wp-admin.
 			$personio_position_manager_role->add_cap( 'read_' . PersonioPosition::get_instance()->get_name() );
 			$personio_position_manager_role->add_cap( 'manage_' . PersonioPosition::get_instance()->get_name() );
@@ -75,7 +75,7 @@ class Roles {
 
 		// get admin-role.
 		$admin_role = get_role( 'administrator' );
-		if ( ! is_null( $admin_role ) ) {
+		if ( ! \is_null( $admin_role ) ) {
 			$admin_role->add_cap( 'read_' . PersonioPosition::get_instance()->get_name() );
 			$admin_role->add_cap( 'manage_' . PersonioPosition::get_instance()->get_name() );
 		}

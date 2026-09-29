@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -166,7 +166,7 @@ class Helper {
 	 * @author matzeeable
 	 */
 	public static function is_rest_request(): bool {
-		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) // Case #1.
+		if ( ( \defined( 'REST_REQUEST' ) && REST_REQUEST ) // Case #1.
 			|| ( isset( $GLOBALS['wp']->query_vars['rest_route'] ) // (#2)
 				&& str_starts_with( $GLOBALS['wp']->query_vars['rest_route'], '/' ) ) ) {
 			return true;
@@ -174,14 +174,14 @@ class Helper {
 
 		// Case #3.
 		global $wp_rewrite;
-		if ( is_null( $wp_rewrite ) ) {
+		if ( \is_null( $wp_rewrite ) ) {
 			$wp_rewrite = new WP_Rewrite();
 		}
 
 		// Case #4.
 		$rest_url    = wp_parse_url( trailingslashit( rest_url() ) );
 		$current_url = wp_parse_url( add_query_arg( array() ) );
-		if ( is_array( $current_url ) && is_array( $rest_url ) && isset( $current_url['path'], $rest_url['path'] ) ) {
+		if ( \is_array( $current_url ) && \is_array( $rest_url ) && isset( $current_url['path'], $rest_url['path'] ) ) {
 			return str_starts_with( $current_url['path'], $rest_url['path'] );
 		}
 		return false;
@@ -242,7 +242,7 @@ class Helper {
 			if ( ! empty( $attribute_settings[ $name ] ) ) {
 				if ( 'array' === $attribute_settings[ $name ] ) {
 					if ( ! empty( $attribute ) ) {
-						if ( ! is_array( $attribute ) ) {
+						if ( ! \is_array( $attribute ) ) {
 							$attributes[ $name ] = array_map( 'trim', explode( ',', $attribute ) );
 						} else {
 							$attributes[ $name ] = $attribute;
@@ -313,7 +313,7 @@ class Helper {
 	 * @return bool
 	 */
 	public static function is_plugin_active( string $plugin ): bool {
-		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true );
+		return \in_array( $plugin, (array) get_option( 'active_plugins', array() ), true );
 	}
 
 	/**
@@ -359,7 +359,7 @@ class Helper {
 	 * @return bool
 	 */
 	public static function theme_is_fse_theme(): bool {
-		if ( function_exists( 'wp_is_block_theme' ) ) {
+		if ( \function_exists( 'wp_is_block_theme' ) ) {
 			return wp_is_block_theme();
 		}
 		return false;
@@ -387,7 +387,7 @@ class Helper {
 	 * @return bool
 	 */
 	public static function is_cli(): bool {
-		return defined( 'WP_CLI' ) && WP_CLI;
+		return \defined( 'WP_CLI' ) && WP_CLI;
 	}
 
 	/**
@@ -663,7 +663,7 @@ class Helper {
 		$result = preg_replace( '/\s+/', ' ', $text_to_parse );
 
 		// bail if the result is not a string.
-		if ( ! is_string( $result ) ) {
+		if ( ! \is_string( $result ) ) {
 			return '';
 		}
 
@@ -683,7 +683,7 @@ class Helper {
 	 */
 	public static function get_file_version( string $filepath ): string {
 		// check for WP_DEBUG.
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if ( \defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			return (string) filemtime( $filepath );
 		}
 
@@ -715,10 +715,10 @@ class Helper {
 	 * @return array<int|string,mixed>
 	 */
 	public static function add_array_in_array_on_position( array|null $fields, int $position, array $array_to_add ): array {
-		if ( is_null( $fields ) ) {
+		if ( \is_null( $fields ) ) {
 			return array();
 		}
-		return array_slice( $fields, 0, $position, true ) + $array_to_add + array_slice( $fields, $position, null, true );
+		return \array_slice( $fields, 0, $position, true ) + $array_to_add + \array_slice( $fields, $position, null, true );
 	}
 
 	/**
@@ -729,10 +729,10 @@ class Helper {
 	 */
 	public static function update_page_builder_list( string $page_builder_name ): void {
 		$page_builder_list = get_option( 'personioIntegrationPageBuilder' );
-		if ( ! is_array( $page_builder_list ) ) {
+		if ( ! \is_array( $page_builder_list ) ) {
 			$page_builder_list = array();
 		}
-		if ( ! in_array( $page_builder_name, $page_builder_list, true ) ) {
+		if ( ! \in_array( $page_builder_name, $page_builder_list, true ) ) {
 			$page_builder_list[] = $page_builder_name;
 			update_option( 'personioIntegrationPageBuilder', $page_builder_list );
 		}
@@ -770,13 +770,13 @@ class Helper {
 		}
 
 		// do not load our files outside our own backend pages.
-		if ( function_exists( 'get_current_screen' ) && in_array( $hook, array( 'edit.php', 'post.php', 'edit-tags.php', 'term.php' ), true ) ) {
+		if ( \function_exists( 'get_current_screen' ) && \in_array( $hook, array( 'edit.php', 'post.php', 'edit-tags.php', 'term.php' ), true ) ) {
 			$screen = get_current_screen();
 			// bail if the screen could not be loaded.
 			if ( ! $screen instanceof WP_Screen ) {
 				return false;
 			}
-			if ( ! in_array( $screen->post_type, apply_filters( 'personio_integration_light_do_not_load_on_cpt', array( PersonioPosition::get_instance()->get_name() ) ), true ) ) {
+			if ( ! \in_array( $screen->post_type, apply_filters( 'personio_integration_light_do_not_load_on_cpt', array( PersonioPosition::get_instance()->get_name() ) ), true ) ) {
 				return true;
 			}
 		} elseif ( ! str_contains( $hook, 'personio' ) && ! str_contains( $hook, 'options-permalink.php' ) ) {
@@ -820,7 +820,7 @@ class Helper {
 		if ( $wp_filesystem->errors->has_errors() ) {
 			// log this event.
 			/* translators: a name will replace %1$s. */
-			Log::get_instance()->add( sprintf( __( '<strong>Error during loading the required WordPress-own filesystem object!</strong><br>We will now use the local filesystem object and hope it will work.<br><br>Tipps to solve this:<ul><li>Check the following error and speak to your WordPress administrator about it.</li><li>Check your <em>wp-config.php</em> if you have the constant "FS_METHOD" set there. If yes, remove it and check if your WordPress can save media files.</li><li>Ask the support of your hoster for help.</li></ul>Used filesystem mode: <em>%1$s</em><br>The following errors occurred:', 'personio-integration-light' ), get_filesystem_method() ) . ' <code>' . wp_json_encode( $wp_filesystem->errors ) . '</code>', 'error', 'system' );
+			Log::get_instance()->add( \sprintf( __( '<strong>Error during loading the required WordPress-own filesystem object!</strong><br>We will now use the local filesystem object and hope it will work.<br><br>Tipps to solve this:<ul><li>Check the following error and speak to your WordPress administrator about it.</li><li>Check your <em>wp-config.php</em> if you have the constant "FS_METHOD" set there. If yes, remove it and check if your WordPress can save media files.</li><li>Ask the support of your hoster for help.</li></ul>Used filesystem mode: <em>%1$s</em><br>The following errors occurred:', 'personio-integration-light' ), get_filesystem_method() ) . ' <code>' . wp_json_encode( $wp_filesystem->errors ) . '</code>', 'error', 'system' );
 
 			// embed the local directory object.
 			require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
@@ -957,7 +957,7 @@ class Helper {
 	 * @return bool
 	 */
 	public static function is_development_mode_active(): bool {
-		return function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' );
+		return \function_exists( 'wp_is_development_mode' ) && wp_is_development_mode( 'plugin' );
 	}
 
 	/**

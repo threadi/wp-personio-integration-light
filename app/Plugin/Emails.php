@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
@@ -44,7 +44,7 @@ class Emails {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Emails {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -242,7 +242,7 @@ class Emails {
 		$content .= '<p><strong>' . __( 'Important notes:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ul>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Check and test whether you can send emails to the recipients from your project. This depends on many factors that our plugin does not influence. <a href="%1$s" target="_blank">SMTP plugins%2$s</a> may help here.', 'personio-integration-light' ), 'https://wordpress.org/plugins/tags/smtp/', Helper::get_a11n_window_hint() ) . '</li>';
+		$content .= '<li>' . \sprintf( __( 'Check and test whether you can send emails to the recipients from your project. This depends on many factors that our plugin does not influence. <a href="%1$s" target="_blank">SMTP plugins%2$s</a> may help here.', 'personio-integration-light' ), 'https://wordpress.org/plugins/tags/smtp/', Helper::get_a11n_window_hint() ) . '</li>';
 		$content .= '</ul>';
 
 		// add help for the positions in general.
@@ -311,7 +311,7 @@ class Emails {
 		$transient_obj->set_name( 'personio_integration_light_email_testmail' );
 		$transient_obj->set_type( 'success' );
 		/* translators: a name will replace %1$s. */
-		$transient_obj->set_message( sprintf( __( 'Test-Email has been sent. Check now your inbox in %1$s.', 'personio-integration-light' ), implode( ', ', $email_obj->get_recipients() ) ) );
+		$transient_obj->set_message( \sprintf( __( 'Test-Email has been sent. Check now your inbox in %1$s.', 'personio-integration-light' ), implode( ', ', $email_obj->get_recipients() ) ) );
 		$transient_obj->save();
 
 		// let the user return.
@@ -372,7 +372,7 @@ class Emails {
 			'title'   => __( 'Test-Email has been sent', 'personio-integration-light' ),
 			'texts'   => array(
 				/* translators: %1$s will be replaced with an email or list of emails. */
-				'<p>' . sprintf( __( 'Check now your inbox in %1$s.', 'personio-integration-light' ), implode( ',', $email_obj->get_recipients() ) ) . '</p>',
+				'<p>' . \sprintf( __( 'Check now your inbox in %1$s.', 'personio-integration-light' ), implode( ',', $email_obj->get_recipients() ) ) . '</p>',
 			),
 			'buttons' => array(
 				array(
@@ -394,7 +394,7 @@ class Emails {
 	 */
 	public function set_email_template( mixed $args ): mixed {
 		// bail if args is not an array.
-		if ( ! is_array( $args ) ) {
+		if ( ! \is_array( $args ) ) {
 			return $args;
 		}
 
@@ -414,7 +414,7 @@ class Emails {
 		}
 
 		// bail if email is already HTML.
-		if ( function_exists( 'str_contains' ) && ( str_contains( $args['message'], '<html' ) || str_contains( $args['message'], '<HTML' ) || str_contains( $args['message'], '<body' ) ) ) {
+		if ( \function_exists( 'str_contains' ) && ( str_contains( $args['message'], '<html' ) || str_contains( $args['message'], '<HTML' ) || str_contains( $args['message'], '<body' ) ) ) {
 			return $args;
 		}
 

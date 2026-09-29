@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
@@ -62,7 +62,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 						$transient_obj = $transients_obj->add();
 						$transient_obj->set_name( 'personio_integration_url_not_usable' );
 						/* translators: %1$s is replaced with the entered Personio-URL */
-						$transient_obj->set_message( sprintf( __( 'The specified Personio URL %1$s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there.', 'personio-integration-light' ), esc_url( $value ) ) );
+						$transient_obj->set_message( \sprintf( __( 'The specified Personio URL %1$s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there.', 'personio-integration-light' ), esc_url( $value ) ) );
 						$transient_obj->set_type( 'error' );
 						$transient_obj->save();
 						$error = true;
@@ -105,7 +105,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 		$body = wp_remote_retrieve_body( $response );
 
 		// return false if URL is not available.
-		return ! ( ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) || ( function_exists( 'str_starts_with' ) && str_starts_with( $body, '<!doctype html>' ) ) );
+		return ! ( ( \is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) || ( \function_exists( 'str_starts_with' ) && str_starts_with( $body, '<!doctype html>' ) ) );
 	}
 
 	/**
@@ -164,14 +164,14 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function check_personio_in_url( string $value ): bool {
-		if ( ! function_exists( 'str_ends_with' ) ) {
+		if ( ! \function_exists( 'str_ends_with' ) ) {
 			return false;
 		}
 
 		$host = wp_parse_url( $value, PHP_URL_HOST );
 
 		// bail if the URL has no parsable host at all.
-		if ( ! is_string( $host ) || '' === $host ) {
+		if ( ! \is_string( $host ) || '' === $host ) {
 			return false;
 		}
 
@@ -186,7 +186,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 * @return bool
 	 */
 	public static function validate_url( string $value ): bool {
-		return is_string( wp_http_validate_url( $value ) );
+		return \is_string( wp_http_validate_url( $value ) );
 	}
 
 	/**
@@ -198,7 +198,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	 */
 	public static function cleanup_url_string( string $value ): string {
 		// add protocol if this is missing.
-		if ( ! empty( $value ) && function_exists( 'str_contains' ) && ! str_contains( $value, 'https://' ) ) {
+		if ( ! empty( $value ) && \function_exists( 'str_contains' ) && ! str_contains( $value, 'https://' ) ) {
 			$value = 'https://' . $value;
 		}
 

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
@@ -35,7 +35,7 @@ class MainLanguage extends Settings_Validation_Base {
 			}
 
 			// trigger re-import hint if setting will be changed.
-			if ( ! defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE ) !== $value ) {
+			if ( ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE ) !== $value ) {
 				Positions::get_instance()->trigger_reimport_hint();
 			}
 		}

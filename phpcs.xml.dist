@@ -25,6 +25,14 @@
     <!-- Use additional rulesets -->
 	<rule ref="WordPress-Docs"/>
 	<rule ref="WordPress-Extra"/>
+
+    <!-- Reference compiler-optimized PHP functions fully qualified (e.g. \count()) for better performance in namespaces. -->
+    <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions">
+        <properties>
+            <property name="includeSpecialFunctions" value="true"/>
+        </properties>
+    </rule>
+
     <rule ref="WordPress">
         <!-- Excluded in favour to match PSR-4-namings of classes. -->
         <exclude name="WordPress.Files.FileName"/>

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * Handler for any language-tasks.
@@ -75,7 +75,7 @@ class Languages {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Languages {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -222,7 +222,7 @@ class Languages {
 		);
 
 		// return result: true if the actual WP-language is a german language.
-		return in_array( $this->get_current_lang(), $german_languages, true );
+		return \in_array( $this->get_current_lang(), $german_languages, true );
 	}
 
 	/**
@@ -300,7 +300,7 @@ class Languages {
 
 		// return the mapping for the requested language.
 		foreach ( $mapping_languages as $language => $shortcodes ) {
-			if ( in_array( $language_name, $shortcodes, true ) ) {
+			if ( \in_array( $language_name, $shortcodes, true ) ) {
 				return $language;
 			}
 		}

@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use easySettingsForWordPress\Fields\Button;
 use easySettingsForWordPress\Fields\Checkbox;
@@ -56,7 +56,7 @@ class Settings {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Settings {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -201,7 +201,7 @@ class Settings {
 				admin_url( 'admin.php' )
 			);
 			/* translators: %1$s will be replaced by a URL */
-			$error_help = '<div class="personio-integration-transient notice notice-success"><h3>' . wp_kses_post( Helper::get_logo_img() ) . ' ' . esc_html( apply_filters( 'personio_integration_light_transient_title', Helper::get_plugin_name() ) ) . '</h3><p><strong>' . __( 'Page is loading', 'personio-integration-light' ) . '</strong><br>' . __( 'Please wait while we load the page.', 'personio-integration-light' ) . '<br>' . __( 'This may take a moment.', 'personio-integration-light' ) . '<br>' . sprintf( __( '<a href="%1$s">Click this link</a> to switch to the classic view.', 'personio-integration-light' ), $url ) . '</p></div>';
+			$error_help = '<div class="personio-integration-transient notice notice-success"><h3>' . wp_kses_post( Helper::get_logo_img() ) . ' ' . esc_html( apply_filters( 'personio_integration_light_transient_title', Helper::get_plugin_name() ) ) . '</h3><p><strong>' . __( 'Page is loading', 'personio-integration-light' ) . '</strong><br>' . __( 'Please wait while we load the page.', 'personio-integration-light' ) . '<br>' . __( 'This may take a moment.', 'personio-integration-light' ) . '<br>' . \sprintf( __( '<a href="%1$s">Click this link</a> to switch to the classic view.', 'personio-integration-light' ), $url ) . '</p></div>';
 			$settings_obj->set_error_help( $error_help );
 		}
 
@@ -343,7 +343,7 @@ class Settings {
 		$field = new Text( $settings_obj );
 		$field->set_title( __( 'Personio URL', 'personio-integration-light' ) );
 		/* translators: %1$s is replaced with the URL to Personio login for account access, %2$s is replaced with the url to the Personio support, %3$s is replaced with the closing HTML tag. */
-		$field->set_description( sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account%3$s</a> under Settings > Recruiting > Career Page > Activations.<br><strong>Hint:</strong> You have to enable the XML-feed under Settings > Recruiting > Career in your Personio account.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s" target="_blank">Personio support%3$s</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_login_url() ), esc_url( Helper::get_personio_support_url() ), Helper::get_a11n_window_hint() ) . '</p>' . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
+		$field->set_description( \sprintf( __( 'You find this URL in your <a href="%1$s" target="_blank">Personio-account%3$s</a> under Settings > Recruiting > Career Page > Activations.<br><strong>Hint:</strong> You have to enable the XML-feed under Settings > Recruiting > Career in your Personio account.<br>If you have any questions about the URL provided by Personio, please contact the <a href="%2$s" target="_blank">Personio support%3$s</a>.', 'personio-integration-light' ), esc_url( Personio_Accounts::get_instance()->get_login_url() ), esc_url( Helper::get_personio_support_url() ), Helper::get_a11n_window_hint() ) . '</p>' . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ) );
 		$field->set_placeholder( Helper::get_personio_url_example() );
 		$field->set_sanitize_callback( array( 'PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl', 'validate' ) );
 		$personio_url_setting->set_field( $field );
@@ -446,7 +446,7 @@ class Settings {
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Choose template for listing', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced with the documentation-URL, %2$s will be replaced with the closing HTML tag. */
-		$field->set_description( sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
+		$field->set_description( \sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
 		$field->set_options( Templates::get_instance()->get_archive_templates() );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
@@ -515,7 +515,7 @@ class Settings {
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Choose a template for position details', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced with the documentation-URL */
-		$field->set_description( sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
+		$field->set_description( \sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
 		$field->set_options( Templates::get_instance()->get_excerpts_templates() );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
@@ -542,7 +542,7 @@ class Settings {
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Choose template for content in list-view', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced with the documentation-URL */
-		$field->set_description( sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
+		$field->set_description( \sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
 		$field->set_options( Templates::get_instance()->get_jobdescription_templates() );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
@@ -581,7 +581,7 @@ class Settings {
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Choose template for content in list-view', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced with the documentation-URL */
-		$field->set_description( sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
+		$field->set_description( \sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
 		$field->set_options( Templates::get_instance()->get_excerpts_templates() );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
@@ -607,7 +607,7 @@ class Settings {
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Choose job description template in details-view', 'personio-integration-light' ) );
 		/* translators: %1$s will be replaced with the documentation-URL */
-		$field->set_description( sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
+		$field->set_description( \sprintf( __( 'You could add your own custom templates as described in the <a href="%1$s" target="_blank">documentation%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_template_documentation_url() ), Helper::get_a11n_window_hint() ) );
 		$field->set_options( Templates::get_instance()->get_jobdescription_templates() );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
@@ -755,7 +755,7 @@ class Settings {
 		$field->set_title( __( 'Debug-Mode', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		/* translators: %1$s will be replaced by a URL. */
-		$field->set_description( sprintf( __( 'When activated, the plugin logs many processes. This information can then be seen <a href="%1$s">in the log</a>. This helps to analyze any problems that may occur. At the same time, all open positions are retrieved in full at any time - it will not be checked whether anything has been changed in Personio. <strong>We do not recommend using this mode permanently in a productive system.</strong>', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
+		$field->set_description( \sprintf( __( 'When activated, the plugin logs many processes. This information can then be seen <a href="%1$s">in the log</a>. This helps to analyze any problems that may occur. At the same time, all open positions are retrieved in full at any time - it will not be checked whether anything has been changed in Personio. <strong>We do not recommend using this mode permanently in a productive system.</strong>', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
 		$debug_setting->set_field( $field );
 
 		// add setting.
@@ -957,7 +957,7 @@ class Settings {
 		<p>
 			<?php
 			/* translators: %1$s will be replaced by the URL for Personio */
-			echo wp_kses_post( sprintf( __( 'The Personio logo as part of all distributed icons is a trademark of <a href="%1$s" target="_blank">Personio SE & Co. KG%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ), Helper::get_a11n_window_hint() ) );
+			echo wp_kses_post( \sprintf( __( 'The Personio logo as part of all distributed icons is a trademark of <a href="%1$s" target="_blank">Personio SE & Co. KG%2$s</a>.', 'personio-integration-light' ), esc_url( Helper::get_personio_url() ), Helper::get_a11n_window_hint() ) );
 			?>
 		</p>
 		</div>
@@ -977,7 +977,7 @@ class Settings {
 		$content .= '<p><strong>' . __( 'How to use:', 'personio-integration-light' ) . '</strong></p>';
 		$content .= '<ol>';
 		/* translators: %1$s will be replaced by a URL. */
-		$content .= '<li>' . sprintf( __( 'Call up the <a href="%1$s">page with the settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) . '</li>';
+		$content .= '<li>' . \sprintf( __( 'Call up the <a href="%1$s">page with the settings</a>.', 'personio-integration-light' ), esc_url( Helper::get_settings_url() ) ) . '</li>';
 		$content .= '<li>' . __( 'You will find a short explanation for each setting.', 'personio-integration-light' ) . '</li>';
 		$content .= '<li>' . __( 'Adjust the settings to your requirements.', 'personio-integration-light' ) . '</li>';
 		$content .= '<li>' . __( 'Check your settings where they should apply.', 'personio-integration-light' ) . '</li>';
@@ -992,7 +992,7 @@ class Settings {
 		 */
 		if ( ! apply_filters( 'personio_integration_hide_pro_hints', $false ) ) {
 			/* translators: %1$s will be replaced by a URL, %2$s will be replaced by an accessibility hint. */
-			$content .= '<li>' . sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get many more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
+			$content .= '<li>' . \sprintf( __( '<a href="%1$s" target="_blank">Order Personio Integration Pro%2$s</a> to get many more extensions.', 'personio-integration-light' ), esc_url( Helper::get_pro_url() ), Helper::get_a11n_window_hint() ) . '</li>';
 		}
 		$content .= '</ol>';
 		$content .= '<p><strong>' . __( 'Hint:', 'personio-integration-light' ) . '</strong></p>';
@@ -1003,7 +1003,7 @@ class Settings {
 			'id'       => PersonioPosition::get_instance()->get_name() . '-settings',
 			'title'    => __( 'Settings', 'personio-integration-light' ),
 			'content'  => $content,
-			'priority' => function_exists( 'str_starts_with' ) && str_starts_with( Helper::get_current_url(), Helper::get_settings_url() ) ? 1 : 20,
+			'priority' => \function_exists( 'str_starts_with' ) && str_starts_with( Helper::get_current_url(), Helper::get_settings_url() ) ? 1 : 20,
 		);
 
 		// return the resulting list.
@@ -1079,7 +1079,7 @@ class Settings {
 	 */
 	public function show_extensions_hint(): void {
 		/* translators: %1$s will be replaced by a URL. */
-		echo '<p class="personio-integration-hint">' . wp_kses_post( sprintf( __( 'Manage your active extensions <a href="%1$s">here</a>. Depending on the active extensions, your setting options will expand here.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link() ) ) ) . '</p>';
+		echo '<p class="personio-integration-hint">' . wp_kses_post( \sprintf( __( 'Manage your active extensions <a href="%1$s">here</a>. Depending on the active extensions, your setting options will expand here.', 'personio-integration-light' ), esc_url( Extensions::get_instance()->get_link() ) ) ) . '</p>';
 	}
 
 	/**
@@ -1197,7 +1197,7 @@ class Settings {
 	 */
 	public function add_settings( mixed $settings ): array {
 		_deprecated_function( __FUNCTION__, '5.0.0', '\easySettingsForWordPress\Settings::get_instance()' );
-		if ( ! is_array( $settings ) ) {
+		if ( ! \is_array( $settings ) ) {
 			return array();
 		}
 		return $settings;
@@ -1256,7 +1256,7 @@ class Settings {
 	 * @return bool
 	 */
 	public function enqueue_styles_and_scripts( bool $result, string $hook ): bool {
-		if ( ! in_array( $hook, array( 'applications_page_personioApplicationSettings', 'personioposition_page_personioPositions', 'positions_page_personioPositions' ), true ) ) {
+		if ( ! \in_array( $hook, array( 'applications_page_personioApplicationSettings', 'personioposition_page_personioPositions', 'positions_page_personioPositions' ), true ) ) {
 			return $result;
 		}
 		return true;

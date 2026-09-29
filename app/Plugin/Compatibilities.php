@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\Plugin;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 /**
  * The object which handles schedules.
@@ -37,7 +37,7 @@ class Compatibilities {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Compatibilities {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -98,7 +98,7 @@ class Compatibilities {
 			$class_name = $compatibility_check . '::get_instance';
 
 			// bail if it is not callable.
-			if ( ! is_callable( $class_name ) ) {
+			if ( ! \is_callable( $class_name ) ) {
 				continue;
 			}
 
