@@ -109,6 +109,10 @@ Run in the main directory:
 
 OR use ant in build/-directory: `ant json-translations`
 
+### generate optimized PHP file
+
+`wp i18n make-php languages`
+
 ## Check for WordPress Coding Standards
 
 ### Initialize
