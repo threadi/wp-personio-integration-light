@@ -12,6 +12,7 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 
 use easySettingsForWordPress\Fields\Button;
 use easySettingsForWordPress\Fields\Checkbox;
+use easySettingsForWordPress\Fields\Select;
 use easySettingsForWordPress\Fields\TextInfo;
 use easySettingsForWordPress\Page;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
@@ -179,6 +180,34 @@ class Imports {
 			$description = \sprintf( __( 'The automatic import is run once per day. Next run will be on %1$s. You don\'t have to worry about updating your positions on the website yourself.', 'personio-integration-light' ) . apply_filters( 'personio_integration_admin_show_pro_hint', $pro_hint, $true ), Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', absint( $import_schedule_obj->timestamp ) ) ) );
 		}
 
+		// get list of enabled import types.
+		$import_types = array();
+		foreach( $this->get_import_extensions_as_object() as $import_obj ) {
+			// bail if this is not enabled.
+			if( ! $import_obj->is_enabled() ) {
+				continue;
+			}
+
+			// bail if this is the API import and development is not enabled.
+			// TODO remove until Personio fully supports position data via API v2.
+			if( 'api_import' === $imports_obj && Helper::is_development_mode_active() ) {
+				continue;
+			}
+
+			// add to the list.
+			$import_types[ $import_obj->get_name() ] = $import_obj->get_label();
+		}
+
+		// add setting.
+		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationImportVersion' );
+		$automatic_import_setting->set_section( $import_section );
+		$automatic_import_setting->set_type( 'string' );
+		$automatic_import_setting->set_default( Imports\Xml::get_instance()->get_name() );
+		$field = new Select( $settings_obj );
+		$field->set_title( __( 'Choose API for import', 'personio-integration-light' ) );
+		$field->set_options( $import_types );
+		$automatic_import_setting->set_field( $field );
+
 		// add setting.
 		$automatic_import_setting = $settings_obj->add_setting( 'personioIntegrationEnablePositionSchedule' );
 		$automatic_import_setting->set_section( $import_section );
@@ -284,8 +313,23 @@ class Imports {
 	 * @return Imports_Base|false
 	 */
 	public function get_import_extension(): Imports_Base|false {
+		// get the setting.
+		$import_extension = get_option( 'personioIntegrationImportVersion' );
+
+		// bail on no setting.
+		if( empty( $import_extension ) ) {
+			return false;
+		}
+
+		// get the object of the chosen extension if it is enabled.
 		foreach ( $this->get_import_extensions_as_object() as $import_extension_obj ) {
+			// bail if it is not enabled.
 			if ( ! $import_extension_obj->is_enabled() ) {
+				continue;
+			}
+
+			// bail if it does not match the setting.
+			if( $import_extension !== $import_extension_obj->get_name() ) {
 				continue;
 			}
 

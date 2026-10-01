@@ -107,7 +107,7 @@ class Api {
 
 		// create the section.
 		$api_section = $general_tab->add_section( 'settings_section_api', 70 );
-		$api_section->set_title( __( 'Settings for API', 'personio-integration-light' ) );
+		$api_section->set_title( __( 'Settings for API v2', 'personio-integration-light' ) );
 		$api_section->set_setting( $settings_obj );
 		$api_section->set_callback( array( $this, 'show_api_settings_hint' ) );
 		$api_section->set_hidden( ! \PersonioIntegrationLight\PersonioIntegration\Imports\Api::get_instance()->is_enabled() );
@@ -224,7 +224,7 @@ class Api {
 		// bail if HTTP status is not 200.
 		if ( 200 !== $request_object->get_http_status() ) {
 			// log this event.
-			Log::get_instance()->add( __( 'Could not get access token. Response:', 'personio-integration-light' ) . ' ' . $request_object->get_http_status(), 'error', 'import' );
+			Log::get_instance()->add( __( 'Could not get access token from Personio API v2. Response:', 'personio-integration-light' ) . ' <em>' . $request_object->get_http_status() . '</em>', 'error', 'import' );
 
 			// show on WP CLI.
 			Helper::is_cli() ? \WP_CLI::error( __( 'Could not get access token. See logs for details. Response:', 'personio-integration-light' ) . ' ' . $request_object->get_http_status() ) : '';
