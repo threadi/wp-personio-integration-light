@@ -19,6 +19,7 @@
 - Force to reload the WordPress-own permalink cache on uninstallation
 - Updated the settings library to 3.6.2
 - Updated the setup library
+- Updated dependencies
 
 ### Fixed
 
