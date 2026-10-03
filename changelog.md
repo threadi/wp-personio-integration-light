@@ -7,7 +7,7 @@
 - Added compatibility check for Enfold
 - Added more abilities to manage your position templates with AI
 - Added a link to edit a single position in your Personio account in the list of all positions in backend
-- Added setting to chose which API to use for import of positions
+- Added setting to chose, which API to use for import of positions
 
 ### Changed
 
