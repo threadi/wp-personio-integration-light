@@ -25,6 +25,7 @@
 
 - Fixed the intro handling
 - Fixed some typos
+- Fixed missing logging of errors if debug mode is enabled with restriction for one or more categories
 
 ## [5.7.1] - 14.09.2026
 

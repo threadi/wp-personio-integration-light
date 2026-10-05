@@ -138,11 +138,14 @@ class Log {
 				$log_categories = array();
 			}
 
+			// check if this is an error, they are logged in any case.
+			$is_error = 'error' === $state;
+
 			// check if this is a success import entry.
-			$is_import_success = 'import' === $category && 'success' === $state;
+			$is_import_success = ( 'import' === $category && 'success' === $state ) || ( 'system' === $category && 'info' === $state );
 
 			// check if we should log this entry.
-			$should_log = $is_import_success || empty( $log_categories ) || \in_array( $category, $log_categories, true );
+			$should_log = $is_error || $is_import_success || empty( $log_categories ) || in_array( $category, $log_categories, true );
 
 			/**
 			 * Filter whether a log entry should be written when debug mode is enabled.
