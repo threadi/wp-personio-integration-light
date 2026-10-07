@@ -529,30 +529,54 @@ class Helper {
 	}
 
 	/**
-	 * Return the list of blogs in a multisite-installation.
+	 * Return the IDs of the blogs in a multisite-installation.
 	 *
-	 * @return array<int,mixed>
+	 * @param bool $all  True to return every blog of the installation, including archived,
+	 *                   spam and deleted ones and the blogs of other networks. Only meant
+	 *                   for the uninstallation: nothing may be left behind there.
+	 *
+	 * @return array<int,int>
 	 */
-	public static function get_blogs(): array {
+	public static function get_blogs( bool $all = false ): array {
 		// bail if this is not a multisite installation.
 		if ( false === is_multisite() ) {
 			return array();
+		}
+
+		// every blog, whatever its state and network.
+		if ( $all ) {
+			$blog_ids = get_sites(
+				array(
+					'fields' => 'ids',
+					'number' => 0,
+				)
+			);
+
+			return array_values( array_filter( array_map( 'absint', $blog_ids ) ) );
 		}
 
 		// get the WordPress-own database object.
 		global $wpdb;
 
 		// get blogs in this site-network.
-		return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			'
-            SELECT blog_id
-            FROM ' . $wpdb->blogs . "
-            WHERE site_id = '" . $wpdb->siteid . "'
-            AND spam = '0'
-            AND deleted = '0'
-            AND archived = '0'
-        	"
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery -- Get blog data.
+		$blog_ids = $wpdb->get_col(
+			$wpdb->prepare(
+				'
+	            SELECT blog_id
+	            FROM ' . $wpdb->blogs . "
+	            WHERE site_id = %d
+	            AND spam = '0'
+	            AND deleted = '0'
+	            AND archived = '0'
+	            ",
+				$wpdb->siteid
+			)
 		);
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery
+
+		// return the list of IDs as integers.
+		return array_values( array_filter( array_map( 'absint', (array) $blog_ids ) ) );
 	}
 
 	/**

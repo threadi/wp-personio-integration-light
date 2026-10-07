@@ -35,4 +35,4 @@ require_once __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/inc/constants.php';
 
 // run uninstaller.
-Uninstaller::get_instance()->run( array( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ) );
+Uninstaller::get_instance()->run( array( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ), true );

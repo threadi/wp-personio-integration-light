@@ -8,7 +8,7 @@
 - Added more abilities to manage your position templates with AI
 - Added abilities to run and cancel the import of positions, to delete all positions and to read the log with AI, and extended the import state ability with the progress
 - Added a link to edit a single position in your Personio account in the list of all positions in backend
-- Added setting to chose which API to use for import of positions
+- Added setting to chose, which API to use for import of positions
 - Added new hooks
 
 ### Changed
@@ -17,8 +17,10 @@
 - Optimized check for Elementor Pro and PRO Elements
 - Optimized support for Personio API v2 (still no position import possible)
 - Optimized the position count handling
+- Optimized resetting this plugin in a network
 - Modernize usage of global functions to speed up loading times
 - Switches from introJS to driver.js as technical base for the intro
+- Show warning in backend if crypt key has been changed (additional to the log entry)
 - Force to reload the WordPress-own permalink cache on uninstallation
 - Updated the settings library
 - Updated the setup library

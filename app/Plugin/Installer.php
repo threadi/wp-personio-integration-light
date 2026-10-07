@@ -66,18 +66,21 @@ class Installer {
 			// loop through the blogs.
 			foreach ( Helper::get_blogs() as $blog_id ) {
 				// switch to the blog.
-				switch_to_blog( $blog_id['blog_id'] );
+				switch_to_blog( $blog_id );
 
 				// run tasks for activation in this single blog.
 				$this->activation_tasks();
+
+				// switch back to the original blog.
+				restore_current_blog();
 			}
 
-			// switch back to the original blog.
-			restore_current_blog();
-		} else {
-			// simply run the tasks on single-site-install.
-			$this->activation_tasks();
+			// do nothing more.
+			return;
 		}
+
+		// simply run the tasks on single-site-install.
+		$this->activation_tasks();
 	}
 
 	/**

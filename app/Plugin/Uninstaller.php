@@ -62,40 +62,44 @@ class Uninstaller {
 	 * Either via uninstall or via cli.
 	 *
 	 * @param array<int> $delete_data Marker to delete all data.
+	 * @param bool       $network_wide True to clean up every site of the network (only uninstall.php does this).
+	 *
 	 * @return void
 	 */
-	public function run( array $delete_data = array() ): void {
+	public function run( array $delete_data = array(), bool $network_wide = false ): void {
 		// set deactivation runner to enable.
 		if ( ! \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) ) {
 			\define( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING', 1 );
 		}
 
-		if ( is_multisite() ) {
+		if ( $network_wide && is_multisite() ) {
 			// loop through the blogs.
-			foreach ( Helper::get_blogs() as $blog ) {
+			foreach ( Helper::get_blogs( true ) as $blog_id ) {
 				// switch to the blog.
-				switch_to_blog( $blog->blog_id );
+				switch_to_blog( $blog_id );
 
 				// run tasks for deactivation in this single blog.
-				$this->deinstallation_tasks( $delete_data );
-			}
+				$this->deinstallation_tasks( $delete_data, true );
 
-			// switch back to the original blog.
-			restore_current_blog();
-		} else {
-			// simply run the tasks on single-site-install.
-			$this->deinstallation_tasks( $delete_data );
+				// switch back to the original blog.
+				restore_current_blog();
+			}
+			return;
 		}
+
+		// simply run the tasks on single-site-install.
+		$this->deinstallation_tasks( $delete_data, false );
 	}
 
 	/**
 	 * Define the tasks to run during deactivation.
 	 *
 	 * @param array<int> $delete_data Whether all data should be removed or not (should be an array with value 1 for "yes").
+	 * @param bool       $network_wide True to clean up every site of the network (only uninstall.php does this).
 	 *
 	 * @return void
 	 */
-	private function deinstallation_tasks( array $delete_data ): void {
+	private function deinstallation_tasks( array $delete_data, bool $network_wide = false ): void {
 		global $wpdb;
 
 		// delete all plugin-data.
@@ -161,8 +165,10 @@ class Uninstaller {
 					continue;
 				}
 
-				// delete the settings of this object from user meta.
-				$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => 'manageedit-' . $obj->get_name() . 'columnshidden' ) );// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Direct usermeta cleanup on uninstallation.
+				// delete the settings of this object from user meta, if we are deleting networkwide.
+				if( $network_wide ) {
+					$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => 'manageedit-' . $obj->get_name() . 'columnshidden' ) );// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Direct usermeta cleanup on uninstallation.
+				}
 			}
 
 			// uninstall extensions.
