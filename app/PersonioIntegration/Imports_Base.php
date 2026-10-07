@@ -116,6 +116,18 @@ class Imports_Base extends Extensions_Base {
 	}
 
 	/**
+	 * Reset the list of errors.
+	 *
+	 * Necessary if more than one import is run in the same process, as the import objects are Singletons
+	 * and would otherwise keep the errors of a previous run.
+	 *
+	 * @return void
+	 */
+	public function reset_errors(): void {
+		$this->errors = array();
+	}
+
+	/**
 	 * Return whether errors occurred during the running import (true) or not (false).
 	 *
 	 * @return bool

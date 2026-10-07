@@ -152,6 +152,7 @@ class Import_Single_Personio_Url {
 
 		// enable xml-error-handling.
 		libxml_use_internal_errors( true );
+		libxml_clear_errors();
 
 		// get language name (e.g. "en").
 		$language_name = $this->get_language();

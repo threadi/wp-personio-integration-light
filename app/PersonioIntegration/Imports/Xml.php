@@ -191,7 +191,7 @@ class Xml extends Imports_Base {
 			}
 		} catch ( Error $e ) {
 			// log this event.
-			Log::get_instance()->add( __( 'Following error occurred during import of positions via XML:', 'personio-integration-light' ) . '<br>' . __( 'Message:', 'personio-integration-light' ) . '<code>' . $e->getMessage() . '</code><br>' . __( 'Code:', 'personio-integration-light' ) . '<code>' . $e->getCode() . '</code><br>' . __( 'File:', 'personio-integration-light' ) . '<code>' . $e->getFile() . '</code><br>' . __( 'Line:', 'personio-integration-light' ) . '<code>' . $e->getLine() . '</code>', 'error', 'imports' );
+			Log::get_instance()->add( __( 'Following error occurred during import of positions via XML:', 'personio-integration-light' ) . '<br>' . __( 'Message:', 'personio-integration-light' ) . '<code>' . $e->getMessage() . '</code><br>' . __( 'Code:', 'personio-integration-light' ) . '<code>' . $e->getCode() . '</code><br>' . __( 'File:', 'personio-integration-light' ) . '<code>' . $e->getFile() . '</code><br>' . __( 'Line:', 'personio-integration-light' ) . '<code>' . $e->getLine() . '</code>', 'error', 'import' );
 
 			// show hint.
 			/* translators: %1$s will be replaced by a URL. */

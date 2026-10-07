@@ -6,6 +6,7 @@
 
 - Added compatibility check for Enfold
 - Added more abilities to manage your position templates with AI
+- Added abilities to run and cancel the import of positions, to delete all positions and to read the log with AI, and extended the import state ability with the progress
 - Added a link to edit a single position in your Personio account in the list of all positions in backend
 - Added setting to chose which API to use for import of positions
 - Added new hooks
@@ -19,7 +20,7 @@
 - Modernize usage of global functions to speed up loading times
 - Switches from introJS to driver.js as technical base for the intro
 - Force to reload the WordPress-own permalink cache on uninstallation
-- Updated the settings library to 3.6.2
+- Updated the settings library
 - Updated the setup library
 - Updated dependencies
 
@@ -28,6 +29,8 @@
 - Fixed the intro handling
 - Fixed some typos
 - Fixed missing logging of errors if debug mode is enabled with restriction for one or more categories
+- Fixed XML errors of a faulty Personio feed blocking the following imports in the same process
+- Fixed a deletion of all positions, which was aborted by an error, blocking every further deletion
 
 ## [5.7.1] - 14.09.2026
 

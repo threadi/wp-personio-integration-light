@@ -387,7 +387,18 @@ class Helper {
 	 * @return bool
 	 */
 	public static function is_cli(): bool {
-		return \defined( 'WP_CLI' ) && WP_CLI;
+		$is_cli = \defined( 'WP_CLI' ) && WP_CLI;
+
+		/**
+		 * Filter whether the actual process is handled as WP CLI request.
+		 *
+		 * Used to suppress the output for WP CLI (messages, progress bars and the exit on errors) if a task is
+		 * run by an ability in a WP CLI process, e.g. by an MCP server which uses STDIO as transport.
+		 *
+		 * @since 5.8.0 Available since 5.8.0.
+		 * @param bool $is_cli True if this is a WP CLI request.
+		 */
+		return (bool) apply_filters( 'personio_integration_light_is_cli', $is_cli );
 	}
 
 	/**
