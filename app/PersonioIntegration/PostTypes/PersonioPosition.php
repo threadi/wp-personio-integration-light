@@ -1561,8 +1561,11 @@ class PersonioPosition extends Post_Type {
 	 * @noinspection PhpUnused
 	 */
 	public function delete_positions(): void {
+		// release a deletion which got stuck, as it would otherwise block every further deletion.
+		$this->release_stuck_deletion();
+
 		// bail if deletion is actual running.
-		if ( absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING ) ) > 0 ) {
+		if ( $this->get_deletion_start_time() > 0 ) {
 			return;
 		}
 
@@ -1574,8 +1577,14 @@ class PersonioPosition extends Post_Type {
 		// reset info values.
 		update_option( WP_PERSONIO_INTEGRATION_DELETE_COUNT, 0 );
 
+		// reset the list of errors during deletion.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_ERRORS, array() );
+
 		// mark as running.
 		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, time() );
+
+		// register a shutdown handler to catch fatal errors during the deletion.
+		register_shutdown_function( array( $this, 'handle_fatal_shutdown_during_deletion' ) );
 
 		// set label.
 		update_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, __( 'Deleting of positions is running ..', 'personio-integration-light' ) );
@@ -1662,6 +1671,98 @@ class PersonioPosition extends Post_Type {
 		update_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, __( 'Deleting of positions has been run.', 'personio-integration-light' ) );
 
 		// mark as not running.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 );
+	}
+
+	/**
+	 * Return the time the running deletion of all positions has been started, 0 if none is running.
+	 *
+	 * @return int
+	 */
+	public function get_deletion_start_time(): int {
+		return absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 ) );
+	}
+
+	/**
+	 * Return whether the deletion of all positions is marked as running for that long, that it got stuck.
+	 *
+	 * This happens if the process of a deletion has been killed (e.g. by the hosting), so it could neither end
+	 * nor clean up. The same limit is used for the import, which can be cancelled after one hour.
+	 *
+	 * @return bool
+	 */
+	public function is_deletion_stuck(): bool {
+		$started = $this->get_deletion_start_time();
+		return $started > 0 && ( time() - $started ) > HOUR_IN_SECONDS;
+	}
+
+	/**
+	 * Release a deletion of all positions which got stuck, so positions can be deleted again.
+	 *
+	 * @return bool True if a stuck deletion has been released.
+	 */
+	public function release_stuck_deletion(): bool {
+		// bail if no deletion got stuck.
+		if ( ! $this->is_deletion_stuck() ) {
+			return false;
+		}
+
+		// log this event.
+		/* translators: %1$s will be replaced by a date. */
+		Log::get_instance()->add( \sprintf( __( 'A deletion of positions which has been started on %1$s did not end properly. It has been released.', 'personio-integration-light' ), esc_html( Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $this->get_deletion_start_time() ) ) ) ), 'error', 'import' );
+
+		// reset the running-flag so the user is not stuck.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 );
+
+		// return that it has been released.
+		return true;
+	}
+
+	/**
+	 * Catch fatal errors during the deletion of all positions and clean up the running-state.
+	 *
+	 * @return void
+	 */
+	public function handle_fatal_shutdown_during_deletion(): void {
+		$this->process_deletion_shutdown_error( error_get_last() );
+	}
+
+	/**
+	 * Testable core of the shutdown handling for the deletion of all positions.
+	 *
+	 * @param array{type:int,message:string,file:string,line:int}|null $error The error.
+	 *
+	 * @return void
+	 */
+	public function process_deletion_shutdown_error( ?array $error ): void {
+		// bail if there was no fatal error.
+		if ( null === $error || ! \in_array( $error['type'], array( E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ), true ) ) {
+			return;
+		}
+
+		// bail if the deletion already finished cleanly.
+		if ( 0 === $this->get_deletion_start_time() ) {
+			return;
+		}
+
+		// get the text for this event.
+		$text = __( 'Deletion of positions was aborted by a fatal PHP error:', 'personio-integration-light' );
+
+		// log this event.
+		Log::get_instance()->add(
+			$text . '<br><code>' . esc_html( $error['message'] ) . '</code> ' . esc_html( $error['file'] ) . ':' . absint( $error['line'] ),
+			'error',
+			'import'
+		);
+
+		// set the error in the list for the response, so the progress in the backend ends with it
+		// (only its first line, the complete message with the stack trace is in the log).
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_ERRORS, array( $text . ' ' . esc_html( explode( "\n", $error['message'], 2 )[0] ) ) );
+
+		// reset the status.
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, '' );
+
+		// reset the running-flag so the user is not stuck.
 		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 );
 	}
 

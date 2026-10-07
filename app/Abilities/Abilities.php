@@ -15,6 +15,7 @@ namespace PersonioIntegrationLight\Abilities;
 // prevent direct access.
 \defined( 'ABSPATH' ) || exit;
 
+use PersonioIntegrationLight\PersonioIntegration\Imports;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
@@ -27,7 +28,8 @@ use WP_Term;
 /**
  * Object to add support for abilities.
  *
- * The positions are managed in Personio, so the abilities only read them. They never change positions.
+ * The positions are managed in Personio, so the abilities never edit them. They are only read, refreshed by an
+ * import from Personio or removed from WordPress, see Import_Abilities.
  */
 class Abilities {
 	/**
@@ -85,6 +87,12 @@ class Abilities {
 
 		// initialize the abilities for templates of page builders.
 		Template_Abilities::get_instance()->init();
+
+		// initialize the abilities to control the import and the deletion of positions.
+		Import_Abilities::get_instance()->init();
+
+		// initialize the ability to read the log.
+		Log_Abilities::get_instance()->init();
 	}
 
 	/**
@@ -356,7 +364,7 @@ class Abilities {
 			self::ABILITY_CATEGORY . '/get-import-status',
 			array(
 				'label'               => __( 'Get the state of the position import', 'personio-integration-light' ),
-				'description'         => __( 'Returns whether an import of positions from Personio is running right now, its last state and how many positions exist. Use this to find out why positions are missing. The import itself is controlled in the settings of this plugin.', 'personio-integration-light' ),
+				'description'         => __( 'Returns whether an import of positions from Personio is running right now, since when and how far it is, its last state and errors and how many positions exist. Use this to find out why positions are missing and to follow a running import. Use run-import to start an import, cancel-import to release an import which got stuck and get-log for the details of past imports.', 'personio-integration-light' ),
 				'category'            => self::ABILITY_CATEGORY,
 				'input_schema'        => array(
 					'type'    => 'object',
@@ -368,6 +376,24 @@ class Abilities {
 						'is_running'       => array(
 							'type'        => 'boolean',
 							'description' => __( 'True if an import is running right now.', 'personio-integration-light' ),
+						),
+						'started_at'       => array(
+							'type'        => 'string',
+							'description' => __( 'The date the running import has been started (ISO 8601), empty if none is running. An import which is running for more than an hour is most likely stuck.', 'personio-integration-light' ),
+						),
+						'progress'         => array(
+							'type'        => 'object',
+							'description' => __( 'The progress of the running or the last import in steps. These are not the amounts of positions.', 'personio-integration-light' ),
+							'properties'  => array(
+								'count' => array(
+									'type'        => 'integer',
+									'description' => __( 'The steps which are done.', 'personio-integration-light' ),
+								),
+								'max'   => array(
+									'type'        => 'integer',
+									'description' => __( 'The steps to do.', 'personio-integration-light' ),
+								),
+							),
 						),
 						'status'           => array(
 							'type'        => 'string',
@@ -381,6 +407,14 @@ class Abilities {
 						'position_count'   => array(
 							'type'        => 'integer',
 							'description' => __( 'The amount of positions which exist in WordPress.', 'personio-integration-light' ),
+						),
+						'new_positions'    => array(
+							'type'        => 'integer',
+							'description' => __( 'The amount of positions which have been added by the last import.', 'personio-integration-light' ),
+						),
+						'import_type'      => array(
+							'type'        => 'string',
+							'description' => __( 'The internal name of the used import type, empty if none is enabled.', 'personio-integration-light' ),
 						),
 						'has_personio_url' => array(
 							'type'        => 'boolean',
@@ -738,12 +772,28 @@ class Abilities {
 			}
 		}
 
+		// get the start time of the running import.
+		$running_since = absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) );
+
+		// get the positions which have been added by the last import.
+		$new_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, array() );
+
+		// get the import object.
+		$imports_obj = Imports::get_instance()->get_import_extension();
+
 		// return the state.
 		return array(
-			'is_running'       => absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) > 0,
+			'is_running'       => $running_since > 0,
+			'started_at'       => $running_since > 0 ? gmdate( 'c', $running_since ) : '',
+			'progress'         => array(
+				'count' => absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_COUNT, 0 ) ),
+				'max'   => absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX, 0 ) ),
+			),
 			'status'           => wp_strip_all_tags( (string) get_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, '' ) ),
 			'errors'           => $errors,
 			'position_count'   => Positions::get_instance()->get_positions_count(),
+			'new_positions'    => \is_array( $new_positions ) ? \count( $new_positions ) : 0,
+			'import_type'      => $imports_obj ? $imports_obj->get_name() : '',
 			'has_personio_url' => ! empty( get_option( 'personioIntegrationUrl' ) ),
 			'next_import'      => \is_int( $next_import ) ? gmdate( 'c', $next_import ) : '',
 		);

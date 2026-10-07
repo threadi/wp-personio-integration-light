@@ -183,7 +183,7 @@ class Abilities_Settings {
 		$setting->set_default( 1 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Provide abilities', 'personio-integration-light' ) );
-		$field->set_description( __( 'Provides the abilities of this plugin via the Abilities API of WordPress. Applications, which you connect to your WordPress yourself (e.g. an AI assistant via an MCP plugin), can then read your positions and create templates for the detail view and the list of positions. The positions themselves can not be changed this way, as Personio is the leading system for them. This plugin sends no data to such applications on its own. Disable this option if you do not want to use it.', 'personio-integration-light' ) );
+		$field->set_description( __( 'Provides the abilities of this plugin via the Abilities API of WordPress. Applications, which you connect to your WordPress yourself (e.g. an AI assistant via an MCP plugin), can then read your positions, run the import of positions from Personio, delete the imported positions, read the log and create templates for the detail view and the list of positions. The positions themselves can not be edited this way, as Personio is the leading system for them. This plugin sends no data to such applications on its own. Disable this option if you do not want to use it.', 'personio-integration-light' ) );
 		$setting->set_field( $field );
 
 		// add the status.
@@ -278,6 +278,10 @@ class Abilities_Settings {
 			'get-position'         => __( 'Read a single position with its job description.', 'personio-integration-light' ),
 			'get-taxonomies'       => __( 'Read the taxonomies, terms and languages of the positions.', 'personio-integration-light' ),
 			'get-import-status'    => __( 'Read the state of the import from Personio.', 'personio-integration-light' ),
+			'run-import'           => __( 'Run the import of positions from Personio.', 'personio-integration-light' ),
+			'cancel-import'        => __( 'Release a running import of positions which got stuck.', 'personio-integration-light' ),
+			'delete-positions'     => __( 'Delete all positions in WordPress. They are not deleted in Personio.', 'personio-integration-light' ),
+			'get-log'              => __( 'Read the log of this plugin.', 'personio-integration-light' ),
 			'get-builders'         => __( 'Read the page builders, whose templates can be used.', 'personio-integration-light' ),
 			'get-template-catalog' => __( 'Read the elements of this plugin for templates.', 'personio-integration-light' ),
 			'get-template'         => __( 'Read the template for the detail view or the list of positions.', 'personio-integration-light' ),
@@ -291,7 +295,7 @@ class Abilities_Settings {
 			$html .= '<li><code>' . esc_html( Abilities::ABILITY_CATEGORY . '/' . $name ) . '</code> - ' . esc_html( $description ) . '</li>';
 		}
 		$html .= '</ul>';
-		$html .= '<p>' . esc_html__( 'The positions themselves can only be read, as they are managed in Personio.', 'personio-integration-light' ) . '</p>';
+		$html .= '<p>' . esc_html__( 'The positions themselves can not be edited, as they are managed in Personio. An import only fetches their actual state from there, and deleted positions are imported again by the next import.', 'personio-integration-light' ) . '</p>';
 		return $html;
 	}
 
@@ -435,12 +439,13 @@ class Abilities_Settings {
 		$html .= '<p><strong>' . esc_html__( 'Examples for requests to your application:', 'personio-integration-light' ) . '</strong></p>';
 		$html .= '<ul>';
 		$html .= '<li><em>' . esc_html__( 'Which positions are open in Berlin right now?', 'personio-integration-light' ) . '</em></li>';
+		$html .= '<li><em>' . esc_html__( 'Import the actual positions from Personio and tell me what has changed.', 'personio-integration-light' ) . '</em></li>';
 		$html .= '<li><em>' . esc_html__( 'Create a template for the detail view of my positions with the details on the left and the application button on the right.', 'personio-integration-light' ) . '</em></li>';
 		$html .= '<li><em>' . esc_html__( 'Change the list of positions so it shows a filter for the office above the positions.', 'personio-integration-light' ) . '</em></li>';
 		$html .= '</ul>';
 
 		// add a note about the permissions and the check before saving.
-		$html .= '<p>' . esc_html__( 'The application acts with the permissions of the user whose access data it uses. Templates are only saved after a check, and the application is asked to show you the result before saving it. Templates saved this way can be reset here at any time.', 'personio-integration-light' ) . '</p>';
+		$html .= '<p>' . esc_html__( 'The application acts with the permissions of the user whose access data it uses. The import, the deletion of positions and the log are only available for users who are allowed to manage the settings of WordPress, and the application is asked to get your confirmation before it deletes positions. Templates are only saved after a check, and the application is asked to show you the result before saving it. Templates saved this way can be reset here at any time.', 'personio-integration-light' ) . '</p>';
 		return $html;
 	}
 
