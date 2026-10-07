@@ -1105,6 +1105,26 @@ class Admin {
 	 * @return void
 	 */
 	public function save_crypt_error( string $code, string $message, array $data ): void {
+		// tell the user if the key is gone: every saved key and token has to be entered again.
+		if ( in_array( $code, array( 'key_missing', 'key_changed' ), true ) ) {
+			$transient_obj = Transients::get_instance()->add();
+			$transient_obj->set_name( 'personio_integration_light_crypt_key_lost' );
+			$transient_obj->set_type( 'error' );
+			$transient_obj->set_dismissible_days( 30 );
+			$transient_obj->set_message(
+				'<strong>' . esc_html__( 'Personio Integration Light: the encryption key of this website has changed.', 'personio-integration-light' ) . '</strong> '
+				. esc_html__( 'This usually happens after moving the website or replacing the wp-config.php. Saved API tokens can not be read. Please enter them again.', 'personio-integration-light' )
+			);
+			$transient_obj->save();
+		}
+
+		// log the same error only once per hour: some of them are reported on every request.
+		$throttle_key = 'personio_integration_light_crypt_error_' . md5( $code );
+		if ( false !== get_transient( $throttle_key ) ) {
+			return;
+		}
+		set_transient( $throttle_key, 1, HOUR_IN_SECONDS );
+
 		// collect the data for the log entry.
 		$log_entry = array(
 			__( 'Error Code', 'personio-integration-light' ) => '<code>' . $code . '</code>',

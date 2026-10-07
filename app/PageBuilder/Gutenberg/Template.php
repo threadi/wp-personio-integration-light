@@ -376,7 +376,7 @@ class Template {
 	public function get_content(): string {
 		if ( empty( $this->content ) ) {
 			// get WP Filesystem-handler.
-			$wp_filesystem = Helper::get_wp_filesystem();
+			$wp_filesystem = Helper::get_wp_filesystem( true );
 
 			// get the template content.
 			$content = $wp_filesystem->get_contents( $this->get_file_path() );

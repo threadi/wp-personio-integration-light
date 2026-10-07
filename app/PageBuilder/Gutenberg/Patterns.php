@@ -101,7 +101,7 @@ class Patterns {
 		}
 
 		// get WP Filesystem-handler.
-		$wp_filesystem = Helper::get_wp_filesystem();
+		$wp_filesystem = Helper::get_wp_filesystem( true );
 
 		// loop through the patterns and add them.
 		foreach ( $this->get_patterns() as $pattern_name => $pattern ) {

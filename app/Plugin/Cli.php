@@ -76,6 +76,9 @@ class Cli {
 	 * [--not-light]
 	 * : Prevent reset of light plugin.
 	 *
+	 * [--yes]
+	 * : Answer yes to the confirmation message.
+	 *
 	 * @since        1.0.0
 	 *
 	 * @param array<string,string> $attributes Marker to delete all data or not.
@@ -86,6 +89,11 @@ class Cli {
 	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function reset_plugin( array $attributes = array(), array $options = array() ): void {
+		\WP_CLI::confirm(
+			sprintf( 'Reset Now Pages on %s? All entries, sources and settings of this site will be deleted.', home_url() ),
+			$options
+		);
+
 		// check for "delete-all"-marker.
 		$delete_all = isset( $options['delete-all'] ) ? 1 : 0;
 
