@@ -143,6 +143,7 @@ class PersonioPosition extends Post_Type {
 		add_action( 'personio_integration_import_max_count', array( $this, 'update_import_max_step' ) );
 		add_action( 'personio_integration_import_count', array( $this, 'update_import_step' ) );
 		add_action( 'personio_integration_import_ended', array( $this, 'import_ended' ) );
+		add_action( 'personio_integration_import_without_changes', array( $this, 'import_ended' ) );
 		add_filter( 'personio_integration_extend_position_object', array( $this, 'add_pro_extensions' ) );
 		add_action( 'personio_integration_import_of_url_starting', array( $this, 'update_import_status' ), 10, 0 );
 		add_filter( 'personio_integration_log_categories', array( $this, 'add_log_categories' ) );
@@ -1614,8 +1615,8 @@ class PersonioPosition extends Post_Type {
 		// finalize progress.
 		$progress ? $progress->finish() : false;
 
-		// delete position count.
-		delete_option( 'personioIntegrationPositionCount' );
+		// update position count.
+		update_option( 'personioIntegrationPositionCount', 0 );
 
 		// set label.
 		update_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, __( 'Cleanup database ..', 'personio-integration-light' ) );

@@ -151,8 +151,20 @@ class Schedules_Base {
 			Log::get_instance()->add( \sprintf( __( 'Interval of schedule %1$s changed from %2$s to %3$s - rescheduling.', 'personio-integration-light' ), $this->get_name(), (string) $current_interval, $interval ), 'info', $this->get_log_category() );
 		}
 
+		$instance = $this;
+		$start = time();
+		/**
+		 * Filter the timestamp of the first run of a schedule.
+		 *
+		 * @since 6.0.0 Available since 6.0.0.
+		 * @param int            $start    The timestamp of the first run.
+		 * @param string         $interval The interval.
+		 * @param Schedules_Base $instance The schedule object.
+		 */
+		$start = absint( apply_filters( 'personio_integration_light_schedule_start_time', $start, $interval, $instance ) );
+
 		// create the schedule.
-		$result = wp_schedule_event( time(), $interval, $this->get_name(), $this->get_args(), true );
+		$result = wp_schedule_event( $start, $interval, $this->get_name(), $this->get_args(), true );
 
 		// log event if the schedule could not be created.
 		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType

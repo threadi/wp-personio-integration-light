@@ -8,12 +8,14 @@
 - Added more abilities to manage your position templates with AI
 - Added a link to edit a single position in your Personio account in the list of all positions in backend
 - Added setting to chose which API to use for import of positions
+- Added new hooks
 
 ### Changed
 
 - Optimized some visibility conditions for settings on our blocks
 - Optimized check for Elementor Pro and PRO Elements
 - Optimized support for Personio API v2 (still no position import possible)
+- Optimized the position count handling
 - Modernize usage of global functions to speed up loading times
 - Switches from introJS to driver.js as technical base for the intro
 - Force to reload the WordPress-own permalink cache on uninstallation
@@ -25,6 +27,7 @@
 
 - Fixed the intro handling
 - Fixed some typos
+- Fixed missing logging of errors if debug mode is enabled with restriction for one or more categories
 
 ## [5.7.1] - 14.09.2026
 
