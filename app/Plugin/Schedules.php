@@ -240,10 +240,13 @@ class Schedules {
 			if ( $obj->is_enabled() && ! isset( $our_events[ $obj->get_name() ] ) ) {
 				// reinstall the missing event.
 				$obj->install();
-
-				// log this event.
-				/* translators: %1$s will be replaced by the event name. */
-				Log::get_instance()->add( \sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
+				if ( $obj->get_event() ) {
+					// log this event.
+					/* translators: %1$s will be replaced by the event name. */
+					Log::get_instance()->add( \sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
+				} else {
+					Log::get_instance()->add( \sprintf( __( 'Missing cron event <i>%1$s</i> could not be re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'error', $obj->get_log_category() );
+				}
 
 				// re-run the check for WP-cron-events.
 				$our_events = $this->get_wp_events();

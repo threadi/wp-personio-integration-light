@@ -19,6 +19,7 @@
 - Optimized the position count handling
 - Optimized resetting this plugin in a network
 - Modernize usage of global functions to speed up loading times
+- Optimized schedule handling of they could not be added
 - Switches from introJS to driver.js as technical base for the intro
 - Show warning in backend if crypt key has been changed (additional to the log entry)
 - Force to reload the WordPress-own permalink cache on uninstallation

@@ -2,8 +2,6 @@
 /**
  * File to handle setup for this plugin.
  *
- * TODO Re-Add the import during setup.
- *
  * @package personio-integration-light
  */
 
