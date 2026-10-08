@@ -13,6 +13,7 @@
 
 ### Changed
 
+- Now requires WordPress 6.6 or newer
 - Optimized some visibility conditions for settings on our blocks
 - Optimized check for Elementor Pro and PRO Elements
 - Optimized support for Personio API v2 (still no position import possible)

@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Personio Integration Light
  * Description:       Provides functions for handling your recruiting with Personio.
- * Requires at least: 5.9
+ * Requires at least: 6.6
  * Requires PHP:      8.2
  * Version:           @@VersionNumber@@
  * Author:            laOlaWeb
