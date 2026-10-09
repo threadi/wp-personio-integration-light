@@ -684,6 +684,7 @@ class Api extends Imports_Base {
 	public function get_usable_hint(): Field_Base {
 		$field = new TextInfo( Settings::get_instance()->get_settings_object() );
 		$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
+		/* translators: %1$s will be replaced by a URL. */
 		$field->set_description( \sprintf( __( 'Add your API v2 credentials <a href="%1$s">here</a>.', 'personio-integration-light' ), Helper::get_settings_url() ) );
 		return $field;
 	}

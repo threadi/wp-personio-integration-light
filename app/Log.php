@@ -304,7 +304,7 @@ class Log {
 		$args[] = max( 0, $offset );
 
 		// get and return the entries.
-		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where contains only fixed conditions with placeholders; values use %s/%d.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- $order_by/$order are whitelisted identifiers, $where contains only fixed conditions with placeholders; $args holds their values plus limit and offset, so the number of replacements depends on the filters.
 		return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->prepare(
 				'SELECT `state`, `time` AS `date`, `log`, `category`
@@ -316,7 +316,7 @@ class Log {
 			),
 			ARRAY_A
 		);
-		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
 	}
 
 	/**

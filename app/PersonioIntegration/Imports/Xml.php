@@ -242,7 +242,7 @@ class Xml extends Imports_Base {
 		if ( ! $this->has_errors() ) {
 			// do not clean up if no positions have been imported, but positions have been read from XML,
 			// or if no URL/language had any changes since the last import.
-			if ( 0 === $imported_positions && ( $this->get_import_count() > 0 || ( $unchanged_count > 0 && $unchanged_count === \count( $personio_urls ) * $language_count ) ) ) {
+			if ( 0 === $imported_positions && ( $this->get_import_count() > 0 || ( $unchanged_count > 0 && \count( $personio_urls ) * $language_count === $unchanged_count ) ) ) {
 				// output success-message.
 				Helper::is_cli() ? \WP_CLI::success( 'Import has been run but no changes have been imported.' ) : false;
 

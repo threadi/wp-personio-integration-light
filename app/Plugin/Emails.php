@@ -506,7 +506,7 @@ class Emails {
 			}
 
 			// return whether this is our plugin.
-			return $plugin_name === trim( $header_value );
+			return trim( $header_value ) === $plugin_name;
 		}
 
 		// return false if header has not been found.

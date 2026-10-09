@@ -1230,17 +1230,17 @@ class Templates {
 	 *
 	 * @param mixed  $name    The template name, e.g. from block or shortcode attributes.
 	 * @param string $folder  The folder below templates/, e.g. "parts/jobdescription".
-	 * @param string $default The default template name.
+	 * @param string $default_name The default template name.
 	 *
 	 * @return string
 	 */
-	public function get_valid_template_name( mixed $name, string $folder, string $default = 'default' ): string {
+	public function get_valid_template_name( mixed $name, string $folder, string $default_name = 'default' ): string {
 		// only simple names: letters, numbers, "-" and "_" (no paths).
 		if ( ! \is_string( $name ) || ! preg_match( '/^[a-z0-9_-]+$/iD', $name ) ) {
-			return $default;
+			return $default_name;
 		}
 
 		// the template file must exist (in the theme, the plugin or via filter).
-		return $this->has_template( $folder . '/' . $name . '.php' ) ? $name : $default;
+		return $this->has_template( $folder . '/' . $name . '.php' ) ? $name : $default_name;
 	}
 }

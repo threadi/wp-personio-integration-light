@@ -1243,15 +1243,28 @@ class Taxonomies {
 			$term_ids          = array_map( 'absint', wp_list_pluck( $terms, 'term_id' ) );
 			$term_taxonomy_ids = array_map( 'absint', wp_list_pluck( $terms, 'term_taxonomy_id' ) );
 
-			// delete relationships, meta-data and the terms in chunks to keep the queries small.
+			// delete relationships, metadata and the terms in chunks to keep the queries small.
 			foreach ( array_chunk( $term_taxonomy_ids, 500 ) as $chunk ) {
-				$placeholders = implode( ',', array_fill( 0, \count( $chunk ), '%d' ) );
-				$wpdb->query( $wpdb->prepare( 'DELETE FROM ' . $wpdb->term_relationships . ' WHERE term_taxonomy_id IN (' . $placeholders . ')', $chunk ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+				$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					$wpdb->prepare(
+						"DELETE FROM {$wpdb->term_relationships} WHERE term_taxonomy_id IN (" . implode( ',', array_fill( 0, \count( $chunk ), '%d' ) ) . ')',
+						$chunk
+					)
+				);
 			}
 			foreach ( array_chunk( $term_ids, 500 ) as $chunk ) {
-				$placeholders = implode( ',', array_fill( 0, \count( $chunk ), '%d' ) );
-				$wpdb->query( $wpdb->prepare( 'DELETE FROM ' . $wpdb->termmeta . ' WHERE term_id IN (' . $placeholders . ')', $chunk ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
-				$wpdb->query( $wpdb->prepare( 'DELETE FROM ' . $wpdb->terms . ' WHERE term_id IN (' . $placeholders . ')', $chunk ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+				$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					$wpdb->prepare(
+						"DELETE FROM {$wpdb->termmeta} WHERE term_id IN (" . implode( ',', array_fill( 0, \count( $chunk ), '%d' ) ) . ')',
+						$chunk
+					)
+				);
+				$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					$wpdb->prepare(
+						"DELETE FROM {$wpdb->terms} WHERE term_id IN (" . implode( ',', array_fill( 0, \count( $chunk ), '%d' ) ) . ')',
+						$chunk
+					)
+				);
 			}
 
 			// delete all taxonomy-entries.
