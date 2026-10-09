@@ -55,7 +55,7 @@ class Pdf_Generator_For_Wp extends Compatibilities_Base {
 		if ( $this->is_active() ) {
 			// if post-type is set, to nothing more.
 			$pdf_generator_advanced_settings = get_option( 'pgfw_advanced_save_settings' );
-			if ( ! empty( $pdf_generator_advanced_settings ) && ! empty( $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'] ) && \in_array( PersonioPosition::get_instance()->get_name(), $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'], true ) ) {
+			if ( \is_array( $pdf_generator_advanced_settings ) && ! empty( $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'] ) && \is_array( $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'] ) && \in_array( PersonioPosition::get_instance()->get_name(), $pdf_generator_advanced_settings['pgfw_advanced_show_post_type_icons'], true ) ) {
 				$transients_obj->get_transient_by_name( $this->get_name() )->delete();
 				return;
 			}

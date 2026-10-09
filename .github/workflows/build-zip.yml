@@ -6,16 +6,21 @@ on:
             - '*'
     workflow_dispatch:
 
+permissions:
+    contents: read
+
 jobs:
     build:
         name: Build release zip
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
         steps:
             - name: Checkout
               uses: actions/checkout@v7
 
             - name: Setup WP-CLI
-              uses: godaddy-wordpress/setup-wp-cli@1
+              uses: godaddy-wordpress/setup-wp-cli@80c9a89bd347082429795c0f12acf567e2c390d4 # 1
 
             - name: Run package installs and builds
               run: |
@@ -50,24 +55,24 @@ jobs:
             - name: Composer audit
               run: composer audit --abandoned=ignore
 
-            - uses: anchore/sbom-action@v0
+            - uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0
 
             - name: Set licence server
-              uses: richardrigutins/replace-in-files@v3
+              uses: richardrigutins/replace-in-files@bca25c5a547c8caa5e4db158b34ee8e8c7539ccf # v3
               with:
                 files: 'inc/constants_urls.php'
                 search-text: '@@UrlLicense@@'
                 replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/'
 
             - name: Set update server
-              uses: richardrigutins/replace-in-files@v3
+              uses: richardrigutins/replace-in-files@bca25c5a547c8caa5e4db158b34ee8e8c7539ccf # v3
               with:
                 files: 'inc/constants_urls.php'
                 search-text: '@@UrlUpdate@@'
                 replacement-text: 'https://laolaweb.com/wp-json/lwreleases/personio-integration/'
 
             - name: Set costs server
-              uses: richardrigutins/replace-in-files@v3
+              uses: richardrigutins/replace-in-files@bca25c5a547c8caa5e4db158b34ee8e8c7539ccf # v3
               with:
                 files: 'inc/constants_urls.php'
                 search-text: '@@UrlCosts@@'
@@ -77,7 +82,7 @@ jobs:
               run: vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration --exclude=Section.php --exclude=Tab.php --exclude=Import.php --exclude=Export.php --exclude=Field_Base.php --exclude=Settings.php --exclude=Page.php --exclude=Widget_Base.php --exclude=Transients.php
 
             - name: Generate checksum
-              uses: Solratic/checksum-action@v1
+              uses: Solratic/checksum-action@9273babc6fb8a5eb0d60dc44e67480c7439fcb7b # v1
               with:
                     pattern: "inc/constants_urls.php"
                     suffix: "MD5"
@@ -96,21 +101,21 @@ jobs:
               run: vendor/bin/phpcs .
 
             - name: Set version number 1
-              uses: richardrigutins/replace-in-files@v3
+              uses: richardrigutins/replace-in-files@bca25c5a547c8caa5e4db158b34ee8e8c7539ccf # v3
               with:
                   files: 'personio-integration-light.php'
                   search-text: '@@VersionNumber@@'
                   replacement-text: ${{ github.ref_name }}
 
             - name: Set version number 2
-              uses: richardrigutins/replace-in-files@v3
+              uses: richardrigutins/replace-in-files@bca25c5a547c8caa5e4db158b34ee8e8c7539ccf # v3
               with:
                   files: 'uninstall.php'
                   search-text: '@@VersionNumber@@'
                   replacement-text: ${{ github.ref_name }}
 
             - name: Set version number 3
-              uses: richardrigutins/replace-in-files@v3
+              uses: richardrigutins/replace-in-files@bca25c5a547c8caa5e4db158b34ee8e8c7539ccf # v3
               with:
                   files: 'readme.txt'
                   search-text: '@@VersionNumber@@'
@@ -131,7 +136,7 @@ jobs:
                 rm dev-composer.json
 
             - name: Run PCP check
-              uses: wordpress/plugin-check-action@v1
+              uses: wordpress/plugin-check-action@10857da14b6c2246d15402b3e69f777edcf8c12e # v1
               with:
                   exclude-directories: |
                     app/Dependencies/easyTransientsForWordPress
@@ -149,7 +154,7 @@ jobs:
               run: |
                   cd ..
                   mv ${{ github.event.repository.name }} personio-integration-light
-                  zip -r -q personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/* -x "*/.git/*" "*/.github/*" "*/blocks/*/src/*" "*/doc/*" "*/legacy-classes/Divi/.yarn/*" "*/phpcs.xml" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/phpcs.xml.dist" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "/.editorconfig" "*/tmp/*"
+                  zip -r -q personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/* -x "*/.git/*" "*/.github/*" "*/blocks/*/src/*" "*/doc/*" "*/legacy-classes/Divi/.yarn/*" "*/phpcs.xml" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/phpcs.xml.dist" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "*/tmp/*" "personio-integration-light/.editorconfig" "personio-integration-light/.gitattributes" "personio-integration-light/.gitignore" "personio-integration-light/tests/*" "personio-integration-light/example/*" "personio-integration-light/bin/*" "personio-integration-light/build/*" "personio-integration-light/svn/*" "personio-integration-light/assets/*" "personio-integration-light/releases/*" "personio-integration-light/Taskfile.yml" "personio-integration-light/dev-composer.*" "personio-integration-light/phpunit.xml.dist" "personio-integration-light/phpstan.neon" "personio-integration-light/readme.md" "personio-integration-light/changelog.md" "personio-integration-light/CONTRIBUTING.md" "personio-integration-light/CODE_OF_CONDUCT.md" "personio-integration-light/blocks/commands.js" "personio-integration-light/inc/constants_urls.php.dist" "personio-integration-light/smoke-result.txt"
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/autoload.php
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/composer/*
                   zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/*/build/*
@@ -161,7 +166,7 @@ jobs:
                   cp personio-integration-light_${{ github.ref_name }}.zip ${{ github.event.repository.name }}/
 
             - name: Create Release
-              uses: softprops/action-gh-release@v3
+              uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
               if: startsWith(github.ref, 'refs/tags/')
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

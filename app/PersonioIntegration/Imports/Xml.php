@@ -139,8 +139,12 @@ class Xml extends Imports_Base {
 		// set max counter.
 		$language_count = \count( $languages );
 
-		// mark the import as running with its start-time.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
+		// mark the import as running with its start-time (atomic), bail if another import got the lock in the meantime.
+		if ( ! $this->acquire_lock() ) {
+			$this->add_error( __( 'Import is already running. Please wait a moment until it is finished.', 'personio-integration-light' ) );
+			$this->handle_errors();
+			return;
+		}
 
 		// set status.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import starting ..', 'personio-integration-light' ) );
@@ -162,6 +166,12 @@ class Xml extends Imports_Base {
 
 		// set some counter.
 		$imported_positions = 0;
+
+		// list of Personio URLs where at least one language did not change since the last import.
+		$unchanged_urls = array();
+
+		// count of URL/language-combinations without changes.
+		$unchanged_count = 0;
 		$this->set_import_count( 0 );
 		$this->set_import_max_count( 0 );
 
@@ -187,6 +197,12 @@ class Xml extends Imports_Base {
 
 					// update counter for imported positions.
 					$imported_positions += (int) \count( $import_obj->get_imported_positions() );
+
+					// remember URLs without changes to prevent the deletion of their positions during cleanup.
+					if ( $import_obj->has_no_changes() ) {
+						$unchanged_urls[] = untrailingslashit( $import_url );
+						++$unchanged_count;
+					}
 				}
 			}
 		} catch ( Error $e ) {
@@ -198,7 +214,7 @@ class Xml extends Imports_Base {
 			$this->add_error( \sprintf( __( 'Error occurred. Check <a href="%1$s">the log</a> for details.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'logs' ) ) ) );
 
 			// mark import as not running anymore.
-			update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+			$this->release_lock();
 		}
 
 		// finalize progress for WP CLI.
@@ -216,7 +232,7 @@ class Xml extends Imports_Base {
 		 */
 		if ( apply_filters( 'personio_integration_light_import_bail_before_cleanup', $false, $instance ) ) {
 			// mark import as not running anymore.
-			update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+			$this->release_lock();
 
 			// do nothing more.
 			return;
@@ -224,13 +240,14 @@ class Xml extends Imports_Base {
 
 		// clean up the database if no errors occurred.
 		if ( ! $this->has_errors() ) {
-			// do not clean up if no positions have been imported, but positions have been read from XML.
-			if ( 0 === $imported_positions && $this->get_import_count() > 0 ) {
+			// do not clean up if no positions have been imported, but positions have been read from XML,
+			// or if no URL/language had any changes since the last import.
+			if ( 0 === $imported_positions && ( $this->get_import_count() > 0 || ( $unchanged_count > 0 && $unchanged_count === \count( $personio_urls ) * $language_count ) ) ) {
 				// output success-message.
 				Helper::is_cli() ? \WP_CLI::success( 'Import has been run but no changes have been imported.' ) : false;
 
 				// mark import as not running anymore.
-				update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+				$this->release_lock();
 
 				// set status.
 				update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import completed.', 'personio-integration-light' ) );
@@ -281,6 +298,9 @@ class Xml extends Imports_Base {
 						/* translators: %1$s will be replaced by the PersonioId. */
 						Log::get_instance()->add( \sprintf( __( 'Removing the update flag for %1$s failed.', 'personio-integration-light' ), esc_html( $personio_id ) ), 'error', 'import' );
 					}
+				} elseif ( ! empty( $unchanged_urls ) && \in_array( untrailingslashit( $position_obj->get_personio_account()->get_url() ), $unchanged_urls, true ) ) {
+					// do not delete positions from a Personio URL without changes, as they have not been imported in this run.
+					continue;
 				} else {
 					// delete this position from the database without using trash.
 					$result = wp_delete_post( $position_obj->get_id(), true );
@@ -337,7 +357,7 @@ class Xml extends Imports_Base {
 		do_action( 'personio_integration_import_finished', $step );
 
 		// mark import as not running anymore.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+		$this->release_lock();
 
 		// set status.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import completed.', 'personio-integration-light' ) );
@@ -476,5 +496,14 @@ class Xml extends Imports_Base {
 	 */
 	public function can_be_enabled_by_user(): bool {
 		return \function_exists( 'simplexml_load_string' );
+	}
+
+	/**
+	 * Return whether this import object is usable.
+	 *
+	 * @return bool
+	 */
+	public function is_usable(): bool {
+		return true;
 	}
 }

@@ -25,6 +25,14 @@ class Languages {
 	 * @return array<string,string>
 	 */
 	public static function validate( mixed $values ): array {
+		// reject any value which is not an array.
+		if ( ! \is_array( $values ) ) {
+			$values = array();
+		}
+
+		// only allow supported languages as keys.
+		$values = array_intersect_key( $values, \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_languages() );
+
 		// if empty set fallback language.
 		if ( empty( $values ) ) {
 			add_settings_error( 'personioPositionLanguages', 'personioPositionLanguages', __( 'You must enable one language. English will be set.', 'personio-integration-light' ) );

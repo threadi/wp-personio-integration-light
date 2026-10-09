@@ -76,9 +76,14 @@ class Templates {
 	 * @noinspection PhpUnused
 	 */
 	public function add_block_templates( array $template_list, array $query, string $template_type ): array {
-		// bail if theme is not a block theme.
+		// bail if theme is not a block theme: return the list unchanged.
 		if ( ! Helper::theme_is_fse_theme() ) {
-			return array();
+			return $template_list;
+		}
+
+		// bail if this is not a request for templates (e.g. for template parts).
+		if ( 'wp_template' !== $template_type ) {
+			return $template_list;
 		}
 
 		// get post type.
@@ -307,7 +312,7 @@ class Templates {
 				'ID'           => $template->get_post_id(),
 				'post_content' => $updated_content,
 			);
-			wp_update_post( $query );
+			wp_update_post( wp_slash( $query ) );
 		}
 	}
 

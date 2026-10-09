@@ -143,11 +143,21 @@ class Details extends Widget_Base {
 			$attributes['classes'] = '';
 		}
 
+		// normalize the excerpt setting to a list (e.g., if set as a comma-separated string via shortcode).
+		if ( ! empty( $attributes['excerpt'] ) && ! \is_array( $attributes['excerpt'] ) ) {
+			$attributes['excerpt'] = \is_string( $attributes['excerpt'] ) ? array_filter( array_map( 'trim', explode( ',', $attributes['excerpt'] ) ) ) : array();
+		}
+
 		// get the excerpts for this position.
 		if ( ! empty( $attributes['excerpt'] ) ) {
 
 			// loop through each configured detail taxonomy.
 			foreach ( $attributes['excerpt'] as $taxonomy_slug ) {
+				// bail if the slug is not a string.
+				if ( ! \is_string( $taxonomy_slug ) ) {
+					continue;
+				}
+
 				// get the taxonomy name by the given slug (e.g., office => personioOffice).
 				$taxonomy_name = Taxonomies::get_instance()->get_taxonomy_name_by_slug( $taxonomy_slug );
 
@@ -157,10 +167,10 @@ class Details extends Widget_Base {
 				}
 
 				// get the taxonomy plural label.
-				$taxonomy_label = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name, $attributes['lang'] )['name'];
+				$taxonomy_label = Taxonomies::get_instance()->get_taxonomy_label( $taxonomy_name, (string) ( $attributes['lang'] ?? '' ) )['name'];
 
 				// get the default terms for the terms of this taxonomy.
-				$terms_label = Taxonomies::get_instance()->get_default_terms_for_taxonomy( $taxonomy_name, $attributes['lang'] );
+				$terms_label = Taxonomies::get_instance()->get_default_terms_for_taxonomy( $taxonomy_name, (string) ( $attributes['lang'] ?? '' ) );
 
 				// get terms this position is using on this taxonomy.
 				$terms = get_the_terms( $position->get_id(), $taxonomy_name );
@@ -199,7 +209,7 @@ class Details extends Widget_Base {
 						}
 
 						// add the term name to the list.
-						$values .= $term->name;
+						$values .= $name;
 					}
 
 					// set collected values as detail content.
@@ -218,7 +228,7 @@ class Details extends Widget_Base {
 			if ( empty( $attributes['excerpt_template'] ) ) {
 				$template = get_option( is_singular() ? 'personioIntegrationTemplateDetailsExcerptsTemplate' : 'personioIntegrationTemplateListingExcerptsTemplate' );
 			} else {
-				$template = $attributes['excerpt_template'];
+				$template = Templates::get_instance()->get_valid_template_name( $attributes['excerpt_template'], 'parts/details' );
 			}
 
 			$personio_attributes = $attributes;

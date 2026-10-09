@@ -37,39 +37,31 @@ trait Helper {
 		foreach ( $fields as $name => $field ) {
 			switch ( $field['type'] ) {
 				case 'select':
-					// get actual value.
-					$selected_value = array( ! empty( $instance[ $name ] ) ? $instance[ $name ] : $field['std'] );
+					// check if this is a multiselect.
+					$is_multiple = isset( $field['multiple'] ) && false !== $field['multiple'];
 
-					// multiselect.
-					$multiple = '';
-					if ( isset( $field['multiple'] ) && false !== $field['multiple'] ) {
-						$multiple = ' multiple="multiple"';
-						if ( ! empty( $instance[ $name ] ) && \is_array( $instance[ $name ] ) ) {
-							$selected_value = array();
-							foreach ( $field['values'] as $n => $v ) {
-								if ( false !== \in_array( $n, $instance[ $name ], true ) ) {
-									$selected_value[] = $n;
-								}
-							}
-						}
-					}
+					// get actual value (saved setting or the default) as list of strings.
+					// -> option values are array keys which could be integers, so compare them as strings.
+					$current_value  = ! empty( $instance[ $name ] ) ? $instance[ $name ] : ( $field['std'] ?? '' );
+					$selected_value = array_map( 'strval', array_filter( (array) $current_value, 'is_scalar' ) );
 
-					// define field-name.
-					$name = $this->get_field_name( $name );
-					if ( isset( $field['multiple'] ) && false !== $field['multiple'] ) {
-						$name .= '[]';
+					// define field-ID and field-name.
+					$field_id   = $this->get_field_id( $name );
+					$field_name = $this->get_field_name( $name );
+					if ( $is_multiple ) {
+						$field_name .= '[]';
 					}
 
 					// output.
 					?>
 					<p>
-						<label for="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>"><?php echo esc_html( $field['title'] ); ?></label>
-						<select class="widefat" id="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" name="<?php echo esc_attr( $name ); ?>"<?php echo esc_attr( $multiple ); ?>>
+						<label for="<?php echo esc_attr( $field_id ); ?>"><?php echo esc_html( $field['title'] ); ?></label>
+						<select class="widefat" id="<?php echo esc_attr( $field_id ); ?>" name="<?php echo esc_attr( $field_name ); ?>"<?php echo $is_multiple ? ' multiple="multiple"' : ''; ?>>
 							<?php
 							foreach ( $field['values'] as $value => $title ) {
 								?>
-								<option value="<?php echo esc_attr( $value ); ?>"<?php echo ( \in_array( $value, $selected_value, true ) ? ' selected="selected"' : '' ); ?>><?php echo esc_html( $title ); ?></option>
-															<?php
+								<option value="<?php echo esc_attr( $value ); ?>"<?php echo ( \in_array( (string) $value, $selected_value, true ) ? ' selected="selected"' : '' ); ?>><?php echo esc_html( $title ); ?></option>
+								<?php
 							}
 							?>
 						</select>
@@ -106,14 +98,14 @@ trait Helper {
 				case 'select':
 					if ( ! empty( $field['multiple'] ) ) {
 						$values = array();
-						if ( ! empty( $new_instance[ $name ] ) ) {
+						if ( ! empty( $new_instance[ $name ] ) && \is_array( $new_instance[ $name ] ) ) {
 							foreach ( $new_instance[ $name ] as $v ) {
 								$values[] = sanitize_text_field( $v );
 							}
 						}
 						$instance[ $name ] = $values;
 					} else {
-						$instance[ $name ] = sanitize_text_field( $new_instance[ $name ] );
+						$instance[ $name ] = sanitize_text_field( $new_instance[ $name ] ?? '' );
 					}
 					break;
 				case 'number':

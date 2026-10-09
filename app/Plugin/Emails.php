@@ -197,9 +197,20 @@ class Emails {
 		// get the actual list of new position from this import.
 		$new_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, array() );
 
+		// bail if no new positions have been imported.
+		if ( empty( $new_positions ) || ! \is_array( $new_positions ) ) {
+			return;
+		}
+
 		// send email.
 		$email = new NewPositions();
 		$email->set_new_positions( $new_positions );
+
+		// bail if none of the new positions does exist anymore.
+		if ( ! $email->has_new_positions() ) {
+			return;
+		}
+
 		$email->send();
 	}
 
@@ -212,8 +223,8 @@ class Emails {
 		// get the actual list of new position from this import.
 		$deleted_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, array() );
 
-		// bail if no new positions have been imported.
-		if ( empty( $deleted_positions ) ) {
+		// bail if no positions have been deleted.
+		if ( empty( $deleted_positions ) || ! \is_array( $deleted_positions ) ) {
 			return;
 		}
 
@@ -221,6 +232,9 @@ class Emails {
 		$email = new DeletedPositions();
 		$email->set_deleted_positions( $deleted_positions );
 		$email->send();
+
+		// reset the list of deleted positions as they have been reported.
+		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS );
 	}
 
 	/**
@@ -403,13 +417,8 @@ class Emails {
 			return $args;
 		}
 
-		// bail if the header "X-Mailer" is not set.
-		if ( ! isset( $args['headers']['X-Mailer'] ) ) {
-			return $args;
-		}
-
 		// bail if the header "X-Mailer" is not our plugin.
-		if ( Helper::get_plugin_name() !== $args['headers']['X-Mailer'] ) {
+		if ( ! $this->has_own_mailer_header( $args['headers'] ) ) {
 			return $args;
 		}
 
@@ -435,5 +444,72 @@ class Emails {
 
 		// return resulting mail configuration.
 		return $args;
+	}
+
+	/**
+	 * Return whether the given email headers contain the "X-Mailer" header of this plugin.
+	 *
+	 * Headers could be a string (lines separated by line breaks) or an array of header lines
+	 * (or an associative array with header names as keys).
+	 *
+	 * @param mixed $headers The headers.
+	 *
+	 * @return bool
+	 */
+	private function has_own_mailer_header( mixed $headers ): bool {
+		// bail early if there is no X-Mailer header at all (this filter runs for every email of the website).
+		$headers_string = \is_string( $headers ) ? $headers : (string) wp_json_encode( $headers );
+		if ( false === stripos( $headers_string, 'x-mailer' ) ) {
+			return false;
+		}
+
+		// get our plugin name.
+		$plugin_name = Helper::get_plugin_name();
+
+		// bail if plugin name is unknown.
+		if ( empty( $plugin_name ) ) {
+			return false;
+		}
+
+		// convert a string to a list of lines.
+		if ( \is_string( $headers ) ) {
+			$headers = explode( "\n", str_replace( "\r\n", "\n", $headers ) );
+		}
+
+		// bail if headers are not an array.
+		if ( ! \is_array( $headers ) ) {
+			return false;
+		}
+
+		// check each header.
+		foreach ( $headers as $name => $header ) {
+			// bail if the value is not a string.
+			if ( ! \is_string( $header ) ) {
+				continue;
+			}
+
+			// get name and value of this header.
+			if ( \is_string( $name ) ) {
+				$header_name  = $name;
+				$header_value = $header;
+			} else {
+				// bail if line does not contain a colon.
+				if ( ! str_contains( $header, ':' ) ) {
+					continue;
+				}
+				list( $header_name, $header_value ) = explode( ':', $header, 2 );
+			}
+
+			// bail if this is not the "X-Mailer" header.
+			if ( 'x-mailer' !== strtolower( trim( $header_name ) ) ) {
+				continue;
+			}
+
+			// return whether this is our plugin.
+			return $plugin_name === trim( $header_value );
+		}
+
+		// return false if header has not been found.
+		return false;
 	}
 }

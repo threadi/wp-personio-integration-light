@@ -94,9 +94,6 @@ class Templates {
 		add_action( 'personio_integration_filter_pre', array( $this, 'extend_form_for_simple_permalinks' ) );
 		add_action( 'personio_integration_get_template_before', array( $this, 'add_styles' ) );
 		add_filter( 'personio_integration_show_content', array( $this, 'prevent_content_via_excerpt_loading' ) );
-
-		// expand kses-filter.
-		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ), 10, 2 );
 	}
 
 	/**
@@ -129,10 +126,6 @@ class Templates {
 	 * @return string
 	 */
 	public function get_template( string $template ): string {
-		if ( is_embed() ) {
-			return $template;
-		}
-
 		// reject path traversal outright.
 		if ( str_contains( $template, '..' ) ) {
 			return '';
@@ -470,7 +463,15 @@ class Templates {
 		}
 
 		// return our own archive template.
-		return $this->get_template( 'archive-' . PersonioPosition::get_instance()->get_name() . '.php' );
+		$template = $this->get_template( 'archive-' . PersonioPosition::get_instance()->get_name() . '.php' );
+
+		// backwards compatibility for theme overrides which still use wp_kses_post() for the archive output.
+		// Only active while rendering this archive, never on requests which save user content.
+		if ( ! str_starts_with( wp_normalize_path( $template ), wp_normalize_path( Helper::get_plugin_path() ) ) ) {
+			add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html_for_theme_override' ), 10, 2 );
+		}
+
+		return $template;
 	}
 
 	/**
@@ -839,7 +840,7 @@ class Templates {
 			if ( empty( $attributes['jobdescription_template'] ) ) {
 				$template = get_option( is_singular() ? 'personioIntegrationTemplateJobDescription' : 'personioIntegrationTemplateListingContentTemplate' );
 			} else {
-				$template = $attributes['jobdescription_template'];
+				$template = $this->get_valid_template_name( $attributes['jobdescription_template'], 'parts/jobdescription' );
 			}
 			$template_file = 'parts/jobdescription/' . $template . '.php';
 		}
@@ -861,70 +862,62 @@ class Templates {
 	}
 
 	/**
-	 * Extend kses-filter for the form-element if our own cpt is called.
+	 * Return the allowed HTML for the output of our own templates, including the filter form.
 	 *
-	 * @param array<string,mixed> $allowed_tags List of allowed tags and attributes.
-	 * @param string              $context The context where this is called.
+	 * Hint: this is only used for our own output and does not change the global "post" context,
+	 * which is also used to filter user content on saving.
 	 *
-	 * @return array<string,mixed>
+	 * @return array<string,array<string,bool>>
 	 */
-	public function add_kses_html( array $allowed_tags, string $context ): array {
-		$false = false;
-		/**
-		 * Prevent filtering the HTML code via kses.
-		 * We need this only for the filter-form.
-		 *
-		 * @since 3.0.0 Available since 3.0.0.
-		 *
-		 * @param bool $false False if the filter should be run.
-		 * @noinspection PhpConditionAlreadyCheckedInspection
-		 */
-		if ( apply_filters( 'personio_integration_add_kses_filter', $false ) ) {
-			return $allowed_tags;
-		}
+	public function get_allowed_html(): array {
+		$allowed_tags = wp_kses_allowed_html( 'post' );
 
-		// bail if context is not "post".
-		if ( 'post' !== $context ) {
-			return $allowed_tags;
-		}
-
-		// add the necessary fields for the filter, if not already set.
-		if ( empty( $allowed_tags['form'] ) ) {
-			$allowed_tags['form'] = array(
+		$allowed_tags['form']   = array_merge(
+			$allowed_tags['form'] ?? array(),
+			array(
 				'action' => true,
 				'method' => true,
 				'class'  => true,
 				'id'     => true,
-			);
-		}
-		if ( empty( $allowed_tags['select'] ) ) {
-			$allowed_tags['select'] = array(
+			)
+		);
+		$allowed_tags['select'] = array_merge(
+			$allowed_tags['select'] ?? array(),
+			array(
 				'class' => true,
 				'id'    => true,
 				'name'  => true,
-			);
-		}
-		if ( empty( $allowed_tags['option'] ) ) {
-			$allowed_tags['option'] = array(
+			)
+		);
+		$allowed_tags['option'] = array_merge(
+			$allowed_tags['option'] ?? array(),
+			array(
 				'class'    => true,
 				'id'       => true,
 				'selected' => true,
 				'value'    => true,
-			);
-		}
-		if ( empty( $allowed_tags['input'] ) ) {
-			$allowed_tags['input'] = array(
+			)
+		);
+		$allowed_tags['input']  = array_merge(
+			$allowed_tags['input'] ?? array(),
+			array(
 				'class'       => true,
 				'id'          => true,
 				'name'        => true,
 				'type'        => true,
 				'value'       => true,
 				'placeholder' => true,
-			);
-		}
+			)
+		);
 
-		// return the list of allowed tags.
-		return $allowed_tags;
+		/**
+		 * Filter the allowed HTML for the output of Personio templates.
+		 *
+		 * @since 6.0.0 Available since 6.0.0.
+		 *
+		 * @param array<string,array<string,bool>> $allowed_tags List of allowed tags with their attributes.
+		 */
+		return apply_filters( 'personio_integration_light_allowed_html', $allowed_tags );
 	}
 
 	/**
@@ -1184,14 +1177,17 @@ class Templates {
 	 */
 	public function add_styles( array $attributes ): void {
 		// bail if styles are not set.
-		if ( empty( $attributes['styles'] ) ) {
+		if ( empty( $attributes['styles'] ) || ! \is_string( $attributes['styles'] ) ) {
 			return;
 		}
+
+		// prevent breaking out of the <style> element: CSS never needs "<".
+		$styles = str_replace( '<', '', wp_strip_all_tags( $attributes['styles'] ) );
 
 		// if this is a block theme, add styles the modern way.
 		if ( Helper::theme_is_fse_theme() && ! Helper::is_rest_request() ) {
 			// show these styles the modern way.
-			wp_add_inline_style( 'wp-block-library', $attributes['styles'] );
+			wp_add_inline_style( 'wp-block-library', $styles );
 
 			// and do nothing more.
 			return;
@@ -1200,7 +1196,7 @@ class Templates {
 		// show this styles the classic way.
 		wp_register_style( 'personio-integration-generated-styles', false, array(), WP_PERSONIO_INTEGRATION_VERSION, 'all' );
 		wp_enqueue_style( 'personio-integration-generated-styles' );
-		wp_add_inline_style( 'personio-integration-generated-styles', $attributes['styles'] );
+		wp_add_inline_style( 'personio-integration-generated-styles', $styles );
 	}
 
 	/**
@@ -1210,5 +1206,41 @@ class Templates {
 	 */
 	public function prevent_content_via_excerpt_loading(): bool {
 		return ! doing_filter( 'get_the_excerpt' );
+	}
+
+	/**
+	 * Extend the "post" context only while rendering a theme override of our archive template.
+	 *
+	 * @deprecated 6.0.0 Theme overrides should use wp_kses() with Templates::get_allowed_html().
+	 *
+	 * @param array<string,array<string,bool>> $allowed_tags The allowed tags.
+	 * @param string|array<mixed>              $context The context.
+	 *
+	 * @return array<string,array<string,bool>>
+	 */
+	public function add_kses_html_for_theme_override( array $allowed_tags, string|array $context ): array {
+		if ( 'post' !== $context ) {
+			return $allowed_tags;
+		}
+		return array_merge( $allowed_tags, array_intersect_key( $this->get_allowed_html(), array_flip( array( 'form', 'select', 'option', 'input' ) ) ) );
+	}
+
+	/**
+	 * Return the given template name if it is a valid template in the given folder, otherwise the default.
+	 *
+	 * @param mixed  $name    The template name, e.g. from block or shortcode attributes.
+	 * @param string $folder  The folder below templates/, e.g. "parts/jobdescription".
+	 * @param string $default The default template name.
+	 *
+	 * @return string
+	 */
+	public function get_valid_template_name( mixed $name, string $folder, string $default = 'default' ): string {
+		// only simple names: letters, numbers, "-" and "_" (no paths).
+		if ( ! \is_string( $name ) || ! preg_match( '/^[a-z0-9_-]+$/iD', $name ) ) {
+			return $default;
+		}
+
+		// the template file must exist (in the theme, the plugin or via filter).
+		return $this->has_template( $folder . '/' . $name . '.php' ) ? $name : $default;
 	}
 }

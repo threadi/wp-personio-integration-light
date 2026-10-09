@@ -82,6 +82,13 @@ class Api_Request {
 	private string $md5 = '';
 
 	/**
+	 * List of keys whose values must never be written to the log.
+	 *
+	 * @var array<int,string>
+	 */
+	private const SENSITIVE_KEYS = array( 'authorization', 'client_secret', 'client_id', 'token', 'access_token', 'refresh_token' );
+
+	/**
 	 * Constructor to build this object.
 	 */
 	public function __construct() {}
@@ -134,21 +141,22 @@ class Api_Request {
 		 */
 		$time_limit = apply_filters( 'personio_integration_light_request_time_limit', $time_limit );
 
+		// remove old entries from the request table.
+		$this->cleanup_requests();
+
 		// check if there have not been 150 requests in the last 90 seconds to Personio.
 		// -> we use a puffer of 30 seconds more than the Personio API requires.
-		$results = Db::get_instance()->get_results(
-			$wpdb->prepare(
-				'SELECT
-                `id`
-            FROM ' . $wpdb->prefix . 'personio_api_requests
-            WHERE
-                insertdate >= DATE_SUB( %s, INTERVAL %d SECOND)',
-				current_time( 'mysql', true ),
-				absint( $time_limit )
-			),
-			ARRAY_A
+		$request_count = absint(
+			$wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Custom plugin table; WP caching/query APIs don't apply.
+				$wpdb->prepare(
+					'SELECT COUNT(*) FROM %i WHERE insertdate >= DATE_SUB( %s, INTERVAL %d SECOND)',
+					$wpdb->prefix . 'personio_api_requests',
+					current_time( 'mysql', true ),
+					absint( $time_limit )
+				)
+			)
 		);
-		if ( \count( $results ) >= 150 ) {
+		if ( $request_count >= 150 ) {
 			// log this as an error.
 			$this->add_error( __( 'More than 150 requests were sent to Personio in the last 90 seconds - we will try it later to get around the limitation of Personio.', 'personio-integration-light' ) );
 
@@ -176,7 +184,7 @@ class Api_Request {
 			'headers'     => $headers,
 			'httpversion' => '1.1',
 			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
-			'redirection' => 10,
+			'redirection' => 0, // API endpoints do not redirect, and the authorization header must not be sent anywhere else.
 			'body'        => $this->get_post_data(),
 		);
 
@@ -233,15 +241,52 @@ class Api_Request {
 			}
 		}
 
+		// anonymize credentials in a copy of the request and the response for logging.
+		$log_args = $this->anonymize_for_log( $args );
+
+		$log_response = $this->get_response();
+		$decoded      = json_decode( $log_response, true );
+		if ( \is_array( $decoded ) ) {
+			$log_response = wp_json_encode( $this->anonymize_for_log( $decoded ) );
+		}
+
 		// log this request.
 		$log_text  = __( 'URL:', 'personio-integration-light' ) . ' <code>' . esc_url( $this->get_url() ) . '</code>';
-		$log_text .= '<br><br>' . __( 'Request:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $args ) . '</code>';
-		$log_text .= '<br><br>' . __( 'HTTP-Status:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $this->get_http_status() ) . '</code>';
-		$log_text .= '<br><br>' . __( 'Response:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $this->get_response() ) . '</code>';
+		$log_text .= '<br><br>' . __( 'Request:', 'personio-integration-light' ) . ' <code>' . esc_html( Helper::get_json( $log_args ) ) . '</code>';
+		$log_text .= '<br><br>' . __( 'HTTP-Status:', 'personio-integration-light' ) . ' <code>' . absint( $this->get_http_status() ) . '</code>';
+		$log_text .= '<br><br>' . __( 'Response:', 'personio-integration-light' ) . ' <code>' . esc_html( (string) $log_response ) . '</code>';
 		Log::get_instance()->add( $log_text, 'info', 'api', $this->get_md5() );
 
 		// return true as the request itself was successful.
 		return true;
+	}
+
+	/**
+	 * Delete entries older than 1 day from the table of API requests.
+	 *
+	 * Runs at most once per hour.
+	 *
+	 * @return void
+	 */
+	private function cleanup_requests(): void {
+		global $wpdb;
+
+		// bail if cleanup has been run in the last hour.
+		if ( false !== get_transient( 'personio_integration_light_api_requests_cleanup' ) ) {
+			return;
+		}
+
+		// mark the cleanup as run.
+		set_transient( 'personio_integration_light_api_requests_cleanup', 1, HOUR_IN_SECONDS );
+
+		// delete the old entries.
+		$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Custom plugin table; WP caching/query APIs don't apply.
+			$wpdb->prepare(
+				'DELETE FROM %i WHERE insertdate < DATE_SUB( %s, INTERVAL 1 DAY )',
+				$wpdb->prefix . 'personio_api_requests',
+				current_time( 'mysql', true )
+			)
+		);
 	}
 
 	/**
@@ -366,5 +411,28 @@ class Api_Request {
 	 */
 	public function get_errors(): array {
 		return $this->errors;
+	}
+
+	/**
+	 * Return a copy of the given data with all sensitive values replaced.
+	 *
+	 * @param mixed $data Headers, body or decoded response.
+	 *
+	 * @return mixed
+	 */
+	private function anonymize_for_log( mixed $data ): mixed {
+		if ( ! \is_array( $data ) ) {
+			return $data;
+		}
+
+		foreach ( $data as $key => $value ) {
+			if ( \is_string( $key ) && \in_array( strtolower( $key ), self::SENSITIVE_KEYS, true ) ) {
+				$data[ $key ] = 'anonymized';
+				continue;
+			}
+			$data[ $key ] = $this->anonymize_for_log( $value );
+		}
+
+		return $data;
 	}
 }

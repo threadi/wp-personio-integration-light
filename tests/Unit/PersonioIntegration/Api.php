@@ -19,7 +19,9 @@ class Api extends PersonioTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp(): void {
+	public function set_up(): void {
+		parent::set_up();
+
 		// install the db table for the API.
 		\PersonioIntegrationLight\PersonioIntegration\Api::get_instance()->create_table();
 

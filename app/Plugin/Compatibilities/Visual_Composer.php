@@ -24,7 +24,7 @@ class Visual_Composer extends Compatibilities_Base {
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_bold_page_builder';
+	protected string $name = 'personio_integration_compatibility_visual_composer';
 
 	/**
 	 * Instance of this object.

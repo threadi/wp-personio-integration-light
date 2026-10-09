@@ -10,7 +10,6 @@ namespace PersonioIntegrationLight\Plugin;
 // prevent direct access.
 \defined( 'ABSPATH' ) || exit;
 
-use CryptForWordPress\Method_Base;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
@@ -83,7 +82,6 @@ class License {
 		add_action( 'admin_action_personio_integration_light_install_pro', array( $this, 'install_by_request' ) );
 		add_action( 'admin_action_personio_integration_light_acknowledge_costs_loading', array( $this, 'acknowledge_costs_loading_by_request' ) );
 		add_action( 'admin_action_personio_integration_light_revoke_acknowledge_costs_loading', array( $this, 'revoke_acknowledge_costs_loading_by_request' ) );
-		add_filter( 'http_request_reject_unsafe_urls', array( $this, 'allow_own_safe_domain' ), 10, 2 );
 	}
 
 	/**
@@ -232,7 +230,7 @@ class License {
 		}
 
 		// get entered license key.
-		$this->key = filter_input( INPUT_POST, 'licence_key', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$this->key = isset( $_POST['licence_key'] ) && \is_string( $_POST['licence_key'] ) ? sanitize_text_field( wp_unslash( $_POST['licence_key'] ) ) : '';
 
 		// bail if no license key is given.
 		if ( empty( $this->key ) ) {
@@ -252,11 +250,8 @@ class License {
 		// Create the body with all necessary values to validate the license key.
 		$body = $this->get_data();
 
-		// send the request to API to verify the key.
+		// send the request to API to verify the key (the body is sent form-encoded).
 		$query    = array(
-			'header' => array(
-				'Content-Type' => 'application/json; charset=utf-8',
-			),
 			'method' => 'POST',
 			'body'   => $body,
 		);
@@ -307,12 +302,14 @@ class License {
 
 		// get the body.
 		if ( 200 === $http_status ) {
+			// save the validated key for the installation, so it is not part of the install URL.
+			set_transient( $this->get_license_key_transient_name(), $this->key, 15 * MINUTE_IN_SECONDS );
+
 			// create URL to install Pro.
 			$url = add_query_arg(
 				array(
 					'action' => 'personio_integration_light_install_pro',
 					'nonce'  => wp_create_nonce( 'personio-integration-light-install-pro' ),
-					'key'    => $this->key,
 				),
 				get_admin_url() . 'admin.php'
 			);
@@ -367,67 +364,47 @@ class License {
 			return;
 		}
 
-		// load the costs.
-		$url = add_query_arg(
-			array(
-				'source' => 'personio-integration-light',
-				'plugin' => 'personio-integration',
-			),
-			WP_PERSONIO_INTEGRATION_LIGHT_COSTS_URL
-		);
+		// get the periods with their costs.
+		$periods = $this->get_costs_periods();
 
-		// get possible periods and the billing address for the license from laolaweb.com.
-		$query    = array(
-			'header' => array(
-				'Content-Type' => 'application/json; charset=utf-8',
-			),
-			'method' => 'GET',
-		);
-		$response = wp_remote_get( $url, $query );
-
-		// get the HTTP status.
-		$http_status = absint( wp_remote_retrieve_response_code( $response ) );
-
-		// get the content.
-		$response_body  = wp_remote_retrieve_body( $response );
-		$response_array = json_decode( $response_body, true );
-
-		// bail if HTTP status is not 200.
-		if ( 200 !== $http_status ) {
-			// log this event.
-			Log::get_instance()->add( __( 'Following error occurred during the request to the license server:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $response ) . '</code>', 'error', 'system' );
-
-			// show success message.
-			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_name( 'personio_integration_license_costs_error' );
-			$transient_obj->set_message( __( 'Error during loading the costs for Personio Integration Pro. Check the log for details.', 'personio-integration-light' ) . ' <a href="' . esc_url( $url ) . '" class="button button-primary">' . esc_html__( 'Install now', 'personio-integration-light' ) . '</a>' );
-			$transient_obj->set_type( 'success' );
-			$transient_obj->save();
-
-			// forward user.
-			wp_safe_redirect( wp_get_referer() );
-			exit;
+		// show an error if no costs could be loaded.
+		if ( empty( $periods ) ) {
+			?>
+			<p><?php echo esc_html__( 'Error during loading the costs for Personio Integration Pro. Please try again later. Check the log for details.', 'personio-integration-light' ); ?></p>
+			<?php
+		} else {
+			$this->show_pro_licence_costs_table( $periods );
 		}
 
-		// bail if response does not contain "periods".
-		if ( empty( $response_array['periods'] ) ) {
-			// show success message.
-			$transient_obj = Transients::get_instance()->add();
-			$transient_obj->set_name( 'personio_integration_license_costs_error' );
-			$transient_obj->set_message( __( 'Got no data for costs from laolaweb.com. Please try again later.', 'personio-integration-light' ) . ' <a href="' . esc_url( $url ) . '" class="button button-primary">' . esc_html__( 'Install now', 'personio-integration-light' ) . '</a>' );
-			$transient_obj->set_type( 'success' );
-			$transient_obj->save();
+		?>
+		<img src="<?php echo esc_url( Helper::get_plugin_url() ) . 'gfx/laolaweb-logo.svg'; ?>" alt="">
+		<?php
+			// generate URL to revoke the loading of costs.
+			$url = add_query_arg(
+				array(
+					'action' => 'personio_integration_light_revoke_acknowledge_costs_loading',
+					'nonce'  => wp_create_nonce( 'personio-integration-license-costs-revoke' ),
+				),
+				get_admin_url() . 'admin.php'
+			)
+		?>
+		<a href="<?php echo esc_url( $url ); ?>" class="button button-primary"><?php echo esc_html__( 'Revoke consent to load data', 'personio-integration-light' ); ?></a>
+		<?php
+	}
 
-			// forward user.
-			wp_safe_redirect( wp_get_referer() );
-			exit;
-		}
-
+	/**
+	 * Show the table with the given periods and their costs.
+	 *
+	 * @param array<int|string,mixed> $periods List of periods.
+	 *
+	 * @return void
+	 */
+	private function show_pro_licence_costs_table( array $periods ): void {
 		?>
 		<table>
 			<tr>
 			<?php
-			foreach ( $response_array['periods'] as $period ) {
+			foreach ( $periods as $period ) {
 				?>
 						<td>
 						<?php
@@ -448,7 +425,7 @@ class License {
 			</tr>
 			<tr>
 				<?php
-				foreach ( $response_array['periods'] as $period ) {
+				foreach ( $periods as $period ) {
 					?>
 						<td>
 							<a href="<?php echo esc_url( Helper::get_pro_url() ); ?>" title="<?php echo esc_attr( $period['label'] ); ?>" class="button button-primary" target="_blank"><?php echo esc_html__( 'More infos & book', 'personio-integration-light' ); ?></a>
@@ -458,19 +435,79 @@ class License {
 				?>
 			</tr>
 		</table>
-		<img src="<?php echo esc_url( Helper::get_plugin_url() ) . 'gfx/laolaweb-logo.svg'; ?>" alt="">
 		<?php
-			// generate URL to revoke the loading of costs.
-			$url = add_query_arg(
-				array(
-					'action' => 'personio_integration_light_revoke_acknowledge_costs_loading',
-					'nonce'  => wp_create_nonce( 'personio-integration-license-costs-revoke' ),
-				),
-				get_admin_url() . 'admin.php'
-			)
-		?>
-		<a href="<?php echo esc_url( $url ); ?>" class="button button-primary"><?php echo esc_html__( 'Revoke consent to load data', 'personio-integration-light' ); ?></a>
-		<?php
+	}
+
+	/**
+	 * Return the periods with their costs for Personio Integration Pro from laolaweb.com.
+	 *
+	 * The successful response is cached for 12 hours.
+	 *
+	 * @return array<int|string,mixed>
+	 */
+	private function get_costs_periods(): array {
+		// return the cached periods, if available.
+		$periods = get_transient( 'personio_integration_license_costs' );
+		if ( \is_array( $periods ) && ! empty( $periods ) ) {
+			return $periods;
+		}
+
+		// load the costs.
+		$url = add_query_arg(
+			array(
+				'source' => 'personio-integration-light',
+				'plugin' => 'personio-integration',
+			),
+			WP_PERSONIO_INTEGRATION_LIGHT_COSTS_URL
+		);
+
+		// get possible periods and the billing address for the license from laolaweb.com.
+		$query    = array(
+			'headers' => array(
+				'Content-Type' => 'application/json; charset=utf-8',
+			),
+			'method'  => 'GET',
+		);
+		$response = wp_remote_get( $url, $query );
+
+		// get the HTTP status.
+		$http_status = absint( wp_remote_retrieve_response_code( $response ) );
+
+		// bail if HTTP status is not 200.
+		if ( 200 !== $http_status ) {
+			// log this event.
+			Log::get_instance()->add( __( 'Following error occurred during the request to the license server:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $response ) . '</code>', 'error', 'system' );
+
+			// return empty array.
+			return array();
+		}
+
+		// get the content.
+		$response_array = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		// bail if response does not contain "periods".
+		if ( ! \is_array( $response_array ) || empty( $response_array['periods'] ) || ! \is_array( $response_array['periods'] ) ) {
+			// log this event.
+			Log::get_instance()->add( __( 'Got no data for costs from laolaweb.com.', 'personio-integration-light' ), 'error', 'system' );
+
+			// return empty array.
+			return array();
+		}
+
+		// cache the periods.
+		set_transient( 'personio_integration_license_costs', $response_array['periods'], 12 * HOUR_IN_SECONDS );
+
+		// return the periods.
+		return $response_array['periods'];
+	}
+
+	/**
+	 * Return the name of the transient which holds the validated license key for the actual user.
+	 *
+	 * @return string
+	 */
+	private function get_license_key_transient_name(): string {
+		return 'personio_integration_license_key_' . get_current_user_id();
 	}
 
 	/**
@@ -524,19 +561,11 @@ class License {
 		// get wp-version-data.
 		require ABSPATH . WPINC . '/version.php';
 
-		// get crypt method.
-		$crypt_obj = Crypt::get_instance()->get_method();
-
-		// bail if no crypt method could be loaded.
-		if ( ! $crypt_obj instanceof Method_Base ) {
-			return array();
-		}
-
 		// return values as an array.
 		return array(
 			'plugin'               => 'personio-integration',
 			'key'                  => $this->key,
-			'hash'                 => $crypt_obj->get_hash(),
+			'hash'                 => $this->get_installation_id(),
 			'domain'               => preg_replace( '(^https?://)', '', get_option( 'siteurl' ) ),
 			'plugin_version_light' => $plugin_light_data['Version'],
 			'wp_version'           => $wp_version,
@@ -547,19 +576,18 @@ class License {
 	 * Install Pro plugin by request (only with a valid license key).
 	 *
 	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function install_by_request(): void {
 		// check nonce.
 		check_admin_referer( 'personio-integration-light-install-pro', 'nonce' );
 
 		// bail if capability is missing.
-		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
-			return;
+		if ( ! current_user_can( 'activate_plugins' ) || ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
+			wp_die( esc_html__( 'You are not allowed to activate plugins.', 'personio-integration-light' ), '', array( 'response' => 403 ) );
 		}
 
-		// get entered license key.
-		$this->key = filter_input( INPUT_GET, 'key', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		// get the validated license key for this user.
+		$this->key = (string) get_transient( $this->get_license_key_transient_name() );
 
 		// bail if no license key is given.
 		if ( empty( $this->key ) ) {
@@ -594,7 +622,10 @@ class License {
 			}
 
 			// set the license key.
-			update_option( 'personioIntegrationLicenseKey', $this->key );
+			update_option( 'personioIntegrationLicenseKey', $this->key, false );
+
+			// remove the temporary license key.
+			delete_transient( $this->get_license_key_transient_name() );
 
 			// set the referrer URL.
 			$url = (string) wp_get_referer();
@@ -609,6 +640,22 @@ class License {
 
 			// forward user.
 			wp_safe_redirect( $url );
+			exit;
+		}
+
+		// bail if plugins could not be installed (missing capability, multisite without super admin or DISALLOW_FILE_MODS).
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			$transient_obj = Transients::get_instance()->add();
+			$transient_obj->set_name( 'personio_integration_install_error' );
+			$transient_obj->set_message(
+				wp_is_file_mod_allowed( 'personio_integration_install_pro' )
+					? __( 'You are not allowed to install plugins. Please ask an administrator to install Personio Integration Pro.', 'personio-integration-light' )
+					: __( 'Installing plugins is disabled on this website. Please upload Personio Integration Pro manually.', 'personio-integration-light' )
+			);
+			$transient_obj->set_type( 'error' );
+			$transient_obj->save();
+
+			wp_safe_redirect( wp_get_referer() );
 			exit;
 		}
 
@@ -687,7 +734,10 @@ class License {
 		}
 
 		// set the license key.
-		update_option( 'personioIntegrationLicenseKey', $this->key );
+		update_option( 'personioIntegrationLicenseKey', $this->key, false );
+
+		// remove the temporary license key.
+		delete_transient( $this->get_license_key_transient_name() );
 
 		// set the referrer URL.
 		$url = Helper::get_settings_url( 'personioPositionsLicense' );
@@ -703,21 +753,6 @@ class License {
 		// forward user.
 		wp_safe_redirect( $url );
 		exit;
-	}
-
-	/**
-	 * Allow our license-url for requests during an update.
-	 *
-	 * @param bool   $return_value True if the domain in the URL is safe.
-	 * @param string $url The requested URL.
-	 *
-	 * @return bool
-	 */
-	public function allow_own_safe_domain( bool $return_value, string $url ): bool {
-		if ( strpos( $url, (string) wp_parse_url( WP_PERSONIO_INTEGRATION_LIGHT_LICENCE_URL, PHP_URL_HOST ) ) ) {
-			return true;
-		}
-		return $return_value;
 	}
 
 	/**
@@ -747,7 +782,6 @@ class License {
 	 * Revoke in user settings that he acknowledged to load the costs from laolaweb.com.
 	 *
 	 * @return void
-	 * @noinspection PhpNoReturnAttributeCanBeAddedInspection
 	 */
 	public function revoke_acknowledge_costs_loading_by_request(): void {
 		// check nonce.
@@ -764,5 +798,27 @@ class License {
 		// forward user.
 		wp_safe_redirect( wp_get_referer() . '#personioposition-pro-costs' );
 		exit;
+	}
+
+	/**
+	 * Return a stable, unique, non-sensitive installation identifier used to
+	 * recognize this installation on the license server.
+	 *
+	 * Unlike the encryption key, this ID does not depend on file writability,
+	 * WordPress salts, or the crypt place. It therefore stays stable across
+	 * permission changes, salt rotations, and any migration that keeps the
+	 * database — and it never exposes key material.
+	 *
+	 * @return string
+	 */
+	public function get_installation_id(): string {
+		$installation_id = get_option( 'personioIntegrationInstallationId', '' );
+
+		if ( ! \is_string( $installation_id ) || empty( $installation_id ) ) {
+			$installation_id = wp_generate_uuid4();
+			update_option( 'personioIntegrationInstallationId', $installation_id, true );
+		}
+
+		return $installation_id;
 	}
 }

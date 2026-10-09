@@ -218,13 +218,8 @@ class Site_Health {
 				continue;
 			}
 
-			// get the value.
-			$value = $setting->get_value();
-
-			// mask value if it is an email.
-			if ( \is_string( $value ) && is_email( $value ) ) {
-				$value = 'masked';
-			}
+			// mask emails, also in lists of emails.
+			$value = $this->mask_emails( $setting->get_value() );
 
 			// create the entry.
 			$entry = array(
@@ -239,5 +234,22 @@ class Site_Health {
 
 		// return the resulting list of debug information.
 		return $debug_information;
+	}
+
+	/**
+	 * Mask email addresses in the given value, also inside arrays.
+	 *
+	 * @param mixed $value The value.
+	 *
+	 * @return mixed
+	 */
+	private function mask_emails( mixed $value ): mixed {
+		if ( \is_array( $value ) ) {
+			return array_map( array( $this, 'mask_emails' ), $value );
+		}
+		if ( \is_string( $value ) && is_email( $value ) ) {
+			return 'masked';
+		}
+		return $value;
 	}
 }

@@ -22,60 +22,71 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 	/**
 	 * Validate the Personio-URL.
 	 *
-	 * @param string $value The value from the field.
+	 * @param ?string $value The value from the field.
 	 *
 	 * @return string
 	 */
-	public static function validate( string $value ): string {
-		if ( ! Helper::is_rest_request() ) {
-			$transients_obj = Transients::get_instance();
+	public static function validate( ?string $value ): string {
+		// set value as string if null is given.
+		$value = (string) $value;
 
-			$errors = get_settings_errors();
-			/**
-			 * If a result-entry already exists, do nothing here.
-			 *
-			 * @see https://core.trac.wordpress.org/ticket/21989
-			 */
-			if ( Helper::check_if_setting_error_entry_exists_in_array( 'personioIntegrationUrl', $errors ) ) {
-				return $value;
+		// in REST requests validate without settings errors and keep the stored value if the new one is not valid.
+		if ( Helper::is_rest_request() ) {
+			$value = self::cleanup_url_string( $value );
+			if ( ! self::has_size( $value ) || ! empty( self::rest_validate( $value ) ) ) {
+				return (string) get_option( 'personioIntegrationUrl', '' );
 			}
+			return $value;
+		}
 
-			$error = false;
-			if ( '' === $value ) {
-				add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'The specification of the Personio URL is mandatory.', 'personio-integration-light' ) );
+		// get the transient object.
+		$transients_obj = Transients::get_instance();
+
+		$errors = get_settings_errors();
+		/**
+		 * If a result-entry already exists, do nothing here.
+		 *
+		 * @see https://core.trac.wordpress.org/ticket/21989
+		 */
+		if ( Helper::check_if_setting_error_entry_exists_in_array( 'personioIntegrationUrl', $errors ) ) {
+			return $value;
+		}
+
+		$error = false;
+		if ( '' === $value ) {
+			add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'The specification of the Personio URL is mandatory.', 'personio-integration-light' ) );
+			$error = true;
+		}
+		if ( self::has_size( $value ) ) {
+			$value = self::cleanup_url_string( $value );
+
+			// check if the URL ends with ".jobs.personio.com" or ".jobs.personio.de" with or without "/" on the end.
+			if ( ! self::check_personio_in_url( $value ) ) {
+				add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'The Personio URL must end with ".jobs.personio.com" or ".jobs.personio.de"!', 'personio-integration-light' ) );
 				$error = true;
-			}
-			if ( self::has_size( $value ) ) {
-				$value = self::cleanup_url_string( $value );
-
-				// check if the URL ends with ".jobs.personio.com" or ".jobs.personio.de" with or without "/" on the end.
-				if ( ! self::check_personio_in_url( $value ) ) {
-					add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'The Personio URL must end with ".jobs.personio.com" or ".jobs.personio.de"!', 'personio-integration-light' ) );
+				$value = '';
+			} elseif ( ! self::validate_url( $value ) ) {
+				add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'Please enter a valid URL, e.g., https://example.jobs.personio.com. See also the hints below.', 'personio-integration-light' ) );
+				$error = true;
+				$value = '';
+			} elseif ( Helper::get_personio_url() !== $value ) {
+				if ( ! self::check_url( $value ) ) {
+					$transient_obj = $transients_obj->add();
+					$transient_obj->set_name( 'personio_integration_url_not_usable' );
+					/* translators: %1$s is replaced with the entered Personio-URL */
+					$transient_obj->set_message( \sprintf( __( 'The specified Personio URL %1$s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there.', 'personio-integration-light' ), esc_url( $value ) ) );
+					$transient_obj->set_type( 'error' );
+					$transient_obj->save();
 					$error = true;
 					$value = '';
-				} elseif ( ! self::validate_url( $value ) ) {
-					add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'Please enter a valid URL, e.g., https://example.jobs.personio.com. See also the hints below.', 'personio-integration-light' ) );
-					$error = true;
-					$value = '';
-				} elseif ( Helper::get_personio_url() !== $value ) {
-					if ( ! self::check_url( $value ) ) {
-						$transient_obj = $transients_obj->add();
-						$transient_obj->set_name( 'personio_integration_url_not_usable' );
-						/* translators: %1$s is replaced with the entered Personio-URL */
-						$transient_obj->set_message( \sprintf( __( 'The specified Personio URL %1$s is not usable for this plugin. Please double-check the URL in your Personio-account under Settings > Recruiting > Career Page > Activations. Please also check if the XML interface is enabled there.', 'personio-integration-light' ), esc_url( $value ) ) );
-						$transient_obj->set_type( 'error' );
-						$transient_obj->save();
-						$error = true;
-						$value = '';
-					}
 				}
 			}
+		}
 
-			// reset transient if the URL is set.
-			if ( ! $error ) {
-				$transient_obj = $transients_obj->get_transient_by_name( 'personio_integration_no_url_set' );
-				$transient_obj->delete();
-			}
+		// reset transient if the URL is set.
+		if ( ! $error ) {
+			$transient_obj = $transients_obj->get_transient_by_name( 'personio_integration_no_url_set' );
+			$transient_obj->delete();
 		}
 
 		// return value if all is ok.

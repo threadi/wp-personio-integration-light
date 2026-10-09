@@ -145,7 +145,7 @@ class Log {
 			$is_import_success = ( 'import' === $category && 'success' === $state ) || ( 'system' === $category && 'info' === $state );
 
 			// check if we should log this entry.
-			$should_log = $is_error || $is_import_success || empty( $log_categories ) || in_array( $category, $log_categories, true );
+			$should_log = $is_error || $is_import_success || empty( $log_categories ) || \in_array( $category, $log_categories, true );
 
 			/**
 			 * Filter whether a log entry should be written when debug mode is enabled.
@@ -212,12 +212,21 @@ class Log {
 			return;
 		}
 
+		// bail if the log has been cleaned within the last hour (the cleanup is a full scan of the table).
+		if ( false !== get_transient( 'personio_integration_light_log_cleanup' ) ) {
+			return;
+		}
+
 		global $wpdb;
 
 		$is_running = true;
 
+		// mark the cleanup as done for the next hour, before running it, so errors do not trigger it again.
+		set_transient( 'personio_integration_light_log_cleanup', 1, HOUR_IN_SECONDS );
+
+		// get the max age of entries, at least 1 day.
 		$table_name = (string) esc_sql( $wpdb->prefix . 'personio_import_logs' ); // @phpstan-ignore cast.string
-		$max_age    = absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) );
+		$max_age    = max( 1, absint( get_option( 'personioIntegrationMaxAgeLogEntries' ) ) );
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.NotPrepared -- Custom log table; fixed table name, esc_sql-escaped, %d via absint().
 		$wpdb->query( \sprintf( 'DELETE FROM %s WHERE `time` < DATE_SUB(NOW(), INTERVAL %d DAY) LIMIT 10000', $table_name, $max_age ) );
@@ -254,33 +263,89 @@ class Log {
 	/**
 	 * Get log entries depending on some filters.
 	 *
-	 * Use for each possible condition own statements to match WCS.
+	 * @param int $limit  The max. amount of entries to return (0 for the default limit).
+	 * @param int $offset The amount of entries to skip (for pagination).
 	 *
 	 * @return array<int,mixed>
 	 */
-	public function get_entries(): array {
+	public function get_entries( int $limit = 0, int $offset = 0 ): array {
 		global $wpdb;
 
-		// order table.
-		$order_by = filter_input( INPUT_GET, 'orderby', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( \is_null( $order_by ) ) {
-			$order_by = 'date';
-		}
-		if ( 'date' !== $order_by ) {
-			$order_by = 'date';
-		}
-		$order = strtoupper( (string) filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
+		// order table, only by date.
+		$order_by = 'date';
+		$order    = strtoupper( (string) filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
+		$order    = \in_array( $order, array( 'ASC', 'DESC' ), true ) ? $order : 'DESC';
+
+		/**
+		 * Filter the order direction of the log entries ("ASC" or "DESC").
+		 *
+		 * @since 6.0.0 Available since 6.0.0.
+		 * @param string $order The order direction.
+		 */
+		$order = strtoupper( (string) apply_filters( 'personio_integration_light_log_entries_order', $order ) );
 		$order = \in_array( $order, array( 'ASC', 'DESC' ), true ) ? $order : 'DESC';
 
-		$limit = 10000;
-		/**
-		 * Filter limit to prevent possible errors on big tables.
-		 *
-		 * @since 3.1.0 Available since 3.1.0.
-		 * @param int $limit The actual limit.
-		 */
-		$limit = apply_filters( 'personio_integration_light_log_limit', $limit );
+		// use the default limit (filterable) if no limit (e.g. for pagination) is given.
+		if ( $limit <= 0 ) {
+			/**
+			 * Filter limit to prevent possible errors on big tables.
+			 *
+			 * @since 3.1.0 Available since 3.1.0.
+			 * @param int $limit The actual limit.
+			 */
+			$limit = absint( apply_filters( 'personio_integration_light_log_limit', 10000 ) );
+		}
 
+		// get the conditions.
+		list( $where, $args ) = $this->get_entries_conditions();
+
+		// add limit and offset.
+		$args[] = $limit;
+		$args[] = max( 0, $offset );
+
+		// get and return the entries.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where contains only fixed conditions with placeholders; values use %s/%d.
+		return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->prepare(
+				'SELECT `state`, `time` AS `date`, `log`, `category`
+                FROM `' . $wpdb->prefix . 'personio_import_logs`
+                WHERE 1 = 1' . $where . '
+                ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
+                LIMIT %d OFFSET %d',
+				$args
+			),
+			ARRAY_A
+		);
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
+	}
+
+	/**
+	 * Return the amount of log entries depending on the filters (same filters as get_entries()).
+	 *
+	 * @return int
+	 */
+	public function get_entries_count(): int {
+		global $wpdb;
+
+		// get the conditions.
+		list( $where, $args ) = $this->get_entries_conditions();
+
+		// build the statement.
+		$sql = 'SELECT COUNT(*) FROM `' . $wpdb->prefix . 'personio_import_logs` WHERE 1 = 1' . $where;
+		if ( ! empty( $args ) ) {
+			$sql = $wpdb->prepare( $sql, $args ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $where contains only fixed conditions with placeholders.
+		}
+
+		// return the amount.
+		return absint( $wpdb->get_var( $sql ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.NotPrepared -- Custom log table; $sql is prepared above or contains no values.
+	}
+
+	/**
+	 * Return the conditions for the log entries depending on the filters as SQL with placeholders and their values.
+	 *
+	 * @return array{0: string, 1: array<int,string>}
+	 */
+	private function get_entries_conditions(): array {
 		// get filter.
 		$category = (string) filter_input( INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
@@ -319,96 +384,23 @@ class Log {
 		 */
 		$errors = apply_filters( 'personio_integration_light_log_errors', $errors );
 
-		// add where-condition for errors.
+		// collect the conditions.
 		$where = '';
+		$args  = array();
+		if ( ! empty( $md5 ) ) {
+			$where .= ' AND `md5` = %s';
+			$args[] = $md5;
+		}
+		if ( ! empty( $category ) ) {
+			$where .= ' AND `category` = %s';
+			$args[] = $category;
+		}
 		if ( 1 === $errors ) {
 			$where .= ' AND `state` = "error"';
 		}
 
-		// if only category is set.
-		if ( ! empty( $category ) && empty( $md5 ) ) {
-			// get and return the entries.
-			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where is a fixed literal; values use %s/%d.
-			return Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-				$wpdb->prepare(
-					'SELECT `state`, `time` AS `date`, `log`, `category`
-                    FROM `' . $wpdb->prefix . 'personio_import_logs`
-                    WHERE `category` = %s' . $where . '
-                    ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
-                    LIMIT %d',
-					array( $category, $limit )
-				),
-				ARRAY_A
-			);
-			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
-		}
-
-		// if only md5 is set.
-		if ( empty( $category ) && ! empty( $md5 ) ) {
-			// get and return the entries.
-			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where is a fixed literal; values use %s/%d.
-			return Db::get_instance()->get_results(
-				$wpdb->prepare(
-					'SELECT `state`, `time` AS `date`, `log`, `category`
-                    FROM `' . $wpdb->prefix . 'personio_import_logs`
-                    WHERE `md5` = %s' . $where . '
-                    ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
-                    LIMIT %d',
-					array( $md5, $limit )
-				),
-				ARRAY_A
-			);
-			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
-		}
-
-		// if both are set.
-		if ( ! empty( $category ) ) {
-			// get and return the entries.
-			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where is a fixed literal; values use %s/%d.
-			return Db::get_instance()->get_results(
-				$wpdb->prepare(
-					'SELECT `state`, `time` AS `date`, `log`, `category`
-                    FROM `' . $wpdb->prefix . 'personio_import_logs`
-                    WHERE `md5` = %s AND `category` = %s' . $where . '
-                    ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
-                    LIMIT %d',
-					array( $md5, $category, $limit )
-				),
-				ARRAY_A
-			);
-			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
-		}
-
-		if ( 1 === $errors ) {
-			// return all.
-			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where is a fixed literal; values use %s/%d.
-			return Db::get_instance()->get_results(
-				$wpdb->prepare(
-					'SELECT `state`, `time` AS `date`, `log`, `category`
-                FROM `' . $wpdb->prefix . 'personio_import_logs`
-                WHERE `state` = "error"
-                ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
-                LIMIT %d',
-					array( $limit )
-				),
-				ARRAY_A
-			);
-			// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
-		}
-
-		// return all.
-		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- $order_by/$order are whitelisted identifiers, $where is a fixed literal; values use %s/%d.
-		return Db::get_instance()->get_results(
-			$wpdb->prepare(
-				'SELECT `state`, `time` AS `date`, `log`, `category`
-                FROM `' . $wpdb->prefix . 'personio_import_logs`
-                ORDER BY ' . $order_by . ' ' . $order . ', `id` ' . $order . '
-                LIMIT %d',
-				array( $limit )
-			),
-			ARRAY_A
-		);
-		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
+		// return the conditions.
+		return array( $where, $args );
 	}
 
 	/**

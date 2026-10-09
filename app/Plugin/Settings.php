@@ -136,8 +136,7 @@ class Settings {
 		/**
 		 * Configure the basic settings object.
 		 */
-		$settings_obj  = $this->get_settings_object();
-		$settings_page = $settings_obj->add_page( 'personioPositions' );
+		$settings_obj = $this->get_settings_object();
 		$settings_obj->set_slug( 'personio_integration_light' );
 		$settings_obj->set_plugin_slug( WP_PERSONIO_INTEGRATION_PLUGIN );
 		$settings_obj->set_menu_title( __( 'Settings', 'personio-integration-light' ) );
@@ -208,6 +207,12 @@ class Settings {
 		// initialize this setting object if setup has been completed or if this is a REST API request.
 		if ( Helper::is_rest_request() || Setup::get_instance()->is_completed() ) {
 			$settings_obj->init();
+		}
+
+		// get the settings page.
+		$settings_page = $settings_obj->get_page( 'personioPositions' );
+		if ( ! $settings_page instanceof Page ) {
+			return;
 		}
 
 		/**
@@ -1271,6 +1276,11 @@ class Settings {
 	public function use_classic_view(): void {
 		// check nonce.
 		check_admin_referer( 'personio-integration-light-use-classic-view', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( $this->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// change the setting.
 		update_option( 'personio_integration_light_setting_view', 'classic' );

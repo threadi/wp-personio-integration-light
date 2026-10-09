@@ -58,8 +58,8 @@ class SettingsValidation extends PersonioTestCase {
 			// UrlTimeout: absint with a "> 0" requirement.
 			'timeout: positive kept'     => array( array( UrlTimeout::class, 'validate' ), '30', 30, 'positive timeout stays' ),
 			'timeout: negative absinted' => array( array( UrlTimeout::class, 'validate' ), '-5', 5, 'negative -> absint' ),
-			'timeout: non-numeric -> 0'  => array( array( UrlTimeout::class, 'validate' ), 'abc', 0, 'non-numeric -> 0' ),
-			'timeout: empty -> 0'        => array( array( UrlTimeout::class, 'validate' ), '', 0, 'empty -> 0' ),
+			'timeout: non-numeric -> 30' => array( array( UrlTimeout::class, 'validate' ), 'abc', 30, 'non-numeric -> stored value or default 30, never 0 (unlimited)' ),
+			'timeout: empty -> 30'       => array( array( UrlTimeout::class, 'validate' ), '', 30, 'empty -> stored value or default 30, never 0 (unlimited)' ),
 
 			// ScheduleInterval: empty and a WP-core interval that always exists.
 			'schedule: empty -> empty'   => array( array( ScheduleInterval::class, 'validate' ), '', '', 'empty interval -> empty' ),

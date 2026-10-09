@@ -279,6 +279,28 @@ class Extensions {
 			);
 		}
 
+		// bail if user can not change the state of this extension.
+		if ( ! $obj->can_be_enabled_by_user() ) {
+			wp_send_json_error(
+				array(
+					'detail' =>
+						array(
+							'title'   => __( 'Not possible', 'personio-integration-light' ),
+							'texts'   => array(
+								'<p>' . __( 'You are not allowed to change the state of this extension.', 'personio-integration-light' ) . '</p>',
+							),
+							'buttons' => array(
+								array(
+									'action'  => 'closeDialog();',
+									'variant' => 'primary',
+									'text'    => __( 'OK', 'personio-integration-light' ),
+								),
+							),
+						),
+				)
+			);
+		}
+
 		// toggle the state of the extension (this triggers extension-own handlers).
 		$obj->toggle_state();
 

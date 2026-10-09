@@ -63,11 +63,6 @@ class Api {
 	 * @return void
 	 */
 	public function init(): void {
-		// bail if WordPress has not enabled the development mode.
-		if ( ! Helper::is_development_mode_active() ) {
-			return;
-		}
-
 		// add settings.
 		add_action( 'init', array( $this, 'add_the_settings' ), 20 );
 
@@ -120,6 +115,7 @@ class Api {
 		$setting->set_default( '' );
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
 		$setting->set_save_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
+		$setting->prevent_export( true );
 		$field = new Text( $settings_obj );
 		$field->set_title( __( 'Your Client-ID', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
@@ -133,6 +129,7 @@ class Api {
 		$setting->set_default( '' );
 		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
 		$setting->set_save_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
+		$setting->prevent_export( true );
 		$field = new Password( $settings_obj );
 		$field->set_title( __( 'Access token', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );

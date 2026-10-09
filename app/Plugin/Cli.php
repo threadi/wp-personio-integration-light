@@ -90,7 +90,7 @@ class Cli {
 	 */
 	public function reset_plugin( array $attributes = array(), array $options = array() ): void {
 		\WP_CLI::confirm(
-			sprintf( 'Reset Now Pages on %s? All entries, sources and settings of this site will be deleted.', home_url() ),
+			\sprintf( 'Reset Personio Integration Light on %s? All settings of this plugin will be reset (with --delete-all also all positions, taxonomies and other data of this plugin) on this site.', home_url() ),
 			$options
 		);
 

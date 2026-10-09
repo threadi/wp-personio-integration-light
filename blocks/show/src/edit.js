@@ -51,7 +51,7 @@ export default function Edit( object ) {
 
 	// useSelect to retrieve all entries on our own cpt
 	const positions = useSelect(
-		(select) => select('core').getEntityRecords('postType', 'personioposition', { per_page: -1 }), []
+		(select) => select('core').getEntityRecords('postType', 'personioposition', { per_page: -1, _fields: 'id,title,meta' }), []
 	);
 
   // get taxonomies

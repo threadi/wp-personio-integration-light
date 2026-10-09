@@ -133,8 +133,8 @@ class Db {
 
 		// create the error text.
 		$text  = '<strong>' . __( 'Database-error occurred!', 'personio-integration-light' ) . '</strong>';
-		$text .= '<br><br><em>' . __( 'Statement:', 'personio-integration-light' ) . '</em> <code>' . $sql . '</code>';
-		$text .= '<br><br><em>' . __( 'Error:', 'personio-integration-light' ) . '</em> <code>' . $wpdb->last_error . '</code>';
+		$text .= '<br><br><em>' . __( 'Statement:', 'personio-integration-light' ) . '</em> <code>' . esc_html( $sql ) . '</code>';
+		$text .= '<br><br><em>' . __( 'Error:', 'personio-integration-light' ) . '</em> <code>' . esc_html( (string) $wpdb->last_error ) . '</code>';
 
 		// log this error.
 		Log::get_instance()->add( $text, 'error', 'system' );

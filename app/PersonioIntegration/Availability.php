@@ -416,7 +416,7 @@ class Availability extends Extensions_Base {
 		}
 
 		// get the state.
-		$is_running = 1 === absint( get_option( 'personio-integration-availability-info-nonce', 0 ) );
+		$is_running = 1 === absint( get_option( 'personio_integration_availability_check_running', 0 ) );
 
 		// return the result.
 		wp_send_json(

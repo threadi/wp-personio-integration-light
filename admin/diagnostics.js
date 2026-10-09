@@ -26,14 +26,28 @@ jQuery(document).ready(function($) {
         out.html( '<div class="spinner"></div>' );
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        personio_integration_ajax_error_dialog( errorThrown )
+        out.html( '' );
+        out.css( 'display', 'none' );
+        personio_light_diagnostics_error( errorThrown );
       },
       success: function (result) {
+        // bail if diagnostic could not be run (e.g. missing capability).
+        if( ! result || 'object' !== typeof result || ! result.success || 'string' !== typeof result.data ) {
+          out.html( '' );
+          out.css( 'display', 'none' );
+          personio_light_diagnostics_error();
+          return;
+        }
+
+        // show the results.
         out.html( result.data );
-        btn.prop( 'disabled', false );
-        btn.removeClass( 'disabled' )
         copy_btn.prop( 'disabled', false )
         copy_btn.removeClass( 'disabled' )
+      },
+      complete: function () {
+        // reset the start button in any case.
+        btn.prop( 'disabled', false );
+        btn.removeClass( 'disabled' )
         btn.html( personioIntegrationLightDiagnosticsJsVars.lbl_diagnose_start );
       }
     } );
@@ -56,6 +70,19 @@ jQuery(document).ready(function($) {
     }
   });
 });
+
+/**
+ * Show error if diagnostic could not be run.
+ *
+ * @param errortext The error text (optional).
+ */
+function personio_light_diagnostics_error( errortext ) {
+  if( 'function' === typeof personio_integration_ajax_error_dialog ) {
+    personio_integration_ajax_error_dialog( errortext );
+    return;
+  }
+  window.alert( errortext ? errortext : 'Error' );
+}
 
 /**
  * Copy given text to clipboard.

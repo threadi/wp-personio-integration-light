@@ -127,9 +127,6 @@ class Extensions extends WP_List_Table {
 	 * @return void
 	 */
 	public function prepare_items(): void {
-		// use some hooks.
-		add_filter( 'wp_kses_allowed_html', array( $this, 'add_kses_html' ) );
-
 		// prepare table.
 		$columns  = $this->get_columns();
 		$hidden   = $this->get_hidden_columns();
@@ -300,22 +297,6 @@ class Extensions extends WP_List_Table {
 
 		// output.
 		return $html;
-	}
-
-	/**
-	 * Allow input-field in kses for on/off-toggle.
-	 *
-	 * @param array<string,array<string,bool>> $allowed_tags The allowed tags.
-	 *
-	 * @return array<string,array<string,bool>>
-	 */
-	public function add_kses_html( array $allowed_tags ): array {
-		$allowed_tags['input'] = array(
-			'type'  => true,
-			'class' => true,
-			'id'    => true,
-		);
-		return $allowed_tags;
 	}
 
 	/**

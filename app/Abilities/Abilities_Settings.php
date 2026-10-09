@@ -364,6 +364,11 @@ class Abilities_Settings {
 			return esc_html( $template->get_error_message() );
 		}
 
+		// the template is customized, but not saved via abilities (e.g. in the Site Editor).
+		if ( ! empty( $template['is_customized'] ) && ! Template_Abilities::get_instance()->is_ability_template( $template ) ) {
+			return esc_html__( 'Customized template (not created via abilities)', 'personio-integration-light' );
+		}
+
 		// the template is not saved via abilities.
 		if ( empty( $template['is_customized'] ) ) {
 			$id     = isset( $template['id'] ) && \is_scalar( $template['id'] ) ? (string) $template['id'] : '';
@@ -516,6 +521,15 @@ class Abilities_Settings {
 
 		// reset the template, errors of a page builder must not break the request.
 		try {
+			// only templates saved via abilities can be reset here.
+			$template = $adapter->get_template( $type );
+			if ( $template instanceof WP_Error ) {
+				return $template;
+			}
+			if ( ! empty( $template['is_customized'] ) && ! Template_Abilities::get_instance()->is_ability_template( $template ) ) {
+				return new WP_Error( 'personio_integration_template_not_saved_via_abilities', __( 'The customized template has not been saved via abilities. Reset it in the page builder instead.', 'personio-integration-light' ) );
+			}
+
 			return $adapter->reset_template( $type, false );
 		} catch ( Throwable $e ) {
 			return new WP_Error( 'personio_integration_reset_failed', $e->getMessage() );

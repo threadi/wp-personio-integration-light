@@ -173,7 +173,7 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 
 		// multilingual test: "de" delivers an empty feed, every other language delivers positions.
 		if ( 'GET' === $parsed_args['method'] && str_starts_with( $url, self::$personio_multilang_url ) ) {
-			$file = str_contains( $url, 'language=de' ) ? 'personio_empty.xml' : 'positions.xml';
+			$file = str_contains( $url, 'language=de' ) ? 'positions_empty.xml' : 'positions.xml';
 			$xml  = \PersonioIntegrationLight\Helper::get_wp_filesystem()->get_contents( UNIT_TESTS_DATA_PLUGIN_DIR . $file );
 			return self::mock_http_response( 200, $parsed_args['filename'], $xml );
 		}

@@ -67,7 +67,7 @@ class Page_Builders extends PersonioTestCase {
 			$this->assertInstanceOf( '\PersonioIntegrationLight\PageBuilder\Gutenberg', $gutenberg );
 		}
 		else {
-			$this->hasFailed();
+			$this->fail( 'Gutenberg is not registered as page builder.' );
 		}
 	}
 

@@ -15,6 +15,7 @@ namespace PersonioIntegrationLight\Abilities;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\PersonioIntegration\Taxonomies;
 use PersonioIntegrationLight\Plugin\Templates;
+use Throwable;
 use WP_Error;
 use WP_Query;
 
@@ -317,13 +318,17 @@ class Template_Abilities {
 				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
-						'builder'       => array( 'type' => 'string' ),
-						'type'          => array( 'type' => 'string' ),
-						'id'            => array( 'type' => 'string' ),
-						'source'        => array( 'type' => 'string' ),
-						'is_customized' => array( 'type' => 'boolean' ),
-						'content'       => array( 'type' => 'string' ),
-						'css'           => array(
+						'builder'             => array( 'type' => 'string' ),
+						'type'                => array( 'type' => 'string' ),
+						'id'                  => array( 'type' => 'string' ),
+						'source'              => array( 'type' => 'string' ),
+						'is_customized'       => array( 'type' => 'boolean' ),
+						'is_ability_template' => array(
+							'type'        => 'boolean',
+							'description' => __( 'True if the customized template has been saved via abilities. Customized templates from other sources (e.g. the Site Editor) are only reset with "force": true.', 'personio-integration-light' ),
+						),
+						'content'             => array( 'type' => 'string' ),
+						'css'                 => array(
 							'type'        => 'string',
 							'description' => __( 'The CSS saved for this template with save-template.', 'personio-integration-light' ),
 						),
@@ -427,6 +432,10 @@ class Template_Abilities {
 					'type'  => 'array',
 					'items' => array( 'type' => 'string' ),
 				),
+				'filtered' => array(
+					'type'        => 'boolean',
+					'description' => __( 'True if the template has been changed by the security filter of WordPress before saving.', 'personio-integration-light' ),
+				),
 				'message'  => array( 'type' => 'string' ),
 			),
 		);
@@ -490,6 +499,11 @@ class Template_Abilities {
 							'type'        => 'boolean',
 							'description' => __( 'Only return what would happen, without resetting. Set to false to reset.', 'personio-integration-light' ),
 							'default'     => true,
+						),
+						'force'   => array(
+							'type'        => 'boolean',
+							'description' => __( 'Also reset a customized template, which has not been saved via abilities (e.g. customized in the Site Editor). Use only after the user explicitly agreed.', 'personio-integration-light' ),
+							'default'     => false,
 						),
 					),
 					'default'    => array(),
@@ -576,10 +590,15 @@ class Template_Abilities {
 			return $type;
 		}
 
-		// get the template.
-		$template = $adapter->get_template( $type );
-		if ( $template instanceof WP_Error ) {
-			return $template;
+		// get the template and its CSS, errors of a page builder must not break the request.
+		try {
+			$template = $adapter->get_template( $type );
+			if ( $template instanceof WP_Error ) {
+				return $template;
+			}
+			$css = $adapter->get_css( $type );
+		} catch ( Throwable $e ) {
+			return new WP_Error( 'personio_integration_template_error', $e->getMessage() );
 		}
 
 		// return the result.
@@ -589,8 +608,24 @@ class Template_Abilities {
 				'type'    => $type,
 			),
 			$template,
-			array( 'css' => $adapter->get_css( $type ) )
+			array( 'css' => $css )
 		);
+	}
+
+	/**
+	 * Return whether the given template (result of an adapter's get_template()) has been saved via abilities.
+	 *
+	 * Adapters without the information "is_ability_template" are handled as before: every customized template counts.
+	 *
+	 * @param array<string,mixed> $template The template.
+	 *
+	 * @return bool
+	 */
+	public function is_ability_template( array $template ): bool {
+		if ( \array_key_exists( 'is_ability_template', $template ) ) {
+			return ! empty( $template['is_ability_template'] );
+		}
+		return ! empty( $template['is_customized'] );
 	}
 
 	/**
@@ -616,10 +651,14 @@ class Template_Abilities {
 		// get the content.
 		$content = isset( $input['content'] ) ? (string) $input['content'] : '';
 
-		// validate the content.
-		$validation = $adapter->validate( $type, $content );
-		$errors     = isset( $validation['errors'] ) ? array_values( $validation['errors'] ) : array();
-		$warnings   = isset( $validation['warnings'] ) ? array_values( $validation['warnings'] ) : array();
+		// validate the content, errors of a page builder must not break the request.
+		try {
+			$validation = $adapter->validate( $type, $content );
+		} catch ( Throwable $e ) {
+			return new WP_Error( 'personio_integration_template_error', $e->getMessage() );
+		}
+		$errors   = isset( $validation['errors'] ) ? array_values( $validation['errors'] ) : array();
+		$warnings = isset( $validation['warnings'] ) ? array_values( $validation['warnings'] ) : array();
 
 		// prepare the result.
 		$result = array(
@@ -634,7 +673,12 @@ class Template_Abilities {
 		);
 
 		// bail if the rendering is not requested or the content is empty.
-		if ( ( isset( $input['render'] ) && ! $input['render'] ) || '' === trim( $content ) ) {
+		if ( ( isset( $input['render'] ) && ! filter_var( $input['render'], FILTER_VALIDATE_BOOLEAN ) ) || '' === trim( $content ) ) {
+			return $result;
+		}
+
+		// bail if the template has errors: it is not rendered (e.g. disallowed blocks with remote content).
+		if ( ! empty( $errors ) ) {
 			return $result;
 		}
 
@@ -650,8 +694,12 @@ class Template_Abilities {
 		}
 		$result['post_id'] = $post_id;
 
-		// render the template.
-		$html = $adapter->render( $type, $content, $post_id );
+		// render the template, errors of a page builder must not break the request.
+		try {
+			$html = $adapter->render( $type, $content, $post_id );
+		} catch ( Throwable $e ) {
+			$html = new WP_Error( 'personio_integration_render_error', $e->getMessage() );
+		}
 		if ( $html instanceof WP_Error ) {
 			$result['errors'][] = $html->get_error_message();
 			$result['valid']    = false;
@@ -660,7 +708,7 @@ class Template_Abilities {
 
 		// limit the length of the HTML.
 		if ( \strlen( $html ) > self::MAX_PREVIEW_LENGTH ) {
-			$html                = substr( $html, 0, self::MAX_PREVIEW_LENGTH );
+			$html                = \function_exists( 'mb_strcut' ) ? mb_strcut( $html, 0, self::MAX_PREVIEW_LENGTH, 'UTF-8' ) : substr( $html, 0, self::MAX_PREVIEW_LENGTH );
 			$result['truncated'] = true;
 		}
 		$result['html'] = $html;
@@ -724,8 +772,12 @@ class Template_Abilities {
 			}
 		}
 
-		// validate the content.
-		$validation         = $adapter->validate( $type, $content );
+		// validate the content, errors of a page builder must not break the request.
+		try {
+			$validation = $adapter->validate( $type, $content );
+		} catch ( Throwable $e ) {
+			return new WP_Error( 'personio_integration_template_error', $e->getMessage() );
+		}
 		$result['errors']   = array_merge( $result['errors'], isset( $validation['errors'] ) ? array_values( $validation['errors'] ) : array() );
 		$result['warnings'] = isset( $validation['warnings'] ) ? array_values( $validation['warnings'] ) : array();
 
@@ -735,8 +787,12 @@ class Template_Abilities {
 			return $result;
 		}
 
-		// save the template (or check what would happen).
-		$saved = $adapter->save_template( $type, $content, $css, $dry_run );
+		// save the template (or check what would happen), errors of a page builder must not break the request.
+		try {
+			$saved = $adapter->save_template( $type, $content, $css, $dry_run );
+		} catch ( Throwable $e ) {
+			return new WP_Error( 'personio_integration_save_failed', $e->getMessage() );
+		}
 		if ( $saved instanceof WP_Error ) {
 			$result['errors'][] = $saved->get_error_message();
 			return $result;
@@ -744,6 +800,9 @@ class Template_Abilities {
 		$result['action'] = isset( $saved['action'] ) ? (string) $saved['action'] : 'none';
 		$result['id']     = isset( $saved['id'] ) ? absint( $saved['id'] ) : 0;
 		$result['done']   = ! $dry_run;
+		if ( isset( $saved['filtered'] ) ) {
+			$result['filtered'] = (bool) $saved['filtered'];
+		}
 
 		// add the notes of the page builder, e.g. about other templates which are affected.
 		if ( ! empty( $saved['notes'] ) && \is_array( $saved['notes'] ) ) {
@@ -783,6 +842,7 @@ class Template_Abilities {
 
 		// get the parameters.
 		$dry_run = ! isset( $input['dry_run'] ) || (bool) $input['dry_run'];
+		$force = isset( $input['force'] ) && filter_var( $input['force'], FILTER_VALIDATE_BOOLEAN );
 
 		// prepare the result.
 		$result = array(
@@ -803,8 +863,18 @@ class Template_Abilities {
 			return $result;
 		}
 
-		// reset the template (or check what would happen).
-		$reset = $adapter->reset_template( $type, $dry_run );
+		// check the template and reset it (or check what would happen), errors of a page builder must not break the request.
+		try {
+			// refuse to reset a customized template, which has not been saved via abilities, without explicit force.
+			$template = $adapter->get_template( $type );
+			if ( ! $force && \is_array( $template ) && ! empty( $template['is_customized'] ) && ! $this->is_ability_template( $template ) ) {
+				return new WP_Error( 'personio_integration_template_not_saved_via_abilities', __( 'The customized template has not been saved via abilities (e.g. it was customized in the Site Editor). It is not reset. Set "force": true to reset it anyway, but only after the user explicitly agreed.', 'personio-integration-light' ) );
+			}
+
+			$reset = $adapter->reset_template( $type, $dry_run );
+		} catch ( Throwable $e ) {
+			return new WP_Error( 'personio_integration_reset_failed', $e->getMessage() );
+		}
 		if ( $reset instanceof WP_Error ) {
 			$result['errors'][] = $reset->get_error_message();
 			return $result;

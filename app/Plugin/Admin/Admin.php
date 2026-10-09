@@ -17,6 +17,7 @@ use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Intro;
 use PersonioIntegrationLight\Plugin\License;
+use PersonioIntegrationLight\Plugin\Lock;
 use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
@@ -358,18 +359,25 @@ class Admin {
 			return;
 		}
 
-		// delete positions.
-		PersonioPosition::get_instance()->delete_positions();
-
 		// get the import object.
 		$imports_obj = Imports::get_instance()->get_import_extension();
 
-		// bail if no import is enabled.
+		// bail if no import is enabled, before any positions are deleted.
 		if ( ! $imports_obj ) {
+			// show error.
+			$transient_obj = Transients::get_instance()->add();
+			$transient_obj->set_name( 'personio_integration_no_import_extension' );
+			$transient_obj->set_message( __( '<strong>The positions could not be re-imported.</strong> No import extension is enabled.', 'personio-integration-light' ) );
+			$transient_obj->set_type( 'error' );
+			$transient_obj->save();
+
 			// redirect user.
 			wp_safe_redirect( wp_get_referer() );
 			exit;
 		}
+
+		// delete positions.
+		PersonioPosition::get_instance()->delete_positions();
 
 		// run the import.
 		$imports_obj->run();
@@ -396,8 +404,8 @@ class Admin {
 
 		// check if import as running.
 		if ( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) > 0 ) {
-			// remove running marker.
-			update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+			// remove running marker, regardless of which process holds it.
+			Lock::force_release( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
 
 			// add hint.
 			$transient_obj = Transients::get_instance()->add();
@@ -912,11 +920,17 @@ class Admin {
 			exit;
 		}
 
+		// bail if no entries are available.
+		if ( empty( $entries ) ) {
+			fclose( $fp ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+			exit;
+		}
+
 		// get the header.
-		$head_row = $entries[0];
+		$head_row = reset( $entries );
 
 		// add the header.
-		fputcsv( $fp, array_keys( $head_row ) );
+		fputcsv( $fp, array_keys( (array) $head_row ) );
 
 		// add the entries.
 		foreach ( $entries as $data ) {
@@ -1106,7 +1120,7 @@ class Admin {
 	 */
 	public function save_crypt_error( string $code, string $message, array $data ): void {
 		// tell the user if the key is gone: every saved key and token has to be entered again.
-		if ( in_array( $code, array( 'key_missing', 'key_changed' ), true ) ) {
+		if ( \in_array( $code, array( 'key_missing', 'key_changed' ), true ) ) {
 			$transient_obj = Transients::get_instance()->add();
 			$transient_obj->set_name( 'personio_integration_light_crypt_key_lost' );
 			$transient_obj->set_type( 'error' );
@@ -1159,7 +1173,7 @@ class Admin {
 		$settings_obj = Settings::get_instance()->get_settings_object();
 
 		// bail if no errors occurred.
-		if ( ! method_exists( $settings_obj, 'has_errors' ) || $settings_obj->has_errors() ) { // @phpstan-ignore function.alreadyNarrowedType
+		if ( ! method_exists( $settings_obj, 'has_errors' ) || ! $settings_obj->has_errors() ) { // @phpstan-ignore function.alreadyNarrowedType
 			return;
 		}
 
@@ -1170,6 +1184,13 @@ class Admin {
 		if ( ! $errors instanceof WP_Error ) {
 			return;
 		}
+
+		// bail if exactly these errors have already been logged in the last day (this runs on every admin request).
+		$hash = md5( (string) wp_json_encode( $errors->errors ) );
+		if ( get_transient( 'personio_integration_settings_errors_logged' ) === $hash ) {
+			return;
+		}
+		set_transient( 'personio_integration_settings_errors_logged', $hash, DAY_IN_SECONDS );
 
 		// log these errors.
 		foreach ( $errors->errors as $key => $errors ) {

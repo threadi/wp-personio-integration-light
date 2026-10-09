@@ -84,7 +84,7 @@ class Diagnostics {
 		wp_enqueue_script(
 			'personio-integration-light-diagnostics',
 			Helper::get_plugin_url() . 'admin/diagnostics.js',
-			array(),
+			array( 'jquery' ),
 			Helper::get_file_version( Helper::get_plugin_path() . 'admin/diagnostics.js' ),
 			true
 		);
@@ -197,7 +197,8 @@ class Diagnostics {
 				case 'dns':
 					$report .= '--- ' . esc_html__( 'DNS resolution', 'personio-integration-light' ) . " ---\n";
 					if ( $result['value'] === $result['data']['host'] ) {
-						$report .= esc_html__( 'ERROR: Could not resolve {$host} ({$ms} ms).', 'personio-integration-light' ) . "\n\n";
+						/* translators: %1$s will be replaced by the domain, %2$d by the time to check in ms. */
+						$report .= esc_html( \sprintf( __( 'ERROR: Could not resolve %1$s (%2$d ms).', 'personio-integration-light' ), (string) $result['data']['host'], absint( $result['duration_ms'] ?? 0 ) ) ) . "\n\n";
 					} else {
 						/* translators: %1$s will be replaced by the domain, %2$s by the IP and %3$s by the time to check.*/
 						$report .= wp_kses_post( \sprintf( __( '%1$s resolves to %2$s (%3$s ms)', 'personio-integration-light' ), $result['data']['host'], $result['value'], $result['duration_ms'] ) ) . "\n\n";
@@ -238,9 +239,9 @@ class Diagnostics {
 
 							$report .= \sprintf(
 								"%2d  %-15s  %s\n",
-								$value['hop'],
-								$value['ip'] ?? '*',
-								array() === $times ? '*' : implode( '  ', $times )
+								absint( $value['hop'] ?? 0 ),
+								esc_html( (string) ( $value['ip'] ?? '*' ) ),
+								esc_html( array() === $times ? '*' : implode( '  ', $times ) )
 							);
 						}
 					}

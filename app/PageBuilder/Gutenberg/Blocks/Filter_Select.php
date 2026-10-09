@@ -98,7 +98,7 @@ class Filter_Select extends Blocks_Basis {
 	 */
 	public function render( array $attributes ): string {
 		// set ID as class.
-		$class = $this->get_block_class( $attributes );
+		$classes = $this->get_block_class( $attributes );
 
 		// get block-classes.
 		$styles_array          = array();
@@ -107,20 +107,20 @@ class Filter_Select extends Blocks_Basis {
 			$block_html_attributes = get_block_wrapper_attributes();
 
 			// get styles.
-			$styles = Helper::get_attribute_value_from_html( 'style', $block_html_attributes );
-			if ( ! empty( $styles ) ) {
-				$styles_array[] = '.' . $class . ' { ' . $styles . ' }';
+			$styles = Helper::sanitize_css_declarations( (string) Helper::get_attribute_value_from_html( 'style', $block_html_attributes ) );
+			if ( ! empty( $styles ) && ! empty( $classes ) ) {
+				$styles_array[] = '.' . $classes . ' { ' . $styles . ' }';
 			}
 
-			if ( ! empty( $class ) ) {
+			if ( ! empty( $classes ) ) {
 				if ( ! empty( $attributes['hideResetLink'] ) ) {
-					$styles_array[] = '.entry.' . $class . ' .personio-position-filter-reset { display: none }';
+					$styles_array[] = '.entry.' . $classes . ' .personio-position-filter-reset { display: none }';
 				}
 				if ( ! empty( $attributes['hideSubmitButton'] ) ) {
-					$styles_array[] = '.entry.' . $class . ' button { display: none }';
+					$styles_array[] = '.entry.' . $classes . ' button { display: none }';
 				}
 				if ( ! empty( $attributes['hideFilterTitle'] ) ) {
-					$styles_array[] = '.entry.' . $class . ' legend { display: none }';
+					$styles_array[] = '.entry.' . $classes . ' legend { display: none }';
 				}
 			}
 		}
@@ -132,7 +132,7 @@ class Filter_Select extends Blocks_Basis {
 			'filtertype' => 'select',
 			'showfilter' => true,
 			'styles'     => implode( PHP_EOL, $styles_array ),
-			'classes'    => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
+			'classes'    => $classes . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 		);
 
 		/**

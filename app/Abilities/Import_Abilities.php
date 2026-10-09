@@ -20,6 +20,7 @@ use PersonioIntegrationLight\PersonioIntegration\Personio_Accounts;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Lock;
 use Throwable;
 use WP_Error;
 use WP_User;
@@ -195,6 +196,11 @@ class Import_Abilities {
 							'type'        => 'boolean',
 							'description' => __( 'Only return what would happen, without cancelling. Set to false to cancel.', 'personio-integration-light' ),
 							'default'     => true,
+						),
+						'force'   => array(
+							'type'        => 'boolean',
+							'description' => __( 'Also release an import which has been started less than an hour ago and might still be working. Use only after the user explicitly agreed.', 'personio-integration-light' ),
+							'default'     => false,
 						),
 					),
 					'default'    => array(),
@@ -517,8 +523,8 @@ class Import_Abilities {
 			// log this event.
 			Log::get_instance()->add( __( 'Import of positions via ability was aborted by an error:', 'personio-integration-light' ) . ' <code>' . esc_html( $exception->getMessage() ) . '</code>', 'error', 'import' );
 
-			// release the import, as this process does not work on it anymore.
-			update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+			// release the import, as this process does not work on it anymore (only if this process holds the lock).
+			$imports_obj->release_lock();
 
 			// add the error to the result.
 			/* translators: %1$s will be replaced by an error message. */
@@ -556,6 +562,7 @@ class Import_Abilities {
 	public function cancel_import( mixed $input = array() ): array|WP_Error {
 		// get the parameters.
 		$dry_run = $this->is_dry_run( $input );
+		$force = \is_array( $input ) && isset( $input['force'] ) && filter_var( $input['force'], FILTER_VALIDATE_BOOLEAN );
 
 		// get the start time of the running import.
 		$running_since = $this->get_running_since();
@@ -579,8 +586,14 @@ class Import_Abilities {
 		}
 		$result['action'] = 'cancel';
 
-		// warn if the import might still be working.
+		// refuse to cancel an import which might still be working, unless it is forced.
 		if ( ! $this->is_stuck( $running_since ) ) {
+			if ( ! $force ) {
+				$result['action']   = 'none';
+				$result['errors'][] = __( 'This import has been started less than an hour ago and might still be working. It is not released. Wait until it is finished, or set "force": true if the user explicitly agreed.', 'personio-integration-light' );
+				$result['message']  = __( 'The running import has not been released, as it is not stuck.', 'personio-integration-light' );
+				return $result;
+			}
 			$result['warnings'][] = __( 'This import has been started less than an hour ago and might still be working. Cancelling does not stop it, so a new import could run at the same time.', 'personio-integration-light' );
 		}
 
@@ -590,8 +603,8 @@ class Import_Abilities {
 			return $result;
 		}
 
-		// remove the running marker.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+		// remove the running marker, regardless of which process holds it.
+		Lock::force_release( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
 
 		// log this event.
 		$user = wp_get_current_user();
@@ -684,8 +697,8 @@ class Import_Abilities {
 			// log this event.
 			Log::get_instance()->add( __( 'Deletion of positions via ability was aborted by an error:', 'personio-integration-light' ) . ' <code>' . esc_html( $e->getMessage() ) . '</code>', 'error', 'import' );
 
-			// release the deletion, as this process does not work on it anymore.
-			update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 );
+			// release the deletion, as this process does not work on it anymore (only if this process holds the lock).
+			PersonioPosition::get_instance()->release_deletion_lock();
 
 			// add the error to the result.
 			/* translators: %1$s will be replaced by an error message. */

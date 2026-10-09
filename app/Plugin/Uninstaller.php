@@ -34,6 +34,13 @@ class Uninstaller {
 	private static ?Uninstaller $instance = null;
 
 	/**
+	 * Marker whether data shared by all blogs (user meta, crypt key) should be removed.
+	 *
+	 * @var bool
+	 */
+	private bool $remove_global_data = false;
+
+	/**
 	 * Constructor for this object.
 	 */
 	private function __construct() {}
@@ -61,7 +68,10 @@ class Uninstaller {
 	 *
 	 * Either via uninstall or via cli.
 	 *
-	 * @param array<int> $delete_data Marker to delete all data.
+	 * If running network-wide on a multisite, the setting "personioIntegrationDeleteOnUninstall"
+	 * of each single blog is used to decide whether all data in this blog should be deleted.
+	 *
+	 * @param array<int> $delete_data Marker to delete all data (not used if running network-wide on multisite).
 	 * @param bool       $network_wide True to clean up every site of the network (only uninstall.php does this).
 	 *
 	 * @return void
@@ -73,19 +83,31 @@ class Uninstaller {
 		}
 
 		if ( $network_wide && is_multisite() ) {
+			// global data (user meta and the crypt key are shared by all blogs) is only removed
+			// during the uninstallation if every blog wants its data to be deleted.
+			$this->remove_global_data = \defined( 'WP_UNINSTALL_PLUGIN' );
+			foreach ( Helper::get_blogs( true ) as $blog_id ) {
+				if ( 1 !== absint( get_blog_option( $blog_id, 'personioIntegrationDeleteOnUninstall', 0 ) ) ) {
+					$this->remove_global_data = false;
+				}
+			}
+
 			// loop through the blogs.
 			foreach ( Helper::get_blogs( true ) as $blog_id ) {
 				// switch to the blog.
 				switch_to_blog( $blog_id );
 
-				// run tasks for deactivation in this single blog.
-				$this->deinstallation_tasks( $delete_data, true );
+				// run tasks for deactivation in this single blog with the setting of this blog.
+				$this->deinstallation_tasks( array( absint( get_option( 'personioIntegrationDeleteOnUninstall', 0 ) ) ), true );
 
 				// switch back to the original blog.
 				restore_current_blog();
 			}
 			return;
 		}
+
+		// global data is only removed during the uninstallation of a single-site-install, not by a reset.
+		$this->remove_global_data = \defined( 'WP_UNINSTALL_PLUGIN' ) && ! is_multisite() && ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] );
 
 		// simply run the tasks on single-site-install.
 		$this->deinstallation_tasks( $delete_data, false );
@@ -99,9 +121,7 @@ class Uninstaller {
 	 *
 	 * @return void
 	 */
-	private function deinstallation_tasks( array $delete_data, bool $network_wide = false ): void {
-		global $wpdb;
-
+	private function deinstallation_tasks( array $delete_data, bool $network_wide = false ): void { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		// delete all plugin-data.
 		if ( ! empty( $delete_data[0] ) && 1 === absint( $delete_data[0] ) ) {
 			// initialize the plugin.
@@ -165,14 +185,48 @@ class Uninstaller {
 					continue;
 				}
 
-				// delete the settings of this object from user meta, if we are deleting networkwide.
-				if( $network_wide ) {
-					$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => 'manageedit-' . $obj->get_name() . 'columnshidden' ) );// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Direct usermeta cleanup on uninstallation.
+				// delete the settings of this object from user meta (user meta is shared by all blogs in a multisite).
+				if ( ! is_multisite() || $this->remove_global_data ) {
+					delete_metadata( 'user', 0, 'manageedit-' . $obj->get_name() . 'columnshidden', '', true );
 				}
 			}
 
+			// remove custom user meta (user meta is shared by all blogs in a multisite).
+			if ( ! is_multisite() || $this->remove_global_data ) {
+				foreach ( $this->get_user_meta_keys() as $meta_key ) {
+					delete_metadata( 'user', 0, $meta_key, '', true );
+				}
+			}
+
+			// remove custom transients.
+			delete_transient( 'personio_integration_api_token' );
+
 			// uninstall extensions.
 			Extensions::get_instance()->uninstall_all();
+
+			// remove the crypt data (e.g., the key) only during the uninstallation, if no encrypted data is left in any blog.
+			if ( $this->remove_global_data ) {
+				Crypt::get_instance()->uninstall();
+			}
+		}
+
+		// remove the throttle transients of our schedules.
+		foreach ( Schedules::get_instance()->get_schedule_object_names() as $schedule_object_name ) {
+			// bail if the class does not exist.
+			if ( ! class_exists( $schedule_object_name ) ) {
+				continue;
+			}
+
+			// get the object.
+			$schedule_obj = new $schedule_object_name();
+
+			// bail if the object is not a Schedules_Base object.
+			if ( ! $schedule_obj instanceof Schedules_Base ) {
+				continue;
+			}
+
+			// delete the transient.
+			delete_transient( 'personio_integration_schedule_failed_' . md5( $schedule_obj->get_name() ) );
 		}
 
 		// remove schedules.
@@ -226,13 +280,30 @@ class Uninstaller {
 			WP_PERSONIO_INTEGRATION_DELETE_ERRORS,
 			WP_PERSONIO_INTEGRATION_TRANSIENTS_LIST,
 			WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS,
+			WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS,
 			WP_PERSONIO_INTEGRATION_DELETE_COUNT,
 			WP_PERSONIO_INTEGRATION_DELETE_MAX,
 			'personioIntegrationLightInstallDate',
 			'personio_integration_settings',
 			'personio_integration_intro',
 			'personioIntegrationPageBuilder',
+			'personioIntegrationLicenseKey',
+			'personioIntegrationInstallationId',
+			'personioIntegrationClientId',
+			'personioIntegrationApiSecret',
+			'personio_integration_update_running',
 			\PersonioIntegrationLight\PageBuilder\Gutenberg\Template_Styles::OPTION,
+		);
+	}
+
+	/**
+	 * Return list of user meta keys this plugin is using.
+	 *
+	 * @return array<string>
+	 */
+	private function get_user_meta_keys(): array {
+		return array(
+			'personio-integration-acknowledge-costs-loading',
 		);
 	}
 }

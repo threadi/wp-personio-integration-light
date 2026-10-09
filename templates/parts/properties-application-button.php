@@ -7,7 +7,7 @@
  * @param string $back_to_list_url Define the text for "back to list" link. If empty link will not be displayed.
  * @param string $target Defines the value for the target-attribute.
  *
- * @version: 4.0.0
+ * @version: 6.0.0
  * @package personio-integration-light
  */
 
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 <div class="entry-content">
-	<p class="personio-integration-application-button<?php echo esc_attr( $attributes['classes'] ); ?>">
+	<p class="personio-integration-application-button <?php echo esc_attr( $attributes['classes'] ?? '' ); ?>">
 		<a class="personio-integration-application-button" href="<?php echo esc_url( $link ); ?>" target="<?php echo esc_attr( $target ); ?>">
 			<?php
 			if ( 'archive' === $text_position ) {

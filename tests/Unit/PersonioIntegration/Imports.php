@@ -15,6 +15,17 @@ use PersonioIntegrationLight\Tests\PersonioTestCase;
 class Imports extends PersonioTestCase {
 
 	/**
+	 * Reset the import marker after each test, so it does not leak into following tests.
+	 *
+	 * @return void
+	 */
+	public function tear_down(): void {
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+
+		parent::tear_down();
+	}
+
+	/**
 	 * Test to run an import of positions.
 	 *
 	 * @return void

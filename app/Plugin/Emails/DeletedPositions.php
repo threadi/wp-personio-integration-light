@@ -85,7 +85,7 @@ class DeletedPositions extends Email_Base {
 		// create the body.
 		$body = __( 'The following Personio IDs have been deleted in WordPress after the last import from Personio:', 'personio-integration-light' );
 		foreach ( $this->get_deleted_positions() as $personio_id ) {
-			$body .= '<br>' . $personio_id;
+			$body .= '<br>' . esc_html( (string) $personio_id );
 		}
 		$body .= '<br><br>' . __( 'They were deleted because they were no longer made available as positions by Personio.', 'personio-integration-light' );
 

@@ -33,7 +33,9 @@ class Personio extends PersonioTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp(): void {
+	public function set_up(): void {
+		parent::set_up();
+
 		// create the object with our test URL.
 		$this->object = new \PersonioIntegrationLight\PersonioIntegration\Personio( $this->url );
 	}

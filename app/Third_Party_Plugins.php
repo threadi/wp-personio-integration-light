@@ -295,7 +295,7 @@ class Third_Party_Plugins {
 	public function seopress_og_description( string $meta_og_description ): string {
 		if ( is_singular( PersonioPosition::get_instance()->get_name() ) ) {
 			// get og:description.
-			return '<meta property="og:description" content="' . wp_kses_post( Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) ) ) . '" />';
+			return '<meta property="og:description" content="' . esc_attr( Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( get_queried_object_id() ) ) ) ) . '" />';
 		}
 
 		// return the resulting text.
@@ -446,11 +446,8 @@ class Third_Party_Plugins {
 			return $meta_description;
 		}
 
-		// get the requested position.
-		$position_obj = Positions::get_instance()->get_position( $post->ID );
-
-		// return our compiled content.
-		return Templates::get_instance()->get_direct_content_template( $position_obj, array() );
+		// return the description of the position as plain text.
+		return Helper::replace_linebreaks( wp_strip_all_tags( $this->get_content( $post->ID ) ) );
 	}
 
 	/**

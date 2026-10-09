@@ -76,6 +76,13 @@ class Import_Single_Personio_Url {
 	private ?Xml $imports_obj = null;
 
 	/**
+	 * Marker whether the positions of this URL in this language did not change since the last import.
+	 *
+	 * @var bool
+	 */
+	private bool $no_changes = false;
+
+	/**
 	 * Constructor which runs the import of position for a single Personio-account in the given language.
 	 */
 	public function __construct() {
@@ -150,10 +157,28 @@ class Import_Single_Personio_Url {
 		$positions_obj   = Positions::get_instance();
 		$positions_count = $positions_obj->get_positions_count();
 
-		// enable xml-error-handling.
-		libxml_use_internal_errors( true );
+		// enable xml-error-handling and remember the previous state.
+		$libxml_previous_state = libxml_use_internal_errors( true );
 		libxml_clear_errors();
 
+		try {
+			$this->run_import( $imports_obj, $positions_count );
+		} finally {
+			// restore the previous xml-error-handling on every path.
+			libxml_clear_errors();
+			libxml_use_internal_errors( $libxml_previous_state );
+		}
+	}
+
+	/**
+	 * Run the import of positions from this URL in this language.
+	 *
+	 * @param Xml $imports_obj     The XML-Imports-object.
+	 * @param int $positions_count The count of positions in the local DB before this import.
+	 *
+	 * @return void
+	 */
+	private function run_import( Xml $imports_obj, int $positions_count ): void {
 		// get language name (e.g. "en").
 		$language_name = $this->get_language();
 
@@ -185,12 +210,15 @@ class Import_Single_Personio_Url {
 		 */
 		$url = apply_filters( 'personio_integration_import_url', $url, $language_name );
 
-		$check_for_changes = 1 === absint( get_option( 'personioIntegration_debug' ) );
+		// do not check for changes via timestamp and md5-hash by default: every import is a full import,
+		// so changed settings (e.g. languages or templates) are applied without changes in Personio.
+		// Use the following filter to enable the check.
+		$check_for_changes = false;
 		/**
 		 * Set marker to check for timestamp and md5-hash-compare.
 		 *
 		 * @since 5.0.0 Available since 5.0.0.
-		 * @param bool $check_for_changes False to prevent this check.
+		 * @param bool $check_for_changes True to compare timestamp and md5-hash and skip unchanged data.
 		 *
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
@@ -201,7 +229,7 @@ class Import_Single_Personio_Url {
 			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
 			'redirection' => 0,
 		);
-		$response = wp_remote_head( $url, $args );
+		$response = wp_safe_remote_head( $url, $args );
 
 		// check the response and get its http-status and last-modified-date as timestamp.
 		$last_modified_timestamp = time();
@@ -233,7 +261,10 @@ class Import_Single_Personio_Url {
 		$http_status = absint( apply_filters( 'personio_integration_import_header_status', $http_status ) );
 		if ( 200 === $http_status ) {
 			// timestamp did not change -> do nothing if we already have positions in the DB.
-			if ( $positions_count > 0 && $check_for_changes && $last_modified_timestamp > 0 && $personio_obj->get_timestamp( $this->get_language() ) === $last_modified_timestamp && 0 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+			if ( $positions_count > 0 && $check_for_changes && $last_modified_timestamp > 0 && $personio_obj->get_timestamp( $this->get_language() ) === $last_modified_timestamp ) {
+				// mark that nothing changed, so the cleanup will not delete the existing positions of this URL.
+				$this->no_changes = true;
+
 				// set the import count to actual max to show that it has been run.
 				$imports_obj->set_import_count( $imports_obj->get_import_max_count() );
 
@@ -255,10 +286,18 @@ class Import_Single_Personio_Url {
 
 			// define settings for the second request to Personio XML to get the contents.
 			$args     = array(
-				'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
-				'redirection' => 0,
+				'timeout'             => get_option( 'personioIntegrationUrlTimeout' ),
+				'redirection'         => 0,
+				/**
+				 * Filter the maximum size in bytes of the XML file we load from Personio.
+				 *
+				 * @since 6.0.0 Available since 6.0.0.
+				 * @param int $max_size The maximum size in bytes (default 20 MB).
+				 * @param string $url The URL of the XML file.
+				 */
+				'limit_response_size' => absint( apply_filters( 'personio_integration_light_xml_max_size', 20 * MB_IN_BYTES, $url ) ),
 			);
-			$response = wp_remote_get( $url, $args );
+			$response = wp_safe_remote_get( $url, $args );
 
 			// bail if any error occurred.
 			if ( is_wp_error( $response ) ) {
@@ -273,7 +312,10 @@ class Import_Single_Personio_Url {
 
 				// check if md5-hash of body content has not been changed.
 				// md5-hash did not change -> do nothing if we already have positions in the DB.
-				if ( $check_for_changes && $positions_count > 0 && $personio_obj->get_md5( $language_name ) === $md5hash && 0 === absint( get_option( 'personioIntegration_debug', 0 ) ) ) {
+				if ( $check_for_changes && $positions_count > 0 && $personio_obj->get_md5( $language_name ) === $md5hash ) {
+					// mark that nothing changed, so the cleanup will not delete the existing positions of this URL.
+					$this->no_changes = true;
+
 					// log event.
 					/* translators: %1$s will be replaced by a URL, %2$s by the language name. */
 					$this->log->add( \sprintf( __( 'No changes in positions from %1$s for language %2$s according to the content we got from Personio. No import run.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ) ), 'success', 'import' );
@@ -396,9 +438,6 @@ class Import_Single_Personio_Url {
 		 * @param Import_Single_Personio_Url $instance The import-object.
 		 */
 		do_action( 'personio_integration_import_of_url_ended', $instance );
-
-		// disable xml-error-handling.
-		libxml_use_internal_errors( false );
 	}
 
 	/**
@@ -408,6 +447,17 @@ class Import_Single_Personio_Url {
 	 */
 	public function get_errors(): array {
 		return $this->errors;
+	}
+
+	/**
+	 * Return whether the positions of this URL in this language did not change since the last import.
+	 *
+	 * In this case no positions have been imported, and the existing ones must not be deleted.
+	 *
+	 * @return bool
+	 */
+	public function has_no_changes(): bool {
+		return $this->no_changes;
 	}
 
 	/**

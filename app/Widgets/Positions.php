@@ -173,6 +173,25 @@ class Positions extends WP_Widget {
 	 * @noinspection PhpMissingReturnTypeInspection
 	 */
 	public function widget( $args, $settings ) {
+		// set defaults for not configured settings.
+		$settings = wp_parse_args(
+			(array) $settings,
+			array(
+				'template'            => get_option( 'personioIntegrationTemplateContentListingTemplate' ),
+				'limit'               => 0,
+				'sort'                => 'asc',
+				'sortby'              => 'title',
+				'groupby'             => '',
+				'showTitle'           => 'yes',
+				'linkTitle'           => 'yes',
+				'showExcerpt'         => 'yes',
+				'excerptTemplates'    => (array) get_option( 'personioIntegrationTemplateExcerptDefaults', array() ),
+				'showContent'         => 'no',
+				'content_template'    => get_option( 'personioIntegrationTemplateListingContentTemplate' ),
+				'showApplicationForm' => 'no',
+			)
+		);
+
 		// collect the configured templates.
 		$templates = '';
 		if ( 'yes' === $settings['showTitle'] ) {
@@ -203,7 +222,7 @@ class Positions extends WP_Widget {
 		// limit.
 		$limit = 0;
 		if ( ! empty( $settings['limit'] ) ) {
-			$limit = $settings['limit'];
+			$limit = absint( $settings['limit'] );
 		}
 
 		$attribute_defaults = array(
@@ -216,15 +235,16 @@ class Positions extends WP_Widget {
 			'groupby'                 => $settings['groupby'],
 			'limit'                   => $limit,
 			'jobdescription_template' => $settings['content_template'],
+			'listing_template'        => $settings['template'],
 		);
 
 		// add wrapper from template around widget-content.
-		echo wp_kses_post( $args['before_widget'] );
+		echo wp_kses_post( $args['before_widget'] ?? '' );
 
 		// get the output.
 		echo wp_kses_post( Archive::get_instance()->render( $attribute_defaults ) );
 
 		// add wrapper from template around widget-content.
-		echo wp_kses_post( $args['after_widget'] );
+		echo wp_kses_post( $args['after_widget'] ?? '' );
 	}
 }

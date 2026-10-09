@@ -486,7 +486,7 @@ class Import_Abilities extends AbilitiesTestCase {
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, $started );
 
 		// run the ability.
-		$result = $this->run_ability( 'cancel-import', array( 'dry_run' => true ) );
+		$result = $this->run_ability( 'cancel-import', array( 'dry_run' => true, 'force' => true ) );
 
 		// test it.
 		$this->assertIsArray( $result );
@@ -499,6 +499,26 @@ class Import_Abilities extends AbilitiesTestCase {
 		$this->assertCount( 1, $result['warnings'] );
 
 		// the marker of the import must be untouched.
+		$this->assertSame( $started, absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING ) ) );
+	}
+
+	/**
+	 * Test that an import which is running for less than an hour is not cancelled without force.
+	 *
+	 * @return void
+	 */
+	public function test_cancel_import_without_force_is_refused(): void {
+		// mark that an import is running for a minute.
+		$started = time() - 60;
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, $started );
+
+		// run the ability without force.
+		$result = $this->run_ability( 'cancel-import', array( 'dry_run' => false ) );
+
+		// test it: nothing is cancelled and an error is reported.
+		$this->assertIsArray( $result );
+		$this->assertSame( 'none', $result['action'] );
+		$this->assertNotEmpty( $result['errors'] );
 		$this->assertSame( $started, absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING ) ) );
 	}
 

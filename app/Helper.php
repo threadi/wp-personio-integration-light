@@ -445,12 +445,70 @@ class Helper {
 	 * @return string|false
 	 */
 	public static function get_attribute_value_from_html( string $attribute, string $tag ): string|false {
-		// get attribute from HTML tag.
-		$re = '/' . preg_quote( $attribute, null ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
+		$re = '/' . preg_quote( $attribute, '/' ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
 		if ( preg_match( $re, $tag, $match ) ) {
-			return urldecode( $match[2] );
+			return wp_specialchars_decode( $match[2], ENT_QUOTES );
 		}
 		return false;
+	}
+
+	/**
+	 * Sanitize a list of CSS declarations ("prop: value; prop: value") for use in inline styles.
+	 *
+	 * @param string $css The CSS declarations.
+	 *
+	 * @return string
+	 */
+	public static function sanitize_css_declarations( string $css ): string {
+		// use the WordPress-own filter for inline styles (allowlist of properties, no "(", "}", "\" etc. outside of allowed functions).
+		$css = safecss_filter_attr( wp_strip_all_tags( $css ) );
+
+		// never allow breaking out of the declaration block or the style element.
+		return str_replace( array( '<', '>', '{', '}' ), '', $css );
+	}
+
+	/**
+	 * Return a single sanitized CSS declaration or an empty string if the value is not allowed.
+	 *
+	 * @param string $property The CSS property, e.g. "margin-bottom".
+	 * @param mixed  $value    The value from block attributes.
+	 *
+	 * @return string
+	 */
+	public static function get_css_declaration( string $property, mixed $value ): string {
+		// only single values: no further declarations, blocks, tags, escapes or line breaks.
+		if ( ! \is_string( $value ) || '' === $value || preg_match( '/[;{}<>\\\\\r\n]/', $value ) ) {
+			return '';
+		}
+		return self::sanitize_css_declarations( $property . ': ' . $value );
+	}
+
+	/**
+	 * Return a sanitized CSS color value or an empty string.
+	 *
+	 * Allows hex (3, 4, 6, 8 digits), rgb(a)/hsl(a), CSS variables and color keywords.
+	 *
+	 * @param mixed $value The color value.
+	 *
+	 * @return string
+	 */
+	public static function sanitize_css_color( mixed $value ): string {
+		if ( ! \is_string( $value ) ) {
+			return '';
+		}
+		$value    = trim( $value );
+		$patterns = array(
+			'/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/iD',
+			'/^(?:rgba?|hsla?)\(\s*[0-9.%,\s\/+-]+\)$/iD',
+			'/^var\(\s*--[a-z0-9_-]+\s*\)$/iD',
+			'/^[a-z]+$/iD',
+		);
+		foreach ( $patterns as $pattern ) {
+			if ( preg_match( $pattern, $value ) ) {
+				return $value;
+			}
+		}
+		return '';
 	}
 
 	/**
@@ -608,8 +666,13 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_plugin_name(): string {
-		// get the plugin data.
-		$plugin_data = get_plugin_data( WP_PERSONIO_INTEGRATION_PLUGIN );
+		// load the necessary function, as it is not available in frontend, REST or cron requests.
+		if ( ! \function_exists( 'get_plugin_data' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		// get the plugin data (without markup and translation, so it can be used at any time).
+		$plugin_data = get_plugin_data( WP_PERSONIO_INTEGRATION_PLUGIN, false, false );
 
 		// bail if no 'Name' is in the result.
 		if ( empty( $plugin_data['Name'] ) ) {

@@ -46,6 +46,9 @@ function personio_integration_run_manual_import() {
       }
       personio_integration_create_dialog( dialog_config );
     },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      personio_integration_ajax_error_dialog( errorThrown )
+    },
     success: function( response ) {
       personio_integration_create_dialog( response );
     },
@@ -60,7 +63,7 @@ function personio_integration_run_manual_import_callback() {
   jQuery( '.personio-integration-manual-import-selection #check_all').on( 'change', function() {
     let new_state = jQuery( this ).is(':checked');
     jQuery( '.personio-integration-manual-import-selection input[type="checkbox"]' ).each(function() {
-      jQuery( this ).attr( 'checked', new_state );
+      jQuery( this ).prop( 'checked', new_state );
     });
   });
 }
@@ -102,6 +105,9 @@ function personio_integration_save_manual_import() {
         }
       }
       personio_integration_create_dialog( dialog_config );
+    },
+    error: function( jqXHR, textStatus, errorThrown ) {
+      personio_integration_ajax_error_dialog( errorThrown )
     },
     success: function( response ) {
       personio_integration_create_dialog( response )
