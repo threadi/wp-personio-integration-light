@@ -33,6 +33,7 @@
   "devDependencies": {
     "@babel/core": "^7.28.5",
     "@wordpress/scripts": "~36.0",
+    "@wp-playground/cli": "^3.1.57",
     "concurrently": "^9.2.3"
   },
   "dependencies": {

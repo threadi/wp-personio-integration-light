@@ -19,7 +19,6 @@ tasks:
   prepare:
     cmds:
       - composer install
-      - composer update
       - npm i
       - npm i concurrently
       - npm run build:show

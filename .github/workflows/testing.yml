@@ -3,99 +3,101 @@ name: Testing
 on:
   pull_request:
     branches:
-      - master
+      - '**'
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  test:
-    name: Run tests
+  checks:
+    name: Code checks
     runs-on: ubuntu-latest
     steps:
-      - name: Check out source code
-        uses: actions/checkout@v7
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check composer.json and composer.lock
+        run: composer validate --strict --no-check-publish
 
       - name: Install dependencies
-        run: composer install
+        run: composer install --no-interaction --no-progress
 
       - name: Prepare generated files
+        # PHPStan needs the constants of this file, the placeholders are enough for that.
         run: cp inc/constants_urls.php.dist inc/constants_urls.php
 
       - name: Run PHPStan check
-        run: vendor/bin/phpstan analyse
+        run: vendor/bin/phpstan analyse --no-progress
+
+      - name: Run WordPress Coding Standard checks
+        run: vendor/bin/phpcs .
 
       - name: PHP Compatibility check
-        run: vendor/bin/phpcs -p app --standard=PHPCompatibilityWP --runtime-set testVersion 8.1- --ignore=*/Crypt.php
+        run: vendor/bin/phpcs -p app --standard=PHPCompatibilityWP --runtime-set testVersion 8.2- --ignore=*/Crypt.php
 
   phpunit:
-    name: Run PHP Unit tests
+    name: PHPUnit (PHP ${{ matrix.php-version }})
     runs-on: ubuntu-latest
     strategy:
+      # let the other PHP versions finish if one of them fails.
+      fail-fast: false
       matrix:
-        php-version: ['8.5', '8.4', '8.3', '8.2']
+        php-version: ['8.2', '8.3', '8.4', '8.5']
     services:
       database:
-        image: mysql:latest
+        # a fixed LTS version, so a new major release does not break the tests unnoticed.
+        image: mysql:8.4
         env:
           MYSQL_DATABASE: wordpress_tests
           MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306:3306
+        # wait until the server accepts connections before the steps start.
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
     steps:
-      - name: Check out source code
-        uses: actions/checkout@v7
-
-      - name: Run package installs and builds
-        run: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash
-          export NVM_DIR=~/.nvm
-          source ~/.nvm/nvm.sh
-          composer install
-          npm i
-          npm i concurrently
-          cd vendor/threadi/easy-setup-for-wordpress/
-          npm i
-          npm run build
-          cd ../../../
-          npm run build:show
-          npm run build:list
-          npm run build:filter-list
-          npm run build:filter-select
-          npm run build:application-button
-          npm run build:details
-          npm run build:description
-          npm run global-styles
-          cp inc/constants_urls.php.dist inc/constants_urls.php
-
-      - name: Set licence server
-        uses: richardrigutins/replace-in-files@bca25c5a547c8caa5e4db158b34ee8e8c7539ccf # v3
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          files: 'inc/constants_urls.php'
-          search-text: '@@UrlLicense@@'
-          replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/'
+          persist-credentials: false
 
-      - name: Set update server
-        uses: richardrigutins/replace-in-files@bca25c5a547c8caa5e4db158b34ee8e8c7539ccf # v3
-        with:
-          files: 'inc/constants_urls.php'
-          search-text: '@@UrlUpdate@@'
-          replacement-text: 'https://laolaweb.com/wp-json/lwreleases/personio-integration/'
-
-      - name: Set costs server
-        uses: richardrigutins/replace-in-files@bca25c5a547c8caa5e4db158b34ee8e8c7539ccf # v3
-        with:
-          files: 'inc/constants_urls.php'
-          search-text: '@@UrlCosts@@'
-          replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/costs'
-
+      # set up PHP first, so composer resolves the dependencies for the PHP version under test.
       - name: Setup PHP
-        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
-            php-version: ${{ matrix.php-version }}
-            tools: phpunit-polyfills:1.1
-            extensions: mbstring, xml, zip, intl, pdo, mysql
-            coverage: none
+          php-version: ${{ matrix.php-version }}
+          tools: phpunit-polyfills:1.1
+          extensions: mbstring, xml, zip, intl, pdo, mysql
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+
+      # the tests load the plugin with its blocks, commands and styles.
+      - name: Build blocks, commands and copy driver.js
+        run: |
+          npm ci
+          npm run build
+          npm run global-styles
+
+      - name: Generate the URL constants
+        run: |
+          sed \
+            -e 's#@@UrlLicense@@#https://laolaweb.com/wp-json/lwlicences/personio-integration/#' \
+            -e 's#@@UrlUpdate@@#https://laolaweb.com/wp-json/lwreleases/personio-integration/#' \
+            -e 's#@@UrlCosts@@#https://laolaweb.com/wp-json/lwlicences/personio-integration/costs#' \
+            inc/constants_urls.php.dist > inc/constants_urls.php
 
       - name: Install SVN
         run: sudo apt-get update && sudo apt-get install -y subversion
