@@ -155,6 +155,20 @@ class Position extends WP_Widget {
 	 * @noinspection PhpMissingReturnTypeInspection
 	 */
 	public function widget( $args, $settings ) {
+		// set defaults for not configured settings.
+		$settings = wp_parse_args(
+			(array) $settings,
+			array(
+				'postId'              => 0,
+				'showTitle'           => 'yes',
+				'linkTitle'           => 'no',
+				'showExcerpt'         => 'no',
+				'excerptTemplates'    => (array) get_option( 'personioIntegrationTemplateExcerptDefaults', array() ),
+				'showContent'         => 'yes',
+				'showApplicationForm' => 'yes',
+			)
+		);
+
 		// collect the configured templates.
 		$templates = '';
 		if ( 'yes' === $settings['showTitle'] ) {
@@ -173,7 +187,7 @@ class Position extends WP_Widget {
 		// get the excerpt-templates.
 		$excerpt_templates = '';
 		if ( ! empty( $settings['excerptTemplates'] ) ) {
-			$excerpt_templates = implode( ',', $settings['excerptTemplates'] );
+			$excerpt_templates = implode( ',', (array) $settings['excerptTemplates'] );
 		}
 
 		// link title.
@@ -188,7 +202,7 @@ class Position extends WP_Widget {
 		}
 
 		// get the Personio ID of the requested position.
-		$position_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_position( $settings['postId'] );
+		$position_obj = \PersonioIntegrationLight\PersonioIntegration\Positions::get_instance()->get_position( absint( $settings['postId'] ) );
 
 		// bail if position could not be loaded.
 		if ( ! $position_obj->is_valid() ) {
@@ -203,12 +217,12 @@ class Position extends WP_Widget {
 		);
 
 		// add wrapper from template around widget-content.
-		echo wp_kses_post( $args['before_widget'] );
+		echo wp_kses_post( $args['before_widget'] ?? '' );
 
 		// get the output.
 		echo wp_kses_post( Single::get_instance()->render( $attribute_defaults ) );
 
 		// add wrapper from template around widget-content.
-		echo wp_kses_post( $args['after_widget'] );
+		echo wp_kses_post( $args['after_widget'] ?? '' );
 	}
 }

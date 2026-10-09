@@ -28,6 +28,7 @@ use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Plugin\Compatibilities\Loco;
 use PersonioIntegrationLight\Plugin\Compatibilities\SayWhat;
 use PersonioIntegrationLight\Plugin\Languages;
+use PersonioIntegrationLight\Plugin\Lock;
 use PersonioIntegrationLight\Plugin\Settings;
 use PersonioIntegrationLight\Plugin\Setup;
 use PersonioIntegrationLight\Plugin\Templates;
@@ -56,6 +57,13 @@ class PersonioPosition extends Post_Type {
 	 * @var ?PersonioPosition
 	 */
 	private static ?PersonioPosition $instance = null;
+
+	/**
+	 * The token of the lock, if this process is running the deletion of all positions. 0 if not.
+	 *
+	 * @var int
+	 */
+	private int $deletion_lock_token = 0;
 
 	/**
 	 * Constructor for this object.
@@ -355,7 +363,7 @@ class PersonioPosition extends Post_Type {
 			$this->get_name(), // @phpstan-ignore argument.type
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => array( $this, 'delete_positions' ),
+				'callback'            => array( $this, 'delete_positions_via_rest' ),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_' . PersonioPosition::get_instance()->get_name() );
 				},
@@ -535,8 +543,6 @@ class PersonioPosition extends Post_Type {
 	 * @return void
 	 */
 	public function add_column_content( string $column, int $post_id ): void {
-		global $wp;
-
 		// get position as an object.
 		$position_obj = Positions::get_instance()->get_position( $post_id );
 
@@ -557,8 +563,13 @@ class PersonioPosition extends Post_Type {
 
 		// show languages with its names.
 		if ( WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES === $column ) {
-			// get main-url.
-			$url = add_query_arg( filter_input( INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_FULL_SPECIAL_CHARS ), '', home_url( $wp->request ) );
+			// get main-url of the list of positions in backend.
+			$url = add_query_arg(
+				array(
+					'post_type' => $this->get_name(),
+				),
+				admin_url( 'edit.php' )
+			);
 
 			// get languages in the project.
 			$languages = Languages::get_instance()->get_languages();
@@ -571,7 +582,7 @@ class PersonioPosition extends Post_Type {
 				}
 
 				// create filter-url for this language.
-				$lang_url = add_query_arg( array( 'language' => $language_name ), $url );
+				$lang_url = add_query_arg( array( 'admin_filter_language' => $language_name ), $url );
 
 				// show comma-separator.
 				if ( $index > 0 ) {
@@ -738,6 +749,16 @@ class PersonioPosition extends Post_Type {
 					'terms'    => absint( wp_unslash( filter_input( INPUT_GET, 'admin_filter_' . $taxonomy_name, FILTER_SANITIZE_NUMBER_INT ) ) ),
 				);
 			}
+		}
+
+		// add filter for the language (used by the links in the language column).
+		$language_name = sanitize_key( (string) filter_input( INPUT_GET, 'admin_filter_language', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
+		if ( ! empty( $language_name ) && ! empty( Languages::get_instance()->get_languages()[ $language_name ] ) ) {
+			$tax_query[] = array(
+				'taxonomy' => WP_PERSONIO_INTEGRATION_TAXONOMY_LANGUAGES,
+				'field'    => 'name',
+				'terms'    => $language_name,
+			);
 		}
 
 		// bail if no query is set.
@@ -1194,7 +1215,7 @@ class PersonioPosition extends Post_Type {
 					// get languages in the project.
 					$languages = Languages::get_instance()->get_languages();
 					// get the label from the language list.
-					$label = $languages[ $term->name ];
+					$label = $languages[ $term->name ] ?? $term->name;
 				}
 
 				// create filter url.
@@ -1305,10 +1326,10 @@ class PersonioPosition extends Post_Type {
 			'personioid'              => 0,
 			'lang'                    => Languages::get_instance()->get_main_language(),
 			'template'                => '',
-			'templates'               => implode( ',', get_option( 'personioIntegrationTemplateContentDefaults' ) ),
+			'templates'               => implode( ',', (array) get_option( 'personioIntegrationTemplateContentDefaults', array() ) ),
 			'excerpt_template'        => get_option( 'personioIntegrationTemplateDetailsExcerptsTemplate' ),
 			'jobdescription_template' => get_option( 'personioIntegrationTemplateJobDescription' ),
-			'excerpt'                 => implode( ',', get_option( 'personioIntegrationTemplateExcerptDetail' ) ),
+			'excerpt'                 => implode( ',', (array) get_option( 'personioIntegrationTemplateExcerptDetail', array() ) ),
 			'donotlink'               => 1,
 			'styles'                  => '',
 			'classes'                 => '',
@@ -1564,13 +1585,14 @@ class PersonioPosition extends Post_Type {
 		// release a deletion which got stuck, as it would otherwise block every further deletion.
 		$this->release_stuck_deletion();
 
-		// bail if deletion is actual running.
-		if ( $this->get_deletion_start_time() > 0 ) {
+		// bail if import is running.
+		if ( Lock::get_start_time( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING ) > 0 ) {
 			return;
 		}
 
-		// bail if import is running.
-		if ( absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ) > 0 ) {
+		// mark as running (atomic), bail if another deletion is running.
+		$this->deletion_lock_token = Lock::acquire( WP_PERSONIO_INTEGRATION_DELETE_RUNNING );
+		if ( 0 === $this->deletion_lock_token ) {
 			return;
 		}
 
@@ -1579,9 +1601,6 @@ class PersonioPosition extends Post_Type {
 
 		// reset the list of errors during deletion.
 		update_option( WP_PERSONIO_INTEGRATION_DELETE_ERRORS, array() );
-
-		// mark as running.
-		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, time() );
 
 		// register a shutdown handler to catch fatal errors during the deletion.
 		register_shutdown_function( array( $this, 'handle_fatal_shutdown_during_deletion' ) );
@@ -1671,7 +1690,38 @@ class PersonioPosition extends Post_Type {
 		update_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, __( 'Deleting of positions has been run.', 'personio-integration-light' ) );
 
 		// mark as not running.
-		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 );
+		$this->release_deletion_lock();
+	}
+
+	/**
+	 * Return the given list of errors as filtered texts for the AJAX-responses about import and deletion.
+	 *
+	 * @param mixed $errors List of errors (strings or WP_Error-objects).
+	 *
+	 * @return array<int,string>
+	 */
+	private function get_error_texts_for_response( mixed $errors ): array {
+		$texts = array();
+		foreach ( (array) $errors as $error ) {
+			if ( $error instanceof \WP_Error ) {
+				$error = $error->get_error_message();
+			}
+			if ( ! \is_string( $error ) || '' === $error ) {
+				continue;
+			}
+			$texts[] = wp_kses_post( $error );
+		}
+		return $texts;
+	}
+
+	/**
+	 * Release the lock of the deletion of all positions, but only if it is held by this process.
+	 *
+	 * @return void
+	 */
+	public function release_deletion_lock(): void {
+		Lock::release( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, $this->deletion_lock_token );
+		$this->deletion_lock_token = 0;
 	}
 
 	/**
@@ -1680,7 +1730,7 @@ class PersonioPosition extends Post_Type {
 	 * @return int
 	 */
 	public function get_deletion_start_time(): int {
-		return absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 ) );
+		return Lock::get_start_time( WP_PERSONIO_INTEGRATION_DELETE_RUNNING );
 	}
 
 	/**
@@ -1711,8 +1761,8 @@ class PersonioPosition extends Post_Type {
 		/* translators: %1$s will be replaced by a date. */
 		Log::get_instance()->add( \sprintf( __( 'A deletion of positions which has been started on %1$s did not end properly. It has been released.', 'personio-integration-light' ), esc_html( Helper::get_format_date_time( gmdate( 'Y-m-d H:i:s', $this->get_deletion_start_time() ) ) ) ), 'error', 'import' );
 
-		// reset the running-flag so the user is not stuck.
-		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 );
+		// reset the running-flag so the user is not stuck (this is the lock of another, killed process).
+		Lock::force_release( WP_PERSONIO_INTEGRATION_DELETE_RUNNING );
 
 		// return that it has been released.
 		return true;
@@ -1762,8 +1812,13 @@ class PersonioPosition extends Post_Type {
 		// reset the status.
 		update_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, '' );
 
-		// reset the running-flag so the user is not stuck.
-		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 );
+		// reset the running-flag so the user is not stuck: our own lock, or any lock if this process does not hold one
+		// (the handler is only registered by the process which got the lock).
+		if ( $this->deletion_lock_token > 0 ) {
+			$this->release_deletion_lock();
+		} else {
+			Lock::force_release( WP_PERSONIO_INTEGRATION_DELETE_RUNNING );
+		}
 	}
 
 	/**
@@ -1811,7 +1866,7 @@ class PersonioPosition extends Post_Type {
 
 		// bail if capability is missing.
 		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
-			return;
+			wp_send_json_error();
 		}
 
 		// return actual and max count of import steps.
@@ -1821,7 +1876,7 @@ class PersonioPosition extends Post_Type {
 				absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_MAX ) ),
 				absint( get_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 ) ),
 				wp_kses_post( get_option( WP_PERSONIO_INTEGRATION_DELETE_STATUS, '' ) ),
-				wp_json_encode( get_option( WP_PERSONIO_INTEGRATION_DELETE_ERRORS, array() ) ),
+				wp_json_encode( $this->get_error_texts_for_response( get_option( WP_PERSONIO_INTEGRATION_DELETE_ERRORS, array() ) ) ),
 			)
 		);
 	}
@@ -1838,7 +1893,7 @@ class PersonioPosition extends Post_Type {
 
 		// bail if capability is missing.
 		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
-			return;
+			wp_send_json_error();
 		}
 
 		// get the import object.
@@ -1877,7 +1932,7 @@ class PersonioPosition extends Post_Type {
 
 		// bail if capability is missing.
 		if ( ! current_user_can( Settings::get_instance()->get_settings_object()->get_capability() ) ) {
-			return;
+			wp_send_json_error();
 		}
 
 		// return actual and max count of import steps.
@@ -1887,7 +1942,7 @@ class PersonioPosition extends Post_Type {
 				absint( get_option( WP_PERSONIO_INTEGRATION_OPTION_MAX ) ),
 				absint( get_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 ) ),
 				wp_kses_post( get_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, '' ) ),
-				wp_json_encode( get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) ),
+				wp_json_encode( $this->get_error_texts_for_response( get_option( WP_PERSONIO_INTEGRATION_IMPORT_ERRORS, array() ) ) ),
 			)
 		);
 	}
@@ -2339,19 +2394,24 @@ class PersonioPosition extends Post_Type {
 		// get db object.
 		global $wpdb;
 
-		// get the search term from the query.
-		$search_term = $wp_query->query['s'];
-		$search      = '';
+		// get the search term from the query (unslashed, as WordPress adds slashes to request data).
+		$search_term = wp_unslash( (string) $wp_query->get( 's' ) );
 
-		// build SQL to search the post-title and content.
-		$search .= "($wpdb->posts.post_title LIKE '%" . $wpdb->esc_like( $search_term ) . "%') OR ($wpdb->posts.post_content LIKE '%" . $wpdb->esc_like( $search_term ) . "%')";
+		// build the LIKE pattern: escape LIKE wildcards in the term, then add our own.
+		$like = '%' . $wpdb->esc_like( $search_term ) . '%';
 
-		// add SQL to also search postmeta table for matching custom field values.
-		$search .= " OR EXISTS (
-			SELECT * FROM $wpdb->postmeta
-			WHERE post_id = $wpdb->posts.ID
-			AND meta_value LIKE '%" . $wpdb->esc_like( $search_term ) . "%'
-		)";
+		// build SQL to search the post-title, the content and all postmeta values.
+		// prepare() quotes and escapes the value, so it cannot break out of the string.
+		$search = $wpdb->prepare(
+			"($wpdb->posts.post_title LIKE %s) OR ($wpdb->posts.post_content LIKE %s) OR EXISTS (
+		SELECT * FROM $wpdb->postmeta
+		WHERE post_id = $wpdb->posts.ID
+		AND meta_value LIKE %s
+	)",
+			$like,
+			$like,
+			$like
+		);
 
 		// return the resulting search SQL string.
 		return ' AND (' . $search . ') ';
@@ -2454,5 +2514,24 @@ class PersonioPosition extends Post_Type {
 		// show hint for our plugin.
 		/* translators: %1$s will be replaced by the plugin name. */
 		return $content . ' ' . \sprintf( __( 'This page is provided by the plugin %1$s.', 'personio-integration-light' ), '<em>' . Helper::get_plugin_name() . '</em>' );
+	}
+
+	/**
+	 * Delete all positions via REST API and return the result.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function delete_positions_via_rest(): WP_REST_Response {
+		// delete the positions.
+		$this->delete_positions();
+
+		// return the result (errors are shown by the progress via get_deletion_info()).
+		return new WP_REST_Response(
+			array(
+				'success' => true,
+				'errors'  => (array) get_option( WP_PERSONIO_INTEGRATION_DELETE_ERRORS, array() ),
+			),
+			200
+		);
 	}
 }

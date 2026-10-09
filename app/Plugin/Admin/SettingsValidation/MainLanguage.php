@@ -21,24 +21,35 @@ class MainLanguage extends Settings_Validation_Base {
 	/**
 	 * Validate the setting for the main language.
 	 *
-	 * @param string $value The string of the main language.
+	 * @param ?string $value The string of the main language.
 	 * @return string
 	 */
-	public static function validate( string $value ): string {
-		if ( ! Helper::is_rest_request() ) {
-			if ( ! self::has_size( $value ) ) {
-				add_settings_error( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, __( 'No main language was specified. The specification of a main language is mandatory.', 'personio-integration-light' ) );
-				$value = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language();
-			} elseif ( ! self::check_language( $value ) ) {
-				add_settings_error( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, __( 'The selected main language is not activated as a language.', 'personio-integration-light' ) );
-				$value = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language();
-			}
+	public static function validate( ?string $value ): string {
+		// set value as string if null is given.
+		$value = (string) $value;
 
-			// trigger re-import hint if setting will be changed.
-			if ( ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE ) !== $value ) {
-				Positions::get_instance()->trigger_reimport_hint();
+		// in REST requests validate without settings errors and keep the stored value if the new one is not valid.
+		if ( Helper::is_rest_request() ) {
+			if ( ! empty( self::rest_validate( $value ) ) ) {
+				return (string) get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, '' );
 			}
+			return $value;
 		}
+
+		if ( ! self::has_size( $value ) ) {
+			add_settings_error( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, __( 'No main language was specified. The specification of a main language is mandatory.', 'personio-integration-light' ) );
+			$value = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language();
+		} elseif ( ! self::check_language( $value ) ) {
+			add_settings_error( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE, __( 'The selected main language is not activated as a language.', 'personio-integration-light' ) );
+			$value = \PersonioIntegrationLight\Plugin\Languages::get_instance()->get_main_language();
+		}
+
+		// trigger re-import hint if setting will be changed.
+		if ( ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && get_option( WP_PERSONIO_INTEGRATION_MAIN_LANGUAGE ) !== $value ) {
+			Positions::get_instance()->trigger_reimport_hint();
+		}
+
+		// return the value.
 		return $value;
 	}
 

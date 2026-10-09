@@ -24,7 +24,7 @@ class Pods extends Compatibilities_Base {
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_acf';
+	protected string $name = 'personio_integration_compatibility_pods';
 
 	/**
 	 * Instance of this object.

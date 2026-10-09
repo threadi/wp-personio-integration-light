@@ -111,4 +111,22 @@ class Crypt {
 	public function get_method(): Method_Base|false {
 		return $this->get_crypt_obj()->get_method();
 	}
+
+	/**
+	 * Remove the crypt data (e.g. the key) of this plugin during uninstallation.
+	 *
+	 * @return void
+	 */
+	public function uninstall(): void {
+		// get the crypt object.
+		$crypt_obj = $this->get_crypt_obj();
+
+		// bail if the library does not support uninstallation.
+		if ( ! method_exists( $crypt_obj, 'uninstall' ) ) { // @phpstan-ignore function.alreadyNarrowedType
+			return;
+		}
+
+		// run the uninstallation of the library.
+		$crypt_obj->uninstall();
+	}
 }

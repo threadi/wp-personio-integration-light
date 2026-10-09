@@ -32,6 +32,15 @@ class Imports {
 	protected static ?Imports $instance = null;
 
 	/**
+	 * List of position objects which will be saved as new positions during this request.
+	 *
+	 * Key is the object ID of the Position object.
+	 *
+	 * @var array<int,bool>
+	 */
+	private array $pending_new_positions = array();
+
+	/**
 	 * Constructor, not used as this a Singleton object.
 	 */
 	private function __construct() {}
@@ -82,7 +91,9 @@ class Imports {
 
 		// use our own hooks.
 		add_action( 'personio_integration_import_starting', array( $this, 'reset_new_position_list' ) );
+		add_action( 'personio_integration_import_starting', array( $this, 'reset_deleted_position_list' ) );
 		add_filter( 'personio_integration_import_single_position_filter_before_saving', array( $this, 'check_if_position_is_new' ), 10, 2 );
+		add_action( 'personio_integration_import_single_position_save', array( $this, 'add_to_list_of_new_positions' ) );
 		add_action( 'personio_integration_light_import_deleted_position', array( $this, 'add_to_list_of_deleted_positions' ) );
 	}
 
@@ -142,6 +153,8 @@ class Imports {
 			$field = new TextInfo( $settings_obj );
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
 			$field->set_description( __( 'The import is already running. Please wait for some moments.', 'personio-integration-light' ) );
+		} elseif ( ! $imports_obj->is_usable() ) {
+			$field = $imports_obj->get_usable_hint();
 		} else {
 			$field = new Button( $settings_obj );
 			$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
@@ -182,15 +195,9 @@ class Imports {
 
 		// get list of enabled import types.
 		$import_types = array();
-		foreach( $this->get_import_extensions_as_object() as $import_obj ) {
+		foreach ( $this->get_import_extensions_as_object() as $import_obj ) {
 			// bail if this is not enabled.
-			if( ! $import_obj->is_enabled() ) {
-				continue;
-			}
-
-			// bail if this is the API import and development is not enabled.
-			// TODO remove until Personio fully supports position data via API v2.
-			if( 'api_import' === $imports_obj && Helper::is_development_mode_active() ) {
+			if ( ! $import_obj->is_enabled() ) {
 				continue;
 			}
 
@@ -206,6 +213,9 @@ class Imports {
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Choose API for import', 'personio-integration-light' ) );
 		$field->set_options( $import_types );
+		if ( isset( $import_types[ Imports\Api::get_instance()->get_name() ] ) ) {
+			$field->set_description( '<strong>' . __( 'Hint:', 'personio-integration-light' ) . '</strong> ' . __( 'The import via API v2 uses a beta interface of Personio which does not provide all data of positions yet. Use the XML import for productive websites.', 'personio-integration-light' ) );
+		}
 		$automatic_import_setting->set_field( $field );
 
 		// add setting.
@@ -317,7 +327,7 @@ class Imports {
 		$import_extension = get_option( 'personioIntegrationImportVersion' );
 
 		// bail on no setting.
-		if( empty( $import_extension ) ) {
+		if ( empty( $import_extension ) ) {
 			return false;
 		}
 
@@ -329,7 +339,7 @@ class Imports {
 			}
 
 			// bail if it does not match the setting.
-			if( $import_extension !== $import_extension_obj->get_name() ) {
+			if ( $import_extension !== $import_extension_obj->get_name() ) {
 				continue;
 			}
 
@@ -347,11 +357,24 @@ class Imports {
 	 * @return void
 	 */
 	public function reset_new_position_list(): void {
+		$this->pending_new_positions = array();
 		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS );
 	}
 
 	/**
+	 * Reset the list of deleted positions.
+	 *
+	 * @return void
+	 */
+	public function reset_deleted_position_list(): void {
+		delete_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS );
+	}
+
+	/**
 	 * Check if we have a new position. This is detected if "ID" is 0.
+	 *
+	 * The position is only marked here, as it has no post ID yet. The post ID is
+	 * saved in the list of new positions after the position has been saved.
 	 *
 	 * @param array<string,mixed> $post_array List of data.
 	 * @param Position            $position_obj The position object.
@@ -359,27 +382,56 @@ class Imports {
 	 * @return array<string,mixed>
 	 */
 	public function check_if_position_is_new( array $post_array, Position $position_obj ): array {
-		// bail if ID is given.
+		// bail if ID is given (and remove a possible outdated marker for a reused object id).
 		if ( absint( $post_array['ID'] ) > 0 ) {
+			unset( $this->pending_new_positions[ spl_object_id( $position_obj ) ] );
 			return $post_array;
+		}
+
+		// mark this position object as new.
+		$this->pending_new_positions[ spl_object_id( $position_obj ) ] = true;
+
+		// return the post-array.
+		return $post_array;
+	}
+
+	/**
+	 * Add the post ID of a saved position to the list of new positions, if it has been marked as new.
+	 *
+	 * @param Position $position_obj The saved position object.
+	 *
+	 * @return void
+	 */
+	public function add_to_list_of_new_positions( Position $position_obj ): void {
+		// get the object ID.
+		$object_id = spl_object_id( $position_obj );
+
+		// bail if this position is not marked as new.
+		if ( ! isset( $this->pending_new_positions[ $object_id ] ) ) {
+			return;
+		}
+
+		// remove the marker.
+		unset( $this->pending_new_positions[ $object_id ] );
+
+		// bail if the position has no post ID.
+		if ( 0 === $position_obj->get_id() ) {
+			return;
 		}
 
 		// get the actual list of new position from this import.
 		$new_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, array() );
 
 		// bail if a list is empty.
-		if ( empty( $new_positions ) ) {
+		if ( ! \is_array( $new_positions ) ) {
 			$new_positions = array();
 		}
 
-		// add this position.
-		$new_positions[] = $position_obj;
+		// add the post ID of this position.
+		$new_positions[] = $position_obj->get_id();
 
-		// save the list of new positions.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, $new_positions );
-
-		// return the post-array.
-		return $post_array;
+		// save the list of new positions (without autoload).
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, $new_positions, false );
 	}
 
 	/**
@@ -394,15 +446,15 @@ class Imports {
 		$deleted_positions = get_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, array() );
 
 		// bail if a list is empty.
-		if ( empty( $deleted_positions ) ) {
+		if ( ! \is_array( $deleted_positions ) ) {
 			$deleted_positions = array();
 		}
 
 		// add this position.
 		$deleted_positions[] = $personio_id;
 
-		// save the list of new positions.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, $deleted_positions );
+		// save the list of deleted positions (without autoload).
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, array_values( array_unique( $deleted_positions ) ), false );
 	}
 
 	/**

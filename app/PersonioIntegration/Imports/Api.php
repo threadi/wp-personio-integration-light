@@ -12,6 +12,8 @@ namespace PersonioIntegrationLight\PersonioIntegration\Imports;
 // prevent direct access.
 \defined( 'ABSPATH' ) || exit;
 
+use easySettingsForWordPress\Field_Base;
+use easySettingsForWordPress\Fields\TextInfo;
 use Error;
 use JsonException;
 use PersonioIntegrationLight\Helper;
@@ -22,6 +24,7 @@ use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\PersonioIntegration\Position;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
 use PersonioIntegrationLight\Plugin\Schedules\ApiAccessToken;
+use PersonioIntegrationLight\Plugin\Settings;
 use stdClass;
 use WP_Post;
 
@@ -131,8 +134,15 @@ class Api extends Imports_Base {
 			\define( 'PERSONIO_INTEGRATION_IMPORT_RUNNING', 1 );
 		}
 
-		// mark the import as running with its start-time.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, time() );
+		// mark the import as running with its start-time (atomic), bail if another import is running.
+		if ( ! $this->acquire_lock() ) {
+			$this->add_error( __( 'Import is already running. Please wait a moment until it is finished.', 'personio-integration-light' ) );
+			$this->handle_errors();
+			return;
+		}
+
+		// log a warning as the API v2 is still in beta mode.
+		Log::get_instance()->add( __( 'The import uses the Personio API v2, which is still in beta mode and does not provide all data of positions. Missing data is no error of this plugin.', 'personio-integration-light' ), 'info', 'import' );
 
 		// set status.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import starting ..', 'personio-integration-light' ) );
@@ -182,6 +192,10 @@ class Api extends Imports_Base {
 				$request_object->set_method( 'GET' );
 				$request_object->set_md5( md5( $url ) );
 
+				// show the progress for the list of positions.
+				/* translators: %1$d will be replaced by the page number. */
+				update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, \sprintf( __( 'Get list of positions from Personio (page %1$d) ..', 'personio-integration-light' ), $i ) );
+
 				// send it.
 				if ( ! $request_object->send() ) {
 					// if it was not successful, get the occurred errors from the request object.
@@ -189,8 +203,8 @@ class Api extends Imports_Base {
 						$this->add_error( $error );
 					}
 
-					// do nothing more.
-					continue;
+					// stop the loop, as a retry with the same URL would fail again.
+					break;
 				}
 
 				// bail if response is not 200.
@@ -211,7 +225,9 @@ class Api extends Imports_Base {
 				// bail if list is empty.
 				if ( empty( $positions ) ) {
 					$this->add_error( __( 'Got empty response for positions from Personio API.', 'personio-integration-light' ) );
-					continue;
+
+					// stop the loop, as a retry with the same URL would get the same response.
+					break;
 				}
 
 				// bail if "_data" is missing. This should happen in any step > 1 OR if no positions are available in Personio.
@@ -228,26 +244,47 @@ class Api extends Imports_Base {
 					$this->add_position( $position['id'] );
 				}
 
-				// bail if next is missing.
-				if ( empty( $positions['_meta']['links']['next']['href'] ) ) {
+				// a missing or empty "next"-link is the normal end of the pagination.
+				if ( empty( $positions['_meta']['links']['next']['href'] ) || ! \is_string( $positions['_meta']['links']['next']['href'] ) ) {
+					// break the loop.
+					break;
+				}
+
+				// get the "next" URL which will be used in next loop.
+				$next_url = $positions['_meta']['links']['next']['href'];
+
+				// prefix a relative "next" URL with the Personio API host.
+				if ( str_starts_with( $next_url, '/' ) && ! str_starts_with( $next_url, '//' ) ) {
+					$next_url = 'https://api.personio.de' . $next_url;
+				}
+
+				// bail if the "next" URL does not point to the Personio API, as our access token is sent to it.
+				if ( ! $this->is_personio_api_url( $next_url ) ) {
 					// break the loop.
 					$i = $max_iterations;
 
 					// add the error.
-					$this->add_error( __( 'Response from Personio API is missing the "next"-link entry:', 'personio-integration-light' ) . ' <code>' . wp_json_encode( $positions ) . '</code>' );
+					$this->add_error( __( 'Response from Personio API contains an unexpected "next"-link. Import has been stopped.', 'personio-integration-light' ) . ' <code>' . esc_html( $next_url ) . '</code>' );
 
 					// do nothing more.
 					continue;
 				}
-
-				// get the "next" URL which will be used in next loop.
-				$url = $positions['_meta']['links']['next']['href'];
+				$url = $next_url;
 			}
 
 			// bail if list of positions is empty.
 			if ( empty( $this->get_positions() ) ) {
+				// mark import as not running anymore.
+				$this->release_lock();
+
+				// reset status.
+				update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, '' );
 				return;
 			}
+
+			// set the max count for the progress, as we know the number of positions now.
+			$this->set_import_max_count( \count( $this->get_positions() ) );
+			update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import positions ..', 'personio-integration-light' ) );
 
 			/**
 			 * Get the data of all positions we collected in a loop.
@@ -256,6 +293,9 @@ class Api extends Imports_Base {
 			 */
 			// loop through the positions and get their data.
 			foreach ( $this->get_positions() as $personio_id => $position_data ) {
+				// update the progress (also for positions which are skipped because of errors).
+				$this->set_import_count( 1 );
+
 				// bail if position data are not empty.
 				if ( ! empty( $position_data ) ) {
 					continue;
@@ -287,11 +327,17 @@ class Api extends Imports_Base {
 				// get the response content.
 				$body = $request_object->get_response();
 
+				// reset the data of the previous position.
+				$data = array();
+
 				// convert it to array.
 				try {
 					$data = json_decode( $body, true, 512, JSON_THROW_ON_ERROR );
 				} catch ( JsonException $e ) {
 					$this->add_error( __( 'JSON-Error:', 'personio-integration-light' ) . ' <code>' . $e->getMessage() . '</code>' );
+
+					// do nothing more with this position.
+					continue;
 				}
 
 				// bail if data is empty.
@@ -324,7 +370,7 @@ class Api extends Imports_Base {
 				 * @param Personio $personio_obj The used Personio-account-object.
 				 * @param Imports_Base $imports_obj The used imports object.
 				 */
-				if ( false !== apply_filters( 'personio_integration_import_single_position', $run_import, $object, $language_name, $personio_obj, $imports_obj ) ) {
+				if ( false === apply_filters( 'personio_integration_import_single_position', $run_import, $object, $language_name, $personio_obj, $imports_obj ) ) {
 					continue;
 				}
 
@@ -396,11 +442,16 @@ class Api extends Imports_Base {
 		 * @noinspection PhpConditionAlreadyCheckedInspection
 		 */
 		if ( apply_filters( 'personio_integration_light_import_bail_before_cleanup', $false ) ) {
+			// mark import as not running anymore.
+			$this->release_lock();
 			return;
 		}
 
 		// handle the errors.
 		if ( $this->has_errors() ) {
+			// mark import as not running anymore.
+			$this->release_lock();
+
 			$this->handle_errors();
 			return;
 		}
@@ -408,7 +459,7 @@ class Api extends Imports_Base {
 		// if no positions has been imported.
 		if ( 0 === $imported_positions ) {
 			// mark import as not running anymore.
-			update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+			$this->release_lock();
 
 			// set status.
 			update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import completed.', 'personio-integration-light' ) );
@@ -502,7 +553,7 @@ class Api extends Imports_Base {
 		do_action( 'personio_integration_import_finished', $step );
 
 		// mark import as not running anymore.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+		$this->release_lock();
 
 		// set status.
 		update_option( WP_PERSONIO_INTEGRATION_IMPORT_STATUS, __( 'Import completed.', 'personio-integration-light' ) );
@@ -523,10 +574,7 @@ class Api extends Imports_Base {
 	 * @return string
 	 */
 	public function get_description(): string {
-		if ( $this->can_be_enabled_by_user() ) {
-			return esc_html__( 'Provides the import of positions from Personio via API. You can activate this extension because your WordPress is running in plugin developer mode. Note that the Personio API is still in beta mode and does not provide all the data the plugin needs. You will encounter errors that the plugin itself cannot solve for you.', 'personio-integration-light' );
-		}
-		return esc_html__( 'Provides the import of positions from Personio via API. This interface does not yet provide all the data required by the plugin. This extension will therefore only be available once the Personio API has reached a usable state.', 'personio-integration-light' );
+		return esc_html__( 'Provides the import of positions from Personio via API v2. Note that the Personio API is still in beta mode and does not provide all the data the plugin needs. You will encounter errors that the plugin itself cannot solve for you. Use the XML import for productive websites.', 'personio-integration-light' );
 	}
 
 	/**
@@ -564,7 +612,7 @@ class Api extends Imports_Base {
 	 * @return bool
 	 */
 	public function can_be_enabled_by_user(): bool {
-		return Helper::is_development_mode_active();
+		return true;
 	}
 
 	/**
@@ -582,6 +630,9 @@ class Api extends Imports_Base {
 		$state = absint( get_option( $this->get_settings_field_name() ) );
 
 		if ( 1 === $state ) {
+			// create the table for API requests, if it does not exist yet (dbDelta is safe to run again).
+			\PersonioIntegrationLight\PersonioIntegration\Api::get_instance()->create_table();
+
 			// install the schedule if credentials are set.
 			if ( \PersonioIntegrationLight\PersonioIntegration\Api::get_instance()->is_credential_prepared() ) {
 				update_option( 'personioIntegrationEnableApiAccessToken', 1 );
@@ -597,5 +648,44 @@ class Api extends Imports_Base {
 
 		// set token to "disabled".
 		update_option( 'personioIntegrationEnableApiAccessToken', 0 );
+	}
+
+	/**
+	 * Return whether the given URL points to the Personio API for recruiting jobs.
+	 *
+	 * @param string $url The URL to check.
+	 *
+	 * @return bool
+	 */
+	private function is_personio_api_url( string $url ): bool {
+		$parts = wp_parse_url( $url );
+
+		return \is_array( $parts )
+				&& 'https' === strtolower( $parts['scheme'] ?? '' )
+				&& 'api.personio.de' === strtolower( $parts['host'] ?? '' )
+				&& ! isset( $parts['user'] ) && ! isset( $parts['pass'] ) && ! isset( $parts['port'] )
+				&& str_starts_with( $parts['path'] ?? '', '/v2/recruiting/jobs' );
+	}
+
+	/**
+	 * Return whether this import object is usable.
+	 *
+	 * @return bool
+	 */
+	public function is_usable(): bool {
+		return \PersonioIntegrationLight\PersonioIntegration\Api::get_instance()->is_credential_prepared();
+	}
+
+	/**
+	 * Return a field with a usable hint.
+	 *
+	 * @return Field_Base
+	 */
+	public function get_usable_hint(): Field_Base {
+		$field = new TextInfo( Settings::get_instance()->get_settings_object() );
+		$field->set_title( __( 'Get open positions from Personio', 'personio-integration-light' ) );
+		/* translators: %1$s will be replaced by a URL. */
+		$field->set_description( \sprintf( __( 'Add your API v2 credentials <a href="%1$s">here</a>.', 'personio-integration-light' ), Helper::get_settings_url() ) );
+		return $field;
 	}
 }

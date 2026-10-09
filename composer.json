@@ -1,6 +1,6 @@
 {
     "name": "threadi/personio-integration-light",
-    "version": "5.7.2",
+    "version": "6.0.0",
     "description": "This plugin supports the embedding of Personio in WordPress.",
     "authors": [
         {
@@ -10,6 +10,7 @@
     ],
     "type": "wordpress-plugin",
     "homepage": "https://laolaweb.com",
+    "license": "GPL-2.0-or-later",
     "minimum-stability": "stable",
     "scripts": {
         "post-install-cmd": [
@@ -40,9 +41,11 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "phpstan/extension-installer": true
         },
+        "platform": {
+            "php": "8.2.0"
+        },
         "optimize-autoloader": true,
         "classmap-authoritative": true,
-        "apcu-autoloader": true,
         "prepend-autoloader": false,
         "platform-check": false
     },

@@ -36,14 +36,14 @@ class Languages {
 	private array $language_to_wp_lang_mapping = array(
 		'de' => array(
 			'de_DE',
-			'de_DE_format',
+			'de_DE_formal',
 			'de_CH',
 			'de_CH_informal',
 			'de_AT',
 		),
 		'en' => array(
 			'en_US',
-			'en_UK',
+			'en_GB',
 		),
 	);
 
@@ -151,10 +151,11 @@ class Languages {
 		// add active languages to returning the list if they exist as language.
 		$languages = array();
 
-		// list with the main language.
-		if ( $with_main_language ) {
+		// list with the main language (only if it is a known language).
+		$main_language = $this->get_main_language();
+		if ( $with_main_language && isset( $all_languages[ $main_language ] ) ) {
 			$languages = array(
-				$this->get_main_language() => $all_languages[ $this->get_main_language() ],
+				$main_language => $all_languages[ $main_language ],
 			);
 		}
 		foreach ( $this->get_languages() as $language_name => $label ) {
@@ -329,6 +330,6 @@ class Languages {
 		}
 
 		// return the title of the language.
-		return $languages[ $language_key ];
+		return (string) ( $languages[ $language_key ] ?? '' );
 	}
 }

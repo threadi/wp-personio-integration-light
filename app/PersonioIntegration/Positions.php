@@ -111,6 +111,12 @@ class Positions {
 	 * @return array<Position>
 	 */
 	public function get_positions( int $limit = -1, array $parameter_to_add = array() ): array {
+		// use the requested page only for real paginated listings, not for lookups of single positions.
+		$paged = 1;
+		if ( $limit > 0 && empty( $parameter_to_add['personioid'] ) ) {
+			$paged = max( 1, absint( get_query_var( 'paged' ) ) );
+		}
+
 		$query = array(
 			'post_type'      => PersonioPosition::get_instance()->get_name(),
 			'post_status'    => 'publish',
@@ -118,7 +124,7 @@ class Positions {
 			'no_found_rows'  => empty( $parameter_to_add['nopagination'] ) ? false : $parameter_to_add['nopagination'],
 			'order'          => 'asc',
 			'orderby'        => 'title',
-			'paged'          => ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1,
+			'paged'          => $paged,
 			'fields'         => 'ids',
 		);
 		if ( ! empty( $parameter_to_add['ids'] ) ) {
@@ -144,6 +150,9 @@ class Positions {
 					'compare' => '=',
 				),
 			);
+
+			// a lookup by Personio ID does not need any pagination information.
+			$query['no_found_rows'] = true;
 		}
 
 		// add taxonomies as a filter.
@@ -217,6 +226,7 @@ class Positions {
 		// get the positions as an object in array
 		// -> optionally grouped by a given taxonomy.
 		$resulting_position_list = array();
+		$grouped_position_list   = array();
 		foreach ( $this->results->get_posts() as $post_id ) {
 			// if post_id is a WP_Post object, get the ID.
 			if ( $post_id instanceof WP_Post ) {
@@ -241,7 +251,8 @@ class Positions {
 
 			// consider grouping of entries in the list.
 			if ( ! empty( $grouped_taxonomy_name ) ) {
-				$resulting_position_list[ $position_object->get_term_by_field( $grouped_taxonomy_name, 'name' ) ] = $position_object;
+				// collect all positions per group to prevent overwriting positions with the same term.
+				$grouped_position_list[ (string) $position_object->get_term_by_field( $grouped_taxonomy_name, 'name' ) ][] = $position_object;
 			} else {
 				// ungrouped simply add the position to the list.
 				$resulting_position_list[] = $position_object;
@@ -252,8 +263,15 @@ class Positions {
 		remove_filter( 'posts_join', array( $this, 'add_taxonomy_table_to_position_query' ) );
 		remove_filter( 'posts_orderby', array( $this, 'set_position_query_order_by_for_group' ) );
 
-		// sort the list by key.
-		ksort( $resulting_position_list );
+		// sort the grouped list by the group name and flatten it while keeping the order.
+		if ( ! empty( $grouped_position_list ) ) {
+			ksort( $grouped_position_list );
+			foreach ( $grouped_position_list as $positions_in_group ) {
+				foreach ( $positions_in_group as $position_object ) {
+					$resulting_position_list[] = $position_object;
+				}
+			}
+		}
 
 		/**
 		 * Filter the resulting and sorted list of position objects.
@@ -311,7 +329,7 @@ class Positions {
 	 */
 	public function add_taxonomy_table_to_position_query( string $join ): string {
 		global $wpdb;
-		return $join . " LEFT JOIN $wpdb->terms ON $wpdb->terms.term_id = $wpdb->term_relationships.term_taxonomy_id";
+		return $join . " LEFT JOIN $wpdb->term_taxonomy AS personio_tt ON personio_tt.term_taxonomy_id = $wpdb->term_relationships.term_taxonomy_id LEFT JOIN $wpdb->terms ON $wpdb->terms.term_id = personio_tt.term_id";
 	}
 
 	/**
@@ -320,7 +338,35 @@ class Positions {
 	 * @return int
 	 */
 	public function get_positions_count(): int {
-		return \count( $this->get_positions() );
+		$query = array(
+			'post_type'   => PersonioPosition::get_instance()->get_name(),
+			'post_status' => 'publish',
+			'order'       => 'asc',
+			'orderby'     => 'title',
+			'paged'       => 1,
+			'fields'      => 'ids',
+		);
+
+		/**
+		 * Filter the custom query for positions just before it is used.
+		 *
+		 * @since 3.0.0 Available since 3.0.0.
+		 *
+		 * @param array<string,mixed> $query The configured query.
+		 * @param array<string,mixed> $parameter_to_add The parameter to filter for.
+		 */
+		$query = apply_filters( 'personio_integration_positions_query', $query, array() );
+
+		// only count the results, do not load them.
+		$query['posts_per_page']         = 1;
+		$query['paged']                  = 1;
+		$query['fields']                 = 'ids';
+		$query['no_found_rows']          = false;
+		$query['update_post_meta_cache'] = false;
+		$query['update_post_term_cache'] = false;
+
+		$results = new WP_Query( $query );
+		return absint( $results->found_posts );
 	}
 
 	/**

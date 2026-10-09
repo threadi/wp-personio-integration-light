@@ -173,7 +173,7 @@ class Log_Abilities {
 		// get the parameters.
 		$limit       = isset( $input['limit'] ) && \is_scalar( $input['limit'] ) ? min( self::MAX_LIMIT, max( 1, absint( $input['limit'] ) ) ) : self::DEFAULT_LIMIT;
 		$category    = isset( $input['category'] ) && \is_scalar( $input['category'] ) ? sanitize_key( (string) $input['category'] ) : '';
-		$errors_only = ! empty( $input['errors_only'] );
+		$errors_only = isset( $input['errors_only'] ) && filter_var( $input['errors_only'], FILTER_VALIDATE_BOOLEAN );
 
 		// get the categories.
 		$categories = Log::get_instance()->get_categories();
@@ -186,17 +186,20 @@ class Log_Abilities {
 
 		// the log object reads its filters from the request of the log table in the backend, so we set them via its hooks.
 		$filters = array(
-			'personio_integration_light_log_limit'    => static function () use ( $limit ): int {
+			'personio_integration_light_log_limit'         => static function () use ( $limit ): int {
 				return $limit;
 			},
-			'personio_integration_light_log_category' => static function () use ( $category ): string {
+			'personio_integration_light_log_category'      => static function () use ( $category ): string {
 				return $category;
 			},
-			'personio_integration_light_log_md5'      => static function (): string {
+			'personio_integration_light_log_md5'           => static function (): string {
 				return '';
 			},
-			'personio_integration_light_log_errors'   => static function () use ( $errors_only ): int {
+			'personio_integration_light_log_errors'        => static function () use ( $errors_only ): int {
 				return $errors_only ? 1 : 0;
+			},
+			'personio_integration_light_log_entries_order' => static function (): string {
+				return 'DESC';
 			},
 		);
 		foreach ( $filters as $hook => $callback ) {

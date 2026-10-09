@@ -18,10 +18,7 @@ export const onChangeApplicationFormVisibility = ( newAlignment, object ) => {
 }
 
 export const onChangeLimit = ( newValue, object ) => {
-    if( newValue.length === 0 ) {
-        newValue = 0;
-    }
-    object.setAttributes({ limit: newValue });
+    object.setAttributes({ limit: parseInt( newValue, 10 ) || 0 });
 }
 
 export const onChangeSort = ( newValue, object ) => {

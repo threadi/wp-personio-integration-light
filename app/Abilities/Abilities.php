@@ -553,7 +553,7 @@ class Abilities {
 
 		// get the language and whether the description should be returned.
 		$language         = $this->get_language( $input );
-		$with_description = ! empty( $input['with_description'] );
+		$with_description = isset( $input['with_description'] ) && filter_var( $input['with_description'], FILTER_VALIDATE_BOOLEAN );
 
 		// collect the positions.
 		$positions = array();
@@ -646,8 +646,9 @@ class Abilities {
 			}
 		}
 
-		// get the creation date.
-		$created_at = absint( $position_obj->get_created_at() );
+		// get the creation date from the meta directly, as get_created_at() returns the actual time if it is not set.
+		$created_at_meta = get_post_meta( $position_obj->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT, true );
+		$created_at      = \is_scalar( $created_at_meta ) ? absint( $created_at_meta ) : 0;
 
 		// collect the data.
 		$data = array(

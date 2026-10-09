@@ -24,7 +24,7 @@ class Weglot extends Compatibilities_Base {
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_polylang';
+	protected string $name = 'personio_integration_compatibility_weglot';
 
 	/**
 	 * Instance of this object.

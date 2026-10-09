@@ -117,13 +117,18 @@ class Roles {
 	 * @return void
 	 */
 	public function allow_save_settings(): void {
-		$settings_pages = array(
-			'personioIntegrationMainSettings',
-			'personioIntegrationPositionsTemplates',
-			'personioIntegrationPositionsImportExport',
-			'personioIntegrationPositionsAdvanced',
-		);
-		foreach ( apply_filters( 'personio_integration_admin_settings_pages', $settings_pages ) as $settings_page ) {
+		// the former option groups of this plugin do not exist anymore, but extensions could add their own via the filter.
+		$settings_pages = array();
+
+		/**
+		 * Filter the list of option groups which could be saved with our own capability.
+		 *
+		 * @since 6.0.0 Documented since 6.0.0 (the hook itself exists since earlier versions).
+		 * @param array<int,string> $settings_pages List of option groups.
+		 */
+		$settings_pages = apply_filters( 'personio_integration_admin_settings_pages', $settings_pages );
+
+		foreach ( (array) $settings_pages as $settings_page ) {
 			add_filter(
 				'option_page_capability_' . $settings_page,
 				function () {

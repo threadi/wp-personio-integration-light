@@ -141,6 +141,7 @@ class Email_Base {
 		$field->set_description( \sprintf( __( 'If no email is set, we use the admin-email %1$s as sender. You can edit the admin-email of your WordPress <a href="%2$s">here</a>.', 'personio-integration-light' ), '<code>' . get_option( 'admin_email' ) . '</code>', $wp_general_settings_url ) );
 		$field->set_placeholder( 'info@example.com' );
 		$field->add_depend( $enable_setting, 1 );
+		$field->set_sanitize_callback( array( $this, 'sanitize_from' ) );
 		$setting->set_field( $field );
 
 		// create dialog before test email is sent.
@@ -222,11 +223,28 @@ class Email_Base {
 
 		// if setting is empty use the default email.
 		if ( empty( $recipients ) ) {
-			return array( $this->get_default_recipient() );
+			$recipients = array( $this->get_default_recipient() );
 		}
 
-		// return the list of configured recipients.
-		return $recipients;
+		// convert a single recipient (string) into a list.
+		if ( \is_string( $recipients ) ) {
+			$recipients = array( $recipients );
+		}
+
+		// bail if recipients are not an array.
+		if ( ! \is_array( $recipients ) ) {
+			return array();
+		}
+
+		// return the list of configured recipients without empty entries.
+		return array_values(
+			array_filter(
+				array_map( 'strval', $recipients ),
+				static function ( string $value ): bool {
+					return '' !== trim( $value );
+				}
+			)
+		);
 	}
 
 	/**
@@ -369,9 +387,16 @@ class Email_Base {
 	private function get_headers(): array {
 		$headers = array(
 			'Content-Type: text/html; charset=UTF-8',
-			'From: ' . $this->get_from(),
-			'X-Mailer: ' . Helper::get_plugin_name(),
 		);
+
+		// add the "From" header only if a valid email is configured.
+		$from = $this->get_from();
+		if ( ! empty( $from ) ) {
+			$headers[] = 'From: ' . $from;
+		}
+
+		// add our "X-Mailer" header.
+		$headers[] = 'X-Mailer: ' . Helper::get_plugin_name();
 
 		/**
 		 * Filter the email header.
@@ -470,7 +495,89 @@ class Email_Base {
 	 * @return string
 	 */
 	private function get_from(): string {
-		return get_option( 'personio_integration_email_from_' . $this->get_name() );
+		// get the configured value.
+		$from = get_option( 'personio_integration_email_from_' . $this->get_name() );
+
+		// bail if value is not a string.
+		if ( ! \is_string( $from ) ) {
+			return '';
+		}
+
+		// return the normalized value (empty if invalid).
+		return $this->normalize_from( $from );
+	}
+
+	/**
+	 * Return the normalized "from" value: "email" or "Name <email>", empty string if it is invalid.
+	 *
+	 * Line breaks are removed to prevent header injections.
+	 *
+	 * @param string $value The value.
+	 *
+	 * @return string
+	 */
+	private function normalize_from( string $value ): string {
+		// remove line breaks and whitespaces.
+		$value = trim( str_replace( array( "\r", "\n" ), '', $value ) );
+
+		// support the format "Name <email>".
+		if ( preg_match( '/^(.*)<([^<>]+)>$/', $value, $matches ) ) {
+			$email = sanitize_email( $matches[2] );
+			if ( ! is_email( $email ) ) {
+				return '';
+			}
+			$name = trim( str_replace( array( '"', '<', '>' ), '', sanitize_text_field( $matches[1] ) ) );
+			return '' !== $name ? $name . ' <' . $email . '>' : $email;
+		}
+
+		// otherwise, it must be a single email.
+		$email = sanitize_email( $value );
+		return is_email( $email ) ? $email : '';
+	}
+
+	/**
+	 * Sanitize the "from" email during saving the setting.
+	 *
+	 * An invalid value will not be saved, the actual value will be kept instead.
+	 *
+	 * @param mixed $value The value to save.
+	 *
+	 * @return string
+	 */
+	public function sanitize_from( mixed $value ): string {
+		// get the option name.
+		$option = 'personio_integration_email_from_' . $this->get_name();
+
+		// if value is not a string, create one.
+		if ( ! \is_string( $value ) ) {
+			$value = '';
+		}
+
+		// remove line breaks and whitespaces.
+		$value = trim( str_replace( array( "\r", "\n" ), '', $value ) );
+
+		// an empty value is allowed (the admin email will be used).
+		if ( '' === $value ) {
+			return '';
+		}
+
+		// return the normalized value if it is valid.
+		$email = $this->normalize_from( $value );
+		if ( '' !== $email ) {
+			return $email;
+		}
+
+		// add an error.
+		add_settings_error( $option, $option, __( 'The value entered does not appear to be an email address!', 'personio-integration-light' ) );
+
+		// get the actual value to keep it.
+		$old_value = get_option( $option, '' );
+		if ( ! \is_string( $old_value ) ) {
+			return '';
+		}
+
+		// return the actual value (normalized).
+		return $this->normalize_from( $old_value );
 	}
 
 	/**

@@ -100,6 +100,8 @@ abstract class Template_Adapter_Base {
 	 * - content => the template in the format of the page builder.
 	 * - source => where the template comes from, e.g. "plugin" or "custom".
 	 * - is_customized => true if the template has been customized in this WordPress.
+	 * - is_ability_template => optional, true if the customized template has been saved via abilities (has the marker
+	 *   Abilities_Settings::MARKER_META). If omitted, every customized template is handled as saved via abilities.
 	 * - id => the ID of the template in the page builder.
 	 *
 	 * @param string $type The template type, e.g. "single".
@@ -160,6 +162,7 @@ abstract class Template_Adapter_Base {
 	 * - action => "create" or "update".
 	 * - id => the ID of the template in the page builder.
 	 * - notes => optional list of hints for the user, e.g. about other templates which are affected.
+	 * - filtered => optional, true if the content has been changed by a security filter before saving.
 	 *
 	 * @param string      $type    The template type, e.g. "single".
 	 * @param string      $content The template content in the format of the page builder.

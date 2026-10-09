@@ -4,6 +4,11 @@
  * Generates an example-file for import-tests based on the Personio position XML-format.
  */
 
+// only allow usage via CLI.
+if ( PHP_SAPI !== 'cli' ) {
+	exit;
+}
+
 // max jobs to generate
 $maxJobs = 1000;
 

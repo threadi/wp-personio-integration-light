@@ -26,7 +26,9 @@ class Position extends PersonioTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp(): void {
+	public function set_up(): void {
+		parent::set_up();
+
 		$this->object = self::get_single_position();
 	}
 

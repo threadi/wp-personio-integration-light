@@ -15,6 +15,7 @@ use easySettingsForWordPress\Section;
 use easySettingsForWordPress\Setting;
 use easySettingsForWordPress\Settings;
 use easySettingsForWordPress\Tab;
+use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Statistics;
 use PersonioIntegrationLight\Plugin\Email_Base;
 use PersonioIntegrationLight\Plugin\Intervals;
@@ -60,7 +61,7 @@ class Report extends Email_Base {
 	 */
 	public function show_description(): void {
 		/* translators: %1$s will be replaced with a link. */
-		echo wp_kses_post( \sprintf( __( 'The report contains information about the number of positions on your website, the number of locations where they are assigned to, and the categories in which they are located. The report can also be viewed <a href="$1%s">here</a> at any time.', 'personio-integration-light' ), '' ) );
+		echo wp_kses_post( \sprintf( __( 'The report contains information about the number of positions on your website, the number of locations where they are assigned to, and the categories in which they are located. The report can also be viewed <a href="%1$s">here</a> at any time.', 'personio-integration-light' ), esc_url( Helper::get_settings_url( 'personioPositions', 'statistics' ) ) ) );
 	}
 
 	/**

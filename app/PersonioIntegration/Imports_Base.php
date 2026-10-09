@@ -11,10 +11,14 @@ namespace PersonioIntegrationLight\PersonioIntegration;
 \defined( 'ABSPATH' ) || exit;
 
 use cli\progress\Bar;
+use easySettingsForWordPress\Field_Base;
+use easySettingsForWordPress\Fields\TextInfo;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\PostTypes\PersonioPosition;
 use PersonioIntegrationLight\Plugin\Emails\ImportError;
+use PersonioIntegrationLight\Plugin\Lock;
+use PersonioIntegrationLight\Plugin\Settings;
 use WP_CLI\NoOp;
 use WP_Error;
 
@@ -49,6 +53,13 @@ class Imports_Base extends Extensions_Base {
 	 * @var ?Imports_Base
 	 */
 	private static ?Imports_Base $instance = null;
+
+	/**
+	 * The token of the lock, if this process is running the import. 0 if not.
+	 *
+	 * @var int
+	 */
+	private int $lock_token = 0;
 
 	/**
 	 * Return the instance of this Singleton object.
@@ -375,7 +386,51 @@ class Imports_Base extends Extensions_Base {
 			'imports'
 		);
 
-		// reset the running-flag so the user is not stuck.
-		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+		// reset the running-flag so the user is not stuck: our own lock, or any lock if this process does not hold one
+		// (the handler is only registered by the process which got the lock).
+		if ( $this->lock_token > 0 ) {
+			$this->release_lock();
+		} else {
+			Lock::force_release( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
+		}
+	}
+
+	/**
+	 * Try to mark the import as running. Atomic: only one process gets the lock.
+	 * A lock older than one hour is treated as orphaned and taken over.
+	 *
+	 * @return bool True if this process got the lock, false if another import is running.
+	 */
+	protected function acquire_lock(): bool {
+		$this->lock_token = Lock::acquire( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING );
+		return $this->lock_token > 0;
+	}
+
+	/**
+	 * Release the lock of this import, but only if it is still held by this process.
+	 *
+	 * @return void
+	 */
+	public function release_lock(): void {
+		Lock::release( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, $this->lock_token );
+		$this->lock_token = 0;
+	}
+
+	/**
+	 * Return whether this import object is usable.
+	 *
+	 * @return bool
+	 */
+	public function is_usable(): bool {
+		return false;
+	}
+
+	/**
+	 * Return a field with a usable hint.
+	 *
+	 * @return Field_Base
+	 */
+	public function get_usable_hint(): Field_Base {
+		return new TextInfo( Settings::get_instance()->get_settings_object() );
 	}
 }

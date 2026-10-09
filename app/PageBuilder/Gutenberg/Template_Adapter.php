@@ -34,6 +34,13 @@ class Template_Adapter extends Template_Adapter_Base {
 	private const BLOCK_PREFIX = 'wp-personio-integration/';
 
 	/**
+	 * Blocks which output arbitrary HTML, shortcodes or remote content and are therefore not allowed in templates saved via abilities.
+	 *
+	 * @var array<int,string>
+	 */
+	private const DISALLOWED_BLOCKS = array( 'core/html', 'core/shortcode', 'core/freeform', 'core/rss', 'core/legacy-widget' );
+
+	/**
 	 * Return the internal name of the page builder.
 	 *
 	 * @return string
@@ -324,13 +331,34 @@ class Template_Adapter extends Template_Adapter_Base {
 			return new WP_Error( 'personio_integration_template_not_found', __( 'The template could not be found.', 'personio-integration-light' ) );
 		}
 
+		// check whether the customized template has been saved via abilities.
+		$is_customized       = $this->is_customized( $result );
+		$is_ability_template = false;
+		if ( $is_customized ) {
+			$post                = $this->get_customized_post( $type );
+			$is_ability_template = $post instanceof WP_Post && $this->has_marker( $post, $type );
+		}
+
 		// return the template.
 		return array(
-			'id'            => (string) $result->id,
-			'source'        => (string) $result->source,
-			'is_customized' => $this->is_customized( $result ),
-			'content'       => (string) $result->content,
+			'id'                  => (string) $result->id,
+			'source'              => (string) $result->source,
+			'is_customized'       => $is_customized,
+			'is_ability_template' => $is_ability_template,
+			'content'             => (string) $result->content,
 		);
+	}
+
+	/**
+	 * Return whether the given post of a customized template has been saved via abilities (has our marker).
+	 *
+	 * @param WP_Post $post The post of the customized template.
+	 * @param string  $type The template type.
+	 *
+	 * @return bool
+	 */
+	private function has_marker( WP_Post $post, string $type ): bool {
+		return Abilities_Settings::get_instance()->get_marker( $this->get_name(), $type ) === get_post_meta( $post->ID, Abilities_Settings::MARKER_META, true );
 	}
 
 	/**
@@ -395,7 +423,24 @@ class Template_Adapter extends Template_Adapter_Base {
 		$result = array(
 			'action' => $post instanceof WP_Post ? 'update' : 'create',
 			'id'     => $post instanceof WP_Post ? $post->ID : 0,
+			'notes'  => array(),
 		);
+
+		// warn if a customized template, which has not been saved via abilities (e.g. in the Site Editor), would be replaced.
+		if ( $post instanceof WP_Post && ! $this->has_marker( $post, $type ) ) {
+			$result['notes'][] = __( 'The actual customized template has not been saved via abilities (e.g. it was customized in the Site Editor). Saving replaces it, the previous version is kept as revision.', 'personio-integration-light' );
+		}
+
+		// filter the HTML inside of blocks and their attributes, also for users with unfiltered_html.
+		$filtered_content = filter_block_content( $content, 'post' );
+		$changed          = $filtered_content !== $content;
+		$content          = $filtered_content;
+
+		// report whether the content has been changed by the filter.
+		$result['filtered'] = $changed;
+		if ( $changed ) {
+			$result['notes'][] = __( 'Parts of the template (e.g. HTML or attributes) are removed or changed by the security filter of WordPress when saving. Check the result with get-template after saving.', 'personio-integration-light' );
+		}
 
 		// bail on dry run.
 		if ( $dry_run ) {
@@ -625,8 +670,8 @@ class Template_Adapter extends Template_Adapter_Base {
 				// a block comment, which could not be parsed, e.g. because of invalid JSON in its attributes.
 				if ( str_contains( $inner_html, '<!-- wp:' ) ) {
 					$errors[] = __( 'The template contains invalid block markup, e.g. a block comment with invalid JSON attributes.', 'personio-integration-light' );
-				} elseif ( '' !== trim( wp_strip_all_tags( $inner_html ) ) ) {
-					$warnings[] = __( 'The template contains content outside of blocks. It will be shown as classic content.', 'personio-integration-light' );
+				} elseif ( preg_match( '/<[a-z]/i', $inner_html ) || '' !== trim( wp_strip_all_tags( $inner_html ) ) ) {
+					$errors[] = __( 'The template contains content outside of blocks. Wrap all content in blocks.', 'personio-integration-light' );
 				}
 				continue;
 			}
@@ -636,6 +681,19 @@ class Template_Adapter extends Template_Adapter_Base {
 			if ( ! $registry->is_registered( $block_name ) ) {
 				/* translators: %1$s will be replaced by the block name. */
 				$errors[] = \sprintf( __( 'The block %1$s is unknown.', 'personio-integration-light' ), $block_name );
+			}
+
+			/**
+			 * Filter the blocks which are not allowed in templates saved via abilities.
+			 *
+			 * @since 6.0.0 Available since 6.0.0.
+			 *
+			 * @param array<int,string> $disallowed_blocks List of block names.
+			 */
+			$disallowed_blocks = apply_filters( 'personio_integration_light_template_disallowed_blocks', self::DISALLOWED_BLOCKS );
+			if ( \in_array( $block_name, $disallowed_blocks, true ) ) {
+				/* translators: %1$s will be replaced by the block name. */
+				$errors[] = \sprintf( __( 'The block %1$s is not allowed in templates saved via abilities, as it can output arbitrary HTML or remote content.', 'personio-integration-light' ), $block_name );
 			}
 
 			// check the attributes.

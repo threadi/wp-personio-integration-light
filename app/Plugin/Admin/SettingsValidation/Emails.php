@@ -19,7 +19,7 @@ class Emails {
 	/**
 	 * Validate the setting for the number-field.
 	 *
-	 * @param array<int,string>|null $values New value.
+	 * @param array<int|string,mixed>|null $values List of emails.
 	 *
 	 * @return array<int,string>
 	 */
@@ -29,18 +29,23 @@ class Emails {
 			$values = array();
 		}
 
+		// get option.
+		$option = str_replace( 'sanitize_option_', '', (string) current_filter() );
+
 		$errors = get_settings_errors();
 		/**
 		 * If a result-entry already exists, do nothing here.
 		 *
 		 * @see https://core.trac.wordpress.org/ticket/21989
 		 */
-		if ( Helper::check_if_setting_error_entry_exists_in_array( 'personioIntegrationUrls', $errors ) ) {
-			return $values;
+		if ( Helper::check_if_setting_error_entry_exists_in_array( $option, $errors ) ) {
+			return array_values( array_filter( $values, 'is_string' ) );
 		}
 
-		// get option.
-		$option = str_replace( 'sanitize_option_', '', (string) current_filter() );
+		// clean up the strings.
+		foreach ( $values as $index => $value ) {
+			$values[ $index ] = \is_string( $value ) ? trim( $value ) : '';
+		}
 
 		// calculate value counts.
 		$value_counts = array_count_values( $values );
@@ -52,9 +57,6 @@ class Emails {
 				unset( $values[ $index ] );
 				continue;
 			}
-
-			// clean up the string.
-			$value = trim( $value );
 
 			// remove double ones at one time.
 			if ( ! empty( $value_counts[ $value ] ) && $value_counts[ $value ] > 1 ) {
@@ -71,6 +73,6 @@ class Emails {
 		}
 
 		// return the values.
-		return $values;
+		return array_values( $values );
 	}
 }

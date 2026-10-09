@@ -139,13 +139,29 @@ class Widget_Base extends Extensions_Base {
 	}
 
 	/**
-	 * Return the widgets shortcode content.
+	 * Return the rendered widget for a shortcode.
 	 *
-	 * @param array<string,mixed> $attributes List of attributes.
+	 * @param array<string,mixed>|string $attributes Attributes from the shortcode.
 	 *
 	 * @return string
 	 */
-	public function get_shortcode( array $attributes ): string {
+	public function get_shortcode( array|string $attributes = array() ): string {
+		// WordPress may pass an empty string instead of an array.
+		$attributes = \is_array( $attributes ) ? $attributes : array();
+
+		/**
+		 * Remove attributes that are only allowed internally (e.g. from block renderers),
+		 * never from user-editable shortcodes.
+		 *
+		 * @since 6.0.0 Available since 6.0.0.
+		 *
+		 * @param array<int,string> $internal_attributes List of attribute names to remove.
+		 */
+		$internal_attributes = apply_filters( 'personio_integration_light_shortcode_internal_attributes', array( 'styles' ) );
+		foreach ( $internal_attributes as $name ) {
+			unset( $attributes[ $name ] );
+		}
+
 		return $this->render( $attributes );
 	}
 

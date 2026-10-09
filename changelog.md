@@ -4,6 +4,8 @@
 
 ### Added
 
+- Personio API v2 is now available; however, since Personio's position data via their API v2 is still incomplete,
+  we continue to recommend using the tried-and-true XML interface.
 - Added compatibility check for Enfold
 - Added more abilities to manage your position templates with AI
 - Added abilities to run and cancel the import of positions, to delete all positions and to read the log with AI, and extended the import state ability with the progress
@@ -13,26 +15,51 @@
 
 ### Changed
 
+- Now requires WordPress 6.6 or newer
 - Optimized some visibility conditions for settings on our blocks
 - Optimized check for Elementor Pro and PRO Elements
 - Optimized support for Personio API v2 (still no position import possible)
 - Optimized the position count handling
 - Optimized resetting this plugin in a network
 - Modernize usage of global functions to speed up loading times
+- Optimized schedule handling of they could not be added
 - Switches from introJS to driver.js as technical base for the intro
 - Show warning in backend if crypt key has been changed (additional to the log entry)
 - Force to reload the WordPress-own permalink cache on uninstallation
+- Secure handling of styles in Blocks
+- Import and deletion of positions use atomic locks, orphaned locks are released after one hour
+- Credentials and tokens are anonymized in the debug log of API requests
+- Template parts and template names from shortcodes and blocks are checked against allowlists
+- Templates saved via abilities may not contain blocks with arbitrary HTML, shortcodes or remote content
+- The license key is not part of URLs anymore and is not loaded on every request
+- Log cleanup runs at most once per hour, the log table is paginated in the database
+- Release ZIP from GitHub does not contain development files anymore
 - Updated the settings library
 - Updated the setup library
 - Updated dependencies
 
 ### Fixed
 
+- Fixed a potential SQL injection during search in backend (only usable by logged in users)
+- Fixed potential XSS through shortcodes (only usable by logged in users)
 - Fixed the intro handling
 - Fixed some typos
 - Fixed missing logging of errors if debug mode is enabled with restriction for one or more categories
 - Fixed XML errors of a faulty Personio feed blocking the following imports in the same process
 - Fixed a deletion of all positions, which was aborted by an error, blocking every further deletion
+- Fixed encryption key being sent to the license server
+- Fixed possible XSS in the log, in the manual import dialog and in emails through data from Personio
+- Fixed allowed HTML for form fields being extended for all content of the website
+- Fixed missing capability checks on dismissing hints, installing Pro and switching the settings view
+- Fixed validation of Personio URL and login URL being skipped in REST requests
+- Fixed only one position per group being shown if positions are grouped
+- Fixed single position widgets showing nothing on paginated pages
+- Fixed email about deleted positions being sent after every import with all positions ever deleted
+- Fixed email about new positions being sent without new positions
+- Fixed all block templates being removed for classic themes
+- Fixed API import skipping every position and reporting an error on the last page
+- Fixed endless polling in backend if an import or deletion broke up
+- Fixed some possible PHP errors with unexpected setting values
 
 ## [5.7.1] - 14.09.2026
 

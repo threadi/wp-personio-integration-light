@@ -54,15 +54,26 @@ class Installer {
 	 *
 	 * Either via activation-hook or via cli-plugin-reset.
 	 *
+	 * @param bool $network_wide True if the plugin is activated network-wide (only on multisite).
+	 *
 	 * @return void
 	 */
-	public function activation(): void {
+	public function activation( bool $network_wide = false ): void {
 		// mark the activation runner as running.
 		if ( ! \defined( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING' ) ) {
 			\define( 'PERSONIO_INTEGRATION_ACTIVATION_RUNNING', 1 );
 		}
 
-		if ( is_multisite() ) {
+		// mimik that setup has been completed.
+		add_filter( 'personio_integration_light_setup_is_completed', '__return_true' );
+
+		// run normal plugin init, but only once and only if it has not been run before in this request.
+		if ( false === has_action( 'cli_init', array( Init::get_instance(), 'cli' ) ) ) {
+			Init::get_instance()->init();
+		}
+
+		// run the tasks in each blog only if the plugin is activated network-wide.
+		if ( is_multisite() && $network_wide ) {
 			// loop through the blogs.
 			foreach ( Helper::get_blogs() as $blog_id ) {
 				// switch to the blog.
@@ -91,12 +102,6 @@ class Installer {
 	 * @return void
 	 */
 	private function activation_tasks(): void {
-		// mimik that setup has been completed.
-		add_filter( 'personio_integration_light_setup_is_completed', '__return_true' );
-
-		// run normal plugin init.
-		Init::get_instance()->init();
-
 		// install our db tables.
 		Init::get_instance()->install_db_tables();
 

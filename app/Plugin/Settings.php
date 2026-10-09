@@ -136,8 +136,7 @@ class Settings {
 		/**
 		 * Configure the basic settings object.
 		 */
-		$settings_obj  = $this->get_settings_object();
-		$settings_page = $settings_obj->add_page( 'personioPositions' );
+		$settings_obj = $this->get_settings_object();
 		$settings_obj->set_slug( 'personio_integration_light' );
 		$settings_obj->set_plugin_slug( WP_PERSONIO_INTEGRATION_PLUGIN );
 		$settings_obj->set_menu_title( __( 'Settings', 'personio-integration-light' ) );
@@ -208,6 +207,12 @@ class Settings {
 		// initialize this setting object if setup has been completed or if this is a REST API request.
 		if ( Helper::is_rest_request() || Setup::get_instance()->is_completed() ) {
 			$settings_obj->init();
+		}
+
+		// get the settings page.
+		$settings_page = $settings_obj->get_page( 'personioPositions' );
+		if ( ! $settings_page instanceof Page ) {
+			return;
 		}
 
 		/**
@@ -289,12 +294,16 @@ class Settings {
 
 		// the advanced section.
 		$advanced = $advanced_settings_tab->add_section( 'settings_section_advanced', 10 );
-		$advanced->set_title( __( 'Additional settings', 'personio-integration-light' ) );
+		$advanced->set_title( __( 'More settings', 'personio-integration-light' ) );
 		$advanced->set_setting( $settings_obj );
 		$advanced->set_callback( array( $this, 'show_advanced_hint' ) );
 
+		// add a plugin tab.
+		$plugin_tab = $advanced_tab->add_tab( 'settings_section_advanced_plugin', 30 );
+		$plugin_tab->set_title( __( 'Plugin', 'personio-integration-light' ) );
+
 		// the debug section.
-		$debug_plugin = $advanced_settings_tab->add_section( 'settings_section_advanced_debug', 20 );
+		$debug_plugin = $plugin_tab->add_section( 'settings_section_advanced_debug', 20 );
 		$debug_plugin->set_title( __( 'Debug', 'personio-integration-light' ) );
 		$debug_plugin->set_setting( $settings_obj );
 		if ( method_exists( $debug_plugin, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
@@ -302,17 +311,17 @@ class Settings {
 		}
 
 		// add a section.
-		$import_export_section = $advanced_settings_tab->add_section( 'personio_integration_import_export_section', 20 );
+		$import_export_section = $plugin_tab->add_section( 'personio_integration_import_export_section', 20 );
 		$import_export_section->set_title( __( 'Secure settings', 'personio-integration-light' ) );
-		if ( method_exists( $import_export_section, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
-			$import_export_section->set_collapsed( true );
+		if ( method_exists( $import_export_section, 'set_collapsible' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
+			$import_export_section->set_collapsible( true );
 		}
 
 		// the advanced plugin-handling section.
-		$advanced_plugin = $advanced_settings_tab->add_section( 'settings_section_advanced_plugin', 30 );
+		$advanced_plugin = $plugin_tab->add_section( 'settings_section_advanced_plugin', 30 );
 		$advanced_plugin->set_title( __( 'Plugin handling', 'personio-integration-light' ) );
-		if ( method_exists( $advanced_plugin, 'set_collapsed' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
-			$advanced_plugin->set_collapsed( true );
+		if ( method_exists( $advanced_plugin, 'set_collapsible' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
+			$advanced_plugin->set_collapsible( true );
 		}
 
 		// create a hidden page for hidden settings.
@@ -655,7 +664,7 @@ class Settings {
 		$setting->set_default( 0 );
 		$field = new Checkbox( $settings_obj );
 		$field->set_title( __( 'Note the position-keywords in search in frontend', 'personio-integration-light' ) );
-		$field->set_description( __( 'If activated, the keywords stored at the locations in Personio are taken into account within the WordPress full-text search.', 'personio-integration-light' ) );
+		$field->set_description( __( 'If activated, the keywords stored at the positions in Personio are taken into account within the WordPress full-text search.', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
 		$setting->set_field( $field );
 
@@ -1271,6 +1280,11 @@ class Settings {
 	public function use_classic_view(): void {
 		// check nonce.
 		check_admin_referer( 'personio-integration-light-use-classic-view', 'nonce' );
+
+		// bail if capability is missing.
+		if ( ! current_user_can( $this->get_settings_object()->get_capability() ) ) {
+			return;
+		}
 
 		// change the setting.
 		update_option( 'personio_integration_light_setting_view', 'classic' );

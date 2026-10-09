@@ -238,12 +238,32 @@ class Schedules {
 
 			// install if the schedule is enabled and not in the list of our schedules.
 			if ( $obj->is_enabled() && ! isset( $our_events[ $obj->get_name() ] ) ) {
+				// bail if the schedule could not be installed in this environment (e.g., setup not completed).
+				if ( ! $obj->can_be_installed() ) {
+					continue;
+				}
+
+				// get the name of the transient which throttles the re-installation after a failure.
+				$throttle_transient = 'personio_integration_schedule_failed_' . md5( $obj->get_name() );
+
+				// bail if a re-installation failed shortly before.
+				if ( get_transient( $throttle_transient ) ) {
+					continue;
+				}
+
 				// reinstall the missing event.
 				$obj->install();
+				if ( $obj->get_event() ) {
+					// log this event.
+					/* translators: %1$s will be replaced by the event name. */
+					Log::get_instance()->add( \sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
+				} else {
+					/* translators: %1$s will be replaced by the event name. */
+					Log::get_instance()->add( \sprintf( __( 'Missing cron event <i>%1$s</i> could not be re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'error', $obj->get_log_category() );
 
-				// log this event.
-				/* translators: %1$s will be replaced by the event name. */
-				Log::get_instance()->add( \sprintf( __( 'Missing cron event <i>%1$s</i> automatically re-installed.', 'personio-integration-light' ), esc_html( $obj->get_name() ) ), 'success', $obj->get_log_category() );
+					// do not try it again for some time.
+					set_transient( $throttle_transient, 1, HOUR_IN_SECONDS );
+				}
 
 				// re-run the check for WP-cron-events.
 				$our_events = $this->get_wp_events();
@@ -284,6 +304,11 @@ class Schedules {
 
 		// delete the simple schedules from our plugin.
 		foreach ( $this->get_schedule_object_names() as $obj_name ) {
+			// bail if the class name does not exist.
+			if ( ! class_exists( $obj_name ) ) {
+				continue;
+			}
+
 			// get the object.
 			$schedule_obj = new $obj_name();
 
@@ -313,6 +338,11 @@ class Schedules {
 	public function create_schedules(): void {
 		// install the schedules if they do not exist atm.
 		foreach ( $this->get_schedule_object_names() as $obj_name ) {
+			// bail if the class name does not exist.
+			if ( ! class_exists( $obj_name ) ) {
+				continue;
+			}
+
 			// get the object.
 			$schedule_obj = new $obj_name();
 

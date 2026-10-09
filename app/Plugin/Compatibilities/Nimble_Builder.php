@@ -24,7 +24,7 @@ class Nimble_Builder extends Compatibilities_Base {
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_bold_page_builder';
+	protected string $name = 'personio_integration_compatibility_nimble_builder';
 
 	/**
 	 * Instance of this object.

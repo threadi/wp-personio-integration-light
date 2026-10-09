@@ -86,6 +86,9 @@ class Personio_Accounts extends PersonioTestCase {
 	 * @return void
 	 */
 	public function test_get_personio_urls(): void {
+		// set a Personio URL.
+		update_option( 'personioIntegrationUrl', self::$personio_url );
+
 		$urls = \PersonioIntegrationLight\PersonioIntegration\Personio_Accounts::get_instance()->get_personio_urls();
 		$this->assertIsArray( $urls);
 		$this->assertNotEmpty( $urls );

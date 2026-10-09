@@ -36,6 +36,20 @@ class Taxonomies {
 	private static ?Taxonomies $instance = null;
 
 	/**
+	 * Cache for the default terms of all taxonomies per language.
+	 *
+	 * @var array<string,array<string,mixed>>
+	 */
+	private array $default_terms_cache = array();
+
+	/**
+	 * Cache for the taxonomy labels per language and locale.
+	 *
+	 * @var array<string,array<string,array<string,string>>>
+	 */
+	private array $taxonomy_labels_cache = array();
+
+	/**
 	 * Constructor for this object.
 	 */
 	private function __construct() {}
@@ -445,37 +459,24 @@ class Taxonomies {
 	 * @return array<string,string>
 	 */
 	public function get_taxonomy_label( string $taxonomy, string $language_code = '' ): array {
-		// get actual locale.
-		$locale = get_locale();
-
-		// switch to the requested language.
-		if ( ! is_admin() ) {
-			// if no language is requested, use the current language.
-			if ( empty( $language_code ) ) {
-				$language_code = Languages::get_instance()->get_current_lang();
+		// get the labels from the cache, if they are already loaded for this language and locale.
+		$cache_key = ( is_admin() ? 'admin_' : $language_code . '_' ) . get_locale();
+		if ( ! isset( $this->taxonomy_labels_cache[ $cache_key ] ) ) {
+			// switch to the requested language (only in frontend).
+			$switched = false;
+			if ( ! is_admin() ) {
+				$switched = $this->switch_to_language_locale( $language_code );
 			}
 
-			// get mappings.
-			$language_mappings = Languages::get_instance()->get_lang_mappings( $language_code );
+			// get ALL taxonomy labels in the requested language.
+			$this->taxonomy_labels_cache[ $cache_key ] = $this->get_taxonomy_labels();
 
-			// get WP-lang-compatible language-code.
-			if ( empty( $language_code ) && ! empty( $language_mappings ) ) {
-				$language_code = $language_mappings[0];
-			} else {
-				$language_code = Languages::get_instance()->get_fallback_language_name();
+			// revert the locale-setting, if it has been switched.
+			if ( $switched ) {
+				restore_previous_locale();
 			}
-
-			// switch the language.
-			switch_to_locale( $language_code );
 		}
-
-		// get ALL taxonomy labels in the requested language.
-		$array = $this->get_taxonomy_labels();
-
-		// revert the locale-setting.
-		if ( ! is_admin() ) {
-			switch_to_locale( $locale );
-		}
+		$array = $this->taxonomy_labels_cache[ $cache_key ];
 
 		// if the requested taxonomy does not exist in the array, add it as an empty setting.
 		if ( empty( $array[ $taxonomy ] ) ) {
@@ -976,36 +977,33 @@ class Taxonomies {
 	 * @return array<string,mixed>
 	 */
 	public function get_default_terms_for_taxonomy( string $taxonomy, string $language_code = '' ): array {
-		// set language in the frontend to read the texts depending on the main language.
-		$locale = get_locale();
-		// switch to the requested language.
-		if ( ! is_admin() ) {
-			// if no language is requested, use the current language.
-			if ( empty( $language_code ) ) {
-				$language_code = Languages::get_instance()->get_current_lang();
-			}
-
-			// get mappings.
-			$language_mappings = Languages::get_instance()->get_lang_mappings( $language_code );
-
-			// get WP-lang-compatible language-code.
-			if ( empty( $language_code ) && ! empty( $language_mappings ) ) {
-				$language_code = $language_mappings[0];
-			} else {
-				$language_code = Languages::get_instance()->get_fallback_language_name();
-			}
-
-			// switch the language.
-			switch_to_locale( $language_code );
+		// if no language is requested, use the current language.
+		if ( ! is_admin() && empty( $language_code ) ) {
+			$language_code = Languages::get_instance()->get_current_lang();
 		}
 
-		// get ALL defaults for all taxonomies as an array.
-		$array = $this->get_taxonomy_defaults();
+		// get the cache key for this language (in backend the actual locale is used).
+		$cache_key = is_admin() ? 'admin_' . get_locale() : $language_code . '_' . get_locale();
 
-		// revert the locale-setting.
-		if ( ! is_admin() ) {
-			switch_to_locale( $locale );
+		// get ALL defaults for all taxonomies as an array, if they are not cached yet.
+		if ( ! isset( $this->default_terms_cache[ $cache_key ] ) ) {
+			// switch to the requested language (only in frontend).
+			$switched = false;
+			if ( ! is_admin() ) {
+				$switched = $this->switch_to_language_locale( $language_code );
+			}
+
+			// get ALL defaults for all taxonomies as an array.
+			$this->default_terms_cache[ $cache_key ] = $this->get_taxonomy_defaults();
+
+			// revert the locale-setting, if it has been switched.
+			if ( $switched ) {
+				restore_previous_locale();
+			}
 		}
+
+		// get the cached defaults.
+		$array = $this->default_terms_cache[ $cache_key ];
 
 		// return nothing if the requested taxonomy has no defaults.
 		if ( empty( $array[ $taxonomy ] ) ) {
@@ -1014,6 +1012,44 @@ class Taxonomies {
 
 		// return resulting defaults for requested taxonomy.
 		return $array[ $taxonomy ];
+	}
+
+	/**
+	 * Switch to the WordPress locale of the requested language.
+	 *
+	 * Returns true if the locale has been switched, so it must be restored via restore_previous_locale().
+	 *
+	 * @param string $language_code The requested language-name (e.g. 'de'), uses the current language if empty.
+	 *
+	 * @return bool
+	 */
+	private function switch_to_language_locale( string $language_code ): bool {
+		// if no language is requested, use the current language.
+		if ( empty( $language_code ) ) {
+			$language_code = Languages::get_instance()->get_current_lang();
+		}
+
+		// get WP-lang-compatible locales of the requested language.
+		$language_mappings = Languages::get_instance()->get_lang_mappings( $language_code );
+
+		// use the fallback language if no mapping exists for the requested language.
+		if ( empty( $language_mappings ) ) {
+			$language_mappings = Languages::get_instance()->get_lang_mappings( Languages::get_instance()->get_fallback_language_name() );
+		}
+
+		// bail if no mapping could be found.
+		if ( empty( $language_mappings ) ) {
+			return false;
+		}
+
+		// bail if the actual locale already matches the requested language.
+		$locale = get_locale();
+		if ( $locale === $language_code || str_starts_with( $locale, $language_code . '_' ) || \in_array( $locale, $language_mappings, true ) ) {
+			return false;
+		}
+
+		// switch the language.
+		return switch_to_locale( (string) reset( $language_mappings ) );
 	}
 
 	/**
@@ -1192,7 +1228,7 @@ class Taxonomies {
 			// get all terms with direct db access.
 			$terms = Db::get_instance()->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->prepare(
-					'SELECT ' . $wpdb->terms . '.term_id
+					'SELECT ' . $wpdb->terms . '.term_id, ' . $wpdb->term_taxonomy . '.term_taxonomy_id
                     FROM ' . $wpdb->terms . '
                     INNER JOIN
                         ' . $wpdb->term_taxonomy . '
@@ -1203,18 +1239,41 @@ class Taxonomies {
 				)
 			);
 
-			// delete them.
-			foreach ( $terms as $term ) {
-				$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$wpdb->terms,
-					array(
-						'term_id' => $term['term_id'],
+			// collect the IDs.
+			$term_ids          = array_map( 'absint', wp_list_pluck( $terms, 'term_id' ) );
+			$term_taxonomy_ids = array_map( 'absint', wp_list_pluck( $terms, 'term_taxonomy_id' ) );
+
+			// delete relationships, metadata and the terms in chunks to keep the queries small.
+			foreach ( array_chunk( $term_taxonomy_ids, 500 ) as $chunk ) {
+				$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					$wpdb->prepare(
+						"DELETE FROM {$wpdb->term_relationships} WHERE term_taxonomy_id IN (" . implode( ',', array_fill( 0, \count( $chunk ), '%d' ) ) . ')',
+						$chunk
+					)
+				);
+			}
+			foreach ( array_chunk( $term_ids, 500 ) as $chunk ) {
+				$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					$wpdb->prepare(
+						"DELETE FROM {$wpdb->termmeta} WHERE term_id IN (" . implode( ',', array_fill( 0, \count( $chunk ), '%d' ) ) . ')',
+						$chunk
+					)
+				);
+				$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					$wpdb->prepare(
+						"DELETE FROM {$wpdb->terms} WHERE term_id IN (" . implode( ',', array_fill( 0, \count( $chunk ), '%d' ) ) . ')',
+						$chunk
 					)
 				);
 			}
 
 			// delete all taxonomy-entries.
 			$wpdb->delete( $wpdb->term_taxonomy, array( 'taxonomy' => $taxonomy_name ), array( '%s' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+
+			// clean the caches for the deleted terms.
+			if ( ! empty( $term_ids ) ) {
+				clean_term_cache( $term_ids, $taxonomy_name );
+			}
 
 			// cleanup options.
 			delete_option( $taxonomy_name . '_children' );

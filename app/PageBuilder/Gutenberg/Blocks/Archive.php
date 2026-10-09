@@ -129,7 +129,7 @@ class Archive extends Blocks_Basis {
 		$templates = $this->get_template_parts( $attributes );
 
 		// set ID as class.
-		$class = $this->get_block_class( $attributes );
+		$classes = $this->get_block_class( $attributes );
 
 		// get block-classes.
 		$styles_array          = array();
@@ -138,27 +138,32 @@ class Archive extends Blocks_Basis {
 			$block_html_attributes = get_block_wrapper_attributes();
 
 			// get styles.
-			$styles = Helper::get_attribute_value_from_html( 'style', $block_html_attributes );
-			if ( ! empty( $styles ) ) {
-				$styles_array[] = '.' . $class . ' { ' . $styles . ' }';
+			$styles = Helper::sanitize_css_declarations( (string) Helper::get_attribute_value_from_html( 'style', $block_html_attributes ) );
+			if ( ! empty( $styles ) && ! empty( $classes ) ) {
+				$styles_array[] = '.' . $classes . ' { ' . $styles . ' }';
 			}
-			if ( ! empty( $attributes['style'] ) && ! empty( $attributes['style']['spacing'] ) && ! empty( $attributes['style']['spacing']['blockGap'] ) ) {
-				$value = $attributes['style']['spacing']['blockGap'];
-				// convert var-setting to var-style-entity.
-				if ( str_contains( $attributes['style']['spacing']['blockGap'], 'var:' ) ) {
-					$value = str_replace( array( '|', 'var:' ), array( '--', '' ), $value );
-					$value = 'var(--wp--' . $value . ')';
+			// blockGap: only strings, convert preset notation, then sanitize.
+			$block_gap = $attributes['style']['spacing']['blockGap'] ?? '';
+			if ( is_string( $block_gap ) && '' !== $block_gap ) {
+				if ( str_contains( $block_gap, 'var:' ) ) {
+					$block_gap = 'var(--wp--' . str_replace( array( '|', 'var:' ), array( '--', '' ), $block_gap ) . ')';
 				}
-				$styles_array[] = 'body .' . $class . ' { margin-bottom: ' . $value . '; }';
+				$declaration = Helper::get_css_declaration( 'margin-bottom', $block_gap );
+				if ( ! empty( $declaration ) && ! empty( $classes ) ) {
+					$styles_array[] = 'body .' . $classes . ' { ' . $declaration . ' }';
+				}
 			}
 		}
 
 		// set background for single positions in the list.
-		if( ! empty( $attributes['positionBackgroundColor'] ) ) {
-			$styles_array[] = '.wp-block-wp-personio-integration-list .personioposition { background-color: ' . $attributes['positionBackgroundColor'] . ' }';
+		$selector = ! empty( $classes ) ? '.' . $classes : '.wp-block-wp-personio-integration-list';
+		$bg = Helper::sanitize_css_color( ! empty( $attributes['positionBackgroundColor'] ) ? $attributes['positionBackgroundColor'] : '' );
+		if ( ! empty( $bg ) ) {
+			$styles_array[] = $selector . ' .personioposition { background-color: ' . $bg . ' }';
 		}
-		if( ! empty( $attributes['positionBackgroundColorHover'] ) ) {
-			$styles_array[] = '.wp-block-wp-personio-integration-list .personioposition:hover { background-color: ' . $attributes['positionBackgroundColorHover'] . ' }';
+		$bg_hover = Helper::sanitize_css_color( ! empty( $attributes['positionBackgroundColorHover'] ) ? $attributes['positionBackgroundColorHover'] : '' );
+		if ( ! empty( $bg_hover ) ) {
+			$styles_array[] = $selector . ' .personioposition:hover { background-color: ' . $bg_hover . ' }';
 		}
 
 		// collect all settings for this block.
@@ -173,7 +178,7 @@ class Archive extends Blocks_Basis {
 			'showfilter'        => false,
 			'show_back_to_list' => '',
 			'styles'            => implode( PHP_EOL, $styles_array ),
-			'classes'           => $class . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
+			'classes'           => $classes . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 			'listing_template'  => $attributes['template'],
 		);
 

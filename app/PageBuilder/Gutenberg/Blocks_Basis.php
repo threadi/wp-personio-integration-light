@@ -145,10 +145,11 @@ class Blocks_Basis {
 	 * @return string
 	 */
 	protected function get_block_class( array $attributes ): string {
-		if ( ! empty( $attributes['blockId'] ) ) {
-			return 'personio-integration-block-' . $attributes['blockId'];
+		if ( empty( $attributes['blockId'] ) || ! \is_string( $attributes['blockId'] ) ) {
+			return '';
 		}
-		return '';
+		$block_id = sanitize_html_class( $attributes['blockId'] );
+		return '' !== $block_id ? 'personio-integration-block-' . $block_id : '';
 	}
 
 	/**

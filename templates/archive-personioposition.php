@@ -2,7 +2,7 @@
 /**
  * Template for output of a list for positions as an archive of our custom post-type.
  *
- * @version: 5.5.0
+ * @version: 6.0.0
  * @package personio-integration-light
  */
 
@@ -10,6 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\PersonioIntegration\Themes;
+use PersonioIntegrationLight\Plugin\Templates;
 
 // get the description.
 $personio_integration_description = get_the_archive_description();
@@ -25,7 +26,7 @@ get_header();
 		<?php endif; ?>
 	</header>
 	<?php
-		echo wp_kses_post( \PersonioIntegrationLight\PersonioIntegration\Widgets\Archive::get_instance()->render( array() ) );
+	echo wp_kses( \PersonioIntegrationLight\PersonioIntegration\Widgets\Archive::get_instance()->render( array() ), Templates::get_instance()->get_allowed_html() );
 	?>
 </div>
 <?php

@@ -15,6 +15,17 @@ use PersonioIntegrationLight\Tests\PersonioTestCase;
 class Compatibilities extends PersonioTestCase {
 
 	/**
+	 * Reset the simulated admin screen after each test.
+	 *
+	 * @return void
+	 */
+	public function tear_down(): void {
+		unset( $GLOBALS['current_screen'] );
+
+		parent::tear_down();
+	}
+
+	/**
 	 * Test if the returning variable is an array.
 	 *
 	 * @return void
@@ -41,8 +52,13 @@ class Compatibilities extends PersonioTestCase {
 		$this->assertIsBool( $value );
 		$this->assertTrue( $value );
 
-		// enable admin.
-		define( 'WP_ADMIN', 1 );
+		// simulate admin via the current screen (a constant like WP_ADMIN would leak into all following tests).
+		if ( ! function_exists( 'set_current_screen' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
+			require_once ABSPATH . 'wp-admin/includes/screen.php';
+		}
+		set_current_screen( 'dashboard' );
+		$this->assertTrue( is_admin() );
 
 		// test 3: with "true" in admin.
 		$value = \PersonioIntegrationLight\Plugin\Compatibilities::get_instance()->prevent_checks_outside_of_admin( true );

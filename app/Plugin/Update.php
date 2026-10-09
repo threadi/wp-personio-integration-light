@@ -73,11 +73,38 @@ class Update {
 		// get db-version (version, which was last installed).
 		$db_plugin_version = get_option( 'personioIntegrationVersion', '1.0.0' );
 
-		// compare version if we are not in development-mode.
-		if ( ! Helper::is_development_mode_active() && version_compare( $installed_plugin_version, $db_plugin_version, '>' ) ) {
-			if ( ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) ) {
-				\define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
-			}
+		// bail if we are in development-mode.
+		if ( Helper::is_development_mode_active() ) {
+			return;
+		}
+
+		// bail if no update is necessary.
+		if ( ! version_compare( $installed_plugin_version, $db_plugin_version, '>' ) ) {
+			return;
+		}
+
+		// get the lock for the update to prevent parallel runs.
+		$lock_token = Lock::acquire( 'personio_integration_update_running', 5 * MINUTE_IN_SECONDS );
+
+		// bail if another process is running the update.
+		if ( 0 === $lock_token ) {
+			return;
+		}
+
+		// get the db-version again, as another process could have run the update in the meantime.
+		$db_plugin_version = get_option( 'personioIntegrationVersion', '1.0.0' );
+
+		// bail if no update is necessary anymore.
+		if ( ! version_compare( $installed_plugin_version, $db_plugin_version, '>' ) ) {
+			Lock::release( 'personio_integration_update_running', $lock_token );
+			return;
+		}
+
+		if ( ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) ) {
+			\define( 'PERSONIO_INTEGRATION_UPDATE_RUNNING', 1 );
+		}
+
+		try {
 			if ( version_compare( $db_plugin_version, '3.0.0', '<' ) ) {
 				$this->version300();
 			}
@@ -99,17 +126,30 @@ class Update {
 			if ( version_compare( $db_plugin_version, '5.6.1', '<' ) ) {
 				$this->version561();
 			}
+		} catch ( \Throwable $e ) {
+			// log the error.
+			/* translators: %1$s will be replaced by the error message. */
+			Log::get_instance()->add( \sprintf( __( 'Error during update of Personio Integration Light: %1$s', 'personio-integration-light' ), '<code>' . esc_html( $e->getMessage() ) . '</code>' ), 'error', 'system' );
 
+			// do not release the lock: it expires after 5 minutes, so the update is retried then and not on every request.
+			return;
+		}
+
+		// save the new plugin-version in the DB.
+		if ( update_option( 'personioIntegrationVersion', $installed_plugin_version ) || get_option( 'personioIntegrationVersion' ) === $installed_plugin_version ) {
 			// log that this update has been run.
 			/* translators: %1$s and %2$s are replaced by the old and new version. */
 			Log::get_instance()->add( \sprintf( __( 'Personio Integration Light has been updated from %1$s to %2$s.', 'personio-integration-light' ), $db_plugin_version, $installed_plugin_version ), 'info', 'system' );
-
-			// save the new plugin-version in the DB.
-			update_option( 'personioIntegrationVersion', $installed_plugin_version );
-
-			// refresh permalinks.
-			update_option( 'personio_integration_update_slugs', 1 );
+		} else {
+			/* translators: %1$s will be replaced by the version. */
+			Log::get_instance()->add( \sprintf( __( 'The new version %1$s of Personio Integration Light could not be saved in the database.', 'personio-integration-light' ), $installed_plugin_version ), 'error', 'system' );
 		}
+
+		// refresh permalinks.
+		update_option( 'personio_integration_update_slugs', 1 );
+
+		// release the lock.
+		Lock::release( 'personio_integration_update_running', $lock_token );
 	}
 
 	/**
@@ -158,10 +198,46 @@ class Update {
 
 		// if Personio-URL is set, set setup and intro to complete.
 		if ( Helper::is_personio_url_set() ) {
-			$setup_obj = Setup::get_instance();
-			$setup_obj->set_completed( $setup_obj->get_setup_name() );
+			$this->mark_setup_as_completed();
 			Intro::get_instance()->set_closed();
 		}
+	}
+
+	/**
+	 * Mark our setup as completed.
+	 *
+	 * Hint: Setup::set_completed() could not be used here, as it is only usable in REST requests
+	 * and sends a JSON-response.
+	 *
+	 * @return void
+	 */
+	private function mark_setup_as_completed(): void {
+		// get the list of completed setups.
+		$completed = get_option( 'esfw_completed' );
+
+		// use the old setup option if the new one is not set.
+		if ( empty( $completed ) ) {
+			$completed = get_option( 'wp_easy_setup_completed' );
+		}
+
+		// if it is not an array, create one.
+		if ( ! \is_array( $completed ) ) {
+			$completed = array();
+		}
+
+		// get our setup name.
+		$setup_name = Setup::get_instance()->get_setup_name();
+
+		// bail if our setup is already marked as completed.
+		if ( \in_array( $setup_name, $completed, true ) ) {
+			return;
+		}
+
+		// add our setup.
+		$completed[] = $setup_name;
+
+		// save the list.
+		update_option( 'esfw_completed', $completed );
 	}
 
 	/**

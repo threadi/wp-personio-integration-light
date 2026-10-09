@@ -64,6 +64,11 @@ class Themes_Base {
 		// get the CSS file.
 		$css_file = $this->get_css_file();
 
+		// bail if no CSS file is set for this theme (e.g. Hitchcock).
+		if ( empty( $css_file ) ) {
+			return;
+		}
+
 		// enqueue it.
 		wp_enqueue_style(
 			'personio-integration-' . $this->get_name(),

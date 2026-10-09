@@ -392,7 +392,7 @@ class Manual_Import extends Extensions_Base {
 			$personio_id_list .= $position_obj->get_personio_id();
 
 			// add the HTML code.
-			$list .= '<li><label for="position' . $position_obj->get_personio_id() . '"><input type="checkbox" data-personio-id="' . $position_obj->get_personio_id() . '" id="position' . $position_obj->get_personio_id() . '" name="position[' . $position_obj->get_personio_id() . ']" value="1"' . $checked . '> ' . $position_obj->get_title() . ' (' . $position_obj->get_personio_id() . ')</label></li>';
+			$list .= '<li><label for="position' . esc_attr( $position_obj->get_personio_id() ) . '"><input type="checkbox" data-personio-id="' . esc_attr( $position_obj->get_personio_id() ) . '" id="position' . esc_attr( $position_obj->get_personio_id() ) . '" name="position[' . esc_attr( $position_obj->get_personio_id() ) . ']" value="1"' . $checked . '> ' . esc_html( $position_obj->get_title() ) . ' (' . esc_html( $position_obj->get_personio_id() ) . ')</label></li>';
 		}
 		$list .= '</ul>';
 
@@ -406,7 +406,7 @@ class Manual_Import extends Extensions_Base {
 					'<p><strong>' . __( 'Select the positions you want to import in your WordPress.', 'personio-integration-light' ) . '</strong></p>',
 					$list,
 					'<p>' . __( '<strong>Hint:</strong> not selected positions will not be imported and deleted in WordPress if they exist there.', 'personio-integration-light' ) . '</p>',
-					'<input type="hidden" id="all_positions" name="all_positions" value="' . $personio_id_list . '">',
+					'<input type="hidden" id="all_positions" name="all_positions" value="' . esc_attr( $personio_id_list ) . '">',
 				),
 				'buttons'   => array(
 					array(

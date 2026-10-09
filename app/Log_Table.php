@@ -31,12 +31,15 @@ class Log_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Get the table data
+	 * Get the table data for the given page.
+	 *
+	 * @param int $per_page The amount of entries per page.
+	 * @param int $offset   The amount of entries to skip.
 	 *
 	 * @return array<int,mixed>
 	 */
-	private function table_data(): array {
-		return Log::get_instance()->get_entries();
+	private function table_data( int $per_page, int $offset ): array {
+		return Log::get_instance()->get_entries( $per_page, $offset );
 	}
 
 	/**
@@ -49,11 +52,9 @@ class Log_Table extends WP_List_Table {
 		$hidden   = $this->get_hidden_columns();
 		$sortable = $this->get_sortable_columns();
 
-		$data = $this->table_data();
-
 		$per_page     = 100;
 		$current_page = $this->get_pagenum();
-		$total_items  = \count( $data );
+		$total_items  = Log::get_instance()->get_entries_count();
 
 		$this->set_pagination_args(
 			array(
@@ -62,7 +63,8 @@ class Log_Table extends WP_List_Table {
 			)
 		);
 
-		$data = \array_slice( $data, ( ( $current_page - 1 ) * $per_page ), $per_page );
+		// get only the entries of the actual page from the database.
+		$data = $this->table_data( $per_page, ( $current_page - 1 ) * $per_page );
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->items           = $data;
@@ -98,7 +100,7 @@ class Log_Table extends WP_List_Table {
 		return match ( $column_name ) {
 			'date' => Helper::get_format_date_time( $item[ $column_name ] ),
 			'state' => $this->get_status_icon( $item[ $column_name ] ),
-			'log' => nl2br( $item[ $column_name ] ),
+			'log' => wp_kses_post( nl2br( $item[ $column_name ] ) ),
 			'category' => empty( $item[ $column_name ] ) ? '<i>' . esc_html__( 'not defined', 'personio-integration-light' ) . '</i>' : $this->get_category( $item[ $column_name ] ),
 			default => '',
 		};
@@ -272,7 +274,7 @@ class Log_Table extends WP_List_Table {
 
 			// show text.
 			/* translators: %1$s will be replaced by the category name. */
-			printf( esc_html__( 'No log entries for %1$s found.', 'personio-integration-light' ), esc_html( $categories[ $category ] ) );
+			printf( esc_html__( 'No log entries for %1$s found.', 'personio-integration-light' ), esc_html( $categories[ $category ] ?? $category ) );
 			return;
 		}
 

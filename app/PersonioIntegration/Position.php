@@ -181,6 +181,17 @@ class Position {
 			return;
 		}
 
+		// convert the job description from JSON to array before anything is saved
+		// -> an invalid JSON throws an exception before any database write.
+		$job_description_json = $this->data['jobdescription'] ?? '';
+		$job_description      = null;
+		if ( \is_string( $job_description_json ) && '' !== $job_description_json ) {
+			$job_description = json_decode( $job_description_json, true, 512, JSON_THROW_ON_ERROR );
+		}
+		if ( ! \is_array( $job_description ) ) {
+			$job_description = array( 'jobDescription' => array() );
+		}
+
 		// prepare data to be saved
 		// -> overwrite title and content only for the main language.
 		$array = array(
@@ -189,8 +200,9 @@ class Position {
 			'post_type'   => PersonioPosition::get_instance()->get_name(),
 			'menu_order'  => absint( $this->data['menu_order'] ),
 		);
-		if ( Languages::get_instance()->get_main_language() === $this->get_lang() ) {
-			$array['post_title']   = $this->data['post_title'];
+		if ( Languages::get_instance()->get_main_language() === $this->get_lang() || 0 === $this->get_id() ) {
+			// use own data for the main language or for new positions (prevents usage of the global post for ID 0).
+			$array['post_title']   = $this->data['post_title'] ?? '';
 			$array['post_content'] = Templates::get_instance()->get_direct_content_template( $this, array() );
 		} else {
 			$array['post_title']   = get_post_field( 'post_title', $this->data['ID'] );
@@ -245,16 +257,10 @@ class Position {
 			}
 
 			// add created at as post-meta field.
-			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT, strtotime( $this->data['createdAt'] ) );
+			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_MAIN_CPT_CREATEDAT, strtotime( (string) ( $this->data['createdAt'] ?? '' ) ) );
 
 			// add all language-specific titles.
-			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), $this->data['post_title'] );
-
-			// convert the job description from JSON to array.
-			$job_description = json_decode( $this->data['jobdescription'], true, 512, JSON_THROW_ON_ERROR );
-			if ( \is_null( $job_description ) ) {
-				$job_description = array( 'jobDescription' => array() );
-			}
+			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_TITLE . '_' . $this->get_lang(), $this->data['post_title'] ?? '' );
 
 			// add all language-specific texts.
 			update_post_meta( $this->get_id(), WP_PERSONIO_INTEGRATION_LANG_POSITION_CONTENT . '_' . $this->get_lang(), $job_description );
@@ -810,9 +816,10 @@ class Position {
 	public function is_visible(): bool {
 		return ! empty(
 			Positions::get_instance()->get_positions(
-				1,
+				-1,
 				array(
 					'ids'                   => array( $this->get_id() ),
+					'nopagination'          => true,
 					'personio_run_in_admin' => true,
 				)
 			)

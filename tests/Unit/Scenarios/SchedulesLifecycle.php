@@ -117,12 +117,9 @@ class SchedulesLifecycle extends PersonioTestCase {
 	 *
 	 * @return void
 	 */
-	/**
-	 * Prepare the environment.
-	 *
-	 * @return void
-	 */
 	public function set_up(): void {
+		parent::set_up();
+
 		// allow schedules to be installed.
 		add_filter( 'personio_integration_light_setup_is_completed', '__return_true' );
 
@@ -150,6 +147,8 @@ class SchedulesLifecycle extends PersonioTestCase {
 		remove_filter( 'personio_integration_schedules', array( $this, 'add_fixture_schedule' ) );
 		delete_option( self::INT_OPT );
 		delete_option( self::ENABLE_OPT );
+
+		parent::tear_down();
 	}
 
 	/**

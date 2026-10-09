@@ -19,13 +19,13 @@ class PersonioIntegrationUrl {
 	/**
 	 * Save the Personio-URL.
 	 *
-	 * @param string $value The new value of this field.
+	 * @param ?string $value The new value of this field.
 	 *
 	 * @return string
 	 */
-	public static function save( string $value ): string {
+	public static function save( ?string $value ): string {
 		// get cleaned new value.
-		$value = \PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::cleanup_url_string( $value );
+		$value = \PersonioIntegrationLight\Plugin\Admin\SettingsValidation\PersonioIntegrationUrl::cleanup_url_string( (string) $value );
 
 		// trigger re-import hint if URL will be changed and a URL is set.
 		if ( ! empty( $value ) && ! \defined( 'PERSONIO_INTEGRATION_UPDATE_RUNNING' ) && ! \defined( 'PERSONIO_INTEGRATION_DEACTIVATION_RUNNING' ) && ! empty( get_option( 'personioIntegrationUrl' ) ) && get_option( 'personioIntegrationUrl' ) !== $value ) {

@@ -24,7 +24,11 @@ class UrlTimeout {
 	public static function validate( string|null $value ): int {
 		$value = absint( $value );
 		if ( 0 === $value ) {
-			add_settings_error( 'personioIntegrationUrl', 'personioIntegrationUrl', __( 'A timeout must have a value greater than 0.', 'personio-integration-light' ) );
+			add_settings_error( 'personioIntegrationUrlTimeout', 'personioIntegrationUrlTimeout', __( 'A timeout must have a value greater than 0.', 'personio-integration-light' ) );
+
+			// use the actual value or the default value as a timeout of 0 would be unlimited.
+			$old_value = absint( get_option( 'personioIntegrationUrlTimeout' ) );
+			return $old_value > 0 ? $old_value : 30;
 		}
 		return $value;
 	}

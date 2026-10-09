@@ -38,9 +38,7 @@ function usePersonioPositionsInCommandPalette( { search } ) {
         records: getEntityRecords("postType", "personioposition", query),
         isLoading: !select(coreStore).hasFinishedResolution(
           "getEntityRecords",
-          "postType",
-          "page",
-          query
+          ["postType", "personioposition", query]
         ),
       };
     },
@@ -99,7 +97,9 @@ function addImportCommandInCommandPalette() {
         icon: personioIcon,
         callback: ( { close } ) => {
           close();
-          personio_integration_light_get_import_dialog()
+          if ( 'function' === typeof personio_integration_light_get_import_dialog ) {
+            personio_integration_light_get_import_dialog();
+          }
         },
       },
     ];

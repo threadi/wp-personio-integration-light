@@ -24,7 +24,7 @@ class Seed_Prod extends Compatibilities_Base {
 	 *
 	 * @var string
 	 */
-	protected string $name = 'personio_integration_compatibility_bold_page_builder';
+	protected string $name = 'personio_integration_compatibility_seedprod';
 
 	/**
 	 * Instance of this object.

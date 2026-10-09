@@ -31,11 +31,16 @@ function personio_start_availability_check( post_id ) {
         }
       }
       personio_integration_create_dialog( dialog_config );
+    },
+    success: function( data ) {
+      // bail if the check could not be run.
+      if( ! data || 'object' !== typeof data || ! data.success ) {
+        personio_integration_ajax_error_dialog();
+        return;
+      }
 
-      // get info about progress.
-      setTimeout( function () {
-        personio_get_availability_check_info( post_id )
-      }, 1000 );
+      // get info about the result.
+      personio_get_availability_check_info( post_id );
     },
     error: function( jqXHR, textStatus, errorThrown ) {
       personio_integration_ajax_error_dialog( errorThrown )
@@ -59,15 +64,21 @@ function personio_get_availability_check_info( post_id ) {
         personio_integration_ajax_error_dialog( errorThrown )
       },
       success: function (data) {
-        let running = data[0];
-        let status = data[1];
+        // bail if response is not in the expected format.
+        if( ! data || 'object' !== typeof data || undefined === data.running ) {
+          personio_integration_ajax_error_dialog();
+          return;
+        }
+
+        let running = data.running;
+        let status = data.status;
 
         // show progress.
-        jQuery( '#progress_status' ).html( status );
+        jQuery( '#progress_status' ).text( status );
 
-        if (running >= 1) {
+        if ( true === running || parseInt( running ) >= 1 ) {
           setTimeout( function () {
-            personio_get_import_info( post_id )
+            personio_get_availability_check_info( post_id )
           }, 500 );
         } else {
           jQuery( '#progress' ).attr( 'value', 100 );

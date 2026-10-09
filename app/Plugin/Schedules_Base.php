@@ -66,6 +66,13 @@ class Schedules_Base {
 	protected array $args = array();
 
 	/**
+	 * The configured interval, if it has been replaced by the default interval.
+	 *
+	 * @var string
+	 */
+	private string $interval_fallback_from = '';
+
+	/**
 	 * Return the name of this schedule.
 	 *
 	 * @return string
@@ -116,13 +123,8 @@ class Schedules_Base {
 	 * @return void
 	 */
 	public function install(): void {
-		// bail if setup has not been completed.
-		if ( ! Setup::get_instance()->is_completed() ) {
-			return;
-		}
-
-		// bail if "personio_sqlite" is set.
-		if ( 1 === absint( get_option( 'personio_sqlite', 0 ) ) ) {
+		// bail if schedule could not be installed in this environment.
+		if ( ! $this->can_be_installed() ) {
 			return;
 		}
 
@@ -151,8 +153,14 @@ class Schedules_Base {
 			Log::get_instance()->add( \sprintf( __( 'Interval of schedule %1$s changed from %2$s to %3$s - rescheduling.', 'personio-integration-light' ), $this->get_name(), (string) $current_interval, $interval ), 'info', $this->get_log_category() );
 		}
 
+		// log the fallback to the default interval, as we are (re)scheduling the event now.
+		if ( '' !== $this->interval_fallback_from ) {
+			/* translators: %1$s will be replaced by the invalid interval, %2$s by the name of the schedule, %3$s by the fallback interval. */
+			Log::get_instance()->add( \sprintf( __( 'The configured interval %1$s for schedule %2$s is not registered - falling back to %3$s.', 'personio-integration-light' ), '<code>' . esc_html( $this->interval_fallback_from ) . '</code>', '<code>' . esc_html( $this->get_name() ) . '</code>', '<code>' . esc_html( $interval ) . '</code>' ), 'info', $this->get_log_category() );
+		}
+
 		$instance = $this;
-		$start = time();
+		$start    = time();
 		/**
 		 * Filter the timestamp of the first run of a schedule.
 		 *
@@ -169,8 +177,30 @@ class Schedules_Base {
 		// log event if the schedule could not be created.
 		if ( is_wp_error( $result ) ) { // @phpstan-ignore function.impossibleType
 			/* translators: %1$s will be replaced by the name of the schedule. */
-			Log::get_instance()->add( \sprintf( __( 'Error during creation of schedule %1$s:', 'personio-integration-light' ), $this->get_name() ) . ' <code>' . wp_json_encode( wp_json_encode( $result->get_error_messages() ) ) . '</code>', 'info', $this->get_log_category() );
+			Log::get_instance()->add( \sprintf( __( 'Error during creation of schedule %1$s:', 'personio-integration-light' ), $this->get_name() ) . ' <code>' . wp_json_encode( wp_json_encode( $result->get_error_messages() ) ) . '</code>', 'error', $this->get_log_category() );
 		}
+	}
+
+	/**
+	 * Return whether this schedule could be installed in this environment.
+	 *
+	 * Does not check if the schedule is enabled.
+	 *
+	 * @return bool
+	 */
+	public function can_be_installed(): bool {
+		// bail if setup has not been completed.
+		if ( ! Setup::get_instance()->is_completed() ) {
+			return false;
+		}
+
+		// bail if "personio_sqlite" is set.
+		if ( 1 === absint( get_option( 'personio_sqlite', 0 ) ) ) {
+			return false;
+		}
+
+		// return true as the schedule could be installed.
+		return true;
 	}
 
 	/**
@@ -322,11 +352,14 @@ class Schedules_Base {
 	 * @return string
 	 */
 	protected function get_scheduled_interval(): string {
+		// reset the fallback marker.
+		$this->interval_fallback_from = '';
+
 		// get the interval of this schedule.
 		$interval = $this->get_interval();
 
-		// get all schedules.
-		$schedules = Intervals::get_instance()->get_intervals_for_settings();
+		// get all registered schedules in WordPress (incl. our own intervals).
+		$schedules = wp_get_schedules();
 
 		// use the configured interval if it is registered.
 		if ( isset( $schedules[ $interval ] ) ) {
@@ -337,9 +370,8 @@ class Schedules_Base {
 		// actually registered. If neither is available we keep the configured
 		// value and let wp_schedule_event() report the error (as before).
 		if ( isset( $this->default_interval, $schedules[ $this->default_interval ] ) && '' !== $this->default_interval ) {
-			// log the fallback so the misconfiguration is visible.
-			/* translators: %1$s will be replaced by the invalid interval, %2$s by the name of the schedule, %3$s by the fallback interval. */
-			Log::get_instance()->add( \sprintf( __( 'The configured interval %1$s for schedule %2$s is not registered - falling back to %3$s.', 'personio-integration-light' ), '<code>' . $interval . '</code>', '<code>' . $this->get_name() . '</code>', '<code>' . $this->default_interval . '</code>' ), 'info', $this->get_log_category() );
+			// mark the fallback, it will be logged only if the event is (re)scheduled.
+			$this->interval_fallback_from = $interval;
 
 			// return the default interval.
 			return $this->default_interval;

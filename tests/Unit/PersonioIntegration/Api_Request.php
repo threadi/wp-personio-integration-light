@@ -19,7 +19,9 @@ class Api_Request extends PersonioTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp(): void {
+	public function set_up(): void {
+		parent::set_up();
+
 		// install the db table for the API.
 		\PersonioIntegrationLight\PersonioIntegration\Api::get_instance()->create_table();
 
@@ -77,11 +79,30 @@ class Api_Request extends PersonioTestCase {
 	}
 
 	/**
-	 * Test an invalid API request.
+	 * Test the HTTP status of a failed API request.
+	 *
+	 * The response is mocked via "pre_http_request", so no real request is sent to Personio.
 	 *
 	 * @return void
 	 */
-	public function get_failed_http_status(): void {
+	public function test_get_failed_http_status(): void {
+		// mock the response of the Personio API for requests without credentials.
+		$mock = static function ( $preempt, array $parsed_args, string $url ) {
+			if ( ! str_starts_with( $url, self::$api_url ) || ! empty( $parsed_args['body']['client_id'] ) ) {
+				return $preempt;
+			}
+			return array(
+				'headers'  => array(),
+				'body'     => '{"error":"invalid_request"}',
+				'response' => array(
+					'code'    => 400,
+					'message' => 'Bad Request',
+				),
+				'cookies'  => array(),
+			);
+		};
+		add_filter( 'pre_http_request', $mock, 5, 3 );
+
 		// create the request.
 		$request_object = new \PersonioIntegrationLight\PersonioIntegration\Api_Request();
 		$request_object->set_url( 'https://api.personio.de/v2/auth/token' );
@@ -89,6 +110,9 @@ class Api_Request extends PersonioTestCase {
 
 		// send it.
 		$request_object->send();
+
+		// remove the mock.
+		remove_filter( 'pre_http_request', $mock, 5 );
 
 		// get the HTTP status.
 		$http_status = $request_object->get_http_status();

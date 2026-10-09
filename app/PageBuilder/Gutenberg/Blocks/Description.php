@@ -78,10 +78,7 @@ class Description extends Blocks_Basis {
 	 */
 	public function render( array $attributes ): string {
 		// set ID as class.
-		$classes = '';
-		if ( ! empty( $attributes['blockId'] ) ) {
-			$classes = 'personio-integration-block-' . $attributes['blockId'];
-		}
+		$classes = $this->get_block_class( $attributes );
 
 		// get block-classes.
 		$styles_array          = array();
@@ -90,8 +87,8 @@ class Description extends Blocks_Basis {
 			$block_html_attributes = get_block_wrapper_attributes();
 
 			// get styles.
-			$styles = Helper::get_attribute_value_from_html( 'style', $block_html_attributes );
-			if ( ! empty( $styles ) ) {
+			$styles = Helper::sanitize_css_declarations( (string) Helper::get_attribute_value_from_html( 'style', $block_html_attributes ) );
+			if ( ! empty( $styles ) && ! empty( $classes ) ) {
 				$styles_array[] = '.entry-content.' . $classes . ' { ' . $styles . ' }';
 			}
 		}

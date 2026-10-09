@@ -65,14 +65,14 @@ class Template {
 	 *
 	 * @var string
 	 */
-	private string $content;
+	private string $content = '';
 
 	/**
 	 * The template ID.
 	 *
 	 * @var int
 	 */
-	private int $post_id;
+	private int $post_id = 0;
 
 	/**
 	 * Constructor, not used as this a Singleton object.

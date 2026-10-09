@@ -6,7 +6,7 @@
  * @param Position $personio_integration_position_obj       The object for a single position.
  * @param bool $personio_integration_use_li Marker to use <li>.
  *
- * @version: 5.5.0
+ * @version: 6.0.0
  * @package personio-integration-light
  */
 
@@ -21,7 +21,7 @@ if ( ! empty( $personio_attributes['groupby'] ) ) {
 	$personio_integration_new_group_title = $personio_integration_position_obj->get_term_by_field( PersonioIntegrationLight\PersonioIntegration\Taxonomies::get_instance()->get_taxonomy_name_by_slug( $personio_attributes['groupby'] ), 'name', true );
 
 	// output title if it has been changed during the loop.
-	if ( strcmp( $personio_integration_new_group_title, $personio_integration_group_title ) ) {
+	if ( strcmp( $personio_integration_new_group_title, $personio_integration_group_title ?? '' ) ) {
 		$personio_integration_group_title = $personio_integration_new_group_title;
 		if ( $personio_integration_use_li ) {
 			echo '<li>';

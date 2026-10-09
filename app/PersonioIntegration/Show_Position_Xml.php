@@ -56,6 +56,13 @@ class Show_Position_Xml extends Extensions_Base {
 	private static ?Show_Position_Xml $instance = null;
 
 	/**
+	 * List of XML-codes from the running import, which will be saved after the position has been saved.
+	 *
+	 * @var array<string,string>
+	 */
+	private array $pending_xml = array();
+
+	/**
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Show_Position_Xml {
@@ -84,6 +91,7 @@ class Show_Position_Xml extends Extensions_Base {
 
 		// use our own hooks.
 		add_filter( 'personio_integration_import_single_position_xml', array( $this, 'add_xml_to_position_object_on_import' ), 10, 2 );
+		add_action( 'personio_integration_import_single_position_save', array( $this, 'save_xml_after_position_save' ) );
 	}
 
 	/**
@@ -152,7 +160,10 @@ class Show_Position_Xml extends Extensions_Base {
 	}
 
 	/**
-	 * Remove inline styles on job description during import, if enabled.
+	 * Remember the XML-code of a position during import to save it after the position has been saved.
+	 *
+	 * The position has no ID at this point (it is not saved yet), so the XML-code is stored in
+	 * save_xml_after_position_save().
 	 *
 	 * @param Position         $position_obj The Position object we want to change.
 	 * @param SimpleXMLElement $xml_object The XML-object.
@@ -168,11 +179,34 @@ class Show_Position_Xml extends Extensions_Base {
 			return $position_obj;
 		}
 
-		// set the xml on position, convert from object to xml.
-		$this->get_extension( $position_obj )->set_xml( $xml );
+		// remember the xml for this position until it has been saved.
+		$this->pending_xml[ $position_obj->get_personio_id() ] = $xml;
 
 		// return resulting object.
 		return $position_obj;
+	}
+
+	/**
+	 * Save the remembered XML-code after the position has been saved during import.
+	 *
+	 * @param Position $position_obj The saved position.
+	 *
+	 * @return void
+	 */
+	public function save_xml_after_position_save( Position $position_obj ): void {
+		// get the Personio ID.
+		$personio_id = $position_obj->get_personio_id();
+
+		// bail if no XML-code is known for this position.
+		if ( ! isset( $this->pending_xml[ $personio_id ] ) ) {
+			return;
+		}
+
+		// save the xml on the position.
+		$this->get_extension( $position_obj )->set_xml( $this->pending_xml[ $personio_id ] );
+
+		// remove it from the list.
+		unset( $this->pending_xml[ $personio_id ] );
 	}
 
 	/**

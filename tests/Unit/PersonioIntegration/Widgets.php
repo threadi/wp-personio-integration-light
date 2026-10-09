@@ -30,7 +30,7 @@ class Widgets extends PersonioTestCase {
 	 *
 	 * @return void
 	 */
-	public function get_widgets_as_objects(): void {
+	public function test_get_widgets_as_objects(): void {
 		$widgets = \PersonioIntegrationLight\PersonioIntegration\Widgets::get_instance()->get_widgets_as_objects();
 		$this->assertIsArray( $widgets );
 		$this->assertNotEmpty( $widgets );

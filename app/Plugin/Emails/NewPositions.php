@@ -86,7 +86,7 @@ class NewPositions extends Email_Base {
 		// create the body.
 		$body = __( 'New positions from Personio have been imported into your WordPress. These are the following:', 'personio-integration-light' );
 		foreach ( $this->get_new_positions() as $position_obj ) {
-			$body .= '<br>' . $position_obj->get_title() . ' (Personio ID: ' . $position_obj->get_personio_id() . ')';
+			$body .= '<br>' . esc_html( $position_obj->get_title() ) . ' (Personio ID: ' . esc_html( $position_obj->get_personio_id() ) . ')';
 		}
 
 		// set the body.
@@ -108,12 +108,48 @@ class NewPositions extends Email_Base {
 	/**
 	 * Set the new positions.
 	 *
-	 * @param array<int,Position> $new_positions List of new positions.
+	 * The list could contain post IDs or Position objects (for backwards compatibility).
+	 * Entries which could not be resolved to a valid position are skipped.
+	 *
+	 * @param array<int,int|Position|mixed> $new_positions List of new positions.
 	 *
 	 * @return void
 	 */
 	public function set_new_positions( array $new_positions ): void {
-		$this->new_positions = $new_positions;
+		$positions = array();
+		foreach ( $new_positions as $new_position ) {
+			// use position objects directly.
+			if ( $new_position instanceof Position ) {
+				$positions[] = $new_position;
+				continue;
+			}
+
+			// bail if entry is not a post ID.
+			if ( ! is_numeric( $new_position ) || absint( $new_position ) <= 0 ) {
+				continue;
+			}
+
+			// get the position object for this post ID.
+			$position_obj = Positions::get_instance()->get_position( absint( $new_position ) );
+
+			// bail if position is not valid (e.g., deleted in the meantime).
+			if ( ! $position_obj->is_valid() ) {
+				continue;
+			}
+
+			// add it to the list.
+			$positions[] = $position_obj;
+		}
+		$this->new_positions = $positions;
+	}
+
+	/**
+	 * Return whether this object has any new positions.
+	 *
+	 * @return bool
+	 */
+	public function has_new_positions(): bool {
+		return ! empty( $this->get_new_positions() );
 	}
 
 	/**

@@ -8,6 +8,11 @@
     <arg name="extensions" value="php" />
 
     <!--
+        Expect check against WordPress 6.6.
+    -->
+    <config name="minimum_wp_version" value="6.6"/>
+
+    <!--
         Directories to exclude.
     -->
     <exclude-pattern>*/vendor/*</exclude-pattern>

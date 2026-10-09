@@ -1,193 +1,250 @@
 name: Build release zip
 
 on:
-    push:
-        tags:
-            - '*'
-    workflow_dispatch:
+  push:
+    tags:
+      # only tags which look like a version number start a release, e.g. 6.0.0 or 6.1.0-beta.1
+      - '[0-9]+.[0-9]+.[0-9]+*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number for a test build, e.g. 6.0.1-beta.1 (no release is created)'
+        required: true
+        type: string
+
+# nothing in this workflow may write to the repository, unless a job asks for it itself (see "release").
+permissions:
+  contents: read
+
+env:
+  # the name of the plugin folder and of the zip. Independent of how the repository is called.
+  # do not call this PLUGIN_SLUG: wordpress/plugin-check-action sets a variable of that name itself.
+  RELEASE_SLUG: personio-integration-light
 
 jobs:
-    build:
-        name: Build release zip
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v7
+  build:
+    name: Build release zip
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # do not leave the access token in .git/config, where every following script could read it.
+          persist-credentials: false
 
-            - name: Setup WP-CLI
-              uses: godaddy-wordpress/setup-wp-cli@1
+      - name: Determine version number
+        env:
+          # hand the input over as a variable, never write it into the script itself.
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            VERSION="$GITHUB_REF_NAME"
+          else
+            VERSION="$INPUT_VERSION"
+          fi
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]; then
+            echo "::error::'$VERSION' is not a version number like 6.0.0 or 6.1.0-beta.1."
+            exit 1
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
-            - name: Run package installs and builds
-              run: |
-                  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash
-                  export NVM_DIR=~/.nvm
-                  source ~/.nvm/nvm.sh
-                  composer install
-                  npm i
-                  npm i concurrently
-                  cd vendor/threadi/easy-setup-for-wordpress/
-                  npm i
-                  npm run build
-                  cd ../../../
-                  npm run build:show
-                  npm run build:list
-                  npm run build:filter-list
-                  npm run build:filter-select
-                  npm run build:application-button
-                  npm run build:details
-                  npm run build:description
-                  npm run build:commands
-                  npm run global-styles
-                  cp inc/constants_urls.php.dist inc/constants_urls.php
-                  rm -fr assets
-                  rm -fr build
-                  rm -fr releases
-                  rm -fr svn
-                  rm -fr languages
-                  rm -fr example
-                  rm readme.md
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          # the Playground packages in package-lock.json need Node 24.
+          node-version: 24
 
-            - name: Composer audit
-              run: composer audit --abandoned=ignore
+      # --- install and compile -------------------------------------------------------------------------
 
-            - uses: anchore/sbom-action@v0
+      - name: Install PHP packages
+        # also runs Mozart, which copies easy-transients-for-wordpress to app/Dependencies.
+        run: composer install --no-interaction --no-progress
 
-            - name: Set licence server
-              uses: richardrigutins/replace-in-files@v3
-              with:
-                files: 'inc/constants_urls.php'
-                search-text: '@@UrlLicense@@'
-                replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/'
+      - name: Check PHP packages for known security issues
+        run: composer audit --abandoned=ignore
 
-            - name: Set update server
-              uses: richardrigutins/replace-in-files@v3
-              with:
-                files: 'inc/constants_urls.php'
-                search-text: '@@UrlUpdate@@'
-                replacement-text: 'https://laolaweb.com/wp-json/lwreleases/personio-integration/'
+      - name: Build blocks, commands and copy driver.js
+        run: |
+          npm ci
+          # "build" contains all blocks, the commands and the copy of driver.js to admin/driver.
+          npm run build
+          # the concatenated block styles for classic themes (css/blocks.css).
+          npm run global-styles
 
-            - name: Set costs server
-              uses: richardrigutins/replace-in-files@v3
-              with:
-                files: 'inc/constants_urls.php'
-                search-text: '@@UrlCosts@@'
-                replacement-text: 'https://laolaweb.com/wp-json/lwlicences/personio-integration/costs'
+      - name: Generate the URL constants
+        run: |
+          sed \
+            -e 's#@@UrlLicense@@#https://laolaweb.com/wp-json/lwlicences/personio-integration/#' \
+            -e 's#@@UrlUpdate@@#https://laolaweb.com/wp-json/lwreleases/personio-integration/#' \
+            -e 's#@@UrlCosts@@#https://laolaweb.com/wp-json/lwlicences/personio-integration/costs#' \
+            inc/constants_urls.php.dist > inc/constants_urls.php
+          if grep -q '@@Url' inc/constants_urls.php; then
+            echo "::error::inc/constants_urls.php still contains placeholders."
+            exit 1
+          fi
+          # checksum of the file (SHA-256, the file name is kept for compatibility).
+          sha256sum inc/constants_urls.php | cut -d ' ' -f 1 | tr -d '\n' > inc/constants_urls.php.MD5
 
-            - name: Generate hook documentation
-              run: vendor/bin/wp-documentor parse app --format=markdown --output=doc/hooks.md --prefix=personio_integration --exclude=Section.php --exclude=Tab.php --exclude=Import.php --exclude=Export.php --exclude=Field_Base.php --exclude=Settings.php --exclude=Page.php --exclude=Widget_Base.php --exclude=Transients.php
+      - name: Remove dev packages and generate the release autoloader
+        run: |
+          composer install --no-dev --no-scripts --no-interaction --no-progress
+          # its classes are shipped in app/Dependencies (see above). Without this line the
+          # autoloader would also know them under their original names.
+          rm -rf vendor/threadi/easy-transients-for-wordpress
+          composer dump-autoload -oa --no-dev
 
-            - name: Generate checksum
-              uses: Solratic/checksum-action@v1
-              with:
-                    pattern: "inc/constants_urls.php"
-                    suffix: "MD5"
+      # --- collect the release, check it, zip it -------------------------------------------------------
 
-            - name: Generate autoloader
-              run: composer dump-autoload -oa --no-dev
+      - name: Collect the files of the release and set the version number
+        run: |
+          DIST="dist/${RELEASE_SLUG}"
+          mkdir -p "$DIST"
 
-            - name: Run PHPStan check
-              run:  vendor/bin/phpstan analyse
+          # only what is listed here ends up in the zip. Nothing is deleted from the checkout.
+          # rsync stops with an error if one of these paths does not exist.
+          rsync -aR --exclude='.*' --exclude='node_modules/' \
+            "${RELEASE_SLUG}.php" uninstall.php index.php readme.txt LICENSE wpml-config.xml composer.json \
+            admin app css deprecated gfx templates \
+            inc/index.php inc/constants.php inc/constants_urls.php inc/constants_urls.php.MD5 \
+            blocks/index.php blocks/variations.js blocks/commands \
+            blocks/*/block.json blocks/*/build \
+            vendor/autoload.php vendor/composer \
+            vendor/threadi/crypt-for-wordpress/src \
+            vendor/threadi/easy-dialog-for-wordpress/build \
+            vendor/threadi/easy-settings-for-wordpress \
+            vendor/threadi/easy-setup-for-wordpress/build \
+            vendor/threadi/easy-setup-for-wordpress/lib \
+            vendor/threadi/tcp-analyzer/src \
+            "$DIST/"
 
-            - name: Run WordPress Coding Standard fixes
-              run: vendor/bin/phpcbf .
-              continue-on-error: true
+          # instructions for AI agents of the settings library: not needed on a website.
+          rm -rf "$DIST/vendor/threadi/easy-settings-for-wordpress/skills"
 
-            - name: Run WordPress Coding Standard checks
-              run: vendor/bin/phpcs .
+          # these files are used by the plugin at runtime, so a missing one has to stop the release.
+          for FILE in css/blocks.css admin/driver/driver.js.iife.js admin/driver/driver.css blocks/commands/commands.asset.php; do
+            if [ ! -f "$DIST/$FILE" ]; then
+              echo "::error::$FILE is missing in the release."
+              exit 1
+            fi
+          done
 
-            - name: Set version number 1
-              uses: richardrigutins/replace-in-files@v3
-              with:
-                  files: 'personio-integration-light.php'
-                  search-text: '@@VersionNumber@@'
-                  replacement-text: ${{ github.ref_name }}
+          # set the version number - in the copy only.
+          sed -i "s/@@VersionNumber@@/${VERSION}/g" "$DIST/${RELEASE_SLUG}.php" "$DIST/uninstall.php" "$DIST/readme.txt"
 
-            - name: Set version number 2
-              uses: richardrigutins/replace-in-files@v3
-              with:
-                  files: 'uninstall.php'
-                  search-text: '@@VersionNumber@@'
-                  replacement-text: ${{ github.ref_name }}
+      - name: Run Plugin Check
+        uses: wordpress/plugin-check-action@10857da14b6c2246d15402b3e69f777edcf8c12e # v1.1.9
+        with:
+          build-dir: dist/${{ env.RELEASE_SLUG }}
+          slug: ${{ env.RELEASE_SLUG }}
+          exclude-directories: |
+            app/Dependencies/easyTransientsForWordPress
+          ignore-codes: |
+            WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+          include-experimental: false
+          error-severity: 7
+          warning-severity: 6
+          include-low-severity-errors: true
 
-            - name: Set version number 3
-              uses: richardrigutins/replace-in-files@v3
-              with:
-                  files: 'readme.txt'
-                  search-text: '@@VersionNumber@@'
-                  replacement-text: ${{ github.ref_name }}
+      - name: Create the zip
+        working-directory: dist
+        run: zip -rqX "../${RELEASE_SLUG}.zip" "$RELEASE_SLUG"
 
-            - name: Clean up directory
-              run: |
-                rm .gitattributes
-                rm .gitignore
-                rm CODE_OF_CONDUCT.md
-                rm .editorconfig
-                rm inc/constants_urls.php.dist
-                rm phpcs.xml.dist
-                rm phpunit.xml.dist
-                rm -fr bin
-                rm -fr tests
-                rm dev-composer.sh
-                rm dev-composer.json
+      - name: Create SBOM
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
+        with:
+          # describe what is shipped, not the tools which were used to build it.
+          path: dist/${{ env.RELEASE_SLUG }}
+          format: spdx-json
+          output-file: ${{ env.RELEASE_SLUG }}.spdx.json
+          # the job "release" attaches the file. Doing it here would need write access.
+          upload-artifact: false
+          upload-release-assets: false
 
-            - name: Run PCP check
-              uses: wordpress/plugin-check-action@v1
-              with:
-                  exclude-directories: |
-                    app/Dependencies/easyTransientsForWordPress
-                  ignore-codes: |
-                    WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
-                    github_directory
-                  include-experimental: false
-                  error-severity: 7
-                  warning-severity: 6
-                  include-low-severity-errors: true
-                  slug: personio-integration-light
-              continue-on-error: true
+      - name: Smoke test the zip in WordPress Playground
+        run: |
+          set -o pipefail
+          SMOKE="$RUNNER_TEMP/smoke"
+          rm -rf "$SMOKE"
+          mkdir -p "$SMOKE"
+          unzip -q "${RELEASE_SLUG}.zip" -d "$SMOKE"
 
-            - name: Create ZIP release
-              run: |
-                  cd ..
-                  mv ${{ github.event.repository.name }} personio-integration-light
-                  zip -r -q personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/* -x "*/.git/*" "*/.github/*" "*/blocks/*/src/*" "*/doc/*" "*/legacy-classes/Divi/.yarn/*" "*/phpcs.xml" "*/composer.lock" "*/package.json" "*/package-lock.json" "*/phpcs.xml.dist" "*/.gitignore" "*/vendor/*" "*/node_modules/*" "/.editorconfig" "*/tmp/*"
-                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/autoload.php
-                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/composer/*
-                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/*/build/*
-                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/*/lib/*
-                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/easy-settings-for-wordpress/*
-                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/crypt-for-wordpress/src/*
-                  zip -ur personio-integration-light_${{ github.ref_name }}.zip personio-integration-light/vendor/threadi/tcp-analyzer/src/*
-                  mv personio-integration-light ${{ github.event.repository.name }}
-                  cp personio-integration-light_${{ github.ref_name }}.zip ${{ github.event.repository.name }}/
+          # check the zip itself first, so a wrong zip is not mistaken for a problem of Playground.
+          if [ ! -f "$SMOKE/${RELEASE_SLUG}/${RELEASE_SLUG}.php" ]; then
+            ls -la "$SMOKE"
+            echo "::error::The zip does not contain ${RELEASE_SLUG}/${RELEASE_SLUG}.php - see the listing above."
+            exit 1
+          fi
 
-            - name: Create Release
-              uses: softprops/action-gh-release@v3
-              if: startsWith(github.ref, 'refs/tags/')
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  files: personio-integration-light_${{ github.ref_name }}.zip
+          # "--no": use the version from package-lock.json, never download another one.
+          npx --no -- @wp-playground/cli run-blueprint \
+            --blueprint=./.github/blueprints/smoke.json \
+            --mount="$SMOKE/${RELEASE_SLUG}:/wordpress/wp-content/plugins/${RELEASE_SLUG}" \
+            --verbosity=debug \
+            --debug \
+            2>&1 | tee "$RUNNER_TEMP/smoke.log"
 
-            - name: Smoke test the release zip in WordPress Playground
-              run: |
-                set -o pipefail
-                mkdir -p /tmp/smoke
-                unzip -q personio-integration-light_*.zip -d /tmp/smoke
+          if ! grep -qs "SMOKE_OK" "$SMOKE/${RELEASE_SLUG}/smoke-result.txt"; then
+            echo "::error::SMOKE_OK not found in smoke-result.txt - check the log above."
+            exit 1
+          fi
 
-                npx @wp-playground/cli@latest run-blueprint \
-                  --blueprint=./.github/blueprints/smoke.json \
-                  --mount=/tmp/smoke/personio-integration-light:/wordpress/wp-content/plugins/personio-integration-light \
-                  --verbosity=debug \
-                  --debug \
-                  2>&1 | tee /tmp/smoke.log
+      - name: Read the release notes from changelog.md
+        if: github.event_name == 'push'
+        run: |
+          # the section of this version: from its heading up to the next "## " heading.
+          # the heading may be "## 6.0.0", "## [6.0.0]" or "## [6.0.0] - 13.10.2026".
+          awk -v v="$VERSION" '
+            /^## / { if (on) exit; h=$0; sub(/^## +\[?/, "", h); if (h == v || index(h, v "]") == 1 || index(h, v " ") == 1) { on=1; next } }
+            on' changelog.md > release-notes.md
+          if ! grep -q '[^[:space:]]' release-notes.md; then
+            echo "::error::No section for ${VERSION} found in changelog.md."
+            exit 1
+          fi
 
-                echo "----- Vollständiges Playground-Log -----"
-                cat /tmp/smoke.log
+      - name: Hand over the zip
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-zip
+          path: |
+            ${{ env.RELEASE_SLUG }}.zip
+            ${{ env.RELEASE_SLUG }}.spdx.json
+            release-notes.md
+          if-no-files-found: error
 
-                echo "----- Inhalt smoke-result.txt -----"
-                cat /tmp/smoke/personio-integration-light/smoke-result.txt || echo "(File not found)"
+  # the only job which may write to the repository - and it runs no code from the repository or from npm.
+  release:
+    name: Publish the release
+    needs: [build]
+    # only for a pushed tag, never for a manual run.
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Fetch the zip
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-zip
 
-                if ! grep -q "SMOKE_OK" /tmp/smoke/personio-integration-light/smoke-result.txt; then
-                  echo "::error::SMOKE_OK not found in smoke-result.txt - check log above."
-                  exit 1
-                fi
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          # there is no checkout in this job, so tell gh which repository is meant.
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          TAG="$GITHUB_REF_NAME"
+
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            # the release was created by hand, together with the tag: add the zip to it.
+            gh release upload "$TAG" "${RELEASE_SLUG}.zip" "${RELEASE_SLUG}.spdx.json" --clobber
+            # use the text from changelog.md, unless a text was written by hand.
+            if [ -z "$(gh release view "$TAG" --json body --jq '.body')" ]; then
+              gh release edit "$TAG" --notes-file release-notes.md
+            fi
+            exit 0
+          fi
+
+          ARGS=(--verify-tag --notes-file release-notes.md)
+          case "$TAG" in *-*) ARGS+=(--prerelease);; esac
+          gh release create "$TAG" "${RELEASE_SLUG}.zip" "${RELEASE_SLUG}.spdx.json" "${ARGS[@]}"
