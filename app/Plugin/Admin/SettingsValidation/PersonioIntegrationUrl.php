@@ -11,6 +11,7 @@ namespace PersonioIntegrationLight\Plugin\Admin\SettingsValidation;
 \defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Helper;
+use PersonioIntegrationLight\Log;
 use PersonioIntegrationLight\PersonioIntegration\Personio;
 use PersonioIntegrationLight\Plugin\Admin\Settings_Validation_Base;
 use PersonioIntegrationLight\Dependencies\easyTransientsForWordPress\Transients;
@@ -105,18 +106,39 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 		$personio_obj = new Personio( $value );
 
 		// should return HTTP-Status 200.
-		$response = wp_remote_get(
+		$response = wp_safe_remote_get(
 			$personio_obj->get_xml_url(),
 			array(
-				'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
-				'redirection' => 0,
+				'timeout'             => max( 1, absint( get_option( 'personioIntegrationUrlTimeout', 30 ) ) ),
+				'redirection'         => 0,
+				'limit_response_size' => 8 * KB_IN_BYTES, // we only check the start of the body.
 			)
 		);
-		// get the body with the contents.
-		$body = wp_remote_retrieve_body( $response );
 
-		// return false if URL is not available.
-		return ! ( ( \is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) || ( \function_exists( 'str_starts_with' ) && str_starts_with( $body, '<!doctype html>' ) ) );
+		// bail on technical errors (DNS, timeout, SSL, connection refused …).
+		if ( is_wp_error( $response ) ) {
+			Log::get_instance()->add(
+			/* translators: %1$s will be replaced by the URL, %2$s by the error message. */
+				sprintf( __( 'Personio URL %1$s could not be checked: %2$s', 'personio-integration-light' ), esc_url( $value ), esc_html( $response->get_error_message() ) ),
+				'error',
+				'import'
+			);
+			return false;
+		}
+
+		// bail if the HTTP status is not 200.
+		if ( 200 !== absint( wp_remote_retrieve_response_code( $response ) ) ) {
+			return false;
+		}
+
+		// bail on empty body or HTML instead of XML (e.g. deactivated XML interface).
+		$body = ltrim( wp_remote_retrieve_body( $response ) );
+		if ( '' === $body || 0 === stripos( $body, '<!doctype html' ) || 0 === stripos( $body, '<html' ) ) {
+			return false;
+		}
+
+		// return true as the URL is usable.
+		return true;
 	}
 
 	/**

@@ -284,18 +284,21 @@ class Import_Single_Personio_Url {
 				return;
 			}
 
+			$max_size = 20 * MB_IN_BYTES;
+			/**
+			 * Filter the maximum size in bytes of the XML file we load from Personio.
+			 *
+			 * @since 6.0.0 Available since 6.0.0.
+			 * @param int $max_size The maximum size in bytes (default 20 MB).
+			 * @param string $url The URL of the XML file.
+			 */
+			$max_size = absint( apply_filters( 'personio_integration_light_xml_max_size', $max_size, $url ) );
+
 			// define settings for the second request to Personio XML to get the contents.
 			$args     = array(
 				'timeout'             => get_option( 'personioIntegrationUrlTimeout' ),
 				'redirection'         => 0,
-				/**
-				 * Filter the maximum size in bytes of the XML file we load from Personio.
-				 *
-				 * @since 6.0.0 Available since 6.0.0.
-				 * @param int $max_size The maximum size in bytes (default 20 MB).
-				 * @param string $url The URL of the XML file.
-				 */
-				'limit_response_size' => absint( apply_filters( 'personio_integration_light_xml_max_size', 20 * MB_IN_BYTES, $url ) ),
+				'limit_response_size' => $max_size
 			);
 			$response = wp_safe_remote_get( $url, $args );
 
@@ -306,6 +309,13 @@ class Import_Single_Personio_Url {
 			} else {
 				// get the body with the contents.
 				$body = wp_remote_retrieve_body( $response );
+
+				// bail if the response reached the size limit, as the XML is then incomplete.
+				if ( $max_size > 0 && \strlen( $body ) >= $max_size ) {
+					/* translators: %1$s will be replaced with the Personio account URL, %2$s by the language-name, %3$s by the size limit. */
+					$this->errors[] = \sprintf( __( 'XML file from Personio account %1$s for language %2$s exceeds the maximum size of %3$s and has not been imported.', 'personio-integration-light' ), wp_kses_post( $this->get_link() ), esc_html( $language_title ), esc_html( size_format( $max_size ) ) );
+					return;
+				}
 
 				// get the md5-hash of the response.
 				$md5hash = md5( $body );

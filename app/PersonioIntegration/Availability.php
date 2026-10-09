@@ -435,23 +435,35 @@ class Availability extends Extensions_Base {
 	 * @return void
 	 */
 	private function run_single_check( Position $position_obj ): void {
-		// define settings for the second request to get the contents.
+		// define settings for the request.
 		$args     = array(
-			'timeout'     => get_option( 'personioIntegrationUrlTimeout' ),
+			'timeout'     => max( 1, absint( get_option( 'personioIntegrationUrlTimeout', 30 ) ) ),
 			'redirection' => 0,
 		);
-		$response = wp_remote_head( $position_obj->get_application_url(), $args );
+		$response = wp_safe_remote_head( $position_obj->get_application_url(), $args );
 
+		// bail on technical errors: we do not know the availability, so we do not change it.
 		if ( is_wp_error( $response ) ) {
-			// log possible error.
-			Log::get_instance()->add( 'Error on request to get position availability: ' . $response->get_error_message(), 'error', 'availability' );
-		} else {
-			// get the HTTP status to check if the request resulted in acceptable results.
-			$http_status = absint( wp_remote_retrieve_response_code( $response ) );
-
-			// if http-status is not 200, mark the position as not available.
-			$this->get_extension( $position_obj )->set_availability( 200 === $http_status );
+			Log::get_instance()->add( __( 'Error on request to get position availability:', 'personio-integration-light' ) . ' ' . esc_html( $response->get_error_message() ), 'error', 'availability' );
+			return;
 		}
+
+		// get the HTTP status.
+		$http_status = absint( wp_remote_retrieve_response_code( $response ) );
+
+		// bail on temporary problems (rate limit, server errors): availability unknown, keep the actual state.
+		if ( 429 === $http_status || $http_status >= 500 ) {
+			Log::get_instance()->add(
+			/* translators: %1$d will be replaced by the HTTP status. */
+				sprintf( __( 'Availability of position could not be checked, Personio responded with HTTP status %1$d.', 'personio-integration-light' ), $http_status ),
+				'error',
+				'availability'
+			);
+			return;
+		}
+
+		// mark the position as available only on HTTP status 200.
+		$this->get_extension( $position_obj )->set_availability( 200 === $http_status );
 	}
 
 	/**
@@ -558,7 +570,7 @@ class Availability extends Extensions_Base {
 		if ( ! PersonioIntegrationUrl::check_url( $personio_obj->get_url() ) ) {
 			$result['status'] = 'recommended';
 			/* translators: %1$s and %2$s will be replaced by the Personio-URL, %3$s will be replaced by the settings-URL, %4$s will be replaced by the URL to login on Personio */
-			$result['description'] = '<p>' . \sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens a new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens a new window)</a> under Settings > Recruiting > Career Page > Activations.</strong>', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ), esc_url( Helper::get_settings_url() ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) ) . '</p>';
+			$result['description'] = '<p>' . \sprintf( __( 'The Personio-URL <a href="%1$s" target="_blank">%2$s (opens a new window)</a> is not available for the import of positions!<br><strong>Please check if you have entered the correct URL <a href="%3$s">in the plugin-settings</a>.<br>Also check if you have enabled the XML-API in your <a href="%4$s" target="_blank">Personio-account (opens a new window)</a> under Settings > Recruiting > Career Page > Activations.</strong><br>If the URL is correct, Personio may not have been reachable from your server. Details can be found in the log of this plugin.', 'personio-integration-light' ), esc_url( $personio_obj->get_url() ), esc_url( $personio_obj->get_url() ), esc_url( Helper::get_settings_url() ), esc_url( Personio_Accounts::get_instance()->get_login_url() ) ) . '</p>';
 		}
 
 		// return result.
