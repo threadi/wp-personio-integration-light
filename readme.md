@@ -74,7 +74,29 @@ After checkout go through the following steps:
 ### On GitHub
 
 1. Create a new tag with the new version number.
-2. The release zip will be created by a GitHub action.
+2. The release zip will be created by a GitHub action. It is only published if the Playwright tests (see below) succeed.
+
+## End-to-end tests with Playwright
+
+The tests in `tests/Playwright` start a WordPress Playground with this plugin and check setup, settings, import and frontend. They need no database and no Personio account: requests to the test Personio URL are answered with `tests/Data/positions.xml`.
+
+### Preparations
+
+1. `composer install`
+2. `npm ci && npm run build && npm run global-styles`
+3. `npx playwright install chromium` (once)
+
+### Run
+
+`npx playwright test` (or `npm run test:e2e`)
+
+Optional environment variables:
+
+* `PLAYGROUND_WP`: WordPress version, e.g. `6.8`, or the URL of a WordPress zip (default: `latest`)
+* `PLAYGROUND_PHP`: PHP version (default: `8.3`)
+* `PLAYGROUND_HOME`: where Playground keeps the downloaded WordPress (default: `node_modules/.cache/playground-home`)
+
+Each test fails if the plugin causes a PHP error, warning, notice or deprecation.
 
 ## Translations
 
@@ -167,3 +189,18 @@ Then: `composer test-install`
 ### Run
 
 `composer test`
+
+## Playwright
+
+See: https://wordpress.github.io/wordpress-playground/guides/e2e-testing-with-playwright/
+
+### Prepare
+
+```
+npm install
+npx playwright install chromium
+```
+
+### Run
+
+`npx playwright test`

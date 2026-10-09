@@ -11,6 +11,7 @@
 - Added abilities to run and cancel the import of positions, to delete all positions and to read the log with AI, and extended the import state ability with the progress
 - Added a link to edit a single position in your Personio account in the list of all positions in backend
 - Added setting to chose, which API to use for import of positions
+- Added Playwright for automated visual tests before each release
 - Added new hooks
 
 ### Changed
@@ -34,6 +35,7 @@
 - The license key is not part of URLs anymore and is not loaded on every request
 - Log cleanup runs at most once per hour, the log table is paginated in the database
 - Release ZIP from GitHub does not contain development files anymore
+- Settings default view is now DataView for all new installations (old stay unchanged)
 - Updated the settings library
 - Updated the setup library
 - Updated dependencies

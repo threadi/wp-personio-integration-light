@@ -28,13 +28,15 @@
     "start:commands": "wp-scripts start blocks/commands.js --output-path=blocks/commands",
     "build:commands": "wp-scripts build blocks/commands.js --output-path=blocks/commands",
     "global-styles": "cat blocks/*/build/style-index.css > css/blocks.css",
+    "test:e2e": "playwright test",
     "copy:driver": "mkdir -p admin/driver && cp node_modules/driver.js/dist/driver.js.iife.js node_modules/driver.js/dist/driver.css admin/driver/ && cp node_modules/driver.js/license admin/driver/"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",
     "@wordpress/scripts": "~36.0",
     "@wp-playground/cli": "^3.1.57",
-    "concurrently": "^9.2.3"
+    "concurrently": "^9.2.3",
+    "@playwright/test": "^1.62.1"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
