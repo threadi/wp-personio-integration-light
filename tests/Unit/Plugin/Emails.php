@@ -29,6 +29,11 @@ class Emails extends PersonioTestCase {
 		update_option( 'personio_integration_email_new_positions', 1 );
 		update_option( 'personio_integration_email_recipients_new_positions', array( $email_recipient ) );
 
+		// import a position and mark it as new.
+		$position = self::get_single_position();
+		$this->assertNotFalse( $position );
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_NEW_POSITIONS, array( $position->get_id() ) );
+
 		// trigger the email.
 		\PersonioIntegrationLight\Plugin\Emails::get_instance()->trigger_new_positions();
 
@@ -77,6 +82,9 @@ class Emails extends PersonioTestCase {
 		// set necessary options for "delete positions" email.
 		update_option( 'personio_integration_email_deleted_positions', 1 );
 		update_option( 'personio_integration_email_recipients_deleted_positions', array( $email_recipient ) );
+
+		// mark a Personio ID as deleted.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_DELETED_POSITIONS, array( '123456' ) );
 
 		// trigger the email.
 		\PersonioIntegrationLight\Plugin\Emails::get_instance()->trigger_deleted_positions();

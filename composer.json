@@ -10,6 +10,7 @@
     ],
     "type": "wordpress-plugin",
     "homepage": "https://laolaweb.com",
+    "license": "GPL-2.0-or-later",
     "minimum-stability": "stable",
     "scripts": {
         "post-install-cmd": [

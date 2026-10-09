@@ -150,6 +150,9 @@ class Filter_Select extends PersonioTestCase {
 	 * @return void
 	 */
 	public function test_render(): void {
+		// the filter is only shown if positions are available.
+		update_option( 'personioIntegrationPositionCount', 1 );
+
 		// set configuration.
 		$attributes = array(
 			'anchor' => 'hello-world',

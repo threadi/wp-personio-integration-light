@@ -20,7 +20,7 @@ jobs:
           persist-credentials: false
 
       - name: Check composer.json and composer.lock
-        run: composer validate --strict --no-check-publish
+        run: composer validate --strict --no-check-publish --no-check-version
 
       - name: Install dependencies
         run: composer install --no-interaction --no-progress

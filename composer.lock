@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e84d1d13d530b8101e7ab3c1f543af67",
+    "content-hash": "0c4bc6393450fb23690b068fe22efe03",
     "packages": [
         {
             "name": "threadi/crypt-for-wordpress",
@@ -5144,5 +5144,8 @@
         "ext-libxml": "*"
     },
     "platform-dev": {},
+    "platform-overrides": {
+        "php": "8.2.0"
+    },
     "plugin-api-version": "2.9.0"
 }

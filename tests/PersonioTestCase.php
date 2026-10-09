@@ -80,6 +80,19 @@ abstract class PersonioTestCase extends WP_UnitTestCase {
 	protected static string $personio_shortcircuit_nolm_url = 'https://personio-integration-shortcircuit-nolm-test.jobs.personio.com';
 
 	/**
+	 * Prepare each test.
+	 *
+	 * @return void
+	 */
+	public function set_up(): void {
+		parent::set_up();
+
+		// reset the locks, as a previous test could have left them behind.
+		update_option( WP_PERSONIO_INTEGRATION_IMPORT_RUNNING, 0 );
+		update_option( WP_PERSONIO_INTEGRATION_DELETE_RUNNING, 0 );
+	}
+
+	/**
 	 * Prepare the test environment for each test class.
 	 *
 	 * @return void
