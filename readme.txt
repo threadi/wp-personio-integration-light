@@ -44,8 +44,8 @@ The output of the positions as a list is limited to a maximum of 10. Only in [Pe
 
 #### the Pro license includes:
 
-➕ Native support for following PageBuilders: Avada, Beaver Builder, Breakdance, Bricks, Brizy, Divi 4 & 5, Elementor, Elements in GeneratePress Premium, SiteOrigin (SiteOrigin Widgets Bundle necessary), WPBakery
-➕ Also compatible with Avia (from Enfold) and Kubio AI
+➕ Native support for following PageBuilders: Avada, Beaver Builder, Bold Page Builder, Breakdance, Bricks, Brizy, Divi 4 & 5, Elementor, Elements in GeneratePress Premium, Fusion, LiveComposer, Oxygen, PageLayer, SiteOrigin (SiteOrigin Widgets Bundle necessary), Themify, WPBakery und ZionBuilder
+➕ Also compatible with Avia (from Enfold), Colibri, Kubio, Nimble Builder, SeedProd Pro, Visual Composer
 ➕ Multiple and customizable application forms incl. export of them via Personio API
 ➕ Support for multiple form handler like Avada Forms, Contact Form 7, Elementor Forms, Everest Forms, Fluent Forms, Forminator, Ninja Forms and WPForms
 ➕ Customization of slugs (URLs) for list and detailed views of positions

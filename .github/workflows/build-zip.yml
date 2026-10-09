@@ -211,10 +211,62 @@ jobs:
             release-notes.md
           if-no-files-found: error
 
+  # the end-to-end tests run beside "build". A release is only published if both succeeded.
+  playwright:
+    name: Playwright tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          # the Playground packages in package-lock.json need Node 24.
+          node-version: 24
+
+      # --- install and compile, as in "build" -----------------------------------------------------------
+
+      - name: Install PHP packages
+        # also runs Mozart, which copies easy-transients-for-wordpress to app/Dependencies.
+        run: composer install --no-interaction --no-progress
+
+      - name: Build blocks, commands and copy driver.js
+        run: |
+          npm ci
+          npm run build
+          npm run global-styles
+
+      - name: Generate the URL constants
+        # the placeholders are enough for the tests, they never contact these URLs.
+        run: cp inc/constants_urls.php.dist inc/constants_urls.php
+
+      # --- run the tests --------------------------------------------------------------------------------
+
+      - name: Install the browser for Playwright
+        run: npx --no -- playwright install --with-deps chromium
+
+      - name: Run the Playwright tests
+        run: npx --no -- playwright test
+
+      - name: Hand over the report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: ignore
+
   # the only job which may write to the repository - and it runs no code from the repository or from npm.
   release:
     name: Publish the release
-    needs: [build]
+    needs: [build, playwright]
     # only for a pushed tag, never for a manual run.
     if: github.event_name == 'push'
     runs-on: ubuntu-latest

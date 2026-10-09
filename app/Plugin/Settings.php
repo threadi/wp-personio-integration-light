@@ -720,7 +720,7 @@ class Settings {
 		$setting = $settings_obj->add_setting( 'personio_integration_light_setting_view' );
 		$setting->set_section( $advanced );
 		$setting->set_type( 'string' );
-		$setting->set_default( 'classic' );
+		$setting->set_default( 'dataview' );
 		$field = new Select( $settings_obj );
 		$field->set_title( __( 'Settings view', 'personio-integration-light' ) );
 		$field->set_description( __( 'Choose the view for the settings of this plugin. DataView is only available for WordPress 7 or newer.', 'personio-integration-light' ) );
