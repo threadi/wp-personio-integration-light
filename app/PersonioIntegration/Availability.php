@@ -455,7 +455,7 @@ class Availability extends Extensions_Base {
 		if ( 429 === $http_status || $http_status >= 500 ) {
 			Log::get_instance()->add(
 			/* translators: %1$d will be replaced by the HTTP status. */
-				sprintf( __( 'Availability of position could not be checked, Personio responded with HTTP status %1$d.', 'personio-integration-light' ), $http_status ),
+				\sprintf( __( 'Availability of position could not be checked, Personio responded with HTTP status %1$d.', 'personio-integration-light' ), $http_status ),
 				'error',
 				'availability'
 			);

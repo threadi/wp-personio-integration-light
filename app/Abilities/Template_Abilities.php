@@ -842,7 +842,7 @@ class Template_Abilities {
 
 		// get the parameters.
 		$dry_run = ! isset( $input['dry_run'] ) || (bool) $input['dry_run'];
-		$force = isset( $input['force'] ) && filter_var( $input['force'], FILTER_VALIDATE_BOOLEAN );
+		$force   = isset( $input['force'] ) && filter_var( $input['force'], FILTER_VALIDATE_BOOLEAN );
 
 		// prepare the result.
 		$result = array(

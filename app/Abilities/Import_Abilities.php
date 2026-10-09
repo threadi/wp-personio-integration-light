@@ -562,7 +562,7 @@ class Import_Abilities {
 	public function cancel_import( mixed $input = array() ): array|WP_Error {
 		// get the parameters.
 		$dry_run = $this->is_dry_run( $input );
-		$force = \is_array( $input ) && isset( $input['force'] ) && filter_var( $input['force'], FILTER_VALIDATE_BOOLEAN );
+		$force   = \is_array( $input ) && isset( $input['force'] ) && filter_var( $input['force'], FILTER_VALIDATE_BOOLEAN );
 
 		// get the start time of the running import.
 		$running_since = $this->get_running_since();

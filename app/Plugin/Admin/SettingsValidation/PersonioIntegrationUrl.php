@@ -119,7 +119,7 @@ class PersonioIntegrationUrl extends Settings_Validation_Base {
 		if ( is_wp_error( $response ) ) {
 			Log::get_instance()->add(
 			/* translators: %1$s will be replaced by the URL, %2$s by the error message. */
-				sprintf( __( 'Personio URL %1$s could not be checked: %2$s', 'personio-integration-light' ), esc_url( $value ), esc_html( $response->get_error_message() ) ),
+				\sprintf( __( 'Personio URL %1$s could not be checked: %2$s', 'personio-integration-light' ), esc_url( $value ), esc_html( $response->get_error_message() ) ),
 				'error',
 				'import'
 			);

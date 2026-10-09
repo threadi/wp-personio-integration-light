@@ -136,7 +136,7 @@ class Diagnostics {
 		}
 
 		// add a tab for additional settings.
-		$diagnostic_tab = $additional_settings_tab->add_tab( 'personio_integration_diagnostics', 20 );
+		$diagnostic_tab = $additional_settings_tab->add_tab( 'personio_integration_diagnostics', 40 );
 		$diagnostic_tab->set_title( __( 'Diagnostics', 'personio-integration-light' ) );
 		$diagnostic_tab->set_callback( array( $this, 'render_page' ) );
 		$diagnostic_tab->set_hide_save( true );

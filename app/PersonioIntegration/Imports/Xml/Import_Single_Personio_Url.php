@@ -298,7 +298,7 @@ class Import_Single_Personio_Url {
 			$args     = array(
 				'timeout'             => get_option( 'personioIntegrationUrlTimeout' ),
 				'redirection'         => 0,
-				'limit_response_size' => $max_size
+				'limit_response_size' => $max_size,
 			);
 			$response = wp_safe_remote_get( $url, $args );
 
