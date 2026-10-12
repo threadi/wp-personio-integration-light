@@ -133,6 +133,10 @@ class Api {
 		$field = new Password( $settings_obj );
 		$field->set_title( __( 'Access token', 'personio-integration-light' ) );
 		$field->set_readonly( ! Helper::is_personio_url_set() );
+		if( method_exists( $field, 'set_delete_option ') ) { // @phpstan-ignore function.alreadyNarrowedType
+			$field->set_delete_option( true );
+			$field->set_delete_option_label( __( 'Remove access token', 'personio-integration-light' ) );
+		}
 		$setting->set_field( $field );
 
 		// get the hidden section.
