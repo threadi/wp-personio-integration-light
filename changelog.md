@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [6.0.0] - 13.10.2026
 
 ### Added
 
@@ -62,6 +62,8 @@
 - Fixed API import skipping every position and reporting an error on the last page
 - Fixed endless polling in backend if an import or deletion broke up
 - Fixed some possible PHP errors with unexpected setting values
+- Fixed actions in dialogs (e.g. template import, log download) failing with “The link you followed has expired” in the DataView settings
+- Fixed empty error messages of failed requests to the Personio API
 
 ## [5.7.1] - 14.09.2026
 

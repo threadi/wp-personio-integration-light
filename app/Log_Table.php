@@ -169,7 +169,7 @@ class Log_Table extends WP_List_Table {
 				),
 				'buttons' => array(
 					array(
-						'action'  => 'location.href="' . esc_url( $download_url ) . '";closeDialog();',
+						'action'  => 'location.href="' . esc_url_raw( $download_url ) . '";closeDialog();',
 						'variant' => 'primary',
 						'text'    => __( 'Export log entries', 'personio-integration-light' ),
 					),
@@ -199,7 +199,7 @@ class Log_Table extends WP_List_Table {
 				),
 				'buttons' => array(
 					array(
-						'action'  => 'location.href="' . esc_url( $empty_url ) . '";',
+						'action'  => 'location.href="' . esc_url_raw( $empty_url ) . '";',
 						'variant' => 'primary',
 						'text'    => __( 'Yes, empty the log', 'personio-integration-light' ),
 					),
@@ -236,7 +236,7 @@ class Log_Table extends WP_List_Table {
 					),
 					'buttons' => array(
 						array(
-							'action'  => 'location.href="' . esc_url( $reset_error_marker_url ) . '";',
+							'action'  => 'location.href="' . esc_url_raw( $reset_error_marker_url ) . '";',
 							'variant' => 'primary',
 							'text'    => __( 'Yes, reset the marker', 'personio-integration-light' ),
 						),
