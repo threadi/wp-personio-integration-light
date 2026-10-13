@@ -267,7 +267,7 @@ class Availability extends Extensions_Base {
 					),
 					'buttons'   => array(
 						array(
-							'action'  => 'window.open( "' . esc_url( Helper::get_pro_url() ) . '" );closeDialog();',
+							'action'  => 'window.open( "' . esc_url_raw( Helper::get_pro_url() ) . '" );closeDialog();',
 							'variant' => 'primary',
 							'text'    => __( 'Get more info about Pro', 'personio-integration-light' ),
 						),

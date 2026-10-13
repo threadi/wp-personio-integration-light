@@ -399,8 +399,8 @@ class Api_Request {
 	 * @return void
 	 */
 	private function add_error( string $text ): void {
-		$error = new WP_Error();
-		$error->add_data( $text );
+		// set the text as message and as data (the data is used by older callers).
+		$error          = new WP_Error( 'personio_integration_api_request', $text, $text );
 		$this->errors[] = $error;
 	}
 

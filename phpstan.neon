@@ -24,6 +24,7 @@ parameters:
     - "#_IN_SECONDS#"
     - "#WPINC#"
     - "#WP_Icon_Collections_Registry#"
+    - "#_IN_BYTES#"
   paths:
     - app
     - personio-integration-light.php

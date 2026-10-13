@@ -382,7 +382,7 @@ class Extensions extends WP_List_Table {
 				),
 				'buttons' => array(
 					array(
-						'action'  => 'location.href="' . esc_url( $disable_url ) . '";',
+						'action'  => 'location.href="' . esc_url_raw( $disable_url ) . '";',
 						'variant' => 'primary',
 						'text'    => __( 'Yes, disable them', 'personio-integration-light' ),
 					),
@@ -413,7 +413,7 @@ class Extensions extends WP_List_Table {
 				),
 				'buttons' => array(
 					array(
-						'action'  => 'location.href="' . esc_url( $enable_url ) . '";',
+						'action'  => 'location.href="' . esc_url_raw( $enable_url ) . '";',
 						'variant' => 'primary',
 						'text'    => __( 'Yes, enable them', 'personio-integration-light' ),
 					),
