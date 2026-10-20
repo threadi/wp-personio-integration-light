@@ -72,4 +72,22 @@ class Bold_Page_Builder extends Compatibilities_Base {
 	public function is_active(): bool {
 		return Helper::is_plugin_active( 'bold-page-builder/bold-builder.php' );
 	}
+
+	/**
+	 * Return the label of this object.
+	 *
+	 * @return string
+	 */
+	public function get_label(): string {
+		return 'Bold Page Builder';
+	}
+
+	/**
+	 * Return whether this object is a page builder.
+	 *
+	 * @return bool
+	 */
+	public function is_page_builder(): bool {
+		return true;
+	}
 }

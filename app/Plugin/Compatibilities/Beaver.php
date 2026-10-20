@@ -72,4 +72,22 @@ class Beaver extends Compatibilities_Base {
 	public function is_active(): bool {
 		return class_exists( 'FLBuilder' );
 	}
+
+	/**
+	 * Return the label of this object.
+	 *
+	 * @return string
+	 */
+	public function get_label(): string {
+		return 'Beaver';
+	}
+
+	/**
+	 * Return whether this object is a page builder.
+	 *
+	 * @return bool
+	 */
+	public function is_page_builder(): bool {
+		return true;
+	}
 }

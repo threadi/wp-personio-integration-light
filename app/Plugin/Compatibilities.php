@@ -189,4 +189,21 @@ class Compatibilities {
 		// return initial value.
 		return $prevent_checks;
 	}
+
+	/**
+	 * Return the labels of active page builders (or themes with own page builder), which are not natively supported
+	 * by this plugin.
+	 *
+	 * @return array<int,string>
+	 */
+	public function get_active_page_builder_labels(): array {
+		$list = array();
+		foreach ( $this->get_compatibility_checks_as_object() as $compatibility ) {
+			if ( ! $compatibility->is_page_builder() || ! $compatibility->is_active() ) {
+				continue;
+			}
+			$list[] = $compatibility->get_label();
+		}
+		return $list;
+	}
 }

@@ -14,6 +14,7 @@ use PersonioIntegrationLight\Abilities\Abilities;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
+use PersonioIntegrationLight\PersonioIntegration\Frontend_Hints;
 use PersonioIntegrationLight\PersonioIntegration\Post_Types;
 use PersonioIntegrationLight\Plugin\Admin\Admin;
 use PersonioIntegrationLight\Third_Party_Plugins;
@@ -102,11 +103,14 @@ class Init {
 		// init support for command palette.
 		Commands::get_instance()->init();
 
-		// init the diagnose tool.
+		// init the diagnosis tool.
 		Diagnostics::get_instance()->init();
 
 		// initialize the abilities.
 		Abilities::get_instance()->init();
+
+		// initialize the frontend hints.
+		Frontend_Hints::get_instance()->init();
 
 		// install db tables on plugin-installation.
 		add_action( 'personio_integration_install_db_tables', array( $this, 'install_db_tables' ) );

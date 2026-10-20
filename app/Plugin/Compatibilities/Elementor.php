@@ -72,4 +72,22 @@ class Elementor extends Compatibilities_Base {
 	public function is_active(): bool {
 		return did_action( 'elementor/loaded' ) > 0;
 	}
+
+	/**
+	 * Return the label of this object.
+	 *
+	 * @return string
+	 */
+	public function get_label(): string {
+		return 'Elementor';
+	}
+
+	/**
+	 * Return whether this object is a page builder.
+	 *
+	 * @return bool
+	 */
+	public function is_page_builder(): bool {
+		return true;
+	}
 }
