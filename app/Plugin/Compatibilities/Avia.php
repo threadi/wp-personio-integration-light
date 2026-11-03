@@ -90,4 +90,22 @@ class Avia extends Compatibilities_Base {
 		// otherwise return false.
 		return false;
 	}
+
+	/**
+	 * Return the label of this object.
+	 *
+	 * @return string
+	 */
+	public function get_label(): string {
+		return 'Avia (Enfold)';
+	}
+
+	/**
+	 * Return whether this object is a page builder.
+	 *
+	 * @return bool
+	 */
+	public function is_page_builder(): bool {
+		return true;
+	}
 }

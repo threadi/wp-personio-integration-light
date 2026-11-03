@@ -88,4 +88,22 @@ class Avada extends Compatibilities_Base {
 		// return resulting value.
 		return $is_avada;
 	}
+
+	/**
+	 * Return the label of this object.
+	 *
+	 * @return string
+	 */
+	public function get_label(): string {
+		return 'Avada';
+	}
+
+	/**
+	 * Return whether this object is a page builder.
+	 *
+	 * @return bool
+	 */
+	public function is_page_builder(): bool {
+		return true;
+	}
 }

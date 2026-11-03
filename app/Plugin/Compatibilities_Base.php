@@ -66,12 +66,21 @@ class Compatibilities_Base {
 	public function check(): void {}
 
 	/**
-	 * Return the name of the object.
+	 * Return the internal name of the object.
 	 *
 	 * @return string
 	 */
 	public function get_name(): string {
 		return $this->name;
+	}
+
+	/**
+	 * Return the label of this object.
+	 *
+	 * @return string
+	 */
+	public function get_label(): string {
+		return '';
 	}
 
 	/**
@@ -90,5 +99,14 @@ class Compatibilities_Base {
 	 */
 	public function get_plugin_url(): string {
 		return $this->plugin_url;
+	}
+
+	/**
+	 * Return whether this object is a page builder.
+	 *
+	 * @return bool
+	 */
+	public function is_page_builder(): bool {
+		return false;
 	}
 }

@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Add an option in admin bar in frontend for our archive and single pages to quick edit the templates
+
 ## [6.0.0] - 13.10.2026
 
 ### Added

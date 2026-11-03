@@ -699,6 +699,15 @@ class Settings {
 		$setting->set_field( $field );
 
 		// add setting.
+		$setting = $settings_obj->add_setting( 'personio_integration_light_show_frontend_hints' );
+		$setting->set_section( $advanced );
+		$setting->set_default( 1 );
+		$field = new Checkbox( $settings_obj );
+		$field->set_title( __( 'Show hints in frontend', 'personio-integration-light' ) );
+		$field->set_description( __( 'If enabled administrators will see an entry in the admin bar on the detail view and the list of positions. It shows which template is used and where you can edit it. Visitors of your website will never see it.', 'personio-integration-light' ) );
+		$setting->set_field( $field );
+
+		// add setting.
 		$setting = $settings_obj->add_setting( 'personioIntegrationDeleteOnUninstall' );
 		$setting->set_section( $advanced );
 		$setting->set_default( 1 );
