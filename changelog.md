@@ -5,6 +5,12 @@
 ### Added
 
 - Add an option in admin bar in frontend for our archive and single pages to quick edit the templates
+- Added documentation of all shortcodes incl. the widget shortcodes and the attributes of the Pro version
+
+### Fixed
+
+- Fixed wrong values in the shortcode documentation: filtertype "select" instead of "selectbox", template part
+  "formular" instead of "form" and slugs "occupation" and "occupation_detail" for the job types
 
 ## [6.0.0] - 13.10.2026
 
