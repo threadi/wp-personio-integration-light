@@ -20,7 +20,7 @@
   only be decrypted with the name of their setting, the cached access token of the API v2 with the name of its
   transient; existing values are converted during the update and the access token is requested again
 - Updated crypt library to 4.0.0
-- Updated settings library to 3.9.0
+- Updated settings library to 3.9.1
 
 ## [6.0.0] - 13.10.2026
 
