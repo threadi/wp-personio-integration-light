@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c49d8fb8100f1aadceef9ee1f8a14be",
+    "content-hash": "87d9e214ad3c40729bbe731cb33eb21c",
     "packages": [
         {
             "name": "threadi/crypt-for-wordpress",
@@ -88,16 +88,16 @@
         },
         {
             "name": "threadi/easy-settings-for-wordpress",
-            "version": "3.9.0",
+            "version": "3.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/threadi/easy-settings-for-wordpress.git",
-                "reference": "d1f965c39f10e1ea0f1e9aba10f1ca44ac5d5c80"
+                "reference": "1ddb212546eed218a54c6b76ea1e213d6ca997d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/threadi/easy-settings-for-wordpress/zipball/d1f965c39f10e1ea0f1e9aba10f1ca44ac5d5c80",
-                "reference": "d1f965c39f10e1ea0f1e9aba10f1ca44ac5d5c80",
+                "url": "https://api.github.com/repos/threadi/easy-settings-for-wordpress/zipball/1ddb212546eed218a54c6b76ea1e213d6ca997d1",
+                "reference": "1ddb212546eed218a54c6b76ea1e213d6ca997d1",
                 "shasum": ""
             },
             "require": {
@@ -139,9 +139,9 @@
             "description": "Provides a settings wrapper for WordPress plugins and themes.",
             "support": {
                 "issues": "https://github.com/threadi/easy-settings-for-wordpress/issues",
-                "source": "https://github.com/threadi/easy-settings-for-wordpress/tree/3.9.0"
+                "source": "https://github.com/threadi/easy-settings-for-wordpress/tree/3.9.1"
             },
-            "time": "2026-10-27T21:52:06+00:00"
+            "time": "2026-11-06T17:12:48+00:00"
         },
         {
             "name": "threadi/easy-setup-for-wordpress",

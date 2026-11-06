@@ -58,7 +58,7 @@
     "require": {
         "php": "^8.2",
         "threadi/easy-setup-for-wordpress": "^1.4.1",
-        "threadi/easy-settings-for-wordpress": "^3.8.2",
+        "threadi/easy-settings-for-wordpress": "^3.9.1",
         "threadi/easy-transients-for-wordpress": "^1.4.9",
         "threadi/crypt-for-wordpress": "^3.0.0",
         "ext-simplexml": "*",
@@ -91,7 +91,8 @@
             "type": "path",
             "url": "../../../easy-dialog-for-wordpress/",
             "options": {
-                "symlink": true
+                "symlink": true,
+                "versions": { "threadi/easy-dialog-for-wordpress": "2.0.5" }
             }
         },
         {
