@@ -24,6 +24,33 @@ class SaveAsCryptValue {
 	 * @return string|null
 	 */
 	public static function save( string|null $value ): null|string {
+		return self::save_with_context( $value, '' );
+	}
+
+	/**
+	 * Return the callback to encrypt the value of a setting, bound to a context.
+	 *
+	 * The encrypted value could only be decrypted with the same context. Use the name of the setting as context.
+	 *
+	 * @param string $context The context, e.g. the name of the setting.
+	 *
+	 * @return \Closure
+	 */
+	public static function get_callback( string $context ): \Closure {
+		return static function ( $value ) use ( $context ): null|string {
+			return self::save_with_context( null === $value ? null : (string) $value, $context );
+		};
+	}
+
+	/**
+	 * Generate the crypt value, bound to the given context.
+	 *
+	 * @param string|null $value   The value to save.
+	 * @param string      $context The context (optional).
+	 *
+	 * @return string|null
+	 */
+	public static function save_with_context( #[\SensitiveParameter] string|null $value, string $context ): null|string {
 		// bail if the value is empty.
 		if ( empty( $value ) ) {
 			return '';
@@ -44,6 +71,6 @@ class SaveAsCryptValue {
 		}
 
 		// return the new value to save it via WP.
-		return Crypt::get_instance()->encrypt( $value );
+		return Crypt::get_instance()->encrypt( $value, $context );
 	}
 }

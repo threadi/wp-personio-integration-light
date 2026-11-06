@@ -84,23 +84,31 @@ class Crypt {
 	/**
 	 * Encrypt a given string.
 	 *
+	 * The optional context names what the value belongs to, e.g. the name of the setting. It is not encrypted,
+	 * but the value can only be decrypted with the very same context. Errors of the crypt library name the
+	 * context in their data, so it is shown in the log. Never use anything secret as context.
+	 *
 	 * @param string $plain_text The plain string.
+	 * @param string $context    The context (optional).
 	 *
 	 * @return string
 	 */
-	public function encrypt( string $plain_text ): string {
-		return $this->get_crypt_obj()->encrypt( $plain_text );
+	public function encrypt( #[\SensitiveParameter] string $plain_text, string $context = '' ): string {
+		return $this->get_crypt_obj()->encrypt( $plain_text, $context );
 	}
 
 	/**
 	 * Decrypt a given string.
 	 *
+	 * The context must be the same as the one used for the encryption of the value.
+	 *
 	 * @param string $encrypted_string The encrypted string.
+	 * @param string $context          The context (optional).
 	 *
 	 * @return string
 	 */
-	public function decrypt( string $encrypted_string ): string {
-		return $this->get_crypt_obj()->decrypt( $encrypted_string );
+	public function decrypt( string $encrypted_string, string $context = '' ): string {
+		return $this->get_crypt_obj()->decrypt( $encrypted_string, $context );
 	}
 
 	/**

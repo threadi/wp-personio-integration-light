@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74a9cc68caef2f2c6626d824eaa23d77",
+    "content-hash": "b92197673ace9377c584ef86a842ea4d",
     "packages": [
         {
             "name": "threadi/crypt-for-wordpress",
-            "version": "3.1.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/threadi/crypt-for-wordpress.git",
-                "reference": "9b2db2caeca8021921634a215a8f524e8d01c373"
+                "reference": "6bfd9610b8da72a1b501245abc6a47b5eab54562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/threadi/crypt-for-wordpress/zipball/9b2db2caeca8021921634a215a8f524e8d01c373",
-                "reference": "9b2db2caeca8021921634a215a8f524e8d01c373",
+                "url": "https://api.github.com/repos/threadi/crypt-for-wordpress/zipball/6bfd9610b8da72a1b501245abc6a47b5eab54562",
+                "reference": "6bfd9610b8da72a1b501245abc6a47b5eab54562",
                 "shasum": ""
             },
             "require": {
@@ -50,9 +50,9 @@
             ],
             "support": {
                 "issues": "https://github.com/threadi/crypt-for-wordpress/issues",
-                "source": "https://github.com/threadi/crypt-for-wordpress/tree/3.1.0"
+                "source": "https://github.com/threadi/crypt-for-wordpress/tree/4.0.0"
             },
-            "time": "2026-09-09T20:31:37+00:00"
+            "time": "2026-10-03T12:26:20+00:00"
         },
         {
             "name": "threadi/easy-dialog-for-wordpress",

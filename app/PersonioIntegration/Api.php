@@ -19,6 +19,8 @@ use easySettingsForWordPress\Section;
 use easySettingsForWordPress\Tab;
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue;
+use PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue;
 use PersonioIntegrationLight\Plugin\Crypt;
 use PersonioIntegrationLight\Plugin\Schedules\ApiAccessToken;
 use PersonioIntegrationLight\Plugin\Settings;
@@ -27,6 +29,13 @@ use PersonioIntegrationLight\Plugin\Settings;
  * Object to manage any Personio API tasks.
  */
 class Api {
+	/**
+	 * Name of the transient for the access token. It is also the context of its encrypted value.
+	 *
+	 * @var string
+	 */
+	public const ACCESS_TOKEN_TRANSIENT = 'personio_integration_api_token';
+
 	/**
 	 * Instance of this object.
 	 *
@@ -113,8 +122,8 @@ class Api {
 		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
-		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
-		$setting->set_save_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
+		$setting->set_read_callback( GetDecryptValue::get_callback( $setting->get_name() ) );
+		$setting->set_save_callback( SaveAsCryptValue::get_callback( $setting->get_name() ) );
 		$setting->prevent_export( true );
 		$field = new Text( $settings_obj );
 		$field->set_title( __( 'Your Client-ID', 'personio-integration-light' ) );
@@ -127,8 +136,8 @@ class Api {
 		$setting->set_show_in_rest( true );
 		$setting->set_type( 'string' );
 		$setting->set_default( '' );
-		$setting->set_read_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsRead\GetDecryptValue', 'get' ) );
-		$setting->set_save_callback( array( '\PersonioIntegrationLight\Plugin\Admin\SettingsSavings\SaveAsCryptValue', 'save' ) );
+		$setting->set_read_callback( GetDecryptValue::get_callback( $setting->get_name() ) );
+		$setting->set_save_callback( SaveAsCryptValue::get_callback( $setting->get_name() ) );
 		$setting->prevent_export( true );
 		$field = new Password( $settings_obj );
 		$field->set_title( __( 'Access token', 'personio-integration-light' ) );
@@ -193,7 +202,7 @@ class Api {
 		}
 
 		// get the saved token from the DB.
-		$access_token = Crypt::get_instance()->decrypt( get_transient( 'personio_integration_api_token' ) );
+		$access_token = $this->get_access_token_from_db();
 
 		// return token if it is known.
 		if ( ! empty( $access_token ) ) {
@@ -251,7 +260,7 @@ class Api {
 		}
 
 		// save this token as transients.
-		set_transient( 'personio_integration_api_token', Crypt::get_instance()->encrypt( $access_token ), absint( $response['expires_in'] ) );
+		set_transient( self::ACCESS_TOKEN_TRANSIENT, Crypt::get_instance()->encrypt( $access_token, self::ACCESS_TOKEN_TRANSIENT ), absint( $response['expires_in'] ) );
 
 		// return the token.
 		return $access_token;
@@ -293,7 +302,7 @@ class Api {
 		}
 
 		// delete the token in DB.
-		delete_transient( 'personio_integration_api_token' );
+		delete_transient( self::ACCESS_TOKEN_TRANSIENT );
 	}
 
 	/**
@@ -366,7 +375,16 @@ class Api {
 	 * @return string
 	 */
 	private function get_access_token_from_db(): string {
-		return Crypt::get_instance()->decrypt( get_transient( 'personio_integration_api_token' ) );
+		// get the encrypted token.
+		$encrypted_token = get_transient( self::ACCESS_TOKEN_TRANSIENT );
+
+		// bail if no token is saved.
+		if ( ! \is_string( $encrypted_token ) || '' === $encrypted_token ) {
+			return '';
+		}
+
+		// return the decrypted token. The name of the transient is the context of the token.
+		return Crypt::get_instance()->decrypt( $encrypted_token, self::ACCESS_TOKEN_TRANSIENT );
 	}
 
 	/**
@@ -406,7 +424,7 @@ class Api {
 	 */
 	public function check_for_api_support( string $old_value, string $new_value ): void {
 		// bail if the value has not been changed.
-		if ( Crypt::get_instance()->decrypt( $new_value ) === $old_value ) {
+		if ( GetDecryptValue::get_with_context( $new_value, 'personioIntegrationApiSecret' ) === $old_value ) {
 			return;
 		}
 

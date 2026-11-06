@@ -48,7 +48,7 @@ class Api extends PersonioTestCase {
 	 */
 	public function test_get_access_token(): void {
 		// set an example token.
-		set_transient( 'personio_integration_api_token', \PersonioIntegrationLight\Plugin\Crypt::get_instance()->encrypt( 'example' ), 180 );
+		set_transient( \PersonioIntegrationLight\PersonioIntegration\Api::ACCESS_TOKEN_TRANSIENT, \PersonioIntegrationLight\Plugin\Crypt::get_instance()->encrypt( 'example', \PersonioIntegrationLight\PersonioIntegration\Api::ACCESS_TOKEN_TRANSIENT ), 180 );
 
 		// test is.
 		$access_token = \PersonioIntegrationLight\PersonioIntegration\Api::get_instance()->get_access_token();

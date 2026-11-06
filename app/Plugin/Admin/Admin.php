@@ -1132,8 +1132,9 @@ class Admin {
 			$transient_obj->save();
 		}
 
-		// log the same error only once per hour: some of them are reported on every request.
-		$throttle_key = 'personio_integration_light_crypt_error_' . md5( $code );
+		// log the same error for the same value only once per hour: some of them are reported on every request.
+		$context      = isset( $data['context'] ) && \is_string( $data['context'] ) ? $data['context'] : '';
+		$throttle_key = 'personio_integration_light_crypt_error_' . md5( $code . '|' . $context );
 		if ( false !== get_transient( $throttle_key ) ) {
 			return;
 		}
@@ -1145,6 +1146,11 @@ class Admin {
 			__( 'Message', 'personio-integration-light' ) => '<code>' . $message . '</code>',
 			__( 'Data', 'personio-integration-light' )    => '<code>' . Helper::get_json( $data ) . '</code>',
 		);
+
+		// add the context of the value, if the error has one: it shows which value is affected.
+		if ( ! empty( $data['context'] ) && \is_string( $data['context'] ) ) {
+			$log_entry[ __( 'Context', 'personio-integration-light' ) ] = '<code>' . esc_html( $data['context'] ) . '</code>';
+		}
 
 		// log the data.
 		Log::get_instance()->add(
