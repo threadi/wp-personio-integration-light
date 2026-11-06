@@ -291,6 +291,7 @@ class Uninstaller {
 			'personioIntegrationInstallationId',
 			'personioIntegrationClientId',
 			'personioIntegrationApiSecret',
+			'personio_integration_crypt_context_bound',
 			'personio_integration_update_running',
 			\PersonioIntegrationLight\PageBuilder\Gutenberg\Template_Styles::OPTION,
 		);

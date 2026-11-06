@@ -4,7 +4,22 @@
 
 ### Added
 
+- Added optional context to the encryption and decryption of values; the context of a value is shown in the
+  log entry of crypt errors
 - Add an option in admin bar in frontend for our archive and single pages to quick edit the templates
+- Added documentation of all shortcodes incl. the widget shortcodes and the attributes of the Pro version
+
+### Fixed
+
+- Fixed wrong values in the shortcode documentation: filtertype "select" instead of "selectbox", template part
+  "formular" instead of "form" and slugs "occupation" and "occupation_detail" for the job types
+
+### Changed
+
+- Encrypted values are now bound to their context: the Client-ID and the access token of the API v2 settings could
+  only be decrypted with the name of their setting, the cached access token of the API v2 with the name of its
+  transient; existing values are converted during the update and the access token is requested again
+- Updated crypt library to 4.0.0
 
 ## [6.0.0] - 13.10.2026
 

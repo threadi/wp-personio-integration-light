@@ -12,6 +12,7 @@ namespace PersonioIntegrationLight\Plugin;
 
 use PersonioIntegrationLight\Helper;
 use PersonioIntegrationLight\Log;
+use PersonioIntegrationLight\PersonioIntegration\Api;
 use PersonioIntegrationLight\PersonioIntegration\Extensions;
 use PersonioIntegrationLight\PersonioIntegration\Imports\Xml;
 use PersonioIntegrationLight\PersonioIntegration\Positions;
@@ -125,6 +126,9 @@ class Update {
 			}
 			if ( version_compare( $db_plugin_version, '5.6.1', '<' ) ) {
 				$this->version561();
+			}
+			if ( version_compare( $db_plugin_version, '6.1.0', '<' ) ) {
+				$this->version610();
 			}
 		} catch ( \Throwable $e ) {
 			// log the error.
@@ -336,5 +340,106 @@ class Update {
 		if ( 'weekly' === get_option( 'personio_integration_email_interval_report' ) ) {
 			update_option( 'personio_integration_email_interval_report', '' );
 		}
+	}
+
+	/**
+	 * To run on an update to version 6.1.0 or newer.
+	 *
+	 * @return void
+	 */
+	private function version610(): void {
+		$this->bind_encrypted_values_to_context();
+	}
+
+	/**
+	 * Bind the encrypted values to their context.
+	 *
+	 * Encrypted settings could only be decrypted with their name as context from now on. Existing values are
+	 * decrypted without context and saved again with context. The access token is removed, a new one will be
+	 * requested with the next usage of the API.
+	 *
+	 * This is done only once, also if the update routine is run for multiple versions.
+	 *
+	 * @return void
+	 */
+	private function bind_encrypted_values_to_context(): void {
+		// bail if this has been done already.
+		if ( 1 === absint( get_option( 'personio_integration_crypt_context_bound' ) ) ) {
+			return;
+		}
+
+		// remove the access token, as it is encrypted without context.
+		delete_transient( Api::ACCESS_TOKEN_TRANSIENT );
+
+		// get our crypt object.
+		$crypt = Crypt::get_instance();
+
+		// take the check for API support out of the way: the API secret is not changed here.
+		$api_obj        = Api::get_instance();
+		$check_priority = has_action( 'update_option_personioIntegrationApiSecret', array( $api_obj, 'check_for_api_support' ) );
+		if ( false !== $check_priority ) {
+			remove_action( 'update_option_personioIntegrationApiSecret', array( $api_obj, 'check_for_api_support' ), $check_priority );
+		}
+
+		// names of the encrypted settings. The name is also the context of each value.
+		$names = array( 'personioIntegrationClientId', 'personioIntegrationApiSecret' );
+
+		foreach ( $names as $name ) {
+			// get the callbacks of the setting, if it is registered already.
+			$setting = Settings::get_instance()->get_settings_object()->get_setting( $name );
+			$read    = false !== $setting && $setting->has_read_callback() ? $setting->get_read_callback() : null;
+			$save    = false !== $setting && $setting->has_save_callback() ? $setting->get_save_callback() : null;
+
+			// take them out of the way, if they are hooked.
+			$read_priority = null !== $read ? has_filter( 'option_' . $name, $read ) : false;
+			$save_priority = null !== $save ? has_filter( 'pre_update_option_' . $name, $save ) : false;
+			if ( null !== $read && false !== $read_priority ) {
+				remove_filter( 'option_' . $name, $read, $read_priority );
+			}
+			if ( null !== $save && false !== $save_priority ) {
+				remove_filter( 'pre_update_option_' . $name, $save, $save_priority );
+			}
+
+			// get the stored value.
+			$raw = get_option( $name );
+
+			$false = false;
+			/**
+			 * Do not decrypt a given value if requested.
+			 *
+			 * @since 5.0.0 Available since 5.0.0.
+			 *
+			 * @param bool $false Return true to prevent decrypting.
+			 * @param string $value The requested value.
+			 *
+			 * @noinspection PhpConditionAlreadyCheckedInspection
+			 */
+			$is_plain = ! \is_string( $raw ) || '' === $raw || apply_filters( 'personio_integration_light_do_not_decrypt', $false, $raw );
+
+			// decrypt the stored value without context and encrypt it with context.
+			$plain = $is_plain ? '' : $crypt->decrypt( $raw );
+			if ( '' !== $plain ) {
+				$encrypted = $crypt->encrypt( $plain, $name );
+				if ( '' !== $encrypted ) {
+					update_option( $name, $encrypted );
+				}
+			}
+
+			// put the callbacks back.
+			if ( null !== $read && false !== $read_priority ) {
+				add_filter( 'option_' . $name, $read, $read_priority );
+			}
+			if ( null !== $save && false !== $save_priority ) {
+				add_filter( 'pre_update_option_' . $name, $save, $save_priority, 3 );
+			}
+		}
+
+		// put the check for API support back.
+		if ( false !== $check_priority ) {
+			add_action( 'update_option_personioIntegrationApiSecret', array( $api_obj, 'check_for_api_support' ), $check_priority, 2 );
+		}
+
+		// mark this as done.
+		update_option( 'personio_integration_crypt_context_bound', 1 );
 	}
 }

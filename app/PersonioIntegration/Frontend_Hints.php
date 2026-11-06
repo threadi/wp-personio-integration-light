@@ -8,7 +8,7 @@
 namespace PersonioIntegrationLight\PersonioIntegration;
 
 // prevent direct access.
-defined( 'ABSPATH' ) || exit;
+\defined( 'ABSPATH' ) || exit;
 
 use PersonioIntegrationLight\Abilities\Template_Abilities;
 use PersonioIntegrationLight\Helper;
@@ -55,7 +55,7 @@ class Frontend_Hints {
 	 * Return the instance of this Singleton object.
 	 */
 	public static function get_instance(): Frontend_Hints {
-		if ( is_null( self::$instance ) ) {
+		if ( \is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
@@ -173,8 +173,8 @@ class Frontend_Hints {
 
 		// return the result with the expected keys.
 		return array(
-			'label'    => is_string( $info['label'] ?? null ) ? $info['label'] : '',
-			'edit_url' => is_string( $info['edit_url'] ?? null ) ? $info['edit_url'] : '',
+			'label'    => \is_string( $info['label'] ?? null ) ? $info['label'] : '',
+			'edit_url' => \is_string( $info['edit_url'] ?? null ) ? $info['edit_url'] : '',
 		);
 	}
 
@@ -209,7 +209,7 @@ class Frontend_Hints {
 		}
 
 		// set the URL to edit it in the Site Editor.
-		$template_id = is_string( $template['id'] ) ? $template['id'] : '';
+		$template_id = \is_string( $template['id'] ) ? $template['id'] : '';
 		if ( ! empty( $template_id ) && current_user_can( 'edit_theme_options' ) ) {
 			$info['edit_url'] = $this->get_site_editor_url( $template_id );
 		}
@@ -265,7 +265,7 @@ class Frontend_Hints {
 		$plugin_path      = wp_normalize_path( plugin_dir_path( WP_PERSONIO_INTEGRATION_PLUGIN ) );
 		$stylesheet_path  = trailingslashit( wp_normalize_path( get_stylesheet_directory() ) );
 		$template_path    = trailingslashit( wp_normalize_path( get_template_directory() ) );
-		$plugin_subfolder = trailingslashit( basename( dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) );
+		$plugin_subfolder = trailingslashit( basename( \dirname( WP_PERSONIO_INTEGRATION_PLUGIN ) ) );
 
 		// check for the template of this plugin.
 		if ( str_starts_with( $file, $plugin_path ) ) {
@@ -280,23 +280,23 @@ class Frontend_Hints {
 			}
 
 			// get the relative path of the file in the theme.
-			$relative_path = substr( $file, strlen( $theme_path ) );
+			$relative_path = substr( $file, \strlen( $theme_path ) );
 
 			// check for a customized template of this plugin in the theme.
 			if ( str_starts_with( $relative_path, $plugin_subfolder ) ) {
 				/* translators: %1$s will be replaced by the path of the file in the theme. */
-				$info['label'] = sprintf( __( 'Customized template in your theme (%1$s)', 'personio-integration-light' ), $relative_path );
+				$info['label'] = \sprintf( __( 'Customized template in your theme (%1$s)', 'personio-integration-light' ), $relative_path );
 				return $info;
 			}
 
 			/* translators: %1$s will be replaced by the path of the file in the theme. */
-			$info['label'] = sprintf( __( 'Template of your theme (%1$s)', 'personio-integration-light' ), $relative_path );
+			$info['label'] = \sprintf( __( 'Template of your theme (%1$s)', 'personio-integration-light' ), $relative_path );
 			return $info;
 		}
 
 		// the template comes from another plugin.
 		/* translators: %1$s will be replaced by a file name. */
-		$info['label'] = sprintf( __( 'Template of another plugin (%1$s)', 'personio-integration-light' ), basename( $file ) );
+		$info['label'] = \sprintf( __( 'Template of another plugin (%1$s)', 'personio-integration-light' ), basename( $file ) );
 		return $info;
 	}
 
@@ -338,7 +338,7 @@ class Frontend_Hints {
 					'id'     => 'pi-edit-view-template',
 					'parent' => 'pi-edit-view',
 					/* translators: %1$s will be replaced by the description of the used template. */
-					'title'  => esc_html( sprintf( __( 'Used template: %1$s', 'personio-integration-light' ), $info['label'] ) ),
+					'title'  => esc_html( \sprintf( __( 'Used template: %1$s', 'personio-integration-light' ), $info['label'] ) ),
 				)
 			);
 		}
@@ -357,7 +357,7 @@ class Frontend_Hints {
 
 		// add the hint for the Pro plugin if a not natively supported page builder is used.
 		$page_builders = Compatibilities::get_instance()->get_active_page_builder_labels();
-		$false = false;
+		$false         = false;
 		/**
 		 * Hide hint for Pro-plugin.
 		 *
@@ -372,7 +372,7 @@ class Frontend_Hints {
 					'id'     => 'pi-edit-view-pro',
 					'parent' => 'pi-edit-view',
 					/* translators: %1$s will be replaced by the names of page builders. */
-					'title'  => esc_html( sprintf( __( 'Design with %1$s (Pro)', 'personio-integration-light' ), implode( ', ', $page_builders ) ) ),
+					'title'  => esc_html( \sprintf( __( 'Design with %1$s (Pro)', 'personio-integration-light' ), implode( ', ', $page_builders ) ) ),
 					'href'   => Helper::get_pro_url(),
 					'meta'   => array( 'target' => '_blank' ),
 				)
