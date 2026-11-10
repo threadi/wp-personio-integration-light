@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Updated dependencies
+
 ## [6.1.0] - 09.11.2026
 
 ### Added

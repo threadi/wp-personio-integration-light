@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "threadi/crypt-for-wordpress",
-            "version": "4.0.0",
+            "version": "4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/threadi/crypt-for-wordpress.git",
-                "reference": "6bfd9610b8da72a1b501245abc6a47b5eab54562"
+                "reference": "e1c22e92d5a4c5a0449c276e379ea17511a83a12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/threadi/crypt-for-wordpress/zipball/6bfd9610b8da72a1b501245abc6a47b5eab54562",
-                "reference": "6bfd9610b8da72a1b501245abc6a47b5eab54562",
+                "url": "https://api.github.com/repos/threadi/crypt-for-wordpress/zipball/e1c22e92d5a4c5a0449c276e379ea17511a83a12",
+                "reference": "e1c22e92d5a4c5a0449c276e379ea17511a83a12",
                 "shasum": ""
             },
             "require": {
@@ -50,22 +50,22 @@
             ],
             "support": {
                 "issues": "https://github.com/threadi/crypt-for-wordpress/issues",
-                "source": "https://github.com/threadi/crypt-for-wordpress/tree/4.0.0"
+                "source": "https://github.com/threadi/crypt-for-wordpress/tree/4.1.2"
             },
-            "time": "2026-10-03T12:26:20+00:00"
+            "time": "2026-11-09T19:36:42+00:00"
         },
         {
             "name": "threadi/easy-dialog-for-wordpress",
-            "version": "2.0.5",
+            "version": "2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/threadi/easy-dialog-for-wordpress.git",
-                "reference": "e2f8ffddb8cbafc9977d4c23dccd4a154b79c595"
+                "reference": "a711c22885a4aceca4d8e69a1d832b2f1894610e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/threadi/easy-dialog-for-wordpress/zipball/e2f8ffddb8cbafc9977d4c23dccd4a154b79c595",
-                "reference": "e2f8ffddb8cbafc9977d4c23dccd4a154b79c595",
+                "url": "https://api.github.com/repos/threadi/easy-dialog-for-wordpress/zipball/a711c22885a4aceca4d8e69a1d832b2f1894610e",
+                "reference": "a711c22885a4aceca4d8e69a1d832b2f1894610e",
                 "shasum": ""
             },
             "type": "library",
@@ -82,22 +82,22 @@
             "description": "Provides a simple react-driven dialog-modal for the WordPress-backend.",
             "support": {
                 "issues": "https://github.com/threadi/easy-dialog-for-wordpress/issues",
-                "source": "https://github.com/threadi/easy-dialog-for-wordpress/tree/2.0.5"
+                "source": "https://github.com/threadi/easy-dialog-for-wordpress/tree/2.0.6"
             },
-            "time": "2026-10-18T13:02:22+00:00"
+            "time": "2026-11-09T19:39:11+00:00"
         },
         {
             "name": "threadi/easy-settings-for-wordpress",
-            "version": "3.9.1",
+            "version": "3.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/threadi/easy-settings-for-wordpress.git",
-                "reference": "1ddb212546eed218a54c6b76ea1e213d6ca997d1"
+                "reference": "aeeb4d788bdb672d63b13c9d0562a3070dc0d9a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/threadi/easy-settings-for-wordpress/zipball/1ddb212546eed218a54c6b76ea1e213d6ca997d1",
-                "reference": "1ddb212546eed218a54c6b76ea1e213d6ca997d1",
+                "url": "https://api.github.com/repos/threadi/easy-settings-for-wordpress/zipball/aeeb4d788bdb672d63b13c9d0562a3070dc0d9a8",
+                "reference": "aeeb4d788bdb672d63b13c9d0562a3070dc0d9a8",
                 "shasum": ""
             },
             "require": {
@@ -139,9 +139,9 @@
             "description": "Provides a settings wrapper for WordPress plugins and themes.",
             "support": {
                 "issues": "https://github.com/threadi/easy-settings-for-wordpress/issues",
-                "source": "https://github.com/threadi/easy-settings-for-wordpress/tree/3.9.1"
+                "source": "https://github.com/threadi/easy-settings-for-wordpress/tree/3.9.2"
             },
-            "time": "2026-11-06T17:12:48+00:00"
+            "time": "2026-11-07T10:30:35+00:00"
         },
         {
             "name": "threadi/easy-setup-for-wordpress",
