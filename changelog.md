@@ -1,5 +1,15 @@
 # Changelog
 
+## [6.1.1] - 12.11.2026
+
+### Changed
+
+- Updated dependencies
+
+### Fixed
+
+- Fixed potential error if hook template_include loads with null value
+
 ## [6.1.0] - 09.11.2026
 
 ### Added
