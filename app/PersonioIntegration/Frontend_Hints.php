@@ -78,12 +78,17 @@ class Frontend_Hints {
 	/**
 	 * Remember the template file which is used for the actual request.
 	 *
-	 * @param string $template The path to the template file.
+	 * Other plugins or themes might return a non-string value via this filter.
+	 * In this case we ignore it and return the value unchanged.
 	 *
-	 * @return string
+	 * @param mixed $template The path to the template file.
+	 *
+	 * @return mixed
 	 */
-	public function remember_template_file( string $template ): string {
-		$this->template_file = $template;
+	public function remember_template_file( mixed $template ): mixed {
+		if ( is_string( $template ) ) {
+			$this->template_file = $template;
+		}
 		return $template;
 	}
 
