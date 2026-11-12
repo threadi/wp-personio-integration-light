@@ -86,7 +86,7 @@ class Frontend_Hints {
 	 * @return mixed
 	 */
 	public function remember_template_file( mixed $template ): mixed {
-		if ( is_string( $template ) ) {
+		if ( \is_string( $template ) ) {
 			$this->template_file = $template;
 		}
 		return $template;
