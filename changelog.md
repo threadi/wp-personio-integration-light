@@ -4,11 +4,12 @@
 
 ### Changed
 
-- Updated dependencies
+- Updated crypt library
+- Updated settings library
 
 ### Fixed
 
-- Fixed potential error if hook template_include loads with null value
+- Fixed potential error if hook "template_include" loads with null value coming from third party plugins
 
 ## [6.1.0] - 09.11.2026
 

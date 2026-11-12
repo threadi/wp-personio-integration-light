@@ -125,25 +125,11 @@ Yes, it is without any further settings.
 3. Main settings for the plugin
 4. Your positions from Personio in the frontend of your website
 
-== Upgrade Notice ==
-
-= 5.0.0 =
-
-Complete revision of the plugin. Please create a backup before installing version 5.0.0 or newer.
-
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Added optional context to the encryption and decryption of values; the context of a value is shown in the
-  log entry of crypt errors
-- Add an option in admin bar in frontend for our archive and single pages to quick edit the templates
-- Added documentation of all shortcodes incl. the widget shortcodes and the attributes of the Pro version
-- Encrypted values are now bound to their context: the Client-ID and the access token of the API v2 settings could
-  only be decrypted with the name of their setting, the cached access token of the API v2 with the name of its
-  transient; existing values are converted during the update and the access token is requested again
-- Updated crypt library to 4.0.0
-- Updated settings library to 3.9.0
-- Fixed wrong values in the shortcode documentation: filtertype "select" instead of "selectbox", template part
-  "formular" instead of "form" and slugs "occupation" and "occupation_detail" for the job types
+- Updated crypt library
+- Updated settings library
+- Fixed potential error if hook "template_include" loads with null value
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
