@@ -128,7 +128,8 @@ Yes, it is without any further settings.
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Updated dependencies
-- Fixed potential error if hook template_include loads with null value
+- Updated crypt library
+- Updated settings library
+- Fixed potential error if hook "template_include" loads with null value
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)
