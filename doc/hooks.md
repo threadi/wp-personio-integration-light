@@ -382,7 +382,7 @@ Source: [app/PersonioIntegration/Widgets/Filter_Select.php](PersonioIntegration/
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$position_count` | `int` | 
+`$position_count` | `int` |
 
 **Changelog**
 
@@ -436,7 +436,7 @@ Source: [app/PersonioIntegration/Extensions.php](PersonioIntegration/Extensions.
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$this->get_errors()` |  | 
+`$this->get_errors()` |  |
 
 **Changelog**
 
@@ -651,7 +651,7 @@ Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegra
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$params` |  | 
+`$params` |  |
 
 Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 1849](PersonioIntegration/PostTypes/PersonioPosition.php#L1849-L1852)
 
@@ -821,7 +821,7 @@ Source: [app/Log.php](Log.php), [line 253](Log.php#L253-L260)
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$order` |  | 
+`$order` |  |
 
 Source: [app/Log.php](Log.php), [line 285](Log.php#L285-L285)
 
@@ -831,7 +831,7 @@ Source: [app/Log.php](Log.php), [line 285](Log.php#L285-L285)
 
 Argument | Type | Description
 -------- | ---- | -----------
-`10000` |  | 
+`10000` |  |
 
 Source: [app/Log.php](Log.php), [line 296](Log.php#L296-L296)
 
@@ -933,11 +933,11 @@ Source: [app/PersonioIntegration/Themes_Base.php](PersonioIntegration/Themes_Bas
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$run_import` |  | 
-`$object` |  | 
-`$language_name` |  | 
-`$personio_obj` |  | 
-`$imports_obj` |  | 
+`$run_import` |  |
+`$object` |  |
+`$language_name` |  |
+`$personio_obj` |  |
+`$imports_obj` |  |
 
 Source: [app/PersonioIntegration/Imports/Api.php](PersonioIntegration/Imports/Api.php), [line 373](PersonioIntegration/Imports/Api.php#L373-L373)
 
@@ -984,8 +984,8 @@ Source: [app/PersonioIntegration/Imports/Api.php](PersonioIntegration/Imports/Ap
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$do_delete` |  | 
-`$position_obj` |  | 
+`$do_delete` |  |
+`$position_obj` |  |
 
 Source: [app/PersonioIntegration/Imports/Api.php](PersonioIntegration/Imports/Api.php), [line 498](PersonioIntegration/Imports/Api.php#L498-L498)
 
@@ -1014,8 +1014,8 @@ Source: [app/PersonioIntegration/Imports/Xml.php](PersonioIntegration/Imports/Xm
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$do_delete` |  | 
-`$position_obj` |  | 
+`$do_delete` |  |
+`$position_obj` |  |
 
 Source: [app/PersonioIntegration/Imports/Xml.php](PersonioIntegration/Imports/Xml.php), [line 286](PersonioIntegration/Imports/Xml.php#L286-L286)
 
@@ -1082,7 +1082,7 @@ Source: [app/PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php](Per
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$http_status` |  | 
+`$http_status` |  |
 
 Source: [app/PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php](PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php), [line 261](PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php#L261-L261)
 
@@ -1092,8 +1092,8 @@ Source: [app/PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php](Per
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$max_size` |  | 
-`$url` |  | 
+`$max_size` |  |
+`$url` |  |
 
 Source: [app/PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php](PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php), [line 295](PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php#L295-L295)
 
@@ -1103,11 +1103,11 @@ Source: [app/PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php](Per
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$run_import` |  | 
-`$xml_object` |  | 
-`$language_name` |  | 
-`$personio_obj` |  | 
-`$imports_obj` |  | 
+`$run_import` |  |
+`$xml_object` |  |
+`$language_name` |  |
+`$personio_obj` |  |
+`$imports_obj` |  |
 
 Source: [app/PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php](PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php), [line 398](PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php#L398-L398)
 
@@ -1117,7 +1117,7 @@ Source: [app/PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php](Per
 
 Argument | Type | Description
 -------- | ---- | -----------
-`20` |  | 
+`20` |  |
 
 Source: [app/PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php](PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php), [line 418](PersonioIntegration/Imports/Xml/Import_Single_Personio_Url.php#L418-L418)
 
@@ -1390,7 +1390,7 @@ Source: [app/PersonioIntegration/Api_Request.php](PersonioIntegration/Api_Reques
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$html` |  | 
+`$html` |  |
 
 Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 255](PersonioIntegration/Availability.php#L255-L255)
 
@@ -1400,8 +1400,8 @@ Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availabil
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$html` |  | 
-`$position_obj` |  | 
+`$html` |  |
+`$position_obj` |  |
 
 Source: [app/PersonioIntegration/Availability.php](PersonioIntegration/Availability.php), [line 292](PersonioIntegration/Availability.php#L292-L292)
 
@@ -1431,8 +1431,8 @@ Source: [app/PersonioIntegration/Extensions.php](PersonioIntegration/Extensions.
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$dialog` |  | 
-`$obj` |  | 
+`$dialog` |  |
+`$obj` |  |
 
 Source: [app/PersonioIntegration/Extensions.php](PersonioIntegration/Extensions.php), [line 340](PersonioIntegration/Extensions.php#L340-L343)
 
@@ -1442,7 +1442,7 @@ Source: [app/PersonioIntegration/Extensions.php](PersonioIntegration/Extensions.
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
 Source: [app/PersonioIntegration/Extensions.php](PersonioIntegration/Extensions.php), [line 642](PersonioIntegration/Extensions.php#L642-L642)
 
@@ -1472,7 +1472,7 @@ Source: [app/PersonioIntegration/Themes.php](PersonioIntegration/Themes.php), [l
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$postion_obj` |  | 
+`$postion_obj` |  |
 `$language_code` | `string` | The requested language.
 
 **Changelog**
@@ -1508,7 +1508,7 @@ Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.ph
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$post_id` |  | 
+`$post_id` |  |
 
 Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.php), [line 245](PersonioIntegration/Positions.php#L245-L245)
 
@@ -1541,7 +1541,7 @@ Source: [app/PersonioIntegration/Positions.php](PersonioIntegration/Positions.ph
 Argument | Type | Description
 -------- | ---- | -----------
 `$query` | `array<string,mixed>` | The configured query.
-`array()` |  | 
+`array()` |  |
 
 **Changelog**
 
@@ -1567,7 +1567,7 @@ Version | Description
 ------- | -----------
 `6.1.0` | Available since 6.1.0.
 
-Source: [app/PersonioIntegration/Frontend_Hints.php](PersonioIntegration/Frontend_Hints.php), [line 112](PersonioIntegration/Frontend_Hints.php#L112-L119)
+Source: [app/PersonioIntegration/Frontend_Hints.php](PersonioIntegration/Frontend_Hints.php), [line 117](PersonioIntegration/Frontend_Hints.php#L117-L124)
 
 ### `personio_integration_light_frontend_template_info`
 
@@ -1588,7 +1588,7 @@ Version | Description
 ------- | -----------
 `6.1.0` | Available since 6.1.0.
 
-Source: [app/PersonioIntegration/Frontend_Hints.php](PersonioIntegration/Frontend_Hints.php), [line 163](PersonioIntegration/Frontend_Hints.php#L163-L172)
+Source: [app/PersonioIntegration/Frontend_Hints.php](PersonioIntegration/Frontend_Hints.php), [line 168](PersonioIntegration/Frontend_Hints.php#L168-L177)
 
 ### `personio_integration_hide_pro_hints`
 
@@ -1596,9 +1596,9 @@ Source: [app/PersonioIntegration/Frontend_Hints.php](PersonioIntegration/Fronten
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
-Source: [app/PersonioIntegration/Frontend_Hints.php](PersonioIntegration/Frontend_Hints.php), [line 369](PersonioIntegration/Frontend_Hints.php#L369-L369)
+Source: [app/PersonioIntegration/Frontend_Hints.php](PersonioIntegration/Frontend_Hints.php), [line 374](PersonioIntegration/Frontend_Hints.php#L374-L374)
 
 ### `personio_integration_check_requirement_to_import_single_position`
 
@@ -1625,8 +1625,8 @@ Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php)
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$params` |  | 
-`$instance` |  | 
+`$params` |  |
+`$instance` |  |
 
 Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 135](PersonioIntegration/Position.php#L135-L135)
 
@@ -1733,8 +1733,8 @@ Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php)
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$url` |  | 
-`$instance` |  | 
+`$url` |  |
+`$instance` |  |
 
 Source: [app/PersonioIntegration/Position.php](PersonioIntegration/Position.php), [line 771](PersonioIntegration/Position.php#L771-L771)
 
@@ -1762,8 +1762,8 @@ Source: [app/PersonioIntegration/Personio_Accounts.php](PersonioIntegration/Pers
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$pro_hint` |  | 
-`$true` |  | 
+`$pro_hint` |  |
+`$true` |  |
 
 Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 190](PersonioIntegration/Imports.php#L190-L190)
 
@@ -1773,8 +1773,8 @@ Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), 
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$pro_hint` |  | 
-`$true` |  | 
+`$pro_hint` |  |
+`$true` |  |
 
 Source: [app/PersonioIntegration/Imports.php](PersonioIntegration/Imports.php), [line 193](PersonioIntegration/Imports.php#L193-L193)
 
@@ -2023,7 +2023,7 @@ Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegra
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
 Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 2278](PersonioIntegration/PostTypes/PersonioPosition.php#L2278-L2278)
 
@@ -2033,7 +2033,7 @@ Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegra
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
 Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 2316](PersonioIntegration/PostTypes/PersonioPosition.php#L2316-L2316)
 
@@ -2043,7 +2043,7 @@ Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegra
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
 Source: [app/PersonioIntegration/PostTypes/PersonioPosition.php](PersonioIntegration/PostTypes/PersonioPosition.php), [line 2343](PersonioIntegration/PostTypes/PersonioPosition.php#L2343-L2343)
 
@@ -2125,7 +2125,7 @@ Source: [app/PersonioIntegration/Tables/Extensions.php](PersonioIntegration/Tabl
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
 Source: [app/PersonioIntegration/Tables/Extensions.php](PersonioIntegration/Tables/Extensions.php), [line 229](PersonioIntegration/Tables/Extensions.php#L229-L229)
 
@@ -2135,7 +2135,7 @@ Source: [app/PersonioIntegration/Tables/Extensions.php](PersonioIntegration/Tabl
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
 Source: [app/PersonioIntegration/Tables/Extensions.php](PersonioIntegration/Tables/Extensions.php), [line 267](PersonioIntegration/Tables/Extensions.php#L267-L267)
 
@@ -2313,7 +2313,7 @@ Source: [app/Helper.php](Helper.php), [line 59](Helper.php#L59-L66)
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$slug` |  | 
+`$slug` |  |
 
 **Changelog**
 
@@ -2459,7 +2459,7 @@ Source: [app/Helper.php](Helper.php), [line 795](Helper.php#L795-L803)
 
 Argument | Type | Description
 -------- | ---- | -----------
-`array(PersonioPosition::get_instance()->get_name())` |  | 
+`array(PersonioPosition::get_instance()->get_name())` |  |
 
 Source: [app/Helper.php](Helper.php), [line 877](Helper.php#L877-L877)
 
@@ -2489,7 +2489,7 @@ Source: [app/Log_Table.php](Log_Table.php), [line 313](Log_Table.php#L313-L319)
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$list` |  | 
+`$list` |  |
 
 **Changelog**
 
@@ -2505,8 +2505,8 @@ Source: [app/Log_Table.php](Log_Table.php), [line 372](Log_Table.php#L372-L377)
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
-`$raw` |  | 
+`$false` |  |
+`$raw` |  |
 
 Source: [app/Plugin/Update.php](Plugin/Update.php), [line 417](Plugin/Update.php#L417-L417)
 
@@ -2554,7 +2554,7 @@ Source: [app/Plugin/Languages.php](Plugin/Languages.php), [line 94](Plugin/Langu
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$fallback_language` |  | 
+`$fallback_language` |  |
 
 **Changelog**
 
@@ -2678,7 +2678,7 @@ Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 110](Plugin/Temp
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$directory` |  | 
+`$directory` |  |
 
 Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 152](Plugin/Templates.php#L152-L152)
 
@@ -2688,7 +2688,7 @@ Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 152](Plugin/Temp
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$directory` |  | 
+`$directory` |  |
 
 Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 191](Plugin/Templates.php#L191-L191)
 
@@ -2790,7 +2790,7 @@ Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 452](Plugin/Temp
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$true` |  | 
+`$true` |  |
 
 Source: [app/Plugin/Templates.php](Plugin/Templates.php), [line 513](Plugin/Templates.php#L513-L513)
 
@@ -2987,7 +2987,7 @@ Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 205](Plugin/Setup.php#L2
 
 Argument | Type | Description
 -------- | ---- | -----------
-`Helper::get_plugin_name()` |  | 
+`Helper::get_plugin_name()` |  |
 
 Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 222](Plugin/Setup.php#L222-L222)
 
@@ -3015,8 +3015,8 @@ Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 310](Plugin/Setup.php#L3
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$completed_text` |  | 
-`$config_name` |  | 
+`$completed_text` |  |
+`$config_name` |  |
 
 Source: [app/Plugin/Setup.php](Plugin/Setup.php), [line 488](Plugin/Setup.php#L488-L488)
 
@@ -3081,8 +3081,8 @@ Source: [app/Plugin/Admin/SettingsSavings/SaveAsCryptValue.php](Plugin/Admin/Set
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$allowed` |  | 
-`$screen` |  | 
+`$allowed` |  |
+`$screen` |  |
 
 Source: [app/Plugin/Admin/Help_System.php](Plugin/Admin/Help_System.php), [line 78](Plugin/Admin/Help_System.php#L78-L78)
 
@@ -3164,7 +3164,7 @@ Source: [app/Plugin/Admin/Dashboard.php](Plugin/Admin/Dashboard.php), [line 84](
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$text` |  | 
+`$text` |  |
 
 Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 271](Plugin/Admin/Admin.php#L271-L271)
 
@@ -3174,7 +3174,7 @@ Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 271](Plugin/
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
 Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 490](Plugin/Admin/Admin.php#L490-L490)
 
@@ -3184,7 +3184,7 @@ Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 490](Plugin/
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
 Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 555](Plugin/Admin/Admin.php#L555-L555)
 
@@ -3194,7 +3194,7 @@ Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 555](Plugin/
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$true` |  | 
+`$true` |  |
 
 Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 595](Plugin/Admin/Admin.php#L595-L595)
 
@@ -3204,7 +3204,7 @@ Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 595](Plugin/
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
 Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 707](Plugin/Admin/Admin.php#L707-L707)
 
@@ -3214,7 +3214,7 @@ Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 707](Plugin/
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$false` |  | 
+`$false` |  |
 
 Source: [app/Plugin/Admin/Admin.php](Plugin/Admin/Admin.php), [line 826](Plugin/Admin/Admin.php#L826-L826)
 
@@ -3529,9 +3529,9 @@ Source: [app/Plugin/Schedules_Base.php](Plugin/Schedules_Base.php), [line 92](Pl
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$start` |  | 
-`$interval` |  | 
-`$instance` |  | 
+`$start` |  |
+`$interval` |  |
+`$instance` |  |
 
 Source: [app/Plugin/Schedules_Base.php](Plugin/Schedules_Base.php), [line 172](Plugin/Schedules_Base.php#L172-L172)
 
@@ -3716,8 +3716,8 @@ Source: [app/PageBuilder/Gutenberg/Blocks/Filter_List.php](PageBuilder/Gutenberg
 
 Argument | Type | Description
 -------- | ---- | -----------
-`$attribute_defaults` |  | 
-`$attributes` |  | 
+`$attribute_defaults` |  |
+`$attributes` |  |
 
 Source: [app/PageBuilder/Gutenberg/Blocks/Archive.php](PageBuilder/Gutenberg/Blocks/Archive.php), [line 193](PageBuilder/Gutenberg/Blocks/Archive.php#L193-L193)
 
@@ -3783,7 +3783,7 @@ Source: [app/PageBuilder/Gutenberg/Patterns.php](PageBuilder/Gutenberg/Patterns.
 
 Argument | Type | Description
 -------- | ---- | -----------
-`Helper::get_plugin_support_url()` |  | 
+`Helper::get_plugin_support_url()` |  |
 
 Source: [app/PageBuilder/Gutenberg/Blocks_Basis.php](PageBuilder/Gutenberg/Blocks_Basis.php), [line 124](PageBuilder/Gutenberg/Blocks_Basis.php#L124-L124)
 
@@ -3868,7 +3868,7 @@ Source: [app/PageBuilder/Gutenberg/Template_Adapter.php](PageBuilder/Gutenberg/T
 
 Argument | Type | Description
 -------- | ---- | -----------
-`self::DISALLOWED_BLOCKS` |  | 
+`self::DISALLOWED_BLOCKS` |  |
 
 **Changelog**
 

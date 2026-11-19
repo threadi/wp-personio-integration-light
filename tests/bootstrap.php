@@ -41,6 +41,12 @@ require_once "{$_tests_dir}/includes/functions.php";
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
+	// let WordPress treat the plugin as part of its plugin directory, even if it is located outside of the
+	// WordPress installation used for the tests: plugin_basename() then returns "personio-integration-light/..."
+	// instead of the full path, which is used e.g. as slug by the crypt library.
+	global $wp_plugin_paths;
+	$wp_plugin_paths[ wp_normalize_path( WP_PLUGIN_DIR . '/personio-integration-light' ) ] = wp_normalize_path( dirname( __DIR__ ) );
+
 	require dirname( dirname( __FILE__ ) ) . '/personio-integration-light.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );

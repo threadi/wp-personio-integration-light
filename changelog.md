@@ -1,10 +1,22 @@
 # Changelog
 
-## [Unreleased]
+## [6.1.2] - 23.11.2026
 
 ### Changed
 
 - Updated dependencies
+- Enabled search in settings
+
+## [6.1.1] - 12.11.2026
+
+### Changed
+
+- Updated crypt library
+- Updated settings library
+
+### Fixed
+
+- Fixed potential error if hook "template_include" loads with null value coming from third party plugins
 
 ## [6.1.0] - 09.11.2026
 
