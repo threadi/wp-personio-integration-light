@@ -146,6 +146,6 @@ class Filter_List extends Blocks_Basis {
 		$attributes = apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes );
 
 		// return the rendered content.
-		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Filter_List::get_instance()->render( $attributes );
+		return $this->add_editor_styles( \PersonioIntegrationLight\PersonioIntegration\Widgets\Filter_List::get_instance()->render( $attributes ), $attributes );
 	}
 }

@@ -498,3 +498,10 @@ body.easy-dialog-for-wordpress.wp-core-ui .personio-integration-manual-import-se
 }
 
 .esfw-settings-tab-content .logo { width: 240px }
+
+body.personioposition_page_personioPositions .esfw-settings-header {
+	justify-content: left;
+	.esfw-search {
+		margin-left: auto;
+	}
+}

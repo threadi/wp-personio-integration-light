@@ -189,6 +189,9 @@ class Settings {
 		if ( method_exists( $settings_obj, 'set_persist_section_collapse' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
 			$settings_obj->set_persist_section_collapse( true );
 		}
+		if ( method_exists( $settings_obj, 'set_search' ) ) {  // @phpstan-ignore function.alreadyNarrowedType
+			$settings_obj->set_search( true );
+		}
 
 		// create help in case of error during loading of the settings.
 		if ( method_exists( $settings_obj, 'set_error_help' ) ) {  // @phpstan-ignore function.alreadyNarrowedType

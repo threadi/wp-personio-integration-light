@@ -98,6 +98,6 @@ class Description extends Blocks_Basis {
 		$attributes['classes'] = $classes . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes );
 
 		// return the rendered template.
-		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Description::get_instance()->render( $attributes );
+		return $this->add_editor_styles( \PersonioIntegrationLight\PersonioIntegration\Widgets\Description::get_instance()->render( $attributes ), $attributes );
 	}
 }

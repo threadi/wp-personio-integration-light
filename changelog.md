@@ -4,8 +4,14 @@
 
 ### Changed
 
+- Set compatibility with WordPress 7.2
+- Enable search in settings
 - Updated dependencies
 - Enabled search in settings
+
+### Fixed
+
+- Fixed missing hide of filter title and reset link in Block Editor
 
 ## [6.1.1] - 12.11.2026
 

@@ -190,6 +190,9 @@ class Archive extends Blocks_Basis {
 		 * @param array $attribute_defaults List of attributes to use.
 		 * @param array $attributes List of attributes vom PageBuilder.
 		 */
-		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Archive::get_instance()->render( apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes ) );
+		$attributes = apply_filters( 'personio_integration_get_list_attributes', $attribute_defaults, $attributes );
+
+		// return the rendered content.
+		return $this->add_editor_styles( \PersonioIntegrationLight\PersonioIntegration\Widgets\Archive::get_instance()->render( $attributes ), $attributes );
 	}
 }

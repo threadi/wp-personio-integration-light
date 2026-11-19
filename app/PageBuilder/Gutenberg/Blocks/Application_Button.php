@@ -94,6 +94,6 @@ class Application_Button extends Blocks_Basis {
 			'styles'     => implode( PHP_EOL, $styles_array ),
 			'classes'    => $classes . ' ' . Helper::get_attribute_value_from_html( 'class', $block_html_attributes ),
 		);
-		return \PersonioIntegrationLight\PersonioIntegration\Widgets\Application_Button::get_instance()->render( $attributes );
+		return $this->add_editor_styles( \PersonioIntegrationLight\PersonioIntegration\Widgets\Application_Button::get_instance()->render( $attributes ), $attributes );
 	}
 }

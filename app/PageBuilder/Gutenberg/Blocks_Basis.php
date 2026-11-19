@@ -153,6 +153,36 @@ class Blocks_Basis {
 	}
 
 	/**
+	 * Add the generated styles directly to the HTML-output if this is a REST-request.
+	 *
+	 * The block editor renders our blocks via ServerSideRender, which is a REST-request.
+	 * Styles added via wp_add_inline_style() are never printed in this case, so settings
+	 * like "hide filter title" would not be visible in the editor preview.
+	 *
+	 * @param string              $html       The rendered HTML.
+	 * @param array<string,mixed> $attributes List of attributes used for the output (with "styles").
+	 *
+	 * @return string
+	 */
+	protected function add_editor_styles( string $html, array $attributes ): string {
+		// bail if this is not a REST-request.
+		if ( ! Helper::is_rest_request() ) {
+			return $html;
+		}
+
+		// bail if no styles are set.
+		if ( empty( $attributes['styles'] ) || ! \is_string( $attributes['styles'] ) ) {
+			return $html;
+		}
+
+		// prevent breaking out of the <style> element: CSS never needs "<".
+		$styles = str_replace( '<', '', wp_strip_all_tags( $attributes['styles'] ) );
+
+		// return the styles in front of the HTML.
+		return '<style>' . $styles . '</style>' . $html;
+	}
+
+	/**
 	 * Generate template-string from given attributes.
 	 *
 	 * @param array<string,mixed> $attributes List of attributes.

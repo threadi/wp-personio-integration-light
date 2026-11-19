@@ -2,7 +2,7 @@
 Contributors: laolaweb, threadi
 Tags: personio, jobs, recruitment, employee
 Requires at least: 6.6
-Tested up to: 7.1
+Tested up to: 7.2
 Requires PHP: 8.2
 Requires CP:  2.0
 License: GPL-2.0-or-later
@@ -128,8 +128,9 @@ Yes, it is without any further settings.
 == Changelog ==
 
 = @@VersionNumber@@ =
-- Updated crypt library
-- Updated settings library
-- Fixed potential error if hook "template_include" loads with null value
+- Set compatibility with WordPress 7.2
+- Enable search in settings
+- Updated dependencies
+- Fixed missing hide of filter title and reset link in Block Editor
 
 [older changes](https://github.com/threadi/wp-personio-integration-light/blob/master/changelog.md)

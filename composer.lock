@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e0a3eb42f49599413d6bbe4a545027f",
+    "content-hash": "31bb8650bc588b1fbf75cf3cde005c00",
     "packages": [
         {
             "name": "threadi/crypt-for-wordpress",
-            "version": "4.1.2",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/threadi/crypt-for-wordpress.git",
-                "reference": "e1c22e92d5a4c5a0449c276e379ea17511a83a12"
+                "reference": "0b9e2af0764c1dbd95d5570fe71472d18a63fa92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/threadi/crypt-for-wordpress/zipball/e1c22e92d5a4c5a0449c276e379ea17511a83a12",
-                "reference": "e1c22e92d5a4c5a0449c276e379ea17511a83a12",
+                "url": "https://api.github.com/repos/threadi/crypt-for-wordpress/zipball/0b9e2af0764c1dbd95d5570fe71472d18a63fa92",
+                "reference": "0b9e2af0764c1dbd95d5570fe71472d18a63fa92",
                 "shasum": ""
             },
             "require": {
@@ -50,9 +50,9 @@
             ],
             "support": {
                 "issues": "https://github.com/threadi/crypt-for-wordpress/issues",
-                "source": "https://github.com/threadi/crypt-for-wordpress/tree/4.1.2"
+                "source": "https://github.com/threadi/crypt-for-wordpress/tree/4.2.0"
             },
-            "time": "2026-11-09T19:36:42+00:00"
+            "time": "2026-11-12T14:47:21+00:00"
         },
         {
             "name": "threadi/easy-dialog-for-wordpress",
@@ -88,16 +88,16 @@
         },
         {
             "name": "threadi/easy-settings-for-wordpress",
-            "version": "3.9.2",
+            "version": "3.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/threadi/easy-settings-for-wordpress.git",
-                "reference": "aeeb4d788bdb672d63b13c9d0562a3070dc0d9a8"
+                "reference": "cfaae91a11584bb9e77c931e0898499b8a11dc1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/threadi/easy-settings-for-wordpress/zipball/aeeb4d788bdb672d63b13c9d0562a3070dc0d9a8",
-                "reference": "aeeb4d788bdb672d63b13c9d0562a3070dc0d9a8",
+                "url": "https://api.github.com/repos/threadi/easy-settings-for-wordpress/zipball/cfaae91a11584bb9e77c931e0898499b8a11dc1b",
+                "reference": "cfaae91a11584bb9e77c931e0898499b8a11dc1b",
                 "shasum": ""
             },
             "require": {
@@ -139,22 +139,22 @@
             "description": "Provides a settings wrapper for WordPress plugins and themes.",
             "support": {
                 "issues": "https://github.com/threadi/easy-settings-for-wordpress/issues",
-                "source": "https://github.com/threadi/easy-settings-for-wordpress/tree/3.9.2"
+                "source": "https://github.com/threadi/easy-settings-for-wordpress/tree/3.10.0"
             },
-            "time": "2026-11-07T10:30:35+00:00"
+            "time": "2026-11-14T23:52:10+00:00"
         },
         {
             "name": "threadi/easy-setup-for-wordpress",
-            "version": "1.5.1",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/threadi/easy-setup-for-wordpress.git",
-                "reference": "bf1b95b973efef812731af08b6b8f995f97ea251"
+                "reference": "a81ec263c39c908d09d6370cfd5671210ae837e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/threadi/easy-setup-for-wordpress/zipball/bf1b95b973efef812731af08b6b8f995f97ea251",
-                "reference": "bf1b95b973efef812731af08b6b8f995f97ea251",
+                "url": "https://api.github.com/repos/threadi/easy-setup-for-wordpress/zipball/a81ec263c39c908d09d6370cfd5671210ae837e6",
+                "reference": "a81ec263c39c908d09d6370cfd5671210ae837e6",
                 "shasum": ""
             },
             "require-dev": {
@@ -186,9 +186,9 @@
             "description": "Provides a simple react-driven plugin-setup for WordPress-backend.",
             "support": {
                 "issues": "https://github.com/threadi/easy-setup-for-wordpress/issues",
-                "source": "https://github.com/threadi/easy-setup-for-wordpress/tree/1.5.1"
+                "source": "https://github.com/threadi/easy-setup-for-wordpress/tree/1.6.1"
             },
-            "time": "2026-10-04T14:36:09+00:00"
+            "time": "2026-11-14T11:54:51+00:00"
         },
         {
             "name": "threadi/easy-transients-for-wordpress",
@@ -2018,11 +2018,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.3.5",
+            "version": "2.3.7",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/645a1bd6bead15fc1b8474137467961d0fa30a79",
-                "reference": "645a1bd6bead15fc1b8474137467961d0fa30a79",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/90c91c2498849ab8cc4e873864bbf1cb2bf6ea12",
+                "reference": "90c91c2498849ab8cc4e873864bbf1cb2bf6ea12",
                 "shasum": ""
             },
             "require": {
@@ -2078,7 +2078,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-03T12:14:22+00:00"
+            "time": "2026-11-19T10:31:11+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2401,16 +2401,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.6.38",
+            "version": "9.6.39",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "8b5f757e8e92071bfdbfa93943f94f84c4e31007"
+                "reference": "133394556c813b61aa3481a87bef8419d8ec95c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8b5f757e8e92071bfdbfa93943f94f84c4e31007",
-                "reference": "8b5f757e8e92071bfdbfa93943f94f84c4e31007",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/133394556c813b61aa3481a87bef8419d8ec95c0",
+                "reference": "133394556c813b61aa3481a87bef8419d8ec95c0",
                 "shasum": ""
             },
             "require": {
@@ -2484,7 +2484,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.38"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.39"
             },
             "funding": [
                 {
@@ -2492,7 +2492,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-10-05T05:44:26+00:00"
+            "time": "2026-11-13T11:05:34+00:00"
         },
         {
             "name": "pronamic/wp-documentor",
